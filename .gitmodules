@@ -1,0 +1,3 @@
+[submodule "Krystal/third-party/spdlog"]
+	path = Krystal/third-party/spdlog
+	url = https://github.com/gabime/spdlog
