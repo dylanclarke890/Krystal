@@ -150,6 +150,10 @@
     <ClInclude Include="src\Krystal\Application.h" />
     <ClInclude Include="src\Krystal\Core.h" />
     <ClInclude Include="src\Krystal\EntryPoint.h" />
+    <ClInclude Include="src\Krystal\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Krystal\Events\Event.h" />
+    <ClInclude Include="src\Krystal\Events\KeyEvent.h" />
+    <ClInclude Include="src\Krystal\Events\MouseEvent.h" />
     <ClInclude Include="src\Krystal\Log.h" />
   </ItemGroup>
   <ItemGroup>
