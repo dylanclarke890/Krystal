@@ -7,8 +7,10 @@ outputdir = "%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Krystal/third-party/GLFW/include"
+IncludeDir["glad"] = "Krystal/third-party/glad/include"
 
 include "Krystal/third-party/GLFW"
+include "Krystal/third-party/glad"
 
 project "Krystal"
   location "Krystal"
@@ -25,10 +27,12 @@ project "Krystal"
   includedirs { 
     "%{prj.name}/third-party/spdlog/include", 
     "%{prj.name}/src",
-    "%{IncludeDir.GLFW}"
+    "%{IncludeDir.GLFW}",
+    "%{IncludeDir.glad}"
   }
 
   links {
+    "glad",
     "GLFW",
     "opengl32.lib"
   }
@@ -43,14 +47,17 @@ project "Krystal"
 
   filter "configurations:Debug"
     defines {"KRYS_DEBUG", "KRYS_ENABLE_ASSERTS" }
+    buildoptions "/MDd"
     symbols "On"
 
   filter "configurations:Release"
     defines "KRYS_RELEASE"
+    buildoptions "/MD"
     optimize "On"
 
   filter "configurations:Publish"
     defines "KRYS_PUBLISH"
+    buildoptions "/MD"
     optimize "On"
 
 project "Sandbox"
@@ -73,12 +80,15 @@ project "Sandbox"
 
   filter "configurations:Debug"
     defines "KRYS_DEBUG"
+    buildoptions "/MDd"
     symbols "On"
 
   filter "configurations:Release"
     defines "KRYS_RELEASE"
+    buildoptions "/MD"
     optimize "On"
 
-  filter "configurations:Debug"
+  filter "configurations:Publish"
     defines "KRYS_PUBLISH"
+    buildoptions "/MD"
     optimize "On"
