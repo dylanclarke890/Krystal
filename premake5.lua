@@ -41,7 +41,11 @@ project "Krystal"
     cppdialect "C++20"
     staticruntime "On"
     systemversion "latest"
-    defines { "KRYS_PLATFORM_WINDOWS", "KRYS_BUILD_DLL" }
+    defines { 
+      "KRYS_PLATFORM_WINDOWS", 
+      "KRYS_BUILD_DLL",
+      "GLFW_INCLUDE_NONE"
+    }
 
     postbuildcommands { ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox") }
 
