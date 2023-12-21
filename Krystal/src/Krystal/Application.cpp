@@ -1,3 +1,4 @@
+#include "krys-pch.h"
 #include "Application.h"
 
 namespace Krys

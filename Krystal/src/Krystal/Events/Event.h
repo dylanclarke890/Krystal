@@ -1,9 +1,7 @@
 #pragma once
 
-#include "../Core.h"
-
-#include <string>
-#include <functional>
+#include "Krystal/Core.h"
+#include "krys-pch.h"
 
 namespace Krys
 {

@@ -1,6 +1,5 @@
+#include "krys-pch.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
-
-#include "Log.h"
 
 namespace Krys
 {

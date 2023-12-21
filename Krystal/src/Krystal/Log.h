@@ -24,8 +24,8 @@ namespace Krys
 #define KRYS_CORE_ERROR(...)    ::Krys::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define KRYS_CORE_CRITICAL(...) ::Krys::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
-#define KRYS_TRACE(...)    ::Krys::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define KRYS_INFO(...)     ::Krys::Log::GetClientLogger()->info(__VA_ARGS__)
-#define KRYS_WARN(...)     ::Krys::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define KRYS_ERROR(...)    ::Krys::Log::GetClientLogger()->error(__VA_ARGS__)
-#define KRYS_CRITICAL(...) ::Krys::Log::GetClientLogger()->critical(__VA_ARGS__)
+#define KRYS_TRACE(...)         ::Krys::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define KRYS_INFO(...)          ::Krys::Log::GetClientLogger()->info(__VA_ARGS__)
+#define KRYS_WARN(...)          ::Krys::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define KRYS_ERROR(...)         ::Krys::Log::GetClientLogger()->error(__VA_ARGS__)
+#define KRYS_CRITICAL(...)      ::Krys::Log::GetClientLogger()->critical(__VA_ARGS__)
