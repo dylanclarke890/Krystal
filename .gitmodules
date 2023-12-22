@@ -4,3 +4,6 @@
 [submodule "Krystal/third-party/GLFW"]
 	path = Krystal/third-party/GLFW
 	url = https://github.com/TheCherno/glfw
+[submodule "Krystal/third-party/imgui"]
+	path = Krystal/third-party/imgui
+	url = https://github.com/TheCherno/imgui
