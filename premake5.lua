@@ -11,11 +11,12 @@ IncludeDir["GLFW"] = "Krystal/third-party/GLFW/include"
 IncludeDir["glad"] = "Krystal/third-party/glad/include"
 IncludeDir["imgui"] = "Krystal/third-party/imgui"
 
-include "Krystal/third-party/GLFW"
-include "Krystal/third-party/glad"
-include "Krystal/third-party/imgui"
+group "Dependencies"
+  include "Krystal/third-party/GLFW"
+  include "Krystal/third-party/glad"
+  include "Krystal/third-party/imgui"
 
-
+group ""
 project "Krystal"
   location "Krystal"
   kind "SharedLib"
