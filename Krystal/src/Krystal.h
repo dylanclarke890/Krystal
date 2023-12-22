@@ -1,10 +1,8 @@
 #pragma once
 
-// For use by Krystal applications
 #include "Krystal/Application.h"
-#include "Krystal/Layer.h"
 #include "Krystal/Log.h"
-
+#include "Krystal/Layer.h"
 #include "Krystal/ImGui/ImGuiLayer.h"
 
 // --------- ENTRY POINT ---------

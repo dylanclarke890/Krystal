@@ -1,6 +1,7 @@
 workspace "Krystal"
   architecture "x64"
   configurations { "Debug", "Release", "Publish" }
+  startproject "Sandbox"
 
 outputdir = "%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}"
 
@@ -13,6 +14,7 @@ IncludeDir["imgui"] = "Krystal/third-party/imgui"
 include "Krystal/third-party/GLFW"
 include "Krystal/third-party/glad"
 include "Krystal/third-party/imgui"
+
 
 project "Krystal"
   location "Krystal"
