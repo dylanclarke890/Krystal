@@ -19,3 +19,5 @@
   #define KRYS_ASSERT(x, ...)
   #define KRYS_CORE_ASSERT(x, ...)
 #endif
+
+#define KRYS_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)

@@ -42,6 +42,21 @@ namespace Krys
 		EVENT_CLASS_TYPE(KeyPressed)
 	};
 
+	class KRYSTAL_API KeyTypedEvent : public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int keycode) : KeyEvent(keycode) {}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvents: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped)
+	};
+
 	class KRYSTAL_API KeyReleasedEvent : public KeyEvent
 	{
 	public:
