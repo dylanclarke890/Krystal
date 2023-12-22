@@ -43,7 +43,6 @@ project "Krystal"
   
   filter "system:windows"
     cppdialect "C++20"
-    staticruntime "On"
     systemversion "latest"
     defines { 
       "KRYS_PLATFORM_WINDOWS", 
@@ -55,17 +54,17 @@ project "Krystal"
 
   filter "configurations:Debug"
     defines {"KRYS_DEBUG", "KRYS_ENABLE_ASSERTS" }
-    buildoptions "/MDd"
+    runtime "Debug"
     symbols "On"
 
   filter "configurations:Release"
     defines "KRYS_RELEASE"
-    buildoptions "/MD"
+    runtime "Release"
     optimize "On"
 
   filter "configurations:Publish"
     defines "KRYS_PUBLISH"
-    buildoptions "/MD"
+    runtime "Release"
     optimize "On"
 
 project "Sandbox"
@@ -82,21 +81,20 @@ project "Sandbox"
 
   filter "system:windows"
     cppdialect "C++20"
-    staticruntime "On"
     systemversion "latest"
     defines { "KRYS_PLATFORM_WINDOWS" }
 
   filter "configurations:Debug"
     defines "KRYS_DEBUG"
-    buildoptions "/MDd"
+    runtime "Debug"
     symbols "On"
 
   filter "configurations:Release"
     defines "KRYS_RELEASE"
-    buildoptions "/MD"
+    runtime "Release"
     optimize "On"
 
   filter "configurations:Publish"
     defines "KRYS_PUBLISH"
-    buildoptions "/MD"
+    runtime "Release"
     optimize "On"
