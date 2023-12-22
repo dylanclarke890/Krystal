@@ -53,7 +53,7 @@ project "Krystal"
       "GLFW_INCLUDE_NONE"
     }
 
-    postbuildcommands { ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox") }
+    postbuildcommands { ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"") }
 
   filter "configurations:Debug"
     defines {"KRYS_DEBUG", "KRYS_ENABLE_ASSERTS" }

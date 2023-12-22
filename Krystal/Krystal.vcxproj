@@ -161,11 +161,13 @@
     <ClInclude Include="src\Krystal\Events\KeyEvent.h" />
     <ClInclude Include="src\Krystal\Events\MouseEvent.h" />
     <ClInclude Include="src\Krystal\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Krystal\Input.h" />
     <ClInclude Include="src\Krystal\Layer.h" />
     <ClInclude Include="src\Krystal\LayerStack.h" />
     <ClInclude Include="src\Krystal\Log.h" />
     <ClInclude Include="src\Krystal\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\krys-pch.h" />
   </ItemGroup>
@@ -176,6 +178,7 @@
     <ClCompile Include="src\Krystal\LayerStack.cpp" />
     <ClCompile Include="src\Krystal\Log.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\krys-pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
