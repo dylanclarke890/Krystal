@@ -162,9 +162,11 @@
     <ClInclude Include="src\Krystal\Events\MouseEvent.h" />
     <ClInclude Include="src\Krystal\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Krystal\Input.h" />
+    <ClInclude Include="src\Krystal\KeyCodes.h" />
     <ClInclude Include="src\Krystal\Layer.h" />
     <ClInclude Include="src\Krystal\LayerStack.h" />
     <ClInclude Include="src\Krystal\Log.h" />
+    <ClInclude Include="src\Krystal\MouseButtonCodes.h" />
     <ClInclude Include="src\Krystal\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />

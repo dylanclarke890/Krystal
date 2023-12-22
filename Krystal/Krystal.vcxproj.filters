@@ -67,6 +67,8 @@
     <ClInclude Include="src\krys-pch.h" />
     <ClInclude Include="src\Krystal\Input.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Krystal\KeyCodes.h" />
+    <ClInclude Include="src\Krystal\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Krystal\Application.cpp">
