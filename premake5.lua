@@ -82,8 +82,9 @@ project "Sandbox"
   
   files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp" }
   includedirs { 
-    "Krystal/third-party/spdlog/include",
     "Krystal/src",
+    "Krystal/third-party",
+    "Krystal/third-party/spdlog/include",
     "%{IncludeDir.glm}"
   }
 
