@@ -10,6 +10,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Krystal/third-party/GLFW/include"
 IncludeDir["glad"] = "Krystal/third-party/glad/include"
 IncludeDir["imgui"] = "Krystal/third-party/imgui"
+IncludeDir["glm"] = "Krystal/third-party/glm"
 
 group "Dependencies"
   include "Krystal/third-party/GLFW"
@@ -35,6 +36,7 @@ project "Krystal"
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.glad}",
     "%{IncludeDir.imgui}",
+    "%{IncludeDir.glm}",
   }
 
   links {
@@ -79,7 +81,12 @@ project "Sandbox"
   objdir("bin-obj/" .. outputdir .. "/%{prj.name}")
   
   files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp" }
-  includedirs { "Krystal/third-party/spdlog/include", "Krystal/src" }
+  includedirs { 
+    "Krystal/third-party/spdlog/include",
+    "Krystal/src",
+    "%{IncludeDir.glm}"
+  }
+
   links { "Krystal" }
 
   filter "system:windows"

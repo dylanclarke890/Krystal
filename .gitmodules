@@ -7,3 +7,6 @@
 [submodule "Krystal/third-party/imgui"]
 	path = Krystal/third-party/imgui
 	url = https://github.com/TheCherno/imgui
+[submodule "Krystal/third-party/glm"]
+	path = Krystal/third-party/glm
+	url = https://github.com/g-truc/glm

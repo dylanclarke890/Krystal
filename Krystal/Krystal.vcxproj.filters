@@ -46,6 +46,12 @@
     <ClInclude Include="src\Krystal\ImGui\ImGuiLayer.h">
       <Filter>Krystal\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Krystal\Input.h">
+      <Filter>Krystal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Krystal\KeyCodes.h">
+      <Filter>Krystal</Filter>
+    </ClInclude>
     <ClInclude Include="src\Krystal\Layer.h">
       <Filter>Krystal</Filter>
     </ClInclude>
@@ -55,20 +61,22 @@
     <ClInclude Include="src\Krystal\Log.h">
       <Filter>Krystal</Filter>
     </ClInclude>
+    <ClInclude Include="src\Krystal\MouseButtonCodes.h">
+      <Filter>Krystal</Filter>
+    </ClInclude>
     <ClInclude Include="src\Krystal\Window.h">
       <Filter>Krystal</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\krys-pch.h" />
-    <ClInclude Include="src\Krystal\Input.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
-    <ClInclude Include="src\Krystal\KeyCodes.h" />
-    <ClInclude Include="src\Krystal\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Krystal\Application.cpp">
@@ -89,10 +97,12 @@
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
       <Filter>Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\krys-pch.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
 </Project>
