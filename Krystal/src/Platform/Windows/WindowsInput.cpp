@@ -26,7 +26,7 @@ namespace Krys
     auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);
-    return std::make_pair(xpos, ypos);
+    return std::make_pair((float)xpos, (float)ypos);
   }
 
   float WindowsInput::GetMouseXImpl()

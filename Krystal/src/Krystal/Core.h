@@ -1,10 +1,14 @@
 #pragma once
 
 #ifdef KRYS_PLATFORM_WINDOWS
-  #ifdef KRYS_BUILD_DLL
-    #define KRYSTAL_API __declspec(dllexport)
+  #ifdef KRYS_DYNAMIC_LINK
+    #ifdef KRYS_BUILD_DLL
+      #define KRYSTAL_API __declspec(dllexport)
+    #else
+      #define KRYSTAL_API __declspec(dllimport)
+    #endif
   #else
-    #define KRYSTAL_API __declspec(dllimport)
+    #define KRYSTAL_API
   #endif
 #else
   #error Krystal only supports Windows!

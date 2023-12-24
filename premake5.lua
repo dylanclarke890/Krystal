@@ -20,17 +20,27 @@ group "Dependencies"
 group ""
 project "Krystal"
   location "Krystal"
-  kind "SharedLib"
+  kind "StaticLib"
+  staticruntime "on"
   language "C++"
-
+  cppdialect "C++20"
+  
   targetdir("bin/" .. outputdir .. "/%{prj.name}")
   objdir("bin-obj/" .. outputdir .. "/%{prj.name}")
 
   pchheader "krys-pch.h"
   pchsource "Krystal/src/krys-pch.cpp"
   
-  files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp" }
-  includedirs { 
+  files { 
+    "%{prj.name}/src/**.h",
+     "%{prj.name}/src/**.cpp"
+  }
+
+  defines {
+    "_CRT_SECURE_NO_WARNINGS"
+  }
+
+  includedirs {
     "%{prj.name}/third-party/spdlog/include", 
     "%{prj.name}/src",
     "%{IncludeDir.GLFW}",
@@ -47,7 +57,6 @@ project "Krystal"
   }
   
   filter "system:windows"
-    cppdialect "C++20"
     systemversion "latest"
     defines { 
       "KRYS_PLATFORM_WINDOWS", 
@@ -55,26 +64,26 @@ project "Krystal"
       "GLFW_INCLUDE_NONE"
     }
 
-    postbuildcommands { ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"") }
-
   filter "configurations:Debug"
     defines {"KRYS_DEBUG", "KRYS_ENABLE_ASSERTS" }
     runtime "Debug"
-    symbols "On"
+    symbols "on"
 
   filter "configurations:Release"
     defines "KRYS_RELEASE"
     runtime "Release"
-    optimize "On"
+    optimize "on"
 
   filter "configurations:Publish"
     defines "KRYS_PUBLISH"
     runtime "Release"
-    optimize "On"
+    optimize "on"
 
 project "Sandbox"
   location "Sandbox"
   kind "ConsoleApp"
+  staticruntime "on"
+  cppdialect "C++20"
   language "C++"
 
   targetdir("bin/" .. outputdir .. "/%{prj.name}")
@@ -91,21 +100,20 @@ project "Sandbox"
   links { "Krystal" }
 
   filter "system:windows"
-    cppdialect "C++20"
     systemversion "latest"
     defines { "KRYS_PLATFORM_WINDOWS" }
 
   filter "configurations:Debug"
     defines "KRYS_DEBUG"
     runtime "Debug"
-    symbols "On"
+    symbols "on"
 
   filter "configurations:Release"
     defines "KRYS_RELEASE"
     runtime "Release"
-    optimize "On"
+    optimize "on"
 
   filter "configurations:Publish"
     defines "KRYS_PUBLISH"
     runtime "Release"
-    optimize "On"
+    optimize "on"
