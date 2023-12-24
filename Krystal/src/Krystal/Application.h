@@ -19,6 +19,9 @@ namespace Krys
     ImGuiLayer* m_ImGuiLayer;
     bool m_Running;
     LayerStack m_LayerStack;
+    bool OnWindowClose(WindowCloseEvent& e);
+    static Application* s_Instance;
+    unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
   public:
     Application();
     virtual ~Application();
@@ -31,9 +34,6 @@ namespace Krys
 
     inline Window& GetWindow() { return *m_Window; }
     inline static Application& Get() { return *s_Instance; }
-  private:
-    bool OnWindowClose(WindowCloseEvent& e);
-    static Application* s_Instance;
   };
 
   // To be defined in CLIENT
