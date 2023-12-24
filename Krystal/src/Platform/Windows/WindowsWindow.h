@@ -1,8 +1,7 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-
 #include "Krystal/Window.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Krys
 {
@@ -25,6 +24,7 @@ namespace Krys
 		inline virtual void* GetNativeWindow() const { return m_Window; }
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();

@@ -143,6 +143,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Krystal\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Krystal.h" />
     <ClInclude Include="src\Krystal\Application.h" />
     <ClInclude Include="src\Krystal\Core.h" />
@@ -170,6 +172,7 @@
     <ClCompile Include="src\Krystal\Layer.cpp" />
     <ClCompile Include="src\Krystal\LayerStack.cpp" />
     <ClCompile Include="src\Krystal\Log.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\krys-pch.cpp">
