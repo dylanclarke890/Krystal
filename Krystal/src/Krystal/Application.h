@@ -10,6 +10,8 @@
 
 #include "ImGui/ImGuiLayer.h"
 
+#include "Krystal/Renderer/Shader.h"
+
 namespace Krys
 {
   class KRYSTAL_API Application
@@ -22,6 +24,7 @@ namespace Krys
     bool OnWindowClose(WindowCloseEvent& e);
     static Application* s_Instance;
     unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+    std::unique_ptr<Shader> m_Shader; 
   public:
     Application();
     virtual ~Application();
