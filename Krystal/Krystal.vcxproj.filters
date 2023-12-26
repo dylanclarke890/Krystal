@@ -74,6 +74,9 @@
     <ClInclude Include="src\Krystal\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Krystal\Renderer\Shader.h" />
+    <ClInclude Include="src\Krystal\Renderer\Buffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\Krystal\Renderer\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Krystal\Application.cpp">
@@ -103,5 +106,8 @@
     <ClCompile Include="src\krys-pch.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Krystal\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Krystal\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\Krystal\Renderer\Renderer.cpp" />
   </ItemGroup>
 </Project>

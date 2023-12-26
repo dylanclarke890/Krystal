@@ -143,6 +143,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Krystal\Renderer\Renderer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\Krystal\Renderer\Buffer.h" />
     <ClInclude Include="src\Krystal\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Krystal\Renderer\Shader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -167,13 +170,16 @@
     <ClInclude Include="src\krys-pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Krystal\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Krystal\Application.cpp" />
     <ClCompile Include="src\Krystal\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Krystal\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Krystal\Layer.cpp" />
     <ClCompile Include="src\Krystal\LayerStack.cpp" />
     <ClCompile Include="src\Krystal\Log.cpp" />
+    <ClCompile Include="src\Krystal\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Krystal\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
