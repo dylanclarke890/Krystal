@@ -29,15 +29,15 @@ namespace Krys
   {
     switch (Renderer::GetAPI())
     {
-    case RendererAPI::None:
-    {
-      KRYS_CORE_ASSERT(false, "RendererAPI::None is not supported.");
-      return nullptr;
-    }
-    case RendererAPI::OpenGL:
-    {
-      return new OpenGLIndexBuffer(indices, count);
-    }
+      case RendererAPI::None:
+      {
+        KRYS_CORE_ASSERT(false, "RendererAPI::None is not supported.");
+        return nullptr;
+      }
+      case RendererAPI::OpenGL:
+      {
+        return new OpenGLIndexBuffer(indices, count);
+      }
     }
 
     KRYS_CORE_ASSERT(false, "Unknown RendererAPI!");
