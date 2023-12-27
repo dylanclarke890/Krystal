@@ -42,6 +42,11 @@ namespace Krys
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
   }
 
+  OpenGLIndexBuffer::~OpenGLIndexBuffer()
+  {
+    glDeleteBuffers(1, &m_RendererId);
+  }
+
   void OpenGLIndexBuffer::Bind() const
   {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererId);

@@ -30,7 +30,7 @@ namespace Krys
     uint32_t m_Count;
   public:
     OpenGLIndexBuffer(uint32_t* indices, uint32_t size);
-    virtual ~OpenGLIndexBuffer() override {}
+    virtual ~OpenGLIndexBuffer() override;
     
     virtual void Bind() const override;
     virtual void Unbind() const override;
