@@ -130,6 +130,6 @@ namespace Krys
 
     virtual uint32_t GetCount() const = 0;
 
-    static IndexBuffer* Create(uint32_t* vertices, uint32_t count);
+    static IndexBuffer* Create(uint32_t* indices, uint32_t count);
   };
 }

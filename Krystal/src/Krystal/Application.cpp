@@ -9,30 +9,6 @@ namespace Krys
 {
   Application* Application::s_Instance = nullptr;
 
-  static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-  {
-    switch (type)
-    {
-      case Krys::ShaderDataType::Float:
-      case Krys::ShaderDataType::Float2:
-      case Krys::ShaderDataType::Float3:
-      case Krys::ShaderDataType::Float4:
-      case Krys::ShaderDataType::Mat3:
-      case Krys::ShaderDataType::Mat4:
-        return GL_FLOAT;
-      case Krys::ShaderDataType::Int:
-      case Krys::ShaderDataType::Int2:
-      case Krys::ShaderDataType::Int3:
-      case Krys::ShaderDataType::Int4:
-        return GL_INT;
-      case Krys::ShaderDataType::Bool:
-        return GL_BOOL;
-    }
-
-    KRYS_CORE_ASSERT(false, "Unknown ShaderDataType!");
-    return 0;
-  }
-
   Application::Application(): m_Running(true)
   {
     KRYS_CORE_ASSERT(!s_Instance, "Application already exists!");
@@ -42,41 +18,6 @@ namespace Krys
 
     m_ImGuiLayer = new ImGuiLayer();
     PushOverlay(m_ImGuiLayer);
-
-    glGenVertexArrays(1, &m_VertexArray);
-    glBindVertexArray(m_VertexArray);
-
-    float vertices[3 * 7] = {
-      -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-       0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-       0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
-    };
-
-    m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-
-    BufferLayout layout = {
-      { ShaderDataType::Float3, "a_Position" },
-      { ShaderDataType::Float4, "a_Color" }
-    };
-    m_VertexBuffer->SetLayout(layout);
-
-    uint32_t index = 0;
-    for (const auto& element : layout)
-    {
-      glEnableVertexAttribArray(index);
-      glVertexAttribPointer(
-        index, 
-        element.GetComponentCount(),
-        ShaderDataTypeToOpenGLBaseType(element.Type), 
-        element.Normalized ? GL_TRUE : GL_FALSE,
-        layout.GetStride(),
-        (const void*)element.Offset
-      );
-      index++;
-    }
-
-    unsigned int indices[3] = { 0, 1, 2 };
-    m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
     std::string vertexSource = R"(
       #version 330 core
@@ -110,7 +51,71 @@ namespace Krys
       }
     )";
 
+    std::string blueShaderVertexSource = R"(
+      #version 330 core
+      
+      layout (location = 0) in vec3 a_Position;
+
+      void main()
+      {
+        gl_Position = vec4(a_Position, 1.0);
+      }
+    )";
+
+    std::string blueShaderFragmentSource = R"(
+      #version 330 core
+      
+      layout (location = 0) out vec4 color;
+
+      void main()
+      {
+        color = vec4(0.2, 0.3, 0.8, 1.0);
+      }
+    )";
+
+    float triangleVertices[3 * 7] = {
+      -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+       0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+       0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
+    };
+
+    float squareVertices[3 * 4] = {
+      -0.5f, -0.5f, 0.0f,
+       0.5f, -0.5f, 0.0f,
+       0.5f,  0.5f, 0.0f,
+      -0.5f,  0.5f, 0.0f
+    };
+
+    unsigned int triangleIndices[3] = { 0, 1, 2 };
+    unsigned int squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+
+    std::shared_ptr<VertexBuffer> triangleVertexBuffer;
+    std::shared_ptr<IndexBuffer> triangleIndexBuffer;
+
     m_Shader.reset(new Shader(vertexSource, fragmentSource));
+    m_TriangleVertexArray.reset(VertexArray::Create());
+    triangleVertexBuffer.reset(VertexBuffer::Create(triangleVertices, sizeof(triangleVertices)));
+    triangleIndexBuffer.reset(IndexBuffer::Create(triangleIndices, sizeof(triangleIndices) / sizeof(uint32_t)));
+
+    triangleVertexBuffer->SetLayout({
+      { ShaderDataType::Float3, "a_Position" },
+      { ShaderDataType::Float4, "a_Color" }
+    });
+    m_TriangleVertexArray->AddVertexBuffer(triangleVertexBuffer);
+    m_TriangleVertexArray->SetIndexBuffer(triangleIndexBuffer);
+
+
+    std::shared_ptr<VertexBuffer> squareVertexBuffer;
+    std::shared_ptr<IndexBuffer> squareIndexBuffer;
+
+    m_BlueShader.reset(new Shader(blueShaderVertexSource, blueShaderFragmentSource));
+    m_SquareVertexArray.reset(VertexArray::Create());
+    squareVertexBuffer.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+    squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+    
+    squareVertexBuffer->SetLayout({ { ShaderDataType::Float3, "a_Position" } });
+    m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
+    m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
   }
   
   Application::~Application() {}
@@ -123,9 +128,13 @@ namespace Krys
       glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT);
 
+      m_BlueShader->Bind();
+      m_SquareVertexArray->Bind();
+      glDrawElements(GL_TRIANGLES, m_SquareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
       m_Shader->Bind();
-      glBindVertexArray(m_VertexArray);
-      glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+      m_TriangleVertexArray->Bind();
+      glDrawElements(GL_TRIANGLES, m_TriangleVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
       for (Layer* layer : m_LayerStack)
         layer->OnUpdate();

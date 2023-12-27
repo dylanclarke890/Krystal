@@ -12,6 +12,7 @@
 
 #include "Krystal/Renderer/Shader.h"
 #include "Krystal/Renderer/Buffer.h"
+#include "Krystal/Renderer/VertexArray.h"
 
 namespace Krys
 {
@@ -24,10 +25,10 @@ namespace Krys
     LayerStack m_LayerStack;
     bool OnWindowClose(WindowCloseEvent& e);
     static Application* s_Instance;
-    unsigned int m_VertexArray;
-    std::unique_ptr<Shader> m_Shader;
-    std::unique_ptr<VertexBuffer> m_VertexBuffer;
-    std::unique_ptr<IndexBuffer> m_IndexBuffer;
+    std::shared_ptr<Shader> m_Shader;
+    std::shared_ptr<Shader> m_BlueShader;
+    std::shared_ptr<VertexArray> m_TriangleVertexArray;
+    std::shared_ptr<VertexArray> m_SquareVertexArray;
   public:
     Application();
     virtual ~Application();
