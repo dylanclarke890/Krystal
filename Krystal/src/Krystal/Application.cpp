@@ -1,9 +1,8 @@
 #include "krys-pch.h"
 #include "Application.h"
-#include "Input.h"
 
-// TODO: Temporary
-#include <glad/glad.h>
+#include "Input.h"
+#include "Renderer/Renderer.h"
 
 namespace Krys
 {
@@ -124,17 +123,18 @@ namespace Krys
   {
     while (m_Running) 
     {
-      // TODO: Temporary
-      glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT);
+      RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+      RenderCommand::Clear();
 
-      m_BlueShader->Bind();
-      m_SquareVertexArray->Bind();
-      glDrawElements(GL_TRIANGLES, m_SquareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+      Renderer::BeginScene();
+      {
+        m_BlueShader->Bind();
+        Renderer::Submit(m_SquareVertexArray);
 
-      m_Shader->Bind();
-      m_TriangleVertexArray->Bind();
-      glDrawElements(GL_TRIANGLES, m_TriangleVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        m_Shader->Bind();
+        Renderer::Submit(m_TriangleVertexArray);
+      }
+      Renderer::EndScene();
 
       for (Layer* layer : m_LayerStack)
         layer->OnUpdate();
