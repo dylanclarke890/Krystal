@@ -13,6 +13,7 @@
 #include "Krystal/Renderer/Shader.h"
 #include "Krystal/Renderer/Buffer.h"
 #include "Krystal/Renderer/VertexArray.h"
+#include "Krystal/Renderer/OrthographicCamera.h"
 
 namespace Krys
 {
@@ -29,6 +30,8 @@ namespace Krys
     std::shared_ptr<Shader> m_BlueShader;
     std::shared_ptr<VertexArray> m_TriangleVertexArray;
     std::shared_ptr<VertexArray> m_SquareVertexArray;
+
+    OrthographicCamera m_Camera;
   public:
     Application();
     virtual ~Application();
