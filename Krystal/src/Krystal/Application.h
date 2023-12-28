@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core.h"
-
 #include "Window.h"
 #include "LayerStack.h"
 
@@ -9,11 +8,6 @@
 #include "Events/ApplicationEvent.h"
 
 #include "ImGui/ImGuiLayer.h"
-
-#include "Krystal/Renderer/Shader.h"
-#include "Krystal/Renderer/Buffer.h"
-#include "Krystal/Renderer/VertexArray.h"
-#include "Krystal/Renderer/OrthographicCamera.h"
 
 namespace Krys
 {
