@@ -9,7 +9,7 @@ class DemoLayer : public Krys::Layer
 {
 private:
   std::shared_ptr<Krys::Shader> m_Shader;
-  std::shared_ptr<Krys::Shader> m_BlueShader;
+  std::shared_ptr<Krys::Shader> m_FlatColorShader;
   std::shared_ptr<Krys::VertexArray> m_TriangleVertexArray;
   std::shared_ptr<Krys::VertexArray> m_SquareVertexArray;
 
@@ -62,7 +62,7 @@ public:
       }
     )";
 
-    std::string blueShaderVertexSource = R"(
+    std::string flatColorShaderVertexSource = R"(
       #version 330 core
       
       layout (location = 0) in vec3 a_Position;
@@ -76,14 +76,16 @@ public:
       }
     )";
 
-    std::string blueShaderFragmentSource = R"(
+    std::string flatColorShaderFragmentSource = R"(
       #version 330 core
       
       layout (location = 0) out vec4 color;
 
+      uniform vec4 u_Color;
+
       void main()
       {
-        color = vec4(0.2, 0.3, 0.8, 1.0);
+        color = u_Color;
       }
     )";
 
@@ -118,11 +120,10 @@ public:
     m_TriangleVertexArray->AddVertexBuffer(triangleVertexBuffer);
     m_TriangleVertexArray->SetIndexBuffer(triangleIndexBuffer);
 
-
     std::shared_ptr<Krys::VertexBuffer> squareVertexBuffer;
     std::shared_ptr<Krys::IndexBuffer> squareIndexBuffer;
 
-    m_BlueShader.reset(new Krys::Shader(blueShaderVertexSource, blueShaderFragmentSource));
+    m_FlatColorShader.reset(new Krys::Shader(flatColorShaderVertexSource, flatColorShaderFragmentSource));
     m_SquareVertexArray.reset(Krys::VertexArray::Create());
     squareVertexBuffer.reset(Krys::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
     squareIndexBuffer.reset(Krys::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
@@ -163,13 +164,24 @@ public:
     {
       static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+      glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.0f);
+      glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
+
       for (int y = 0; y < 20; y++)
       {
         for (int x = 0; x < 20; x++)
         {
           glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
           glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-          Krys::Renderer::Submit(m_BlueShader, m_SquareVertexArray, transform);
+         
+          m_FlatColorShader->Bind();
+
+          if (x % 2 == 0)
+            m_FlatColorShader->UploadUniformFloat4("u_Color", redColor);
+          else
+            m_FlatColorShader->UploadUniformFloat4("u_Color", blueColor);
+
+          Krys::Renderer::Submit(m_FlatColorShader, m_SquareVertexArray, transform);
         }
       }
 

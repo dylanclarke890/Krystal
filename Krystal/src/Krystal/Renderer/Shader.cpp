@@ -131,4 +131,10 @@ namespace Krys
 		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
+
+	void Shader::UploadUniformFloat4(const std::string& name, const glm::vec4& vector)
+	{
+		GLint location = glGetUniformLocation(m_RendererId, name.c_str());
+		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+	}
 }
