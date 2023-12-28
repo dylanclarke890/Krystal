@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Krystal/Core.h"
-#include "Krystal/Events/Event.h"
+#include "Core.h"
+#include "Core/TimeStep.h"
+#include "Events/Event.h"
 
 namespace Krys
 {
@@ -13,7 +14,7 @@ namespace Krys
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(TimeStep ts) {}
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& event) {}
 

@@ -5,6 +5,8 @@
 #include "Krystal/Layer.h"
 #include "Krystal/Window.h"
 
+#include "Krystal/Core/TimeStep.h"
+
 // ---------- INPUT -----------
 #include "Krystal/Input.h"
 #include "Krystal/KeyCodes.h"

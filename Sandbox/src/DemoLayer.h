@@ -132,25 +132,25 @@ public:
 	{
 	}
 	
-	virtual void OnUpdate() override
+	virtual void OnUpdate(Krys::TimeStep ts) override
 	{
     Krys::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
     Krys::RenderCommand::Clear();
 
     if (Krys::Input::IsKeyPressed(KRYS_KEY_LEFT))
-      m_CameraPosition.x -= m_CameraMoveSpeed;
+      m_CameraPosition.x -= m_CameraMoveSpeed * ts;
     else if (Krys::Input::IsKeyPressed(KRYS_KEY_RIGHT))
-      m_CameraPosition.x += m_CameraMoveSpeed;
+      m_CameraPosition.x += m_CameraMoveSpeed * ts;
 
     if (Krys::Input::IsKeyPressed(KRYS_KEY_UP))
-      m_CameraPosition.y += m_CameraMoveSpeed;
+      m_CameraPosition.y += m_CameraMoveSpeed * ts;
     else if (Krys::Input::IsKeyPressed(KRYS_KEY_DOWN))
-      m_CameraPosition.y -= m_CameraMoveSpeed;
+      m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 
     if (Krys::Input::IsKeyPressed(KRYS_KEY_A))
-      m_CameraRotation += m_CameraRotateSpeed;
+      m_CameraRotation += m_CameraRotateSpeed * ts;
     else if (Krys::Input::IsKeyPressed(KRYS_KEY_D))
-      m_CameraRotation -= m_CameraRotateSpeed;
+      m_CameraRotation -= m_CameraRotateSpeed * ts;
 
     m_Camera.SetPosition(m_CameraPosition);
     m_Camera.SetRotation(m_CameraRotation);

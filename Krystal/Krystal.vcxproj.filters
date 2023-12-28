@@ -83,6 +83,7 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Krystal\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Krystal\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Krystal\Core\TimeStep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Krystal\Application.cpp">
