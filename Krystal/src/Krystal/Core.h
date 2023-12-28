@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef KRYS_PLATFORM_WINDOWS
   #ifdef KRYS_DYNAMIC_LINK
     #ifdef KRYS_BUILD_DLL
@@ -25,3 +27,12 @@
 #endif
 
 #define KRYS_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
+namespace Krys
+{
+  template<typename T>
+  using Scope = std::unique_ptr<T>;
+ 
+  template<typename T>
+  using Ref = std::shared_ptr<T>;
+}

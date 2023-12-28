@@ -49,7 +49,7 @@ namespace Krys
     glBindVertexArray(0);
   }
 
-  void OpenGLVertexArray::AddVertexBuffer(std::shared_ptr<VertexBuffer> buffer)
+  void OpenGLVertexArray::AddVertexBuffer(Ref<VertexBuffer> buffer)
   {
     const auto& layout = buffer->GetLayout();
     KRYS_CORE_ASSERT(layout.GetElements().size(), "Vertex Buffer has no layout!");
@@ -75,7 +75,7 @@ namespace Krys
     m_VertexBuffers.push_back(buffer);
   }
 
-  void OpenGLVertexArray::SetIndexBuffer(std::shared_ptr<IndexBuffer> buffer)
+  void OpenGLVertexArray::SetIndexBuffer(Ref<IndexBuffer> buffer)
   {
     glBindVertexArray(m_RendererId);
     buffer->Bind();

@@ -11,10 +11,10 @@
 class DemoLayer : public Krys::Layer
 {
 private:
-  std::shared_ptr<Krys::Shader> m_Shader;
-  std::shared_ptr<Krys::Shader> m_FlatColorShader;
-  std::shared_ptr<Krys::VertexArray> m_TriangleVertexArray;
-  std::shared_ptr<Krys::VertexArray> m_SquareVertexArray;
+  Krys::Ref<Krys::Shader> m_Shader;
+  Krys::Ref<Krys::Shader> m_FlatColorShader;
+  Krys::Ref<Krys::VertexArray> m_TriangleVertexArray;
+  Krys::Ref<Krys::VertexArray> m_SquareVertexArray;
 
   Krys::OrthographicCamera m_Camera;
   glm::vec3 m_CameraPosition;
@@ -111,8 +111,8 @@ public:
     unsigned int triangleIndices[3] = { 0, 1, 2 };
     unsigned int squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
-    std::shared_ptr<Krys::VertexBuffer> triangleVertexBuffer;
-    std::shared_ptr<Krys::IndexBuffer> triangleIndexBuffer;
+    Krys::Ref<Krys::VertexBuffer> triangleVertexBuffer;
+    Krys::Ref<Krys::IndexBuffer> triangleIndexBuffer;
 
     m_Shader.reset(Krys::Shader::Create(vertexSource, fragmentSource));
     m_TriangleVertexArray.reset(Krys::VertexArray::Create());
@@ -126,8 +126,8 @@ public:
     m_TriangleVertexArray->AddVertexBuffer(triangleVertexBuffer);
     m_TriangleVertexArray->SetIndexBuffer(triangleIndexBuffer);
 
-    std::shared_ptr<Krys::VertexBuffer> squareVertexBuffer;
-    std::shared_ptr<Krys::IndexBuffer> squareIndexBuffer;
+    Krys::Ref<Krys::VertexBuffer> squareVertexBuffer;
+    Krys::Ref<Krys::IndexBuffer> squareIndexBuffer;
 
     m_FlatColorShader.reset(Krys::Shader::Create(flatColorShaderVertexSource, flatColorShaderFragmentSource));
     m_SquareVertexArray.reset(Krys::VertexArray::Create());
