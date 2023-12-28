@@ -4,6 +4,9 @@
 #include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include "Platform/OpenGL/OpenGLShader.h" // TODO: TEMPORARY
 
 class DemoLayer : public Krys::Layer
 {
@@ -19,13 +22,16 @@ private:
   float m_CameraMoveSpeed;
   float m_CameraRotateSpeed;
 
+  glm::vec3 m_SquareColor;
+
 public:
 	DemoLayer() : Layer("Example"),
     m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), 
     m_CameraPosition(0.0f),
     m_CameraMoveSpeed(5.0f),
     m_CameraRotateSpeed(180.0f),
-    m_CameraRotation(0.0f)
+    m_CameraRotation(0.0f),
+    m_SquareColor(0.2f, 0.3f, 0.8f)
   {
     std::string vertexSource = R"(
       #version 330 core
@@ -81,11 +87,11 @@ public:
       
       layout (location = 0) out vec4 color;
 
-      uniform vec4 u_Color;
+      uniform vec3 u_Color;
 
       void main()
       {
-        color = u_Color;
+        color = vec4(u_Color, 1.0f);
       }
     )";
 
@@ -108,7 +114,7 @@ public:
     std::shared_ptr<Krys::VertexBuffer> triangleVertexBuffer;
     std::shared_ptr<Krys::IndexBuffer> triangleIndexBuffer;
 
-    m_Shader.reset(new Krys::Shader(vertexSource, fragmentSource));
+    m_Shader.reset(Krys::Shader::Create(vertexSource, fragmentSource));
     m_TriangleVertexArray.reset(Krys::VertexArray::Create());
     triangleVertexBuffer.reset(Krys::VertexBuffer::Create(triangleVertices, sizeof(triangleVertices)));
     triangleIndexBuffer.reset(Krys::IndexBuffer::Create(triangleIndices, sizeof(triangleIndices) / sizeof(uint32_t)));
@@ -123,7 +129,7 @@ public:
     std::shared_ptr<Krys::VertexBuffer> squareVertexBuffer;
     std::shared_ptr<Krys::IndexBuffer> squareIndexBuffer;
 
-    m_FlatColorShader.reset(new Krys::Shader(flatColorShaderVertexSource, flatColorShaderFragmentSource));
+    m_FlatColorShader.reset(Krys::Shader::Create(flatColorShaderVertexSource, flatColorShaderFragmentSource));
     m_SquareVertexArray.reset(Krys::VertexArray::Create());
     squareVertexBuffer.reset(Krys::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
     squareIndexBuffer.reset(Krys::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
@@ -135,6 +141,9 @@ public:
 
 	virtual void OnImGuiRender() override
 	{
+    ImGui::Begin("Settings");
+    ImGui::ColorPicker3("Square Color", glm::value_ptr(m_SquareColor));
+    ImGui::End();
 	}
 	
 	virtual void OnUpdate(Krys::TimeStep ts) override
@@ -164,8 +173,8 @@ public:
     {
       static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-      glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.0f);
-      glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
+      m_FlatColorShader->Bind();
+      std::dynamic_pointer_cast<Krys::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3("u_Color", m_SquareColor);
 
       for (int y = 0; y < 20; y++)
       {
@@ -173,13 +182,6 @@ public:
         {
           glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
           glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-         
-          m_FlatColorShader->Bind();
-
-          if (x % 2 == 0)
-            m_FlatColorShader->UploadUniformFloat4("u_Color", redColor);
-          else
-            m_FlatColorShader->UploadUniformFloat4("u_Color", blueColor);
 
           Krys::Renderer::Submit(m_FlatColorShader, m_SquareVertexArray, transform);
         }
