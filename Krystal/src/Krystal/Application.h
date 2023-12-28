@@ -26,12 +26,7 @@ namespace Krys
     LayerStack m_LayerStack;
     bool OnWindowClose(WindowCloseEvent& e);
     static Application* s_Instance;
-    std::shared_ptr<Shader> m_Shader;
-    std::shared_ptr<Shader> m_BlueShader;
-    std::shared_ptr<VertexArray> m_TriangleVertexArray;
-    std::shared_ptr<VertexArray> m_SquareVertexArray;
 
-    OrthographicCamera m_Camera;
   public:
     Application();
     virtual ~Application();
