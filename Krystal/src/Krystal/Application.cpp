@@ -128,7 +128,7 @@ namespace Krys
   {
     while (m_Running) 
     {
-      RenderCommand::SetClearColor({ 0.1f, 0.9f, 0.1f, 1.0f });
+      RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
       RenderCommand::Clear();
 
       m_Camera.SetPosition({ 0.75f, 0.75f, 0.0f });
