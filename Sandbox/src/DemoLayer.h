@@ -12,8 +12,18 @@ private:
   std::shared_ptr<Krys::VertexArray> m_SquareVertexArray;
 
   Krys::OrthographicCamera m_Camera;
+  glm::vec3 m_CameraPosition;
+  float m_CameraRotation;
+  float m_CameraMoveSpeed;
+  float m_CameraRotateSpeed;
+
 public:
-	DemoLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f) 
+	DemoLayer() : Layer("Example"),
+    m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), 
+    m_CameraPosition(0.0f),
+    m_CameraMoveSpeed(0.1f),
+    m_CameraRotateSpeed(2.0f),
+    m_CameraRotation(0.0f)
   {
     std::string vertexSource = R"(
       #version 330 core
@@ -127,8 +137,24 @@ public:
     Krys::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
     Krys::RenderCommand::Clear();
 
-    m_Camera.SetPosition({ 0.75f, 0.75f, 0.0f });
-    m_Camera.SetRotation(69.0f);
+    if (Krys::Input::IsKeyPressed(KRYS_KEY_LEFT))
+      m_CameraPosition.x -= m_CameraMoveSpeed;
+    else if (Krys::Input::IsKeyPressed(KRYS_KEY_RIGHT))
+      m_CameraPosition.x += m_CameraMoveSpeed;
+
+    if (Krys::Input::IsKeyPressed(KRYS_KEY_UP))
+      m_CameraPosition.y += m_CameraMoveSpeed;
+    else if (Krys::Input::IsKeyPressed(KRYS_KEY_DOWN))
+      m_CameraPosition.y -= m_CameraMoveSpeed;
+
+    if (Krys::Input::IsKeyPressed(KRYS_KEY_A))
+      m_CameraRotation += m_CameraRotateSpeed;
+    else if (Krys::Input::IsKeyPressed(KRYS_KEY_D))
+      m_CameraRotation -= m_CameraRotateSpeed;
+
+    m_Camera.SetPosition(m_CameraPosition);
+    m_Camera.SetRotation(m_CameraRotation);
+
     Krys::Renderer::BeginScene(m_Camera);
     {
       Krys::Renderer::Submit(m_BlueShader, m_SquareVertexArray);
