@@ -3,6 +3,8 @@
 #include <Krystal.h>
 #include <imgui/imgui.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class DemoLayer : public Krys::Layer
 {
 private:
@@ -21,8 +23,8 @@ public:
 	DemoLayer() : Layer("Example"),
     m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), 
     m_CameraPosition(0.0f),
-    m_CameraMoveSpeed(0.1f),
-    m_CameraRotateSpeed(2.0f),
+    m_CameraMoveSpeed(5.0f),
+    m_CameraRotateSpeed(180.0f),
     m_CameraRotation(0.0f)
   {
     std::string vertexSource = R"(
@@ -32,6 +34,7 @@ public:
       layout (location = 1) in vec4 a_Color;
 
       uniform mat4 u_ViewProjection;
+      uniform mat4 u_Transform;
 
       out vec3 v_Position; 
       out vec4 v_Color; 
@@ -40,7 +43,7 @@ public:
       {
         v_Position = a_Position;
         v_Color = a_Color;
-        gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+        gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
       }
     )";
 
@@ -65,10 +68,11 @@ public:
       layout (location = 0) in vec3 a_Position;
 
       uniform mat4 u_ViewProjection;
+      uniform mat4 u_Transform;
 
       void main()
       {
-        gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+        gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
       }
     )";
 
@@ -90,10 +94,10 @@ public:
     };
 
     float squareVertices[3 * 4] = {
-      -0.75f, -0.75f, 0.0f,
-       0.75f, -0.75f, 0.0f,
-       0.75f,  0.75f, 0.0f,
-      -0.75f,  0.75f, 0.0f
+      -0.5f, -0.5f, 0.0f,
+       0.5f, -0.5f, 0.0f,
+       0.5f,  0.5f, 0.0f,
+      -0.5f,  0.5f, 0.0f
     };
 
     unsigned int triangleIndices[3] = { 0, 1, 2 };
@@ -137,19 +141,19 @@ public:
     Krys::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
     Krys::RenderCommand::Clear();
 
-    if (Krys::Input::IsKeyPressed(KRYS_KEY_LEFT))
+    if (Krys::Input::IsKeyPressed(KRYS_KEY_A))
       m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-    else if (Krys::Input::IsKeyPressed(KRYS_KEY_RIGHT))
+    else if (Krys::Input::IsKeyPressed(KRYS_KEY_D))
       m_CameraPosition.x += m_CameraMoveSpeed * ts;
 
-    if (Krys::Input::IsKeyPressed(KRYS_KEY_UP))
+    if (Krys::Input::IsKeyPressed(KRYS_KEY_W))
       m_CameraPosition.y += m_CameraMoveSpeed * ts;
-    else if (Krys::Input::IsKeyPressed(KRYS_KEY_DOWN))
+    else if (Krys::Input::IsKeyPressed(KRYS_KEY_S))
       m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 
-    if (Krys::Input::IsKeyPressed(KRYS_KEY_A))
+    if (Krys::Input::IsKeyPressed(KRYS_KEY_Q))
       m_CameraRotation += m_CameraRotateSpeed * ts;
-    else if (Krys::Input::IsKeyPressed(KRYS_KEY_D))
+    else if (Krys::Input::IsKeyPressed(KRYS_KEY_E))
       m_CameraRotation -= m_CameraRotateSpeed * ts;
 
     m_Camera.SetPosition(m_CameraPosition);
@@ -157,7 +161,18 @@ public:
 
     Krys::Renderer::BeginScene(m_Camera);
     {
-      Krys::Renderer::Submit(m_BlueShader, m_SquareVertexArray);
+      static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+      for (int y = 0; y < 20; y++)
+      {
+        for (int x = 0; x < 20; x++)
+        {
+          glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+          glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+          Krys::Renderer::Submit(m_BlueShader, m_SquareVertexArray, transform);
+        }
+      }
+
       Krys::Renderer::Submit(m_Shader, m_TriangleVertexArray);
     }
     Krys::Renderer::EndScene();
