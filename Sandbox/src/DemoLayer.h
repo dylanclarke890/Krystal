@@ -12,9 +12,11 @@ class DemoLayer : public Krys::Layer
 {
 private:
   Krys::Ref<Krys::Shader> m_Shader;
-  Krys::Ref<Krys::Shader> m_FlatColorShader;
+  Krys::Ref<Krys::Shader> m_FlatColorShader, m_TextureShader;
   Krys::Ref<Krys::VertexArray> m_TriangleVertexArray;
   Krys::Ref<Krys::VertexArray> m_SquareVertexArray;
+
+  Krys::Ref<Krys::Texture2D> m_CheckerboardTexture;
 
   Krys::OrthographicCamera m_Camera;
   glm::vec3 m_CameraPosition;
@@ -95,17 +97,51 @@ public:
       }
     )";
 
+
+    std::string textureShaderVertexSource = R"(
+      #version 330 core
+      
+      layout (location = 0) in vec3 a_Position;
+      layout (location = 1) in vec2 a_TextureCoord;
+
+      uniform mat4 u_ViewProjection;
+      uniform mat4 u_Transform;
+
+      out vec2 v_TextureCoord;
+
+      void main()
+      {
+        v_TextureCoord = a_TextureCoord;
+        gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+      }
+    )";
+
+    std::string textureShaderFragmentSource = R"(
+      #version 330 core
+      
+      layout (location = 0) out vec4 color;
+
+      in vec2 v_TextureCoord;
+
+      uniform sampler2D u_Texture;
+
+      void main()
+      {
+        color = texture(u_Texture, v_TextureCoord);
+      }
+    )";
+
     float triangleVertices[3 * 7] = {
       -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
        0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
     };
 
-    float squareVertices[3 * 4] = {
-      -0.5f, -0.5f, 0.0f,
-       0.5f, -0.5f, 0.0f,
-       0.5f,  0.5f, 0.0f,
-      -0.5f,  0.5f, 0.0f
+    float squareVertices[5 * 4] = {
+      -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+       0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+       0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+      -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
     };
 
     unsigned int triangleIndices[3] = { 0, 1, 2 };
@@ -134,9 +170,18 @@ public:
     squareVertexBuffer.reset(Krys::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
     squareIndexBuffer.reset(Krys::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 
-    squareVertexBuffer->SetLayout({ { Krys::ShaderDataType::Float3, "a_Position" } });
+    squareVertexBuffer->SetLayout({
+      { Krys::ShaderDataType::Float3, "a_Position" },
+      { Krys::ShaderDataType::Float2, "a_TextureCoord" }
+    });
     m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
     m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
+
+    m_TextureShader.reset(Krys::Shader::Create(textureShaderVertexSource, textureShaderFragmentSource));
+    m_CheckerboardTexture = Krys::Texture2D::Create("assets/textures/Checkerboard.png");
+    m_TextureShader->Bind();
+    int checkboardTextureSlot = 0;
+    std::dynamic_pointer_cast<Krys::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", checkboardTextureSlot);
   }
 
 	virtual void OnImGuiRender() override
@@ -187,7 +232,11 @@ public:
         }
       }
 
-      Krys::Renderer::Submit(m_Shader, m_TriangleVertexArray);
+      m_CheckerboardTexture->Bind();
+      Krys::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+      // Triangle
+      //Krys::Renderer::Submit(m_Shader, m_TriangleVertexArray);
     }
     Krys::Renderer::EndScene();
 	}

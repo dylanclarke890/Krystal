@@ -20,6 +20,7 @@
 #include "Krystal/Renderer/Buffer.h"
 #include "Krystal/Renderer/VertexArray.h"
 #include "Krystal/Renderer/Shader.h"
+#include "Krystal/Renderer/Texture.h"
 
 #include "Krystal/Renderer/OrthographicCamera.h"
 // ---------- RENDERER -----------

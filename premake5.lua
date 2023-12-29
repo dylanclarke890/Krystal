@@ -11,6 +11,7 @@ IncludeDir["GLFW"] = "Krystal/third-party/GLFW/include"
 IncludeDir["glad"] = "Krystal/third-party/glad/include"
 IncludeDir["imgui"] = "Krystal/third-party/imgui"
 IncludeDir["glm"] = "Krystal/third-party/glm"
+IncludeDir["stb_image"] = "Krystal/third-party/stb_image"
 
 group "Dependencies"
   include "Krystal/third-party/GLFW"
@@ -33,7 +34,11 @@ project "Krystal"
   
   files { 
     "%{prj.name}/src/**.h",
-     "%{prj.name}/src/**.cpp"
+     "%{prj.name}/src/**.cpp",
+     "%{prj.name}/third-party/stb_image/**.h",
+     "%{prj.name}/third-party/stb_image/**.cpp",
+     "%{prj.name}/third-party/glm/glm/**.hpp",
+     "%{prj.name}/third-party/glm/glm/**.inl"
   }
 
   defines {
@@ -47,6 +52,7 @@ project "Krystal"
     "%{IncludeDir.glad}",
     "%{IncludeDir.imgui}",
     "%{IncludeDir.glm}",
+    "%{IncludeDir.stb_image}"
   }
 
   links {
