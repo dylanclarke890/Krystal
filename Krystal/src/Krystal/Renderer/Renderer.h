@@ -9,6 +9,8 @@ namespace Krys
   class Renderer
   {
   public:
+    static void Init();
+
     static void BeginScene(OrthographicCamera& camera);
     static void Submit(
       const Ref<Shader>& shader,
