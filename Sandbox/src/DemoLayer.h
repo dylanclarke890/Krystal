@@ -98,40 +98,6 @@ public:
       }
     )";
 
-
-    std::string textureShaderVertexSource = R"(
-      #version 330 core
-      
-      layout (location = 0) in vec3 a_Position;
-      layout (location = 1) in vec2 a_TextureCoord;
-
-      uniform mat4 u_ViewProjection;
-      uniform mat4 u_Transform;
-
-      out vec2 v_TextureCoord;
-
-      void main()
-      {
-        v_TextureCoord = a_TextureCoord;
-        gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-      }
-    )";
-
-    std::string textureShaderFragmentSource = R"(
-      #version 330 core
-      
-      layout (location = 0) out vec4 color;
-
-      in vec2 v_TextureCoord;
-
-      uniform sampler2D u_Texture;
-
-      void main()
-      {
-        color = texture(u_Texture, v_TextureCoord);
-      }
-    )";
-
     float triangleVertices[3 * 7] = {
       -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
@@ -178,7 +144,7 @@ public:
     m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
     m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
-    m_TextureShader.reset(Krys::Shader::Create(textureShaderVertexSource, textureShaderFragmentSource));
+    m_TextureShader.reset(Krys::Shader::Create("assets/shaders/Texture.krys"));
     m_CheckerboardTexture = Krys::Texture2D::Create("assets/textures/Checkerboard.png");
     m_MGTexture = Krys::Texture2D::Create("assets/textures/MG.png");
     m_TextureShader->Bind();
