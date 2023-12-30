@@ -149,7 +149,8 @@ namespace Krys
 	void OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLuint> shaderIds(shaderSources.size());
+		std::vector<GLuint> shaderIds;
+		shaderIds.reserve(shaderSources.size());
 
 		for (auto& [type, source] : shaderSources)
 		{
