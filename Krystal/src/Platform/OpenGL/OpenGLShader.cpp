@@ -2,6 +2,7 @@
 #include "OpenGLShader.h"
 
 #include <fstream>
+#include <filesystem>
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -27,10 +28,13 @@ namespace Krys
 		std::string source = ReadFile(filePath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
+
+		std::filesystem::path path = filePath;
+		m_Name = path.stem().string();
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource)
-		: m_RendererId(0)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
+		: m_RendererId(0), m_Name(name)
   {
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSource;

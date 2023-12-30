@@ -12,13 +12,16 @@ namespace Krys
   {
   private:
     uint32_t m_RendererId;
+    std::string m_Name;
   public:
     OpenGLShader(const std::string& filePath);
-    OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource);
+    OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource);
     virtual ~OpenGLShader() override;
 
     virtual void Bind() const override;
     virtual void Unbind() const override;
+
+    virtual const std::string& GetName() const override { return m_Name; }
 
     void UploadUniformInt(const std::string& name, int value);
 

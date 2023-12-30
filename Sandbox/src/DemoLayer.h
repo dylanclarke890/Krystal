@@ -11,21 +11,15 @@
 class DemoLayer : public Krys::Layer
 {
 private:
-  Krys::Ref<Krys::Shader> m_Shader;
-  Krys::Ref<Krys::Shader> m_FlatColorShader, m_TextureShader;
-  Krys::Ref<Krys::VertexArray> m_TriangleVertexArray;
-  Krys::Ref<Krys::VertexArray> m_SquareVertexArray;
+  Krys::ShaderLibrary m_ShaderLibrary;
 
-  Krys::Ref<Krys::Texture2D> m_CheckerboardTexture;
-  Krys::Ref<Krys::Texture2D> m_MGTexture;
+  Krys::Ref<Krys::Shader> m_Shader, m_FlatColorShader, m_TextureShader;
+  Krys::Ref<Krys::VertexArray> m_TriangleVertexArray, m_SquareVertexArray;
+  Krys::Ref<Krys::Texture2D> m_CheckerboardTexture, m_MGTexture;
 
   Krys::OrthographicCamera m_Camera;
-  glm::vec3 m_CameraPosition;
-  float m_CameraRotation;
-  float m_CameraMoveSpeed;
-  float m_CameraRotateSpeed;
-
-  glm::vec3 m_SquareColor;
+  glm::vec3 m_CameraPosition, m_SquareColor;
+  float m_CameraRotation, m_CameraMoveSpeed, m_CameraRotateSpeed;
 
 public:
 	DemoLayer() : Layer("Example"),
@@ -117,7 +111,7 @@ public:
     Krys::Ref<Krys::VertexBuffer> triangleVertexBuffer;
     Krys::Ref<Krys::IndexBuffer> triangleIndexBuffer;
 
-    m_Shader.reset(Krys::Shader::Create(vertexSource, fragmentSource));
+    m_Shader = Krys::Shader::Create("TriangleShader", vertexSource, fragmentSource);
     m_TriangleVertexArray.reset(Krys::VertexArray::Create());
     triangleVertexBuffer.reset(Krys::VertexBuffer::Create(triangleVertices, sizeof(triangleVertices)));
     triangleIndexBuffer.reset(Krys::IndexBuffer::Create(triangleIndices, sizeof(triangleIndices) / sizeof(uint32_t)));
@@ -132,7 +126,7 @@ public:
     Krys::Ref<Krys::VertexBuffer> squareVertexBuffer;
     Krys::Ref<Krys::IndexBuffer> squareIndexBuffer;
 
-    m_FlatColorShader.reset(Krys::Shader::Create(flatColorShaderVertexSource, flatColorShaderFragmentSource));
+    m_FlatColorShader = Krys::Shader::Create("FlatColourShader", flatColorShaderVertexSource, flatColorShaderFragmentSource);
     m_SquareVertexArray.reset(Krys::VertexArray::Create());
     squareVertexBuffer.reset(Krys::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
     squareIndexBuffer.reset(Krys::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
@@ -144,7 +138,7 @@ public:
     m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
     m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
-    m_TextureShader.reset(Krys::Shader::Create("assets/shaders/Texture.krys"));
+    m_TextureShader = m_ShaderLibrary.Load("assets/shaders/Texture.krys");
     m_CheckerboardTexture = Krys::Texture2D::Create("assets/textures/Checkerboard.png");
     m_MGTexture = Krys::Texture2D::Create("assets/textures/MG.png");
     m_TextureShader->Bind();
