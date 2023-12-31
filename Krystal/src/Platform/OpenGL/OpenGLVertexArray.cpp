@@ -29,7 +29,7 @@ namespace Krys
     return 0;
   }
 
-  OpenGLVertexArray::OpenGLVertexArray() : m_RendererId(0), m_VertexBufferIndexOffset(0)
+  OpenGLVertexArray::OpenGLVertexArray() : m_RendererId(0), m_VertexBufferIndex(0)
   {
     glCreateVertexArrays(1, &m_RendererId);
   }
@@ -57,23 +57,21 @@ namespace Krys
     glBindVertexArray(m_RendererId);
     buffer->Bind();
 
-    uint32_t index = 0;
     for (const auto& element : layout)
     {
-      glEnableVertexAttribArray(index + m_VertexBufferIndexOffset);
+      glEnableVertexAttribArray(m_VertexBufferIndex);
       glVertexAttribPointer(
-        index + m_VertexBufferIndexOffset,
+        m_VertexBufferIndex,
         element.GetComponentCount(),
         ShaderDataTypeToOpenGLBaseType(element.Type),
         element.Normalized ? GL_TRUE : GL_FALSE,
         layout.GetStride(),
         (const void*)(intptr_t)element.Offset
       );
-      index++;
+      m_VertexBufferIndex++;
     }
 
     m_VertexBuffers.push_back(buffer);
-    m_VertexBufferIndexOffset += layout.GetElements().size();
   }
 
   void OpenGLVertexArray::SetIndexBuffer(Ref<IndexBuffer> buffer)
