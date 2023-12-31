@@ -16,6 +16,6 @@ namespace Krys
     s_ClientLogger = spdlog::stdout_color_mt("APP");
     s_ClientLogger->set_level(spdlog::level::trace);
 
-    KRYS_CORE_INFO("LOG INITIALISED");
+    KRYS_CORE_INFO("Start Up - Log Initialised.");
   }
 }

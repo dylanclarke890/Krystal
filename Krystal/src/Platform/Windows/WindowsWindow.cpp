@@ -37,19 +37,24 @@ namespace Krys
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
-		KRYS_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
-
-
 		if (s_GLFWWindowCount == 0)
 		{
-			KRYS_CORE_INFO("Initializing GLFW");
-			int success = glfwInit();
-			KRYS_CORE_ASSERT(success, "Could not intialize GLFW!");
-
+			KRYS_CORE_INFO("Start Up: Initialising GLFW.");
+			{
+				int success = glfwInit();
+				KRYS_CORE_ASSERT(success, "Could not intialise GLFW!");
+			}
+			KRYS_CORE_INFO("Start Up: GLFW initialised.");
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		s_GLFWWindowCount++;
+
+		if (s_GLFWWindowCount++ == 0)
+			KRYS_CORE_INFO("Start Up: Creating Window:", props.Title, props.Width, props.Height);
+		else
+			KRYS_CORE_INFO("Creating Window:", props.Title, props.Width, props.Height);
+		KRYS_CORE_INFO("- Title: {0}", props.Title);
+		KRYS_CORE_INFO("- Size: {0} x {1}", props.Width, props.Height);
 
 		m_Context = CreateScope<OpenGLContext>(m_Window);
 		m_Context->Init();
@@ -156,8 +161,12 @@ namespace Krys
 
 		if (--s_GLFWWindowCount == 0)
 		{
-			KRYS_CORE_INFO("Terminating GLFW");
+			KRYS_CORE_INFO("Shut Down: Terminating GLFW.");
+			{
+
+			}
 			glfwTerminate();
+			KRYS_CORE_INFO("Shut Down: GLFW Terminated.");
 		}
 	}
 
