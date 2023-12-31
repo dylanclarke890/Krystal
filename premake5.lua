@@ -65,11 +65,7 @@ project "Krystal"
   
   filter "system:windows"
     systemversion "latest"
-    defines { 
-      "KRYS_PLATFORM_WINDOWS", 
-      "KRYS_BUILD_DLL",
-      "GLFW_INCLUDE_NONE"
-    }
+    defines { "GLFW_INCLUDE_NONE" }
 
   filter "configurations:Debug"
     defines {"KRYS_DEBUG", "KRYS_ENABLE_ASSERTS" }
@@ -108,7 +104,6 @@ project "Sandbox"
 
   filter "system:windows"
     systemversion "latest"
-    defines { "KRYS_PLATFORM_WINDOWS" }
 
   filter "configurations:Debug"
     defines "KRYS_DEBUG"
