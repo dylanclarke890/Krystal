@@ -21,13 +21,14 @@ namespace Krys
     static inline Application& Get() { return *s_Instance; }
 
   private:
-    bool m_Running;
+    bool m_Running, m_Minimised;
     std::unique_ptr<Window> m_Window;
     ImGuiLayer* m_ImGuiLayer;
     LayerStack m_LayerStack;
     float m_LastFrameTime;
 
     bool OnWindowClose(WindowCloseEvent& e);
+    bool OnWindowResize(WindowResizeEvent& e);
   public:
     Application();
     virtual ~Application();
