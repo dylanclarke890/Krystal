@@ -7,7 +7,7 @@ namespace Krys
   class OpenGLVertexArray : public VertexArray
   {
   private:
-    uint32_t m_RendererId;
+    uint32_t m_RendererId, m_VertexBufferIndexOffset;
     std::vector<Ref<VertexBuffer>> m_VertexBuffers;
     Ref<IndexBuffer> m_IndexBuffer;
   public:
