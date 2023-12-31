@@ -185,5 +185,6 @@ public:
 
   virtual void OnEvent(Krys::Event& e) override
   {
+    m_CameraController.OnEvent(e);
   }
 };
