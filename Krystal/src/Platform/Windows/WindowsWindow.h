@@ -25,7 +25,7 @@ namespace Krys
 		inline virtual void* GetNativeWindow() const { return m_Window; }
 	private:
 		GLFWwindow* m_Window;
-		GraphicsContext* m_Context;
+		Scope<GraphicsContext> m_Context;
 
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
