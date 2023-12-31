@@ -14,9 +14,10 @@ namespace Krys
   private:
     float m_AspectRatio, m_ZoomLevel;
     OrthographicCamera m_Camera;
-    
-    bool m_CanRotate;
     glm::vec3 m_CameraPosition;
+
+    bool m_CanRotate;
+    // In degrees, anti-clockwise.
     float m_CameraRotation;
     float m_CameraTranslationSpeed, m_CameraRotationSpeed;
 
