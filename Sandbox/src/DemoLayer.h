@@ -17,17 +17,12 @@ private:
   Krys::Ref<Krys::VertexArray> m_TriangleVertexArray, m_SquareVertexArray;
   Krys::Ref<Krys::Texture2D> m_CheckerboardTexture, m_MGTexture;
 
-  Krys::OrthographicCamera m_Camera;
-  glm::vec3 m_CameraPosition, m_SquareColor;
-  float m_CameraRotation, m_CameraMoveSpeed, m_CameraRotateSpeed;
+  Krys::OrthographicCameraController m_CameraController;
+  glm::vec3 m_SquareColor;
 
 public:
 	DemoLayer() : Layer("Example"),
-    m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), 
-    m_CameraPosition(0.0f),
-    m_CameraMoveSpeed(5.0f),
-    m_CameraRotateSpeed(180.0f),
-    m_CameraRotation(0.0f),
+    m_CameraController(1280.0f / 720.0f, true), 
     m_SquareColor(0.2f, 0.3f, 0.8f)
   {
     std::string vertexSource = R"(
@@ -154,28 +149,11 @@ public:
 	
 	virtual void OnUpdate(Krys::TimeStep ts) override
 	{
+    m_CameraController.OnUpdate(ts);
     Krys::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
     Krys::RenderCommand::Clear();
 
-    if (Krys::Input::IsKeyPressed(KRYS_KEY_A))
-      m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-    else if (Krys::Input::IsKeyPressed(KRYS_KEY_D))
-      m_CameraPosition.x += m_CameraMoveSpeed * ts;
-
-    if (Krys::Input::IsKeyPressed(KRYS_KEY_W))
-      m_CameraPosition.y += m_CameraMoveSpeed * ts;
-    else if (Krys::Input::IsKeyPressed(KRYS_KEY_S))
-      m_CameraPosition.y -= m_CameraMoveSpeed * ts;
-
-    if (Krys::Input::IsKeyPressed(KRYS_KEY_Q))
-      m_CameraRotation += m_CameraRotateSpeed * ts;
-    else if (Krys::Input::IsKeyPressed(KRYS_KEY_E))
-      m_CameraRotation -= m_CameraRotateSpeed * ts;
-
-    m_Camera.SetPosition(m_CameraPosition);
-    m_Camera.SetRotation(m_CameraRotation);
-
-    Krys::Renderer::BeginScene(m_Camera);
+    Krys::Renderer::BeginScene(m_CameraController.GetCamera());
     {
       static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -204,4 +182,9 @@ public:
     }
     Krys::Renderer::EndScene();
 	}
+
+  virtual void OnEvent(Krys::Event& e) override
+  {
+    m_CameraController.OnEvent(e);
+  }
 };

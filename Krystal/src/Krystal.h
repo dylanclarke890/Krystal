@@ -21,9 +21,10 @@
 #include "Krystal/Renderer/VertexArray.h"
 #include "Krystal/Renderer/Shader.h"
 #include "Krystal/Renderer/Texture.h"
-
-#include "Krystal/Renderer/OrthographicCamera.h"
 // ---------- RENDERER -----------
+
+#include "Krystal/Camera/OrthographicCamera.h"
+#include "Krystal/Camera/OrthographicCameraController.h"
 
 // --------- ENTRY POINT ---------
 #include "Krystal/EntryPoint.h"

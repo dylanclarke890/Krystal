@@ -15,6 +15,7 @@ namespace Krys
     float m_Rotation;
   public:
     OrthographicCamera(float left, float right, float bottom, float top);
+    void SetProjection(float left, float right, float bottom, float top);
 
     void SetPosition(const glm::vec3& position);
     inline const glm::vec3& GetPosition() const { return m_Position; }
@@ -28,5 +29,6 @@ namespace Krys
 
   private:
     void RecalculateViewMatrix();
+    inline void RecalculateViewProjectionMatrix();
   };
 }
