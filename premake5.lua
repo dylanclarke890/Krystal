@@ -1,9 +1,10 @@
+outputdir = "%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}"
+
 workspace "Krystal"
   architecture "x64"
   configurations { "Debug", "Release", "Publish" }
   startproject "Sandbox"
-
-outputdir = "%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}"
+  flags { "MultiProcessorCompile" }
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
