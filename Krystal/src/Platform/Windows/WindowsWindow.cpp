@@ -9,7 +9,7 @@
 
 namespace Krys
 {
-	static bool s_GLFWInitialized = false;
+	static uint8_t s_GLFWWindowCount = 0;
 	
 	static void GLFWErrorCallback(int error, const char* description)
 	{
@@ -40,17 +40,17 @@ namespace Krys
 		KRYS_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 
-		if (!s_GLFWInitialized)
+		if (s_GLFWWindowCount == 0)
 		{
-			// TODO: glfwTerminate on system shutdown
+			KRYS_CORE_INFO("Initializing GLFW");
 			int success = glfwInit();
 			KRYS_CORE_ASSERT(success, "Could not intialize GLFW!");
 
-			s_GLFWInitialized = true;
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		
+		s_GLFWWindowCount++;
+
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->Init();
 
@@ -153,6 +153,12 @@ namespace Krys
 	void WindowsWindow::Shutdown()
 	{
 		glfwDestroyWindow(m_Window);
+
+		if (--s_GLFWWindowCount == 0)
+		{
+			KRYS_CORE_INFO("Terminating GLFW");
+			glfwTerminate();
+		}
 	}
 
 	void WindowsWindow::OnUpdate()
