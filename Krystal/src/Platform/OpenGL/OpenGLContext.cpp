@@ -21,6 +21,14 @@ namespace Krys
     KRYS_CORE_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
     KRYS_CORE_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
     KRYS_CORE_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
+
+#ifdef KRYS_ENABLE_ASSERTS
+    int versionMajor, versionMinor;
+    glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
+    glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
+
+    KRYS_CORE_ASSERT(versionMajor >= 4 && versionMinor >= 5, "Krystal requires at least OpenGL version 4.5!");
+#endif
   }
 
   void OpenGLContext::SwapBuffers()
