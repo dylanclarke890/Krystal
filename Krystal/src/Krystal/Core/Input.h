@@ -20,5 +20,12 @@ namespace Krys
     virtual float GetMouseYImpl() = 0;
   private:
     static Input* s_Instance;
+
+  // Enforce Singleton usage.
+  public:
+    Input(const Input&) = delete;
+    Input& operator=(const Input&) = delete;
+  protected:
+    Input() = default;
   };
 }
