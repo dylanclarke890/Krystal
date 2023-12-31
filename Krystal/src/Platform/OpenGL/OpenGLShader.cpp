@@ -126,25 +126,24 @@ namespace Krys
 
 		const char* typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
-		size_t pos = source.find(typeToken, 0);
+		size_t currentPosition = source.find(typeToken, 0);
 
-		while (pos != std::string::npos)
+		while (currentPosition != std::string::npos)
 		{
-			size_t eol = source.find_first_of("\r\n", pos);
-			KRYS_CORE_ASSERT(eol != std::string::npos, "Syntax error");
-			size_t begin = pos + typeTokenLength + 1;
+			size_t endOfLine = source.find_first_of("\r\n", currentPosition);
+			KRYS_CORE_ASSERT(endOfLine != std::string::npos, "Syntax error");
+			size_t startOfShaderType = currentPosition + typeTokenLength + 1;
 
-			std::string type = source.substr(begin, eol - begin);
+			std::string type = source.substr(startOfShaderType, endOfLine - startOfShaderType);
 			KRYS_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type!");
 
-			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
-			pos = source.find(typeToken, nextLinePos);
+			size_t nextLinePos = source.find_first_not_of("\r\n", endOfLine);
+			KRYS_CORE_ASSERT(nextLinePos != std::string::npos, "Syntax error");
+			currentPosition = source.find(typeToken, nextLinePos);
 
-			std::string shaderSource = source.substr(
-				nextLinePos, 
-				pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos)
-			);
-			shaderSources[ShaderTypeFromString(type)] = shaderSource;
+			shaderSources[ShaderTypeFromString(type)] = (currentPosition == std::string::npos) 
+				? source.substr(nextLinePos) 
+				: source.substr(nextLinePos, currentPosition - nextLinePos);
 		}
 
 		return shaderSources;
