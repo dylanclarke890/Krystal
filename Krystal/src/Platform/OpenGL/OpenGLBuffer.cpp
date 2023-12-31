@@ -38,8 +38,8 @@ namespace Krys
   OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count) : m_RendererId(0), m_Count(count)
   {
     glCreateBuffers(1, &m_RendererId);
-    Bind();
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
+    glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
   }
 
   OpenGLIndexBuffer::~OpenGLIndexBuffer()
