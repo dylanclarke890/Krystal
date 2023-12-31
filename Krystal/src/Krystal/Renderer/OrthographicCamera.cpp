@@ -1,5 +1,5 @@
 #include "krys-pch.h"
-#include "OrthographicCamera.h"
+#include "Krystal/Renderer/OrthographicCamera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

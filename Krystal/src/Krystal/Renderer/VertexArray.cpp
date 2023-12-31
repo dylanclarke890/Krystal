@@ -1,7 +1,8 @@
 #include "krys-pch.h"
-#include "VertexArray.h"
+#include "Krystal/Renderer/VertexArray.h"
 
-#include "Renderer.h"
+#include "Krystal/Renderer/Renderer.h"
+
 #include "Platform/OpenGL/OpenGLBuffer.h"
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core.h"
-#include "Core/TimeStep.h"
-#include "Events/Event.h"
+#include "Krystal/Core/Core.h"
+#include "Krystal/Core/TimeStep.h"
+#include "Krystal/Events/Event.h"
 
 namespace Krys
 {

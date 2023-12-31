@@ -1,10 +1,11 @@
 #include "krys-pch.h"
-#include "ImGuiLayer.h"
-#include "Krystal/Application.h"
+#include "Krystal/Core/Application.h"
+
+#include "Krystal/ImGui/ImGuiLayer.h"
 
 #include <imgui.h>
-#include "backends/imgui_impl_opengl3.h"
-#include "backends/imgui_impl_glfw.h"
+#include <backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_glfw.h>
 
 // TODO: TEMPORARY!
 #include <GLFW/glfw3.h>

@@ -1,5 +1,5 @@
 #include "krys-pch.h"
-#include "Renderer.h"
+#include "Krystal/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
 

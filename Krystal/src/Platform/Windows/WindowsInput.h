@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Krystal/Input.h"
+#include "Krystal/Core/Input.h"
 
 namespace Krys {
   class WindowsInput : public Input

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Krystal/Window.h"
+#include "Krystal/Core/Window.h"
+
 #include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Krys

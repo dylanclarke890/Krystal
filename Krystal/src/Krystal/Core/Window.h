@@ -1,8 +1,6 @@
 #pragma once
 
-#include "krys-pch.h"
-
-#include "Krystal/Core.h"
+#include "Krystal/Core/Core.h"
 #include "Krystal/Events/Event.h"
 
 namespace Krys
@@ -43,5 +41,4 @@ namespace Krys
 
 		static Window* Create(const WindowProps& props = WindowProps());
 	};
-
 }

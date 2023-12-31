@@ -1,6 +1,7 @@
 #include "krys-pch.h"
-#include "WindowsInput.h"
-#include "Krystal/Application.h"
+#include "Platform/Windows/WindowsInput.h"
+
+#include "Krystal/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 

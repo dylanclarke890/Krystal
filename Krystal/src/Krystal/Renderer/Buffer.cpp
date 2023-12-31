@@ -1,6 +1,6 @@
 #include "krys-pch.h"
-#include "Buffer.h"
-#include "Renderer.h"
+#include "Krystal/Renderer/Buffer.h"
+#include "Krystal/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLBuffer.h"
 

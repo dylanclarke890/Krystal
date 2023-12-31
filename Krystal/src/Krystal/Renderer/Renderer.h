@@ -1,8 +1,8 @@
 #pragma once
 
-#include "RenderCommand.h"
-#include "Krystal/Camera/OrthographicCamera.h"
-#include "Shader.h"
+#include "Krystal/Renderer/RenderCommand.h"
+#include "Krystal/Renderer/OrthographicCamera.h"
+#include "Krystal/Renderer/Shader.h"
 
 namespace Krys
 {

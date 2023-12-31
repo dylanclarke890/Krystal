@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Event.h"
+#include "Krystal/Events/Event.h"
+
+#include <sstream>
 
 namespace Krys
 {
@@ -104,5 +106,4 @@ namespace Krys
 
 		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
-
 }

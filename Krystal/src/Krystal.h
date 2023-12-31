@@ -1,17 +1,15 @@
 #pragma once
 
-#include "Krystal/Application.h"
-#include "Krystal/Log.h"
-#include "Krystal/Layer.h"
-#include "Krystal/Window.h"
-
+// ------------ CORE -------------
+#include "Krystal/Core/Application.h"
+#include "Krystal/Core/Log.h"
+#include "Krystal/Core/Layer.h"
+#include "Krystal/Core/Window.h"
 #include "Krystal/Core/TimeStep.h"
-
-// ---------- INPUT -----------
-#include "Krystal/Input.h"
-#include "Krystal/KeyCodes.h"
-#include "Krystal/MouseButtonCodes.h"
-// ---------- INPUT -----------
+#include "Krystal/Core/Input.h"
+#include "Krystal/Core/KeyCodes.h"
+#include "Krystal/Core/MouseButtonCodes.h"
+// ------------ CORE -------------
 
 // ---------- RENDERER -----------
 #include "Krystal/Renderer/Renderer.h"
@@ -21,11 +19,10 @@
 #include "Krystal/Renderer/VertexArray.h"
 #include "Krystal/Renderer/Shader.h"
 #include "Krystal/Renderer/Texture.h"
+#include "Krystal/Renderer/OrthographicCamera.h"
+#include "Krystal/Renderer/OrthographicCameraController.h"
 // ---------- RENDERER -----------
 
-#include "Krystal/Camera/OrthographicCamera.h"
-#include "Krystal/Camera/OrthographicCameraController.h"
-
 // --------- ENTRY POINT ---------
-#include "Krystal/EntryPoint.h"
+#include "Krystal/Core/EntryPoint.h"
 // --------- ENTRY POINT ---------

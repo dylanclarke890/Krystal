@@ -144,32 +144,32 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Krystal.h" />
-    <ClInclude Include="src\Krystal\Application.h" />
-    <ClInclude Include="src\Krystal\Camera\OrthographicCameraController.h" />
-    <ClInclude Include="src\Krystal\Core.h" />
+    <ClInclude Include="src\Krystal\Core\Application.h" />
+    <ClInclude Include="src\Krystal\Renderer\OrthographicCameraController.h" />
+    <ClInclude Include="src\Krystal\Core\Core.h" />
     <ClInclude Include="src\Krystal\Core\TimeStep.h" />
-    <ClInclude Include="src\Krystal\EntryPoint.h" />
+    <ClInclude Include="src\Krystal\Core\EntryPoint.h" />
     <ClInclude Include="src\Krystal\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Krystal\Events\Event.h" />
     <ClInclude Include="src\Krystal\Events\KeyEvent.h" />
     <ClInclude Include="src\Krystal\Events\MouseEvent.h" />
     <ClInclude Include="src\Krystal\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\Krystal\Input.h" />
-    <ClInclude Include="src\Krystal\KeyCodes.h" />
-    <ClInclude Include="src\Krystal\Layer.h" />
-    <ClInclude Include="src\Krystal\LayerStack.h" />
-    <ClInclude Include="src\Krystal\Log.h" />
-    <ClInclude Include="src\Krystal\MouseButtonCodes.h" />
+    <ClInclude Include="src\Krystal\Core\Input.h" />
+    <ClInclude Include="src\Krystal\Core\KeyCodes.h" />
+    <ClInclude Include="src\Krystal\Core\Layer.h" />
+    <ClInclude Include="src\Krystal\Core\LayerStack.h" />
+    <ClInclude Include="src\Krystal\Core\Log.h" />
+    <ClInclude Include="src\Krystal\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Krystal\Renderer\Buffer.h" />
     <ClInclude Include="src\Krystal\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\Krystal\Camera\OrthographicCamera.h" />
+    <ClInclude Include="src\Krystal\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Krystal\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Krystal\Renderer\Renderer.h" />
     <ClInclude Include="src\Krystal\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Krystal\Renderer\Shader.h" />
     <ClInclude Include="src\Krystal\Renderer\Texture.h" />
     <ClInclude Include="src\Krystal\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Krystal\Window.h" />
+    <ClInclude Include="src\Krystal\Core\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
@@ -596,15 +596,15 @@
     <ClInclude Include="third-party\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Krystal\Application.cpp" />
-    <ClCompile Include="src\Krystal\Camera\OrthographicCameraController.cpp" />
+    <ClCompile Include="src\Krystal\Core\Application.cpp" />
+    <ClCompile Include="src\Krystal\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Krystal\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Krystal\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Krystal\Layer.cpp" />
-    <ClCompile Include="src\Krystal\LayerStack.cpp" />
-    <ClCompile Include="src\Krystal\Log.cpp" />
+    <ClCompile Include="src\Krystal\Core\Layer.cpp" />
+    <ClCompile Include="src\Krystal\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Krystal\Core\Log.cpp" />
     <ClCompile Include="src\Krystal\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Krystal\Camera\OrthographicCamera.cpp" />
+    <ClCompile Include="src\Krystal\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Krystal\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Krystal\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Krystal\Renderer\RendererAPI.cpp" />

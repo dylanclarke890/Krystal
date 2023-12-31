@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Event.h"
+#include "Krystal/Events/Event.h"
 
 namespace Krys
 {

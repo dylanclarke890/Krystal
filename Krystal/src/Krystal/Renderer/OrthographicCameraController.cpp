@@ -1,8 +1,8 @@
 #include "krys-pch.h"
-#include "OrthographicCameraController.h"
+#include "Krystal/Renderer/OrthographicCameraController.h"
 
-#include "Krystal/Input.h"
-#include "Krystal/KeyCodes.h"
+#include "Krystal/Core/Input.h"
+#include "Krystal/Core/KeyCodes.h"
 
 namespace Krys
 {

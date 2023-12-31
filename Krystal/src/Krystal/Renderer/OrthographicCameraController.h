@@ -1,9 +1,11 @@
 #pragma once
 
-#include "OrthographicCamera.h"
 #include "Krystal/Core/TimeStep.h"
+
 #include "Krystal/Events/ApplicationEvent.h"
 #include "Krystal/Events/MouseEvent.h"
+
+#include "Krystal/Renderer/OrthographicCamera.h"
 
 namespace Krys
 {

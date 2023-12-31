@@ -1,8 +1,8 @@
 #include "krys-pch.h"
-#include "Application.h"
+#include "Krystal/Core/Application.h"
 
-#include "Input.h"
-#include "Renderer/Renderer.h"
+#include "Krystal/Core/Input.h"
+#include "Krystal/Renderer/Renderer.h"
 
 #include <GLFW/glfw3.h>
 

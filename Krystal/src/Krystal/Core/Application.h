@@ -1,15 +1,14 @@
 #pragma once
 
-#include "Core.h"
-#include "Window.h"
-#include "LayerStack.h"
+#include "Krystal/Core/Core.h"
+#include "Krystal/Core/Window.h"
+#include "Krystal/Core/LayerStack.h"
+#include "Krystal/Core/TimeStep.h"
 
-#include "Core/TimeStep.h"
+#include "Krystal/Events/Event.h"
+#include "Krystal/Events/ApplicationEvent.h"
 
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
-
-#include "ImGui/ImGuiLayer.h"
+#include "Krystal/ImGui/ImGuiLayer.h"
 
 namespace Krys
 {

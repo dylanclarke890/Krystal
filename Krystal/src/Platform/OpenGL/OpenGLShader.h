@@ -3,7 +3,7 @@
 #include "Krystal/Renderer/Shader.h"
 
 #include <glm/glm.hpp>
-typedef unsigned int GLenum; // TODOL REMOVE!
+typedef unsigned int GLenum; // TODO: REMOVE!
 
 namespace Krys
 {

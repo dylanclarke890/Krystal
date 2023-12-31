@@ -1,5 +1,5 @@
 #include "krys-pch.h"
-#include "WindowsWindow.h"
+#include "Platform/Windows/WindowsWindow.h"
 
 #include "Krystal/Events/ApplicationEvent.h"
 #include "Krystal/Events/KeyEvent.h"

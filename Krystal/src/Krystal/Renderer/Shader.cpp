@@ -1,7 +1,7 @@
 #include "krys-pch.h"
-#include "Shader.h"
+#include "Krystal/Renderer/Shader.h"
 
-#include "Renderer.h"
+#include "Krystal/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Krys

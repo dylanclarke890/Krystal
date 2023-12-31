@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Krystal/Layer.h"
+#include "Krystal/Core/Layer.h"
+
 #include "Krystal/Events/ApplicationEvent.h"
 #include "Krystal/Events/KeyEvent.h"
 #include "Krystal/Events/MouseEvent.h"

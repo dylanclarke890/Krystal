@@ -17,4 +17,4 @@
   #include <Windows.h>
 #endif
 
-#include "Krystal/Log.h"
+#include "Krystal/Core/Log.h"
