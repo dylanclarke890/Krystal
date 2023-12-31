@@ -212,7 +212,10 @@ namespace Krys
 		}
 
 		for (auto id : shaderIds)
+		{
 			glDetachShader(program, id);
+			glDeleteShader(id);
+		}
 
 		m_RendererId = program;
 	}
