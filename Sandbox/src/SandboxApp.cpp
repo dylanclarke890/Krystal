@@ -3,13 +3,14 @@
 #include <Krystal.h>
 #include <imgui/imgui.h>
 
+#include "Sandbox2DLayer.h"
 
 class Sandbox : public Krys::Application
 {
 public:
   Sandbox() 
 	{
-		PushLayer(new DemoLayer());
+		PushLayer(new Sandbox2DLayer());
 	}
 
   ~Sandbox() {}

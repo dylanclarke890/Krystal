@@ -139,8 +139,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\DemoLayer.h" />
+    <ClInclude Include="src\Sandbox2DLayer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sandbox2DLayer.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
   </ItemGroup>
   <ItemGroup>
