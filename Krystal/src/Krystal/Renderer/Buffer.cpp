@@ -6,7 +6,7 @@
 
 namespace Krys
 {
-  VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
+  Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
   {
     switch (Renderer::GetAPI())
     {
@@ -17,7 +17,7 @@ namespace Krys
       }
       case RendererAPI::API::OpenGL:
       {
-        return new OpenGLVertexBuffer(vertices, size);
+        return CreateScope<OpenGLVertexBuffer>(vertices, size);
       }
     }
 
@@ -25,7 +25,7 @@ namespace Krys
     return nullptr;
   }
 
-  IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t count)
+  Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
   {
     switch (Renderer::GetAPI())
     {
@@ -36,7 +36,7 @@ namespace Krys
       }
       case RendererAPI::API::OpenGL:
       {
-        return new OpenGLIndexBuffer(indices, count);
+        return CreateScope<OpenGLIndexBuffer>(indices, count);
       }
     }
 

@@ -107,9 +107,9 @@ public:
     Krys::Ref<Krys::IndexBuffer> triangleIndexBuffer;
 
     m_Shader = Krys::Shader::Create("TriangleShader", vertexSource, fragmentSource);
-    m_TriangleVertexArray.reset(Krys::VertexArray::Create());
-    triangleVertexBuffer.reset(Krys::VertexBuffer::Create(triangleVertices, sizeof(triangleVertices)));
-    triangleIndexBuffer.reset(Krys::IndexBuffer::Create(triangleIndices, sizeof(triangleIndices) / sizeof(uint32_t)));
+    m_TriangleVertexArray = Krys::VertexArray::Create();
+    triangleVertexBuffer = Krys::VertexBuffer::Create(triangleVertices, sizeof(triangleVertices));
+    triangleIndexBuffer = Krys::IndexBuffer::Create(triangleIndices, sizeof(triangleIndices) / sizeof(uint32_t));
 
     triangleVertexBuffer->SetLayout({
       { Krys::ShaderDataType::Float3, "a_Position" },
@@ -122,9 +122,9 @@ public:
     Krys::Ref<Krys::IndexBuffer> squareIndexBuffer;
 
     m_FlatColorShader = Krys::Shader::Create("FlatColourShader", flatColorShaderVertexSource, flatColorShaderFragmentSource);
-    m_SquareVertexArray.reset(Krys::VertexArray::Create());
-    squareVertexBuffer.reset(Krys::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
-    squareIndexBuffer.reset(Krys::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+    m_SquareVertexArray = Krys::VertexArray::Create();
+    squareVertexBuffer = Krys::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+    squareIndexBuffer = Krys::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 
     squareVertexBuffer->SetLayout({
       { Krys::ShaderDataType::Float3, "a_Position" },

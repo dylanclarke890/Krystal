@@ -8,7 +8,7 @@
 
 namespace Krys
 {
-  VertexArray* VertexArray::Create()
+  Ref<VertexArray> VertexArray::Create()
   {
     switch (Renderer::GetAPI())
     {
@@ -19,7 +19,7 @@ namespace Krys
       }
       case RendererAPI::API::OpenGL:
       {
-        return new OpenGLVertexArray();
+        return CreateScope<OpenGLVertexArray>();
       }
     }
 
