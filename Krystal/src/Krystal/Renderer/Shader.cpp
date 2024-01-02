@@ -6,7 +6,7 @@
 
 namespace Krys
 {
-  Ref<Shader> Shader::Create(const std::string& filePath)
+    Ref<Shader> Shader::Create(const std::string& filePath)
   {
     switch (Renderer::GetAPI())
     {
