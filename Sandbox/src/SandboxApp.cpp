@@ -1,9 +1,9 @@
-#include "DemoLayer.h"
-
 #include <Krystal.h>
+#include <Krystal/Core/EntryPoint.h>
 #include <imgui/imgui.h>
 
 #include "Sandbox2DLayer.h"
+#include "DemoLayer.h"
 
 class Sandbox : public Krys::Application
 {

@@ -22,7 +22,3 @@
 #include "Krystal/Renderer/OrthographicCamera.h"
 #include "Krystal/Renderer/OrthographicCameraController.h"
 // ---------- RENDERER -----------
-
-// --------- ENTRY POINT ---------
-#include "Krystal/Core/EntryPoint.h"
-// --------- ENTRY POINT ---------

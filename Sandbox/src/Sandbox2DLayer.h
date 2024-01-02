@@ -9,9 +9,12 @@ private:
   Krys::Ref<Krys::Shader> m_Shader;
   Krys::Ref<Krys::VertexArray> m_VertexArray;
 
-  glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
+  glm::vec4 m_SquareColor;
 
 public:
+  Sandbox2DLayer();
+  virtual ~Sandbox2DLayer() = default;
+
   virtual void OnAttach() override;
   virtual void OnDetach() override;
   virtual void OnUpdate(Krys::TimeStep ts) override;
