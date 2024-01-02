@@ -23,9 +23,9 @@ namespace Krys
     void SetRotation(float rotation);
     inline float GetRotation() const { return m_Rotation; }
 
-    inline const glm::mat4& GetViewMatrix() { return m_ViewMatrix; }
-    inline const glm::mat4& GetProjectionMatrix() { return m_ProjectionMatrix; }
-    inline const glm::mat4& GetViewProjectionMatrix() { return m_ViewProjectionMatrix; }
+    inline const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
+    inline const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
+    inline const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
 
   private:
     void RecalculateViewMatrix();

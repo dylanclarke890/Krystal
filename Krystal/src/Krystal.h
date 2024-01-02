@@ -13,6 +13,7 @@
 
 // ---------- RENDERER -----------
 #include "Krystal/Renderer/Renderer.h"
+#include "Krystal/Renderer/Renderer2D.h"
 #include "Krystal/Renderer/RenderCommand.h"
 
 #include "Krystal/Renderer/Buffer.h"

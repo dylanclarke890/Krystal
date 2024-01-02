@@ -41,21 +41,16 @@ void Sandbox2DLayer::OnDetach()
 
 void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 {
-	// Update
 	m_CameraController.OnUpdate(ts);
 
-	// Render
 	Krys::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	Krys::RenderCommand::Clear();
 
-	Krys::Renderer::BeginScene(m_CameraController.GetCamera());
-
-	m_Shader->Bind();
-	std::dynamic_pointer_cast<Krys::OpenGLShader>(m_Shader)->UploadUniformFloat4("u_Color", m_SquareColor);
-
-	Krys::Renderer::Submit(m_Shader, m_VertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
-
-	Krys::Renderer::EndScene();
+	Krys::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	{
+		Krys::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	}
+	Krys::Renderer2D::EndScene();
 }
 
 void Sandbox2DLayer::OnImGuiRender()
