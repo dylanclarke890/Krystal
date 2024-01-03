@@ -14,25 +14,7 @@ Sandbox2DLayer::Sandbox2DLayer()
 
 void Sandbox2DLayer::OnAttach()
 {
-	m_VertexArray = Krys::VertexArray::Create();
-	m_Shader = Krys::Shader::Create("assets/shaders/FlatColor.krys");
-
-	float vertices[5 * 4] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.5f,  0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f
-	};
-	uint32_t indices[6] = { 0, 1, 2, 2, 3, 0 };
-
-	Krys::Ref<Krys::VertexBuffer> vertexBuffer = Krys::VertexBuffer::Create(vertices, sizeof(vertices));
-	Krys::Ref<Krys::IndexBuffer> indexBuffer = Krys::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
-
-	vertexBuffer->SetLayout({
-		{ Krys::ShaderDataType::Float3, "a_Position" }
-	});
-	m_VertexArray->AddVertexBuffer(vertexBuffer);
-	m_VertexArray->SetIndexBuffer(indexBuffer);
+	m_CheckerboardTexture = Krys::Texture2D::Create("assets/textures/Checkerboard.png");
 }
 
 void Sandbox2DLayer::OnDetach()
@@ -50,6 +32,7 @@ void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 	{
 		Krys::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 		Krys::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+		Krys::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
 	}
 	Krys::Renderer2D::EndScene();
 }

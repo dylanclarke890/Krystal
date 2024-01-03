@@ -6,9 +6,8 @@ class Sandbox2DLayer : public Krys::Layer
 {
 private:
   Krys::OrthographicCameraController m_CameraController;
-  Krys::Ref<Krys::Shader> m_Shader;
-  Krys::Ref<Krys::VertexArray> m_VertexArray;
 
+  Krys::Ref<Krys::Texture2D> m_CheckerboardTexture;
   glm::vec4 m_SquareColor;
 
 public:
