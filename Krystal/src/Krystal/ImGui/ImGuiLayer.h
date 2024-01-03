@@ -8,7 +8,7 @@
 
 namespace Krys
 {
-  class KRYSTAL_API ImGuiLayer : public Layer
+  class ImGuiLayer : public Layer
   {
   public:
     ImGuiLayer();

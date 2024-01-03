@@ -3,7 +3,6 @@
 #include <imgui/imgui.h>
 
 #include "Layers/Sandbox2DLayer.h"
-#include "Layers/DemoLayer.h"
 
 class Sandbox : public Krys::Application
 {

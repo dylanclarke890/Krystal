@@ -15,7 +15,8 @@ namespace Krys
   {
     KRYS_CORE_ASSERT(!s_Instance, "Application already exists!");
     s_Instance = this;
-    m_Window = std::unique_ptr<Window>(Window::Create());
+
+    m_Window = Window::Create();
     m_Window->SetEventCallback(KRYS_BIND_EVENT_FN(Application::OnEvent));
 
     Renderer::Init();
@@ -24,7 +25,9 @@ namespace Krys
     PushOverlay(m_ImGuiLayer);
   }
   
-  Application::~Application() {}
+  Application::~Application() {
+    Renderer::Shutdown();
+  }
 
   void Application::Run()
   {

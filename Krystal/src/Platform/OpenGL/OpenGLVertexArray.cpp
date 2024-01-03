@@ -9,19 +9,19 @@ namespace Krys
   {
     switch (type)
     {
-      case Krys::ShaderDataType::Float:
-      case Krys::ShaderDataType::Float2:
-      case Krys::ShaderDataType::Float3:
-      case Krys::ShaderDataType::Float4:
-      case Krys::ShaderDataType::Mat3:
-      case Krys::ShaderDataType::Mat4:
+      case ShaderDataType::Float:
+      case ShaderDataType::Float2:
+      case ShaderDataType::Float3:
+      case ShaderDataType::Float4:
+      case ShaderDataType::Mat3:
+      case ShaderDataType::Mat4:
         return GL_FLOAT;
-      case Krys::ShaderDataType::Int:
-      case Krys::ShaderDataType::Int2:
-      case Krys::ShaderDataType::Int3:
-      case Krys::ShaderDataType::Int4:
+      case ShaderDataType::Int:
+      case ShaderDataType::Int2:
+      case ShaderDataType::Int3:
+      case ShaderDataType::Int4:
         return GL_INT;
-      case Krys::ShaderDataType::Bool:
+      case ShaderDataType::Bool:
         return GL_BOOL;
     }
 

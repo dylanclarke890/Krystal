@@ -42,21 +42,6 @@
 #error "Unknown platform!"
 #endif // End of platform detection
 
-
-#ifdef KRYS_PLATFORM_WINDOWS
-#if KRYS_DYNAMIC_LINK
-#ifdef KRYS_BUILD_DLL
-#define KRYSTAL_API __declspec(dllexport)
-#else
-#define KRYSTAL_API __declspec(dllimport)
-#endif
-#else
-#define KRYSTAL_API
-#endif
-#else
-#error Krystal only supports Windows!
-#endif
-
 #define BIT(x) (1 << x)
 
 #ifdef KRYS_ENABLE_ASSERTS

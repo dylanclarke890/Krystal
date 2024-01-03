@@ -16,9 +16,9 @@ namespace Krys
 		KRYS_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
-	Window* Window::Create(const WindowProps& props)
+	Scope<Window> Window::Create(const WindowProps& props)
 	{
-		return new WindowsWindow(props);
+		return CreateScope<WindowsWindow>(props);
 	}
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
@@ -56,7 +56,7 @@ namespace Krys
 		KRYS_CORE_INFO("- Title: {0}", props.Title);
 		KRYS_CORE_INFO("- Size: {0} x {1}", props.Width, props.Height);
 
-		m_Context = CreateScope<OpenGLContext>(m_Window);
+		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);

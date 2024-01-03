@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Krystal/Core/Core.h"
+
 #ifdef KRYS_PLATFORM_WINDOWS
 
 extern Krys::Application* Krys::CreateApplication();

@@ -3,8 +3,6 @@
 #include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
 Sandbox2DLayer::Sandbox2DLayer()
   : Layer("Sandbox 2D"),
   m_CameraController(1280.0f / 720.0f, true),

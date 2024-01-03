@@ -13,6 +13,8 @@ namespace Krys
     static Scope<SceneData> s_SceneData;
   public:
     static void Init();
+    static void Shutdown();
+
     static void OnWindowResize(uint32_t width, uint32_t height);
 
     static void BeginScene(OrthographicCamera& camera);

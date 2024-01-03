@@ -7,7 +7,7 @@
 namespace Krys
 {
 
-	class KRYSTAL_API MouseMovedEvent : public Event
+	class MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float x, float y)
@@ -32,7 +32,7 @@ namespace Krys
 		float m_MouseX, m_MouseY;
 	};
 
-	class KRYSTAL_API MouseScrolledEvent : public Event
+	class MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(float xOffset, float yOffset)
@@ -56,7 +56,7 @@ namespace Krys
 		float m_XOffset, m_YOffset;
 	};
 
-	class KRYSTAL_API MouseButtonEvent : public Event
+	class MouseButtonEvent : public Event
 	{
 	public:
 		inline int GetMouseButton() const { return m_Button; }
@@ -71,7 +71,7 @@ namespace Krys
 		int m_Button;
 	};
 
-	class KRYSTAL_API MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button)
@@ -89,7 +89,7 @@ namespace Krys
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class KRYSTAL_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int button)

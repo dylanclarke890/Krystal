@@ -1,15 +1,14 @@
 #include "krys-pch.h"
+#include "Krystal/Renderer/GraphicsContext.h"
 
-#include "Krystal/Renderer/RendererAPI.h"
-#include "Platform/OpenGL/OpenGLRendererAPI.h"
+#include "Krystal/Renderer/Renderer.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Krys
 {
-  RendererAPI::API RendererAPI::s_API = RendererAPI::API::OpenGL;
-
-  Scope<RendererAPI> RendererAPI::Create()
+  Scope<GraphicsContext> GraphicsContext::Create(void* window)
   {
-    switch (s_API)
+    switch (Renderer::GetAPI())
     {
       case RendererAPI::API::None:
       {
@@ -18,7 +17,7 @@ namespace Krys
       }
       case RendererAPI::API::OpenGL:
       {
-        return CreateScope<OpenGLRendererAPI>();
+        return CreateScope<OpenGLContext>(static_cast<GLFWwindow*>(window));
       }
     }
 

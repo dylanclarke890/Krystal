@@ -25,5 +25,7 @@ namespace Krys
     virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
 
     static inline API GetAPI() { return s_API; }
+
+    static Scope<RendererAPI> Create();
   };
 }

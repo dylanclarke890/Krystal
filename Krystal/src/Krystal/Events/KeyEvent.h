@@ -5,7 +5,7 @@
 namespace Krys
 {
 
-	class KRYSTAL_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
@@ -20,7 +20,7 @@ namespace Krys
 		int m_KeyCode;
 	};
 
-	class KRYSTAL_API KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent : public KeyEvent
 	{
 	private:
 		int m_RepeatCount;
@@ -42,7 +42,7 @@ namespace Krys
 		EVENT_CLASS_TYPE(KeyPressed)
 	};
 
-	class KRYSTAL_API KeyTypedEvent : public KeyEvent
+	class KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int keycode) : KeyEvent(keycode) {}
@@ -57,7 +57,7 @@ namespace Krys
 		EVENT_CLASS_TYPE(KeyTyped)
 	};
 
-	class KRYSTAL_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)

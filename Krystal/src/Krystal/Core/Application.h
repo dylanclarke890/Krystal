@@ -12,7 +12,7 @@
 
 namespace Krys
 {
-  class KRYSTAL_API Application
+  class Application
   {
   private:
     static Application* s_Instance;
@@ -21,7 +21,7 @@ namespace Krys
 
   private:
     bool m_Running, m_Minimised;
-    std::unique_ptr<Window> m_Window;
+    Scope<Window> m_Window;
     ImGuiLayer* m_ImGuiLayer;
     LayerStack m_LayerStack;
     float m_LastFrameTime;
