@@ -18,3 +18,4 @@
 #endif
 
 #include "Krystal/Core/Log.h"
+#include "Krystal/Debug/Instrumentor.h"

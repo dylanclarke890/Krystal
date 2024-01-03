@@ -152,6 +152,7 @@
     <ClInclude Include="src\Krystal\Core\Core.h" />
     <ClInclude Include="src\Krystal\Core\EntryPoint.h" />
     <ClInclude Include="src\Krystal\Core\Input.h" />
+    <ClInclude Include="src\Krystal\Debug\Instrumentor.h" />
     <ClInclude Include="src\Krystal\Core\KeyCodes.h" />
     <ClInclude Include="src\Krystal\Core\Layer.h" />
     <ClInclude Include="src\Krystal\Core\LayerStack.h" />

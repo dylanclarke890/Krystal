@@ -2,6 +2,10 @@
 
 #include <memory>
 
+// -------- CONFIG --------
+#define KRYS_ENABLE_PROFILING
+// -------- CONFIG --------
+
 #ifdef _WIN32
 	/* Windows x64/x86 */
 #ifdef _WIN64
@@ -42,8 +46,6 @@
 #error "Unknown platform!"
 #endif // End of platform detection
 
-#define BIT(x) (1 << x)
-
 #ifdef KRYS_ENABLE_ASSERTS
   #define KRYS_ASSERT(x, ...) { if(!(x)) { KRYS_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
   #define KRYS_CORE_ASSERT(x, ...) { if(!(x)) { KRYS_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
@@ -52,7 +54,23 @@
   #define KRYS_CORE_ASSERT(x, ...)
 #endif
 
+#define __KRYS_CONCAT_NUM_TO_STR(str, num) str  ## num
+
+#ifdef KRYS_ENABLE_PROFILING
+#define KRYS_PROFILE_BEGIN_SESSION(name, filepath) ::Krys::Instrumentor::Get().BeginSession(name, filepath)
+#define KRYS_PROFILE_END_SESSION() ::Krys::Instrumentor::Get().EndSession()
+#define KRYS_PROFILE_SCOPE(name) __KRYS_CONCAT_NUM_TO_STR(::Krys::InstrumentationTimer timer, __LINE__) (name)
+#define KRYS_PROFILE_FUNCTION() KRYS_PROFILE_SCOPE(__FUNCSIG__)
+#else
+#define KRYS_PROFILE_BEGIN_SESSION(name)
+#define KRYS_PROFILE_END_SESSION()
+#define KRYS_PROFILE_SCOPE(name)
+#define KRYS_PROFILE_FUNCTION()
+#endif
+
 #define KRYS_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
+#define BIT(x) (1 << x)
 
 namespace Krys
 {

@@ -23,3 +23,7 @@
 #include "Krystal/Renderer/OrthographicCamera.h"
 #include "Krystal/Renderer/OrthographicCameraController.h"
 // ---------- RENDERER -----------
+
+// ----------- DEBUG -------------
+#include "Krystal/Debug/Instrumentor.h"
+// ----------- DEBUG -------------
