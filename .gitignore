@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /bin-obj/*
 /Krystal/third-party/glad/bin-int/windows-x86_64-Debug/glad/glad.tlog
 /Krystal/third-party/glad/bin-int/windows-x86_64-Debug/glad
+/Sandbox/imgui.ini
