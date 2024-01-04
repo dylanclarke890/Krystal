@@ -8,7 +8,7 @@
 #include "Krystal/Core/TimeStep.h"
 #include "Krystal/Core/Input.h"
 #include "Krystal/Core/KeyCodes.h"
-#include "Krystal/Core/MouseButtonCodes.h"
+#include "Krystal/Core/MouseCodes.h"
 // ------------ CORE -------------
 
 // ---------- RENDERER -----------

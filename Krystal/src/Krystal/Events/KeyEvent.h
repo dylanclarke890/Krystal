@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Krystal/Core/KeyCodes.h"
 #include "Krystal/Events/Event.h"
 
 namespace Krys
@@ -7,28 +8,23 @@ namespace Krys
 
 	class KeyEvent : public Event
 	{
-	public:
-		inline int GetKeyCode() const { return m_KeyCode; }
-
-		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
-		KeyEvent(int keycode)
-			: m_KeyCode(keycode)
-		{
-		}
+		KeyEvent(KeyCode key) : m_KeyCode(key) {}
+		KeyCode m_KeyCode;
 
-		int m_KeyCode;
+	public:
+		inline KeyCode GetKeyCode() const { return m_KeyCode; }
+		
+		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	};
 
 	class KeyPressedEvent : public KeyEvent
 	{
 	private:
 		int m_RepeatCount;
+
 	public:
-		KeyPressedEvent(int keycode, int repeatCount)
-			: KeyEvent(keycode), m_RepeatCount(repeatCount)
-		{
-		}
+		KeyPressedEvent(KeyCode key, int repeatCount) : KeyEvent(key), m_RepeatCount(repeatCount) {}
 
 		inline int GetRepeatCount() const { return m_RepeatCount; }
 
@@ -45,7 +41,7 @@ namespace Krys
 	class KeyTypedEvent : public KeyEvent
 	{
 	public:
-		KeyTypedEvent(int keycode) : KeyEvent(keycode) {}
+		KeyTypedEvent(KeyCode key) : KeyEvent(key) {}
 
 		std::string ToString() const override
 		{
@@ -60,10 +56,7 @@ namespace Krys
 	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(int keycode)
-			: KeyEvent(keycode)
-		{
-		}
+		KeyReleasedEvent(KeyCode key) : KeyEvent(key) {}
 
 		std::string ToString() const override
 		{
