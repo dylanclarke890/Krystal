@@ -54,18 +54,38 @@
   #define KRYS_CORE_ASSERT(x, ...)
 #endif
 
+// Resolve the best macro for a function signature, based on the compiler being used.
+// Note: only gets resolved during preprocessing so your code editor may highlight the wrong one (i.e the 'else' branch) but should still work. 
+#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
+	#define __KRYS_FUNC_SIG __PRETTY_FUNCTION__
+#elif defined(__DMC__) && (__DMC__ >= 0x810)
+	#define __KRYS_FUNC_SIG __PRETTY_FUNCTION__
+#elif defined(__FUNCSIG__)
+	#define __KRYS_FUNC_SIG __FUNCSIG__
+#elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
+	#define __KRYS_FUNC_SIG __FUNCTION__
+#elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
+	#define __KRYS_FUNC_SIG __FUNC__
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
+	#define __KRYS_FUNC_SIG __func__
+#elif defined(__cplusplus) && (__cplusplus >= 201103)
+	#define __KRYS_FUNC_SIG __func__
+#else
+	#define __KRYS_FUNC_SIG "__KRYS_FUNC_SIG unknown!"
+#endif
+
 #define __KRYS_CONCAT_NUM_TO_STR(str, num) str  ## num
 
 #ifdef KRYS_ENABLE_PROFILING
-#define KRYS_PROFILE_BEGIN_SESSION(name, filepath) ::Krys::Instrumentor::Get().BeginSession(name, filepath)
-#define KRYS_PROFILE_END_SESSION() ::Krys::Instrumentor::Get().EndSession()
-#define KRYS_PROFILE_SCOPE(name) __KRYS_CONCAT_NUM_TO_STR(::Krys::InstrumentationTimer timer, __LINE__) (name)
-#define KRYS_PROFILE_FUNCTION() KRYS_PROFILE_SCOPE(__FUNCSIG__)
+	#define KRYS_PROFILE_BEGIN_SESSION(name, filepath) ::Krys::Instrumentor::Get().BeginSession(name, filepath)
+	#define KRYS_PROFILE_END_SESSION() ::Krys::Instrumentor::Get().EndSession()
+	#define KRYS_PROFILE_SCOPE(name) __KRYS_CONCAT_NUM_TO_STR(::Krys::InstrumentationTimer timer, __LINE__) (name)
+	#define KRYS_PROFILE_FUNCTION() KRYS_PROFILE_SCOPE(__KRYS_FUNC_SIG)
 #else
-#define KRYS_PROFILE_BEGIN_SESSION(name)
-#define KRYS_PROFILE_END_SESSION()
-#define KRYS_PROFILE_SCOPE(name)
-#define KRYS_PROFILE_FUNCTION()
+	#define KRYS_PROFILE_BEGIN_SESSION(name)
+	#define KRYS_PROFILE_END_SESSION()
+	#define KRYS_PROFILE_SCOPE(name)
+	#define KRYS_PROFILE_FUNCTION()
 #endif
 
 #define KRYS_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
