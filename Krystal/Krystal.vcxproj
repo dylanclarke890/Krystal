@@ -603,9 +603,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Krystal\Core\Application.cpp" />
+    <ClCompile Include="src\Krystal\Core\Input.cpp" />
     <ClCompile Include="src\Krystal\Core\Layer.cpp" />
     <ClCompile Include="src\Krystal\Core\LayerStack.cpp" />
     <ClCompile Include="src\Krystal\Core\Log.cpp" />
+    <ClCompile Include="src\Krystal\Core\Window.cpp" />
     <ClCompile Include="src\Krystal\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Krystal\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Krystal\Renderer\Buffer.cpp" />
