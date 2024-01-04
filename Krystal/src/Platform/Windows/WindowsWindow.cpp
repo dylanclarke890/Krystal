@@ -23,16 +23,22 @@ namespace Krys
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		Init(props);
 	}
 
 	WindowsWindow::~WindowsWindow()
 	{
+		KRYS_PROFILE_FUNCTION();
+		
 		Shutdown();
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
@@ -41,13 +47,19 @@ namespace Krys
 		{
 			KRYS_CORE_INFO("Start Up: Initialising GLFW.");
 			{
+				KRYS_PROFILE_SCOPE("glfwInit");
+
 				int success = glfwInit();
 				KRYS_CORE_ASSERT(success, "Could not intialise GLFW!");
 			}
 			KRYS_CORE_INFO("Start Up: GLFW initialised.");
 		}
 
-		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		{
+			KRYS_PROFILE_SCOPE("glfwCreateWindow");
+
+			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		}
 
 		if (s_GLFWWindowCount++ == 0)
 			KRYS_CORE_INFO("Start Up: Creating Window:", props.Title, props.Width, props.Height);
@@ -157,6 +169,8 @@ namespace Krys
 
 	void WindowsWindow::Shutdown()
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(m_Window);
 
 		if (--s_GLFWWindowCount == 0)
@@ -172,12 +186,16 @@ namespace Krys
 
 	void WindowsWindow::OnUpdate()
 	{
+		KRYS_PROFILE_FUNCTION();
+		
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		if (enabled)
 			glfwSwapInterval(1);
 		else

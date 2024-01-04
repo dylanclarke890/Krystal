@@ -31,26 +31,36 @@ namespace Krys
 
   OpenGLVertexArray::OpenGLVertexArray() : m_RendererId(0), m_VertexBufferIndex(0)
   {
+    KRYS_PROFILE_FUNCTION();
+
     glCreateVertexArrays(1, &m_RendererId);
   }
 
   OpenGLVertexArray::~OpenGLVertexArray()
   {
+    KRYS_PROFILE_FUNCTION();
+    
     glDeleteVertexArrays(1, &m_RendererId);
   }
 
   void OpenGLVertexArray::Bind() const
   {
+    KRYS_PROFILE_FUNCTION();
+    
     glBindVertexArray(m_RendererId);
   }
 
   void OpenGLVertexArray::Unbind() const
   {
+    KRYS_PROFILE_FUNCTION();
+    
     glBindVertexArray(0);
   }
 
   void OpenGLVertexArray::AddVertexBuffer(Ref<VertexBuffer> buffer)
   {
+    KRYS_PROFILE_FUNCTION();
+    
     const auto& layout = buffer->GetLayout();
     KRYS_CORE_ASSERT(layout.GetElements().size(), "Vertex Buffer has no layout!");
 
@@ -76,6 +86,8 @@ namespace Krys
 
   void OpenGLVertexArray::SetIndexBuffer(Ref<IndexBuffer> buffer)
   {
+    KRYS_PROFILE_FUNCTION();
+    
     glBindVertexArray(m_RendererId);
     buffer->Bind();
 

@@ -25,6 +25,8 @@ namespace Krys
 	OpenGLShader::OpenGLShader(const std::string& filePath)
 		: m_RendererId(0)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(filePath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -36,6 +38,8 @@ namespace Krys
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
 		: m_RendererId(0), m_Name(name)
   {
+		KRYS_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSource;
 		shaderSources[GL_FRAGMENT_SHADER] = fragmentSource;
@@ -45,36 +49,50 @@ namespace Krys
 
 	OpenGLShader::~OpenGLShader()
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererId);
 	}
 
 	void OpenGLShader::Bind() const
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererId);
 	}
 
 	void OpenGLShader::Unbind() const
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetInt(const std::string& name, int value)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		UploadUniformInt(name, value);
 	}
 
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& vector)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		UploadUniformFloat3(name, vector);
 	}
 
 	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& vector)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		UploadUniformFloat4(name, vector);
 	}
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& matrix)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		UploadUniformMat4(name, matrix);
 	}
 
@@ -122,6 +140,8 @@ namespace Krys
 
 	std::string OpenGLShader::ReadFile(const std::string& filePath)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		std::ifstream in(filePath, std::ios::in | std::ios::binary);
 		std::string result;
 
@@ -151,6 +171,8 @@ namespace Krys
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -180,6 +202,8 @@ namespace Krys
 
 	void OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		KRYS_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		KRYS_CORE_ASSERT(shaderSources.size() <= 2, "More than 2 shader sources were specified.");
 		std::array<GLuint, 2> shaderIds{};

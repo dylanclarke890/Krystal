@@ -13,6 +13,8 @@ namespace Krys
   Application::Application()
     : m_Running(true), m_Minimised(false)
   {
+    KRYS_PROFILE_FUNCTION();
+
     KRYS_CORE_ASSERT(!s_Instance, "Application already exists!");
     s_Instance = this;
 
@@ -31,21 +33,32 @@ namespace Krys
 
   void Application::Run()
   {
+    KRYS_PROFILE_FUNCTION();
+
     while (m_Running) 
     {
+      KRYS_PROFILE_SCOPE("RunLoop");
+
       float time = (float)glfwGetTime(); // TODO: Platform::GetTime
       TimeStep ts(time - m_LastFrameTime);
       m_LastFrameTime = time;
 
       if (!m_Minimised)
       {
-        for (Layer* layer : m_LayerStack)
-          layer->OnUpdate(ts);
+        {
+          KRYS_PROFILE_SCOPE("LayerStack OnUpdate");
+
+          for (Layer* layer : m_LayerStack)
+            layer->OnUpdate(ts);
+        }
       }
 
       m_ImGuiLayer->Begin();
-      for (Layer* layer : m_LayerStack)
-        layer->OnImGuiRender();
+      {
+        KRYS_PROFILE_SCOPE("LayerStack OnImGuiRender");
+        for (Layer* layer : m_LayerStack)
+          layer->OnImGuiRender();
+      }
       m_ImGuiLayer->End();
 
       m_Window->OnUpdate();
@@ -54,6 +67,8 @@ namespace Krys
 
   void Application::OnEvent(Event& e)
   {
+    KRYS_PROFILE_FUNCTION();
+
     EventDispatcher dispatcher(e);
     dispatcher.Dispatch<WindowCloseEvent>(KRYS_BIND_EVENT_FN(Application::OnWindowClose));
     dispatcher.Dispatch<WindowResizeEvent>(KRYS_BIND_EVENT_FN(Application::OnWindowResize));
@@ -68,12 +83,18 @@ namespace Krys
 
   void Application::PushLayer(Layer* layer)
   {
+    KRYS_PROFILE_FUNCTION();
+
     m_LayerStack.PushLayer(layer);
+    layer->OnAttach();
   }
 
   void Application::PushOverlay(Layer* overlay)
   {
+    KRYS_PROFILE_FUNCTION();
+
     m_LayerStack.PushOverlay(overlay);
+    overlay->OnAttach();
   }
 
   bool Application::OnWindowClose(WindowCloseEvent& e)
@@ -84,6 +105,8 @@ namespace Krys
 
   bool Application::OnWindowResize(WindowResizeEvent& e)
   {
+    KRYS_PROFILE_FUNCTION();
+
     if (e.GetWidth() == 0 || e.GetHeight() == 0)
     {
       m_Minimised = true;

@@ -13,6 +13,7 @@ namespace Krys
 
   void OpenGLContext::Init()
   {
+    KRYS_PROFILE_FUNCTION();
     glfwMakeContextCurrent(m_WindowHandle);
     int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     KRYS_CORE_ASSERT(status, "Failed to initialise glad!");
@@ -33,6 +34,7 @@ namespace Krys
 
   void OpenGLContext::SwapBuffers()
   {
+    KRYS_PROFILE_FUNCTION();
     glfwSwapBuffers(m_WindowHandle);
   }
 }

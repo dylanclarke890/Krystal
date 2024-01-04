@@ -8,12 +8,16 @@ namespace Krys
 
   void Renderer::Init()
   {
+    KRYS_PROFILE_FUNCTION();
+
     RenderCommand::Init();
     Renderer2D::Init();
   }
 
   void Renderer::Shutdown()
   {
+    KRYS_PROFILE_FUNCTION();
+    
     Renderer2D::Shutdown();
   }
 

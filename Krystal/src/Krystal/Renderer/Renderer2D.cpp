@@ -20,6 +20,8 @@ namespace Krys
 
   void Renderer2D::Init()
   {
+    KRYS_PROFILE_FUNCTION();
+
     s_Data = new Renderer2DData();
 
     s_Data->QuadVertexArray = VertexArray::Create();
@@ -53,18 +55,22 @@ namespace Krys
 
   void Renderer2D::Shutdown()
   {
+    KRYS_PROFILE_FUNCTION();
+
     delete s_Data;
   }
   
   void Renderer2D::BeginScene(const OrthographicCamera& camera)
   {
+    KRYS_PROFILE_FUNCTION();
+
     s_Data->Shader->Bind();
     s_Data->Shader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
   }
   
   void Renderer2D::EndScene()
   {
-
+    KRYS_PROFILE_FUNCTION();
   }
 
   void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -74,6 +80,8 @@ namespace Krys
   
   void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
   {
+    KRYS_PROFILE_FUNCTION();
+
     s_Data->Shader->SetFloat4("u_Color", color);
     s_Data->WhiteTexture->Bind();
 
@@ -87,11 +95,12 @@ namespace Krys
   void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
   {
     DrawQuad({ position.x, position.y, 0.0f }, size, texture);
-
   }
   
   void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
   {
+    KRYS_PROFILE_FUNCTION();
+
     s_Data->Shader->SetFloat4("u_Color", glm::vec4(1.0f));
     texture->Bind();
 

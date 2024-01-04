@@ -24,10 +24,7 @@ void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 {
 	KRYS_PROFILE_FUNCTION();
 	
-	{
-		KRYS_PROFILE_SCOPE("CameraController::OnUpdate");
-		m_CameraController.OnUpdate(ts);
-	}
+	m_CameraController.OnUpdate(ts);
 
 	{
 		KRYS_PROFILE_SCOPE("Renderer Prep");
