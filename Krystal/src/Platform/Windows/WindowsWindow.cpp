@@ -4,6 +4,7 @@
 #include "Krystal/Events/ApplicationEvent.h"
 #include "Krystal/Events/KeyEvent.h"
 #include "Krystal/Events/MouseEvent.h"
+#include "Krystal/Renderer/Renderer.h"
 
 #include <GLFW/glfw3.h>
 
@@ -57,6 +58,11 @@ namespace Krys
 
 		{
 			KRYS_PROFILE_SCOPE("glfwCreateWindow");
+
+#ifdef KRYS_DEBUG
+			if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
+				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+#endif
 
 			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		}
