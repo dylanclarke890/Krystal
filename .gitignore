@@ -371,3 +371,5 @@ FodyWeavers.xsd
 # Krystal Logging/Profiling files
 KrystalProfile-*.json
 *.log
+/Krystal/third-party/glad/bin-int/windows-x86_64-Release/glad/glad.tlog
+/Krystal/third-party/glad/bin-int/windows-x86_64-Release/glad
