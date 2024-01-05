@@ -36,9 +36,10 @@ void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 		KRYS_PROFILE_SCOPE("Renderer Draw");
 		Krys::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		{
-			Krys::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, glm::radians(-45.0f), { 0.8f, 0.2f, 0.3f, 1.0f });
 			Krys::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-			Krys::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f, { 0.2f, 0.3f, 0.8f, 0.5f });
+			Krys::Renderer2D::DrawQuad({ 0.8f, -1.5f }, { 0.5f, 0.75f }, { 0.5f, 0.3f, 0.8f, 1.0f });
+			Krys::Renderer2D::DrawQuad({ 2.5f, -3.5f }, { 0.5f, 0.75f }, { 0.2f, 0.6f, 0.8f, 1.0f });
+			Krys::Renderer2D::DrawQuad({ 2.5f, -3.5f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.f);
 		}
 		Krys::Renderer2D::EndScene();
 	}
@@ -47,9 +48,6 @@ void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 void Sandbox2DLayer::OnImGuiRender()
 {
 	KRYS_PROFILE_FUNCTION();
-  ImGui::Begin("Settings");
-  ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
-	ImGui::End();
 }
 
 void Sandbox2DLayer::OnEvent(Krys::Event& e)
