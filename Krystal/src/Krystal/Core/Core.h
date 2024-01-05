@@ -68,6 +68,8 @@
 	#else
 		#error "KRYS_DEBUG_BREAK is not supported for your platform!"
 	#endif
+#else 
+	#define KRYS_DEBUG_BREAK()
 #endif
 // ------ DEBUG BREAK -------
 
@@ -112,8 +114,6 @@
 	#define KRYS_PROFILE_END_SESSION() ::Krys::Instrumentor::Get().EndSession()
 	#define KRYS_PROFILE_SCOPE(name) __KRYS_CONCAT_NUM_TO_STR(::Krys::InstrumentationTimer timer, __LINE__) (name)
 	#define KRYS_PROFILE_FUNCTION() KRYS_PROFILE_SCOPE(__KRYS_FUNC_SIG)
-
-	#undef __KRYS_CONCAT_NUM_TO_STR
 #else
 	#define KRYS_PROFILE_BEGIN_SESSION(name)
 	#define KRYS_PROFILE_END_SESSION()

@@ -76,7 +76,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>krys-pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;KRYS_DEBUG;KRYS_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;KRYS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>third-party\spdlog\include;src;third-party\GLFW\include;third-party\glad\include;third-party\imgui;third-party\glm;third-party\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -152,14 +152,14 @@
     <ClInclude Include="src\Krystal\Core\Core.h" />
     <ClInclude Include="src\Krystal\Core\EntryPoint.h" />
     <ClInclude Include="src\Krystal\Core\Input.h" />
-    <ClInclude Include="src\Krystal\Core\MouseCodes.h" />
-    <ClInclude Include="src\Krystal\Debug\Instrumentor.h" />
     <ClInclude Include="src\Krystal\Core\KeyCodes.h" />
     <ClInclude Include="src\Krystal\Core\Layer.h" />
     <ClInclude Include="src\Krystal\Core\LayerStack.h" />
     <ClInclude Include="src\Krystal\Core\Log.h" />
+    <ClInclude Include="src\Krystal\Core\MouseCodes.h" />
     <ClInclude Include="src\Krystal\Core\TimeStep.h" />
     <ClInclude Include="src\Krystal\Core\Window.h" />
+    <ClInclude Include="src\Krystal\Debug\Instrumentor.h" />
     <ClInclude Include="src\Krystal\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Krystal\Events\Event.h" />
     <ClInclude Include="src\Krystal\Events\KeyEvent.h" />
