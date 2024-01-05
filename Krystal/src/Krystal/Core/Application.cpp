@@ -11,7 +11,7 @@ namespace Krys
   Application* Application::s_Instance = nullptr;
 
   Application::Application()
-    : m_Running(true), m_Minimised(false)
+    : m_Running(true), m_Minimised(false), m_LastFrameTime(0.0f)
   {
     KRYS_PROFILE_FUNCTION();
 

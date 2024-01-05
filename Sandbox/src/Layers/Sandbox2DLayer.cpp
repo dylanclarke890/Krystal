@@ -34,12 +34,17 @@ void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 
 	{
 		KRYS_PROFILE_SCOPE("Renderer Draw");
+
+		static float rotation = 0.0f;
+		rotation += ts * 20.0f;
+
 		Krys::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		{
 			Krys::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
 			Krys::Renderer2D::DrawQuad({ 0.8f, -1.5f }, { 0.5f, 0.75f }, { 0.5f, 0.3f, 0.8f, 1.0f });
 			Krys::Renderer2D::DrawQuad({ 2.5f, -3.5f }, { 0.5f, 0.75f }, { 0.2f, 0.6f, 0.8f, 1.0f });
-			Krys::Renderer2D::DrawQuad({ 2.5f, -3.5f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.f);
+			Krys::Renderer2D::DrawQuad({ 2.5f, -3.5f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.f);
+			Krys::Renderer2D::DrawRotatedQuad({ 2.5f, -3.5f }, { 10.0f, 10.0f }, rotation, m_CheckerboardTexture, 20.f);
 		}
 		Krys::Renderer2D::EndScene();
 	}
