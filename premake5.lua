@@ -43,7 +43,8 @@ project "Krystal"
   }
 
   defines {
-    "_CRT_SECURE_NO_WARNINGS"
+    "_CRT_SECURE_NO_WARNINGS",
+     "GLFW_INCLUDE_NONE"
   }
 
   includedirs {
@@ -65,10 +66,9 @@ project "Krystal"
   
   filter "system:windows"
     systemversion "latest"
-    defines { "GLFW_INCLUDE_NONE" }
 
   filter "configurations:Debug"
-    defines {"KRYS_DEBUG", "KRYS_ENABLE_ASSERTS" }
+    defines "KRYS_DEBUG"
     runtime "Debug"
     symbols "on"
 
