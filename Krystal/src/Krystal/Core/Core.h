@@ -91,7 +91,7 @@
 	#define __KRYS_FUNC_SIG __PRETTY_FUNCTION__
 #elif defined(__DMC__) && (__DMC__ >= 0x810)
 	#define __KRYS_FUNC_SIG __PRETTY_FUNCTION__
-#elif defined(__FUNCSIG__)
+#elif defined(__FUNCSIG__) || defined(_MSC_VER)
 	#define __KRYS_FUNC_SIG __FUNCSIG__
 #elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
 	#define __KRYS_FUNC_SIG __FUNCTION__
@@ -102,7 +102,7 @@
 #elif defined(__cplusplus) && (__cplusplus >= 201103)
 	#define __KRYS_FUNC_SIG __func__
 #else
-	#define __KRYS_FUNC_SIG "__KRYS_FUNC_SIG unknown!"
+	#error "__KRYS_FUNC_SIG unknown!"
 #endif
 // ------- FUNC NAME --------
 
@@ -113,7 +113,8 @@
 
 	#define KRYS_PROFILE_BEGIN_SESSION(name, filepath) ::Krys::Instrumentor::Get().BeginSession(name, filepath)
 	#define KRYS_PROFILE_END_SESSION() ::Krys::Instrumentor::Get().EndSession()
-	#define KRYS_PROFILE_SCOPE(name) __KRYS_CONCAT_NUM_TO_STR(::Krys::InstrumentationTimer timer, __LINE__) (name)
+	#define KRYS_PROFILE_SCOPE(name) constexpr auto fixedName = ::Krys::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");\
+																	 __KRYS_CONCAT_NUM_TO_STR(::Krys::InstrumentationTimer timer, __LINE__) (fixedName.Data)
 	#define KRYS_PROFILE_FUNCTION() KRYS_PROFILE_SCOPE(__KRYS_FUNC_SIG)
 #else
 	#define KRYS_PROFILE_BEGIN_SESSION(name)
