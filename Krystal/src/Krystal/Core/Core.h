@@ -50,6 +50,7 @@
 #endif
 
 #ifdef KRYS_RELEASE
+	#define KRYS_ENABLE_DEBUG_BREAK
 	#define KRYS_ENABLE_PROFILING
 	#define KRYS_ENABLE_ASSERTS
 #endif
