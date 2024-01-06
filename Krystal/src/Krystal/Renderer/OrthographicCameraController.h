@@ -9,10 +9,20 @@
 
 namespace Krys
 {
+  struct OrthographicCameraBounds
+  {
+    float Left, Right;
+    float Top, Bottom;
+
+    inline float GetWidth() { return Right - Left; }
+    inline float GetHeight() { return Top - Bottom; }
+  };
+
   class OrthographicCameraController
   {
   private:
     float m_AspectRatio, m_ZoomLevel;
+    OrthographicCameraBounds m_Bounds;
     OrthographicCamera m_Camera;
     glm::vec3 m_CameraPosition;
 
@@ -32,6 +42,8 @@ namespace Krys
 
     float GetZoomLevel() { return m_ZoomLevel; }
     void SetZoomLevel(float level) { m_ZoomLevel = level; }
+
+    const OrthographicCameraBounds& GetBounds() { return m_Bounds; }
   private:
     bool OnMouseScrolled(MouseScrolledEvent& e);
     bool OnWindowResized(WindowResizeEvent& e);

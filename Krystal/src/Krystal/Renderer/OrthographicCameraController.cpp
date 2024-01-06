@@ -8,7 +8,8 @@ namespace Krys
 {
   OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool canRotate)
     : m_AspectRatio(aspectRatio), m_ZoomLevel(1.0f),
-      m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel),
+      m_Bounds({ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel }),
+      m_Camera(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top),
       m_CanRotate(canRotate), m_CameraRotation(0.0f), m_CameraPosition(0.0f),
       m_CameraRotationSpeed(5.0f), m_CameraTranslationSpeed(10.0f)
   {
@@ -76,7 +77,8 @@ namespace Krys
 
     m_ZoomLevel -= e.GetYOffset() * 0.5f;
     m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
-    m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+    m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+    m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
 
     return false;
   }
@@ -86,7 +88,9 @@ namespace Krys
     KRYS_PROFILE_FUNCTION();
 
     m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-    m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+    m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+    m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
+
     return false;
   }
 }
