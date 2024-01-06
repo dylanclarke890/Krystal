@@ -196,7 +196,6 @@ namespace Krys
   {
     KRYS_PROFILE_FUNCTION();
     
-    constexpr glm::vec4 color(1.0f);
     constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
     if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
@@ -230,7 +229,7 @@ namespace Krys
     for (size_t i = 0; i < s_Data.QuadVertexCount; i++)
     {
       s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
-      s_Data.QuadVertexBufferPtr->Color = color;
+      s_Data.QuadVertexBufferPtr->Color = tintColor;
       s_Data.QuadVertexBufferPtr->TextureCoord = textureCoords[i];
       s_Data.QuadVertexBufferPtr->TextureIndex = textureIndex;
       s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
@@ -287,7 +286,6 @@ namespace Krys
   {
     KRYS_PROFILE_FUNCTION();
 
-    constexpr glm::vec4 color(1.0f);
     constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
     constexpr glm::vec3 rotationAxis(0.0f, 0.0f, 1.0f);
 
@@ -323,7 +321,7 @@ namespace Krys
     for (size_t i = 0; i < s_Data.QuadVertexCount; i++)
     {
       s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
-      s_Data.QuadVertexBufferPtr->Color = color;
+      s_Data.QuadVertexBufferPtr->Color = tintColor;
       s_Data.QuadVertexBufferPtr->TextureCoord = textureCoords[i];
       s_Data.QuadVertexBufferPtr->TextureIndex = textureIndex;
       s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
