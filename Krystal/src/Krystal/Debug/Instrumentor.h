@@ -68,25 +68,24 @@ namespace Krys
 
 		void WriteProfile(const ProfileResult& result)
 		{
-			std::stringstream json;
-
 			std::string name = result.Name;
 			std::replace(name.begin(), name.end(), '"', '\'');
-
-			json << std::setprecision(3) << std::fixed;
-			json << ",{";
-			json << "\"cat\":\"function\",";
-			json << "\"dur\":" << (result.ElapsedTime.count()) << ',';
-			json << "\"name\":\"" << name << "\",";
-			json << "\"ph\":\"X\",";
-			json << "\"pid\":0,";
-			json << "\"tid\":" << result.ThreadID << ",";
-			json << "\"ts\":" << result.Start.count();
-			json << "}";
-
+			
 			std::lock_guard lock(m_Mutex);
 			if (m_CurrentSession)
 			{
+				std::stringstream json;
+				json << std::setprecision(3) << std::fixed;
+				json << ",{";
+				json << "\"cat\":\"function\",";
+				json << "\"dur\":" << (result.ElapsedTime.count()) << ',';
+				json << "\"name\":\"" << name << "\",";
+				json << "\"ph\":\"X\",";
+				json << "\"pid\":0,";
+				json << "\"tid\":" << result.ThreadID << ",";
+				json << "\"ts\":" << result.Start.count();
+				json << "}";
+
 				m_OutputStream << json.str();
 				m_OutputStream.flush();
 			}
