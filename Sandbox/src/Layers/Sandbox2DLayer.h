@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Krystal.h"
+#include <Krystal.h>
+
+#include <Krystal/Utilities/ParticleSystem.h>
 
 class Sandbox2DLayer : public Krys::Layer
 {
@@ -9,6 +11,9 @@ private:
 
   Krys::Ref<Krys::Texture2D> m_CheckerboardTexture;
   glm::vec4 m_SquareColor;
+
+  Krys::ParticleProps m_Particle;
+  Krys::ParticleSystem m_ParticleSystem;
 
 public:
   Sandbox2DLayer();

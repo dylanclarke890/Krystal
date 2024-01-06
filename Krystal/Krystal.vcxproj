@@ -176,6 +176,7 @@
     <ClInclude Include="src\Krystal\Renderer\Shader.h" />
     <ClInclude Include="src\Krystal\Renderer\Texture.h" />
     <ClInclude Include="src\Krystal\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Krystal\Utilities\ParticleSystem.h" />
     <ClInclude Include="src\Krystal\Utilities\Random.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -622,6 +623,7 @@
     <ClCompile Include="src\Krystal\Renderer\Shader.cpp" />
     <ClCompile Include="src\Krystal\Renderer\Texture.cpp" />
     <ClCompile Include="src\Krystal\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Krystal\Utilities\ParticleSystem.cpp" />
     <ClCompile Include="src\Krystal\Utilities\Random.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />

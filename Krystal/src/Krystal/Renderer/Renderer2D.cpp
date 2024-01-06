@@ -255,7 +255,7 @@ namespace Krys
   {
     KRYS_PROFILE_FUNCTION();
 
-    constexpr float textureIndex = 1.0f;
+    constexpr float textureIndex = 0.0f;
     constexpr float tilingFactor = 1.0f;
     constexpr glm::vec3 rotationAxis(0.0f, 0.0f, 1.0f);
     constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
@@ -264,7 +264,7 @@ namespace Krys
       FlushAndReset();
 
     glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-      * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), rotationAxis)
+      * glm::rotate(glm::mat4(1.0f), rotation, rotationAxis)
       * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
     for (size_t i = 0; i < s_Data.QuadVertexCount; i++)
@@ -322,7 +322,7 @@ namespace Krys
       }
 
     glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-      * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), rotationAxis)
+      * glm::rotate(glm::mat4(1.0f), rotation, rotationAxis)
       * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
     for (size_t i = 0; i < s_Data.QuadVertexCount; i++)
