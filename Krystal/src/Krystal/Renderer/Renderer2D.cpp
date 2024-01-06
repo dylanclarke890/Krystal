@@ -221,6 +221,8 @@ namespace Krys
       
       s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
       s_Data.TextureSlotIndex++;
+
+      s_Data.Stats.Textures++;
     }
 
     glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
@@ -312,6 +314,8 @@ namespace Krys
 
         s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
         s_Data.TextureSlotIndex++;
+
+        s_Data.Stats.Textures++;
       }
 
     glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
@@ -341,5 +345,7 @@ namespace Krys
   void Renderer2D::ResetStats()
   {
     memset(&s_Data.Stats, 0, sizeof(Renderer2D::Statistics));
+
+    s_Data.Stats.Textures++; // To account for the default white texture that's always bound for non-tinted textures.
   }
 }

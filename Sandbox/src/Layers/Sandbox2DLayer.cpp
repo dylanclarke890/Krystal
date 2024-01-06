@@ -70,6 +70,7 @@ void Sandbox2DLayer::OnImGuiRender()
 		auto stats = Krys::Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+		ImGui::Text("Textures: %d", stats.Textures);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
