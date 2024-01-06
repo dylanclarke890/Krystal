@@ -29,7 +29,11 @@ namespace Krys
 			}
 
 			particle.LifeRemaining -= ts;
-			particle.Position += particle.Velocity * (float)ts;
+			
+			auto movement = particle.Velocity * (float)ts;
+			particle.Position.x += movement.x;
+			particle.Position.y += movement.y;
+
 			particle.Rotation += 0.01f * ts;
 		}
 	}
@@ -47,7 +51,7 @@ namespace Krys
 			glm::vec4 color = glm::lerp(particle.ColorEnd, particle.ColorBegin, life);
 			float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
 
-			Renderer2D::DrawRotatedQuad({ particle.Position.x, particle.Position.y, 1.0f }, { size, size }, particle.Rotation, color);
+			Renderer2D::DrawRotatedQuad(particle.Position, { size, size }, particle.Rotation, color);
 		}
 		Renderer2D::EndScene();
 	}

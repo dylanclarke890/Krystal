@@ -10,6 +10,7 @@ private:
   Krys::OrthographicCameraController m_CameraController;
 
   Krys::Ref<Krys::Texture2D> m_CheckerboardTexture;
+  Krys::Ref<Krys::Texture2D> m_SpriteSheet;
   glm::vec4 m_SquareColor;
 
   Krys::ParticleProps m_Particle;

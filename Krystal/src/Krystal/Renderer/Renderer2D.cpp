@@ -199,7 +199,16 @@ namespace Krys
   {
     KRYS_PROFILE_FUNCTION();
     
-    constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+    constexpr float x = 7.0f, y = 6.0f;
+    constexpr float sheetWidth = 2560.f, sheetHeight = 1664.0f;
+    constexpr float spriteWidth = 128.0f, spriteHeight = 128.0f;
+
+    constexpr glm::vec2 textureCoords[] = { 
+      { (x * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight },
+      { ((x + 1) * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight },
+      { ((x + 1) * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight },
+      { (x * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight }
+    };
 
     if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
       FlushAndReset();
@@ -348,7 +357,5 @@ namespace Krys
   void Renderer2D::ResetStats()
   {
     memset(&s_Data.Stats, 0, sizeof(Renderer2D::Statistics));
-
-    s_Data.Stats.Textures++; // To account for the default white texture that's always bound for non-tinted textures.
   }
 }

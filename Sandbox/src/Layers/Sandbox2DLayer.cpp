@@ -15,6 +15,7 @@ Sandbox2DLayer::Sandbox2DLayer()
 void Sandbox2DLayer::OnAttach()
 {
 	m_CheckerboardTexture = Krys::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_SpriteSheet = Krys::Texture2D::Create("assets/game/textures/rpg-pack-spritesheet.png");
 
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
@@ -22,7 +23,7 @@ void Sandbox2DLayer::OnAttach()
 	m_Particle.LifeTime = 1.0f;
 	m_Particle.Velocity = { 0.0f, 0.0f };
 	m_Particle.VelocityVariation = { 3.0f, 1.0f };
-	m_Particle.Position = { 0.0f, 0.0f };
+	m_Particle.Position = { 0.0f, 0.0f, 0.0f };
 }
 
 void Sandbox2DLayer::OnDetach()
@@ -42,9 +43,9 @@ void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 		Krys::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Krys::RenderCommand::Clear();
 	}
-
 	{
 		KRYS_PROFILE_SCOPE("Renderer Draw");
+#if 0
 
 		static float rotation = 0.0f;
 		rotation += ts * 20.0f;
@@ -67,6 +68,7 @@ void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 			}
 		}
 		Krys::Renderer2D::EndScene();
+#endif
 
 		if (Krys::Input::IsMouseButtonPressed(Krys::MouseCode::ButtonLeft))
 		{
@@ -79,7 +81,7 @@ void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 
 			x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
 			y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
-			m_Particle.Position = { x + pos.x, y + pos.y };
+			m_Particle.Position = { x + pos.x, y + pos.y, 0.0f };
 			
 			for (int i = 0; i < 5; i++)
 				m_ParticleSystem.Emit(m_Particle);
@@ -87,6 +89,10 @@ void Sandbox2DLayer::OnUpdate(Krys::TimeStep ts)
 
 		m_ParticleSystem.OnUpdate(ts);
 		m_ParticleSystem.OnRender(m_CameraController.GetCamera());
+
+		Krys::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		Krys::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.1f}, {1.0f, 1.0f}, m_SpriteSheet);
+		Krys::Renderer2D::EndScene();
 	}
 }
 
