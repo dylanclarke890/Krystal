@@ -218,6 +218,8 @@ namespace Krys
         FlushAndReset();
 
       textureIndex = (float)s_Data.TextureSlotIndex;
+      KRYS_CORE_ASSERT(textureIndex >= 0.0f && textureIndex <= Renderer2DData::MaxTextureSlots - 1, "Texture index out of bounds!");
+      
       s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
       s_Data.TextureSlotIndex++;
     }
@@ -302,15 +304,17 @@ namespace Krys
       }
     }
 
-    if (textureIndex == 0.0f)
-    {
-      if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
-        FlushAndReset();
+      if (textureIndex == 0.0f)
+      {
+        if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
+          FlushAndReset();
 
-      textureIndex = (float)s_Data.TextureSlotIndex;
-      s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
-      s_Data.TextureSlotIndex++;
-    }
+        textureIndex = (float)s_Data.TextureSlotIndex;
+        KRYS_CORE_ASSERT(textureIndex >= 0.0f && textureIndex <= Renderer2DData::MaxTextureSlots - 1, "Texture index out of bounds!");
+
+        s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+        s_Data.TextureSlotIndex++;
+      }
 
     glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
       * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), rotationAxis)
