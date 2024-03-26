@@ -1,10 +1,2 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs
-/Krystal/x64/Debug
-/Krystal/Krystal.vcxproj
-/Krystal/Krystal.vcxproj.filters
-/Krystal/Krystal.vcxproj.user
-/x64/Debug
+﻿/.vs
+/build
