@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#define local_to_file static
+#define internal static
 #define persisted static
 #define global_variable static
 
