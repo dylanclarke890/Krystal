@@ -20,6 +20,7 @@ struct Win32_WindowDimensions
 
 global_variable bool IsRunning;
 global_variable Win32_OffscreenBuffer BackBuffer;
+global_variable LPDIRECTSOUNDBUFFER SecondaryBuffer;
 
 #define X_INPUT_GET_STATE(name) DWORD WINAPI name(DWORD dwUserIndex, XINPUT_STATE *pState)
 typedef X_INPUT_GET_STATE(XInputGetStateDecl);
@@ -115,8 +116,7 @@ internal void Win32_InitDirectSound(HWND window, uint32 samplesPerSecond, uint32
     bufferDesc.dwBufferBytes = bufferSize;
     bufferDesc.lpwfxFormat = &waveFormat;
 
-    LPDIRECTSOUNDBUFFER secondaryBuffer;
-    if (SUCCEEDED(directSound->CreateSoundBuffer(&bufferDesc, &secondaryBuffer, 0)))
+    if (SUCCEEDED(directSound->CreateSoundBuffer(&bufferDesc, &SecondaryBuffer, 0)))
     {
       OutputDebugStringA("Secondary buffer was successfully created. \n");
     }
@@ -304,14 +304,24 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
 
     if (window)
     {
-      Win32_InitDirectSound(window, 48000, 48000 * sizeof(int16) * 2);
+      int samplesPerSecond = 48000;
+      int bytesPerSample = sizeof(int16) * 2;
+      int toneHertz = 256, toneVolume = 4000;
+      int runningSampleIndex = 0;
+      int squareWavePeriod = samplesPerSecond / toneHertz;
+      int halfSquareWavePeriod = squareWavePeriod / 2;
+      int bufferSize = samplesPerSecond * bytesPerSample;
+
+      Win32_InitDirectSound(window, samplesPerSecond, bufferSize);
+      SecondaryBuffer->Play(0, 0, DSBPLAY_LOOPING);
       HDC deviceContext = GetDC(window); // Specified CS_OWNDC so we don't need to release this.
       Win32_WindowDimensions dimensions = Win32_GetWindowDimensions(window);
       Win32_ResizeDIBSection(&BackBuffer, dimensions.Width, dimensions.Height);
 
-      IsRunning = true;
       int xOffset = 0, yOffset = 0;
+
       MSG msg;
+      IsRunning = true;
       while (IsRunning)
       {
         while (PeekMessageA(&msg, 0, 0, 0, PM_REMOVE))
@@ -356,6 +366,52 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
 
         RenderWeirdGradient(&BackBuffer, xOffset, yOffset);
         xOffset++;
+
+        // Direct sound output test
+        DWORD playCursor;
+        DWORD writeCursor;
+        if (SUCCEEDED(SecondaryBuffer->GetCurrentPosition(&playCursor, &writeCursor)))
+        {
+          DWORD byteToLock = runningSampleIndex * bytesPerSample % bufferSize;
+          DWORD bytesToWrite;
+          if (byteToLock > playCursor)
+          {
+            bytesToWrite = bufferSize - byteToLock;
+            bytesToWrite += playCursor;
+          }
+          else
+          {
+            bytesToWrite = playCursor - byteToLock;
+          }
+
+          VOID *region1;
+          DWORD region1Size;
+          VOID *region2;
+          DWORD region2Size;
+          if (SUCCEEDED(SecondaryBuffer->Lock(byteToLock, bytesToWrite, &region1, &region1Size, &region2, &region2Size, 0)))
+          {
+            // TODO: assert region size is valid
+            int16 *sampleOut = (int16 *)region1;
+            DWORD region1SampleCount = region1Size / bytesPerSample;
+            for (DWORD sampleIndex = 0; sampleIndex < region1SampleCount; sampleIndex++)
+            {
+              int16 sampleValue = (runningSampleIndex++ / halfSquareWavePeriod) % 2 ? toneVolume : -toneVolume;
+              *sampleOut++ = sampleValue;
+              *sampleOut++ = sampleValue;
+            }
+
+            sampleOut = (int16 *)region2;
+            DWORD region2SampleCount = region2Size / bytesPerSample;
+            for (DWORD sampleIndex = 0; sampleIndex < region2SampleCount; sampleIndex++)
+            {
+              int16 sampleValue = (runningSampleIndex++ / halfSquareWavePeriod) % 2 ? toneVolume : -toneVolume;
+              *sampleOut++ = sampleValue;
+              *sampleOut++ = sampleValue;
+            }
+
+            SecondaryBuffer->Unlock(region1, region1Size, region2, region2Size);
+          }
+        }
 
         Win32_WindowDimensions dimensions = Win32_GetWindowDimensions(window);
         Win32_UpdateWindow(&BackBuffer, dimensions, deviceContext);
