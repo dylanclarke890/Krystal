@@ -178,7 +178,7 @@ internal void Win32_ResizeDIBSection(Win32_OffscreenBuffer *buffer, int width, i
   buffer->Info.bmiHeader.biCompression = BI_RGB;
 
   int bitMapMemorySize = (width * height) * bytesPerPixel;
-  buffer->Memory = VirtualAlloc(0, bitMapMemorySize, MEM_COMMIT, PAGE_READWRITE);
+  buffer->Memory = VirtualAlloc(0, bitMapMemorySize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 
   // TODO: clear to black
 }
