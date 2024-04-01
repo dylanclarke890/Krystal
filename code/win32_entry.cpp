@@ -24,7 +24,7 @@ global_variable Win32_OffscreenBuffer BackBuffer;
 typedef X_INPUT_GET_STATE(XInputGetStateDecl);
 X_INPUT_GET_STATE(XInputGetStateStub)
 {
-  return 0;
+  return ERROR_DEVICE_NOT_CONNECTED;
 }
 global_variable XInputGetStateDecl *XInputGetState_ = XInputGetStateStub;
 #define XInputGetState XInputGetState_
@@ -33,14 +33,19 @@ global_variable XInputGetStateDecl *XInputGetState_ = XInputGetStateStub;
 typedef X_INPUT_SET_STATE(XInputSetStateDecl);
 X_INPUT_SET_STATE(XInputSetStateStub)
 {
-  return 0;
+  return ERROR_DEVICE_NOT_CONNECTED;
 }
 global_variable XInputSetStateDecl *XInputSetState_ = XInputSetStateStub;
 #define XInputSetState XInputSetState_
 
 internal void Win32_LoadXInput(void)
 {
-  HMODULE xInputLib = LoadLibraryA("xinput1_3.dll");
+  HMODULE xInputLib = LoadLibraryA("xinput1_4.dll");
+  if (!xInputLib)
+  {
+    xInputLib = LoadLibraryA("xinput1_3.dll");
+  }
+
   if (xInputLib)
   {
     XInputGetState = (XInputGetStateDecl *)GetProcAddress(xInputLib, "XInputGetState");
@@ -112,7 +117,7 @@ internal void Win32_UpdateWindow(Win32_OffscreenBuffer *buffer, Win32_WindowDime
       DIB_RGB_COLORS, SRCCOPY);
 }
 
-internal LRESULT Win32_WindowCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT Win32_WindowCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
 {
   LRESULT result = 0;
 
@@ -153,24 +158,34 @@ internal LRESULT Win32_WindowCallback(HWND window, UINT message, WPARAM wParam, 
     bool wasDown = ((lParam & (1 << 30))) != 0;
     bool isDown = ((lParam & (1 << 31))) == 0;
 
-    switch (vkCode)
+    if (wasDown != isDown)
     {
-    case 'W':
-    case 'A':
-    case 'S':
-    case 'D':
-    case 'Q':
-    case 'E':
-    case VK_LEFT:
-    case VK_RIGHT:
-    case VK_UP:
-    case VK_DOWN:
-    case VK_ESCAPE:
-    case VK_SPACE:
-      break;
+      switch (vkCode)
+      {
+      case 'W':
+      case 'A':
+      case 'S':
+      case 'D':
+      case 'Q':
+      case 'E':
+      case VK_LEFT:
+      case VK_RIGHT:
+      case VK_UP:
+      case VK_DOWN:
+      case VK_ESCAPE:
+      case VK_SPACE:
+        break;
+      case VK_F4:
+      {
+        bool altKeyWasDown = (lParam & (1 << 29)) != 0;
+        if (altKeyWasDown)
+        {
+          IsRunning = false;
+        }
+        break;
+      }
+      }
     }
-
-    break;
   }
   default:
   {
@@ -180,6 +195,17 @@ internal LRESULT Win32_WindowCallback(HWND window, UINT message, WPARAM wParam, 
   }
 
   return result;
+}
+
+void ErrorExit()
+{
+  LPVOID lpMsgBuf;
+  DWORD dw = GetLastError();
+
+  auto dwFlags = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS;
+  FormatMessageA(dwFlags, 0, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&lpMsgBuf, 0, 0);
+
+  OutputDebugStringA((LPSTR)lpMsgBuf);
 }
 
 int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int showCode)
@@ -259,12 +285,12 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
     }
     else
     {
-      // TODO: logging
+      ErrorExit();
     }
   }
   else
   {
-    // TODO: logging
+    ErrorExit();
   }
   return 0;
 }
