@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <xinput.h>
+#include <dsound.h>
 #include "types.h"
 
 struct Win32_OffscreenBuffer
@@ -43,6 +44,7 @@ internal void Win32_LoadXInput(void)
   HMODULE xInputLib = LoadLibraryA("xinput1_4.dll");
   if (!xInputLib)
   {
+    // TODO: logging
     xInputLib = LoadLibraryA("xinput1_3.dll");
   }
 
@@ -51,6 +53,81 @@ internal void Win32_LoadXInput(void)
     XInputGetState = (XInputGetStateDecl *)GetProcAddress(xInputLib, "XInputGetState");
     XInputSetState = (XInputSetStateDecl *)GetProcAddress(xInputLib, "XInputSetState");
   }
+  else
+  {
+    // TODO: logging
+  }
+}
+
+#define DIRECT_SOUND_CREATE(name) HRESULT WINAPI name(LPCGUID pcGuidDevice, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter)
+typedef DIRECT_SOUND_CREATE(DirectSoundCreateDecl);
+
+internal void Win32_InitDirectSound(HWND window, uint32 samplesPerSecond, uint32 bufferSize)
+{
+  HMODULE dSoundLib = LoadLibraryA("dsound.dll");
+  if (!dSoundLib)
+  {
+    return;
+  }
+
+  DirectSoundCreateDecl *DirectSoundCreate =
+      (DirectSoundCreateDecl *)GetProcAddress(dSoundLib, "DirectSoundCreate");
+
+  LPDIRECTSOUND directSound;
+  if (DirectSoundCreate && SUCCEEDED(DirectSoundCreate(0, &directSound, 0)))
+  {
+    WAVEFORMATEX waveFormat;
+    waveFormat.wFormatTag = WAVE_FORMAT_PCM;
+    waveFormat.nChannels = 2;
+    waveFormat.nSamplesPerSec = samplesPerSecond;
+    waveFormat.wBitsPerSample = 16;
+    waveFormat.nBlockAlign = (waveFormat.nChannels * waveFormat.wBitsPerSample) / 8;
+    waveFormat.nAvgBytesPerSec = waveFormat.nSamplesPerSec * waveFormat.nBlockAlign;
+    waveFormat.cbSize = 0;
+
+    if (SUCCEEDED(directSound->SetCooperativeLevel(window, DSSCL_PRIORITY)))
+    {
+      DSBUFFERDESC bufferDesc = {};
+      bufferDesc.dwSize = sizeof(bufferDesc);
+      bufferDesc.dwFlags = DSBCAPS_PRIMARYBUFFER;
+
+      LPDIRECTSOUNDBUFFER primaryBuffer;
+      if (SUCCEEDED(directSound->CreateSoundBuffer(&bufferDesc, &primaryBuffer, 0)))
+      {
+        OutputDebugStringA("Primary buffer was successfully created. \n");
+        if (SUCCEEDED(primaryBuffer->SetFormat(&waveFormat)))
+        {
+          OutputDebugStringA("Primary buffer format was set. \n");
+        }
+        else
+        {
+          // TODO: logging
+        }
+      }
+    }
+    else
+    {
+      // TODO: logging
+    }
+
+    DSBUFFERDESC bufferDesc = {};
+    bufferDesc.dwSize = sizeof(bufferDesc);
+    bufferDesc.dwBufferBytes = bufferSize;
+    bufferDesc.lpwfxFormat = &waveFormat;
+
+    LPDIRECTSOUNDBUFFER secondaryBuffer;
+    if (SUCCEEDED(directSound->CreateSoundBuffer(&bufferDesc, &secondaryBuffer, 0)))
+    {
+      OutputDebugStringA("Secondary buffer was successfully created. \n");
+    }
+  }
+  else
+  {
+    // TODO: logging
+  }
+
+  // Create a secondary buffer
+  // Start it playing
 }
 
 internal Win32_WindowDimensions Win32_GetWindowDimensions(HWND window)
@@ -227,6 +304,7 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
 
     if (window)
     {
+      Win32_InitDirectSound(window, 48000, 48000 * sizeof(int16) * 2);
       HDC deviceContext = GetDC(window); // Specified CS_OWNDC so we don't need to release this.
       Win32_WindowDimensions dimensions = Win32_GetWindowDimensions(window);
       Win32_ResizeDIBSection(&BackBuffer, dimensions.Width, dimensions.Height);
