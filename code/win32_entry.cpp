@@ -374,7 +374,11 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
         {
           DWORD byteToLock = runningSampleIndex * bytesPerSample % bufferSize;
           DWORD bytesToWrite;
-          if (byteToLock > playCursor)
+          if (byteToLock == playCursor)
+          {
+            bytesToWrite = bufferSize;
+          }
+          else if (byteToLock > playCursor)
           {
             bytesToWrite = bufferSize - byteToLock;
             bytesToWrite += playCursor;
