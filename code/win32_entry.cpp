@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <xinput.h>
 #include <dsound.h>
+#include <stdio.h>
 // TODO: remove dep on math.h
 #include <math.h>
 #include "types.h"
@@ -342,6 +343,11 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
 {
   Win32_LoadXInput();
 
+  LARGE_INTEGER performanceCountFrequencyResult;
+  QueryPerformanceFrequency(&performanceCountFrequencyResult);
+  int64 performanceCountFrequency = performanceCountFrequencyResult.QuadPart;
+  int64 lastCycleCount = __rdtsc();
+
   WNDCLASSA windowClass = {};
   windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
   windowClass.lpfnWndProc = Win32_WindowCallback;
@@ -376,10 +382,14 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
 
       int xOffset = 0, yOffset = 0;
 
-      MSG msg;
+      LARGE_INTEGER lastCounter;
+      QueryPerformanceCounter(&lastCounter);
+      uint64 lastCycleCount = __rdtsc();
+
       IsRunning = true;
       while (IsRunning)
       {
+        MSG msg;
         while (PeekMessageA(&msg, 0, 0, 0, PM_REMOVE))
         {
           TranslateMessage(&msg);
@@ -449,6 +459,22 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
 
         Win32_WindowDimensions dimensions = Win32_GetWindowDimensions(window);
         Win32_UpdateWindow(&BackBuffer, dimensions, deviceContext);
+
+        uint64 endCycleCount = __rdtsc();
+        LARGE_INTEGER endCounter;
+        QueryPerformanceCounter(&endCounter);
+
+        uint64 cyclesElapsed = endCycleCount - lastCycleCount;
+        int64 counterElapsed = (endCounter.QuadPart - lastCounter.QuadPart);
+        float32 msPerFrame = (float32)((1000.0f * (float32)counterElapsed) / (float32)performanceCountFrequency);
+        float32 fps = (float32)performanceCountFrequency / (float32)counterElapsed;
+        float32 mcpf = (float32)((float32)cyclesElapsed / (1000.0f * 1000.0f));
+
+        char buffer[256];
+        sprintf(buffer, "%.02fms/f, %.02ff/s, %.02fmc/f\n", msPerFrame, fps, mcpf);
+        OutputDebugStringA(buffer);
+        lastCounter = endCounter;
+        lastCycleCount = endCycleCount;
       }
     }
     else
