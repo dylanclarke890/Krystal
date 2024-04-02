@@ -1,10 +1,11 @@
+#include <stdio.h>
+#include "krystal.cpp"
+
 #include <windows.h>
 #include <xinput.h>
 #include <dsound.h>
-#include <stdio.h>
 // TODO: remove dep on math.h
 #include <math.h>
-#include "types.h"
 
 struct Win32_OffscreenBuffer
 {
@@ -196,24 +197,6 @@ internal Win32_WindowDimensions Win32_GetWindowDimensions(HWND window)
   return result;
 }
 
-internal void RenderWeirdGradient(Win32_OffscreenBuffer *buffer, int xOffset, int yOffset)
-{
-  uint8 *row = (uint8 *)buffer->Memory;
-
-  for (int y = 0; y < buffer->Height; y++)
-  {
-    uint32 *pixel = (uint32 *)row;
-    for (int x = 0; x < buffer->Width; x++)
-    {
-      uint8 blue = (uint8)(x + xOffset);
-      uint8 green = (uint8)(y + yOffset);
-      *pixel++ = (green << 8) | blue;
-    }
-
-    row += buffer->Pitch;
-  }
-}
-
 internal void Win32_ResizeDIBSection(Win32_OffscreenBuffer *buffer, int width, int height)
 {
   if (buffer->Memory)
@@ -380,8 +363,6 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
       Win32_WindowDimensions dimensions = Win32_GetWindowDimensions(window);
       Win32_ResizeDIBSection(&BackBuffer, dimensions.Width, dimensions.Height);
 
-      int xOffset = 0, yOffset = 0;
-
       LARGE_INTEGER lastCounter;
       QueryPerformanceCounter(&lastCounter);
       uint64 lastCycleCount = __rdtsc();
@@ -432,8 +413,12 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
           }
         }
 
-        RenderWeirdGradient(&BackBuffer, xOffset, yOffset);
-        xOffset++;
+        Game_OffscreenBuffer buffer = {};
+        buffer.Height = BackBuffer.Height;
+        buffer.Width = BackBuffer.Width;
+        buffer.Memory = BackBuffer.Memory;
+        buffer.Pitch = BackBuffer.Pitch;
+        GameUpdateAndRender(&buffer);
 
         DWORD playCursor;
         DWORD writeCursor;
@@ -441,9 +426,8 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
         {
           DWORD byteToLock = (soundOutput.RunningSampleIndex * soundOutput.BytesPerSample) % soundOutput.SecondaryBufferSize;
           DWORD targetCursor = (playCursor + (soundOutput.LatencySampleCount * soundOutput.BytesPerSample)) % soundOutput.SecondaryBufferSize;
-
           DWORD bytesToWrite;
-          // TODO: introduce a lower latency offset when playing from zero. (address when doing sound effects)
+
           if (byteToLock > targetCursor)
           {
             bytesToWrite = soundOutput.SecondaryBufferSize - byteToLock;
@@ -470,9 +454,11 @@ int WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR commandLine, int s
         float32 fps = (float32)performanceCountFrequency / (float32)counterElapsed;
         float32 mcpf = (float32)((float32)cyclesElapsed / (1000.0f * 1000.0f));
 
+#if 0
         char buffer[256];
         sprintf(buffer, "%.02fms/f, %.02ff/s, %.02fmc/f\n", msPerFrame, fps, mcpf);
         OutputDebugStringA(buffer);
+#endif
         lastCounter = endCounter;
         lastCycleCount = endCycleCount;
       }
