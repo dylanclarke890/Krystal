@@ -1,5 +1,5 @@
 @echo off
-mkdir .\build
+IF NOT EXIST .\build mkdir .\build
 pushd .\build
 
 :: Compiler Flags:
@@ -8,6 +8,6 @@ pushd .\build
 :: -Wall - compile with optimisations turned on
 :: -D compile-time defines
 
-cl -Zi -FC -DKRYSTAL_WIN32=1 ..\code\win32_entry.cpp user32.lib Gdi32.lib
+cl -Zi -FC -DKRYSTAL_WIN32=1 ..\code\win32_handmade.cpp user32.lib Gdi32.lib
 
 popd
