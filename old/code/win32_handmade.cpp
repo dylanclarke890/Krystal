@@ -524,7 +524,6 @@ WinMain(HINSTANCE Instance,
   WindowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
   WindowClass.lpfnWndProc = Win32MainWindowCallback;
   WindowClass.hInstance = Instance;
-  //    WindowClass.hIcon;
   WindowClass.lpszClassName = "HandmadeHeroWindowClass";
 
   if (RegisterClassA(&WindowClass))
