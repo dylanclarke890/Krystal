@@ -2,6 +2,8 @@
 IF NOT EXIST .\build mkdir .\build
 pushd .\build
 
+:: TODO: check out Chandler Carruth - optimisation guy on LLVM
+
 :: Compiler Flags:
 :: |  FLAG  | DESCRIPTION
 :: | D      | compiler level #defines
