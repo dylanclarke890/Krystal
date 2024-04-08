@@ -11,11 +11,10 @@ int CALLBACK WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR cmdLine, 
   {
     while (PeekMessageA(&msg, NULL, 0, 0, PM_REMOVE) > 0)
     {
-      if (msg.message == WM_QUIT)
-        isRunning = false;
-
       TranslateMessage(&msg);
       DispatchMessageA(&msg);
+      if (msg.message == WM_QUIT)
+        isRunning = false;
     }
   }
 
