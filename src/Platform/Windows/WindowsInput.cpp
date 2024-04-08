@@ -1,4 +1,4 @@
-#include "../Core/Input.h"
+#include "WindowsInput.h"
 
 namespace Krys
 {
