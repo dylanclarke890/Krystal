@@ -1,34 +1,9 @@
 #include <windowsx.h>
 #include "WindowsWindow.h"
+#include "Events/Application.h"
 
 namespace Krys
 {
-  template <typename T>
-  struct Vector2D
-  {
-    Vector2D(T x, T y) : X(x), Y(y) {}
-
-    T X;
-    T Y;
-  };
-
-  struct MouseButtonState
-  {
-    bool IsDown;
-    uint32 DownDuration;
-  };
-
-  struct MouseState
-  {
-    Vector2D<int> Position;
-    Vector2D<int> DeltaPosition;
-    bool IsShiftDown;
-    bool IsCtrlDown;
-    MouseButtonState LeftButtonState;
-    MouseButtonState MiddleButtonState;
-    MouseButtonState RightButtonState;
-  };
-
   WindowsWindow::WindowsWindow(char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd)
       : Window(name), cmdLine(cmdLine), nShowCmd(nShowCmd)
   {
@@ -88,78 +63,51 @@ namespace Krys
   LRESULT CALLBACK WindowsWindow::WindowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
   {
     LRESULT result = 0;
-
-    // For mouse clicks, this is the current position of the mouse relative to the top left
-    // int xPos = GET_X_LPARAM(lParam);
-    // int yPos = GET_Y_LPARAM(lParam);
-
-    // wParam (bitwise flags)
-    // MK_CONTROL	The CTRL key is down.
-    // MK_LBUTTON The left mouse button is down.
-    // MK_MBUTTON The middle mouse button is down.
-    // MK_RBUTTON The right mouse button is down.
-    // MK_SHIFT The SHIFT key is down.
-    // MK_XBUTTON1 The XBUTTON1 button is down.
-    // MK_XBUTTON2 The XBUTTON2 button is down.
-
     switch (message)
     {
-      // #region Input
+    // #region Input
     case WM_LBUTTONDOWN:
+    case WM_RBUTTONDOWN:
+    case WM_MBUTTONDOWN:
+    case WM_XBUTTONDOWN:
     {
-      OutputDebugStringA("Left button down\n");
-
+      MouseDownEvent event;
+      GetMouseEventData(&event, wParam, lParam);
+      if (eventCallback)
+        eventCallback(ctx, event);
       break;
     }
     case WM_LBUTTONUP:
-    {
-      OutputDebugStringA("Left button up\n");
-      break;
-    }
-    // NOTE: The first click comes through as WM_LBUTTONDOWN, the second as this
-    case WM_LBUTTONDBLCLK:
-    {
-      OutputDebugStringA("Left button double clicked\n");
-      break;
-    }
-    case WM_MBUTTONDOWN:
-    {
-      OutputDebugStringA("Middle button down\n");
-      break;
-    }
-    case WM_MBUTTONUP:
-    {
-      OutputDebugStringA("Middle button up\n");
-      break;
-    }
-    case WM_RBUTTONDOWN:
-    {
-      OutputDebugStringA("Right button down\n");
-      break;
-    }
     case WM_RBUTTONUP:
-    {
-      OutputDebugStringA("Right button up\n");
-      break;
-    }
-    case WM_XBUTTONDOWN:
-    {
-      OutputDebugStringA("XBUTTON1 or XBUTTON2 down\n");
-      break;
-    }
+    case WM_MBUTTONUP:
     case WM_XBUTTONUP:
     {
-      OutputDebugStringA("XBUTTON1 or XBUTTON2 up\n");
+      MouseUpEvent event;
+      GetMouseEventData(&event, wParam, lParam);
+      if (eventCallback)
+        eventCallback(ctx, event);
+      break;
+    }
+    // TODO: does windows send a double click event if two separate x buttons are clicked?
+    case WM_LBUTTONDBLCLK:
+    case WM_RBUTTONDBLCLK:
+    case WM_MBUTTONDBLCLK:
+    case WM_XBUTTONDBLCLK:
+    {
+      // TODO: double click event
+      MouseDownEvent event;
+      GetMouseEventData(&event, wParam, lParam);
+      if (eventCallback)
+        eventCallback(ctx, event);
       break;
     }
       // #endregion Input
+
+    // #region Quitting
     case WM_CLOSE:
     {
       if (MessageBoxA(window, "Are you sure you want to exit?", "Quit?", MB_OKCANCEL) == IDOK)
-      {
         DestroyWindow(hWnd);
-        // TODO: destroy window??
-      }
       break;
     }
     case WM_DESTROY:
@@ -167,6 +115,8 @@ namespace Krys
       PostQuitMessage(0);
       break;
     }
+      // #endregion Quitting
+
     case WM_SIZE:
     {
       // int width = LOWORD(lParam);
@@ -188,16 +138,57 @@ namespace Krys
       EndPaint(window, &ps);
       break;
     }
-    default:
-      result = DefWindowProcA(window, message, wParam, lParam);
-      break;
+
+    default: return DefWindowProcA(window, message, wParam, lParam);
     }
 
     return result;
   }
 
+  void WindowsWindow::GetMouseEventData(MouseEvent *event, WPARAM wParam, LPARAM lParam)
+  {
+    event->Shift = wParam & MK_SHIFT;
+    event->Ctrl = wParam & MK_CONTROL;
+
+    uint32 buttons = 0;
+    if (wParam & MK_LBUTTON)
+      buttons |= MouseButton::Primary;
+    if (wParam & MK_RBUTTON)
+      buttons |= MouseButton::Secondary;
+    if (wParam & MK_MBUTTON)
+      buttons |= MouseButton::Auxiliary;
+    if (wParam & MK_XBUTTON1)
+      buttons |= MouseButton::Fourth;
+    if (wParam & MK_XBUTTON2)
+      buttons |= MouseButton::Fifth;
+    event->Buttons = buttons;
+
+    event->X = GET_X_LPARAM(lParam);
+    event->Y = GET_Y_LPARAM(lParam);
+  }
+
   void WindowsWindow::Show(bool visible)
   {
     ShowWindow(hWnd, visible ? SW_SHOW : SW_HIDE);
+  }
+
+  void WindowsWindow::BeginFrame()
+  {
+    MSG msg = {};
+    while (PeekMessageA(&msg, NULL, 0, 0, PM_REMOVE) > 0)
+    {
+      TranslateMessage(&msg);
+      DispatchMessageA(&msg);
+
+      if (msg.message == WM_QUIT && eventCallback)
+      {
+        ShutdownEvent event;
+        eventCallback(ctx, event);
+      }
+    }
+  }
+
+  void WindowsWindow::EndFrame()
+  {
   }
 }
