@@ -2,6 +2,8 @@
 
 #include "Window.h"
 #include "Events/Events.h"
+#include "Events/ApplicationEvent.h"
+#include "Events/MouseEvent.h"
 
 namespace Krys
 {
@@ -14,6 +16,10 @@ namespace Krys
   public:
     Application(Window *window);
     void Run();
-    bool OnEvent(Event &event);
+
+  private:
+    void OnEvent(Event &event);
+    bool OnMouseEvent(MouseEvent &event);
+    bool OnShutdownEvent(ShutdownEvent &event);
   };
 }

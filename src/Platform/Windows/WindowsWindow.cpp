@@ -1,6 +1,6 @@
 #include <windowsx.h>
 #include "WindowsWindow.h"
-#include "Events/Application.h"
+#include "Events/ApplicationEvent.h"
 
 namespace Krys
 {
@@ -74,7 +74,7 @@ namespace Krys
       MouseDownEvent event;
       GetMouseEventData(&event, wParam, lParam);
       if (eventCallback)
-        eventCallback(ctx, event);
+        eventCallback(event);
       break;
     }
     case WM_LBUTTONUP:
@@ -85,10 +85,11 @@ namespace Krys
       MouseUpEvent event;
       GetMouseEventData(&event, wParam, lParam);
       if (eventCallback)
-        eventCallback(ctx, event);
+        eventCallback(event);
       break;
     }
     // TODO: does windows send a double click event if two separate x buttons are clicked?
+    // TODO: double click event
     case WM_LBUTTONDBLCLK:
     case WM_RBUTTONDBLCLK:
     case WM_MBUTTONDBLCLK:
@@ -98,7 +99,7 @@ namespace Krys
       MouseDownEvent event;
       GetMouseEventData(&event, wParam, lParam);
       if (eventCallback)
-        eventCallback(ctx, event);
+        eventCallback(event);
       break;
     }
       // #endregion Input
@@ -183,7 +184,7 @@ namespace Krys
       if (msg.message == WM_QUIT && eventCallback)
       {
         ShutdownEvent event;
-        eventCallback(ctx, event);
+        eventCallback(event);
       }
     }
   }

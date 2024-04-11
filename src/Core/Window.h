@@ -2,10 +2,12 @@
 
 #include "Krystal.h"
 #include "Events/Events.h"
+#include <functional>
 
 namespace Krys
 {
-  typedef bool (*WindowEventCallback)(void *, Event &);
+  // TODO: can we do something similar without std::function?
+  using EventCallbackFn = std::function<void(Event &)>;
 
   class Window
   {
@@ -14,7 +16,7 @@ namespace Krys
 
   protected:
     void *ctx = nullptr;
-    WindowEventCallback eventCallback;
+    EventCallbackFn eventCallback;
 
   public:
     Window() = delete;
@@ -28,9 +30,8 @@ namespace Krys
     virtual void BeginFrame() = 0;
     virtual void EndFrame() = 0;
 
-    void SetEventCallback(void *context, WindowEventCallback callback)
+    void SetEventCallback(EventCallbackFn callback)
     {
-      ctx = context;
       eventCallback = callback;
     }
   };

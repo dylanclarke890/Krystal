@@ -5,11 +5,6 @@
 
 namespace Krys
 {
-  static bool OnAppEvent(void *context, Event &event)
-  {
-    return static_cast<Application *>(context)->OnEvent(event);
-  }
-
   Application::Application(Window *window)
       : window(window)
   {
@@ -18,7 +13,7 @@ namespace Krys
   void Application::Run()
   {
     window->Show(true);
-    window->SetEventCallback(this, &OnAppEvent);
+    window->SetEventCallback(KRYS_BIND_EVENT_FN(Application::OnEvent));
 
     isRunning = true;
     while (isRunning)
@@ -28,14 +23,28 @@ namespace Krys
     }
   }
 
-  bool Application::OnEvent(Event &event)
+  void Application::OnEvent(Event &event)
   {
-    if (event.GetEventType() == EventType::Shutdown)
-      isRunning = false;
+    EventDispatcher dispatcher(event);
+    dispatcher.Dispatch<MouseDownEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseEvent));
+    dispatcher.Dispatch<MouseUpEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseEvent));
+    dispatcher.Dispatch<ShutdownEvent>(KRYS_BIND_EVENT_FN(Application::OnShutdownEvent));
+  }
 
+  bool Application::OnMouseEvent(MouseEvent &event)
+  {
     OutputDebugStringA(event.GetName());
     OutputDebugStringA("\n");
 
     return false;
+  }
+
+  bool Application::OnShutdownEvent(ShutdownEvent &event)
+  {
+    isRunning = false;
+    OutputDebugStringA(event.GetName());
+    OutputDebugStringA("\n");
+
+    return true;
   }
 }

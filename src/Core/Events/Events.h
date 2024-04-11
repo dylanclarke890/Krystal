@@ -9,6 +9,7 @@ enum class EventType
 {
   NoType,
   Shutdown,
+  Mouse,
   MouseDown,
   MouseUp,
 };
