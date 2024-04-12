@@ -66,6 +66,7 @@ namespace Krys
     switch (message)
     {
     // #region Input
+    // TODO: Do we need to differentiate the button that initiated the click??
     case WM_LBUTTONDOWN:
     case WM_RBUTTONDOWN:
     case WM_MBUTTONDOWN:
@@ -77,6 +78,7 @@ namespace Krys
         eventCallback(event);
       break;
     }
+    // TODO: Do we need to differentiate the button that initiated the click??
     case WM_LBUTTONUP:
     case WM_RBUTTONUP:
     case WM_MBUTTONUP:
@@ -90,6 +92,7 @@ namespace Krys
     }
     // TODO: does windows send a double click event if two separate x buttons are clicked?
     // TODO: double click event
+    // TODO: Do we need to differentiate the button that initiated the click??
     case WM_LBUTTONDBLCLK:
     case WM_RBUTTONDBLCLK:
     case WM_MBUTTONDBLCLK:
@@ -166,6 +169,8 @@ namespace Krys
 
     event->X = GET_X_LPARAM(lParam);
     event->Y = GET_Y_LPARAM(lParam);
+
+    // TODO: deltaX and deltaY?
   }
 
   void WindowsWindow::Show(bool visible)

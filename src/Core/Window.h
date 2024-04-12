@@ -15,13 +15,12 @@ namespace Krys
     char *name;
 
   protected:
-    void *ctx = nullptr;
     EventCallbackFn eventCallback;
 
   public:
     Window() = delete;
-    virtual ~Window() = default;
     Window(char *name) : name(name) {}
+    virtual ~Window() = default;
 
     char *GetName() const { return name; }
 
