@@ -15,13 +15,15 @@ pushd .\build
 :: | wd     | disable warnings for a specific warning code
 :: | FC     | compile-time errors show full path to source code
 :: | nologo | turn off compiler name banner
+:: | MP     | enable multi-processing compilation
 
-set compiler_flags=-nologo -Zi -Oi -FC -W4 -WX
+set compiler_flags=-nologo -Zi -Oi -FC -W4 -WX -MP
 set defines=-DKRYSTAL_WINDOWS=1
 set disable_warnings=-wd4100
 set include_dirs=/I "..\src\Core" /I "..\src\Platform\Windows"
 set entry_point=..\src\Platform\Windows\WindowsEntry.cpp
 set additional_translation_units=^
+..\src\Platform\Windows\WindowsInput.cpp ^
 ..\src\Platform\Windows\WindowsWindow.cpp ^
 ..\src\Core\Application.cpp
 set linked_libs=user32.lib Gdi32.lib
