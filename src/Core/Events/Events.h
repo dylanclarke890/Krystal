@@ -3,7 +3,6 @@
 
 namespace Krys
 {
-  // TODO: events currently get handled as they come in, move to a queue system.
   enum class EventType
   {
     NoType,
@@ -63,6 +62,7 @@ namespace Krys
     EventDispatcher(Event &event) : event(event) {}
 
     template <typename T, typename F> // F will be deduced by the compiler
+    // TODO: events currently get handled as they come in, move to a queue system.
     bool Dispatch(const F &func)
     {
       if (!event.Handled && event.GetEventType() == T::GetStaticType())

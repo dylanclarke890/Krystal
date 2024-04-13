@@ -17,8 +17,6 @@ namespace Krys
     {
       window->BeginFrame();
 
-      // TODO: do stuff here
-
       window->EndFrame();
     }
   }

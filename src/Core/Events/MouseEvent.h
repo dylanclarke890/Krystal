@@ -10,6 +10,8 @@ namespace Krys
     int X, Y;
     bool Ctrl, Shift, Alt;
     uint32 Buttons;
+    // TODO: deltaX and deltaY?
+    // TODO: double click?
 
     EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
   };

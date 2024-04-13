@@ -69,7 +69,8 @@ namespace Krys
     LRESULT result = 0;
     switch (message)
     {
-    // #region Input
+    // TODO: should we always capture mouse on mouse down until mouse up?
+    // #region Mouse input
     case WM_LBUTTONDOWN:
     {
       MouseButtonPressedEvent event(MouseButton::Left);
@@ -132,7 +133,6 @@ namespace Krys
       KRYS_EVENT_CALLBACK();
       break;
     }
-    // TODO: double click event
     case WM_LBUTTONDBLCLK:
     case WM_RBUTTONDBLCLK:
     case WM_MBUTTONDBLCLK:
@@ -140,7 +140,7 @@ namespace Krys
     {
       return DefWindowProc(window, message, wParam, lParam);
     }
-      // #endregion Input
+      // #endregion  Mouse input
 
     // #region Quitting
     case WM_CLOSE:
@@ -187,7 +187,6 @@ namespace Krys
 
   void WindowsWindow::GetMouseEventData(MouseEvent *event, WPARAM wParam, LPARAM lParam)
   {
-    // TODO: deltaX and deltaY?
     event->X = GET_X_LPARAM(lParam);
     event->Y = GET_Y_LPARAM(lParam);
 
@@ -217,7 +216,7 @@ namespace Krys
 
   void WindowsWindow::BeginFrame()
   {
-    MSG msg = {};
+    MSG msg;
     while (PeekMessageA(&msg, NULL, 0, 0, PM_REMOVE) > 0)
     {
       TranslateMessage(&msg);
