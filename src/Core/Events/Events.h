@@ -1,33 +1,28 @@
 #pragma once
+
 #include "Krystal.h"
+#include "Input/MouseButtons.h"
 
 namespace Krys
 {
   enum class EventType
   {
-    NoType,
+    None,
     Shutdown,
     MousePressed,
     MouseReleased,
-    MouseMoved
+    MouseMoved,
+    KeyPressed,
+    KeyReleased
   };
 
   enum EventCategory
   {
-    NoCategory,
+    EventCategoryNone,
     EventCategoryApp = BIT(0),
     EventCategoryInput = BIT(1),
-    EventCategoryMouse = BIT(2)
-  };
-
-  enum MouseButton
-  {
-    NoButton,
-    Left = BIT(0),
-    Right = BIT(1),
-    Middle = BIT(2),
-    Thumb1 = BIT(3),
-    Thumb2 = BIT(4)
+    EventCategoryMouse = BIT(2),
+    EventCategoryKeyboard = BIT(3),
   };
 
 #define EVENT_CLASS_TYPE(type)                                                \

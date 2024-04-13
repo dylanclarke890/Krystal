@@ -1,12 +1,99 @@
+#include <vector> // TODO: implement own map or vector class
 #include <windowsx.h>
+
 #include "WindowsWindow.h"
 #include "Events/ApplicationEvent.h"
-
+#include "Input/MouseButtons.h"
+#include "Input/KeyCodes.h"
 namespace Krys
 {
+  static std::vector<KeyCode> keyMap(256, KeyCode::None);
+
+  static void InitKeyCodes()
+  {
+    // Character keys
+    keyMap['A'] = KeyCode::A;
+    keyMap['B'] = KeyCode::B;
+    keyMap['C'] = KeyCode::C;
+    keyMap['D'] = KeyCode::D;
+    keyMap['E'] = KeyCode::E;
+    keyMap['F'] = KeyCode::F;
+    keyMap['G'] = KeyCode::G;
+    keyMap['H'] = KeyCode::H;
+    keyMap['I'] = KeyCode::I;
+    keyMap['J'] = KeyCode::J;
+    keyMap['K'] = KeyCode::K;
+    keyMap['L'] = KeyCode::L;
+    keyMap['M'] = KeyCode::M;
+    keyMap['N'] = KeyCode::N;
+    keyMap['O'] = KeyCode::O;
+    keyMap['P'] = KeyCode::P;
+    keyMap['Q'] = KeyCode::Q;
+    keyMap['R'] = KeyCode::R;
+    keyMap['S'] = KeyCode::S;
+    keyMap['T'] = KeyCode::T;
+    keyMap['U'] = KeyCode::U;
+    keyMap['V'] = KeyCode::V;
+    keyMap['W'] = KeyCode::W;
+    keyMap['X'] = KeyCode::X;
+    keyMap['Y'] = KeyCode::Y;
+    keyMap['Z'] = KeyCode::Z;
+
+    // Num keys
+    keyMap['0'] = KeyCode::Num0;
+    keyMap['1'] = KeyCode::Num1;
+    keyMap['2'] = KeyCode::Num2;
+    keyMap['3'] = KeyCode::Num3;
+    keyMap['4'] = KeyCode::Num4;
+    keyMap['5'] = KeyCode::Num5;
+    keyMap['6'] = KeyCode::Num6;
+    keyMap['7'] = KeyCode::Num7;
+    keyMap['8'] = KeyCode::Num8;
+    keyMap['9'] = KeyCode::Num9;
+
+    // Modifier keys
+    keyMap[VK_SHIFT] = KeyCode::LeftShift;
+    keyMap[VK_LSHIFT] = KeyCode::LeftShift;
+    keyMap[VK_RSHIFT] = KeyCode::RightShift;
+    keyMap[VK_CONTROL] = KeyCode::LeftControl;
+    keyMap[VK_LCONTROL] = KeyCode::LeftControl;
+    keyMap[VK_RCONTROL] = KeyCode::RightControl;
+    keyMap[VK_MENU] = KeyCode::LeftAlt;
+    keyMap[VK_LMENU] = KeyCode::LeftAlt;
+    keyMap[VK_RMENU] = KeyCode::RightAlt;
+
+    // System keys
+    keyMap[VK_SPACE] = KeyCode::Space;
+    keyMap[VK_RETURN] = KeyCode::Enter;
+    keyMap[VK_ESCAPE] = KeyCode::Escape;
+    keyMap[VK_BACK] = KeyCode::Backspace;
+    keyMap[VK_TAB] = KeyCode::Tab;
+
+    // Arrow keys
+    keyMap[VK_LEFT] = KeyCode::LeftArrow;
+    keyMap[VK_RIGHT] = KeyCode::RightArrow;
+    keyMap[VK_UP] = KeyCode::UpArrow;
+    keyMap[VK_DOWN] = KeyCode::DownArrow;
+
+    // Function keys
+    keyMap[VK_F1] = KeyCode::F1;
+    keyMap[VK_F2] = KeyCode::F2;
+    keyMap[VK_F3] = KeyCode::F3;
+    keyMap[VK_F4] = KeyCode::F4;
+    keyMap[VK_F5] = KeyCode::F5;
+    keyMap[VK_F6] = KeyCode::F6;
+    keyMap[VK_F7] = KeyCode::F7;
+    keyMap[VK_F8] = KeyCode::F8;
+    keyMap[VK_F9] = KeyCode::F9;
+    keyMap[VK_F10] = KeyCode::F10;
+    keyMap[VK_F11] = KeyCode::F11;
+    keyMap[VK_F12] = KeyCode::F12;
+  }
+
   WindowsWindow::WindowsWindow(char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd)
       : Window(name), cmdLine(cmdLine), nShowCmd(nShowCmd)
   {
+    InitKeyCodes();
     WNDCLASSA windowClass = {};
     windowClass.style = CS_HREDRAW | CS_VREDRAW;
     windowClass.lpfnWndProc = &WindowsWindow::StaticWindowProc;
@@ -69,7 +156,7 @@ namespace Krys
     LRESULT result = 0;
     switch (message)
     {
-    // TODO: should we always capture mouse on mouse down until mouse up?
+    // TODO: should we always capture mouse on mouse down until mouse up? we currently don't.
     // #region Mouse input
     case WM_LBUTTONDOWN:
     {
@@ -142,6 +229,58 @@ namespace Krys
     }
       // #endregion  Mouse input
 
+    // #region Keyboard input
+    case WM_KEYUP:
+    case WM_KEYDOWN:
+    case WM_SYSKEYUP:
+    case WM_SYSKEYDOWN:
+    {
+      // Unused data:
+      // KF_DLGMODE -  Dialog mode flag, indicates whether a dialog box is active.
+      // KF_MENUMODE - Menu mode flag, indicates whether a menu is active.
+      // WORD repeatCount = LOWORD(lParam); // repeat count, > 0 if several keydown messages was combined into one message
+      WORD keyFlags = HIWORD(lParam);
+      bool isSysKeyMessage = (keyFlags & KF_ALTDOWN);
+
+      bool isExtendedKey = (keyFlags & KF_EXTENDED); // extended-key flag, 1 if scancode has 0xE0 prefix
+      WORD scanCode = LOBYTE(keyFlags);
+      if (isExtendedKey)
+        scanCode = MAKEWORD(scanCode, 0xE0);
+      WORD vkCode = LOWORD(wParam);
+      switch (vkCode)
+      {
+      case VK_SHIFT:   // converts to VK_LSHIFT or VK_RSHIFT
+      case VK_CONTROL: // converts to VK_LCONTROL or VK_RCONTROL
+      case VK_MENU:    // converts to VK_LMENU or VK_RMENU
+        vkCode = LOWORD(MapVirtualKeyA(scanCode, MAPVK_VSC_TO_VK_EX));
+        break;
+      default:
+        break;
+      }
+
+      bool isKeyUpMessage = (keyFlags & KF_UP);
+      if (isKeyUpMessage)
+      {
+        KeyReleasedEvent event;
+        event.Alt = isSysKeyMessage;
+        GetKeyEventData(&event, vkCode);
+        KRYS_EVENT_CALLBACK();
+      }
+      else
+      {
+        KeyPressedEvent event;
+        event.Alt = isSysKeyMessage;
+        event.Repeat = (keyFlags & KF_REPEAT); // previous key-state flag, 1 on autorepeat
+        GetKeyEventData(&event, vkCode);
+        KRYS_EVENT_CALLBACK();
+      }
+
+      if (isSysKeyMessage) // OS also needs to process, otherwise cmds like ALT+TAB won't work
+        return DefWindowProcA(window, message, wParam, lParam);
+      break;
+    }
+    // #endregion Keyboard input
+
     // #region Quitting
     case WM_CLOSE:
     {
@@ -195,7 +334,7 @@ namespace Krys
     event->Ctrl = keysDown & MK_CONTROL;
     event->Alt = GetKeyState(VK_MENU) < 0;
 
-    uint32 buttons = 0;
+    uint32 buttons = MouseButton::MouseButtonNone;
     if (keysDown & MK_LBUTTON)
       buttons |= MouseButton::Left;
     if (keysDown & MK_RBUTTON)
@@ -207,6 +346,13 @@ namespace Krys
     if (keysDown & MK_XBUTTON2)
       buttons |= MouseButton::Thumb2;
     event->Buttons = buttons;
+  }
+
+  void WindowsWindow::GetKeyEventData(KeyEvent *event, WORD vkCode)
+  {
+    event->Shift = GetKeyState(VK_SHIFT) < 0;
+    event->Ctrl = GetKeyState(VK_CONTROL) < 0;
+    event->Key = keyMap[vkCode];
   }
 
   void WindowsWindow::Show(bool visible)

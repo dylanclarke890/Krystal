@@ -27,7 +27,7 @@ namespace Krys
   {
   public:
     MouseButtonEvent(MouseButton button) : Button(button) {}
-    int Button;
+    MouseButton Button;
   };
 
   class MouseButtonPressedEvent : public MouseButtonEvent

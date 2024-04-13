@@ -4,6 +4,7 @@
 #include "Events/Events.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/MouseEvent.h"
+#include "Events/KeyEvent.h"
 
 namespace Krys
 {
@@ -20,6 +21,7 @@ namespace Krys
   private:
     void OnEvent(Event &event);
     bool OnMouseButtonEvent(MouseButtonEvent &event);
+    bool OnKeyEvent(KeyEvent &event);
     bool OnShutdownEvent(ShutdownEvent &event);
   };
 }

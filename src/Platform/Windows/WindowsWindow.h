@@ -2,6 +2,7 @@
 #include <windows.h>
 #include "Window.h"
 #include "Events/MouseEvent.h"
+#include "Events/KeyEvent.h"
 
 namespace Krys
 {
@@ -21,6 +22,8 @@ namespace Krys
   private:
     static LRESULT CALLBACK StaticWindowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
     LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
-    void GetMouseEventData(MouseEvent *event, WPARAM wParam, LPARAM lParam);
+
+    static void GetMouseEventData(MouseEvent *event, WPARAM wParam, LPARAM lParam);
+    void GetKeyEventData(KeyEvent *event, WORD vkCode);
   };
 }

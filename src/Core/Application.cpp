@@ -1,8 +1,10 @@
 #pragma once
 
 #include <windows.h>
+#include <string> // TODO: temp so we can use std::to_string
 #include "Application.h"
-
+#include "Input/MouseButtons.h"
+#include "Input/KeyCodes.h"
 namespace Krys
 {
   Application::Application(Window *window) : window(window) {}
@@ -28,6 +30,8 @@ namespace Krys
 
     dispatcher.Dispatch<MouseButtonReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
     dispatcher.Dispatch<MouseButtonPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
+    dispatcher.Dispatch<KeyPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
+    dispatcher.Dispatch<KeyReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
     dispatcher.Dispatch<ShutdownEvent>(KRYS_BIND_EVENT_FN(Application::OnShutdownEvent));
   }
 
@@ -83,6 +87,17 @@ namespace Krys
       OutputDebugStringA("Thumb2 button was down");
       OutputDebugStringA("\n");
     }
+
+    return false;
+  }
+
+  bool Application::OnKeyEvent(KeyEvent &event)
+  {
+    OutputDebugStringA(event.GetName());
+    OutputDebugStringA("\n");
+
+    OutputDebugStringA(std::to_string((int)event.Key).c_str());
+    OutputDebugStringA("\n");
 
     return false;
   }
