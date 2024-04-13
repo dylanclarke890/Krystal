@@ -65,11 +65,12 @@ namespace Krys
     template <typename T, typename F> // F will be deduced by the compiler
     bool Dispatch(const F &func)
     {
-      if (event.GetEventType() == T::GetStaticType())
+      if (!event.Handled && event.GetEventType() == T::GetStaticType())
       {
-        event.Handled |= func(static_cast<T &>(event));
+        event.Handled = func(static_cast<T &>(event));
         return true;
       }
+      
       return false;
     }
   };
