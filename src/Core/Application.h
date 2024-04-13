@@ -12,7 +12,7 @@ namespace Krys
   {
   private:
     Window *window;
-    bool isRunning;
+    bool IsRunning;
 
   public:
     Application(Window *window);

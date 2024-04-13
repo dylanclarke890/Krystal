@@ -14,8 +14,8 @@ namespace Krys
     window->SetEventCallback(KRYS_BIND_EVENT_FN(Application::OnEvent));
     window->Show(true);
 
-    isRunning = true;
-    while (isRunning)
+    IsRunning = true;
+    while (IsRunning)
     {
       window->BeginFrame();
 
@@ -27,7 +27,6 @@ namespace Krys
   void Application::OnEvent(Event &event)
   {
     EventDispatcher dispatcher(event);
-
     dispatcher.Dispatch<MouseButtonReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
     dispatcher.Dispatch<MouseButtonPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
     dispatcher.Dispatch<KeyPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
@@ -104,7 +103,7 @@ namespace Krys
 
   bool Application::OnShutdownEvent(ShutdownEvent &event)
   {
-    isRunning = false;
+    IsRunning = false;
     OutputDebugStringA(event.GetName());
     OutputDebugStringA("\n");
 
