@@ -47,3 +47,5 @@ set /A "durationSecs=%endSecs%-%startSecs%"
 echo Compilation finished at %endTime% (%durationSecs%s)
 
 popd
+
+exit /b %ERRORLEVEL%

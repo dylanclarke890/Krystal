@@ -19,8 +19,7 @@ namespace Krys
 
   private:
     void OnEvent(Event &event);
-    bool OnMouseDownEvent(MouseDownEvent &event);
-    bool OnMouseUpEvent(MouseUpEvent &event);
+    bool OnMouseButtonEvent(MouseButtonEvent &event);
     bool OnShutdownEvent(ShutdownEvent &event);
   };
 }

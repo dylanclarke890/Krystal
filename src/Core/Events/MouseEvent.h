@@ -2,27 +2,43 @@
 
 #include "Events/Events.h"
 
-class MouseEvent : public Event
+namespace Krys
 {
-public:
-  int X, Y;
-  bool Ctrl, Shift;
-  uint32 Buttons;
+  class MouseEvent : public Event
+  {
+  public:
+    int X, Y;
+    bool Ctrl, Shift, Alt;
+    uint32 Buttons;
 
-  MouseEvent() = default;
+    EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
+  };
 
-  EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
-  EVENT_CLASS_TYPE(Mouse)
-};
+  class MouseMoveEvent : public MouseEvent
+  {
+  public:
+    MouseMoveEvent() = default;
+    EVENT_CLASS_TYPE(MouseMoved)
+  };
 
-class MouseDownEvent : public MouseEvent
-{
-public:
-  EVENT_CLASS_TYPE(MouseDown)
-};
+  class MouseButtonEvent : public MouseEvent
+  {
+  public:
+    MouseButtonEvent(MouseButton button) : Button(button) {}
+    int Button;
+  };
 
-class MouseUpEvent : public MouseEvent
-{
-public:
-  EVENT_CLASS_TYPE(MouseUp)
-};
+  class MouseButtonPressedEvent : public MouseButtonEvent
+  {
+  public:
+    MouseButtonPressedEvent(MouseButton button) : MouseButtonEvent(button) {}
+    EVENT_CLASS_TYPE(MousePressed)
+  };
+
+  class MouseButtonReleasedEvent : public MouseButtonEvent
+  {
+  public:
+    MouseButtonReleasedEvent(MouseButton button) : MouseButtonEvent(button) {}
+    EVENT_CLASS_TYPE(MouseReleased)
+  };
+}

@@ -62,48 +62,83 @@ namespace Krys
 
   LRESULT CALLBACK WindowsWindow::WindowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
   {
+#define KRYS_EVENT_CALLBACK() \
+  if (eventCallback)          \
+  eventCallback(event)
+
     LRESULT result = 0;
     switch (message)
     {
     // #region Input
-    // TODO: Do we need to differentiate the button that initiated the click??
     case WM_LBUTTONDOWN:
+    {
+      MouseButtonPressedEvent event(MouseButton::Left);
+      GetMouseEventData(&event, wParam, lParam);
+      KRYS_EVENT_CALLBACK();
+      break;
+    }
+    case WM_LBUTTONUP:
+    {
+      MouseButtonReleasedEvent event(MouseButton::Left);
+      GetMouseEventData(&event, wParam, lParam);
+      KRYS_EVENT_CALLBACK();
+      break;
+    }
     case WM_RBUTTONDOWN:
+    {
+      MouseButtonPressedEvent event(MouseButton::Right);
+      GetMouseEventData(&event, wParam, lParam);
+      KRYS_EVENT_CALLBACK();
+      break;
+    }
+    case WM_RBUTTONUP:
+    {
+      MouseButtonReleasedEvent event(MouseButton::Right);
+      GetMouseEventData(&event, wParam, lParam);
+      KRYS_EVENT_CALLBACK();
+      break;
+    }
     case WM_MBUTTONDOWN:
+    {
+      MouseButtonPressedEvent event(MouseButton::Middle);
+      GetMouseEventData(&event, wParam, lParam);
+      KRYS_EVENT_CALLBACK();
+      break;
+    }
+    case WM_MBUTTONUP:
+    {
+      MouseButtonReleasedEvent event(MouseButton::Middle);
+      GetMouseEventData(&event, wParam, lParam);
+      KRYS_EVENT_CALLBACK();
+      break;
+    }
     case WM_XBUTTONDOWN:
     {
-      MouseDownEvent event;
+      MouseButton button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1
+                               ? MouseButton::Thumb1
+                               : MouseButton::Thumb2;
+      MouseButtonPressedEvent event(button);
       GetMouseEventData(&event, wParam, lParam);
-      if (eventCallback)
-        eventCallback(event);
+      KRYS_EVENT_CALLBACK();
       break;
     }
-    // TODO: Do we need to differentiate the button that initiated the click??
-    case WM_LBUTTONUP:
-    case WM_RBUTTONUP:
-    case WM_MBUTTONUP:
     case WM_XBUTTONUP:
     {
-      MouseUpEvent event;
+      MouseButton button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1
+                               ? MouseButton::Thumb1
+                               : MouseButton::Thumb2;
+      MouseButtonReleasedEvent event(button);
       GetMouseEventData(&event, wParam, lParam);
-      if (eventCallback)
-        eventCallback(event);
+      KRYS_EVENT_CALLBACK();
       break;
     }
-    // TODO: does windows send a double click event if two separate x buttons are clicked?
     // TODO: double click event
-    // TODO: Do we need to differentiate the button that initiated the click??
     case WM_LBUTTONDBLCLK:
     case WM_RBUTTONDBLCLK:
     case WM_MBUTTONDBLCLK:
     case WM_XBUTTONDBLCLK:
     {
-      // TODO: double click event
-      MouseDownEvent event;
-      GetMouseEventData(&event, wParam, lParam);
-      if (eventCallback)
-        eventCallback(event);
-      break;
+      return DefWindowProc(window, message, wParam, lParam);
     }
       // #endregion Input
 
@@ -143,7 +178,8 @@ namespace Krys
       break;
     }
 
-    default: return DefWindowProcA(window, message, wParam, lParam);
+    default:
+      return DefWindowProcA(window, message, wParam, lParam);
     }
 
     return result;
@@ -151,26 +187,27 @@ namespace Krys
 
   void WindowsWindow::GetMouseEventData(MouseEvent *event, WPARAM wParam, LPARAM lParam)
   {
-    event->Shift = wParam & MK_SHIFT;
-    event->Ctrl = wParam & MK_CONTROL;
-
-    uint32 buttons = 0;
-    if (wParam & MK_LBUTTON)
-      buttons |= MouseButton::Primary;
-    if (wParam & MK_RBUTTON)
-      buttons |= MouseButton::Secondary;
-    if (wParam & MK_MBUTTON)
-      buttons |= MouseButton::Auxiliary;
-    if (wParam & MK_XBUTTON1)
-      buttons |= MouseButton::Fourth;
-    if (wParam & MK_XBUTTON2)
-      buttons |= MouseButton::Fifth;
-    event->Buttons = buttons;
-
+    // TODO: deltaX and deltaY?
     event->X = GET_X_LPARAM(lParam);
     event->Y = GET_Y_LPARAM(lParam);
 
-    // TODO: deltaX and deltaY?
+    WORD keysDown = GET_KEYSTATE_WPARAM(wParam);
+    event->Shift = keysDown & MK_SHIFT;
+    event->Ctrl = keysDown & MK_CONTROL;
+    event->Alt = GetKeyState(VK_MENU) < 0;
+
+    uint32 buttons = 0;
+    if (keysDown & MK_LBUTTON)
+      buttons |= MouseButton::Left;
+    if (keysDown & MK_RBUTTON)
+      buttons |= MouseButton::Right;
+    if (keysDown & MK_MBUTTON)
+      buttons |= MouseButton::Middle;
+    if (keysDown & MK_XBUTTON1)
+      buttons |= MouseButton::Thumb1;
+    if (keysDown & MK_XBUTTON2)
+      buttons |= MouseButton::Thumb2;
+    event->Buttons = buttons;
   }
 
   void WindowsWindow::Show(bool visible)
