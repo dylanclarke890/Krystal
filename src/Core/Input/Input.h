@@ -2,8 +2,9 @@
 
 #include "KeyCodes.h"
 #include "MouseButtons.h"
-#include <utility> // For std::pair
+#include <utility> // TODO: For std::pair, remove when we have Vectors
 
+// TODO: consider implementing this in the same way we implemented the logger.
 namespace Krys
 {
   class Input
