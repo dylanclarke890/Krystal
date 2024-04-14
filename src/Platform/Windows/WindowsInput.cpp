@@ -272,25 +272,24 @@ namespace Krys
     return (PrevKeyState[vkCode] & 0x80) && !(KeyState[vkCode] & 0x80);
   }
 
-  // TODO: replace pair<int, int> with Vector2D.
-  std::pair<int, int> WindowsInput::GetMousePosition() const
+  Vector2D<int> WindowsInput::GetMousePosition() const
   {
     POINT point;
     if (GetCursorPos(&point))
     {
-      return {point.x, point.y};
+      return Vector2D<int>(point.x, point.y);
     }
-    return {0, 0};
+    return Vector2D<int>(0, 0);
   }
 
   int WindowsInput::GetMouseX() const
   {
-    return GetMousePosition().first;
+    return GetMousePosition().X;
   }
 
   int WindowsInput::GetMouseY() const
   {
-    return GetMousePosition().second;
+    return GetMousePosition().Y;
   }
 
   KeyCode WindowsInput::MapVirtualKeyToKeyCode(WORD vkCode) const
