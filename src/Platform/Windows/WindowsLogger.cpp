@@ -8,9 +8,10 @@ namespace Krys
   // Static member initialization
   std::mutex Logger::mu;
   std::ofstream Logger::logFile("log.txt"); // Created in cwd
-
+  LogLevel Logger::logLevel = LogLevel::Info;
+  
   // TODO: consider an overload that's templated for formatting strings at some point.
-  void Logger::Log(LogLevel level, const char *format, ...)
+  void Logger::Log(const char *format, ...)
   {
     char buffer[1024];
     va_list args;
@@ -19,14 +20,24 @@ namespace Krys
     va_end(args);
 
     std::lock_guard<std::mutex> lock(mu);
-    auto logMessage = FormatLogMessage(level, buffer);
+    auto logMessage = FormatLogMessage(buffer);
     Output(logMessage);
   }
 
-  const char *Logger::FormatLogMessage(LogLevel level, const char *message)
+  void Logger::SetLogLevel(LogLevel level)
+  {
+    logLevel = level;
+  }
+
+  LogLevel Logger::GetLogLevel()
+  {
+    return logLevel;
+  }
+
+  const char *Logger::FormatLogMessage(const char *message)
   {
     std::ostringstream ss;
-    ss << ToString(level) << ": " << message << "\n";
+    ss << ToString(logLevel) << ": " << message << "\n";
     return ss.str().c_str();
   }
 

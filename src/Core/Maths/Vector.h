@@ -52,7 +52,7 @@ namespace Krys
   template <typename T>
   class Vector3D
   {
-    static_assert(std::is_arithmetic<T>::value, "Vector2D can only be instantiated with arithmetic types");
+    static_assert(std::is_arithmetic<T>::value, "Vector3D can only be instantiated with arithmetic types");
 
   public:
     T X, Y, Z;
