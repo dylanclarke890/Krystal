@@ -1,10 +1,11 @@
 #pragma once
 
 #include <windows.h>
-#include <string> // TODO: temp so we can use std::to_string, remove after adding debugging
+#include <string> // TODO: temp so we can use std::to_string, logging needs to be able to format strings
 #include "Application.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
+#include "Logging/Logger.h"
 namespace Krys
 {
   Application::Application(Window *window, Input *input) : window(window), input(input) {}
@@ -40,67 +41,39 @@ namespace Krys
 
   bool Application::OnMouseButtonEvent(MouseButtonEvent &event)
   {
-    OutputDebugStringA(event.GetName());
-    OutputDebugStringA("\n");
+    Logger::Log(LogLevel::Info, event.GetName());
 
     if (event.Alt)
-    {
-      OutputDebugStringA("Alt was down");
-      OutputDebugStringA("\n");
-    }
+      Logger::Log(LogLevel::Info, "Alt was down");
 
     if (event.Shift)
-    {
-      OutputDebugStringA("Shift was down");
-      OutputDebugStringA("\n");
-    }
+      Logger::Log(LogLevel::Info, "Shift was down");
 
     if (event.Ctrl)
-    {
-      OutputDebugStringA("Ctrl was down");
-      OutputDebugStringA("\n");
-    }
+      Logger::Log(LogLevel::Info, "Ctrl was down");
 
     if (event.Buttons & MouseButton::Left)
-    {
-      OutputDebugStringA("Left button was down");
-      OutputDebugStringA("\n");
-    }
+      Logger::Log(LogLevel::Info, "Left button was down");
 
     if (event.Buttons & MouseButton::Right)
-    {
-      OutputDebugStringA("Right button was down");
-      OutputDebugStringA("\n");
-    }
+      Logger::Log(LogLevel::Info, "Right button was down");
 
     if (event.Buttons & MouseButton::Middle)
-    {
-      OutputDebugStringA("Middle button was down");
-      OutputDebugStringA("\n");
-    }
+      Logger::Log(LogLevel::Info, "Middle button was down");
 
     if (event.Buttons & MouseButton::Thumb1)
-    {
-      OutputDebugStringA("Thumb1 button was down");
-      OutputDebugStringA("\n");
-    }
+      Logger::Log(LogLevel::Info, "Thumb1 button was down");
 
     if (event.Buttons & MouseButton::Thumb2)
-    {
-      OutputDebugStringA("Thumb2 button was down");
-      OutputDebugStringA("\n");
-    }
+      Logger::Log(LogLevel::Info, "Thumb2 button was down");
 
     return false;
   }
 
   bool Application::OnKeyEvent(KeyEvent &event)
   {
-    OutputDebugStringA(event.GetName());
-    OutputDebugStringA("\n");
-
-    OutputDebugStringA(std::to_string((int)event.Key).c_str());
-    OutputDebugStringA("\n");
+    Logger::Log(LogLevel::Info, event.GetName());
+    Logger::Log(LogLevel::Info, std::to_string((int)event.Key).c_str());
 
     return false;
   }
@@ -108,8 +81,7 @@ namespace Krys
   bool Application::OnShutdownEvent(ShutdownEvent &event)
   {
     IsRunning = false;
-    OutputDebugStringA(event.GetName());
-    OutputDebugStringA("\n");
+    Logger::Log(LogLevel::Info, event.GetName());
 
     return true;
   }

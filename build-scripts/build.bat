@@ -16,8 +16,8 @@ pushd .\build
 :: | FC     | compile-time errors show full path to source code
 :: | nologo | turn off compiler name banner
 :: | MP     | enable multi-processing compilation
+set compiler-flags=-nologo -Zi -Oi -FC -W4 -WX -MP -EHsc
 
-:: Start compiler settings
 set entry-point=..\src\Platform\Windows\WindowsEntry.cpp
 
 set include-dirs=^
@@ -25,6 +25,7 @@ set include-dirs=^
 /I "..\src\Platform\Windows"
 
 set additional-translation-units=^
+..\src\Platform\Windows\WindowsLogger.cpp ^
 ..\src\Platform\Windows\WindowsInput.cpp ^
 ..\src\Platform\Windows\WindowsWindow.cpp ^
 ..\src\Core\Application.cpp
@@ -32,7 +33,6 @@ set additional-translation-units=^
 set defines=^
 -DKRYSTAL_WINDOWS=1
 
-set compiler-flags=-nologo -Zi -Oi -FC -W4 -WX -MP
 
 set linked-libs=^
 user32.lib ^
@@ -42,7 +42,7 @@ set disable-warnings=-wd4100
 :: End compiler settings
 
 set start_time=%time%
-echo Compilation started at%start_time%.
+echo Compilation started at %start_time%.
 
 cl^
  %compiler-flags%^
@@ -59,7 +59,7 @@ set end_time=%time%
 set /A "start_in_seconds=((%start_time:~0,2%*3600)+(%start_time:~3,2%*60)+%start_time:~6,2%)"
 set /A "end_in_seconds=((%end_time:~0,2%*3600)+(%end_time:~3,2%*60)+%end_time:~6,2%)"
 set /A "duration_in_seconds=%end_in_seconds%-%start_in_seconds%"
-echo Compilation finished at%end_time% (%duration_in_seconds%s)
+echo Compilation finished at %end_time% (%duration_in_seconds%s)
 
 popd
 
