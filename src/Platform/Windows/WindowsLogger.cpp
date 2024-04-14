@@ -9,6 +9,7 @@ namespace Krys
   std::mutex Logger::mu;
   std::ofstream Logger::logFile("log.txt"); // Created in cwd
 
+  // TODO: consider an overload that's templated for formatting strings at some point.
   void Logger::Log(LogLevel level, const char *format, ...)
   {
     char buffer[1024];
