@@ -35,7 +35,6 @@ set additional-translation-units=^
 set defines=^
 -DKRYSTAL_WINDOWS=1
 
-
 set linked-libs=^
 user32.lib ^
 Gdi32.lib
@@ -55,7 +54,8 @@ cl^
  %additional-translation-units%^
  %linked-libs%
 
-if %ERRORLEVEL% equ 0 (echo Compilation succeeded.)
+set compile-error=%ERRORLEVEL%
+if %compile-error% equ 0 (echo Compilation succeeded.)
 
 set end_time=%time%
 set /A "start_in_seconds=((%start_time:~0,2%*3600)+(%start_time:~3,2%*60)+%start_time:~6,2%)"
@@ -65,4 +65,4 @@ echo Compilation finished at %end_time% (%duration_in_seconds%s)
 
 popd
 
-exit /b %ERRORLEVEL%
+exit /b %compile-error%

@@ -10,7 +10,7 @@
 
 namespace Krys
 {
-  Application::Application(Window *window, Input *input) : window(window), input(input), Ticks(0) {}
+  Application::Application(Window *window, Input *input) : window(window), input(input) {}
 
   void Application::Run()
   {
@@ -20,7 +20,7 @@ namespace Krys
     IsRunning = true;
     while (IsRunning)
     {
-      Ticks = Performance::GetTicks();
+      PerformanceTimer frameTimer("Frame");
       window->BeginFrame();
       input->BeginFrame();
 
@@ -28,9 +28,6 @@ namespace Krys
 
       input->EndFrame();
       window->EndFrame();
-
-      auto duration = Performance::GetTicks() - Ticks;
-      Logger::Log("Frame took %d ticks", duration);
     }
   }
 
