@@ -10,12 +10,7 @@ namespace Krys
   {
     LARGE_INTEGER ticks;
     if (!QueryPerformanceCounter(&ticks))
-    {
-      auto currentLevel = Logger::GetLogLevel();
-      Logger::SetLogLevel(LogLevel::Fatal);
-      Logger::Log("QueryPerformanceCounter failed: %s", GetLastError());
-      Logger::SetLogLevel(currentLevel);
-    }
+      Logger::Log(LogLevel::Fatal, "QueryPerformanceCounter failed: %s", GetLastError());
 
     return ticks.QuadPart;
   }

@@ -17,6 +17,7 @@ namespace Krys
     ~Logger() = delete;
 
     static void Log(const char *format, ...);
+    static void Log(LogLevel level, const char *format, ...);
     static void SetLogLevel(LogLevel level);
     static LogLevel GetLogLevel();
 

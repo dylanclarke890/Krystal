@@ -24,6 +24,25 @@ namespace Krys
     Output(logMessage);
   }
 
+  // TODO: combine this with the above
+  void Logger::Log(LogLevel level, const char *format, ...)
+  {
+    auto currentLevel = Logger::GetLogLevel();
+    Logger::SetLogLevel(level);
+    {
+      char buffer[1024];
+      va_list args;
+      va_start(args, format);
+      vsnprintf(buffer, sizeof(buffer), format, args);
+      va_end(args);
+
+      std::lock_guard<std::mutex> lock(mu);
+      auto logMessage = FormatLogMessage(buffer);
+      Output(logMessage);
+    }
+    Logger::SetLogLevel(currentLevel);
+  }
+
   void Logger::SetLogLevel(LogLevel level)
   {
     logLevel = level;

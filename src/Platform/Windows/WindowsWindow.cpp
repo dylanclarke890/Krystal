@@ -4,6 +4,7 @@
 #include "Events/ApplicationEvent.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
+#include "Logging/Logger.h"
 
 namespace Krys
 {
@@ -18,9 +19,7 @@ namespace Krys
     windowClass.cbWndExtra = sizeof(WindowsWindow *);
 
     if (!RegisterClassA(&windowClass))
-    {
-      // TODO: Handle error
-    }
+      Logger::Log(LogLevel::Fatal, "Unable to register class: %s", GetLastError());
 
     hWnd = CreateWindowExA(
         0,                                                          // optional window styles
@@ -34,9 +33,7 @@ namespace Krys
         0);                                                         // additional application data;
 
     if (!hWnd)
-    {
-      // TODO: Handle error
-    }
+      Logger::Log(LogLevel::Fatal, "Unable to create window: %s", GetLastError());
 
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
   }

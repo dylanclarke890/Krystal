@@ -1,4 +1,5 @@
 #include "WindowsInput.h"
+#include "Logging/Logger.h"
 
 namespace Krys
 {
@@ -229,9 +230,7 @@ namespace Krys
   void WindowsInput::BeginFrame()
   {
     if (!GetKeyboardState(KeyState))
-    {
-      // TODO: LOGGING
-    }
+      Logger::Log(LogLevel::Fatal, "Failed to get keyboard state: %s", GetLastError());
 
     MouseButtonState[0] = GetAsyncKeyState(VK_LBUTTON);
     MouseButtonState[1] = GetAsyncKeyState(VK_RBUTTON);
