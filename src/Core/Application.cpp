@@ -1,13 +1,13 @@
 #pragma once
 
 #include <windows.h>
-#include <string> // TODO: temp so we can use std::to_string
+#include <string> // TODO: temp so we can use std::to_string, remove after adding debugging
 #include "Application.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
 namespace Krys
 {
-  Application::Application(Window *window) : window(window) {}
+  Application::Application(Window *window, Input *input) : window(window), input(input) {}
 
   void Application::Run()
   {
@@ -18,7 +18,11 @@ namespace Krys
     while (IsRunning)
     {
       window->BeginFrame();
+      input->BeginFrame();
 
+      // TODO: do stuff here...
+
+      input->EndFrame();
       window->EndFrame();
     }
   }

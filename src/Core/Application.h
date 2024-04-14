@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "Input/Input.h"
 #include "Events/Events.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/MouseEvent.h"
@@ -12,10 +13,11 @@ namespace Krys
   {
   private:
     Window *window;
+    Input *input;
     bool IsRunning;
 
   public:
-    Application(Window *window);
+    Application(Window *window, Input *input);
     void Run();
 
   private:

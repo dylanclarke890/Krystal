@@ -1,99 +1,15 @@
-#include <vector> // TODO: implement own map or vector class
 #include <windowsx.h>
 
 #include "WindowsWindow.h"
 #include "Events/ApplicationEvent.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
+
 namespace Krys
 {
-  static std::vector<KeyCode> keyMap(256, KeyCode::None);
-
-  static void InitKeyCodes()
+  WindowsWindow::WindowsWindow(char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input)
+      : Window(name), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
   {
-    // Character keys
-    keyMap['A'] = KeyCode::A;
-    keyMap['B'] = KeyCode::B;
-    keyMap['C'] = KeyCode::C;
-    keyMap['D'] = KeyCode::D;
-    keyMap['E'] = KeyCode::E;
-    keyMap['F'] = KeyCode::F;
-    keyMap['G'] = KeyCode::G;
-    keyMap['H'] = KeyCode::H;
-    keyMap['I'] = KeyCode::I;
-    keyMap['J'] = KeyCode::J;
-    keyMap['K'] = KeyCode::K;
-    keyMap['L'] = KeyCode::L;
-    keyMap['M'] = KeyCode::M;
-    keyMap['N'] = KeyCode::N;
-    keyMap['O'] = KeyCode::O;
-    keyMap['P'] = KeyCode::P;
-    keyMap['Q'] = KeyCode::Q;
-    keyMap['R'] = KeyCode::R;
-    keyMap['S'] = KeyCode::S;
-    keyMap['T'] = KeyCode::T;
-    keyMap['U'] = KeyCode::U;
-    keyMap['V'] = KeyCode::V;
-    keyMap['W'] = KeyCode::W;
-    keyMap['X'] = KeyCode::X;
-    keyMap['Y'] = KeyCode::Y;
-    keyMap['Z'] = KeyCode::Z;
-
-    // Num keys
-    keyMap['0'] = KeyCode::Num0;
-    keyMap['1'] = KeyCode::Num1;
-    keyMap['2'] = KeyCode::Num2;
-    keyMap['3'] = KeyCode::Num3;
-    keyMap['4'] = KeyCode::Num4;
-    keyMap['5'] = KeyCode::Num5;
-    keyMap['6'] = KeyCode::Num6;
-    keyMap['7'] = KeyCode::Num7;
-    keyMap['8'] = KeyCode::Num8;
-    keyMap['9'] = KeyCode::Num9;
-
-    // Modifier keys
-    keyMap[VK_SHIFT] = KeyCode::LeftShift;
-    keyMap[VK_LSHIFT] = KeyCode::LeftShift;
-    keyMap[VK_RSHIFT] = KeyCode::RightShift;
-    keyMap[VK_CONTROL] = KeyCode::LeftControl;
-    keyMap[VK_LCONTROL] = KeyCode::LeftControl;
-    keyMap[VK_RCONTROL] = KeyCode::RightControl;
-    keyMap[VK_MENU] = KeyCode::LeftAlt;
-    keyMap[VK_LMENU] = KeyCode::LeftAlt;
-    keyMap[VK_RMENU] = KeyCode::RightAlt;
-
-    // System keys
-    keyMap[VK_SPACE] = KeyCode::Space;
-    keyMap[VK_RETURN] = KeyCode::Enter;
-    keyMap[VK_ESCAPE] = KeyCode::Escape;
-    keyMap[VK_BACK] = KeyCode::Backspace;
-    keyMap[VK_TAB] = KeyCode::Tab;
-
-    // Arrow keys
-    keyMap[VK_LEFT] = KeyCode::LeftArrow;
-    keyMap[VK_RIGHT] = KeyCode::RightArrow;
-    keyMap[VK_UP] = KeyCode::UpArrow;
-    keyMap[VK_DOWN] = KeyCode::DownArrow;
-
-    // Function keys
-    keyMap[VK_F1] = KeyCode::F1;
-    keyMap[VK_F2] = KeyCode::F2;
-    keyMap[VK_F3] = KeyCode::F3;
-    keyMap[VK_F4] = KeyCode::F4;
-    keyMap[VK_F5] = KeyCode::F5;
-    keyMap[VK_F6] = KeyCode::F6;
-    keyMap[VK_F7] = KeyCode::F7;
-    keyMap[VK_F8] = KeyCode::F8;
-    keyMap[VK_F9] = KeyCode::F9;
-    keyMap[VK_F10] = KeyCode::F10;
-    keyMap[VK_F11] = KeyCode::F11;
-    keyMap[VK_F12] = KeyCode::F12;
-  }
-
-  WindowsWindow::WindowsWindow(char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd)
-      : Window(name), cmdLine(cmdLine), nShowCmd(nShowCmd)
-  {
-    InitKeyCodes();
     WNDCLASSA windowClass = {};
     windowClass.style = CS_HREDRAW | CS_VREDRAW;
     windowClass.lpfnWndProc = &WindowsWindow::StaticWindowProc;
@@ -352,7 +268,7 @@ namespace Krys
   {
     event->Shift = GetKeyState(VK_SHIFT) < 0;
     event->Ctrl = GetKeyState(VK_CONTROL) < 0;
-    event->Key = keyMap[vkCode];
+    event->Key = input->MapVirtualKeyToKeyCode(vkCode);
   }
 
   void WindowsWindow::Show(bool visible)

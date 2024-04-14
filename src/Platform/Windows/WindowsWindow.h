@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 #include "Window.h"
+#include "WindowsInput.h"
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
 
@@ -12,9 +13,10 @@ namespace Krys
     HWND hWnd;
     LPSTR cmdLine;
     int nShowCmd;
+    WindowsInput *input;
 
   public:
-    WindowsWindow(char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd);
+    WindowsWindow(char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input);
     virtual void Show(bool visible) override;
     virtual void BeginFrame() override;
     virtual void EndFrame() override;
