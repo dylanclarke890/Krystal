@@ -10,7 +10,8 @@
 
 namespace Krys
 {
-  Application::Application(Window *window, Input *input) : window(window), input(input) {}
+  Application::Application(float targetFps, Window *window, Input *input)
+      : window(window), input(input), IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps) {}
 
   void Application::Run()
   {
@@ -18,9 +19,12 @@ namespace Krys
     window->Show(true);
 
     IsRunning = true;
+    int64 lastCounter = Performance::GetTicks();
     while (IsRunning)
     {
       PerformanceTimer frameTimer("Frame");
+      int64 startCounter = Performance::GetTicks();
+
       window->BeginFrame();
       input->BeginFrame();
 
@@ -28,6 +32,17 @@ namespace Krys
 
       input->EndFrame();
       window->EndFrame();
+
+      int64 endCounter = Performance::GetTicks();
+      float elapsedMs = Performance::ToMilliseconds(endCounter - startCounter);
+
+      if (elapsedMs < TargetFrameTimeMs)
+      {
+        int sleepTime = (int)(TargetFrameTimeMs - elapsedMs);
+        Sleep(sleepTime); // TODO: move this to platform layer?
+      }
+
+      lastCounter = endCounter;
     }
   }
 

@@ -15,9 +15,10 @@ namespace Krys
     Window *window;
     Input *input;
     bool IsRunning;
+    float TargetFrameTimeMs;
 
   public:
-    Application(Window *window, Input *input);
+    Application(float targetFps, Window *window, Input *input);
     void Run();
 
   private:

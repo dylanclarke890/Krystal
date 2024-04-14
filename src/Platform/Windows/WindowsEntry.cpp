@@ -10,7 +10,7 @@ int CALLBACK WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR cmdLine, 
   Krys::WindowsWindow *window = new Krys::WindowsWindow("Krystal Platform", instance, cmdLine, nCmdShow, input);
 
   // TODO: this should be the actual game that inherits from 'Application'
-  Krys::Application *app = new Krys::Application(window, input);
+  Krys::Application *app = new Krys::Application(30.0f, window, input);
   app->Run();
 
   delete app;

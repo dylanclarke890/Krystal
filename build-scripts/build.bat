@@ -37,7 +37,8 @@ set defines=^
 
 set linked-libs=^
 user32.lib ^
-Gdi32.lib
+Gdi32.lib ^
+Winmm.lib
 
 set disable-warnings=-wd4100
 :: End compiler settings

@@ -36,6 +36,15 @@ namespace Krys
       Logger::Log(LogLevel::Fatal, "Unable to create window: %s", GetLastError());
 
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+
+    TIMECAPS timeCaps;
+    if (timeGetDevCaps(&timeCaps, sizeof(timeCaps)) == TIMERR_NOCANDO)
+      Logger::Log(LogLevel::Fatal, "timeGetDevCaps failed");
+
+    Logger::Log("Timer precision range - min: %dms, max: %dms", timeCaps.wPeriodMin, timeCaps.wPeriodMax);
+
+    if (timeBeginPeriod(timeCaps.wPeriodMin) == TIMERR_NOCANDO)
+      Logger::Log(LogLevel::Fatal, "timeBeginPeriod failed");
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

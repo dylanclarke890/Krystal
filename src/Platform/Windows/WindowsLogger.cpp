@@ -3,11 +3,11 @@
 #include <cstdio>    // For vsnprintf
 #include "Logging/Logger.h"
 
+// TODO: get the file logging working
 namespace Krys
 {
-  // Static member initialization
   std::mutex Logger::mu;
-  std::ofstream Logger::logFile("log.txt"); // Created in cwd
+  std::ofstream Logger::logFile("log.txt");
   LogLevel Logger::logLevel = LogLevel::Info;
   
   // TODO: consider an overload that's templated for formatting strings at some point.
