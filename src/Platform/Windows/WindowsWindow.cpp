@@ -7,7 +7,7 @@
 
 namespace Krys
 {
-  WindowsWindow::WindowsWindow(char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input)
+  WindowsWindow::WindowsWindow(const char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input)
       : Window(name), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
   {
     WNDCLASSA windowClass = {};

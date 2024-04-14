@@ -1,6 +1,8 @@
-#include "Application.h"
+#include <windows.h>
+
 #include "WindowsWindow.h"
 #include "WindowsInput.h"
+#include "Application.h"
 
 int CALLBACK WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR cmdLine, int nCmdShow)
 {

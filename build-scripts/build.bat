@@ -16,7 +16,8 @@ pushd .\build
 :: | FC     | compile-time errors show full path to source code
 :: | nologo | turn off compiler name banner
 :: | MP     | enable multi-processing compilation
-set compiler-flags=-nologo -Zi -Oi -FC -W4 -WX -MP -EHsc
+:: | /std:  | compiler version e.g. c++20
+set compiler-flags=-nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++20
 
 set entry-point=..\src\Platform\Windows\WindowsEntry.cpp
 
@@ -25,6 +26,7 @@ set include-dirs=^
 /I "..\src\Platform\Windows"
 
 set additional-translation-units=^
+..\src\Platform\Windows\WindowsPerformance.cpp ^
 ..\src\Platform\Windows\WindowsLogger.cpp ^
 ..\src\Platform\Windows\WindowsInput.cpp ^
 ..\src\Platform\Windows\WindowsWindow.cpp ^
