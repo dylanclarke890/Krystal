@@ -1,10 +1,9 @@
 #pragma once
 
 #include <iostream>
-#include <string>
 #include <sstream>
-#include <mutex>
 #include <fstream>
+#include <mutex>
 
 #include "LogLevel.h"
 
@@ -13,18 +12,19 @@ namespace Krys
   class Logger
   {
   public:
-    Logger() = default;
-    ~Logger() = default;
+    Logger() = delete;
+    Logger(Logger&) = delete;
+    ~Logger() = delete;
 
-    static void Log(LogLevel level, const std::string &message);
+    static void Log(LogLevel level, const char *format, ...);
 
   private:
     static std::mutex mu;
     static std::ofstream logFile;
 
-    static std::string FormatMessage(LogLevel level, const std::string &message);
-    static void Output(const std::string &message);
+    static const char *FormatLogMessage(LogLevel level, const char *message);
+    static void Output(const char *message);
 
-    static std::string ToString(LogLevel level);
+    static const char *ToString(LogLevel level);
   };
 }

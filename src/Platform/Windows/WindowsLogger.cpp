@@ -1,4 +1,6 @@
-#include <windows.h>
+#include <windows.h> // For OutputDebugStringA
+#include <cstdarg>   // For va_list and related operations
+#include <cstdio>    // For vsnprintf
 #include "Logging/Logger.h"
 
 namespace Krys
@@ -7,28 +9,34 @@ namespace Krys
   std::mutex Logger::mu;
   std::ofstream Logger::logFile("log.txt"); // Created in cwd
 
-  void Logger::Log(LogLevel level, const std::string &message)
+  void Logger::Log(LogLevel level, const char *format, ...)
   {
+    char buffer[1024];
+    va_list args;
+    va_start(args, format);
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+
     std::lock_guard<std::mutex> lock(mu);
-    auto logMessage = FormatMessage(level, message);
+    auto logMessage = FormatLogMessage(level, buffer);
     Output(logMessage);
   }
 
-  std::string Logger::FormatMessage(LogLevel level, const std::string &message)
+  const char *Logger::FormatLogMessage(LogLevel level, const char *message)
   {
     std::ostringstream ss;
     ss << ToString(level) << ": " << message << "\n";
-    return ss.str();
+    return ss.str().c_str();
   }
 
-  void Logger::Output(const std::string &message)
+  void Logger::Output(const char *message)
   {
-    OutputDebugStringA(message.c_str());
+    OutputDebugStringA(message);
     if (logFile.is_open())
       logFile << message;
   }
 
-  std::string Logger::ToString(LogLevel level)
+  const char *Logger::ToString(LogLevel level)
   {
     switch (level)
     {

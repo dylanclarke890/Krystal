@@ -73,7 +73,7 @@ namespace Krys
   bool Application::OnKeyEvent(KeyEvent &event)
   {
     Logger::Log(LogLevel::Info, event.GetName());
-    Logger::Log(LogLevel::Info, std::to_string((int)event.Key).c_str());
+    Logger::Log(LogLevel::Info, "Key: %d", (int)event.Key);
 
     return false;
   }
