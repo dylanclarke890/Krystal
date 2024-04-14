@@ -1,7 +1,6 @@
 #pragma once
 
 #include <windows.h>
-#include <string> // TODO: temp so we can use std::to_string, logging needs to be able to format strings
 #include "Application.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
