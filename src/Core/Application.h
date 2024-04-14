@@ -15,6 +15,7 @@ namespace Krys
     Window *window;
     Input *input;
     bool IsRunning;
+    int64 Ticks;
 
   public:
     Application(Window *window, Input *input);

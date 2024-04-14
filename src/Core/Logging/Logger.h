@@ -17,14 +17,14 @@ namespace Krys
     ~Logger() = delete;
 
     static void Log(const char *format, ...);
+    static void SetLogLevel(LogLevel level);
+    static LogLevel GetLogLevel();
 
   private:
     static std::mutex mu;
     static std::ofstream logFile;
     static LogLevel logLevel;
 
-    static void SetLogLevel(LogLevel level);
-    static LogLevel GetLogLevel();
     static const char *FormatLogMessage(const char *message);
     static void Output(const char *message);
 

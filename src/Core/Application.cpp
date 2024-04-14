@@ -6,10 +6,11 @@
 #include "Input/KeyCodes.h"
 #include "Logging/Logger.h"
 #include "Maths/Vector.h"
+#include "Misc/Performance.h"
 
 namespace Krys
 {
-  Application::Application(Window *window, Input *input) : window(window), input(input) {}
+  Application::Application(Window *window, Input *input) : window(window), input(input), Ticks(0) {}
 
   void Application::Run()
   {
@@ -19,6 +20,7 @@ namespace Krys
     IsRunning = true;
     while (IsRunning)
     {
+      Ticks = Performance::GetTicks();
       window->BeginFrame();
       input->BeginFrame();
 
@@ -26,6 +28,9 @@ namespace Krys
 
       input->EndFrame();
       window->EndFrame();
+
+      auto duration = Performance::GetTicks() - Ticks;
+      Logger::Log("Frame took %d ticks", duration);
     }
   }
 

@@ -12,17 +12,17 @@ namespace Krys
   class Window
   {
   private:
-    char *name;
+    const char *name;
 
   protected:
     EventCallbackFn eventCallback;
 
   public:
     Window() = delete;
-    Window(char *name) : name(name) {}
+    Window(const char *name) : name(name) {}
     virtual ~Window() = default;
 
-    char *GetName() const { return name; }
+    const char *GetName() const { return name; }
 
     virtual void Show(bool visible) = 0;
 
