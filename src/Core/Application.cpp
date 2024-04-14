@@ -5,6 +5,8 @@
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
 #include "Logging/Logger.h"
+#include "Maths/Vector.h"
+
 namespace Krys
 {
   Application::Application(Window *window, Input *input) : window(window), input(input) {}
@@ -73,6 +75,13 @@ namespace Krys
   {
     Logger::Log(LogLevel::Info, event.GetName());
     Logger::Log(LogLevel::Info, "Key: %d", (int)event.Key);
+
+    Vector3D<float> vec1(1.0f, 1.0f, 1.0f);
+    Vector3D<float> vec2(1.0f, 1.0f, 1.0f);
+
+    Vector3D<float> sum = vec1 + vec2;
+
+    Logger::Log(LogLevel::Info, "X: %f, Y: %f, Z: %f", sum.X, sum.Y, sum.Z);
 
     return false;
   }

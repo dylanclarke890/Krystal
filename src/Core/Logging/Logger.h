@@ -7,6 +7,7 @@
 
 #include "LogLevel.h"
 
+// TODO: add SetLogLevel() method
 namespace Krys
 {
   class Logger
