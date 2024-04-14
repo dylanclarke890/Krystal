@@ -17,36 +17,49 @@ pushd .\build
 :: | nologo | turn off compiler name banner
 :: | MP     | enable multi-processing compilation
 
-set compiler_flags=-nologo -Zi -Oi -FC -W4 -WX -MP
-set defines=-DKRYSTAL_WINDOWS=1
-set disable_warnings=-wd4100
-set include_dirs=/I "..\src\Core" /I "..\src\Platform\Windows"
-set entry_point=..\src\Platform\Windows\WindowsEntry.cpp
-set additional_translation_units=^
+:: Start compiler settings
+set entry-point=..\src\Platform\Windows\WindowsEntry.cpp
+
+set include-dirs=^
+/I "..\src\Core" ^
+/I "..\src\Platform\Windows"
+
+set additional-translation-units=^
 ..\src\Platform\Windows\WindowsInput.cpp ^
 ..\src\Platform\Windows\WindowsWindow.cpp ^
 ..\src\Core\Application.cpp
-set linked_libs=user32.lib Gdi32.lib
 
-set startTime=%time%
-echo Compilation started at %startTime%.
+set defines=^
+-DKRYSTAL_WINDOWS=1
+
+set compiler-flags=-nologo -Zi -Oi -FC -W4 -WX -MP
+
+set linked-libs=^
+user32.lib ^
+Gdi32.lib
+
+set disable-warnings=-wd4100
+:: End compiler settings
+
+set start_time=%time%
+echo Compilation started at%start_time%.
 
 cl^
- %compiler_flags%^
+ %compiler-flags%^
  %defines%^
- %disable_warnings%^
- %include_dirs%^
- %entry_point%^
- %additional_translation_units%^
- %linked_libs%
+ %disable-warnings%^
+ %include-dirs%^
+ %entry-point%^
+ %additional-translation-units%^
+ %linked-libs%
 
 if %ERRORLEVEL% equ 0 (echo Compilation succeeded.)
 
-set endTime=%time%
-set /A "startSecs=((%startTime:~0,2%*3600)+(%startTime:~3,2%*60)+%startTime:~6,2%)"
-set /A "endSecs=((%endTime:~0,2%*3600)+(%endTime:~3,2%*60)+%endTime:~6,2%)"
-set /A "durationSecs=%endSecs%-%startSecs%"
-echo Compilation finished at %endTime% (%durationSecs%s)
+set end_time=%time%
+set /A "start_in_seconds=((%start_time:~0,2%*3600)+(%start_time:~3,2%*60)+%start_time:~6,2%)"
+set /A "end_in_seconds=((%end_time:~0,2%*3600)+(%end_time:~3,2%*60)+%end_time:~6,2%)"
+set /A "duration_in_seconds=%end_in_seconds%-%start_in_seconds%"
+echo Compilation finished at%end_time% (%duration_in_seconds%s)
 
 popd
 
