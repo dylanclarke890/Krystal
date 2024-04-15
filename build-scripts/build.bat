@@ -19,6 +19,16 @@ pushd .\build
 :: | /std:  | compiler version e.g. c++20
 set compiler-flags=-nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++20
 
+:: Custom Defines:
+:: |           -D            |             Description
+:: | KRYS_ENABLE_DEBUG_BREAK | Turn on breakpoints (needed for asserts)
+:: | KRYS_ENABLE_ASSERTS     | Runtime asserts that trigger a break point on fail
+:: | KRYS_ENABLE_LOGGING     | Turn on logging
+set defines=^
+-DKRYS_ENABLE_ASSERTS=1 ^
+-DKRYS_ENABLE_LOGGING=1 ^
+-DKRYS_ENABLE_DEBUG_BREAK=1
+
 set entry-point=..\src\Platform\Windows\WindowsEntry.cpp
 
 set include-dirs=^
@@ -32,10 +42,6 @@ set additional-translation-units=^
 ..\src\Platform\Windows\WindowsInput.cpp ^
 ..\src\Platform\Windows\WindowsWindow.cpp ^
 ..\src\Core\Application.cpp
-
-set defines=^
--DKRYS_ENABLE_ASSERTS=1 ^
--DKRYS_ENABLE_LOGGING=1
 
 set linked-libs=^
 user32.lib ^

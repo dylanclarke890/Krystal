@@ -27,6 +27,8 @@ namespace Krys
       window->BeginFrame();
       input->BeginFrame();
       {
+        int value = 5;
+        KRYS_ASSERT(value == 10, "Expected value to be 10, but got %d", value);
       }
       input->EndFrame();
       window->EndFrame();
