@@ -43,7 +43,7 @@ namespace Krys
     Vector2D &normalize()
     {
       T mag = magnitude();
-      static_assert(mag != 0, "Magnitude should not be zero.");
+      KRYS_ASSERT(mag != 0, "Magnitude should not be zero.");
 
       X /= mag;
       Y /= mag;
