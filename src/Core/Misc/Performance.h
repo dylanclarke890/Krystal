@@ -22,29 +22,23 @@ namespace Krys
   {
   private:
     const char *name;
-    int64 startCycle;
     int64 startCounter;
 
   public:
     PerformanceTimer(const char *name)
-        : name(name), startCycle(Performance::GetCpuCycles()), startCounter(Performance::GetTicks()) {}
+        : name(name), startCounter(Performance::GetTicks()) {}
     ~PerformanceTimer()
     {
-      int64 endCycle = Performance::GetCpuCycles();
       int64 endCounter = Performance::GetTicks();
       int64 tickFrequency = Performance::GetTickFrequency();
 
-      int64 cyclesElapsed = endCycle - startCycle;
       int64 counterElapsed = endCounter - startCounter;
       if (counterElapsed <= 0)
         counterElapsed = 1;
 
-      float64 msPerFrame = (((1000.0f * (float64)counterElapsed) / (float64)tickFrequency));
-      float64 fps = (float64)tickFrequency / (float64)counterElapsed;
-      float64 megaCyclesPerFrame = ((float64)cyclesElapsed / (1000.0f * 1000.0f));
+      float64 ms = (((1000.0f * (float64)counterElapsed) / (float64)tickFrequency));
 
-      Logger::Log(LogLevel::Info, "%s: %.02fms/f,  %.02ff/s,  %.02fmc/f\n",
-                  name, msPerFrame, fps, megaCyclesPerFrame);
+      Logger::Log(LogLevel::Info, "%s: took %.02fms.", name, ms);
     }
   };
 }

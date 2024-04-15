@@ -1,5 +1,4 @@
 #pragma once
-
 #include <windows.h>
 #include "Application.h"
 #include "Input/MouseButtons.h"
@@ -19,30 +18,33 @@ namespace Krys
     window->Show(true);
 
     IsRunning = true;
-    int64 lastCounter = Performance::GetTicks();
+    // int64 lastCounter = Performance::GetTicks();
     while (IsRunning)
     {
-      PerformanceTimer frameTimer("Frame");
       int64 startCounter = Performance::GetTicks();
 
       window->BeginFrame();
       input->BeginFrame();
-
-      // TODO: do stuff here...
-
+      {
+      }
       input->EndFrame();
       window->EndFrame();
 
       int64 endCounter = Performance::GetTicks();
       float elapsedMs = Performance::ToMilliseconds(endCounter - startCounter);
 
-      if (elapsedMs < TargetFrameTimeMs)
+      while (elapsedMs < TargetFrameTimeMs - 1)
       {
-        int sleepTime = (int)(TargetFrameTimeMs - elapsedMs);
-        Sleep(sleepTime); // TODO: move this to platform layer?
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        endCounter = Performance::GetTicks();
+        elapsedMs = Performance::ToMilliseconds(endCounter - startCounter);
       }
-
-      lastCounter = endCounter;
+      while (elapsedMs < TargetFrameTimeMs)
+      {
+        endCounter = Performance::GetTicks();
+        elapsedMs = Performance::ToMilliseconds(endCounter - startCounter);
+      }
+      Logger::Log("Frame time: %.02f ms.", elapsedMs);
     }
   }
 
