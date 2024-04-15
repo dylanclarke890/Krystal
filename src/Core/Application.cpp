@@ -19,7 +19,7 @@ namespace Krys
     window->Show(true);
 
     IsRunning = true;
-    // int64 lastCounter = Performance::GetTicks();
+
     while (IsRunning)
     {
       int64 startCounter = Performance::GetTicks();
@@ -40,11 +40,13 @@ namespace Krys
         endCounter = Performance::GetTicks();
         elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
       }
+
       while (elapsedMs < TargetFrameTimeMs)
       {
         endCounter = Performance::GetTicks();
         elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
       }
+
       Logger::Log("Frame time: %.02f ms.", elapsedMs);
     }
   }

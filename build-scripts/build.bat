@@ -34,7 +34,8 @@ set additional-translation-units=^
 ..\src\Core\Application.cpp
 
 set defines=^
--DKRYSTAL_WINDOWS=1
+-DKRYS_ENABLE_ASSERTS=1 ^
+-DKRYS_ENABLE_LOGGING=1
 
 set linked-libs=^
 user32.lib ^
