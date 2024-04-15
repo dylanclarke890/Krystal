@@ -1,11 +1,12 @@
 #pragma once
-#include <windows.h>
+
 #include "Application.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
 #include "Logging/Logger.h"
 #include "Maths/Vector.h"
 #include "Misc/Performance.h"
+#include "Misc/Chrono.h"
 
 namespace Krys
 {
@@ -31,18 +32,18 @@ namespace Krys
       window->EndFrame();
 
       int64 endCounter = Performance::GetTicks();
-      float elapsedMs = Performance::ToMilliseconds(endCounter - startCounter);
+      float elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
 
-      while (elapsedMs < TargetFrameTimeMs - 1)
+      while (elapsedMs < TargetFrameTimeMs - 2)
       {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        Chrono::Sleep(1);
         endCounter = Performance::GetTicks();
-        elapsedMs = Performance::ToMilliseconds(endCounter - startCounter);
+        elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
       }
       while (elapsedMs < TargetFrameTimeMs)
       {
         endCounter = Performance::GetTicks();
-        elapsedMs = Performance::ToMilliseconds(endCounter - startCounter);
+        elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
       }
       Logger::Log("Frame time: %.02f ms.", elapsedMs);
     }

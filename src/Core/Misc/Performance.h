@@ -15,7 +15,7 @@ namespace Krys
     static int64 GetTicks();
     static int64 GetTickFrequency();
     static uint64 GetCpuCycles();
-    static float ToMilliseconds(int64 ticks);
+    static float TicksToMilliseconds(int64 ticks);
   };
 
   class PerformanceTimer

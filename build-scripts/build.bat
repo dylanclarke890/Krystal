@@ -26,6 +26,7 @@ set include-dirs=^
 /I "..\src\Platform\Windows"
 
 set additional-translation-units=^
+..\src\Platform\Windows\WindowsChrono.cpp ^
 ..\src\Platform\Windows\WindowsPerformance.cpp ^
 ..\src\Platform\Windows\WindowsLogger.cpp ^
 ..\src\Platform\Windows\WindowsInput.cpp ^

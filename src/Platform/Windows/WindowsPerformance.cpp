@@ -40,7 +40,7 @@ namespace Krys
     return __rdtsc();
   }
 
-  float Performance::ToMilliseconds(int64 ticks)
+  float Performance::TicksToMilliseconds(int64 ticks)
   {
     float ms = static_cast<float>(ticks) * 1000.0f / static_cast<float>(GetTickFrequency());
     return ms <= 0 ? 1 : ms;
