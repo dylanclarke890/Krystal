@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Krystal.h"
-#include "Logging/Logger.h"
 
 namespace Krys
 {
@@ -38,7 +37,7 @@ namespace Krys
 
       float64 ms = (((1000.0f * (float64)counterElapsed) / (float64)tickFrequency));
 
-      Logger::Log(LogLevel::Info, "%s: took %.02fms.", name, ms);
+      KRYS_INFO("%s: took %.02fms.", name, ms);
     }
   };
 }

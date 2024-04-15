@@ -1,7 +1,6 @@
 #include <windows.h>
 
 #include "Krystal.h"
-#include "Logging/Logger.h"
 #include "Misc/Performance.h"
 
 namespace Krys
@@ -14,7 +13,7 @@ namespace Krys
     LARGE_INTEGER ticks;
     if (!QueryPerformanceCounter(&ticks))
       // This will never happen on Windows XP and later
-      Logger::Log(LogLevel::Fatal, "QueryPerformanceCounter failed: %s", GetLastError());
+      KRYS_CRITICAL("QueryPerformanceCounter failed: %s", GetLastError());
 
     return ticks.QuadPart;
   }
@@ -27,7 +26,7 @@ namespace Krys
     LARGE_INTEGER frequency;
     if (!QueryPerformanceFrequency(&frequency))
       // This will never happen on Windows XP and later
-      Logger::Log(LogLevel::Fatal, "QueryPerformanceFrequency failed: %s", GetLastError());
+      KRYS_CRITICAL("QueryPerformanceFrequency failed: %s", GetLastError());
 
     PerformanceCounterFrequencyQueried = true;
     PerformanceCounterFrequency = frequency.QuadPart;

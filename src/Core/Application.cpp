@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Krystal.h"
 #include "Application.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
-#include "Logging/Logger.h"
 #include "Maths/Vector.h"
 #include "Misc/Performance.h"
 #include "Misc/Chrono.h"
@@ -47,7 +47,7 @@ namespace Krys
         elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
       }
 
-      Logger::Log("Frame time: %.02f ms.", elapsedMs);
+      KRYS_INFO("Frame time: %.02f ms.", elapsedMs);
     }
   }
 
@@ -64,46 +64,46 @@ namespace Krys
 
   bool Application::OnMouseButtonEvent(MouseButtonEvent &event)
   {
-    Logger::Log(event.GetName());
+    KRYS_INFO(event.GetName());
 
     if (event.Alt)
-      Logger::Log("Alt was down");
+      KRYS_INFO("Alt was down");
 
     if (event.Shift)
-      Logger::Log("Shift was down");
+      KRYS_INFO("Shift was down");
 
     if (event.Ctrl)
-      Logger::Log("Ctrl was down");
+      KRYS_INFO("Ctrl was down");
 
     if (event.Buttons & MouseButton::Left)
-      Logger::Log("Left button was down");
+      KRYS_INFO("Left button was down");
 
     if (event.Buttons & MouseButton::Right)
-      Logger::Log("Right button was down");
+      KRYS_INFO("Right button was down");
 
     if (event.Buttons & MouseButton::Middle)
-      Logger::Log("Middle button was down");
+      KRYS_INFO("Middle button was down");
 
     if (event.Buttons & MouseButton::Thumb1)
-      Logger::Log("Thumb1 button was down");
+      KRYS_INFO("Thumb1 button was down");
 
     if (event.Buttons & MouseButton::Thumb2)
-      Logger::Log("Thumb2 button was down");
+      KRYS_INFO("Thumb2 button was down");
 
     return false;
   }
 
   bool Application::OnKeyEvent(KeyEvent &event)
   {
-    Logger::Log(event.GetName());
-    Logger::Log("Key: %d", (int)event.Key);
+    KRYS_INFO(event.GetName());
+    KRYS_INFO("Key: %d", (int)event.Key);
 
     Vector3D<float> vec1(1.0f, 1.0f, 1.0f);
     Vector3D<float> vec2(1.0f, 1.0f, 1.0f);
 
     Vector3D<float> sum = vec1 + vec2;
 
-    Logger::Log("X: %f, Y: %f, Z: %f", sum.X, sum.Y, sum.Z);
+    KRYS_INFO("X: %f, Y: %f, Z: %f", sum.X, sum.Y, sum.Z);
 
     return false;
   }
@@ -111,7 +111,7 @@ namespace Krys
   bool Application::OnShutdownEvent(ShutdownEvent &event)
   {
     IsRunning = false;
-    Logger::Log(event.GetName());
+    KRYS_INFO(event.GetName());
 
     return true;
   }

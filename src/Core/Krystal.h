@@ -16,6 +16,24 @@ typedef float float32;
 typedef double float64;
 // --------- TYPES ----------
 
+// -------- LOGGING ---------
+#define VA_ARGS(...) , ##__VA_ARGS__
+#ifdef KRYS_ENABLE_ASSERTS
+#include "Logging/Logger.h"
+#define KRYS_DEBUG(message, ...) Logger::Log(LogLevel::Debug, message VA_ARGS(__VA_ARGS__))
+#define KRYS_INFO(message, ...) Logger::Log(LogLevel::Info, message VA_ARGS(__VA_ARGS__))
+#define KRYS_WARN(message, ...) Logger::Log(LogLevel::Warning, message VA_ARGS(__VA_ARGS__))
+#define KRYS_ERROR(message, ...) Logger::Log(LogLevel::Error, message VA_ARGS(__VA_ARGS__))
+#define KRYS_CRITICAL(message, ...) Logger::Log(LogLevel::Fatal, message VA_ARGS(__VA_ARGS__))
+#else
+#define KRYS_DEBUG(message, ...)
+#define KRYS_INFO(message, ...)
+#define KRYS_WARN(message, ...)
+#define KRYS_ERROR(message, ...)
+#define KRYS_CRITICAL(message, ...)
+#endif
+// -------- LOGGING ---------
+
 // ------- MISC/UTILS -------
 #define BIT(x) (1 << x)
 #define Kilobytes(value) ((value) * 1024)

@@ -1,10 +1,10 @@
 #include <windowsx.h>
 
+#include "Krystal.h"
 #include "WindowsWindow.h"
 #include "Events/ApplicationEvent.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
-#include "Logging/Logger.h"
 
 namespace Krys
 {
@@ -19,7 +19,7 @@ namespace Krys
     windowClass.cbWndExtra = sizeof(WindowsWindow *);
 
     if (!RegisterClassA(&windowClass))
-      Logger::Log(LogLevel::Fatal, "Unable to register class: %s", GetLastError());
+      KRYS_CRITICAL("Unable to register class: %s", GetLastError());
 
     hWnd = CreateWindowExA(
         0,                                                          // optional window styles
@@ -33,18 +33,18 @@ namespace Krys
         0);                                                         // additional application data;
 
     if (!hWnd)
-      Logger::Log(LogLevel::Fatal, "Unable to create window: %s", GetLastError());
+      KRYS_CRITICAL("Unable to create window: %s", GetLastError());
 
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
     TIMECAPS timeCaps;
     if (timeGetDevCaps(&timeCaps, sizeof(timeCaps)) == TIMERR_NOCANDO)
-      Logger::Log(LogLevel::Fatal, "timeGetDevCaps failed");
+      KRYS_CRITICAL("timeGetDevCaps failed");
 
-    Logger::Log("Timer precision range - min: %dms, max: %dms", timeCaps.wPeriodMin, timeCaps.wPeriodMax);
+    KRYS_INFO("Timer precision range - min: %dms, max: %dms", timeCaps.wPeriodMin, timeCaps.wPeriodMax);
 
     if (timeBeginPeriod(timeCaps.wPeriodMin) == TIMERR_NOCANDO)
-      Logger::Log(LogLevel::Fatal, "timeBeginPeriod failed");
+      KRYS_CRITICAL("timeBeginPeriod failed");
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
