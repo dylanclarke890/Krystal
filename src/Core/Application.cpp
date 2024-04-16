@@ -22,6 +22,10 @@ namespace Krys
 
     IsRunning = true;
 
+    GLuint VertexArrayID;
+    glGenVertexArrays(1, &VertexArrayID);
+    glBindVertexArray(VertexArrayID);
+
     while (IsRunning)
     {
       int64 startCounter = Performance::GetTicks();
@@ -29,9 +33,6 @@ namespace Krys
       window->BeginFrame();
       input->BeginFrame();
       {
-        GLuint VertexArrayID;
-        glGenVertexArrays(1, &VertexArrayID);
-        glBindVertexArray(VertexArrayID);
       }
       input->EndFrame();
       window->EndFrame();

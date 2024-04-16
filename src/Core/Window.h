@@ -2,6 +2,7 @@
 
 #include "Krystal.h"
 #include "Events/Events.h"
+#include "GraphicsContext.h"
 #include <functional>
 
 namespace Krys
@@ -16,10 +17,11 @@ namespace Krys
 
   protected:
     EventCallbackFn eventCallback;
+    GraphicsContext *ctx;
 
   public:
     Window() = delete;
-    Window(const char *name) : name(name) {}
+    Window(const char *name) : name(name), ctx(nullptr) {}
     virtual ~Window() = default;
 
     const char *GetName() const { return name; }

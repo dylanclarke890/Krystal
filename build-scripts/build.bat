@@ -34,11 +34,14 @@ set entry-point=..\src\Platform\Windows\WindowsEntry.cpp
 set include-dirs=^
 /I "..\src\Core" ^
 /I "..\src\Platform\Windows" ^
+/I "..\src\Graphics" ^
+/I "..\src\Graphics\OpenGL" ^
 /I "..\src\ThirdParty\Glad\include\glad" ^
 /I "..\src\ThirdParty\Glad\include"
 
 set additional-translation-units=^
 ..\src\ThirdParty\Glad\src\glad.c ^
+..\src\Graphics\OpenGL\OpenGLGraphicsContext.cpp ^
 ..\src\Platform\Windows\WindowsChrono.cpp ^
 ..\src\Platform\Windows\WindowsPerformance.cpp ^
 ..\src\Platform\Windows\WindowsLogger.cpp ^
@@ -49,6 +52,7 @@ set additional-translation-units=^
 set linked-libs=^
 user32.lib ^
 Gdi32.lib ^
+OpenGL32.lib ^
 Winmm.lib
 
 set disable-warnings=-wd4100

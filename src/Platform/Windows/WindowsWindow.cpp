@@ -3,6 +3,7 @@
 #include "Krystal.h"
 #include "WindowsWindow.h"
 #include "Events/ApplicationEvent.h"
+#include "OpenGL/OpenGLGraphicsContext.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
 
@@ -12,7 +13,7 @@ namespace Krys
       : Window(name), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
   {
     WNDCLASSA windowClass = {};
-    windowClass.style = CS_HREDRAW | CS_VREDRAW;
+    windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
     windowClass.lpfnWndProc = &WindowsWindow::StaticWindowProc;
     windowClass.hInstance = instance;
     windowClass.lpszClassName = name;
@@ -45,6 +46,9 @@ namespace Krys
 
     if (timeBeginPeriod(timeCaps.wPeriodMin) == TIMERR_NOCANDO)
       KRYS_CRITICAL("timeBeginPeriod failed");
+
+    ctx = new OpenGLGraphicsContext(hWnd);
+    ctx->Init();
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -78,8 +82,8 @@ namespace Krys
     LRESULT result = 0;
     switch (message)
     {
+#pragma region Mouse input
     // TODO: should we always capture mouse on mouse down until mouse up? we currently don't.
-    // #region Mouse input
     case WM_LBUTTONDOWN:
     {
       MouseButtonPressedEvent event(MouseButton::Left);
@@ -149,9 +153,9 @@ namespace Krys
     {
       return DefWindowProc(window, message, wParam, lParam);
     }
-      // #endregion  Mouse input
+#pragma endregion Mouse input
 
-    // #region Keyboard input
+#pragma region Keyboard input
     case WM_KEYUP:
     case WM_KEYDOWN:
     case WM_SYSKEYUP:
@@ -201,9 +205,9 @@ namespace Krys
         return DefWindowProcA(window, message, wParam, lParam);
       break;
     }
-    // #endregion Keyboard input
+#pragma endregion Keyboard input
 
-    // #region Quitting
+#pragma region Quitting
     case WM_CLOSE:
     {
       if (MessageBoxA(window, "Are you sure you want to exit?", "Quit?", MB_OKCANCEL) == IDOK)
@@ -215,7 +219,7 @@ namespace Krys
       PostQuitMessage(0);
       break;
     }
-      // #endregion Quitting
+#pragma endregion Quitting
 
     case WM_SIZE:
     {
