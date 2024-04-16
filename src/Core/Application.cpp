@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glad.h>
+
 #include "Krystal.h"
 #include "Application.h"
 #include "Input/MouseButtons.h"
@@ -27,8 +29,9 @@ namespace Krys
       window->BeginFrame();
       input->BeginFrame();
       {
-        int value = 5;
-        KRYS_ASSERT(value == 10, "Expected value to be 10, but got %d", value);
+        GLuint VertexArrayID;
+        glGenVertexArrays(1, &VertexArrayID);
+        glBindVertexArray(VertexArrayID);
       }
       input->EndFrame();
       window->EndFrame();
