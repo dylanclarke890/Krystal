@@ -33,7 +33,7 @@ namespace Krys
     }
     else
     {
-      KRYS_ERROR("Unable to open %s. Are you in the right directory? Don't forget to read the FAQ !", vertexFile);
+      KRYS_ASSERT(false, "Unable to open %s. Are you in the right directory? Don't forget to read the FAQ !", vertexFile);
       return 0;
     }
 
