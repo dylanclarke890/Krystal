@@ -4,7 +4,6 @@
 #include <vector> // TODO: implement own map or vector class
 #include "Input/Input.h"
 #include "Input/KeyCodes.h"
-#include "Maths/Vector.h"
 
 namespace Krys
 {
@@ -32,7 +31,7 @@ namespace Krys
     // Mouse
     virtual bool IsMouseButtonPressed(MouseButton button) const override;
     virtual bool WasMouseButtonReleased(MouseButton button) const override;
-    virtual Vector2D<int> GetMousePosition() const override;
+    virtual Vec2i GetMousePosition() const override;
     virtual int GetMouseX() const override;
     virtual int GetMouseY() const override;
 

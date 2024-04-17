@@ -272,24 +272,24 @@ namespace Krys
     return (PrevKeyState[vkCode] & 0x80) && !(KeyState[vkCode] & 0x80);
   }
 
-  Vector2D<int> WindowsInput::GetMousePosition() const
+  Vec2i WindowsInput::GetMousePosition() const
   {
     POINT point;
     if (GetCursorPos(&point))
     {
-      return Vector2D<int>(point.x, point.y);
+      return Vec2i(point.x, point.y);
     }
-    return Vector2D<int>(0, 0);
+    return Vec2i(0, 0);
   }
 
   int WindowsInput::GetMouseX() const
   {
-    return GetMousePosition().X;
+    return GetMousePosition().x;
   }
 
   int WindowsInput::GetMouseY() const
   {
-    return GetMousePosition().Y;
+    return GetMousePosition().y;
   }
 
   KeyCode WindowsInput::MapVirtualKeyToKeyCode(WORD vkCode) const

@@ -9,7 +9,6 @@
 #include "Application.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
-#include "Maths/Vector.h"
 #include "Misc/Performance.h"
 #include "Misc/Chrono.h"
 
@@ -239,14 +238,6 @@ namespace Krys
   {
     KRYS_INFO(event.GetName());
     KRYS_INFO("Key: %d", (int)event.Key);
-
-    Vector3D<float> vec1(1.0f, 1.0f, 1.0f);
-    Vector3D<float> vec2(1.0f, 1.0f, 1.0f);
-
-    Vector3D<float> sum = vec1 + vec2;
-
-    KRYS_INFO("X: %f, Y: %f, Z: %f", sum.X, sum.Y, sum.Z);
-
     return false;
   }
 

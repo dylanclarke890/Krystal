@@ -2,7 +2,7 @@
 
 #include "KeyCodes.h"
 #include "MouseButtons.h"
-#include "Maths/Vector.h"
+#include "Misc/Maths.h"
 
 // TODO: consider implementing this in the same way we implemented the logger.
 namespace Krys
@@ -22,7 +22,7 @@ namespace Krys
     // Mouse
     virtual bool IsMouseButtonPressed(MouseButton button) const = 0;
     virtual bool WasMouseButtonReleased(MouseButton button) const = 0;
-    virtual Vector2D<int> GetMousePosition() const = 0;
+    virtual Vec2i GetMousePosition() const = 0;
     virtual int GetMouseX() const = 0;
     virtual int GetMouseY() const = 0;
     // TODO: virtual float GetMouseScrollDelta() const = 0;
