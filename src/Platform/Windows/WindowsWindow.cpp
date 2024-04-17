@@ -6,11 +6,12 @@
 #include "OpenGL/OpenGLGraphicsContext.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
+#include <glad.h>
 
 namespace Krys
 {
   WindowsWindow::WindowsWindow(const char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input)
-      : Window(name), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
+      : Window(name), dc(0), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
   {
     WNDCLASSA windowClass = {};
     windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -47,8 +48,10 @@ namespace Krys
     if (timeBeginPeriod(timeCaps.wPeriodMin) == TIMERR_NOCANDO)
       KRYS_CRITICAL("timeBeginPeriod failed");
 
-    ctx = new OpenGLGraphicsContext(hWnd);
+    dc = GetDC(hWnd);
+    ctx = new OpenGLGraphicsContext(dc, hWnd);
     ctx->Init();
+    ctx->SetClearColor(0.0f, 0.0f, 0.4f, 0.0f);
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -223,8 +226,15 @@ namespace Krys
 
     case WM_SIZE:
     {
-      // int width = LOWORD(lParam);
-      // int height = HIWORD(lParam);
+      int width = LOWORD(lParam);
+      int height = HIWORD(lParam);
+      ResizeEvent event;
+      event.Width = width;
+      event.Height = height;
+
+      KRYS_EVENT_CALLBACK();
+      glViewport(0, 0, width, height);
+
       //  TODO: Replace this with the actual resize handling
       result = DefWindowProcA(window, message, wParam, lParam);
       break;
@@ -232,13 +242,11 @@ namespace Krys
     case WM_PAINT:
     {
       PAINTSTRUCT ps;
-      HDC hdc = BeginPaint(window, &ps);
-
+      BeginPaint(window, &ps);
       // TODO: test code
-      HBRUSH brush = CreateSolidBrush(RGB(50, 151, 151));
-      FillRect(hdc, &ps.rcPaint, brush);
-      DeleteObject(brush);
-
+      // HBRUSH brush = CreateSolidBrush(RGB(50, 151, 151));
+      // FillRect(hdc, &ps.rcPaint, brush);
+      // DeleteObject(brush);
       EndPaint(window, &ps);
       break;
     }
@@ -288,6 +296,8 @@ namespace Krys
 
   void WindowsWindow::BeginFrame()
   {
+    ctx->Clear();
+
     MSG msg;
     while (PeekMessageA(&msg, NULL, 0, 0, PM_REMOVE) > 0)
     {
@@ -304,5 +314,6 @@ namespace Krys
 
   void WindowsWindow::EndFrame()
   {
+    SwapBuffers(dc);
   }
 }

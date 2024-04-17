@@ -11,6 +11,7 @@ namespace Krys
   {
   private:
     HWND hWnd;
+    HDC dc;
     LPSTR cmdLine;
     int nShowCmd;
     WindowsInput *input;

@@ -10,4 +10,14 @@ namespace Krys
     EVENT_CLASS_TYPE(Shutdown)
     EVENT_CLASS_CATEGORY(EventCategoryApp)
   };
+
+  class ResizeEvent : public Event
+  {
+  public:
+    int Width;
+    int Height;
+
+    EVENT_CLASS_TYPE(Resize)
+    EVENT_CLASS_CATEGORY(EventCategoryApp)
+  };
 }

@@ -32,19 +32,18 @@ namespace Krys
         0, 0, 0};
 
     // TODO: static BAD!
-    static HDC deviceContext = GetDC(hWnd);
-    KRYS_ASSERT(deviceContext, "Device context was not valid");
+    KRYS_ASSERT(dc, "Device context was not valid");
 
-    int pixelFormat = ChoosePixelFormat(deviceContext, &pfd);
+    int pixelFormat = ChoosePixelFormat(dc, &pfd);
     KRYS_ASSERT(pixelFormat != 0, "Failed to choose a pixel format");
 
-    BOOL setPixelFormatSuccess = SetPixelFormat(deviceContext, pixelFormat, &pfd);
+    BOOL setPixelFormatSuccess = SetPixelFormat(dc, pixelFormat, &pfd);
     KRYS_ASSERT(setPixelFormatSuccess, "Failed to set the pixel format");
 
-    openGLContext = wglCreateContext(deviceContext);
+    openGLContext = wglCreateContext(dc);
     KRYS_ASSERT(openGLContext, "Failed to create OpenGL context");
 
-    BOOL makeCurrentSuccess = wglMakeCurrent(deviceContext, openGLContext);
+    BOOL makeCurrentSuccess = wglMakeCurrent(dc, openGLContext);
     KRYS_ASSERT(makeCurrentSuccess, "Failed to make OpenGL context current");
 
     if (!gladLoadGL())
@@ -63,5 +62,16 @@ namespace Krys
     KRYS_INFO("- Vendor: %s", glGetString(GL_VENDOR));
     KRYS_INFO("- Renderer: %s", glGetString(GL_RENDERER));
     KRYS_INFO("- Primary GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+  }
+
+  void OpenGLGraphicsContext::Clear()
+  {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  }
+
+  // TODO: pass a vector of floats instead
+  void OpenGLGraphicsContext::SetClearColor(float x, float y, float z, float a)
+  {
+    glClearColor(x, y, z, a);
   }
 }

@@ -9,6 +9,7 @@ namespace Krys
   {
     None,
     Shutdown,
+    Resize,
     MousePressed,
     MouseReleased,
     MouseMoved,

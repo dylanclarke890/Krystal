@@ -11,12 +11,16 @@ namespace Krys
   {
   private:
     HWND hWnd;
+    HDC dc;
     HGLRC openGLContext;
 
   public:
-    OpenGLGraphicsContext(HWND window) : hWnd(window), openGLContext(0) {}
+    OpenGLGraphicsContext(HDC deviceContext, HWND window)
+        : hWnd(window), dc(deviceContext), openGLContext(0) {}
     ~OpenGLGraphicsContext() override;
 
     void Init() override;
+    void Clear() override;
+    void SetClearColor(float x, float y, float z, float a) override;
   };
 }
