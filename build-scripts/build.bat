@@ -37,7 +37,8 @@ set include-dirs=^
 /I "..\src\Graphics" ^
 /I "..\src\Graphics\OpenGL" ^
 /I "..\src\ThirdParty\Glad\include\glad" ^
-/I "..\src\ThirdParty\Glad\include"
+/I "..\src\ThirdParty\Glad\include" ^
+/I "..\src\ThirdParty\glm"
 
 set additional-translation-units=^
 ..\src\ThirdParty\Glad\src\glad.c ^

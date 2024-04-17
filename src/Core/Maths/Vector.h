@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <glm/glm.hpp>
 
 namespace Krys
 {
@@ -44,6 +45,8 @@ namespace Krys
     {
       T mag = magnitude();
       KRYS_ASSERT(mag != 0, "Magnitude should not be zero.");
+
+      glm::vec3 a = glm::vec3(1.0f);
 
       X /= mag;
       Y /= mag;
