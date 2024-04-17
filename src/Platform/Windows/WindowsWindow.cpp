@@ -27,7 +27,7 @@ namespace Krys
         0,                                                          // optional window styles
         windowClass.lpszClassName,                                  // window class
         "Krystal",                                                  // window name
-        WS_BORDER,                                                  // window style
+        WS_BORDER | WS_OVERLAPPEDWINDOW,                            // window style
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, // size/position
         0,                                                          // parent window
         0,                                                          // menu
@@ -51,7 +51,7 @@ namespace Krys
     dc = GetDC(hWnd);
     ctx = new OpenGLGraphicsContext(dc, hWnd);
     ctx->Init();
-    ctx->SetClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+    ctx->SetClearColor(0.5f, 0.0f, 1.0f, 0.0f);
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
