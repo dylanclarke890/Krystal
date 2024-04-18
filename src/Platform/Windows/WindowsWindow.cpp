@@ -10,8 +10,8 @@
 
 namespace Krys
 {
-  WindowsWindow::WindowsWindow(const char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input)
-      : Window(name), dc(0), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
+  WindowsWindow::WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input)
+      : Window(name, width, height), dc(0), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
   {
     WNDCLASSA windowClass = {};
     windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -23,19 +23,46 @@ namespace Krys
     if (!RegisterClassA(&windowClass))
       KRYS_CRITICAL("Unable to register class: %s", GetLastError());
 
+    int windowStyles = WS_OVERLAPPEDWINDOW;
+
+    // TODO: investigate wrong sizing issue (WM_SIZE receives diff dimensions to what we ask for).
+    KRYS_INFO("Creating window with dimensions: %d x %d", width, height);
+    RECT windowDimensions = {};
+    windowDimensions.right = width;
+    windowDimensions.bottom = height;
+
+    if (!AdjustWindowRect(&windowDimensions, windowStyles, 0))
+    {
+      auto error = GetLastError();
+      KRYS_ASSERT(false, "Error adjusting window rect %s", error);
+    }
+
+    // Calculate the total width and height of the window
+    int totalWidth = windowDimensions.right - windowDimensions.left;
+    int totalHeight = windowDimensions.bottom - windowDimensions.top;
+    KRYS_INFO("Adjusted window dimensions: %d x %d", totalWidth, totalHeight);
+
     hWnd = CreateWindowExA(
-        0,                                                          // optional window styles
-        windowClass.lpszClassName,                                  // window class
-        "Krystal",                                                  // window name
-        WS_BORDER | WS_OVERLAPPEDWINDOW,                            // window style
-        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, // size/position
-        0,                                                          // parent window
-        0,                                                          // menu
-        instance,                                                   // instance handle
-        0);                                                         // additional application data;
+        0,                         // optional window styles
+        windowClass.lpszClassName, // window class
+        "Krystal",                 // window name
+        windowStyles,              // window style
+        CW_USEDEFAULT,             // initial x position
+        CW_USEDEFAULT,             // initial y position
+        totalWidth,                // width
+        totalHeight,               // height
+        0,                         // parent window
+        0,                         // menu
+        instance,                  // instance handle
+        0);                        // additional application data;
 
     if (!hWnd)
-      KRYS_CRITICAL("Unable to create window: %s", GetLastError());
+    {
+      auto error = GetLastError();
+      KRYS_CRITICAL("Unable to create window: %s", error);
+    }
+
+    KRYS_INFO("DPI AWARENESS: %d", GetDpiForWindow(hWnd));
 
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
@@ -226,16 +253,17 @@ namespace Krys
 
     case WM_SIZE:
     {
-      int width = LOWORD(lParam);
-      int height = HIWORD(lParam);
+      int width = (int)LOWORD(lParam);
+      int height = (int)HIWORD(lParam);
+
       ResizeEvent event;
       event.Width = width;
+      Width = width;
       event.Height = height;
+      height = Height;
 
       KRYS_EVENT_CALLBACK();
-      glViewport(0, 0, width, height);
 
-      //  TODO: Replace this with the actual resize handling
       result = DefWindowProcA(window, message, wParam, lParam);
       break;
     }

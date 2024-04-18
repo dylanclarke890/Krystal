@@ -17,7 +17,7 @@ namespace Krys
     WindowsInput *input;
 
   public:
-    WindowsWindow(const char *name, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input);
+    WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input);
     virtual void Show(bool visible) override;
     virtual void BeginFrame() override;
     virtual void EndFrame() override;

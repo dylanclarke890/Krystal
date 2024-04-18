@@ -13,18 +13,22 @@ namespace Krys
   class Window
   {
   private:
-    const char *name;
+    const char *Name;
 
   protected:
     EventCallbackFn eventCallback;
+    int Width, Height;
     GraphicsContext *ctx;
 
   public:
     Window() = delete;
-    Window(const char *name) : name(name), ctx(nullptr) {}
+    Window(const char *name, int width, int height)
+        : Name(name), Width(width), Height(height), ctx(nullptr) {}
     virtual ~Window() = default;
 
-    const char *GetName() const { return name; }
+    const char *GetName() const { return Name; }
+    int GetWidth() const { return Width; }
+    int GetHeight() const { return Height; }
 
     virtual void Show(bool visible) = 0;
 

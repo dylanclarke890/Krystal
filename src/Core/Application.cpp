@@ -217,7 +217,7 @@ namespace Krys
     glEnable(GL_DEPTH_TEST);
     // Accept fragment if it closer to the camera than the former one
     glDepthFunc(GL_LESS);
-    
+
     // Projection matrix: 45° Field of View, 4:3 ratio, display range: 0.1 unit <-> 100 units
     // Mat4 Projection = glm::perspective(glm::radians(45.0f), (float)780.0f / (float)1280.0f, 0.1f, 100.0f);
 
@@ -312,6 +312,7 @@ namespace Krys
     dispatcher.Dispatch<KeyPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
     dispatcher.Dispatch<KeyReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
     dispatcher.Dispatch<ShutdownEvent>(KRYS_BIND_EVENT_FN(Application::OnShutdownEvent));
+    dispatcher.Dispatch<ResizeEvent>(KRYS_BIND_EVENT_FN(Application::OnResizeEvent));
   }
 
   bool Application::OnMouseButtonEvent(MouseButtonEvent &event)
@@ -359,5 +360,13 @@ namespace Krys
 
     return true;
   }
+
+  bool Application::OnResizeEvent(ResizeEvent &event)
+  {
+    KRYS_INFO("Width: %d, Height: %d", event.Width, event.Height);
+
+    return false;
+  }
+
   // #endregion Events
 }

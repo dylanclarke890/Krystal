@@ -25,6 +25,7 @@ namespace Krys
     void OnEvent(Event &event);
     bool OnMouseButtonEvent(MouseButtonEvent &event);
     bool OnKeyEvent(KeyEvent &event);
+    bool OnResizeEvent(ResizeEvent &event);
     bool OnShutdownEvent(ShutdownEvent &event);
   };
 }
