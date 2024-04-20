@@ -1,3 +1,4 @@
 ﻿/.vs
 /build
 src/ThirdParty/glm/doc/*
+data/log.txt

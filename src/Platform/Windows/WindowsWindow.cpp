@@ -23,14 +23,11 @@ namespace Krys
     if (!RegisterClassA(&windowClass))
       KRYS_CRITICAL("Unable to register class: %s", GetLastError());
 
-    int windowStyles = WS_OVERLAPPEDWINDOW;
-
-    // TODO: investigate wrong sizing issue (WM_SIZE receives diff dimensions to what we ask for).
-    KRYS_INFO("Creating window with dimensions: %d x %d", width, height);
     RECT windowDimensions = {};
     windowDimensions.right = width;
     windowDimensions.bottom = height;
 
+    int windowStyles = WS_OVERLAPPEDWINDOW;
     if (!AdjustWindowRect(&windowDimensions, windowStyles, 0))
     {
       auto error = GetLastError();
@@ -40,6 +37,7 @@ namespace Krys
     // Calculate the total width and height of the window
     int totalWidth = windowDimensions.right - windowDimensions.left;
     int totalHeight = windowDimensions.bottom - windowDimensions.top;
+    KRYS_INFO("Creating window with dimensions: %d x %d", width, height);
     KRYS_INFO("Adjusted window dimensions: %d x %d", totalWidth, totalHeight);
 
     hWnd = CreateWindowExA(
@@ -61,8 +59,6 @@ namespace Krys
       auto error = GetLastError();
       KRYS_CRITICAL("Unable to create window: %s", error);
     }
-
-    KRYS_INFO("DPI AWARENESS: %d", GetDpiForWindow(hWnd));
 
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
