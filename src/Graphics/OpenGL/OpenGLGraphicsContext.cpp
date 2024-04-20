@@ -74,4 +74,9 @@ namespace Krys
   {
     glClearColor(x, y, z, a);
   }
+
+  void OpenGLGraphicsContext::OnResize(int width, int height)
+  {
+    glViewport(0, 0, width, height);
+  }
 }

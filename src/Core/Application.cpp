@@ -219,10 +219,14 @@ namespace Krys
     glDepthFunc(GL_LESS);
 
     // Projection matrix: 45° Field of View, 4:3 ratio, display range: 0.1 unit <-> 100 units
-    // Mat4 Projection = glm::perspective(glm::radians(45.0f), (float)780.0f / (float)1280.0f, 0.1f, 100.0f);
+    Mat4 Projection = glm::perspective(
+        glm::radians(45.0f),
+        (float)window->GetWidth() / (float)window->GetHeight(),
+        0.1f,
+        100.0f);
 
     // Or, for an ortho camera:
-    Mat4 Projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f); // In world coordinates
+    // Mat4 Projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f); // In world coordinates
 
     // Camera matrix
     Mat4 View = glm::lookAt(
@@ -365,7 +369,9 @@ namespace Krys
   {
     KRYS_INFO("Width: %d, Height: %d", event.Width, event.Height);
 
-    return false;
+    window->GetGraphicsContext()->OnResize(event.Width, event.Height);
+
+    return true;
   }
 
   // #endregion Events

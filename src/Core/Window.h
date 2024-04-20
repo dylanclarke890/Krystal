@@ -29,6 +29,7 @@ namespace Krys
     const char *GetName() const { return Name; }
     int GetWidth() const { return Width; }
     int GetHeight() const { return Height; }
+    GraphicsContext *GetGraphicsContext() const { return ctx; }
 
     virtual void Show(bool visible) = 0;
 
