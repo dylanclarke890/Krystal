@@ -3,7 +3,6 @@
 #include <cstdio>    // For vsnprintf
 #include "Logging/Logger.h"
 
-// TODO: get the file logging working
 namespace Krys
 {
   std::mutex Logger::mu;
