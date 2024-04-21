@@ -2,6 +2,7 @@
 #pragma warning(push)
 #pragma warning(disable : 4005)
 #include <glad.h>
+#include <stdio.h>
 #pragma warning(pop)
 
 namespace Krys
@@ -78,5 +79,53 @@ namespace Krys
   void OpenGLGraphicsContext::OnResize(int width, int height)
   {
     glViewport(0, 0, width, height);
+  }
+
+  uint OpenGLGraphicsContext::CreateTextureFromBMP(const char *imagePath)
+  {
+    FILE *file;
+    int fileResult = fopen_s(&file, imagePath, "rb");
+
+    // TODO: assert or return early?
+    KRYS_ASSERT(!fileResult, "Image could not be opened: %d.", fileResult);
+
+    uchar header[54]; // Each BMP file begins by a 54-bytes header
+    size_t headerBytesRead = fread(header, 1, 54, file);
+
+    // TODO: assert or return early?
+    KRYS_ASSERT(headerBytesRead == 54, "Not a valid BMP file.");
+    KRYS_ASSERT(header[0] == 'B' && header[1] == 'M', "Not a valid BMP file.");
+
+    uint dataPos = *(int *)&(header[0x0A]);
+    uint imageSize = *(int *)&(header[0x22]);
+    uint width = *(int *)&(header[0x12]);
+    uint height = *(int *)&(header[0x16]);
+
+    // Guess missing info for incorrect formats
+    if (imageSize == 0)
+      imageSize = width * height * 3; // 3 : one byte for each Red, Green and Blue component
+    if (dataPos == 0)
+      dataPos = 54;
+
+    // Actual RGB data
+    uchar *data = new uchar[imageSize];
+
+    fread(data, 1, imageSize, file);
+    fclose(file);
+
+    // Create one OpenGL texture
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+
+    // "Bind" the newly created texture : all future texture functions will modify this texture
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // Give the image to OpenGL
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    return textureID;
   }
 }

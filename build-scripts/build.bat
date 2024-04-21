@@ -32,6 +32,7 @@ set defines=^
 set entry-point=..\src\Platform\Windows\WindowsEntry.cpp
 
 set include-dirs=^
+/I "..\src" ^
 /I "..\src\Core" ^
 /I "..\src\Platform\Windows" ^
 /I "..\src\Graphics" ^

@@ -6,6 +6,7 @@
 #include "Events/ApplicationEvent.h"
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
+#include "GraphicsContext.h"
 
 namespace Krys
 {
@@ -14,6 +15,7 @@ namespace Krys
   private:
     Window *window;
     Input *input;
+    GraphicsContext *ctx;
     bool IsRunning;
     float TargetFrameTimeMs;
 
