@@ -81,6 +81,7 @@ namespace Krys
     glViewport(0, 0, width, height);
   }
 
+#if 0
   uint OpenGLGraphicsContext::CreateTextureFromBMP(const char *imagePath)
   {
     FILE *file;
@@ -128,4 +129,5 @@ namespace Krys
 
     return textureID;
   }
+#endif
 }

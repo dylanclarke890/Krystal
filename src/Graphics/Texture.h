@@ -1,0 +1,6 @@
+namespace Krys
+{
+  class Texture
+  {
+  };
+}

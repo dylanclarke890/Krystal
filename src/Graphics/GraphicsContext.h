@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Texture.h"
+#include "Shader.h"
+
 namespace Krys
 {
   class GraphicsContext
@@ -10,6 +13,8 @@ namespace Krys
     virtual void Clear() = 0;
     virtual void SetClearColor(float x, float y, float z, float a) = 0;
     virtual void OnResize(int width, int height) = 0;
-    virtual uint CreateTextureFromBMP(const char *imagePath) = 0;
+
+    // virtual Texture CreateTexture() = 0;
+    // virtual Shader CreateShader() = 0;
   };
 }

@@ -23,6 +23,6 @@ namespace Krys
     void Clear() override;
     void SetClearColor(float x, float y, float z, float a) override;
     void OnResize(int width, int height) override;
-    uint CreateTextureFromBMP(const char *imagePath) override;
+    // uint CreateTexture() override;
   };
 }
