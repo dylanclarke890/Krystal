@@ -15,6 +15,8 @@
 #include "Misc/Performance.h"
 #include "Misc/Chrono.h"
 
+#define ARRAY_COUNT(data) (sizeof(data) / sizeof(data[0]))
+
 namespace Krys
 {
   static GLuint LoadShaders(const char *vertexFile, const char *fragmentFile)
@@ -111,6 +113,17 @@ namespace Krys
     return ProgramID;
   }
 
+  static void ComputePositionOffsets(float elapsed, float &xOffset, float &yOffset)
+  {
+    const float loopDuration = 1000.0f;
+    const float scale = 3.14159f * 2.0f / loopDuration;
+
+    float currTimeThroughLoop = fmodf(elapsed, loopDuration);
+
+    xOffset = cosf(currTimeThroughLoop * scale) * 0.5f;
+    yOffset = sinf(currTimeThroughLoop * scale) * 0.5f;
+  }
+
   Application::Application(float targetFps, Window *window, Input *input)
       : window(window), input(input), ctx(window->GetGraphicsContext()),
         IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps) {}
@@ -152,10 +165,13 @@ namespace Krys
     GLuint buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STREAM_DRAW);
 
     GLuint programID = LoadShaders("shader.vert", "shader.frag");
 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    float totalTimeElapsed = 0;
     while (IsRunning)
     {
       int64 startCounter = Performance::GetTicks();
@@ -163,7 +179,19 @@ namespace Krys
       window->BeginFrame();
       input->BeginFrame();
       {
+        float xOffset = 0.0f, yOffset = 0.0f;
+        ComputePositionOffsets(totalTimeElapsed, xOffset, yOffset);
+        std::vector<float> newData(ARRAY_COUNT(vertexData));
+        memcpy(&newData[0], vertexData, sizeof(vertexData));
+
+        for (int iVertex = 0; iVertex < ARRAY_COUNT(vertexData); iVertex += 4)
+        {
+          newData[iVertex] += xOffset;
+          newData[iVertex + 1] += yOffset;
+        }
+
         glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), &newData[0]);
         glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
         glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)48);
 
@@ -195,6 +223,8 @@ namespace Krys
         endCounter = Performance::GetTicks();
         elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
       }
+
+      totalTimeElapsed += elapsedMs;
 
       KRYS_INFO("Frame time: %.02f ms.", elapsedMs);
     }

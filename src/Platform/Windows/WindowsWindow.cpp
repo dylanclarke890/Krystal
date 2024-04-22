@@ -3,7 +3,7 @@
 #include "Krystal.h"
 #include "WindowsWindow.h"
 #include "Events/ApplicationEvent.h"
-#include "OpenGL/OpenGLGraphicsContext.h"
+#include "OpenGL/GLGraphicsContext.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
 #include <glad.h>
@@ -72,7 +72,7 @@ namespace Krys
       KRYS_CRITICAL("timeBeginPeriod failed");
 
     dc = GetDC(hWnd);
-    ctx = new OpenGLGraphicsContext(dc, hWnd);
+    ctx = new GLGraphicsContext(dc, hWnd);
     ctx->Init();
     ctx->SetClearColor(0.5f, 0.0f, 1.0f, 0.0f);
   }

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Texture.h"
-#include "Shader.h"
-
 namespace Krys
 {
   class GraphicsContext

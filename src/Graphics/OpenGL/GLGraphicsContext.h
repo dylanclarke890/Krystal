@@ -7,7 +7,7 @@
 
 namespace Krys
 {
-  class OpenGLGraphicsContext : public GraphicsContext
+  class GLGraphicsContext : public GraphicsContext
   {
   private:
     HWND hWnd;
@@ -15,9 +15,9 @@ namespace Krys
     HGLRC openGLContext;
 
   public:
-    OpenGLGraphicsContext(HDC deviceContext, HWND window)
+    GLGraphicsContext(HDC deviceContext, HWND window)
         : hWnd(window), dc(deviceContext), openGLContext(0) {}
-    ~OpenGLGraphicsContext() override;
+    ~GLGraphicsContext() override;
 
     void Init() override;
     void Clear() override;
