@@ -233,6 +233,8 @@ namespace Krys
   // #region Events
   void Application::OnEvent(Event &event)
   {
+    KRYS_INFO(event.GetName());
+
     EventDispatcher dispatcher(event);
     dispatcher.Dispatch<MouseButtonReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
     dispatcher.Dispatch<MouseButtonPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
@@ -244,8 +246,6 @@ namespace Krys
 
   bool Application::OnMouseButtonEvent(MouseButtonEvent &event)
   {
-    KRYS_INFO(event.GetName());
-
     if (event.Alt)
       KRYS_INFO("Alt was down");
 
@@ -275,7 +275,6 @@ namespace Krys
 
   bool Application::OnKeyEvent(KeyEvent &event)
   {
-    KRYS_INFO(event.GetName());
     KRYS_INFO("Key: %d", (int)event.Key);
     return false;
   }
@@ -283,17 +282,13 @@ namespace Krys
   bool Application::OnShutdownEvent(ShutdownEvent &event)
   {
     IsRunning = false;
-    KRYS_INFO(event.GetName());
-
     return true;
   }
 
   bool Application::OnResizeEvent(ResizeEvent &event)
   {
     KRYS_INFO("Width: %d, Height: %d", event.Width, event.Height);
-
-    ctx->OnResize(event.Width, event.Height);
-
+    ctx->SetViewport(event.Width, event.Height);
     return true;
   }
 

@@ -22,7 +22,6 @@ namespace Krys
     void Init() override;
     void Clear() override;
     void SetClearColor(float x, float y, float z, float a) override;
-    void OnResize(int width, int height) override;
-    // uint CreateTexture() override;
+    void SetViewport(int width, int height) override;
   };
 }
