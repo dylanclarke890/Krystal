@@ -3,7 +3,7 @@
 #include <windows.h>
 
 #include "Krystal.h"
-#include "GraphicsContext.h"
+#include "Graphics/GraphicsContext.h"
 
 namespace Krys
 {

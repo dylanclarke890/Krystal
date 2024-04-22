@@ -34,16 +34,14 @@ set entry-point=..\src\Platform\Windows\WindowsEntry.cpp
 set include-dirs=^
 /I "..\src" ^
 /I "..\src\Core" ^
-/I "..\src\Platform\Windows" ^
-/I "..\src\Graphics" ^
-/I "..\src\Graphics\OpenGL" ^
+/I "..\src\Platform" ^
 /I "..\src\ThirdParty\Glad\include\glad" ^
 /I "..\src\ThirdParty\Glad\include" ^
 /I "..\src\ThirdParty\glm"
 
 set additional-translation-units=^
 ..\src\ThirdParty\Glad\src\glad.c ^
-..\src\Graphics\OpenGL\GLGraphicsContext.cpp ^
+..\src\Platform\OpenGL\GLGraphicsContext.cpp ^
 ..\src\Platform\Windows\WindowsChrono.cpp ^
 ..\src\Platform\Windows\WindowsPerformance.cpp ^
 ..\src\Platform\Windows\WindowsLogger.cpp ^

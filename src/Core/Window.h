@@ -2,7 +2,7 @@
 
 #include "Krystal.h"
 #include "Events/Events.h"
-#include "GraphicsContext.h"
+#include "Graphics/GraphicsContext.h"
 #include <functional>
 
 namespace Krys

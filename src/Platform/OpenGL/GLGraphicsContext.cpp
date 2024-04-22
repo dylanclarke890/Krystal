@@ -1,4 +1,4 @@
-#include "GLGraphicsContext.h"
+#include "OpenGL/GLGraphicsContext.h"
 #pragma warning(push)
 #pragma warning(disable : 4005)
 #include <glad.h>
