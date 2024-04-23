@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Krystal.h"
+#include "Buffer.h"
+
 namespace Krys
 {
   class GraphicsContext
@@ -10,5 +13,7 @@ namespace Krys
     virtual void Clear() = 0;
     virtual void SetClearColor(float x, float y, float z, float a) = 0;
     virtual void SetViewport(int width, int height) = 0;
+
+    virtual IndexBuffer *CreateIndexBuffer(uint32 *indices, uint32 count) = 0;
   };
 }

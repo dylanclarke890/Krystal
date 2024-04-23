@@ -1,8 +1,10 @@
+#include "GLGraphicsContext.h"
 #include "OpenGL/GLGraphicsContext.h"
+#include "GLBuffer.h"
+
 #pragma warning(push)
 #pragma warning(disable : 4005)
 #include <glad.h>
-#include <stdio.h>
 #pragma warning(pop)
 
 namespace Krys
@@ -32,7 +34,6 @@ namespace Krys
         0,
         0, 0, 0};
 
-    // TODO: static BAD!
     KRYS_ASSERT(dc, "Device context was not valid");
 
     int pixelFormat = ChoosePixelFormat(dc, &pfd);
@@ -50,7 +51,6 @@ namespace Krys
     if (!gladLoadGL())
     {
       KRYS_ASSERT(false, "Failed to initialize OpenGL context");
-      // TODO: exit early
     }
 
     KRYS_INFO("OPENGL - initialised:");
@@ -64,6 +64,7 @@ namespace Krys
     KRYS_INFO("- Renderer: %s", glGetString(GL_RENDERER));
     KRYS_INFO("- Primary GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+    // TODO: does this need to be customisable? probably not but need to be consistent with other APIs
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CW);
@@ -83,5 +84,10 @@ namespace Krys
   void GLGraphicsContext::SetViewport(int width, int height)
   {
     glViewport(0, 0, width, height);
+  }
+
+  IndexBuffer *GLGraphicsContext::CreateIndexBuffer(uint32 *indices, uint32 count)
+  {
+    return new GLIndexBuffer(indices, count);
   }
 }

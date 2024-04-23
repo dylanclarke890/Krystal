@@ -23,5 +23,7 @@ namespace Krys
     void Clear() override;
     void SetClearColor(float x, float y, float z, float a) override;
     void SetViewport(int width, int height) override;
+
+    IndexBuffer *CreateIndexBuffer(uint32 *indices, uint32 count) override;
   };
 }

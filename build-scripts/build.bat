@@ -41,6 +41,7 @@ set include-dirs=^
 
 set additional-translation-units=^
 ..\src\ThirdParty\Glad\src\glad.c ^
+..\src\Platform\OpenGL\GLBuffer.cpp ^
 ..\src\Platform\OpenGL\GLGraphicsContext.cpp ^
 ..\src\Platform\Windows\WindowsChrono.cpp ^
 ..\src\Platform\Windows\WindowsPerformance.cpp ^
