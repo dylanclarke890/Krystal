@@ -3,6 +3,7 @@
 #include <windows.h>
 
 #include "Krystal.h"
+#include "GL.h"
 #include "Graphics/GraphicsContext.h"
 
 namespace Krys
@@ -25,5 +26,8 @@ namespace Krys
     void SetViewport(int width, int height) override;
 
     IndexBuffer *CreateIndexBuffer(uint32 *indices, uint32 count) override;
+
+    VertexBuffer *CreateVertexBuffer(uint32 size) override;
+    VertexBuffer *CreateVertexBuffer(float *vertices, uint32 size) override;
   };
 }

@@ -15,5 +15,8 @@ namespace Krys
     virtual void SetViewport(int width, int height) = 0;
 
     virtual IndexBuffer *CreateIndexBuffer(uint32 *indices, uint32 count) = 0;
+
+    virtual VertexBuffer *CreateVertexBuffer(uint32 size) = 0;
+    virtual VertexBuffer *CreateVertexBuffer(float *vertices, uint32 size) = 0;
   };
 }

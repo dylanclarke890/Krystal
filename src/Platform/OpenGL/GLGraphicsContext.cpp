@@ -2,11 +2,6 @@
 #include "OpenGL/GLGraphicsContext.h"
 #include "GLBuffer.h"
 
-#pragma warning(push)
-#pragma warning(disable : 4005)
-#include <glad.h>
-#pragma warning(pop)
-
 namespace Krys
 {
   GLGraphicsContext::~GLGraphicsContext()
@@ -89,5 +84,15 @@ namespace Krys
   IndexBuffer *GLGraphicsContext::CreateIndexBuffer(uint32 *indices, uint32 count)
   {
     return new GLIndexBuffer(indices, count);
+  }
+
+  VertexBuffer *GLGraphicsContext::CreateVertexBuffer(uint32 size)
+  {
+    return new GLVertexBuffer(size);
+  }
+
+  VertexBuffer *GLGraphicsContext::CreateVertexBuffer(float *vertices, uint32 size)
+  {
+    return new GLVertexBuffer(vertices, size);
   }
 }
