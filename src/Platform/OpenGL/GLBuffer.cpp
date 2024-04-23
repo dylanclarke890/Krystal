@@ -6,8 +6,7 @@ namespace Krys
       : Id(0), Count(count)
   {
     glCreateBuffers(1, &Id);
-    glBindBuffer(GL_ARRAY_BUFFER, Id);
-    glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32), indices, GL_STATIC_DRAW);
+    glNamedBufferData(Id, count * sizeof(uint32), indices, GL_STATIC_DRAW);
   }
 
   GLIndexBuffer::~GLIndexBuffer()
@@ -34,16 +33,14 @@ namespace Krys
       : Id(0)
   {
     glCreateBuffers(1, &Id);
-    glBindBuffer(GL_ARRAY_BUFFER, Id);
-    glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+    glNamedBufferData(Id, size, nullptr, GL_DYNAMIC_DRAW);
   }
 
   GLVertexBuffer::GLVertexBuffer(float *vertices, uint32 size)
       : Id(0)
   {
     glCreateBuffers(1, &Id);
-    glBindBuffer(GL_ARRAY_BUFFER, Id);
-    glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+    glNamedBufferData(Id, size, vertices, GL_STATIC_DRAW);
   }
 
   GLVertexBuffer::~GLVertexBuffer()
@@ -63,8 +60,7 @@ namespace Krys
 
   void GLVertexBuffer::SetData(const void *data, uint32 size)
   {
-    glBindBuffer(GL_ARRAY_BUFFER, Id);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+    glNamedBufferSubData(Id, 0, size, data);
   }
 
   const BufferLayout &GLVertexBuffer::GetLayout() const
