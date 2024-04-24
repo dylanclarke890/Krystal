@@ -1,9 +1,6 @@
 #pragma once
 
 #include <glad.h>
-#include <string>
-#include <fstream>
-#include <sstream>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,105 +12,12 @@
 #include "Misc/Performance.h"
 #include "Misc/Chrono.h"
 #include "Graphics/VertexArray.h"
+#include "Graphics/Shader.h"
 
 #define ARRAY_COUNT(data) (sizeof(data) / sizeof(data[0]))
 
 namespace Krys
 {
-  static GLuint LoadShaders(const char *vertexFile, const char *fragmentFile)
-  {
-    // Create the shaders
-    GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-    GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-
-    // Read the Vertex Shader code from the file
-    std::string VertexShaderCode;
-    std::ifstream VertexShaderStream(vertexFile, std::ios::in);
-    if (VertexShaderStream.is_open())
-    {
-      std::stringstream sstr;
-      sstr << VertexShaderStream.rdbuf();
-      VertexShaderCode = sstr.str();
-      VertexShaderStream.close();
-    }
-    else
-    {
-      KRYS_ASSERT(false, "Unable to open %s. Are you in the right directory?", vertexFile);
-      return 0;
-    }
-
-    // Read the Fragment Shader code from the file
-    std::string FragmentShaderCode;
-    std::ifstream FragmentShaderStream(fragmentFile, std::ios::in);
-    if (FragmentShaderStream.is_open())
-    {
-      std::stringstream sstr;
-      sstr << FragmentShaderStream.rdbuf();
-      FragmentShaderCode = sstr.str();
-      FragmentShaderStream.close();
-    }
-
-    GLint Result = GL_FALSE;
-    int InfoLogLength;
-
-    // Compile Vertex Shader
-    KRYS_INFO("Compiling shader : %s", vertexFile);
-    char const *VertexSourcePointer = VertexShaderCode.c_str();
-    glShaderSource(VertexShaderID, 1, &VertexSourcePointer, NULL);
-    glCompileShader(VertexShaderID);
-
-    // Check Vertex Shader
-    glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
-    glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    if (InfoLogLength > 0)
-    {
-      std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
-      glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
-      KRYS_ERROR("%s", &VertexShaderErrorMessage[0]);
-    }
-
-    // Compile Fragment Shader
-    KRYS_INFO("Compiling shader : %s", fragmentFile);
-    char const *FragmentSourcePointer = FragmentShaderCode.c_str();
-    glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, NULL);
-    glCompileShader(FragmentShaderID);
-
-    // Check Fragment Shader
-    glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
-    glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    if (InfoLogLength > 0)
-    {
-      std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
-      glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
-      KRYS_ERROR("%s", &FragmentShaderErrorMessage[0]);
-    }
-
-    // Link the program
-    KRYS_INFO("Linking program");
-    GLuint ProgramID = glCreateProgram();
-    glAttachShader(ProgramID, VertexShaderID);
-    glAttachShader(ProgramID, FragmentShaderID);
-    glLinkProgram(ProgramID);
-
-    // Check the program
-    glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-    glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    if (InfoLogLength > 0)
-    {
-      std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
-      glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-      KRYS_ERROR("%s", &ProgramErrorMessage[0]);
-    }
-
-    glDetachShader(ProgramID, VertexShaderID);
-    glDetachShader(ProgramID, FragmentShaderID);
-
-    glDeleteShader(VertexShaderID);
-    glDeleteShader(FragmentShaderID);
-
-    return ProgramID;
-  }
-
   static void ComputePositionOffsets(float elapsed, float &xOffset, float &yOffset)
   {
     const float loopDuration = 1000.0f;
@@ -170,7 +74,10 @@ namespace Krys
     VertexArray *va = ctx->CreateVertexArray();
     va->AddVertexBuffer(vb);
 
-    GLuint programID = LoadShaders("shader.vert", "shader.frag");
+    Shader *shader = ctx->CreateShader();
+    shader->Load(ShaderType::Vertex, "shader.vert");
+    shader->Load(ShaderType::Fragment, "shader.frag");
+    shader->Link();
 
     float totalTimeElapsed = 0;
     while (IsRunning)
@@ -180,23 +87,27 @@ namespace Krys
       window->BeginFrame();
       input->BeginFrame();
       {
-        float xOffset = 0.0f, yOffset = 0.0f;
-        ComputePositionOffsets(totalTimeElapsed, xOffset, yOffset);
+        const float loopDuration = 1000.0f;
+        const float scale = 3.14159f * 2.0f / loopDuration;
+
+        float currTimeThroughLoop = fmodf(totalTimeElapsed, loopDuration);
+        float xOffset = cosf(currTimeThroughLoop * scale) * 0.5f;
+        float yOffset = sinf(currTimeThroughLoop * scale) * 0.5f;
+
         std::vector<float> newData(ARRAY_COUNT(vertexData));
         memcpy(&newData[0], vertexData, sizeof(vertexData));
-
-        for (int iVertex = 0; iVertex < ARRAY_COUNT(vertexData); iVertex += 4)
+        for (int i = 0; i < ARRAY_COUNT(vertexData); i += 4)
         {
-          newData[iVertex] += xOffset;
-          newData[iVertex + 1] += yOffset;
+          newData[i] += xOffset;
+          newData[i + 1] += yOffset;
         }
 
         vb->Bind();
         vb->SetData(&newData[0], sizeof(vertexData));
 
-        glUseProgram(programID);
+        shader->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        glUseProgram(0);
+        shader->Unbind();
       }
       input->EndFrame();
       window->EndFrame();

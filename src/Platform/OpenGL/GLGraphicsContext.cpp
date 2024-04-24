@@ -2,6 +2,7 @@
 #include "OpenGL/GLGraphicsContext.h"
 #include "GLBuffer.h"
 #include "GLVertexArray.h"
+#include "GLShader.h"
 
 namespace Krys
 {
@@ -100,5 +101,10 @@ namespace Krys
   VertexArray *GLGraphicsContext::CreateVertexArray()
   {
     return new GLVertexArray();
+  }
+
+  Shader *GLGraphicsContext::CreateShader()
+  {
+    return new GLShader();
   }
 }
