@@ -1,7 +1,7 @@
 #include <windows.h> // For OutputDebugStringA
 #include <cstdarg>   // For va_list and related operations
 #include <cstdio>    // For vsnprintf
-#include "Logging/Logger.h"
+#include "Logger.h"
 
 namespace Krys
 {

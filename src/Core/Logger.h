@@ -5,15 +5,22 @@
 #include <fstream>
 #include <mutex>
 
-#include "LogLevel.h"
-
 namespace Krys
 {
+  enum class LogLevel
+  {
+    Debug,
+    Info,
+    Warning,
+    Error,
+    Fatal
+  };
+
   class Logger
   {
   public:
     Logger() = delete;
-    Logger(Logger&) = delete;
+    Logger(Logger &) = delete;
     ~Logger() = delete;
 
     static void Log(const char *format, ...);

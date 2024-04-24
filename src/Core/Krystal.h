@@ -60,7 +60,7 @@ typedef unsigned char uchar;
 
 // -------- LOGGING ---------
 #ifdef KRYS_ENABLE_LOGGING
-#include "Logging/Logger.h"
+#include "Logger.h"
 #define KRYS_LOG(message, ...) Logger::Log(message VA_ARGS(__VA_ARGS__))
 #define KRYS_DEBUG(message, ...) Logger::Log(LogLevel::Debug, message VA_ARGS(__VA_ARGS__))
 #define KRYS_INFO(message, ...) Logger::Log(LogLevel::Info, message VA_ARGS(__VA_ARGS__))
