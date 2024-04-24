@@ -38,7 +38,8 @@ namespace Krys
     sstr << fileStream.rdbuf();
     fileStream.close();
 
-    const char *source = sstr.str().c_str();
+    auto sourceStr = sstr.str();
+    const char *source = sourceStr.c_str();
     Add(type, source);
   }
 
@@ -73,8 +74,8 @@ namespace Krys
         break;
       }
 
-      delete[] infoLog;
       KRYS_ASSERT(false, "Compile failure in %s shader:\n%s", shaderType, infoLog);
+      delete[] infoLog;
     }
 
     Shaders.push_back(id);
