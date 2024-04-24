@@ -2,33 +2,22 @@
 
 #include <glad.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "Krystal.h"
 #include "Application.h"
+
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
-#include "Misc/Performance.h"
-#include "Misc/Chrono.h"
+
 #include "Graphics/VertexArray.h"
 #include "Graphics/Shader.h"
+
+#include "Misc/Performance.h"
+#include "Misc/Chrono.h"
 
 #define ARRAY_COUNT(data) (sizeof(data) / sizeof(data[0]))
 
 namespace Krys
 {
-  static void ComputePositionOffsets(float elapsed, float &xOffset, float &yOffset)
-  {
-    const float loopDuration = 1000.0f;
-    const float scale = 3.14159f * 2.0f / loopDuration;
-
-    float currTimeThroughLoop = fmodf(elapsed, loopDuration);
-
-    xOffset = cosf(currTimeThroughLoop * scale) * 0.5f;
-    yOffset = sinf(currTimeThroughLoop * scale) * 0.5f;
-  }
-
   Application::Application(float targetFps, Window *window, Input *input)
       : window(window), input(input), ctx(window->GetGraphicsContext()),
         IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps) {}
@@ -78,8 +67,9 @@ namespace Krys
     shader->Load(ShaderType::Vertex, "shader.vert");
     shader->Load(ShaderType::Fragment, "shader.frag");
     shader->Link();
+    shader->Bind();
 
-    float totalTimeElapsed = 0;
+    float totalTimeElapsedInMs = 0;
     while (IsRunning)
     {
       int64 startCounter = Performance::GetTicks();
@@ -87,10 +77,10 @@ namespace Krys
       window->BeginFrame();
       input->BeginFrame();
       {
-        const float loopDuration = 1000.0f;
+        const float loopDuration = 5.0f;
         const float scale = 3.14159f * 2.0f / loopDuration;
 
-        float currTimeThroughLoop = fmodf(totalTimeElapsed, loopDuration);
+        float currTimeThroughLoop = fmodf(totalTimeElapsedInMs / 1000.0f, loopDuration);
         float xOffset = cosf(currTimeThroughLoop * scale) * 0.5f;
         float yOffset = sinf(currTimeThroughLoop * scale) * 0.5f;
 
@@ -102,12 +92,9 @@ namespace Krys
           newData[i + 1] += yOffset;
         }
 
-        vb->Bind();
         vb->SetData(&newData[0], sizeof(vertexData));
 
-        shader->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        shader->Unbind();
       }
       input->EndFrame();
       window->EndFrame();
@@ -128,7 +115,7 @@ namespace Krys
         elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
       }
 
-      totalTimeElapsed += elapsedMs;
+      totalTimeElapsedInMs += elapsedMs;
 
       KRYS_INFO("Frame time: %.02f ms.", elapsedMs);
     }
