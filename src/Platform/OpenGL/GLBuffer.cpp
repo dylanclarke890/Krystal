@@ -68,6 +68,10 @@ namespace Krys
     return Layout;
   }
 
+  // TODO: this should also take a BufferLayoutType, which can be interleaved
+  // TODO: (e.g. [[pos1, color1], [pos2, color2]])
+  // TODO: Or "Continugous" or whatever name we choose
+  // TODO: (e.g. [[pos1, pos2], [color1, color2]])
   void GLVertexBuffer::SetLayout(const BufferLayout &layout)
   {
     Layout = layout;
