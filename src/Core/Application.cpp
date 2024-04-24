@@ -64,14 +64,15 @@ namespace Krys
     va->AddVertexBuffer(vb);
 
     Shader *shader = ctx->CreateShader();
-    shader->Bind();
     shader->Load(ShaderType::Vertex, "shader.vert");
     shader->Load(ShaderType::Fragment, "shader.frag");
     shader->Link();
+    shader->Bind();
 
     float totalTimeElapsedInMs = 0;
     while (IsRunning)
     {
+      PerformanceTimer frameTimer("Frame");
       int64 startCounter = Performance::GetTicks();
 
       window->BeginFrame();
@@ -116,8 +117,6 @@ namespace Krys
       }
 
       totalTimeElapsedInMs += elapsedMs;
-
-      KRYS_INFO("Frame time: %.02f ms.", elapsedMs);
     }
 
     delete va;

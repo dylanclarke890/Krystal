@@ -37,7 +37,7 @@ namespace Krys
 
       float64 ms = (((1000.0f * (float64)counterElapsed) / (float64)tickFrequency));
 
-      KRYS_INFO("%s: took %.02fms.", name, ms);
+      KRYS_INFO("%s took %.02fms.", name, ms);
     }
   };
 }
