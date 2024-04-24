@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Krystal.h"
 
 #include <initializer_list>
@@ -64,7 +66,7 @@ namespace Krys
     BufferElement() = default;
 
     BufferElement(ShaderDataType type, const char *name, bool normalized = false)
-        : Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized)
+        : Name(name), Type(type), Size(ShaderDataTypeSize(type)), Normalized(normalized)
     {
     }
 

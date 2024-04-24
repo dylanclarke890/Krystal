@@ -14,6 +14,7 @@
 #include "Input/KeyCodes.h"
 #include "Misc/Performance.h"
 #include "Misc/Chrono.h"
+#include "Graphics/VertexArray.h"
 
 #define ARRAY_COUNT(data) (sizeof(data) / sizeof(data[0]))
 
@@ -140,20 +141,20 @@ namespace Krys
         0.5f,
         0.0f,
         1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        1.0f,
         0.5f,
         -0.366f,
         0.0f,
         1.0f,
+        0.0f,
+        1.0f,
+        0.0f,
+        1.0f,
         -0.5f,
         -0.366f,
-        0.0f,
-        1.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
         0.0f,
         1.0f,
         0.0f,
@@ -162,14 +163,14 @@ namespace Krys
         1.0f,
     };
 
-    GLuint buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STREAM_DRAW);
+    VertexBuffer *vb = ctx->CreateVertexBuffer(sizeof(vertexData));
+    vb->SetData(vertexData, sizeof(vertexData));
+    vb->SetLayout({{ShaderDataType::Float4, "position"}, {ShaderDataType::Float4, "color"}});
+
+    VertexArray *va = ctx->CreateVertexArray();
+    va->AddVertexBuffer(vb);
 
     GLuint programID = LoadShaders("shader.vert", "shader.frag");
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     float totalTimeElapsed = 0;
     while (IsRunning)
@@ -190,20 +191,12 @@ namespace Krys
           newData[iVertex + 1] += yOffset;
         }
 
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), &newData[0]);
-        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)48);
+        vb->Bind();
+        vb->SetData(&newData[0], sizeof(vertexData));
 
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
         glUseProgram(programID);
-
         glDrawArrays(GL_TRIANGLES, 0, 3);
-
         glUseProgram(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(0);
       }
       input->EndFrame();
       window->EndFrame();

@@ -29,5 +29,7 @@ namespace Krys
 
     VertexBuffer *CreateVertexBuffer(uint32 size) override;
     VertexBuffer *CreateVertexBuffer(float *vertices, uint32 size) override;
+
+    VertexArray *CreateVertexArray() override;
   };
 }

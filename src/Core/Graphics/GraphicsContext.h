@@ -2,6 +2,7 @@
 
 #include "Krystal.h"
 #include "Buffer.h"
+#include "VertexArray.h"
 
 namespace Krys
 {
@@ -18,5 +19,7 @@ namespace Krys
 
     virtual VertexBuffer *CreateVertexBuffer(uint32 size) = 0;
     virtual VertexBuffer *CreateVertexBuffer(float *vertices, uint32 size) = 0;
+
+    virtual VertexArray *CreateVertexArray() = 0;
   };
 }

@@ -1,6 +1,7 @@
 #include "GLGraphicsContext.h"
 #include "OpenGL/GLGraphicsContext.h"
 #include "GLBuffer.h"
+#include "GLVertexArray.h"
 
 namespace Krys
 {
@@ -94,5 +95,10 @@ namespace Krys
   VertexBuffer *GLGraphicsContext::CreateVertexBuffer(float *vertices, uint32 size)
   {
     return new GLVertexBuffer(vertices, size);
+  }
+
+  VertexArray *GLGraphicsContext::CreateVertexArray()
+  {
+    return new GLVertexArray();
   }
 }
