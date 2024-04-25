@@ -110,54 +110,63 @@ namespace Krys
   void GLShader::SetUniform(const char *name, int value)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
+    KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
     glProgramUniform1i(Id, location, value);
   }
 
   void GLShader::SetUniform(const char *name, float value)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
+    KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
     glProgramUniform1f(Id, location, value);
   }
 
   void GLShader::SetUniform(const char *name, int *values, uint32_t count)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
+    KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
     glProgramUniform1iv(Id, location, count, values);
   }
 
   void GLShader::SetUniform(const char *name, float *values, uint32_t count)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
+    KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
     glProgramUniform1fv(Id, location, count, values);
   }
 
   void GLShader::SetUniform(const char *name, const Vec2 &value)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
+    KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
     glProgramUniform2f(Id, location, value.x, value.y);
   }
 
   void GLShader::SetUniform(const char *name, const Vec3 &value)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
+    KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
     glProgramUniform3f(Id, location, value.x, value.y, value.z);
   }
 
   void GLShader::SetUniform(const char *name, const Vec4 &value)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
+    KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
     glProgramUniform4f(Id, location, value.x, value.y, value.z, value.w);
   }
 
   void GLShader::SetUniform(const char *name, const Mat3 &matrix)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
+    KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
     glProgramUniformMatrix3fv(Id, location, 1, GL_FALSE, &(matrix[0].x));
   }
 
   void GLShader::SetUniform(const char *name, const Mat4 &matrix)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
+    KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
     glProgramUniformMatrix4fv(Id, location, 1, GL_FALSE, &(matrix[0].x));
   }
 
