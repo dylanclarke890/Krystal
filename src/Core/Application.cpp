@@ -30,38 +30,26 @@ namespace Krys
     IsRunning = true;
 
     const float vertexData[] = {
-        0.0f,
-        0.5f,
-        0.0f,
-        1.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        0.5f,
-        -0.366f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
-        -0.5f,
-        -0.366f,
-        0.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,  // Top
+        1.0f, 0.0f, 0.0f, 1.0f,  // Red
+        1.0f, 0.0f, 0.0f, 1.0f,  // Right
+        0.0f, 1.0f, 0.0f, 1.0f,  // Green
+        -1.0f, 0.0f, 0.0f, 1.0f, // Left
+        0.0f, 0.0f, 1.0f, 1.0f,  // Blue
+        0.0f, -1.0f, 0.0f, 1.0f, // Bottom
+        1.0f, 0.0f, 0.0f, 1.0f,  // Red
     };
 
     VertexBuffer *vb = ctx->CreateVertexBuffer(sizeof(vertexData));
     vb->SetData(vertexData, sizeof(vertexData));
     vb->SetLayout({{ShaderDataType::Float4, "position"}, {ShaderDataType::Float4, "color"}});
 
+    uint32 indices[] = {0, 1, 2, 3, 2, 1};
+    IndexBuffer *ib = ctx->CreateIndexBuffer(indices, ARRAY_COUNT(indices));
+
     VertexArray *va = ctx->CreateVertexArray();
     va->AddVertexBuffer(vb);
+    va->SetIndexBuffer(ib);
 
     Shader *shader = ctx->CreateShader();
     shader->Load(ShaderType::Vertex, "shader.vert");
@@ -78,24 +66,7 @@ namespace Krys
       window->BeginFrame();
       input->BeginFrame();
       {
-        const float loopDuration = 5.0f;
-        const float scale = 3.14159f * 2.0f / loopDuration;
-
-        float currTimeThroughLoop = fmodf(totalTimeElapsedInMs / 1000.0f, loopDuration);
-        float xOffset = cosf(currTimeThroughLoop * scale) * 0.5f;
-        float yOffset = sinf(currTimeThroughLoop * scale) * 0.5f;
-
-        std::vector<float> newData(ARRAY_COUNT(vertexData));
-        memcpy(&newData[0], vertexData, sizeof(vertexData));
-        for (int i = 0; i < ARRAY_COUNT(vertexData); i += 4)
-        {
-          newData[i] += xOffset;
-          newData[i + 1] += yOffset;
-        }
-
-        vb->SetData(&newData[0], sizeof(vertexData));
-
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
       }
       input->EndFrame();
       window->EndFrame();

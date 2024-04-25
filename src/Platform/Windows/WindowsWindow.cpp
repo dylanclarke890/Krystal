@@ -74,7 +74,7 @@ namespace Krys
     dc = GetDC(hWnd);
     ctx = new GLGraphicsContext(dc, hWnd);
     ctx->Init();
-    ctx->SetClearColor(0.5f, 0.0f, 1.0f, 0.0f);
+    ctx->SetClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

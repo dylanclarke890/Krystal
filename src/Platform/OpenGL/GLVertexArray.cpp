@@ -126,9 +126,8 @@ namespace Krys
   void GLVertexArray::SetIndexBuffer(IndexBuffer *buffer)
   {
     glBindVertexArray(Id);
-    ZBuffer->Bind();
-
     ZBuffer = buffer;
+    ZBuffer->Bind();
   }
 
   const std::vector<VertexBuffer *> &GLVertexArray::GetVertexBuffers() const
