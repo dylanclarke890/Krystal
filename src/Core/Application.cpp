@@ -27,35 +27,195 @@ namespace Krys
     window->SetEventCallback(KRYS_BIND_EVENT_FN(Application::OnEvent));
     window->Show(true);
 
+    ctx->SetFaceCulling(CullMode::Back);
+    ctx->SetWindingOrder(WindingOrder::Clockwise);
+
     IsRunning = true;
 
     const float vertexData[] = {
-        0.0f, 1.0f, 0.0f, 1.0f,  // Top
-        1.0f, 0.0f, 0.0f, 1.0f,  // Red
-        1.0f, 0.0f, 0.0f, 1.0f,  // Right
-        0.0f, 1.0f, 0.0f, 1.0f,  // Green
-        -1.0f, 0.0f, 0.0f, 1.0f, // Left
-        0.0f, 0.0f, 1.0f, 1.0f,  // Blue
-        0.0f, -1.0f, 0.0f, 1.0f, // Bottom
-        1.0f, 0.0f, 0.0f, 1.0f,  // Red
+        0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+        0.25f,
+        -0.25f,
+        -1.25f,
+        1.0f,
+        -0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+
+        0.25f,
+        -0.25f,
+        -1.25f,
+        1.0f,
+        -0.25f,
+        -0.25f,
+        -1.25f,
+        1.0f,
+        -0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+
+        0.25f,
+        0.25f,
+        -2.75f,
+        1.0f,
+        -0.25f,
+        0.25f,
+        -2.75f,
+        1.0f,
+        0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+
+        0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+        -0.25f,
+        0.25f,
+        -2.75f,
+        1.0f,
+        -0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+
+        -0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+        -0.25f,
+        -0.25f,
+        -1.25f,
+        1.0f,
+        -0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+
+        -0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+        -0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+        -0.25f,
+        0.25f,
+        -2.75f,
+        1.0f,
+
+        0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+        0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+        0.25f,
+        -0.25f,
+        -1.25f,
+        1.0f,
+
+        0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+        0.25f,
+        0.25f,
+        -2.75f,
+        1.0f,
+        0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+
+        0.25f,
+        0.25f,
+        -2.75f,
+        1.0f,
+        0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+        -0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+
+        0.25f,
+        0.25f,
+        -2.75f,
+        1.0f,
+        -0.25f,
+        0.25f,
+        -1.25f,
+        1.0f,
+        -0.25f,
+        0.25f,
+        -2.75f,
+        1.0f,
+
+        0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+        -0.25f,
+        -0.25f,
+        -1.25f,
+        1.0f,
+        0.25f,
+        -0.25f,
+        -1.25f,
+        1.0f,
+
+        0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+        -0.25f,
+        -0.25f,
+        -2.75f,
+        1.0f,
+        -0.25f,
+        -0.25f,
+        -1.25f,
+        1.0f,
     };
 
     VertexBuffer *vb = ctx->CreateVertexBuffer(sizeof(vertexData));
     vb->SetData(vertexData, sizeof(vertexData));
-    vb->SetLayout({{ShaderDataType::Float4, "position"}, {ShaderDataType::Float4, "color"}});
-
-    uint32 indices[] = {0, 1, 2, 3, 2, 1};
-    IndexBuffer *ib = ctx->CreateIndexBuffer(indices, ARRAY_COUNT(indices));
+    vb->SetLayout({{ShaderDataType::Float4, "position"}});
 
     VertexArray *va = ctx->CreateVertexArray();
     va->AddVertexBuffer(vb);
-    va->SetIndexBuffer(ib);
 
     Shader *shader = ctx->CreateShader();
     shader->Load(ShaderType::Vertex, "shader.vert");
     shader->Load(ShaderType::Fragment, "shader.frag");
     shader->Link();
     shader->Bind();
+    shader->SetUniform("offset", Vec2(0.5f));
+
+    float fFrustumScale = 1.0f;
+    float fzNear = 0.5f;
+    float fzFar = 3.0f;
+
+    float theMatrix[16];
+    memset(theMatrix, 0, sizeof(float) * 16);
+
+    theMatrix[0] = fFrustumScale;
+    theMatrix[5] = fFrustumScale;
+    theMatrix[10] = (fzFar + fzNear) / (fzNear - fzFar);
+    theMatrix[14] = (2 * fzFar * fzNear) / (fzNear - fzFar);
+    theMatrix[11] = -1.0f;
 
     float totalTimeElapsedInMs = 0;
     while (IsRunning)
@@ -66,7 +226,7 @@ namespace Krys
       window->BeginFrame();
       input->BeginFrame();
       {
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
       }
       input->EndFrame();
       window->EndFrame();

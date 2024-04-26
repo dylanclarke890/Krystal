@@ -60,11 +60,6 @@ namespace Krys
     KRYS_INFO("- Vendor: %s", glGetString(GL_VENDOR));
     KRYS_INFO("- Renderer: %s", glGetString(GL_RENDERER));
     KRYS_INFO("- Primary GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
-
-    // TODO: does this need to be customisable? probably not but need to be consistent with other APIs
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CW);
   }
 
   void GLGraphicsContext::Clear()
@@ -81,6 +76,55 @@ namespace Krys
   void GLGraphicsContext::SetViewport(int width, int height)
   {
     glViewport(0, 0, width, height);
+  }
+
+  void GLGraphicsContext::SetFaceCulling(CullMode mode)
+  {
+    switch (mode)
+    {
+    case CullMode::None:
+    {
+      glDisable(GL_CULL_FACE);
+      break;
+    }
+    case CullMode::Front:
+    {
+      glEnable(GL_CULL_FACE);
+      glCullFace(GL_FRONT);
+      break;
+    }
+    case CullMode::Back:
+    {
+      glEnable(GL_CULL_FACE);
+      glCullFace(GL_BACK);
+      break;
+    }
+    case CullMode::FrontAndBack:
+    {
+      glEnable(GL_CULL_FACE);
+      glCullFace(GL_FRONT_AND_BACK);
+      break;
+    }
+    default:
+      KRYS_ASSERT(false, "Invalid CullMode!");
+      break;
+    }
+  }
+
+  void GLGraphicsContext::SetWindingOrder(WindingOrder mode)
+  {
+    switch (mode)
+    {
+    case WindingOrder::Clockwise:
+      glFrontFace(GL_CW);
+      break;
+    case WindingOrder::CounterClockwise:
+      glFrontFace(GL_CCW);
+      break;
+    default:
+      KRYS_ASSERT(false, "Invalid CullMode!");
+      break;
+    }
   }
 
   IndexBuffer *GLGraphicsContext::CreateIndexBuffer(uint32 *indices, uint32 count)

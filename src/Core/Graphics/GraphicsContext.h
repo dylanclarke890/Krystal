@@ -7,6 +7,20 @@
 
 namespace Krys
 {
+  enum class CullMode
+  {
+    None = 0,
+    Front,
+    Back,
+    FrontAndBack
+  };
+
+  enum class WindingOrder
+  {
+    Clockwise,
+    CounterClockwise
+  };
+
   class GraphicsContext
   {
   public:
@@ -15,6 +29,8 @@ namespace Krys
     virtual void Clear() = 0;
     virtual void SetClearColor(float x, float y, float z, float a) = 0;
     virtual void SetViewport(int width, int height) = 0;
+    virtual void SetFaceCulling(CullMode mode) = 0;
+    virtual void SetWindingOrder(WindingOrder mode) = 0;
 
     virtual IndexBuffer *CreateIndexBuffer(uint32 *indices, uint32 count) = 0;
 
