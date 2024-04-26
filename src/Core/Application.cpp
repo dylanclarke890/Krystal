@@ -12,6 +12,7 @@
 #include "Graphics/Shader.h"
 
 #include "Misc/Performance.h"
+#include "Misc/Maths.h"
 #include "Misc/Chrono.h"
 
 #define ARRAY_COUNT(data) (sizeof(data) / sizeof(data[0]))
@@ -202,20 +203,12 @@ namespace Krys
     shader->Load(ShaderType::Fragment, "shader.frag");
     shader->Link();
     shader->Bind();
-    shader->SetUniform("offset", Vec2(0.5f));
 
-    float fFrustumScale = 1.0f;
-    float fzNear = 0.5f;
-    float fzFar = 3.0f;
+    Vec2 offset(0.5f);
+    Mat4 proj = glm::perspective(glm::radians(90.0f), ((float)window->GetWidth() / (float)window->GetHeight()), 0.1f, 10.0f);
 
-    float theMatrix[16];
-    memset(theMatrix, 0, sizeof(float) * 16);
-
-    theMatrix[0] = fFrustumScale;
-    theMatrix[5] = fFrustumScale;
-    theMatrix[10] = (fzFar + fzNear) / (fzNear - fzFar);
-    theMatrix[14] = (2 * fzFar * fzNear) / (fzNear - fzFar);
-    theMatrix[11] = -1.0f;
+    shader->SetUniform("offset", offset);
+    shader->SetUniform("perspectiveMatrix", proj);
 
     float totalTimeElapsedInMs = 0;
     while (IsRunning)
