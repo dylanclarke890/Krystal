@@ -103,34 +103,44 @@ namespace Krys
     }
   };
 
+  // TODO: extend layout class to support contiguous memory layouts.
+  enum class BufferLayoutType
+  {
+    // Attributes are interleaved in memory (i.e. [pos, color], [pos, color]).
+    Interleaved,
+    // Attributes are contiguous in memory (i.e. [pos, pos], [color, color]).
+    Contiguous
+  };
+
   class BufferLayout
   {
   private:
     std::vector<BufferElement> m_Elements;
-    uint32 m_Stride = 0;
+    uint32 m_Stride;
 
   public:
-    BufferLayout() {}
+    BufferLayout() : m_Stride(0) {}
 
     BufferLayout(std::initializer_list<BufferElement> elements)
-        : m_Elements(elements)
+        : m_Elements(elements), m_Stride(0)
     {
       CalculateOffsetsAndStride();
     }
 
-    uint32 GetStride() const { return m_Stride; }
     const std::vector<BufferElement> &GetElements() const { return m_Elements; }
-
     std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
     std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
     std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
     std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
 
+    uint32 GetStride() const { return m_Stride; }
+
   private:
     void CalculateOffsetsAndStride()
     {
-      size_t offset = 0;
+      uint32 offset = 0;
       m_Stride = 0;
+
       for (auto &element : m_Elements)
       {
         element.Offset = offset;
