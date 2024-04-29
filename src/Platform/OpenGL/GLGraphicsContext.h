@@ -16,24 +16,31 @@ namespace Krys
     HGLRC openGLContext;
 
   public:
-    GLGraphicsContext(HDC deviceContext, HWND window)
-        : hWnd(window), dc(deviceContext), openGLContext(0) {}
+    GLGraphicsContext(HDC deviceContext, HWND window);
     ~GLGraphicsContext() override;
 
     void Init() override;
-    void Clear() override;
+    void Clear(ClearFlags flags = ClearFlags::Color) override;
+
+#pragma region State Settings
     void SetClearColor(float x, float y, float z, float a) override;
     void SetViewport(int width, int height) override;
+
     void SetFaceCulling(CullMode mode) override;
     void SetWindingOrder(WindingOrder mode) override;
 
-    IndexBuffer *CreateIndexBuffer(uint32 *indices, uint32 count) override;
+    void SetClearDepth(float value) override;
+    void SetDepthTestingEnabled(bool enable) override;
+    void SetDepthRange(float dNear, float dFar) override;
+    void SetDepthTestFunc(DepthTestFunc func) override;
+#pragma endregion State Settings
 
+#pragma region Graphics Objects
+    IndexBuffer *CreateIndexBuffer(uint32 *indices, uint32 count) override;
     VertexBuffer *CreateVertexBuffer(uint32 size) override;
     VertexBuffer *CreateVertexBuffer(float *vertices, uint32 size) override;
-
     VertexArray *CreateVertexArray() override;
-
     Shader *CreateShader() override;
+#pragma endregion Graphics Objects
   };
 }

@@ -373,6 +373,7 @@ namespace Krys
     shader->Bind();
 
     Vec2 offset(0.5f);
+    // TODO: move glm methods to Maths.h
     Mat4 proj = glm::perspective(glm::radians(90.0f), ((float)window->GetWidth() / (float)window->GetHeight()), 0.1f, 10.0f);
 
     shader->SetUniform("offset", offset);

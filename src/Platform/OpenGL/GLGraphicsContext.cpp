@@ -6,6 +6,9 @@
 
 namespace Krys
 {
+  GLGraphicsContext::GLGraphicsContext(HDC deviceContext, HWND window)
+      : hWnd(window), dc(deviceContext), openGLContext(0) {}
+
   GLGraphicsContext::~GLGraphicsContext()
   {
     wglDeleteContext(openGLContext);
@@ -46,9 +49,7 @@ namespace Krys
     KRYS_ASSERT(makeCurrentSuccess, "Failed to make OpenGL context current");
 
     if (!gladLoadGL())
-    {
       KRYS_ASSERT(false, "Failed to initialize OpenGL context");
-    }
 
     KRYS_INFO("OPENGL - initialised:");
 
@@ -62,12 +63,27 @@ namespace Krys
     KRYS_INFO("- Primary GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
   }
 
-  void GLGraphicsContext::Clear()
+  void GLGraphicsContext::Clear(ClearFlags flags)
   {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (flags == ClearFlags::None)
+      return;
+
+    int glFlags = 0;
+    if (flags & ClearFlags::Color)
+      glFlags |= GL_COLOR_BUFFER_BIT;
+
+    if (flags & ClearFlags::Depth)
+      glFlags |= GL_DEPTH_BUFFER_BIT;
+
+    if (flags & ClearFlags::Stencil)
+      glFlags |= GL_STENCIL_BUFFER_BIT;
+
+    KRYS_ASSERT(glFlags != 0, "Invalid flags!");
+
+    glClear(glFlags);
   }
 
-  // TODO: pass a vector of floats instead
+  // TODO: pass a vector of floats instead?
   void GLGraphicsContext::SetClearColor(float x, float y, float z, float a)
   {
     glClearColor(x, y, z, a);
@@ -125,6 +141,51 @@ namespace Krys
       KRYS_ASSERT(false, "Invalid CullMode!");
       break;
     }
+  }
+
+  void GLGraphicsContext::SetClearDepth(float value)
+  {
+    glClearDepth(value);
+  }
+
+  void GLGraphicsContext::SetDepthTestingEnabled(bool enable)
+  {
+    if (enable)
+      glEnable(GL_DEPTH_TEST);
+    else
+      glDisable(GL_DEPTH_TEST);
+  }
+
+  void GLGraphicsContext::SetDepthRange(float dNear, float dFar)
+  {
+    glDepthRange(dNear, dFar);
+  }
+
+  void GLGraphicsContext::SetDepthTestFunc(DepthTestFunc func)
+  {
+    int glFunc = [&]()
+    {
+      switch (func)
+      {
+      case DepthTestFunc::Always:
+        return GL_ALWAYS;
+      case DepthTestFunc::EqualOrGreater:
+        return GL_GEQUAL;
+      case DepthTestFunc::Greater:
+        return GL_GREATER;
+      case DepthTestFunc::EqualOrLess:
+        return GL_LEQUAL;
+      case DepthTestFunc::Less:
+        return GL_LESS;
+      case DepthTestFunc::Never:
+        return GL_NEVER;
+      default:
+        KRYS_ASSERT(false, "Invalid depth func!");
+        return 0;
+      }
+    }();
+
+    glDepthFunc(glFunc);
   }
 
   IndexBuffer *GLGraphicsContext::CreateIndexBuffer(uint32 *indices, uint32 count)
