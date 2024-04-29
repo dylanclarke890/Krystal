@@ -10,8 +10,8 @@ namespace Krys
   private:
     GLRendererId Id;
     uint32 VertexBufferIndex = 0;
-    std::vector<VertexBuffer *> VertexBuffers;
-    IndexBuffer *ZBuffer;
+    std::vector<Ref<VertexBuffer>> VertexBuffers;
+    Ref<IndexBuffer> ZBuffer;
 
   public:
     GLVertexArray();
@@ -20,10 +20,10 @@ namespace Krys
     void Bind() const override;
     void Unbind() const override;
 
-    void AddVertexBuffer(VertexBuffer *buffer) override;
-    void SetIndexBuffer(IndexBuffer *buffer) override;
+    void AddVertexBuffer(Ref<VertexBuffer> buffer) override;
+    void SetIndexBuffer(Ref<IndexBuffer> buffer) override;
 
-    const std::vector<VertexBuffer *> &GetVertexBuffers() const override;
-    const IndexBuffer *GetIndexBuffer() override;
+    const std::vector<Ref<VertexBuffer>> &GetVertexBuffers() const override;
+    const Ref<IndexBuffer> GetIndexBuffer() override;
   };
 }

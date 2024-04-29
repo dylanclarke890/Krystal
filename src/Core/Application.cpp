@@ -359,14 +359,14 @@ namespace Krys
         1.0f,
     };
 
-    VertexBuffer *vb = ctx->CreateVertexBuffer(sizeof(vertexData));
+    auto vb = ctx->CreateVertexBuffer(sizeof(vertexData));
     vb->SetData(vertexData, sizeof(vertexData));
     vb->SetLayout({{ShaderDataType::Float4, "position"}, {ShaderDataType::Float4, "color"}});
 
-    VertexArray *va = ctx->CreateVertexArray();
+    auto va = ctx->CreateVertexArray();
     va->AddVertexBuffer(vb);
 
-    Shader *shader = ctx->CreateShader();
+    auto shader = ctx->CreateShader();
     shader->Load(ShaderType::Vertex, "shader.vert");
     shader->Load(ShaderType::Fragment, "shader.frag");
     shader->Link();
@@ -411,10 +411,6 @@ namespace Krys
 
       totalTimeElapsedInMs += elapsedMs;
     }
-
-    delete va;
-    delete vb;
-    delete shader;
   }
 
   // #region Events

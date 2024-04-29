@@ -188,28 +188,28 @@ namespace Krys
     glDepthFunc(glFunc);
   }
 
-  IndexBuffer *GLGraphicsContext::CreateIndexBuffer(uint32 *indices, uint32 count)
+  Ref<IndexBuffer> GLGraphicsContext::CreateIndexBuffer(uint32 *indices, uint32 count)
   {
-    return new GLIndexBuffer(indices, count);
+    return CreateRef<GLIndexBuffer>(indices, count);
   }
 
-  VertexBuffer *GLGraphicsContext::CreateVertexBuffer(uint32 size)
+  Ref<VertexBuffer> GLGraphicsContext::CreateVertexBuffer(uint32 size)
   {
-    return new GLVertexBuffer(size);
+    return CreateRef<GLVertexBuffer>(size);
   }
 
-  VertexBuffer *GLGraphicsContext::CreateVertexBuffer(float *vertices, uint32 size)
+  Ref<VertexBuffer> GLGraphicsContext::CreateVertexBuffer(float *vertices, uint32 size)
   {
-    return new GLVertexBuffer(vertices, size);
+    return CreateRef<GLVertexBuffer>(vertices, size);
   }
 
-  VertexArray *GLGraphicsContext::CreateVertexArray()
+  Ref<VertexArray> GLGraphicsContext::CreateVertexArray()
   {
-    return new GLVertexArray();
+    return CreateRef<GLVertexArray>();
   }
 
-  Shader *GLGraphicsContext::CreateShader()
+  Ref<Shader> GLGraphicsContext::CreateShader()
   {
-    return new GLShader();
+    return CreateRef<GLShader>();
   }
 }

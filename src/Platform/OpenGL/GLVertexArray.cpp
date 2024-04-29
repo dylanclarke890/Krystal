@@ -55,7 +55,7 @@ namespace Krys
     glBindVertexArray(0);
   }
 
-  void GLVertexArray::AddVertexBuffer(VertexBuffer *buffer)
+  void GLVertexArray::AddVertexBuffer(Ref<VertexBuffer> buffer)
   {
     KRYS_ASSERT(buffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 
@@ -123,19 +123,19 @@ namespace Krys
     VertexBuffers.push_back(buffer);
   }
 
-  void GLVertexArray::SetIndexBuffer(IndexBuffer *buffer)
+  void GLVertexArray::SetIndexBuffer(Ref<IndexBuffer> buffer)
   {
     glBindVertexArray(Id);
     ZBuffer = buffer;
     ZBuffer->Bind();
   }
 
-  const std::vector<VertexBuffer *> &GLVertexArray::GetVertexBuffers() const
+  const std::vector<Ref<VertexBuffer>> &GLVertexArray::GetVertexBuffers() const
   {
     return VertexBuffers;
   }
 
-  const IndexBuffer *GLVertexArray::GetIndexBuffer()
+  const Ref<IndexBuffer> GLVertexArray::GetIndexBuffer()
   {
     return ZBuffer;
   }
