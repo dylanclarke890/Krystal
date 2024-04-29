@@ -65,6 +65,7 @@ namespace Krys
     const auto &layout = buffer->GetLayout();
     for (const auto &element : layout)
     {
+      // TODO: we should make sure we don't add too many attributes.
       switch (element.Type)
       {
       case ShaderDataType::Float:
@@ -77,7 +78,7 @@ namespace Krys
                               element.GetComponentCount(),
                               ShaderDataTypeToOpenGLBaseType(element.Type),
                               element.Normalized ? GL_TRUE : GL_FALSE,
-                              layout.GetStride(),
+                              element.Stride,
                               (const void *)element.Offset);
         VertexBufferIndex++;
         break;
@@ -92,7 +93,7 @@ namespace Krys
         glVertexAttribIPointer(VertexBufferIndex,
                                element.GetComponentCount(),
                                ShaderDataTypeToOpenGLBaseType(element.Type),
-                               layout.GetStride(),
+                               element.Stride,
                                (const void *)element.Offset);
         VertexBufferIndex++;
         break;
@@ -108,7 +109,7 @@ namespace Krys
                                 count,
                                 ShaderDataTypeToOpenGLBaseType(element.Type),
                                 element.Normalized ? GL_TRUE : GL_FALSE,
-                                layout.GetStride(),
+                                element.Stride,
                                 (const void *)(element.Offset + sizeof(float) * count * i));
           glVertexAttribDivisor(VertexBufferIndex, 1);
           VertexBufferIndex++;

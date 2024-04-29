@@ -361,7 +361,11 @@ namespace Krys
 
     auto vb = ctx->CreateVertexBuffer(sizeof(vertexData));
     vb->SetData(vertexData, sizeof(vertexData));
-    vb->SetLayout({{ShaderDataType::Float4, "position"}, {ShaderDataType::Float4, "color"}});
+    vb->SetLayout(
+        BufferLayout(
+            sizeof(vertexData),
+            {{ShaderDataType::Float4, "position"}, {ShaderDataType::Float4, "color"}},
+            BufferLayoutType::Interleaved));
 
     auto va = ctx->CreateVertexArray();
     va->AddVertexBuffer(vb);

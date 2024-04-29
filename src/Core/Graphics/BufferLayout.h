@@ -60,6 +60,7 @@ namespace Krys
     const char *Name;
     ShaderDataType Type;
     uint32 Size;
+    uint32 Stride;
     size_t Offset;
     bool Normalized;
 
@@ -107,22 +108,26 @@ namespace Krys
   enum class BufferLayoutType
   {
     // Attributes are interleaved in memory (i.e. [pos, color], [pos, color]).
-    Interleaved,
+    Interleaved = 0,
     // Attributes are contiguous in memory (i.e. [pos, pos], [color, color]).
-    Contiguous
+    Contiguous = 1
   };
 
   class BufferLayout
   {
   private:
     std::vector<BufferElement> m_Elements;
-    uint32 m_Stride;
+    uint32 m_BufferSize;
+    BufferLayoutType m_LayoutType;
 
   public:
-    BufferLayout() : m_Stride(0) {}
+    BufferLayout() = default;
 
-    BufferLayout(std::initializer_list<BufferElement> elements)
-        : m_Elements(elements), m_Stride(0)
+    BufferLayout(
+        uint32 bufferSize,
+        std::initializer_list<BufferElement> elements,
+        BufferLayoutType layoutType = BufferLayoutType::Interleaved)
+        : m_Elements(elements), m_BufferSize(bufferSize), m_LayoutType(layoutType)
     {
       CalculateOffsetsAndStride();
     }
@@ -133,19 +138,42 @@ namespace Krys
     std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
     std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
 
-    uint32 GetStride() const { return m_Stride; }
-
   private:
     void CalculateOffsetsAndStride()
     {
-      uint32 offset = 0;
-      m_Stride = 0;
-
+      uint32 vertexSize = 0;
       for (auto &element : m_Elements)
+        vertexSize += element.Size;
+      KRYS_ASSERT(vertexSize != 0, "Invalid element size!");
+
+      switch (m_LayoutType)
       {
-        element.Offset = offset;
-        offset += element.Size;
-        m_Stride += element.Size;
+      case BufferLayoutType::Interleaved:
+      {
+        uint32 offset = 0;
+        for (auto &element : m_Elements)
+        {
+          element.Offset = offset;
+          offset += element.Size;
+          element.Stride = vertexSize;
+        }
+        break;
+      }
+      case BufferLayoutType::Contiguous:
+      {
+        uint32 offset = 0;
+        uint32 numElements = m_BufferSize / vertexSize;
+        for (auto &element : m_Elements)
+        {
+          element.Offset = offset;
+          offset += element.Size * numElements;
+          element.Stride = element.Size;
+        }
+        break;
+      }
+      default:
+        KRYS_ASSERT(false, "Unrecognised BufferLayoutType!");
+        break;
       }
     }
   };
