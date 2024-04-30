@@ -320,8 +320,6 @@ namespace Krys
 
   void WindowsWindow::BeginFrame()
   {
-    ctx->Clear();
-
     MSG msg;
     while (PeekMessageA(&msg, NULL, 0, 0, PM_REMOVE) > 0)
     {

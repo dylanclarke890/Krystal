@@ -2,11 +2,18 @@
 
 namespace Krys
 {
-  GLIndexBuffer::GLIndexBuffer(uint32 *indices, uint32 count)
+  GLIndexBuffer::GLIndexBuffer(const uint32 *indices, uint32 count)
       : Id(0), Count(count)
   {
     glCreateBuffers(1, &Id);
     glNamedBufferData(Id, count * sizeof(uint32), indices, GL_STATIC_DRAW);
+  }
+
+  GLIndexBuffer::GLIndexBuffer(const ushort *indices, uint32 count)
+      : Id(0), Count(count)
+  {
+    glCreateBuffers(1, &Id);
+    glNamedBufferData(Id, count * sizeof(ushort), indices, GL_STATIC_DRAW);
   }
 
   GLIndexBuffer::~GLIndexBuffer()

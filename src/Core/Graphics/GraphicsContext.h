@@ -31,7 +31,7 @@ namespace Krys
     EqualOrGreater
   };
 
-  enum class ClearFlags : uint
+  enum class ClearFlags : ushort
   {
     None = 0,
     Color = 1,
@@ -70,7 +70,8 @@ namespace Krys
 #pragma endregion State Settings
 
 #pragma region Graphics Objects
-    virtual Ref<IndexBuffer> CreateIndexBuffer(uint32 *indices, uint32 count) = 0;
+    virtual Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) = 0;
+    virtual Ref<IndexBuffer> CreateIndexBuffer(const ushort *indices, uint32 count) = 0;
     virtual Ref<VertexBuffer> CreateVertexBuffer(uint32 size) = 0;
     virtual Ref<VertexBuffer> CreateVertexBuffer(float *vertices, uint32 size) = 0;
     virtual Ref<VertexArray> CreateVertexArray() = 0;

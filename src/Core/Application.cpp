@@ -19,6 +19,8 @@
 
 namespace Krys
 {
+  static Vec3 offset(0.0f);
+
   Application::Application(float targetFps, Window *window, Input *input)
       : window(window), input(input), ctx(window->GetGraphicsContext()),
         IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps) {}
@@ -31,344 +33,248 @@ namespace Krys
     ctx->SetFaceCulling(CullMode::Back);
     ctx->SetWindingOrder(WindingOrder::Clockwise);
 
+    ctx->SetDepthTestingEnabled(true);
+    ctx->SetDepthRange(0.0f, 1.0f);
+    ctx->SetDepthTestFunc(DepthTestFunc::EqualOrLess);
+    ctx->SetClearDepth(1.0f);
+
     IsRunning = true;
 
+#pragma region Test Data
+
+    const int numberOfVertices = 36;
+
+#define RIGHT_EXTENT 0.8f
+#define LEFT_EXTENT -RIGHT_EXTENT
+#define TOP_EXTENT 0.20f
+#define MIDDLE_EXTENT 0.0f
+#define BOTTOM_EXTENT -TOP_EXTENT
+#define FRONT_EXTENT -1.25f
+#define REAR_EXTENT -1.75f
+
+#define GREEN_COLOR 0.75f, 0.75f, 1.0f, 1.0f
+#define BLUE_COLOR 0.0f, 0.5f, 0.0f, 1.0f
+#define RED_COLOR 1.0f, 0.0f, 0.0f, 1.0f
+#define GREY_COLOR 0.8f, 0.8f, 0.8f, 1.0f
+#define BROWN_COLOR 0.5f, 0.5f, 0.0f, 1.0f
+
     const float vertexData[] = {
-        0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        1.0f,
+        // Object 1 positions
+        LEFT_EXTENT,
+        TOP_EXTENT,
+        REAR_EXTENT,
+        LEFT_EXTENT,
+        MIDDLE_EXTENT,
+        FRONT_EXTENT,
+        RIGHT_EXTENT,
+        MIDDLE_EXTENT,
+        FRONT_EXTENT,
+        RIGHT_EXTENT,
+        TOP_EXTENT,
+        REAR_EXTENT,
 
-        0.25f,
-        -0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        1.0f,
+        LEFT_EXTENT,
+        BOTTOM_EXTENT,
+        REAR_EXTENT,
+        LEFT_EXTENT,
+        MIDDLE_EXTENT,
+        FRONT_EXTENT,
+        RIGHT_EXTENT,
+        MIDDLE_EXTENT,
+        FRONT_EXTENT,
+        RIGHT_EXTENT,
+        BOTTOM_EXTENT,
+        REAR_EXTENT,
 
-        -0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        1.0f,
+        LEFT_EXTENT,
+        TOP_EXTENT,
+        REAR_EXTENT,
+        LEFT_EXTENT,
+        MIDDLE_EXTENT,
+        FRONT_EXTENT,
+        LEFT_EXTENT,
+        BOTTOM_EXTENT,
+        REAR_EXTENT,
 
-        0.25f,
-        -0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        1.0f,
+        RIGHT_EXTENT,
+        TOP_EXTENT,
+        REAR_EXTENT,
+        RIGHT_EXTENT,
+        MIDDLE_EXTENT,
+        FRONT_EXTENT,
+        RIGHT_EXTENT,
+        BOTTOM_EXTENT,
+        REAR_EXTENT,
 
-        -0.25f,
-        -0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        1.0f,
+        LEFT_EXTENT,
+        BOTTOM_EXTENT,
+        REAR_EXTENT,
+        LEFT_EXTENT,
+        TOP_EXTENT,
+        REAR_EXTENT,
+        RIGHT_EXTENT,
+        TOP_EXTENT,
+        REAR_EXTENT,
+        RIGHT_EXTENT,
+        BOTTOM_EXTENT,
+        REAR_EXTENT,
 
-        -0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-        1.0f,
+        //	0, 2, 1,
+        //	3, 2, 0,
 
-        0.25f,
-        0.25f,
-        -2.75f,
-        1.0f,
-        0.8f,
-        0.8f,
-        0.8f,
-        1.0f,
+        // Object 2 positions
+        TOP_EXTENT,
+        RIGHT_EXTENT,
+        REAR_EXTENT,
+        MIDDLE_EXTENT,
+        RIGHT_EXTENT,
+        FRONT_EXTENT,
+        MIDDLE_EXTENT,
+        LEFT_EXTENT,
+        FRONT_EXTENT,
+        TOP_EXTENT,
+        LEFT_EXTENT,
+        REAR_EXTENT,
 
-        -0.25f,
-        0.25f,
-        -2.75f,
-        1.0f,
-        0.8f,
-        0.8f,
-        0.8f,
-        1.0f,
+        BOTTOM_EXTENT,
+        RIGHT_EXTENT,
+        REAR_EXTENT,
+        MIDDLE_EXTENT,
+        RIGHT_EXTENT,
+        FRONT_EXTENT,
+        MIDDLE_EXTENT,
+        LEFT_EXTENT,
+        FRONT_EXTENT,
+        BOTTOM_EXTENT,
+        LEFT_EXTENT,
+        REAR_EXTENT,
 
-        0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.8f,
-        0.8f,
-        0.8f,
-        1.0f,
+        TOP_EXTENT,
+        RIGHT_EXTENT,
+        REAR_EXTENT,
+        MIDDLE_EXTENT,
+        RIGHT_EXTENT,
+        FRONT_EXTENT,
+        BOTTOM_EXTENT,
+        RIGHT_EXTENT,
+        REAR_EXTENT,
 
-        0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.8f,
-        0.8f,
-        0.8f,
-        1.0f,
+        TOP_EXTENT,
+        LEFT_EXTENT,
+        REAR_EXTENT,
+        MIDDLE_EXTENT,
+        LEFT_EXTENT,
+        FRONT_EXTENT,
+        BOTTOM_EXTENT,
+        LEFT_EXTENT,
+        REAR_EXTENT,
 
-        -0.25f,
-        0.25f,
-        -2.75f,
-        1.0f,
-        0.8f,
-        0.8f,
-        0.8f,
-        1.0f,
+        BOTTOM_EXTENT,
+        RIGHT_EXTENT,
+        REAR_EXTENT,
+        TOP_EXTENT,
+        RIGHT_EXTENT,
+        REAR_EXTENT,
+        TOP_EXTENT,
+        LEFT_EXTENT,
+        REAR_EXTENT,
+        BOTTOM_EXTENT,
+        LEFT_EXTENT,
+        REAR_EXTENT,
 
-        -0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.8f,
-        0.8f,
-        0.8f,
-        1.0f,
+        // Object 1 colors
+        GREEN_COLOR,
+        GREEN_COLOR,
+        GREEN_COLOR,
+        GREEN_COLOR,
 
-        -0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
+        BLUE_COLOR,
+        BLUE_COLOR,
+        BLUE_COLOR,
+        BLUE_COLOR,
 
-        -0.25f,
-        -0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
+        RED_COLOR,
+        RED_COLOR,
+        RED_COLOR,
 
-        -0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
+        GREY_COLOR,
+        GREY_COLOR,
+        GREY_COLOR,
 
-        -0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
+        BROWN_COLOR,
+        BROWN_COLOR,
+        BROWN_COLOR,
+        BROWN_COLOR,
 
-        -0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
+        // Object 2 colors
+        RED_COLOR,
+        RED_COLOR,
+        RED_COLOR,
+        RED_COLOR,
 
-        -0.25f,
-        0.25f,
-        -2.75f,
-        1.0f,
-        0.0f,
-        1.0f,
-        0.0f,
-        1.0f,
+        BROWN_COLOR,
+        BROWN_COLOR,
+        BROWN_COLOR,
+        BROWN_COLOR,
 
-        0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
+        BLUE_COLOR,
+        BLUE_COLOR,
+        BLUE_COLOR,
 
-        0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
+        GREEN_COLOR,
+        GREEN_COLOR,
+        GREEN_COLOR,
 
-        0.25f,
-        -0.25f,
-        -1.25f,
-        1.0f,
-        0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
-
-        0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
-
-        0.25f,
-        0.25f,
-        -2.75f,
-        1.0f,
-        0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
-
-        0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
-
-        0.25f,
-        0.25f,
-        -2.75f,
-        1.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-
-        0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-
-        -0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-
-        0.25f,
-        0.25f,
-        -2.75f,
-        1.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-
-        -0.25f,
-        0.25f,
-        -1.25f,
-        1.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-
-        -0.25f,
-        0.25f,
-        -2.75f,
-        1.0f,
-        1.0f,
-        0.0f,
-        0.0f,
-        1.0f,
-
-        0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-
-        -0.25f,
-        -0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-
-        0.25f,
-        -0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-
-        0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-
-        -0.25f,
-        -0.25f,
-        -2.75f,
-        1.0f,
-        0.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-
-        -0.25f,
-        -0.25f,
-        -1.25f,
-        1.0f,
-        0.0f,
-        1.0f,
-        1.0f,
-        1.0f,
+        GREY_COLOR,
+        GREY_COLOR,
+        GREY_COLOR,
+        GREY_COLOR,
     };
+
+    const ushort indexData[] =
+        {
+            0,
+            2,
+            1,
+            3,
+            2,
+            0,
+
+            4,
+            5,
+            6,
+            6,
+            7,
+            4,
+
+            8,
+            9,
+            10,
+            11,
+            13,
+            12,
+
+            14,
+            16,
+            15,
+            17,
+            16,
+            14,
+        };
+#pragma endregion Test Data
 
     auto vb = ctx->CreateVertexBuffer(sizeof(vertexData));
     vb->SetData(vertexData, sizeof(vertexData));
     vb->SetLayout(
         BufferLayout(
             sizeof(vertexData),
-            {{ShaderDataType::Float4, "position"}, {ShaderDataType::Float4, "color"}},
-            BufferLayoutType::Interleaved));
+            {{ShaderDataType::Float3, "position"}, {ShaderDataType::Float4, "color"}},
+            BufferLayoutType::Contiguous));
+    auto ib = ctx->CreateIndexBuffer(indexData, ARRAY_COUNT(indexData));
 
     auto va = ctx->CreateVertexArray();
     va->AddVertexBuffer(vb);
+    va->SetIndexBuffer(ib);
 
     auto shader = ctx->CreateShader();
     shader->Load(ShaderType::Vertex, "shader.vert");
@@ -376,11 +282,9 @@ namespace Krys
     shader->Link();
     shader->Bind();
 
-    Vec2 offset(0.5f);
     // TODO: move glm methods to Maths.h
     Mat4 proj = glm::perspective(glm::radians(90.0f), ((float)window->GetWidth() / (float)window->GetHeight()), 0.1f, 10.0f);
 
-    shader->SetUniform("offset", offset);
     shader->SetUniform("perspectiveMatrix", proj);
 
     float totalTimeElapsedInMs = 0;
@@ -392,7 +296,13 @@ namespace Krys
       window->BeginFrame();
       input->BeginFrame();
       {
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        ctx->Clear(ClearFlags::Color | ClearFlags::Depth);
+
+        shader->SetUniform("offset", Vec3(0.0f, 0.0f, 0.0f));
+        glDrawElements(GL_TRIANGLES, ARRAY_COUNT(indexData), GL_UNSIGNED_SHORT, 0);
+
+        shader->SetUniform("offset", offset);
+        glDrawElementsBaseVertex(GL_TRIANGLES, ARRAY_COUNT(indexData), GL_UNSIGNED_SHORT, 0, numberOfVertices / 2);
       }
       input->EndFrame();
       window->EndFrame();
@@ -463,6 +373,27 @@ namespace Krys
   bool Application::OnKeyEvent(KeyEvent &event)
   {
     KRYS_INFO("Key: %d", (int)event.Key);
+
+    if (event.Key == KeyCode::UpArrow)
+    {
+      offset.z -= 0.01f;
+    }
+
+    if (event.Key == KeyCode::DownArrow)
+    {
+      offset.z += 0.01f;
+    }
+
+    if (event.Key == KeyCode::LeftArrow)
+    {
+      offset.x -= 0.01f;
+    }
+
+    if (event.Key == KeyCode::RightArrow)
+    {
+      offset.x += 0.01f;
+    }
+
     return false;
   }
 

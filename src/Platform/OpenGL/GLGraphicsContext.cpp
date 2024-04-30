@@ -188,7 +188,12 @@ namespace Krys
     glDepthFunc(glFunc);
   }
 
-  Ref<IndexBuffer> GLGraphicsContext::CreateIndexBuffer(uint32 *indices, uint32 count)
+  Ref<IndexBuffer> GLGraphicsContext::CreateIndexBuffer(const uint32 *indices, uint32 count)
+  {
+    return CreateRef<GLIndexBuffer>(indices, count);
+  }
+
+  Ref<IndexBuffer> GLGraphicsContext::CreateIndexBuffer(const ushort *indices, uint32 count)
   {
     return CreateRef<GLIndexBuffer>(indices, count);
   }

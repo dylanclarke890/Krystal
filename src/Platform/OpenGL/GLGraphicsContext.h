@@ -36,7 +36,8 @@ namespace Krys
 #pragma endregion State Settings
 
 #pragma region Graphics Objects
-    Ref<IndexBuffer> CreateIndexBuffer(uint32 *indices, uint32 count) override;
+    Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) override;
+    Ref<IndexBuffer> CreateIndexBuffer(const ushort *indices, uint32 count) override;
     Ref<VertexBuffer> CreateVertexBuffer(uint32 size) override;
     Ref<VertexBuffer> CreateVertexBuffer(float *vertices, uint32 size) override;
     Ref<VertexArray> CreateVertexArray() override;

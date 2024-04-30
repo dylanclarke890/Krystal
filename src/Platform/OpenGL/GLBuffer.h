@@ -14,7 +14,8 @@ namespace Krys
     uint Count;
 
   public:
-    GLIndexBuffer(uint32 *indices, uint32 count);
+    GLIndexBuffer(const uint32 *indices, uint32 count);
+    GLIndexBuffer(const ushort *indices, uint32 count);
     ~GLIndexBuffer() override;
 
     void Bind() override;
