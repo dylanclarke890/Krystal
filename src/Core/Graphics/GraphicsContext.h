@@ -7,7 +7,7 @@
 
 namespace Krys
 {
-  enum class CullMode
+  enum class CullMode : ushort
   {
     None = 0,
     Front,
@@ -15,13 +15,13 @@ namespace Krys
     FrontAndBack
   };
 
-  enum class WindingOrder
+  enum class WindingOrder : ushort
   {
     Clockwise,
     CounterClockwise
   };
 
-  enum class DepthTestFunc
+  enum class DepthTestFunc : ushort
   {
     Never,
     Always,
