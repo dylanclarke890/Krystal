@@ -23,9 +23,7 @@ namespace Krys
 
   Application::Application(float targetFps, Window *window, Input *input)
       : window(window), input(input), ctx(window->GetGraphicsContext()),
-        IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps) {}
-
-  void Application::Run()
+        IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps)
   {
     window->SetEventCallback(KRYS_BIND_EVENT_FN(Application::OnEvent));
     window->Show(true);
@@ -37,7 +35,10 @@ namespace Krys
     ctx->SetDepthRange(0.0f, 1.0f);
     ctx->SetDepthTestFunc(DepthTestFunc::EqualOrLess);
     ctx->SetClearDepth(1.0f);
+  }
 
+  void Application::Run()
+  {
     IsRunning = true;
 
 #pragma region Test Data
