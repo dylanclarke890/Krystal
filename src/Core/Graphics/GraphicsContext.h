@@ -63,9 +63,11 @@ namespace Krys
     virtual void SetFaceCulling(CullMode mode) = 0;
     virtual void SetWindingOrder(WindingOrder mode) = 0;
 
+    // TODO: check this, is this actually enabling the buffer or just enabling writing to it?
+    virtual void SetDepthBufferEnabled(bool enable) = 0;
     virtual void SetClearDepth(float value) = 0;
     virtual void SetDepthTestingEnabled(bool enable) = 0;
-    virtual void SetDepthClampRange(float dNear, float dFar) = 0;
+    virtual void SetDepthRange(float dNear, float dFar) = 0;
     virtual void SetDepthClampingEnabled(bool enable) = 0;
     virtual void SetDepthTestFunc(DepthTestFunc func) = 0;
 #pragma endregion State Settings

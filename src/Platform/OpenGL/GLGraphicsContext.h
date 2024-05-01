@@ -29,9 +29,10 @@ namespace Krys
     void SetFaceCulling(CullMode mode) override;
     void SetWindingOrder(WindingOrder mode) override;
 
+    void SetDepthBufferEnabled(bool enable) override;
     void SetClearDepth(float value) override;
     void SetDepthTestingEnabled(bool enable) override;
-    void SetDepthClampRange(float dNear, float dFar) override;
+    void SetDepthRange(float dNear, float dFar) override;
     void SetDepthClampingEnabled(bool enable) override;
     void SetDepthTestFunc(DepthTestFunc func) override;
 #pragma endregion State Settings

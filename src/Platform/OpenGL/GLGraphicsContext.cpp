@@ -143,6 +143,11 @@ namespace Krys
     }
   }
 
+  void GLGraphicsContext::SetDepthBufferEnabled(bool enable)
+  {
+    glDepthMask(enable);
+  }
+
   void GLGraphicsContext::SetClearDepth(float value)
   {
     glClearDepth(value);
@@ -156,7 +161,7 @@ namespace Krys
       glDisable(GL_DEPTH_TEST);
   }
 
-  void GLGraphicsContext::SetDepthClampRange(float dNear, float dFar)
+  void GLGraphicsContext::SetDepthRange(float dNear, float dFar)
   {
     glDepthRange(dNear, dFar);
   }
