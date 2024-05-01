@@ -31,7 +31,8 @@ namespace Krys
 
     void SetClearDepth(float value) override;
     void SetDepthTestingEnabled(bool enable) override;
-    void SetDepthRange(float dNear, float dFar) override;
+    void SetDepthClampRange(float dNear, float dFar) override;
+    void SetDepthClampingEnabled(bool enable) override;
     void SetDepthTestFunc(DepthTestFunc func) override;
 #pragma endregion State Settings
 

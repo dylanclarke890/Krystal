@@ -156,9 +156,17 @@ namespace Krys
       glDisable(GL_DEPTH_TEST);
   }
 
-  void GLGraphicsContext::SetDepthRange(float dNear, float dFar)
+  void GLGraphicsContext::SetDepthClampRange(float dNear, float dFar)
   {
     glDepthRange(dNear, dFar);
+  }
+
+  void GLGraphicsContext::SetDepthClampingEnabled(bool enable)
+  {
+    if (enable)
+      glEnable(GL_DEPTH_CLAMP);
+    else
+      glDisable(GL_DEPTH_CLAMP);
   }
 
   void GLGraphicsContext::SetDepthTestFunc(DepthTestFunc func)

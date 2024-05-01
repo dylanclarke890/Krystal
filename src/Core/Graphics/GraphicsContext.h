@@ -65,7 +65,8 @@ namespace Krys
 
     virtual void SetClearDepth(float value) = 0;
     virtual void SetDepthTestingEnabled(bool enable) = 0;
-    virtual void SetDepthRange(float dNear, float dFar) = 0;
+    virtual void SetDepthClampRange(float dNear, float dFar) = 0;
+    virtual void SetDepthClampingEnabled(bool enable) = 0;
     virtual void SetDepthTestFunc(DepthTestFunc func) = 0;
 #pragma endregion State Settings
 

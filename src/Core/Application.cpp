@@ -32,7 +32,7 @@ namespace Krys
     ctx->SetWindingOrder(WindingOrder::Clockwise);
 
     ctx->SetDepthTestingEnabled(true);
-    ctx->SetDepthRange(0.0f, 1.0f);
+    ctx->SetDepthClampRange(0.0f, 1.0f);
     ctx->SetDepthTestFunc(DepthTestFunc::EqualOrLess);
     ctx->SetClearDepth(1.0f);
   }
