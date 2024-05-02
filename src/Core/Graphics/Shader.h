@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Misc/Maths.h"
+#include "Maths/Maths.h"
 
 namespace Krys
 {

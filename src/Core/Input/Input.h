@@ -2,7 +2,7 @@
 
 #include "KeyCodes.h"
 #include "MouseButtons.h"
-#include "Misc/Maths.h"
+#include "Maths/Maths.h"
 
 // TODO: consider implementing this in the same way we implemented the logger.
 namespace Krys

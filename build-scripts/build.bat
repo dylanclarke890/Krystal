@@ -17,6 +17,7 @@ pushd .\build
 :: | nologo | turn off compiler name banner
 :: | MP     | enable multi-processing compilation
 :: | /std:  | compiler version e.g. c++20
+:: TODO: switch to c++23
 set compiler-flags=-nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++20
 
 :: Custom Defines:

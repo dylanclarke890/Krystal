@@ -12,7 +12,7 @@
 #include "Graphics/Shader.h"
 
 #include "Misc/Performance.h"
-#include "Misc/Maths.h"
+#include "Maths/Maths.h"
 #include "Misc/Chrono.h"
 
 #define ARRAY_COUNT(data) (sizeof(data) / sizeof(data[0]))
