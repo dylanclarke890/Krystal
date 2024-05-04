@@ -42,6 +42,7 @@ namespace Krys
     BOOL setPixelFormatSuccess = SetPixelFormat(dc, pixelFormat, &pfd);
     KRYS_ASSERT(setPixelFormatSuccess, "Failed to set the pixel format");
 
+    // TODO: wglCreateContextAttribsARB
     openGLContext = wglCreateContext(dc);
     KRYS_ASSERT(openGLContext, "Failed to create OpenGL context");
 

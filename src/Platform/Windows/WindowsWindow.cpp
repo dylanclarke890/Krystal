@@ -10,7 +10,7 @@
 
 namespace Krys
 {
-  WindowsWindow::WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input)
+  WindowsWindow::WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, Ref<WindowsInput> input)
       : Window(name, width, height), dc(0), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
   {
     WNDCLASSA windowClass = {};
@@ -72,7 +72,7 @@ namespace Krys
       KRYS_CRITICAL("timeBeginPeriod failed");
 
     dc = GetDC(hWnd);
-    ctx = new GLGraphicsContext(dc, hWnd);
+    ctx = CreateRef<GLGraphicsContext>(dc, hWnd);
     ctx->Init();
     ctx->SetClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   }

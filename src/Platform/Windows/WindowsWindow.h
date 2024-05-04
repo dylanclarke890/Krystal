@@ -14,10 +14,10 @@ namespace Krys
     HDC dc;
     LPSTR cmdLine;
     int nShowCmd;
-    WindowsInput *input;
+    Ref<WindowsInput> input;
 
   public:
-    WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, WindowsInput *input);
+    WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, Ref<WindowsInput> input);
     virtual void Show(bool visible) override;
     virtual void BeginFrame() override;
     virtual void EndFrame() override;

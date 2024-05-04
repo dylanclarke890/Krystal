@@ -13,15 +13,16 @@ namespace Krys
   class Application
   {
   private:
-    Window *window;
-    Input *input;
-    GraphicsContext *ctx;
+    Ref<Window> window;
+    Ref<Input> input;
+    Ref<GraphicsContext> ctx;
     bool IsRunning;
     float TargetFrameTimeMs;
 
   public:
-    Application(float targetFps, Window *window, Input *input);
+    Application(float targetFps, Ref<Window> window, Ref<Input> input);
     void Run();
+    void Shutdown();
 
   private:
     void OnEvent(Event &event);

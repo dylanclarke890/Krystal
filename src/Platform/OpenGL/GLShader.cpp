@@ -43,6 +43,12 @@ namespace Krys
     Add(type, source);
   }
 
+  void GLShader::Load(const char *vertexFilepath, const char *fragmentFilepath)
+  {
+    Load(ShaderType::Vertex, vertexFilepath);
+    Load(ShaderType::Fragment, fragmentFilepath);
+  }
+
   void GLShader::Add(ShaderType type, const char *source)
   {
     GLRendererId id = glCreateShader(ToGLShaderType(type));
