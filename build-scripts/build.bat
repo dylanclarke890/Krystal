@@ -21,14 +21,16 @@ pushd .\build
 set compiler-flags=-nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++20
 
 :: Custom Defines:
-:: |           -D            |             Description
-:: | KRYS_ENABLE_DEBUG_BREAK | Turn on breakpoints (needed for asserts)
-:: | KRYS_ENABLE_ASSERTS     | Runtime asserts that trigger a break point on fail
-:: | KRYS_ENABLE_LOGGING     | Turn on logging
+:: |               -D               |             Description
+:: | KRYS_ENABLE_DEBUG_BREAK        | Turn on breakpoints (needed for asserts)
+:: | KRYS_ENABLE_ASSERTS            | Runtime asserts that trigger a break point on fail
+:: | KRYS_ENABLE_LOGGING            | Turn on logging
+:: | KRYS_ENABLE_PERFORMANCE_CHECKS | Log performance stats
 set defines=^
 -DKRYS_ENABLE_ASSERTS=1 ^
 -DKRYS_ENABLE_LOGGING=1 ^
--DKRYS_ENABLE_DEBUG_BREAK=1
+-DKRYS_ENABLE_DEBUG_BREAK=1 ^
+-DKRYS_ENABLE_PERFORMANCE_CHECKS=1
 
 set entry-point=..\src\Platform\Windows\WindowsEntry.cpp
 

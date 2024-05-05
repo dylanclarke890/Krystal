@@ -37,7 +37,7 @@ namespace Krys
     float totalTimeElapsedInMs = 0;
     while (IsRunning)
     {
-      PerformanceTimer frameTimer("Frame");
+      KRYS_PERFORMANCE_TIMER("Frame");
       int64 startCounter = Performance::GetTicks();
 
       static auto pos = Vec3(-0.5f, -0.5f, 0.0f);

@@ -4,6 +4,7 @@
 
 namespace Krys
 {
+  // TODO: use index buffer
   constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * KRYS_MAX_VERTICES;
 
   Ref<GraphicsContext> Renderer2D::Context;
@@ -49,9 +50,11 @@ namespace Krys
   void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color)
   {
     VertexData vertices[] = {
+        // Triangle 1
         {pos, color},
         {Vec3(pos.x + size.x, pos.y, pos.z), color},
         {Vec3(pos.x, pos.y + size.y, pos.z), color},
+        // Triangle 2
         {Vec3(pos.x + size.x, pos.y, pos.z), color},
         {Vec3(pos.x + size.x, pos.y + size.y, pos.z), color},
         {Vec3(pos.x, pos.y + size.y, pos.z), color},

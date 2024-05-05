@@ -127,3 +127,11 @@ namespace Krys
 #define Gigabytes(value) (Megabytes(value) * 1024)
 #define KRYS_BIND_EVENT_FN(fn) [this](auto &&...args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 // ------- MISC/UTILS -------
+
+// ------- PERFORMANCE ------
+#ifdef DKRYS_ENABLE_PERFORMANCE_CHECKS
+#define KRYS_PERFORMANCE_TIMER(name) PerformanceTimer(name);
+#else
+#define KRYS_PERFORMANCE_TIMER(name)
+#endif
+// ------- PERFORMANCE ------
