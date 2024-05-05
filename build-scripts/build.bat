@@ -56,7 +56,7 @@ set additional-translation-units=^
 ..\src\Platform\Windows\WindowsWindow.cpp ^
 ..\src\Core\Application.cpp
 
-:: TODO: do we need to link to OpenGL if we are using glad? It handles loading it at runtime.
+:: TODO: we link with open gl below but we should really only be doing that at runtime.
 set linked-libs=^
 user32.lib ^
 Gdi32.lib ^
