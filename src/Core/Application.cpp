@@ -33,11 +33,6 @@ namespace Krys
   void Application::Run()
   {
     IsRunning = true;
-    
-    Vec3 PositionA(-1.0f, -1.0f, 0.0f);
-    Vec3 PositionB(1.0f, -1.0f, 0.0f);
-    Vec3 PositionC(0.0f, 1.0f, 0.0f);
-    Vec4 TriangleColor(1.0f);
 
     float totalTimeElapsedInMs = 0;
     while (IsRunning)
@@ -45,13 +40,16 @@ namespace Krys
       PerformanceTimer frameTimer("Frame");
       int64 startCounter = Performance::GetTicks();
 
+      static auto pos = Vec3(-0.5f, -0.5f, 0.0f);
+      static auto size = Vec2(1.0f);
+      static auto color = Vec4(0.8f, 0.6f, 0.7f, 1.0f);
+
       window->BeginFrame();
       input->BeginFrame();
       Renderer2D::Begin();
       {
         ctx->Clear(ClearFlags::Color);
-
-        Renderer2D::DrawTriangle(PositionA, PositionB, PositionC, TriangleColor);
+        Renderer2D::DrawQuad(pos, size, color);
       }
       Renderer2D::End();
       input->EndFrame();

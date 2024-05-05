@@ -31,8 +31,12 @@ namespace Krys
     static void Shutdown();
 
     static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color);
 
     static void Begin();
     static void End();
+
+  private:
+    static void AddVertices(VertexData *vertices, uint count);
   };
 }

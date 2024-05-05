@@ -159,6 +159,7 @@ namespace Krys
         }
         break;
       }
+      // TODO: this won't work when we don't fill up all of the buffer.
       case BufferLayoutType::Contiguous:
       {
         uint32 offset = 0;

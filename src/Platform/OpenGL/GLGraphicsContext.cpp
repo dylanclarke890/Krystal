@@ -19,6 +19,8 @@ namespace Krys
 
   void GLGraphicsContext::Init()
   {
+    // TODO: check we have the settings that we want.
+
     // desired pixel format attributes
     const int32 i_pixel_format_attrib_list[] = {
         WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,       // PFD_DRAW_TO_WINDOW
@@ -26,7 +28,7 @@ namespace Krys
         WGL_DOUBLE_BUFFER_ARB, GL_TRUE,        // PFD_DOUBLEBUFFER
         WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB, // PFD_TYPE_RGBA
         WGL_COLOR_BITS_ARB, 32,                // 32 color bits
-        WGL_DEPTH_BITS_ARB, 24,                // 32 depth bits
+        WGL_DEPTH_BITS_ARB, 24,                // 24 depth bits
         // require that the driver supports the pixel format
         WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
         // MSAA16

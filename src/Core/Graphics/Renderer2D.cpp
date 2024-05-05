@@ -22,9 +22,8 @@ namespace Krys
     VertexBuffer = Context->CreateVertexBuffer(VERTEX_BUFFER_SIZE);
     VertexBuffer->SetLayout(
         BufferLayout(VERTEX_BUFFER_SIZE,
-                     {{ShaderDataType::Float3, "position"},
-                      {ShaderDataType::Float4, "color"}},
-                     BufferLayoutType::Contiguous));
+                     {{ShaderDataType::Float3, "position"}, {ShaderDataType::Float4, "color"}},
+                     BufferLayoutType::Interleaved));
 
     VertexArray->AddVertexBuffer(VertexBuffer);
 
@@ -43,10 +42,21 @@ namespace Krys
 
   void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color)
   {
-    // TODO: make sure we have enough room in the batch
-    Vertices[VertexCount++] = {posA, color};
-    Vertices[VertexCount++] = {posB, color};
-    Vertices[VertexCount++] = {posC, color};
+    VertexData vertices[] = {{posA, color}, {posB, color}, {posC, color}};
+    AddVertices(&vertices[0], 3);
+  }
+
+  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color)
+  {
+    VertexData vertices[] = {
+        {pos, color},
+        {Vec3(pos.x + size.x, pos.y, pos.z), color},
+        {Vec3(pos.x, pos.y + size.y, pos.z), color},
+        {Vec3(pos.x + size.x, pos.y, pos.z), color},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), color},
+        {Vec3(pos.x, pos.y + size.y, pos.z), color},
+    };
+    AddVertices(&vertices[0], 6);
   }
 
   void Renderer2D::Begin()
@@ -59,19 +69,21 @@ namespace Krys
     if (VertexCount == 0)
       return;
 
-    VertexArray->Bind();
-    VertexBuffer->Bind();
     ColorShader->Bind();
-
-    Vec3 PositionA(-1.0f, -1.0f, 0.0f);
-    Vec3 PositionB(1.0f, -1.0f, 0.0f);
-    Vec3 PositionC(0.0f, 1.0f, 0.0f);
-    Vec4 TriangleColor(1.0f);
-    VertexData vertices[] = {{PositionA, TriangleColor},
-                             {PositionB, TriangleColor},
-                             {PositionC, TriangleColor}};
-
-    VertexBuffer->SetData((const void *)vertices, VertexCount * sizeof(VertexData));
+    VertexBuffer->SetData((const void *)Vertices.data(), VertexCount * sizeof(VertexData));
     glDrawArrays(GL_TRIANGLES, 0, VertexCount);
+  }
+
+  void Renderer2D::AddVertices(VertexData *vertices, uint count)
+  {
+    if (VertexCount + count > KRYS_MAX_VERTICES)
+    {
+      // TODO: batch this properly
+      End();
+      Begin();
+    }
+
+    for (size_t i = 0; i < count; i++)
+      Vertices[VertexCount++] = vertices[i];
   }
 }
