@@ -7,7 +7,6 @@
 
 namespace Krys
 {
-  // TODO: can we do something similar without std::function?
   using EventCallbackFn = std::function<void(Event &)>;
 
   class Window

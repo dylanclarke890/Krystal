@@ -105,10 +105,14 @@ namespace Krys
     glClear(glFlags);
   }
 
-  // TODO: pass a vector of floats instead?
-  void GLGraphicsContext::SetClearColor(float x, float y, float z, float a)
+  void GLGraphicsContext::SetClearColor(Vec4 &color)
   {
-    glClearColor(x, y, z, a);
+    glClearColor(color.x, color.y, color.z, color.a);
+  }
+
+  void GLGraphicsContext::SetClearColor(Vec4 color)
+  {
+    glClearColor(color.x, color.y, color.z, color.a);
   }
 
   void GLGraphicsContext::SetViewport(int width, int height)

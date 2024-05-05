@@ -104,7 +104,6 @@ namespace Krys
     }
   };
 
-  // TODO: extend layout class to support contiguous memory layouts.
   enum class BufferLayoutType
   {
     // Attributes are interleaved in memory (i.e. [pos, color], [pos, color]).

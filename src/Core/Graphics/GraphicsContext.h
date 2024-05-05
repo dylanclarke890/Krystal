@@ -57,19 +57,19 @@ namespace Krys
     virtual void Clear(ClearFlags flags = ClearFlags::Color) = 0;
 
 #pragma region State Settings
-    virtual void SetClearColor(float x, float y, float z, float a) = 0;
+    virtual void SetClearColor(Vec4 &color) = 0;
+    virtual void SetClearColor(Vec4 color) = 0;
     virtual void SetViewport(int width, int height) = 0;
 
     virtual void SetFaceCulling(CullMode mode) = 0;
     virtual void SetWindingOrder(WindingOrder mode) = 0;
 
-    // TODO: check this, is this actually enabling the buffer or just enabling writing to it?
-    virtual void SetDepthBufferEnabled(bool enable) = 0;
     virtual void SetClearDepth(float value) = 0;
-    virtual void SetDepthTestingEnabled(bool enable) = 0;
     virtual void SetDepthRange(float dNear, float dFar) = 0;
-    virtual void SetDepthClampingEnabled(bool enable) = 0;
+    virtual void SetDepthBufferEnabled(bool enable) = 0;
+    virtual void SetDepthTestingEnabled(bool enable) = 0;
     virtual void SetDepthTestFunc(DepthTestFunc func) = 0;
+    virtual void SetDepthClampingEnabled(bool enable) = 0;
 #pragma endregion State Settings
 
 #pragma region Graphics Objects

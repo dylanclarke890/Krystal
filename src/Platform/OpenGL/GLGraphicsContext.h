@@ -24,7 +24,8 @@ namespace Krys
     void Clear(ClearFlags flags = ClearFlags::Color) override;
 
 #pragma region State Settings
-    void SetClearColor(float x, float y, float z, float a) override;
+    void SetClearColor(Vec4 &color) override;
+    void SetClearColor(Vec4 color) override;
     void SetViewport(int width, int height) override;
 
     void SetFaceCulling(CullMode mode) override;
