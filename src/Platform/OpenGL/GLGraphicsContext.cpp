@@ -4,10 +4,13 @@
 #include "GLVertexArray.h"
 #include "GLShader.h"
 
+#include <gl.h>
+#include <wgl.h>
+
 namespace Krys
 {
-  GLGraphicsContext::GLGraphicsContext(HDC deviceContext, HWND window)
-      : hWnd(window), dc(deviceContext), openGLContext(0) {}
+  GLGraphicsContext::GLGraphicsContext(HDC deviceContext, HWND window, HINSTANCE instance)
+      : hWnd(window), instance(instance), dc(deviceContext), openGLContext(0) {}
 
   GLGraphicsContext::~GLGraphicsContext()
   {
@@ -16,41 +19,57 @@ namespace Krys
 
   void GLGraphicsContext::Init()
   {
-    PIXELFORMATDESCRIPTOR pfd = {
-        sizeof(PIXELFORMATDESCRIPTOR),
-        1,
-        PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER, // Flags
-        PFD_TYPE_RGBA,                                              // The kind of framebuffer. RGBA or palette.
-        32,                                                         // Colordepth of the framebuffer.
-        0, 0, 0, 0, 0, 0,
-        0,
-        0,
-        0,
-        0, 0, 0, 0,
-        24, // Number of bits for the depthbuffer
-        8,  // Number of bits for the stencilbuffer
-        0,  // Number of Aux buffers in the framebuffer.
-        PFD_MAIN_PLANE,
-        0,
-        0, 0, 0};
+    // desired pixel format attributes
+    const int32 i_pixel_format_attrib_list[] = {
+        WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,       // PFD_DRAW_TO_WINDOW
+        WGL_SUPPORT_OPENGL_ARB, GL_TRUE,       // PFD_SUPPORT_OPENGL
+        WGL_DOUBLE_BUFFER_ARB, GL_TRUE,        // PFD_DOUBLEBUFFER
+        WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB, // PFD_TYPE_RGBA
+        WGL_COLOR_BITS_ARB, 32,                // 32 color bits
+        WGL_DEPTH_BITS_ARB, 24,                // 32 depth bits
+        // require that the driver supports the pixel format
+        WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
+        // MSAA16
+        WGL_SAMPLE_BUFFERS_ARB, GL_TRUE,
+        WGL_SAMPLES_ARB, 16,
+        0 // end
+    };
 
-    KRYS_ASSERT(dc, "Device context was not valid");
+    int32 pixel_format_idx;
+    uint pixel_format_count;
 
-    int pixelFormat = ChoosePixelFormat(dc, &pfd);
-    KRYS_ASSERT(pixelFormat != 0, "Failed to choose a pixel format");
+    auto chooseFormatSuccess = wglChoosePixelFormatARB(
+        dc, i_pixel_format_attrib_list, 0, 1, &pixel_format_idx,
+        &pixel_format_count);
 
-    BOOL setPixelFormatSuccess = SetPixelFormat(dc, pixelFormat, &pfd);
-    KRYS_ASSERT(setPixelFormatSuccess, "Failed to set the pixel format");
+    KRYS_ASSERT(chooseFormatSuccess && pixel_format_count && pixel_format_count,
+                "Cannot find an appropriate pixel format.");
 
-    // TODO: wglCreateContextAttribsARB
-    openGLContext = wglCreateContext(dc);
-    KRYS_ASSERT(openGLContext, "Failed to create OpenGL context");
+    // set actual pixel format to device context
+    PIXELFORMATDESCRIPTOR pfd{};
+    auto describeFormatSuccess = DescribePixelFormat(
+        dc, pixel_format_idx, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+    KRYS_ASSERT(describeFormatSuccess, "Unable to describe pixel format.");
 
-    BOOL makeCurrentSuccess = wglMakeCurrent(dc, openGLContext);
-    KRYS_ASSERT(makeCurrentSuccess, "Failed to make OpenGL context current");
+    auto setPixelFormatSuccess = SetPixelFormat(dc, pixel_format_idx, &pfd);
+    KRYS_ASSERT(setPixelFormatSuccess, "Unable to set pixel format.");
 
-    if (!gladLoadGL())
-      KRYS_ASSERT(false, "Failed to initialize OpenGL context");
+    const uint32 OPENGL_MAJOR = 3;
+    const uint32 OPENGL_MINOR = 3;
+
+    int32 attributes[] = {
+        WGL_CONTEXT_MAJOR_VERSION_ARB, OPENGL_MAJOR,
+        WGL_CONTEXT_MINOR_VERSION_ARB, OPENGL_MINOR,
+        0 // end
+    };
+
+    openGLContext = wglCreateContextAttribsARB(dc, 0, attributes);
+
+    auto makeCurrentSucess = wglMakeCurrent(dc, openGLContext);
+    KRYS_ASSERT(makeCurrentSucess, "Failed to make the OpenGL context current.");
+
+    int32 version = gladLoaderLoadGL();
+    KRYS_ASSERT(version, "Failed to load OpenGL functions.");
 
     KRYS_INFO("OPENGL - initialised:");
 

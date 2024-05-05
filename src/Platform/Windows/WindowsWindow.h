@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+
 #include "Window.h"
 #include "WindowsInput.h"
 #include "Events/MouseEvent.h"

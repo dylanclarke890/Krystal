@@ -1,15 +1,67 @@
 #include <windowsx.h>
 
+#include <wgl.h>
+
 #include "Krystal.h"
 #include "WindowsWindow.h"
 #include "Events/ApplicationEvent.h"
 #include "OpenGL/GLGraphicsContext.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
-#include <glad.h>
 
 namespace Krys
 {
+  static void InitARBExtensions(HINSTANCE instance)
+  {
+    // register window class class
+    WNDCLASSA wc = {0};
+    wc.lpfnWndProc = DefWindowProcA;
+    wc.hInstance = instance;
+    wc.lpszClassName = "wgl_extension_loader_class";
+
+    auto registerSuccess = RegisterClassA(&wc);
+    KRYS_ASSERT(registerSuccess, "unable to register temporary window class");
+
+    HWND fakeWND = CreateWindowA(
+        wc.lpszClassName, "Fake Window",   // window class, title
+        WS_CLIPSIBLINGS | WS_CLIPCHILDREN, // style
+        0, 0,                              // position x, y
+        1, 1,                              // width, height
+        NULL, NULL,                        // parent window, menu
+        instance, NULL);                   // instance, param
+
+    HDC fakeDC = GetDC(fakeWND); // Device Context
+    KRYS_ASSERT(fakeDC, "Device context was not valid");
+
+    // specifiy an arbitray PFD with OpenGL capabilities
+    PIXELFORMATDESCRIPTOR fakePFD = {0};
+    fakePFD.nSize = sizeof(PIXELFORMATDESCRIPTOR); // size of structure
+    fakePFD.nVersion = 1;                          // default version
+    fakePFD.dwFlags = PFD_SUPPORT_OPENGL;          // OpenGL support
+
+    int fakePFDID = ChoosePixelFormat(fakeDC, &fakePFD);
+    KRYS_ASSERT(fakePFDID != 0, "ChoosePixelFormat() failed.");
+
+    BOOL setPixelFormatSuccess = SetPixelFormat(fakeDC, fakePFDID, &fakePFD);
+    KRYS_ASSERT(setPixelFormatSuccess, "Failed to set the pixel format");
+
+    // TODO: DescribePixelFormat?
+
+    HGLRC fakeRC = wglCreateContext(fakeDC);
+    KRYS_ASSERT(fakeRC, "Failed to create OpenGL context");
+
+    BOOL makeCurrentSuccess = wglMakeCurrent(fakeDC, fakeRC);
+    KRYS_ASSERT(makeCurrentSuccess, "Failed to make OpenGL context current");
+
+    int32 wglVersion = gladLoaderLoadWGL(fakeDC);
+    KRYS_ASSERT(wglVersion != 0, "glad WGL loader failed.");
+
+    wglMakeCurrent(NULL, NULL);
+    wglDeleteContext(fakeRC);
+    ReleaseDC(fakeWND, fakeDC);
+    DestroyWindow(fakeWND);
+  }
+
   WindowsWindow::WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, Ref<WindowsInput> input)
       : Window(name, width, height), dc(0), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
   {
@@ -27,7 +79,7 @@ namespace Krys
     windowDimensions.right = width;
     windowDimensions.bottom = height;
 
-    int windowStyles = WS_OVERLAPPEDWINDOW;
+    int windowStyles = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
     if (!AdjustWindowRect(&windowDimensions, windowStyles, 0))
     {
       auto error = GetLastError();
@@ -39,6 +91,8 @@ namespace Krys
     int totalHeight = windowDimensions.bottom - windowDimensions.top;
     KRYS_INFO("Creating window with dimensions: %d x %d", width, height);
     KRYS_INFO("Adjusted window dimensions: %d x %d", totalWidth, totalHeight);
+
+    InitARBExtensions(instance);
 
     hWnd = CreateWindowExA(
         0,                         // optional window styles
@@ -72,7 +126,7 @@ namespace Krys
       KRYS_CRITICAL("timeBeginPeriod failed");
 
     dc = GetDC(hWnd);
-    ctx = CreateRef<GLGraphicsContext>(dc, hWnd);
+    ctx = CreateRef<GLGraphicsContext>(dc, hWnd, instance);
     ctx->Init();
     ctx->SetClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   }

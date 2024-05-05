@@ -41,7 +41,8 @@ set include-dirs=^
 /I "..\src\ThirdParty\glm"
 
 set additional-translation-units=^
-..\src\ThirdParty\Glad\src\glad.c ^
+..\src\ThirdParty\Glad\src\gl.c ^
+..\src\ThirdParty\Glad\src\wgl.c ^
 ..\src\Core\Graphics\Renderer2D.cpp ^
 ..\src\Platform\OpenGL\GLShader.cpp ^
 ..\src\Platform\OpenGL\GLVertexArray.cpp ^
@@ -54,6 +55,7 @@ set additional-translation-units=^
 ..\src\Platform\Windows\WindowsWindow.cpp ^
 ..\src\Core\Application.cpp
 
+:: TODO: do we need to link to OpenGL if we are using glad? It handles loading it at runtime.
 set linked-libs=^
 user32.lib ^
 Gdi32.lib ^

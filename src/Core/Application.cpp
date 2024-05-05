@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glad.h>
-
 #include "Krystal.h"
 #include "Application.h"
 

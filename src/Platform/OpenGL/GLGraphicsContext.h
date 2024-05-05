@@ -12,11 +12,12 @@ namespace Krys
   {
   private:
     HWND hWnd;
+    HINSTANCE instance;
     HDC dc;
     HGLRC openGLContext;
 
   public:
-    GLGraphicsContext(HDC deviceContext, HWND window);
+    GLGraphicsContext(HDC deviceContext, HWND window, HINSTANCE instance);
     ~GLGraphicsContext() override;
 
     void Init() override;
