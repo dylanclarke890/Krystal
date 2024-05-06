@@ -129,7 +129,7 @@ namespace Krys
 // ------- MISC/UTILS -------
 
 // ------- PERFORMANCE ------
-#ifdef DKRYS_ENABLE_PERFORMANCE_CHECKS
+#ifdef KRYS_ENABLE_PERFORMANCE_CHECKS
 #define KRYS_PERFORMANCE_TIMER(name) PerformanceTimer(name);
 #else
 #define KRYS_PERFORMANCE_TIMER(name)
