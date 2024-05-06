@@ -20,6 +20,8 @@ namespace Krys
 {
   static Vec3 offset(0.0f);
 
+  static bool WireFrameMode = false;
+
   Application::Application(float targetFps, Ref<Window> window, Ref<Input> input)
       : window(window), input(input), ctx(window->GetGraphicsContext()),
         IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps)
@@ -34,8 +36,6 @@ namespace Krys
   {
     IsRunning = true;
 
-    ctx->SetWireframeModeEnabled(true);
-
     float totalTimeElapsedInMs = 0;
     while (IsRunning)
     {
@@ -48,6 +48,9 @@ namespace Krys
 
       window->BeginFrame();
       input->BeginFrame();
+
+      ctx->SetWireframeModeEnabled(WireFrameMode);
+
       Renderer2D::Begin();
       {
         ctx->Clear(ClearFlags::Color);
@@ -147,6 +150,11 @@ namespace Krys
     if (event.Key == KeyCode::RightArrow)
     {
       offset.x += 0.01f;
+    }
+
+    if (event.GetEventType() == EventType::KeyPressed && event.Key == KeyCode::Space)
+    {
+      WireFrameMode = !WireFrameMode;
     }
 
     return false;
