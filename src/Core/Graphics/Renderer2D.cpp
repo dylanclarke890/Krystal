@@ -36,7 +36,7 @@ namespace Krys
 
     Shader = Context->CreateShader();
     Shader->Bind();
-    Shader->Load("renderer-2d.vert", "renderer-2d.frag");
+    Shader->Load("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
     Shader->Link();
 
     Vertices = CreateUnique<std::array<VertexData, KRYS_MAX_VERTICES>>();
