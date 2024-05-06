@@ -18,8 +18,6 @@
 
 namespace Krys
 {
-  static Vec3 offset(0.0f);
-
   static bool WireFrameMode = false;
 
   Application::Application(float targetFps, Ref<Window> window, Ref<Input> input)
@@ -132,30 +130,8 @@ namespace Krys
   {
     KRYS_INFO("Key: %d", (int)event.Key);
 
-    if (event.Key == KeyCode::UpArrow)
-    {
-      offset.z -= 0.01f;
-    }
-
-    if (event.Key == KeyCode::DownArrow)
-    {
-      offset.z += 0.01f;
-    }
-
-    if (event.Key == KeyCode::LeftArrow)
-    {
-      offset.x -= 0.01f;
-    }
-
-    if (event.Key == KeyCode::RightArrow)
-    {
-      offset.x += 0.01f;
-    }
-
     if (event.GetEventType() == EventType::KeyPressed && event.Key == KeyCode::Space)
-    {
       WireFrameMode = !WireFrameMode;
-    }
 
     return false;
   }
