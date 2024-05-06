@@ -66,6 +66,8 @@ namespace Krys
     for (const auto &element : layout)
     {
       // TODO: we should make sure we don't add too many attributes.
+      // int nrAttributes;
+      // glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
       switch (element.Type)
       {
       case ShaderDataType::Float:
