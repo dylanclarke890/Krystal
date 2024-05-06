@@ -227,6 +227,11 @@ namespace Krys
     glDepthFunc(glFunc);
   }
 
+  void GLGraphicsContext::SetWireframeModeEnabled(bool enable)
+  {
+    glPolygonMode(GL_FRONT_AND_BACK, enable ? GL_LINE : GL_FILL);
+  }
+
   Ref<IndexBuffer> GLGraphicsContext::CreateIndexBuffer(uint32 count)
   {
     return CreateRef<GLIndexBuffer>(count);

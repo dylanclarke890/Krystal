@@ -34,6 +34,8 @@ namespace Krys
   {
     IsRunning = true;
 
+    ctx->SetWireframeModeEnabled(true);
+
     float totalTimeElapsedInMs = 0;
     while (IsRunning)
     {

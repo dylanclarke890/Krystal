@@ -70,6 +70,8 @@ namespace Krys
     virtual void SetDepthTestingEnabled(bool enable) = 0;
     virtual void SetDepthTestFunc(DepthTestFunc func) = 0;
     virtual void SetDepthClampingEnabled(bool enable) = 0;
+
+    virtual void SetWireframeModeEnabled(bool enable) = 0;
 #pragma endregion State Settings
 
 #pragma region Graphics Objects

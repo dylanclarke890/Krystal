@@ -37,6 +37,9 @@ namespace Krys
     void SetDepthRange(float dNear, float dFar) override;
     void SetDepthClampingEnabled(bool enable) override;
     void SetDepthTestFunc(DepthTestFunc func) override;
+
+    void SetWireframeModeEnabled(bool enable) override;
+
 #pragma endregion State Settings
 
 #pragma region Graphics Objects
