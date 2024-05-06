@@ -22,7 +22,7 @@ namespace Krys
   {
     Context = ctx;
 
-    IndexBuffer = ctx->CreateIndexBuffer(KRYS_MAX_INDICES);
+    IndexBuffer = Context->CreateIndexBuffer(KRYS_MAX_INDICES);
 
     VertexBuffer = Context->CreateVertexBuffer(VERTEX_BUFFER_SIZE);
     VertexBuffer->SetLayout(
@@ -41,6 +41,7 @@ namespace Krys
 
     Vertices = CreateUnique<std::array<VertexData, KRYS_MAX_VERTICES>>();
     VertexCount = 0;
+
     Indices = CreateUnique<std::array<uint32, KRYS_MAX_INDICES>>();
     IndexCount = 0;
   }
