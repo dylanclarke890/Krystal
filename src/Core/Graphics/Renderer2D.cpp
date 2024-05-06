@@ -7,10 +7,12 @@ namespace Krys
   constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * KRYS_MAX_VERTICES;
 
   Ref<GraphicsContext> Renderer2D::Context;
-  Ref<Shader> Renderer2D::ColorShader;
+  Ref<Shader> Renderer2D::Shader;
+
   Ref<VertexArray> Renderer2D::VertexArray;
   Ref<VertexBuffer> Renderer2D::VertexBuffer;
   Ref<IndexBuffer> Renderer2D::IndexBuffer;
+
   Unique<std::array<VertexData, KRYS_MAX_VERTICES>> Renderer2D::Vertices;
   uint Renderer2D::VertexCount;
   Unique<std::array<uint32, KRYS_MAX_INDICES>> Renderer2D::Indices;
@@ -20,22 +22,22 @@ namespace Krys
   {
     Context = ctx;
 
-    VertexArray = Context->CreateVertexArray();
-
     IndexBuffer = ctx->CreateIndexBuffer(KRYS_MAX_INDICES);
+
     VertexBuffer = Context->CreateVertexBuffer(VERTEX_BUFFER_SIZE);
     VertexBuffer->SetLayout(
         BufferLayout(VERTEX_BUFFER_SIZE,
                      {{ShaderDataType::Float3, "position"}, {ShaderDataType::Float4, "color"}},
                      BufferLayoutType::Interleaved));
 
+    VertexArray = Context->CreateVertexArray();
     VertexArray->AddVertexBuffer(VertexBuffer);
     VertexArray->SetIndexBuffer(IndexBuffer);
 
-    ColorShader = Context->CreateShader();
-    ColorShader->Bind();
-    ColorShader->Load("Renderer/color-shader.vert", "Renderer/color-shader.frag");
-    ColorShader->Link();
+    Shader = Context->CreateShader();
+    Shader->Bind();
+    Shader->Load("renderer-2d.vert", "renderer-2d.frag");
+    Shader->Link();
 
     Vertices = CreateUnique<std::array<VertexData, KRYS_MAX_VERTICES>>();
     VertexCount = 0;
@@ -45,6 +47,7 @@ namespace Krys
 
   void Renderer2D::Shutdown()
   {
+    // Everything is static and will get cleaned up when the program terminates, nothing needed for now.
   }
 
   void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color)
@@ -81,12 +84,19 @@ namespace Krys
     IndexCount = 0;
   }
 
+  void Renderer2D::NextBatch()
+  {
+    // TODO: batch this properly
+    End();
+    Begin();
+  }
+
   void Renderer2D::End()
   {
     if (VertexCount == 0)
       return;
 
-    ColorShader->Bind();
+    Shader->Bind();
     VertexBuffer->SetData(static_cast<void *>(Vertices->data()), VertexCount * sizeof(VertexData));
     IndexBuffer->SetData(Indices->data(), IndexCount);
     glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr);
@@ -94,12 +104,8 @@ namespace Krys
 
   void Renderer2D::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
   {
-    // TODO: batch this properly
     if (VertexCount + vertexCount >= KRYS_MAX_VERTICES || IndexCount + indexCount >= KRYS_MAX_INDICES)
-    {
-      End();
-      Begin();
-    }
+      NextBatch();
 
     auto &vertexBuffer = *Vertices;
     for (size_t i = 0; i < vertexCount; i++)

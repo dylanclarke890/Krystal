@@ -22,7 +22,7 @@ namespace Krys
   {
   private:
     static Ref<GraphicsContext> Context;
-    static Ref<Shader> ColorShader;
+    static Ref<Shader> Shader;
     static Ref<VertexArray> VertexArray;
     static Ref<VertexBuffer> VertexBuffer;
     static Ref<IndexBuffer> IndexBuffer;
@@ -39,6 +39,7 @@ namespace Krys
     static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color);
 
     static void Begin();
+    static void NextBatch();
     static void End();
 
   private:
