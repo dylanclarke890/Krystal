@@ -44,7 +44,7 @@ set include-dirs=^
 set additional-translation-units=^
 ..\src\ThirdParty\Glad\src\gl.c ^
 ..\src\ThirdParty\Glad\src\wgl.c ^
-..\src\Core\Graphics\Renderer2D.cpp ^
+..\src\Platform\OpenGL\GLRenderer2D.cpp ^
 ..\src\Platform\OpenGL\GLShader.cpp ^
 ..\src\Platform\OpenGL\GLVertexArray.cpp ^
 ..\src\Platform\OpenGL\GLBuffer.cpp ^

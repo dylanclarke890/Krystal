@@ -1,6 +1,6 @@
-#include "Renderer2D.h"
+#include "Graphics/Renderer2D.h"
 
-#include <gl.h> // TODO: temporary!
+#include <gl.h>
 
 namespace Krys
 {
