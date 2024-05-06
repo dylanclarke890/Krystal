@@ -261,4 +261,9 @@ namespace Krys
   {
     return CreateRef<GLShader>();
   }
+
+  Ref<Texture2D> GLGraphicsContext::CreateTexture2D(const char *filepath)
+  {
+    return CreateRef<Texture2D>(filepath);
+  }
 }

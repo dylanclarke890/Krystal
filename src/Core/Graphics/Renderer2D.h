@@ -36,7 +36,10 @@ namespace Krys
     static void Shutdown();
 
     static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color);
+    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture);
+
     static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture);
 
     static void Begin();
     static void NextBatch();

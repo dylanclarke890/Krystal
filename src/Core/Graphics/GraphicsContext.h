@@ -4,6 +4,7 @@
 #include "Buffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Texture2D.h"
 
 namespace Krys
 {
@@ -77,10 +78,15 @@ namespace Krys
 #pragma region Graphics Objects
     virtual Ref<IndexBuffer> CreateIndexBuffer(uint32 count) = 0;
     virtual Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) = 0;
+
     virtual Ref<VertexBuffer> CreateVertexBuffer(uint32 size) = 0;
     virtual Ref<VertexBuffer> CreateVertexBuffer(float *vertices, uint32 size) = 0;
+
     virtual Ref<VertexArray> CreateVertexArray() = 0;
+
     virtual Ref<Shader> CreateShader() = 0;
+
+    virtual Ref<Texture2D> CreateTexture2D(const char *filepath) = 0;
 #pragma endregion Graphics Objects
   };
 }

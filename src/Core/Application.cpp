@@ -42,6 +42,7 @@ namespace Krys
 
       static auto pos = Vec3(-0.5f, -0.5f, 0.0f);
       static auto size = Vec2(1.0f);
+      static auto texture = ctx->CreateTexture2D("textures/container.jpg");
       static auto color = Vec4(0.8f, 0.6f, 0.7f, 1.0f);
 
       window->BeginFrame();
@@ -53,6 +54,7 @@ namespace Krys
       {
         ctx->Clear(ClearFlags::Color);
         Renderer2D::DrawQuad(pos, size, color);
+        Renderer2D::DrawQuad(pos, size, texture);
       }
       Renderer2D::End();
       input->EndFrame();
