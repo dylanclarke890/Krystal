@@ -12,6 +12,7 @@ namespace Krys
 
     virtual void Bind() = 0;
     virtual void Unbind() = 0;
+    virtual void SetData(const uint32 *indices, uint32 count) = 0;
 
     virtual uint Size() = 0;
   };

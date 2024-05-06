@@ -8,7 +8,9 @@
 namespace Krys
 {
   constexpr uint KRYS_MAX_TRIANGLES = 10000;
-  constexpr uint KRYS_MAX_VERTICES = KRYS_MAX_TRIANGLES * 3;
+  constexpr uint KRYS_MAX_QUADS = KRYS_MAX_TRIANGLES / 2;
+  constexpr uint KRYS_MAX_VERTICES = KRYS_MAX_QUADS * 4;
+  constexpr uint KRYS_MAX_INDICES = KRYS_MAX_QUADS * 6;
 
   struct VertexData
   {
@@ -23,8 +25,11 @@ namespace Krys
     static Ref<Shader> ColorShader;
     static Ref<VertexArray> VertexArray;
     static Ref<VertexBuffer> VertexBuffer;
-    static std::array<VertexData, KRYS_MAX_VERTICES> Vertices;
+    static Ref<IndexBuffer> IndexBuffer;
+    static Unique<std::array<VertexData, KRYS_MAX_VERTICES>> Vertices;
     static uint VertexCount;
+    static Unique<std::array<uint32, KRYS_MAX_INDICES>> Indices;
+    static uint IndexCount;
 
   public:
     static void Init(Ref<GraphicsContext> ctx);
@@ -37,6 +42,6 @@ namespace Krys
     static void End();
 
   private:
-    static void AddVertices(VertexData *vertices, uint count);
+    static void AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount);
   };
 }

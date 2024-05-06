@@ -4,15 +4,17 @@
 
 namespace Krys
 {
-  // TODO: use index buffer
   constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * KRYS_MAX_VERTICES;
 
   Ref<GraphicsContext> Renderer2D::Context;
   Ref<Shader> Renderer2D::ColorShader;
   Ref<VertexArray> Renderer2D::VertexArray;
   Ref<VertexBuffer> Renderer2D::VertexBuffer;
-  std::array<VertexData, KRYS_MAX_VERTICES> Renderer2D::Vertices;
+  Ref<IndexBuffer> Renderer2D::IndexBuffer;
+  Unique<std::array<VertexData, KRYS_MAX_VERTICES>> Renderer2D::Vertices;
   uint Renderer2D::VertexCount;
+  Unique<std::array<uint32, KRYS_MAX_INDICES>> Renderer2D::Indices;
+  uint Renderer2D::IndexCount;
 
   void Renderer2D::Init(Ref<GraphicsContext> ctx)
   {
@@ -20,6 +22,7 @@ namespace Krys
 
     VertexArray = Context->CreateVertexArray();
 
+    IndexBuffer = ctx->CreateIndexBuffer(KRYS_MAX_INDICES);
     VertexBuffer = Context->CreateVertexBuffer(VERTEX_BUFFER_SIZE);
     VertexBuffer->SetLayout(
         BufferLayout(VERTEX_BUFFER_SIZE,
@@ -27,14 +30,17 @@ namespace Krys
                      BufferLayoutType::Interleaved));
 
     VertexArray->AddVertexBuffer(VertexBuffer);
+    VertexArray->SetIndexBuffer(IndexBuffer);
 
     ColorShader = Context->CreateShader();
     ColorShader->Bind();
     ColorShader->Load("Renderer/color-shader.vert", "Renderer/color-shader.frag");
     ColorShader->Link();
 
-    Vertices = std::array<VertexData, KRYS_MAX_VERTICES>();
+    Vertices = CreateUnique<std::array<VertexData, KRYS_MAX_VERTICES>>();
     VertexCount = 0;
+    Indices = CreateUnique<std::array<uint32, KRYS_MAX_INDICES>>();
+    IndexCount = 0;
   }
 
   void Renderer2D::Shutdown()
@@ -44,27 +50,35 @@ namespace Krys
   void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color)
   {
     VertexData vertices[] = {{posA, color}, {posB, color}, {posC, color}};
-    AddVertices(&vertices[0], 3);
+    uint32 indices[] = {VertexCount, VertexCount + 1, VertexCount + 2};
+    AddVertices(&vertices[0], 3, &indices[0], 3);
   }
 
   void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color)
   {
     VertexData vertices[] = {
-        // Triangle 1
         {pos, color},
         {Vec3(pos.x + size.x, pos.y, pos.z), color},
         {Vec3(pos.x, pos.y + size.y, pos.z), color},
-        // Triangle 2
-        {Vec3(pos.x + size.x, pos.y, pos.z), color},
         {Vec3(pos.x + size.x, pos.y + size.y, pos.z), color},
-        {Vec3(pos.x, pos.y + size.y, pos.z), color},
     };
-    AddVertices(&vertices[0], 6);
+    uint32 indices[] = {
+        // Triangle 1
+        VertexCount,
+        VertexCount + 1,
+        VertexCount + 2,
+        // Triangle 2
+        VertexCount + 1,
+        VertexCount + 3,
+        VertexCount + 2,
+    };
+    AddVertices(&vertices[0], 4, &indices[0], 6);
   }
 
   void Renderer2D::Begin()
   {
     VertexCount = 0;
+    IndexCount = 0;
   }
 
   void Renderer2D::End()
@@ -73,20 +87,26 @@ namespace Krys
       return;
 
     ColorShader->Bind();
-    VertexBuffer->SetData((const void *)Vertices.data(), VertexCount * sizeof(VertexData));
-    glDrawArrays(GL_TRIANGLES, 0, VertexCount);
+    VertexBuffer->SetData(static_cast<void *>(Vertices->data()), VertexCount * sizeof(VertexData));
+    IndexBuffer->SetData(Indices->data(), IndexCount);
+    glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr);
   }
 
-  void Renderer2D::AddVertices(VertexData *vertices, uint count)
+  void Renderer2D::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
   {
-    if (VertexCount + count > KRYS_MAX_VERTICES)
+    // TODO: batch this properly
+    if (VertexCount + vertexCount >= KRYS_MAX_VERTICES || IndexCount + indexCount >= KRYS_MAX_INDICES)
     {
-      // TODO: batch this properly
       End();
       Begin();
     }
 
-    for (size_t i = 0; i < count; i++)
-      Vertices[VertexCount++] = vertices[i];
+    auto &vertexBuffer = *Vertices;
+    for (size_t i = 0; i < vertexCount; i++)
+      vertexBuffer[VertexCount++] = vertices[i];
+
+    auto &indexBuffer = *Indices;
+    for (size_t i = 0; i < indexCount; i++)
+      indexBuffer[IndexCount++] = indices[i];
   }
 }
