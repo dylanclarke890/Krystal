@@ -319,14 +319,11 @@ namespace Krys
     }
     case WM_PAINT:
     {
-      PAINTSTRUCT ps;
-      BeginPaint(window, &ps);
-      // TODO: test code
-      // HBRUSH brush = CreateSolidBrush(RGB(50, 151, 151));
-      // FillRect(hdc, &ps.rcPaint, brush);
-      // DeleteObject(brush);
-      EndPaint(window, &ps);
-      break;
+      return DefWindowProcA(window, message, wParam, lParam);
+      // PAINTSTRUCT ps;
+      // BeginPaint(window, &ps);
+      // EndPaint(window, &ps);
+      // break;
     }
 
     default:

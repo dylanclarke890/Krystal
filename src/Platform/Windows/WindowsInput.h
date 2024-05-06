@@ -1,7 +1,7 @@
 #pragma once
 
 #include <windows.h>
-#include <vector> // TODO: implement own map or vector class
+#include <vector>
 #include "Input/Input.h"
 #include "Input/KeyCodes.h"
 
