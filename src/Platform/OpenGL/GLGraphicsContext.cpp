@@ -3,6 +3,7 @@
 #include "GLBuffer.h"
 #include "GLVertexArray.h"
 #include "GLShader.h"
+#include "GLTexture2D.h"
 
 #include <gl.h>
 #include <wgl.h>
@@ -264,6 +265,6 @@ namespace Krys
 
   Ref<Texture2D> GLGraphicsContext::CreateTexture2D(const char *filepath)
   {
-    return CreateRef<Texture2D>(filepath);
+    return CreateRef<GLTexture2D>(filepath);
   }
 }

@@ -16,6 +16,7 @@ namespace Krys
   {
     Vec3 Position;
     Vec4 Color;
+    Vec2 TextureCoords;
   };
 
   class Renderer2D

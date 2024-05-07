@@ -3,7 +3,7 @@
 
 namespace Krys
 {
-  class OpenGLTexture2D : public Texture2D
+  class GLTexture2D : public Texture2D
   {
   private:
     GLRendererId m_RendererId;
@@ -12,9 +12,9 @@ namespace Krys
     GLenum m_InternalFormat, m_DataFormat;
 
   public:
-    OpenGLTexture2D(uint32 width, uint32 height);
-    OpenGLTexture2D(const char *filepath);
-    ~OpenGLTexture2D();
+    GLTexture2D(uint32 width, uint32 height);
+    GLTexture2D(const char *filepath);
+    ~GLTexture2D();
 
     uint32 GetWidth() const override { return m_Width; }
     uint32 GetHeight() const override { return m_Height; }

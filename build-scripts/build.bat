@@ -39,11 +39,13 @@ set include-dirs=^
 /I "..\src\Platform" ^
 /I "..\src\ThirdParty\Glad\include\glad" ^
 /I "..\src\ThirdParty\Glad\include" ^
-/I "..\src\ThirdParty\glm"
+/I "..\src\ThirdParty\glm" ^
+/I "..\src\ThirdParty\stb"
 
 set additional-translation-units=^
 ..\src\ThirdParty\Glad\src\gl.c ^
 ..\src\ThirdParty\Glad\src\wgl.c ^
+..\src\Platform\OpenGL\GLTexture2D.cpp ^
 ..\src\Platform\OpenGL\GLRenderer2D.cpp ^
 ..\src\Platform\OpenGL\GLShader.cpp ^
 ..\src\Platform\OpenGL\GLVertexArray.cpp ^

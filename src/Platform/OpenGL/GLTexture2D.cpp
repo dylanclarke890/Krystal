@@ -6,7 +6,7 @@
 
 namespace Krys
 {
-  OpenGLTexture2D::OpenGLTexture2D(uint32 width, uint32 height)
+  GLTexture2D::GLTexture2D(uint32 width, uint32 height)
       : m_RendererId(0), m_Path(nullptr), m_Width(width), m_Height(height), m_InternalFormat(GL_RGBA8), m_DataFormat(GL_RGBA)
   {
     glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererId);
@@ -21,7 +21,7 @@ namespace Krys
     glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
   }
 
-  OpenGLTexture2D::OpenGLTexture2D(const char *path)
+  GLTexture2D::GLTexture2D(const char *path)
       : m_RendererId(0), m_Path(path), m_Width(0), m_Height(0), m_InternalFormat(0), m_DataFormat(0)
   {
     int width, height, channels;
@@ -61,24 +61,24 @@ namespace Krys
     stbi_image_free(data);
   }
 
-  OpenGLTexture2D::~OpenGLTexture2D()
+  GLTexture2D::~GLTexture2D()
   {
     glDeleteTextures(1, &m_RendererId);
   }
 
-  void OpenGLTexture2D::Bind(uint32 slot) const
+  void GLTexture2D::Bind(uint32 slot) const
   {
     glBindTextureUnit(slot, m_RendererId);
   }
 
-  void OpenGLTexture2D::SetData(void *data, uint32 size)
+  void GLTexture2D::SetData(void *data, uint32 size)
   {
     KRYS_ASSERT(m_Width * m_Height * (m_DataFormat == GL_RGBA ? 4 : 3) == size, "Data must be entire texture!");
     //                                             ^ bytes per pixel
     glTextureSubImage2D(m_RendererId, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
   }
 
-  void OpenGLTexture2D::GenerateMipmaps()
+  void GLTexture2D::GenerateMipmaps()
   {
     glGenerateTextureMipmap(m_RendererId);
     // TODO: make this configurable

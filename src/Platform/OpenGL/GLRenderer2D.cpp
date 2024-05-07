@@ -5,8 +5,21 @@
 namespace Krys
 {
   constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * KRYS_MAX_VERTICES;
+  constexpr Vec4 DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
+  constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
+  constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
+#define QUAD_INDICES(vertexCount)                                                                    \
+  {                                                                                                  \
+    vertexCount, vertexCount + 1, vertexCount + 2, vertexCount + 1, vertexCount + 3, vertexCount + 2 \
+  }
 
-  Ref<GraphicsContext> Renderer2D::Context;
+#define TRIANGLE_INDICES(vertexCount)             \
+  {                                               \
+    vertexCount, vertexCount + 1, vertexCount + 2 \
+  }
+
+  Ref<GraphicsContext>
+      Renderer2D::Context;
   Ref<Shader> Renderer2D::Shader;
 
   Ref<VertexArray> Renderer2D::VertexArray;
@@ -27,7 +40,9 @@ namespace Krys
     VertexBuffer = Context->CreateVertexBuffer(VERTEX_BUFFER_SIZE);
     VertexBuffer->SetLayout(
         BufferLayout(VERTEX_BUFFER_SIZE,
-                     {{ShaderDataType::Float3, "position"}, {ShaderDataType::Float4, "color"}},
+                     {{ShaderDataType::Float3, "position"},
+                      {ShaderDataType::Float4, "color"},
+                      {ShaderDataType::Float2, "textureCoord"}},
                      BufferLayoutType::Interleaved));
 
     VertexArray = Context->CreateVertexArray();
@@ -53,29 +68,47 @@ namespace Krys
 
   void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color)
   {
-    VertexData vertices[] = {{posA, color}, {posB, color}, {posC, color}};
-    uint32 indices[] = {VertexCount, VertexCount + 1, VertexCount + 2};
+    VertexData vertices[] = {
+        {posA, color, TRIANGLE_DEFAULT_TEXTURE_COORDS[0]},
+        {posB, color, TRIANGLE_DEFAULT_TEXTURE_COORDS[1]},
+        {posC, color, TRIANGLE_DEFAULT_TEXTURE_COORDS[2]}};
+    uint32 indices[] = TRIANGLE_INDICES(VertexCount);
+    AddVertices(&vertices[0], 3, &indices[0], 3);
+  }
+
+  void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture)
+  {
+    VertexData vertices[] = {
+        {posA, DEFAULT_COLOR, TRIANGLE_DEFAULT_TEXTURE_COORDS[0]},
+        {posB, DEFAULT_COLOR, TRIANGLE_DEFAULT_TEXTURE_COORDS[1]},
+        {posC, DEFAULT_COLOR, TRIANGLE_DEFAULT_TEXTURE_COORDS[2]}};
+    uint32 indices[] = TRIANGLE_INDICES(VertexCount);
     AddVertices(&vertices[0], 3, &indices[0], 3);
   }
 
   void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color)
   {
     VertexData vertices[] = {
-        {pos, color},
-        {Vec3(pos.x + size.x, pos.y, pos.z), color},
-        {Vec3(pos.x, pos.y + size.y, pos.z), color},
-        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), color},
+        {pos, color, QUAD_DEFAULT_TEXTURE_COORDS[0]},
+        {Vec3(pos.x + size.x, pos.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[1]},
+        {Vec3(pos.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[2]},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[3]},
     };
-    uint32 indices[] = {
-        // Triangle 1
-        VertexCount,
-        VertexCount + 1,
-        VertexCount + 2,
-        // Triangle 2
-        VertexCount + 1,
-        VertexCount + 3,
-        VertexCount + 2,
+
+    uint32 indices[] = QUAD_INDICES(VertexCount);
+    AddVertices(&vertices[0], 4, &indices[0], 6);
+  }
+
+  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture)
+  {
+    VertexData vertices[] = {
+        {pos, DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[0]},
+        {Vec3(pos.x + size.x, pos.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[1]},
+        {Vec3(pos.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[2]},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[3]},
     };
+
+    uint32 indices[] = QUAD_INDICES(VertexCount);
     AddVertices(&vertices[0], 4, &indices[0], 6);
   }
 
