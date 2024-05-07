@@ -10,7 +10,7 @@ namespace Krys
   constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
 #define QUAD_INDICES(vertexCount)                                                                    \
   {                                                                                                  \
-    vertexCount, vertexCount + 1, vertexCount + 2, vertexCount + 1, vertexCount + 3, vertexCount + 2 \
+    vertexCount, vertexCount + 1, vertexCount + 2, vertexCount + 2, vertexCount + 3, vertexCount + 0 \
   }
 
 #define TRIANGLE_INDICES(vertexCount)             \
@@ -18,8 +18,7 @@ namespace Krys
     vertexCount, vertexCount + 1, vertexCount + 2 \
   }
 
-  Ref<GraphicsContext>
-      Renderer2D::Context;
+  Ref<GraphicsContext> Renderer2D::Context;
   Ref<Shader> Renderer2D::Shader;
 
   Ref<VertexArray> Renderer2D::VertexArray;
@@ -91,8 +90,8 @@ namespace Krys
     VertexData vertices[] = {
         {pos, color, QUAD_DEFAULT_TEXTURE_COORDS[0]},
         {Vec3(pos.x + size.x, pos.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[1]},
-        {Vec3(pos.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[2]},
-        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[3]},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[2]},
+        {Vec3(pos.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[3]},
     };
 
     uint32 indices[] = QUAD_INDICES(VertexCount);
@@ -104,8 +103,8 @@ namespace Krys
     VertexData vertices[] = {
         {pos, DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[0]},
         {Vec3(pos.x + size.x, pos.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[1]},
-        {Vec3(pos.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[2]},
-        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[3]},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[2]},
+        {Vec3(pos.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[3]},
     };
 
     uint32 indices[] = QUAD_INDICES(VertexCount);
