@@ -12,7 +12,7 @@ namespace Krys
     GLenum m_InternalFormat, m_DataFormat;
 
   public:
-    GLTexture2D(uint32 width, uint32 height);
+    GLTexture2D(Texture2DSettings settings);
     GLTexture2D(const char *filepath);
     ~GLTexture2D();
 
@@ -23,5 +23,9 @@ namespace Krys
     void SetData(void *data, uint32 size) override;
 
     void GenerateMipmaps() override;
+
+  private:
+    static GLenum ToGLDataFormat(Texture2DFormat format);
+    static GLenum ToGLInternalDataFormat(Texture2DFormat format);
   };
 }

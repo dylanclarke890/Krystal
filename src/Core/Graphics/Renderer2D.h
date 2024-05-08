@@ -23,12 +23,17 @@ namespace Krys
   {
   private:
     static Ref<GraphicsContext> Context;
+
     static Ref<Shader> Shader;
+    static Ref<Texture2D> WhiteTexture;
+
     static Ref<VertexArray> VertexArray;
     static Ref<VertexBuffer> VertexBuffer;
     static Ref<IndexBuffer> IndexBuffer;
+
     static Unique<std::array<VertexData, KRYS_MAX_VERTICES>> Vertices;
     static uint VertexCount;
+    
     static Unique<std::array<uint32, KRYS_MAX_INDICES>> Indices;
     static uint IndexCount;
 

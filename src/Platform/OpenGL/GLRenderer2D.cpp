@@ -19,7 +19,6 @@ namespace Krys
   }
 
   Ref<GraphicsContext> Renderer2D::Context;
-  Ref<Shader> Renderer2D::Shader;
 
   Ref<VertexArray> Renderer2D::VertexArray;
   Ref<VertexBuffer> Renderer2D::VertexBuffer;
@@ -27,14 +26,17 @@ namespace Krys
 
   Unique<std::array<VertexData, KRYS_MAX_VERTICES>> Renderer2D::Vertices;
   uint Renderer2D::VertexCount;
+
   Unique<std::array<uint32, KRYS_MAX_INDICES>> Renderer2D::Indices;
   uint Renderer2D::IndexCount;
+
+  Ref<Shader> Renderer2D::Shader;
+  Ref<Texture2D> Renderer2D::WhiteTexture;
 
   void Renderer2D::Init(Ref<GraphicsContext> ctx)
   {
     Context = ctx;
-
-    IndexBuffer = Context->CreateIndexBuffer(KRYS_MAX_INDICES);
+    VertexArray = Context->CreateVertexArray();
 
     VertexBuffer = Context->CreateVertexBuffer(VERTEX_BUFFER_SIZE);
     VertexBuffer->SetLayout(
@@ -43,21 +45,30 @@ namespace Krys
                       {ShaderDataType::Float4, "color"},
                       {ShaderDataType::Float2, "textureCoord"}},
                      BufferLayoutType::Interleaved));
-
-    VertexArray = Context->CreateVertexArray();
     VertexArray->AddVertexBuffer(VertexBuffer);
-    VertexArray->SetIndexBuffer(IndexBuffer);
 
-    Shader = Context->CreateShader();
-    Shader->Bind();
-    Shader->Load("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
-    Shader->Link();
+    IndexBuffer = Context->CreateIndexBuffer(KRYS_MAX_INDICES);
+    VertexArray->SetIndexBuffer(IndexBuffer);
 
     Vertices = CreateUnique<std::array<VertexData, KRYS_MAX_VERTICES>>();
     VertexCount = 0;
 
     Indices = CreateUnique<std::array<uint32, KRYS_MAX_INDICES>>();
     IndexCount = 0;
+
+    Shader = Context->CreateShader();
+    Shader->Bind();
+    Shader->Load("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
+    Shader->Link();
+
+    Texture2DSettings whiteTextureSettings{};
+    whiteTextureSettings.Width = 1;
+    whiteTextureSettings.Height = 1;
+    whiteTextureSettings.Format = Texture2DFormat::RGBA8;
+    WhiteTexture = Context->CreateTexture2D(whiteTextureSettings);
+
+    uint32_t whiteTextureData = 0xffffffff;
+    WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
   }
 
   void Renderer2D::Shutdown()

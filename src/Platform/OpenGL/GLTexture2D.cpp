@@ -6,9 +6,14 @@
 
 namespace Krys
 {
-  GLTexture2D::GLTexture2D(uint32 width, uint32 height)
-      : m_RendererId(0), m_Path(nullptr), m_Width(width), m_Height(height), m_InternalFormat(GL_RGBA8), m_DataFormat(GL_RGBA)
+  GLTexture2D::GLTexture2D(Texture2DSettings settings)
+      : m_RendererId(0), m_Path(nullptr),
+        m_Width(settings.Width), m_Height(settings.Height),
+        m_InternalFormat(0), m_DataFormat(0)
   {
+    m_DataFormat = ToGLDataFormat(settings.Format);
+    m_InternalFormat = ToGLInternalDataFormat(settings.Format);
+
     glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererId);
     glTextureStorage2D(m_RendererId, 1, m_InternalFormat, m_Width, m_Height);
 
@@ -19,10 +24,15 @@ namespace Krys
     // TODO: make these configurable
     glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    if (settings.GenerateMipMaps)
+      GenerateMipmaps();
   }
 
   GLTexture2D::GLTexture2D(const char *path)
-      : m_RendererId(0), m_Path(path), m_Width(0), m_Height(0), m_InternalFormat(0), m_DataFormat(0)
+      : m_RendererId(0), m_Path(path),
+        m_Width(0), m_Height(0),
+        m_InternalFormat(0), m_DataFormat(0)
   {
     int width, height, channels;
     stbi_set_flip_vertically_on_load(true);
@@ -83,5 +93,33 @@ namespace Krys
     glGenerateTextureMipmap(m_RendererId);
     // TODO: make this configurable
     glTextureParameteri(m_RendererId, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  }
+
+  GLenum GLTexture2D::ToGLDataFormat(Texture2DFormat format)
+  {
+    switch (format)
+    {
+    case Texture2DFormat::RGB8:
+      return GL_RGB;
+    case Texture2DFormat::RGBA8:
+      return GL_RGBA;
+    default:
+      KRYS_ASSERT(false, "Unknown data format");
+      return 0;
+    }
+  }
+
+  GLenum GLTexture2D::ToGLInternalDataFormat(Texture2DFormat format)
+  {
+    switch (format)
+    {
+    case Texture2DFormat::RGB8:
+      return GL_RGB8;
+    case Texture2DFormat::RGBA8:
+      return GL_RGBA8;
+    default:
+      KRYS_ASSERT(false, "Unknown data format");
+      return 0;
+    }
   }
 }
