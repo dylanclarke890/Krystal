@@ -34,11 +34,13 @@ namespace Krys
   {
     IsRunning = true;
 
-    static auto pos1 = Vec3(-0.75f, 0.0f, 0.0f);
-    static auto pos2 = Vec3(+0.25f, 0.0f, 0.0f);
+    static auto pos1 = Vec3(-0.75f, +0.0f, 0.0f);
+    static auto pos2 = Vec3(+0.25f, +0.0f, 0.0f);
+    static auto pos3 = Vec3(+0.00f, -0.25f, 0.0f);
     static auto size = Vec2(0.5f);
+    static auto color1 = Vec4(0.8f, 0.6f, 0.7f, 1.0f);
+    static auto color2 = Vec4(0.3f, 0.2f, 0.4f, 1.0f);
     static auto texture = ctx->CreateTexture2D("textures/container.jpg");
-    static auto color = Vec4(0.8f, 0.6f, 0.7f, 1.0f);
 
     float totalTimeElapsedInMs = 0;
     while (IsRunning)
@@ -54,8 +56,9 @@ namespace Krys
       Renderer2D::Begin();
       {
         ctx->Clear(ClearFlags::Color);
-        Renderer2D::DrawQuad(pos1, size, color);
-        Renderer2D::DrawQuad(pos2, size, texture);
+        Renderer2D::DrawQuad(pos1, size, color1);
+        Renderer2D::DrawQuad(pos2, size, color2);
+        Renderer2D::DrawQuad(pos3, size, texture);
       }
       Renderer2D::End();
       input->EndFrame();

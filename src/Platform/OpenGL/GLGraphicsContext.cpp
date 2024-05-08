@@ -10,6 +10,30 @@
 
 namespace Krys
 {
+#ifdef KRYS_ENABLE_LOGGING
+  void OpenGLMessageCallback(uint source, uint type, uint id, uint severity, int length,
+                             const char *message, const void *userParam)
+  {
+    switch (severity)
+    {
+    case GL_DEBUG_SEVERITY_HIGH:
+      KRYS_CRITICAL(message);
+      return;
+    case GL_DEBUG_SEVERITY_MEDIUM:
+      KRYS_ERROR(message);
+      return;
+    case GL_DEBUG_SEVERITY_LOW:
+      KRYS_WARN(message);
+      return;
+    case GL_DEBUG_SEVERITY_NOTIFICATION:
+      KRYS_INFO(message);
+      return;
+    }
+
+    KRYS_ASSERT(false, "Unknown severity level!");
+  }
+#endif
+
   GLGraphicsContext::GLGraphicsContext(HDC deviceContext, HWND window, HINSTANCE instance)
       : hWnd(window), instance(instance), dc(deviceContext), openGLContext(0) {}
 
@@ -84,6 +108,14 @@ namespace Krys
     KRYS_INFO("- Vendor: %s", glGetString(GL_VENDOR));
     KRYS_INFO("- Renderer: %s", glGetString(GL_RENDERER));
     KRYS_INFO("- Primary GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+#ifdef KRYS_ENABLE_LOGGING
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(OpenGLMessageCallback, nullptr);
+
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
+#endif
   }
 
   void GLGraphicsContext::Clear(ClearFlags flags)

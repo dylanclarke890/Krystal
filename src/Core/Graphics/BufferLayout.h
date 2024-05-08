@@ -23,6 +23,8 @@ namespace Krys
     Bool
   };
 
+  // TODO: make this a private static function of the buffer element struct.
+  // GetSizeOfShaderDataType(ShaderDataType type)
   static uint32 ShaderDataTypeSize(ShaderDataType type)
   {
     switch (type)
@@ -158,7 +160,7 @@ namespace Krys
         }
         break;
       }
-      // TODO: this won't work when we don't fill up all of the buffer.
+      // TODO: this doesn't work when we don't fill up all of the buffer.
       case BufferLayoutType::Contiguous:
       {
         uint32 offset = 0;

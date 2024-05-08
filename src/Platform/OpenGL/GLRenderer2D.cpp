@@ -8,6 +8,8 @@ namespace Krys
   constexpr Vec4 DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
   constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
   constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
+  constexpr float DEFAULT_TEXTURE_SLOT_INDEX = 0;
+  // TODO: temporary
 #define QUAD_INDICES(vertexCount)                                                                    \
   {                                                                                                  \
     vertexCount, vertexCount + 1, vertexCount + 2, vertexCount + 2, vertexCount + 3, vertexCount + 0 \
@@ -31,6 +33,9 @@ namespace Krys
   uint Renderer2D::IndexCount;
 
   Ref<Shader> Renderer2D::Shader;
+
+  Unique<std::array<Ref<Texture2D>, KRYS_MAX_TEXTURE_SLOTS>> Renderer2D::TextureSlots;
+  int Renderer2D::TextureSlotIndex;
   Ref<Texture2D> Renderer2D::WhiteTexture;
 
   void Renderer2D::Init(Ref<GraphicsContext> ctx)
@@ -43,7 +48,8 @@ namespace Krys
         BufferLayout(VERTEX_BUFFER_SIZE,
                      {{ShaderDataType::Float3, "position"},
                       {ShaderDataType::Float4, "color"},
-                      {ShaderDataType::Float2, "textureCoord"}},
+                      {ShaderDataType::Float2, "textureCoord"},
+                      {ShaderDataType::Int, "textureSlotIndex"}},
                      BufferLayoutType::Interleaved));
     VertexArray->AddVertexBuffer(VertexBuffer);
 
@@ -51,15 +57,17 @@ namespace Krys
     VertexArray->SetIndexBuffer(IndexBuffer);
 
     Vertices = CreateUnique<std::array<VertexData, KRYS_MAX_VERTICES>>();
-    VertexCount = 0;
-
     Indices = CreateUnique<std::array<uint32, KRYS_MAX_INDICES>>();
-    IndexCount = 0;
 
     Shader = Context->CreateShader();
     Shader->Bind();
     Shader->Load("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
     Shader->Link();
+
+    int samplers[KRYS_MAX_TEXTURE_SLOTS]{};
+    for (uint32_t i = 0; i < KRYS_MAX_TEXTURE_SLOTS; i++)
+      samplers[i] = i;
+    Shader->SetUniform("u_Textures", samplers, KRYS_MAX_TEXTURE_SLOTS);
 
     Texture2DSettings whiteTextureSettings{};
     whiteTextureSettings.Width = 1;
@@ -69,6 +77,11 @@ namespace Krys
 
     uint32_t whiteTextureData = 0xffffffff;
     WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+
+    TextureSlots = CreateUnique<std::array<Ref<Texture2D>, KRYS_MAX_TEXTURE_SLOTS>>();
+    (*TextureSlots.get())[0] = WhiteTexture;
+
+    Reset();
   }
 
   void Renderer2D::Shutdown()
@@ -79,19 +92,20 @@ namespace Krys
   void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color)
   {
     VertexData vertices[] = {
-        {posA, color, TRIANGLE_DEFAULT_TEXTURE_COORDS[0]},
-        {posB, color, TRIANGLE_DEFAULT_TEXTURE_COORDS[1]},
-        {posC, color, TRIANGLE_DEFAULT_TEXTURE_COORDS[2]}};
+        {posA, color, TRIANGLE_DEFAULT_TEXTURE_COORDS[0], DEFAULT_TEXTURE_SLOT_INDEX},
+        {posB, color, TRIANGLE_DEFAULT_TEXTURE_COORDS[1], DEFAULT_TEXTURE_SLOT_INDEX},
+        {posC, color, TRIANGLE_DEFAULT_TEXTURE_COORDS[2], DEFAULT_TEXTURE_SLOT_INDEX}};
     uint32 indices[] = TRIANGLE_INDICES(VertexCount);
     AddVertices(&vertices[0], 3, &indices[0], 3);
   }
 
   void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture)
   {
+    auto slotIndex = GetTextureSlotIndex(texture);
     VertexData vertices[] = {
-        {posA, DEFAULT_COLOR, TRIANGLE_DEFAULT_TEXTURE_COORDS[0]},
-        {posB, DEFAULT_COLOR, TRIANGLE_DEFAULT_TEXTURE_COORDS[1]},
-        {posC, DEFAULT_COLOR, TRIANGLE_DEFAULT_TEXTURE_COORDS[2]}};
+        {posA, DEFAULT_COLOR, TRIANGLE_DEFAULT_TEXTURE_COORDS[0], slotIndex},
+        {posB, DEFAULT_COLOR, TRIANGLE_DEFAULT_TEXTURE_COORDS[1], slotIndex},
+        {posC, DEFAULT_COLOR, TRIANGLE_DEFAULT_TEXTURE_COORDS[2], slotIndex}};
     uint32 indices[] = TRIANGLE_INDICES(VertexCount);
     AddVertices(&vertices[0], 3, &indices[0], 3);
   }
@@ -99,10 +113,10 @@ namespace Krys
   void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color)
   {
     VertexData vertices[] = {
-        {pos, color, QUAD_DEFAULT_TEXTURE_COORDS[0]},
-        {Vec3(pos.x + size.x, pos.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[1]},
-        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[2]},
-        {Vec3(pos.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[3]},
+        {pos, color, QUAD_DEFAULT_TEXTURE_COORDS[0], DEFAULT_TEXTURE_SLOT_INDEX},
+        {Vec3(pos.x + size.x, pos.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[1], DEFAULT_TEXTURE_SLOT_INDEX},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[2], DEFAULT_TEXTURE_SLOT_INDEX},
+        {Vec3(pos.x, pos.y + size.y, pos.z), color, QUAD_DEFAULT_TEXTURE_COORDS[3], DEFAULT_TEXTURE_SLOT_INDEX},
     };
 
     uint32 indices[] = QUAD_INDICES(VertexCount);
@@ -111,11 +125,13 @@ namespace Krys
 
   void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture)
   {
+    auto slotIndex = GetTextureSlotIndex(texture);
+
     VertexData vertices[] = {
-        {pos, DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[0]},
-        {Vec3(pos.x + size.x, pos.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[1]},
-        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[2]},
-        {Vec3(pos.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[3]},
+        {pos, DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[0], slotIndex},
+        {Vec3(pos.x + size.x, pos.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[1], slotIndex},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[2], slotIndex},
+        {Vec3(pos.x, pos.y + size.y, pos.z), DEFAULT_COLOR, QUAD_DEFAULT_TEXTURE_COORDS[3], slotIndex},
     };
 
     uint32 indices[] = QUAD_INDICES(VertexCount);
@@ -124,8 +140,7 @@ namespace Krys
 
   void Renderer2D::Begin()
   {
-    VertexCount = 0;
-    IndexCount = 0;
+    Reset();
   }
 
   void Renderer2D::NextBatch()
@@ -143,13 +158,20 @@ namespace Krys
     Shader->Bind();
     VertexBuffer->SetData(static_cast<void *>(Vertices->data()), VertexCount * sizeof(VertexData));
     IndexBuffer->SetData(Indices->data(), IndexCount);
+
+    auto &textureSlots = *TextureSlots;
+    for (int i = 0; i < TextureSlotIndex; i++)
+      textureSlots[i]->Bind(i);
+
     glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr);
   }
 
   void Renderer2D::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
   {
     if (VertexCount + vertexCount >= KRYS_MAX_VERTICES || IndexCount + indexCount >= KRYS_MAX_INDICES)
+    {
       NextBatch();
+    }
 
     auto &vertexBuffer = *Vertices;
     for (size_t i = 0; i < vertexCount; i++)
@@ -158,5 +180,38 @@ namespace Krys
     auto &indexBuffer = *Indices;
     for (size_t i = 0; i < indexCount; i++)
       indexBuffer[IndexCount++] = indices[i];
+  }
+
+  void Renderer2D::Reset()
+  {
+    VertexCount = 0;
+    IndexCount = 0;
+    TextureSlotIndex = 1; // 0 == WhiteTexture
+  }
+
+  float Renderer2D::GetTextureSlotIndex(Ref<Texture2D> texture)
+  {
+    int textureSlotIndex = -1;
+    auto &textureSlots = *TextureSlots;
+    for (int i = 0; i < TextureSlotIndex; i++)
+    {
+      if (textureSlots[i]->GetRendererId() == texture->GetRendererId())
+      {
+        textureSlotIndex = i;
+        break;
+      }
+    }
+
+    if (textureSlotIndex == -1)
+    {
+      if (TextureSlotIndex == KRYS_MAX_TEXTURE_SLOTS - 1)
+      {
+        NextBatch();
+      }
+      textureSlotIndex = TextureSlotIndex++;
+      textureSlots[textureSlotIndex] = texture;
+    }
+
+    return (float)textureSlotIndex;
   }
 }
