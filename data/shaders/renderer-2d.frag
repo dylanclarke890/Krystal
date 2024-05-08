@@ -1,4 +1,3 @@
-// TODO: https://stackoverflow.com/a/72649578/15448765
 #version 450
 
 in vec4 v_Color;

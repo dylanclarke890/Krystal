@@ -89,6 +89,7 @@ namespace Krys
     // Everything is static and will get cleaned up when the program terminates, nothing needed for now.
   }
 
+#pragma region Triangles
   void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color)
   {
     VertexData vertices[] = {
@@ -109,6 +110,20 @@ namespace Krys
     uint32 indices[] = TRIANGLE_INDICES(VertexCount);
     AddVertices(&vertices[0], 3, &indices[0], 3);
   }
+
+  void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture, Vec4 &tint)
+  {
+    auto slotIndex = GetTextureSlotIndex(texture);
+    VertexData vertices[] = {
+        {posA, tint, TRIANGLE_DEFAULT_TEXTURE_COORDS[0], slotIndex},
+        {posB, tint, TRIANGLE_DEFAULT_TEXTURE_COORDS[1], slotIndex},
+        {posC, tint, TRIANGLE_DEFAULT_TEXTURE_COORDS[2], slotIndex}};
+    uint32 indices[] = TRIANGLE_INDICES(VertexCount);
+    AddVertices(&vertices[0], 3, &indices[0], 3);
+  }
+#pragma endregion Triangles
+
+#pragma region Quads
 
   void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color)
   {
@@ -138,7 +153,24 @@ namespace Krys
     AddVertices(&vertices[0], 4, &indices[0], 6);
   }
 
-  void Renderer2D::Begin()
+  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, Vec4 &tint)
+  {
+    auto slotIndex = GetTextureSlotIndex(texture);
+
+    VertexData vertices[] = {
+        {pos, tint, QUAD_DEFAULT_TEXTURE_COORDS[0], slotIndex},
+        {Vec3(pos.x + size.x, pos.y, pos.z), tint, QUAD_DEFAULT_TEXTURE_COORDS[1], slotIndex},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), tint, QUAD_DEFAULT_TEXTURE_COORDS[2], slotIndex},
+        {Vec3(pos.x, pos.y + size.y, pos.z), tint, QUAD_DEFAULT_TEXTURE_COORDS[3], slotIndex},
+    };
+
+    uint32 indices[] = QUAD_INDICES(VertexCount);
+    AddVertices(&vertices[0], 4, &indices[0], 6);
+  }
+
+#pragma endregion Quads
+
+  void Renderer2D::BeginScene()
   {
     Reset();
   }
@@ -146,11 +178,11 @@ namespace Krys
   void Renderer2D::NextBatch()
   {
     // TODO: batch this properly
-    End();
-    Begin();
+    EndScene();
+    BeginScene();
   }
 
-  void Renderer2D::End()
+  void Renderer2D::EndScene()
   {
     if (VertexCount == 0)
       return;

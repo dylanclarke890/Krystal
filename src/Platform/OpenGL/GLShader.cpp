@@ -55,7 +55,6 @@ namespace Krys
     glShaderSource(id, 1, &source, NULL);
     glCompileShader(id);
 
-    // TODO: check if the debug output callback can handle outputting this instead
     GLint status;
     glGetShaderiv(id, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE)
@@ -94,7 +93,6 @@ namespace Krys
 
     glLinkProgram(Id);
 
-    // TODO: check if the debug output callback can handle outputting this instead
     GLint status;
     glGetProgramiv(Id, GL_LINK_STATUS, &status);
     if (status == GL_FALSE)

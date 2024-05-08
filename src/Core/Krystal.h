@@ -2,8 +2,6 @@
 
 #include "Misc/PlatformDetection.h"
 
-// TODO: look into type erasure to manage the general architecture
-
 // --------- TYPES ----------
 #include <stdint.h>
 
