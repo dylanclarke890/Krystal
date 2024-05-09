@@ -49,10 +49,14 @@ namespace Krys
     static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color);
     static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture);
     static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture, Vec4 &tint);
+    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<SubTexture2D> subTexture);
+    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<SubTexture2D> subTexture, Vec4 &tint);
 
     static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color);
     static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture);
     static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, Vec4 &tint);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint);
 
     static void BeginScene();
     static void NextBatch();

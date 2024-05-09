@@ -121,6 +121,35 @@ namespace Krys
     uint32 indices[] = TRIANGLE_INDICES(VertexCount);
     AddVertices(&vertices[0], 3, &indices[0], 3);
   }
+
+  void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<SubTexture2D> subTexture)
+  {
+    auto texture = subTexture->GetTexture();
+    auto textureCoords = subTexture->GetTextureCoords();
+    auto slotIndex = GetTextureSlotIndex(texture);
+
+    VertexData vertices[] = {
+        {posA, DEFAULT_COLOR, textureCoords[0], slotIndex},
+        {posB, DEFAULT_COLOR, textureCoords[1], slotIndex},
+        {posC, DEFAULT_COLOR, textureCoords[2], slotIndex}};
+    uint32 indices[] = TRIANGLE_INDICES(VertexCount);
+    AddVertices(&vertices[0], 3, &indices[0], 3);
+  }
+
+  void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<SubTexture2D> subTexture, Vec4 &tint)
+  {
+    auto texture = subTexture->GetTexture();
+    auto textureCoords = subTexture->GetTextureCoords();
+    auto slotIndex = GetTextureSlotIndex(texture);
+
+    VertexData vertices[] = {
+        {posA, tint, textureCoords[0], slotIndex},
+        {posB, tint, textureCoords[1], slotIndex},
+        {posC, tint, textureCoords[2], slotIndex}};
+    uint32 indices[] = TRIANGLE_INDICES(VertexCount);
+    AddVertices(&vertices[0], 3, &indices[0], 3);
+  }
+
 #pragma endregion Triangles
 
 #pragma region Quads
@@ -162,6 +191,40 @@ namespace Krys
         {Vec3(pos.x + size.x, pos.y, pos.z), tint, QUAD_DEFAULT_TEXTURE_COORDS[1], slotIndex},
         {Vec3(pos.x + size.x, pos.y + size.y, pos.z), tint, QUAD_DEFAULT_TEXTURE_COORDS[2], slotIndex},
         {Vec3(pos.x, pos.y + size.y, pos.z), tint, QUAD_DEFAULT_TEXTURE_COORDS[3], slotIndex},
+    };
+
+    uint32 indices[] = QUAD_INDICES(VertexCount);
+    AddVertices(&vertices[0], 4, &indices[0], 6);
+  }
+
+  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture)
+  {
+    auto texture = subTexture->GetTexture();
+    auto textureCoords = subTexture->GetTextureCoords();
+    auto slotIndex = GetTextureSlotIndex(texture);
+
+    VertexData vertices[] = {
+        {pos, DEFAULT_COLOR, textureCoords[0], slotIndex},
+        {Vec3(pos.x + size.x, pos.y, pos.z), DEFAULT_COLOR, textureCoords[1], slotIndex},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), DEFAULT_COLOR, textureCoords[2], slotIndex},
+        {Vec3(pos.x, pos.y + size.y, pos.z), DEFAULT_COLOR, textureCoords[3], slotIndex},
+    };
+
+    uint32 indices[] = QUAD_INDICES(VertexCount);
+    AddVertices(&vertices[0], 4, &indices[0], 6);
+  }
+
+  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint)
+  {
+    auto texture = subTexture->GetTexture();
+    auto textureCoords = subTexture->GetTextureCoords();
+    auto slotIndex = GetTextureSlotIndex(texture);
+
+    VertexData vertices[] = {
+        {pos, tint, textureCoords[0], slotIndex},
+        {Vec3(pos.x + size.x, pos.y, pos.z), tint, textureCoords[1], slotIndex},
+        {Vec3(pos.x + size.x, pos.y + size.y, pos.z), tint, textureCoords[2], slotIndex},
+        {Vec3(pos.x, pos.y + size.y, pos.z), tint, textureCoords[3], slotIndex},
     };
 
     uint32 indices[] = QUAD_INDICES(VertexCount);

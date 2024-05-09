@@ -34,16 +34,24 @@ namespace Krys
   {
     IsRunning = true;
 
+    static auto size = Vec2(0.5f);
+
     static auto pos1 = Vec3(-0.75f, +0.0f, 0.0f);
     static auto pos2 = Vec3(+0.25f, +0.0f, 0.0f);
     static auto pos3 = Vec3(+0.00f, -0.20f, 0.0f);
     static auto pos4 = Vec3(+0.00f, -0.80f, 0.0f);
-    static auto size = Vec2(0.5f);
+
     static auto color1 = Vec4(0.8f, 0.6f, 0.7f, 1.0f);
     static auto color2 = Vec4(0.3f, 0.2f, 0.4f, 1.0f);
     static auto color3 = Vec4(color1.x, color1.y, color1.z, 0.5f);
+
     static auto texture = ctx->CreateTexture2D("textures/container.jpg");
     texture->GenerateMipmaps();
+
+    static auto subTextureSpriteSize = Vec2(128.0f, 128.0f);
+    static auto subTextureCellSize = Vec2(1.0f, 1.0f);
+    static auto subTextureCoords = Vec2(0.25f, 1.0f);
+    static auto subTexture = ctx->CreateSubTexture2D(texture, subTextureCoords, subTextureSpriteSize, subTextureCellSize);
 
     float totalTimeElapsedInMs = 0;
     while (IsRunning)
@@ -60,11 +68,12 @@ namespace Krys
       {
         ctx->Clear(ClearFlags::Color);
         Renderer2D::DrawQuad(pos1, size, color1);
-        Renderer2D::DrawQuad(pos2, size, color2);
-        Renderer2D::DrawQuad(pos3, size, texture);
-        Renderer2D::DrawQuad(pos4, size, texture, color3);
+        Renderer2D::DrawQuad(pos2, size, texture);
+        Renderer2D::DrawQuad(pos3, size, texture, color3);
+        Renderer2D::DrawQuad(pos4, size, subTexture);
       }
       Renderer2D::EndScene();
+
       input->EndFrame();
       window->EndFrame();
 
@@ -142,7 +151,6 @@ namespace Krys
 
     if (event.GetEventType() == EventType::KeyPressed && event.Key == KeyCode::Space)
       WireFrameMode = !WireFrameMode;
-
     return false;
   }
 

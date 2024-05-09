@@ -55,6 +55,7 @@ namespace Krys
 
     Ref<Texture2D> CreateTexture2D(const char *filepath) override;
     Ref<Texture2D> CreateTexture2D(Texture2DSettings settings) override;
+    Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) override;
 #pragma endregion Graphics Objects
   };
 }
