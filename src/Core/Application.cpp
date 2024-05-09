@@ -102,7 +102,7 @@ namespace Krys
     Renderer2D::Shutdown();
   }
 
-  // #region Events
+#pragma region Events
   void Application::OnEvent(Event &event)
   {
     KRYS_INFO(event.GetName());
@@ -168,5 +168,5 @@ namespace Krys
     return true;
   }
 
-  // #endregion Events
+#pragma endregion Events
 }
