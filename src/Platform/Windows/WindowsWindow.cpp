@@ -81,10 +81,7 @@ namespace Krys
 
     int windowStyles = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
     if (!AdjustWindowRect(&windowDimensions, windowStyles, 0))
-    {
-      auto error = GetLastError();
-      KRYS_ASSERT(false, "Error adjusting window rect %s", error);
-    }
+      KRYS_ASSERT(false, "Error adjusting window rect %s", GetLastError());
 
     // Calculate the total width and height of the window
     int totalWidth = windowDimensions.right - windowDimensions.left;
@@ -109,10 +106,7 @@ namespace Krys
         0);                        // additional application data;
 
     if (!hWnd)
-    {
-      auto error = GetLastError();
-      KRYS_CRITICAL("Unable to create window: %s", error);
-    }
+      KRYS_CRITICAL("Unable to create window: %s", GetLastError());
 
     SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
@@ -141,14 +135,10 @@ namespace Krys
       SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pThis));
     }
     else
-    {
       pThis = reinterpret_cast<WindowsWindow *>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-    }
 
     if (pThis)
-    {
       return pThis->WindowProc(hWnd, message, wParam, lParam);
-    }
 
     return DefWindowProc(hWnd, message, wParam, lParam);
   }
