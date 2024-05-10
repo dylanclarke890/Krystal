@@ -164,14 +164,14 @@ namespace Krys
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
-    glProgramUniformMatrix3fv(Id, location, 1, GL_FALSE, &(matrix[0].x));
+    glProgramUniformMatrix3fv(Id, location, 1, GL_FALSE, glm::value_ptr(matrix));
   }
 
   void GLShader::SetUniform(const char *name, const Mat4 &matrix)
   {
     GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name);
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name);
-    glProgramUniformMatrix4fv(Id, location, 1, GL_FALSE, &(matrix[0].x));
+    glProgramUniformMatrix4fv(Id, location, 1, GL_FALSE, glm::value_ptr(matrix));
   }
 
   GLenum GLShader::ToGLShaderType(ShaderType type)

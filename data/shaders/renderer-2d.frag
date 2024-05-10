@@ -2,7 +2,7 @@
 
 in vec4 v_Color;
 in vec2 v_TextureCoord;
-flat in float v_TextureSlotIndex;
+flat in int v_TextureSlotIndex;
 
 out vec4 o_Color;
 
@@ -11,7 +11,7 @@ uniform sampler2D u_Textures[32];
 void main()
 {
   o_Color = v_Color;
-  switch(int(v_TextureSlotIndex))
+  switch(v_TextureSlotIndex)
   {
     case  0: o_Color *= texture(u_Textures[ 0], v_TextureCoord); break;
     case  1: o_Color *= texture(u_Textures[ 1], v_TextureCoord); break;

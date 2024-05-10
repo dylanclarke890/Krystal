@@ -65,7 +65,10 @@ Gdi32.lib ^
 OpenGL32.lib ^
 Winmm.lib
 
-set disable-warnings=-wd4100
+:: Disabled warnings:
+:: 4100 -> unreferenced formal parameter (we'll never need this).
+:: 4201 -> nameless union/struct (we should re-enable this after replacing glm).
+set disable-warnings=-wd4100 -wd4201
 :: End compiler settings
 
 set start_time=%time%

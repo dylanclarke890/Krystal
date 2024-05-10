@@ -18,7 +18,7 @@ namespace Krys
     Vec3 Position;
     Vec4 Color;
     Vec2 TextureCoords;
-    float TextureSlotIndex;
+    int TextureSlotIndex;
   };
 
   class Renderer2D
@@ -67,6 +67,6 @@ namespace Krys
   private:
     static void Reset();
     static void AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount);
-    static float GetTextureSlotIndex(Ref<Texture2D> texture);
+    static int GetTextureSlotIndex(Ref<Texture2D> texture);
   };
 }

@@ -8,7 +8,7 @@ namespace Krys
   constexpr Vec4 DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
   constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
   constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
-  constexpr float DEFAULT_TEXTURE_SLOT_INDEX = 0;
+  constexpr int DEFAULT_TEXTURE_SLOT_INDEX = 0;
   // TODO: temporary
 #define QUAD_INDICES(vertexCount)                                                                    \
   {                                                                                                  \
@@ -236,6 +236,11 @@ namespace Krys
   void Renderer2D::BeginScene()
   {
     Reset();
+
+    Mat4 trans(1.0f);
+    // trans = glm::rotate(trans, glm::radians(90.0f), Vec3(0.0, 0.0, 1.0));
+    // trans = glm::scale(trans, Vec3(0.5, 0.5, 0.5));
+    Shader->SetUniform("u_Transform", trans);
   }
 
   void Renderer2D::NextBatch()
@@ -284,7 +289,7 @@ namespace Krys
     TextureSlotIndex = 1; // 0 == WhiteTexture
   }
 
-  float Renderer2D::GetTextureSlotIndex(Ref<Texture2D> texture)
+  int Renderer2D::GetTextureSlotIndex(Ref<Texture2D> texture)
   {
     int textureSlotIndex = -1;
     auto &textureSlots = *TextureSlots;
@@ -307,6 +312,6 @@ namespace Krys
       textureSlots[textureSlotIndex] = texture;
     }
 
-    return (float)textureSlotIndex;
+    return textureSlotIndex;
   }
 }
