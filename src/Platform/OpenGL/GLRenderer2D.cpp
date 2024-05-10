@@ -237,10 +237,10 @@ namespace Krys
   {
     Reset();
 
-    Mat4 trans(1.0f);
-    // trans = glm::rotate(trans, glm::radians(90.0f), Vec3(0.0, 0.0, 1.0));
-    // trans = glm::scale(trans, Vec3(0.5, 0.5, 0.5));
-    Shader->SetUniform("u_Transform", trans);
+    Mat4 model = glm::rotate(Mat4(1.0f), glm::radians(-55.0f), Vec3(1.0f, 0.0f, 0.0f));
+    Mat4 view = glm::translate(Mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+    Mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+    Shader->SetUniform("u_Transform", projection * view * model);
   }
 
   void Renderer2D::NextBatch()
