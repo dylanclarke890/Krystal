@@ -1,24 +1,33 @@
-#include "Graphics/Renderer2D.h"
-
 #include <gl.h>
+
+#include "Graphics/Renderer2D.h"
+#include "Misc/Time.h"
 
 namespace Krys
 {
-  constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * KRYS_MAX_VERTICES;
-  constexpr Vec4 DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
-  constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
-  constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
-  constexpr int DEFAULT_TEXTURE_SLOT_INDEX = 0;
   // TODO: temporary
 #define QUAD_INDICES(vertexCount)                                                                    \
   {                                                                                                  \
     vertexCount, vertexCount + 1, vertexCount + 2, vertexCount + 2, vertexCount + 3, vertexCount + 0 \
   }
 
+  // TODO: temporary
 #define TRIANGLE_INDICES(vertexCount)             \
   {                                               \
     vertexCount, vertexCount + 1, vertexCount + 2 \
   }
+
+#pragma region Constants
+
+  constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * KRYS_MAX_VERTICES;
+  constexpr Vec4 DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
+  constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
+  constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
+  constexpr int DEFAULT_TEXTURE_SLOT_INDEX = 0;
+
+#pragma endregion Constants
+
+#pragma region Static Member Initialisation
 
   Ref<GraphicsContext> Renderer2D::Context;
 
@@ -37,6 +46,10 @@ namespace Krys
   Unique<std::array<Ref<Texture2D>, KRYS_MAX_TEXTURE_SLOTS>> Renderer2D::TextureSlots;
   int Renderer2D::TextureSlotIndex;
   Ref<Texture2D> Renderer2D::WhiteTexture;
+
+#pragma endregion Static Member Initialisation
+
+#pragma region Lifecycle Methods
 
   void Renderer2D::Init(Ref<GraphicsContext> ctx)
   {
@@ -89,7 +102,9 @@ namespace Krys
     // Everything is static and will get cleaned up when the program terminates, nothing needed for now.
   }
 
-#pragma region Triangles
+#pragma endregion Lifecycle Methods
+
+#pragma region Drawing Triangles
   void Renderer2D::DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color)
   {
     VertexData vertices[] = {
@@ -150,9 +165,9 @@ namespace Krys
     AddVertices(&vertices[0], 3, &indices[0], 3);
   }
 
-#pragma endregion Triangles
+#pragma endregion Drawing Triangles
 
-#pragma region Quads
+#pragma region Drawing Quads
 
   void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color)
   {
@@ -231,14 +246,19 @@ namespace Krys
     AddVertices(&vertices[0], 4, &indices[0], 6);
   }
 
-#pragma endregion Quads
+#pragma endregion Drawing Quads
 
   void Renderer2D::BeginScene()
   {
     Reset();
 
     Mat4 model = glm::rotate(Mat4(1.0f), glm::radians(-55.0f), Vec3(1.0f, 0.0f, 0.0f));
-    Mat4 view = glm::translate(Mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+
+    const float radius = 10.0f;
+    float camX = sin(Time::GetElapsedSecs() / 1000.0f) * radius;
+    float camZ = cos(Time::GetElapsedSecs()) * radius;
+    Mat4 view = glm::lookAt(Vec3(camX, 0.0, camZ), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 1.0, 0.0));
+
     Mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
     Shader->SetUniform("u_Transform", projection * view * model);
   }
@@ -266,6 +286,13 @@ namespace Krys
     glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr);
   }
 
+  void Renderer2D::Reset()
+  {
+    VertexCount = 0;
+    IndexCount = 0;
+    TextureSlotIndex = 1; // 0 == WhiteTexture
+  }
+
   void Renderer2D::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
   {
     if (VertexCount + vertexCount >= KRYS_MAX_VERTICES || IndexCount + indexCount >= KRYS_MAX_INDICES)
@@ -280,13 +307,6 @@ namespace Krys
     auto &indexBuffer = *Indices;
     for (size_t i = 0; i < indexCount; i++)
       indexBuffer[IndexCount++] = indices[i];
-  }
-
-  void Renderer2D::Reset()
-  {
-    VertexCount = 0;
-    IndexCount = 0;
-    TextureSlotIndex = 1; // 0 == WhiteTexture
   }
 
   int Renderer2D::GetTextureSlotIndex(Ref<Texture2D> texture)

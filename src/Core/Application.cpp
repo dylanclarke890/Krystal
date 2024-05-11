@@ -12,6 +12,7 @@
 
 #include "Misc/Performance.h"
 #include "Maths/Maths.h"
+#include "Misc/Time.h"
 #include "Misc/Chrono.h"
 
 #define ARRAY_COUNT(data) (sizeof(data) / sizeof(data[0]))
@@ -53,7 +54,6 @@ namespace Krys
     static auto subTextureCoords = Vec2(0.25f, 1.0f);
     static auto subTexture = ctx->CreateSubTexture2D(texture, subTextureCoords, subTextureSpriteSize, subTextureCellSize);
 
-    float totalTimeElapsedInMs = 0;
     while (IsRunning)
     {
       KRYS_PERFORMANCE_TIMER("Frame");
@@ -93,7 +93,7 @@ namespace Krys
         elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
       }
 
-      totalTimeElapsedInMs += elapsedMs;
+      Time::Increment(elapsedMs);
     }
   }
 

@@ -56,6 +56,7 @@ set additional-translation-units=^
 ..\src\Platform\Windows\WindowsLogger.cpp ^
 ..\src\Platform\Windows\WindowsInput.cpp ^
 ..\src\Platform\Windows\WindowsWindow.cpp ^
+..\src\Core\Misc\Time.cpp ^
 ..\src\Core\Application.cpp
 
 :: TODO: we link with open gl below but we should really only be doing that at runtime.
