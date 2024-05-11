@@ -25,12 +25,8 @@ namespace Krys
 
       m_Projection = glm::perspective(glm::radians(fovAngle), aspectRatio, zNear, zFar);
 
-      Vec3 direction = Vec3(0.0f);
-      direction.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
-      direction.y = sin(glm::radians(m_Pitch));
-      direction.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
-
-      RecalculateViewMatrix();
+      CalculateCameraVectors();
+      CalculateViewMatrix();
     }
 
     void OnUpdate(float dt) noexcept
@@ -45,24 +41,30 @@ namespace Krys
       if (Input::IsKeyPressed(KeyCode::RightArrow) || Input::IsKeyPressed(KeyCode::D))
         m_CameraPosition += glm::normalize(glm::cross(m_CameraFront, m_CameraUp)) * speed;
 
-      // const float radius = 10.0f;
-      // m_CameraPosition.x = sin(Time::GetElapsedSecs()) * radius;
-      // m_CameraPosition.z = cos(Time::GetElapsedSecs()) * radius;
-
-      RecalculateViewMatrix();
+      CalculateViewMatrix();
     }
 
     void SetPosition(Vec3 position)
     {
       m_CameraPosition = position;
-      RecalculateViewMatrix();
+      CalculateViewMatrix();
     }
 
   private:
-    void RecalculateViewMatrix() noexcept
+    void CalculateViewMatrix() noexcept
     {
       m_View = glm::lookAt(m_CameraPosition, m_CameraPosition + m_CameraFront, m_CameraUp);
-      RecalculateViewProjectionMatrix();
+      CalculateViewProjectionMatrix();
+    }
+
+    void CalculateCameraVectors() noexcept
+    {
+      Vec3 front = Vec3(0.0f);
+      front.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+      front.y = sin(glm::radians(m_Pitch));
+      front.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+
+      m_CameraFront = glm::normalize(front);
     }
   };
 }

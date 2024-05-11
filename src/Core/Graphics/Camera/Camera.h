@@ -35,7 +35,7 @@ namespace Krys
     }
 
   protected:
-    void RecalculateViewProjectionMatrix() noexcept
+    void CalculateViewProjectionMatrix() noexcept
     {
       m_ViewProjection = m_Projection * m_View;
     }
