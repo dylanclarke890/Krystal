@@ -2,7 +2,6 @@
 #include <windows.h>
 
 #include "Window.h"
-#include "WindowsInput.h"
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
 
@@ -15,10 +14,9 @@ namespace Krys
     HDC dc;
     LPSTR cmdLine;
     int nShowCmd;
-    Ref<WindowsInput> input;
 
   public:
-    WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, Ref<WindowsInput> input);
+    WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd);
     virtual void Show(bool visible) override;
     virtual void BeginFrame() override;
     virtual void EndFrame() override;

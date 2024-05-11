@@ -2,6 +2,6 @@
 
 namespace Krys
 {
-  float Time::m_TimeElapsed;
-
+  float Time::m_TimeElapsedMs;
+  float Time::m_LastFrameMs;
 }

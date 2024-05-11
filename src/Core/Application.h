@@ -14,13 +14,12 @@ namespace Krys
   {
   private:
     Ref<Window> window;
-    Ref<Input> input;
     Ref<GraphicsContext> ctx;
     bool IsRunning;
     float TargetFrameTimeMs;
 
   public:
-    Application(float targetFps, Ref<Window> window, Ref<Input> input);
+    Application(float targetFps, Ref<Window> window);
     void Run();
     void Shutdown();
 

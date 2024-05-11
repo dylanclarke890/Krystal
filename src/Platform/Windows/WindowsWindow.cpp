@@ -6,6 +6,8 @@
 #include "WindowsWindow.h"
 #include "Events/ApplicationEvent.h"
 #include "OpenGL/GLGraphicsContext.h"
+
+#include "Input/Input.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
 
@@ -62,8 +64,8 @@ namespace Krys
     DestroyWindow(fakeWND);
   }
 
-  WindowsWindow::WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd, Ref<WindowsInput> input)
-      : Window(name, width, height), dc(0), cmdLine(cmdLine), nShowCmd(nShowCmd), input(input)
+  WindowsWindow::WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd)
+      : Window(name, width, height), dc(0), cmdLine(cmdLine), nShowCmd(nShowCmd)
   {
     WNDCLASSA windowClass = {};
     windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -351,7 +353,7 @@ namespace Krys
   {
     event->Shift = GetKeyState(VK_SHIFT) < 0;
     event->Ctrl = GetKeyState(VK_CONTROL) < 0;
-    event->Key = input->MapVirtualKeyToKeyCode(vkCode);
+    event->Key = Input::NativeKeyToKeyCode(static_cast<uint>(vkCode));
   }
 
   void WindowsWindow::Show(bool visible)

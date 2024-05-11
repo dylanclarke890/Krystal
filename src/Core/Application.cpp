@@ -21,14 +21,16 @@ namespace Krys
 {
   static bool WireFrameMode = false;
 
-  Application::Application(float targetFps, Ref<Window> window, Ref<Input> input)
-      : window(window), input(input), ctx(window->GetGraphicsContext()),
+  Application::Application(float targetFps, Ref<Window> window)
+      : window(window), ctx(window->GetGraphicsContext()),
         IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps)
   {
     window->SetEventCallback(KRYS_BIND_EVENT_FN(Application::OnEvent));
-    window->Show(true);
 
+    Input::Init();
     Renderer2D::Init(ctx);
+
+    window->Show(true);
   }
 
   void Application::Run()
@@ -60,7 +62,7 @@ namespace Krys
       int64 startCounter = Performance::GetTicks();
 
       window->BeginFrame();
-      input->BeginFrame();
+      Input::BeginFrame();
 
       ctx->SetWireframeModeEnabled(WireFrameMode);
 
@@ -74,7 +76,7 @@ namespace Krys
       }
       Renderer2D::EndScene();
 
-      input->EndFrame();
+      Input::EndFrame();
       window->EndFrame();
 
       int64 endCounter = Performance::GetTicks();

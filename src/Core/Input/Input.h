@@ -4,27 +4,33 @@
 #include "MouseButtons.h"
 #include "Maths/Maths.h"
 
-// TODO: consider implementing this in the same way we implemented the logger.
 namespace Krys
 {
   class Input
   {
   public:
-    virtual ~Input() = default;
+    Input() = delete;
 
-    virtual void BeginFrame() = 0;
-    virtual void EndFrame() = 0;
+    static void Init();
+    static void Shutdown();
+
+    static void BeginFrame();
+    static void EndFrame();
 
     // Keyboard
-    virtual bool IsKeyPressed(KeyCode key) const = 0;
-    virtual bool WasKeyReleased(KeyCode key) const = 0;
+    static uint KeyCodeToNativeKey(KeyCode key);
+    static KeyCode NativeKeyToKeyCode(uint keyCode);
+    static bool IsKeyPressed(KeyCode key);
+    static bool WasKeyReleased(KeyCode key);
 
     // Mouse
-    virtual bool IsMouseButtonPressed(MouseButton button) const = 0;
-    virtual bool WasMouseButtonReleased(MouseButton button) const = 0;
-    virtual Vec2i GetMousePosition() const = 0;
-    virtual int GetMouseX() const = 0;
-    virtual int GetMouseY() const = 0;
+    static uint MouseButtonToNativeKey(MouseButton button);
+    static MouseButton NativeKeyToMouseButton(uint button);
+    static bool IsMouseButtonPressed(MouseButton button);
+    static bool WasMouseButtonReleased(MouseButton button);
+    static Vec2i GetMousePosition();
+    static int GetMouseX();
+    static int GetMouseY();
     // TODO: virtual float GetMouseScrollDelta() const = 0;
   };
 }
