@@ -1,85 +1,55 @@
 #pragma once
 
-#include "Maths/Maths.h"
+#include "Graphics/Camera/Camera.h"
 
 namespace Krys
 {
-  class OrthographicCamera
+  class OrthographicCamera : public Camera
   {
   private:
-    Mat4 m_View;
-    Mat4 m_Projection;
-    Mat4 m_ViewProjection;
-
-    Vec3 m_Position;
     float m_Rotation;
 
   public:
-    OrthographicCamera(float left, float right, float bottom, float top)
-        : m_View(1.0f),
-          m_Projection(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)),
-          m_Position(0.0f),
-          m_Rotation(0.0f)
+    OrthographicCamera(const RectBounds &bounds, float zNear, float zFar)
+        : m_Rotation(0.0f)
     {
+      m_CameraPosition = Vec3(0.0f);
+      m_View = Mat4(1.0f);
+      m_Projection = glm::ortho(bounds.Left, bounds.Right, bounds.Bottom, bounds.Top, zNear, zFar);
       RecalculateViewProjectionMatrix();
     }
 
-    void SetProjection(float left, float right, float bottom, float top)
+    void SetProjection(const RectBounds &bounds, float zNear, float zFar) noexcept
     {
-      m_Projection = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+      m_Projection = glm::ortho(bounds.Left, bounds.Right, bounds.Bottom, bounds.Top, zNear, zFar);
       RecalculateViewProjectionMatrix();
     }
 
-    void SetPosition(const Vec3 &position)
+    void SetPosition(const Vec3 &position) noexcept
     {
-      m_Position = position;
+      m_CameraPosition = position;
       RecalculateViewMatrix();
     }
 
-    const Vec3 &GetPosition() const
-    {
-      return m_Position;
-    }
-
-    void SetRotation(float rotation)
+    void SetRotation(float rotation) noexcept
     {
       m_Rotation = rotation;
       RecalculateViewMatrix();
     }
 
-    float GetRotation() const
+    float GetRotation() const noexcept
     {
       return m_Rotation;
     }
 
-    const Mat4 &GetViewMatrix() const
-    {
-      return m_View;
-    }
-
-    const Mat4 &GetProjectionMatrix() const
-    {
-      return m_Projection;
-    }
-
-    const Mat4 &GetViewProjectionMatrix() const
-    {
-      return m_ViewProjection;
-    }
-
   private:
-    void RecalculateViewMatrix()
+    void RecalculateViewMatrix() noexcept
     {
       Mat4 rotation = glm::rotate(Mat4(1.0f), glm::radians(m_Rotation), Vec3(0, 0, 1));
-      Mat4 transform = glm::translate(Mat4(1.0f), m_Position) * rotation;
+      Mat4 transform = glm::translate(Mat4(1.0f), m_CameraPosition) * rotation;
 
       m_View = glm::inverse(transform);
       RecalculateViewProjectionMatrix();
-    }
-
-    void RecalculateViewProjectionMatrix()
-    {
-      m_ViewProjection = m_Projection * m_View;
     }
   };
 }

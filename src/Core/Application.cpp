@@ -6,6 +6,7 @@
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
 
+#include "Graphics/Camera/Perspective.h"
 #include "Graphics/Renderer2D.h"
 #include "Graphics/Shader.h"
 #include "Graphics/VertexArray.h"
@@ -56,26 +57,29 @@ namespace Krys
     static auto subTextureCoords = Vec2(0.25f, 1.0f);
     static auto subTexture = ctx->CreateSubTexture2D(texture, subTextureCoords, subTextureSpriteSize, subTextureCellSize);
 
+    static auto camera = PerspectiveCamera(45.0f, 1280.0f / 720.0f, 0.1f, 100.0f);
+
     while (IsRunning)
     {
-      KRYS_PERFORMANCE_TIMER("Frame");
+      KRYS_LOG("Delta Time: %f", Time::GetDeltaMs());
       int64 startCounter = Performance::GetTicks();
 
       window->BeginFrame();
       Input::BeginFrame();
-
-      ctx->SetWireframeModeEnabled(WireFrameMode);
-
-      Renderer2D::BeginScene();
       {
-        ctx->Clear(ClearFlags::Color);
-        Renderer2D::DrawQuad(pos1, size, color1);
-        Renderer2D::DrawQuad(pos2, size, texture);
-        Renderer2D::DrawQuad(pos3, size, texture, color3);
-        Renderer2D::DrawQuad(pos4, size, subTexture);
-      }
-      Renderer2D::EndScene();
+        ctx->SetWireframeModeEnabled(WireFrameMode);
+        camera.OnUpdate(Time::GetDeltaSecs());
 
+        Renderer2D::BeginScene(camera);
+        {
+          ctx->Clear(ClearFlags::Color);
+          Renderer2D::DrawQuad(pos1, size, color1);
+          Renderer2D::DrawQuad(pos2, size, texture);
+          Renderer2D::DrawQuad(pos3, size, texture, color3);
+          Renderer2D::DrawQuad(pos4, size, subTexture);
+        }
+        Renderer2D::EndScene();
+      }
       Input::EndFrame();
       window->EndFrame();
 

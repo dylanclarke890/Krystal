@@ -248,29 +248,22 @@ namespace Krys
 
 #pragma endregion Drawing Quads
 
-  void Renderer2D::BeginScene()
+  void Renderer2D::BeginScene(PerspectiveCamera &camera)
   {
     Reset();
 
-    Mat4 model = glm::rotate(Mat4(1.0f), glm::radians(-55.0f), Vec3(1.0f, 0.0f, 0.0f));
-
-    const float radius = 10.0f;
-    float camX = sin(Time::GetElapsedSecs() / 1000.0f) * radius;
-    float camZ = cos(Time::GetElapsedSecs()) * radius;
-    Mat4 view = glm::lookAt(Vec3(camX, 0.0, camZ), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 1.0, 0.0));
-
-    Mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-    Shader->SetUniform("u_Transform", projection * view * model);
+    auto model = glm::rotate(Mat4(1.0f), glm::radians(-55.0f), Vec3(1.0f, 0.0f, 0.0f));
+    auto &viewProjection = camera.GetViewProjection();
+    Shader->SetUniform("u_Transform", viewProjection * model);
   }
 
   void Renderer2D::NextBatch()
   {
-    // TODO: batch this properly
-    EndScene();
-    BeginScene();
+    Flush();
+    Reset();
   }
 
-  void Renderer2D::EndScene()
+  void Renderer2D::Flush()
   {
     if (VertexCount == 0)
       return;
@@ -284,6 +277,11 @@ namespace Krys
       textureSlots[i]->Bind(i);
 
     glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr);
+  }
+
+  void Renderer2D::EndScene()
+  {
+    Flush();
   }
 
   void Renderer2D::Reset()

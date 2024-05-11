@@ -4,6 +4,7 @@
 
 #include "Krystal.h"
 #include "Graphics/GraphicsContext.h"
+#include "Graphics/Camera/Perspective.h"
 
 namespace Krys
 {
@@ -60,12 +61,13 @@ namespace Krys
     static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint);
     // TODO: tiling factor
 
-    static void BeginScene();
+    static void BeginScene(PerspectiveCamera &camera);
     static void NextBatch();
     static void EndScene();
 
   private:
     static void Reset();
+    static void Flush();
     static void AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount);
     static int GetTextureSlotIndex(Ref<Texture2D> texture);
   };

@@ -37,4 +37,15 @@ namespace Krys
 
     return value;
   }
+
+  struct RectBounds
+  {
+    float Left, Right, Bottom, Top;
+
+    constexpr RectBounds(float left, float right, float bottom, float top)
+        : Left(left), Right(right), Bottom(bottom), Top(top) {}
+
+    constexpr float GetWidth() { return Right - Left; }
+    constexpr float GetHeight() { return Top - Bottom; }
+  };
 }
