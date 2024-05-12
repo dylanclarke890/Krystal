@@ -248,12 +248,12 @@ namespace Krys
 
 #pragma endregion Drawing Quads
 
-  void Renderer2D::BeginScene(PerspectiveCamera &camera)
+  void Renderer2D::BeginScene(Ref<Camera> camera)
   {
     Reset();
 
     auto model = glm::rotate(Mat4(1.0f), glm::radians(-55.0f), Vec3(1.0f, 0.0f, 0.0f));
-    auto &viewProjection = camera.GetViewProjection();
+    auto &viewProjection = camera->GetViewProjection();
     Shader->SetUniform("u_Transform", viewProjection * model);
   }
 

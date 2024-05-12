@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Maths/Maths.h"
+#include "Events/Events.h"
 
 namespace Krys
 {
@@ -33,6 +34,9 @@ namespace Krys
     {
       return m_ViewProjection;
     }
+
+    virtual void OnUpdate(float dt) {}
+    virtual void OnEvent(Event &event) {}
 
   protected:
     void CalculateViewProjectionMatrix() noexcept

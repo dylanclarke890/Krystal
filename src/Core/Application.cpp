@@ -27,11 +27,12 @@ namespace Krys
         IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps)
   {
     window->SetEventCallback(KRYS_BIND_EVENT_FN(Application::OnEvent));
-
     Input::Init();
     Renderer2D::Init(ctx);
 
-    window->Show(true);
+    Camera = CreateRef<PerspectiveCamera>(45.0f, 1280.0f / 720.0f, 0.1f, 100.0f);
+
+    window->Show();
   }
 
   void Application::Run()
@@ -57,20 +58,18 @@ namespace Krys
     static auto subTextureCoords = Vec2(0.25f, 1.0f);
     static auto subTexture = ctx->CreateSubTexture2D(texture, subTextureCoords, subTextureSpriteSize, subTextureCellSize);
 
-    static auto camera = PerspectiveCamera(45.0f, 1280.0f / 720.0f, 0.1f, 100.0f);
-
     while (IsRunning)
     {
-      KRYS_LOG("Delta Time: %f", Time::GetDeltaMs());
+      // KRYS_LOG("Delta Time: %f", Time::GetDeltaMs());
       int64 startCounter = Performance::GetTicks();
 
       window->BeginFrame();
       Input::BeginFrame();
       {
         ctx->SetWireframeModeEnabled(WireFrameMode);
-        camera.OnUpdate(Time::GetDeltaSecs());
+        Camera->OnUpdate(Time::GetDeltaSecs());
 
-        Renderer2D::BeginScene(camera);
+        Renderer2D::BeginScene(Camera);
         {
           ctx->Clear(ClearFlags::Color);
           Renderer2D::DrawQuad(pos1, size, color1);
@@ -116,10 +115,13 @@ namespace Krys
     EventDispatcher dispatcher(event);
     dispatcher.Dispatch<MouseButtonReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
     dispatcher.Dispatch<MouseButtonPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
+    dispatcher.Dispatch<MouseScrollEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseScrollEvent));
     dispatcher.Dispatch<KeyPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
     dispatcher.Dispatch<KeyReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
     dispatcher.Dispatch<ShutdownEvent>(KRYS_BIND_EVENT_FN(Application::OnShutdownEvent));
     dispatcher.Dispatch<ResizeEvent>(KRYS_BIND_EVENT_FN(Application::OnResizeEvent));
+
+    Camera->OnEvent(event);
   }
 
   bool Application::OnMouseButtonEvent(MouseButtonEvent &event)
@@ -160,6 +162,11 @@ namespace Krys
     return false;
   }
 
+  bool Application::OnMouseScrollEvent(MouseScrollEvent &event)
+  {
+    return false;
+  }
+
   bool Application::OnShutdownEvent(ShutdownEvent &event)
   {
     IsRunning = false;
@@ -171,7 +178,7 @@ namespace Krys
   {
     KRYS_INFO("Width: %d, Height: %d", event.Width, event.Height);
     ctx->SetViewport(event.Width, event.Height);
-    return true;
+    return false;
   }
 
 #pragma endregion Events

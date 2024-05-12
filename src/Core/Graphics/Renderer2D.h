@@ -61,7 +61,7 @@ namespace Krys
     static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint);
     // TODO: tiling factor
 
-    static void BeginScene(PerspectiveCamera &camera);
+    static void BeginScene(Ref<Camera> camera);
     static void NextBatch();
     static void EndScene();
 

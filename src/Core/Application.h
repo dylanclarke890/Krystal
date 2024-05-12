@@ -7,6 +7,7 @@
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
 #include "Graphics/GraphicsContext.h"
+#include "Graphics/Camera/Perspective.h"
 
 namespace Krys
 {
@@ -17,6 +18,7 @@ namespace Krys
     Ref<GraphicsContext> ctx;
     bool IsRunning;
     float TargetFrameTimeMs;
+    Ref<Camera> Camera;
 
   public:
     Application(float targetFps, Ref<Window> window);
@@ -27,6 +29,7 @@ namespace Krys
     void OnEvent(Event &event);
     bool OnMouseButtonEvent(MouseButtonEvent &event);
     bool OnKeyEvent(KeyEvent &event);
+    bool OnMouseScrollEvent(MouseScrollEvent &event);
     bool OnResizeEvent(ResizeEvent &event);
     bool OnShutdownEvent(ShutdownEvent &event);
   };

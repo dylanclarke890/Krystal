@@ -30,7 +30,7 @@ namespace Krys
     int GetHeight() const { return Height; }
     Ref<GraphicsContext> GetGraphicsContext() const { return ctx; }
 
-    virtual void Show(bool visible) = 0;
+    virtual void Show(bool visible = true) = 0;
 
     virtual void BeginFrame() = 0;
     virtual void EndFrame() = 0;
