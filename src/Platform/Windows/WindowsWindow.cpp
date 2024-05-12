@@ -155,6 +155,13 @@ namespace Krys
     switch (message)
     {
 #pragma region Mouse input
+    case WM_MOUSEMOVE:
+    {
+      MouseMoveEvent event;
+      GetMouseEventData(&event, wParam, lParam);
+      KRYS_EVENT_CALLBACK();
+      break;
+    }
     // TODO: should we always capture mouse on mouse down until mouse up? we currently don't.
     case WM_LBUTTONDOWN:
     {

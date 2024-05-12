@@ -32,5 +32,6 @@ namespace Krys
     bool OnMouseScrollEvent(MouseScrollEvent &event);
     bool OnResizeEvent(ResizeEvent &event);
     bool OnShutdownEvent(ShutdownEvent &event);
+    bool OnMouseMove(Event &event);
   };
 }

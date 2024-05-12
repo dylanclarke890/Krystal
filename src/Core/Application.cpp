@@ -110,12 +110,12 @@ namespace Krys
 #pragma region Events
   void Application::OnEvent(Event &event)
   {
-    KRYS_INFO(event.GetName());
-
+    // KRYS_INFO(event.GetName());
     EventDispatcher dispatcher(event);
     dispatcher.Dispatch<MouseButtonReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
     dispatcher.Dispatch<MouseButtonPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
     dispatcher.Dispatch<MouseScrollEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseScrollEvent));
+    dispatcher.Dispatch<MouseMoveEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseMove));
     dispatcher.Dispatch<KeyPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
     dispatcher.Dispatch<KeyReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
     dispatcher.Dispatch<ShutdownEvent>(KRYS_BIND_EVENT_FN(Application::OnShutdownEvent));
@@ -126,37 +126,34 @@ namespace Krys
 
   bool Application::OnMouseButtonEvent(MouseButtonEvent &event)
   {
-    if (event.Alt)
-      KRYS_INFO("Alt was down");
+    // if (event.Alt)
+    //   KRYS_INFO("Alt was down");
 
-    if (event.Shift)
-      KRYS_INFO("Shift was down");
+    // if (event.Shift)
+    //   KRYS_INFO("Shift was down");
 
-    if (event.Ctrl)
-      KRYS_INFO("Ctrl was down");
+    // if (event.Ctrl)
+    //   KRYS_INFO("Ctrl was down");
 
-    if (event.Buttons & MouseButton::Left)
-      KRYS_INFO("Left button was down");
+    // if (event.Buttons & MouseButton::Left)
+    //   KRYS_INFO("Left button was down");
 
-    if (event.Buttons & MouseButton::Right)
-      KRYS_INFO("Right button was down");
+    // if (event.Buttons & MouseButton::Right)
+    //   KRYS_INFO("Right button was down");
 
-    if (event.Buttons & MouseButton::Middle)
-      KRYS_INFO("Middle button was down");
+    // if (event.Buttons & MouseButton::Middle)
+    //   KRYS_INFO("Middle button was down");
 
-    if (event.Buttons & MouseButton::Thumb1)
-      KRYS_INFO("Thumb1 button was down");
+    // if (event.Buttons & MouseButton::Thumb1)
+    //   KRYS_INFO("Thumb1 button was down");
 
-    if (event.Buttons & MouseButton::Thumb2)
-      KRYS_INFO("Thumb2 button was down");
-
+    // if (event.Buttons & MouseButton::Thumb2)
+    //   KRYS_INFO("Thumb2 button was down");
     return false;
   }
 
   bool Application::OnKeyEvent(KeyEvent &event)
   {
-    KRYS_INFO("Key: %d", (int)event.Key);
-
     if (event.GetEventType() == EventType::KeyPressed && event.Key == KeyCode::Space)
       WireFrameMode = !WireFrameMode;
     return false;
@@ -181,5 +178,9 @@ namespace Krys
     return false;
   }
 
+  bool Application::OnMouseMove(Event &event)
+  {
+    return false;
+  }
 #pragma endregion Events
 }
