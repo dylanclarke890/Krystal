@@ -10,14 +10,13 @@ namespace Krys
     int X, Y;
     bool Ctrl, Shift, Alt;
     uint32 Buttons;
-    // TODO: deltaX and deltaY?
-    // TODO: double click?
 
     EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
   };
 
   class MouseMoveEvent : public MouseEvent
   {
+    // TODO: deltaX and deltaY?
   public:
     MouseMoveEvent() = default;
     EVENT_CLASS_TYPE(MouseMoved)
@@ -25,6 +24,7 @@ namespace Krys
 
   class MouseButtonEvent : public MouseEvent
   {
+    // TODO: double click?
   public:
     MouseButtonEvent(MouseButton button) : Button(button) {}
     MouseButton Button;
@@ -42,5 +42,12 @@ namespace Krys
   public:
     MouseButtonReleasedEvent(MouseButton button) : MouseButtonEvent(button) {}
     EVENT_CLASS_TYPE(MouseReleased)
+  };
+
+  class MouseScrollEvent : public MouseEvent
+  {
+  public:
+    int DeltaZ;
+    EVENT_CLASS_TYPE(MouseScrolled)
   };
 }

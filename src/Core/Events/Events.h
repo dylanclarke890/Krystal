@@ -13,6 +13,7 @@ namespace Krys
     MousePressed,
     MouseReleased,
     MouseMoved,
+    MouseScrolled,
     KeyPressed,
     KeyReleased
   };

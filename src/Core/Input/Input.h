@@ -31,6 +31,5 @@ namespace Krys
     static Vec2i GetMousePosition();
     static int GetMouseX();
     static int GetMouseY();
-    // TODO: virtual float GetMouseScrollDelta() const = 0;
   };
 }

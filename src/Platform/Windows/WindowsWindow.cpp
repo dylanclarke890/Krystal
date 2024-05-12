@@ -222,8 +222,23 @@ namespace Krys
     case WM_RBUTTONDBLCLK:
     case WM_MBUTTONDBLCLK:
     case WM_XBUTTONDBLCLK:
-    {
       return DefWindowProc(window, message, wParam, lParam);
+    case WM_MOUSEWHEEL:
+    {
+      MouseScrollEvent event;
+      event.DeltaZ = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
+      GetMouseEventData(&event, wParam, lParam);
+
+      // Mouse position is in screen coordinates for this message, convert.
+      POINT pt{};
+      pt.x = event.X;
+      pt.y = event.Y;
+      ScreenToClient(hWnd, &pt);
+      event.X = pt.x;
+      event.Y = pt.y;
+
+      KRYS_EVENT_CALLBACK();
+      break;
     }
 #pragma endregion Mouse input
 
@@ -236,7 +251,7 @@ namespace Krys
       // Unused data:
       // KF_DLGMODE -  Dialog mode flag, indicates whether a dialog box is active.
       // KF_MENUMODE - Menu mode flag, indicates whether a menu is active.
-      // WORD repeatCount = LOWORD(lParam); // repeat count, > 0 if several keydown messages was combined into one message
+      // WORD repeatCount = LOWORD(lParam); // repeat count, > 0 if several keydown messages were combined into one message
       WORD keyFlags = HIWORD(lParam);
       bool isSysKeyMessage = (keyFlags & KF_ALTDOWN);
 
@@ -295,8 +310,8 @@ namespace Krys
 
     case WM_SIZE:
     {
-      int width = (int)LOWORD(lParam);
-      int height = (int)HIWORD(lParam);
+      int width = static_cast<int>(LOWORD(lParam));
+      int height = static_cast<int>(HIWORD(lParam));
 
       ResizeEvent event;
       event.Width = width;
@@ -306,18 +321,9 @@ namespace Krys
 
       KRYS_EVENT_CALLBACK();
 
-      result = DefWindowProcA(window, message, wParam, lParam);
-      break;
+      return DefWindowProcA(window, message, wParam, lParam);
     }
     case WM_PAINT:
-    {
-      return DefWindowProcA(window, message, wParam, lParam);
-      // PAINTSTRUCT ps;
-      // BeginPaint(window, &ps);
-      // EndPaint(window, &ps);
-      // break;
-    }
-
     default:
       return DefWindowProcA(window, message, wParam, lParam);
     }
