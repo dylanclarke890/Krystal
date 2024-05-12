@@ -30,7 +30,10 @@ namespace Krys
     Input::Init();
     Renderer2D::Init(ctx);
 
-    Camera = CreateRef<PerspectiveCamera>(45.0f, 1280.0f / 720.0f, 0.1f, 100.0f);
+    Camera = CreateRef<PerspectiveCamera>(
+        45.0f,
+        static_cast<float>(window->GetWidth()) / static_cast<float>(window->GetHeight()),
+        0.1f, 100.0f);
 
     window->Show();
   }
@@ -57,6 +60,8 @@ namespace Krys
     static auto subTextureCellSize = Vec2(1.0f, 1.0f);
     static auto subTextureCoords = Vec2(0.25f, 1.0f);
     static auto subTexture = ctx->CreateSubTexture2D(texture, subTextureCoords, subTextureSpriteSize, subTextureCellSize);
+
+    Camera->SetPosition({0.0f, 0.0f, 3.0f});
 
     while (IsRunning)
     {

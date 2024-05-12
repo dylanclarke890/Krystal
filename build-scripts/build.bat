@@ -91,7 +91,7 @@ set end_time=%time%
 set /A "start_in_seconds=((%start_time:~0,2%*3600)+(%start_time:~3,2%*60)+%start_time:~6,2%)"
 set /A "end_in_seconds=((%end_time:~0,2%*3600)+(%end_time:~3,2%*60)+%end_time:~6,2%)"
 set /A "duration_in_seconds=%end_in_seconds%-%start_in_seconds%"
-echo Compilation finished at %end_time% (%duration_in_seconds%s)
+echo Compilation finished at%end_time% (%duration_in_seconds%s)
 
 popd
 
