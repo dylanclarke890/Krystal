@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Krystal.h"
+#include "Core.h"
 #include "Application.h"
 
 #include "Input/MouseButtons.h"
@@ -22,8 +22,8 @@ namespace Krys
 {
   static bool WireFrameMode = false;
 
-  Application::Application(float targetFps, Ref<Window> window)
-      : window(window), ctx(window->GetGraphicsContext()),
+  Application::Application(const char *name, int width, int height, float targetFps)
+      : window(Window::Create(name, width, height)), ctx(window->GetGraphicsContext()),
         IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps)
   {
     window->SetEventCallback(KRYS_BIND_EVENT_FN(Application::OnEvent));

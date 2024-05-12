@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Krystal.h"
+#include "Core.h"
 #include "Buffer.h"
 #include "VertexArray.h"
 #include "Shader.h"

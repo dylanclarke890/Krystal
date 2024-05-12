@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Krystal.h"
+#include "Core.h"
 
 #include "Maths/Maths.h"
 #include "Graphics/Texture2D.h"

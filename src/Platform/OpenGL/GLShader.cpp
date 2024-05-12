@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "GLShader.h"
-#include "Krystal.h"
+#include "Core.h"
 
 namespace Krys
 {

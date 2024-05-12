@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Krystal.h"
+#include "Core.h"
 #include "Buffer.h"
 
 namespace Krys

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Krystal.h"
+#include "Core.h"
 #include "Application.h"
 
 namespace Krys

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Krystal.h"
+#include "Core.h"
 #include "Input/MouseButtons.h"
 
 namespace Krys

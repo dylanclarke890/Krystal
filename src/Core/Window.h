@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Krystal.h"
+#include "Core.h"
 #include "Events/Events.h"
 #include "Graphics/GraphicsContext.h"
 #include <functional>
@@ -39,5 +39,7 @@ namespace Krys
     {
       eventCallback = callback;
     }
+
+    static Ref<Window> Create(const char *name, int width, int height);
   };
 }

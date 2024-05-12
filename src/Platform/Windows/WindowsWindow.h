@@ -16,7 +16,7 @@ namespace Krys
     int nShowCmd;
 
   public:
-    WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd);
+    WindowsWindow(const char *name, int width, int height, HINSTANCE instance);
     virtual void Show(bool visible) override;
     virtual void BeginFrame() override;
     virtual void EndFrame() override;

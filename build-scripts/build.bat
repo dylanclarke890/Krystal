@@ -4,35 +4,17 @@ cls
 IF NOT EXIST .\build mkdir .\build
 pushd .\build
 
-:: Compiler Flags:
-:: |  FLAG  | DESCRIPTION
-:: | D      | compiler level #defines
-:: | O2     | enable optimisations
-:: | Oi     | use intrinsics whenever possible
-:: | Zi     | debug info
-:: | W4     | compile-time warnings
-:: | WX     | treat warnings as errors
-:: | wd     | disable warnings for a specific warning code
-:: | FC     | compile-time errors show full path to source code
-:: | nologo | turn off compiler name banner
-:: | MP     | enable multi-processing compilation
-:: | /std:  | compiler version e.g. c++20
-set compiler-flags=-nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++latest
+:: Compiler Flags
+set compiler-flags=-c -nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++latest
 
-:: Custom Defines:
-:: |               -D               |             Description
-:: | KRYS_ENABLE_DEBUG_BREAK        | Turn on breakpoints (needed for asserts)
-:: | KRYS_ENABLE_ASSERTS            | Runtime asserts that trigger a break point on fail
-:: | KRYS_ENABLE_LOGGING            | Turn on logging
-:: | KRYS_ENABLE_PERFORMANCE_CHECKS | Log performance stats
+:: Custom Defines
 set defines=^
 -DKRYS_ENABLE_ASSERTS=1 ^
 -DKRYS_ENABLE_LOGGING=1 ^
 -DKRYS_ENABLE_DEBUG_BREAK=1 ^
 -DKRYS_ENABLE_PERFORMANCE_CHECKS=1
 
-set entry-point=..\src\Platform\Windows\WindowsEntry.cpp
-
+:: Include Directories
 set include-dirs=^
 /I "..\src" ^
 /I "..\src\Core" ^
@@ -42,7 +24,8 @@ set include-dirs=^
 /I "..\src\ThirdParty\glm" ^
 /I "..\src\ThirdParty\stb"
 
-set additional-translation-units=^
+:: Source Files
+set source-files=^
 ..\src\ThirdParty\Glad\src\gl.c ^
 ..\src\ThirdParty\Glad\src\wgl.c ^
 ..\src\Platform\OpenGL\GLTexture2D.cpp ^
@@ -59,40 +42,27 @@ set additional-translation-units=^
 ..\src\Core\Misc\Time.cpp ^
 ..\src\Core\Application.cpp
 
-:: TODO: we link with open gl below but we should really only be doing that at runtime.
-set linked-libs=^
-user32.lib ^
-Gdi32.lib ^
-OpenGL32.lib ^
-Winmm.lib
-
 :: Disabled warnings:
-:: 4100 -> unreferenced formal parameter (we'll never need this).
-:: 4201 -> nameless union/struct (we should re-enable this after replacing glm).
-set disable-warnings=-wd4100 -wd4201
-:: End compiler settings
+set disabled-warnings=-wd4100 -wd4201
 
-set start_time=%time%
-echo Compilation started at %start_time%.
+:: Compile each source file to an object file
+cl %compiler-flags% %disable-warnings% %source-files% %defines% %include-dirs%
 
-cl^
- %compiler-flags%^
- %defines%^
- %disable-warnings%^
- %include-dirs%^
- %entry-point%^
- %additional-translation-units%^
- %linked-libs%
+:: Link object files into a static library
+lib -nologo -OUT:Krystal.lib *.obj
 
+:: Check for compilation errors
 set compile-error=%ERRORLEVEL%
-if %compile-error% equ 0 (echo Compilation succeeded.)
-
-set end_time=%time%
-set /A "start_in_seconds=((%start_time:~0,2%*3600)+(%start_time:~3,2%*60)+%start_time:~6,2%)"
-set /A "end_in_seconds=((%end_time:~0,2%*3600)+(%end_time:~3,2%*60)+%end_time:~6,2%)"
-set /A "duration_in_seconds=%end_in_seconds%-%start_in_seconds%"
-echo Compilation finished at%end_time% (%duration_in_seconds%s)
+if %compile-error% equ 0 (
+    echo Compilation succeeded.
+) else (
+    echo Compilation failed.
+)
 
 popd
 
 exit /b %compile-error%
+
+:: Disabled warnings:
+:: 4100 -> unreferenced formal parameter (we'll never need this).
+:: 4201 -> nameless union/struct (we should re-enable this after replacing glm).

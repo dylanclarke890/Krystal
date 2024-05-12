@@ -1,6 +1,6 @@
 #include <windows.h>
 
-#include "Krystal.h"
+#include "Core.h"
 #include "Misc/Performance.h"
 
 namespace Krys

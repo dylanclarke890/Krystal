@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-#include "Krystal.h"
+#include "Core.h"
 #include "GL.h"
 #include "Graphics/GraphicsContext.h"
 

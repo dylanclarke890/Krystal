@@ -2,7 +2,7 @@
 
 #include <wgl.h>
 
-#include "Krystal.h"
+#include "Core.h"
 #include "WindowsWindow.h"
 #include "Events/ApplicationEvents.h"
 #include "OpenGL/GLGraphicsContext.h"
@@ -10,6 +10,9 @@
 #include "Input/Input.h"
 #include "Input/MouseButtons.h"
 #include "Input/KeyCodes.h"
+
+EXTERN_C IMAGE_DOS_HEADER __ImageBase;
+#define HINST_THISCOMPONENT (reinterpret_cast<HINSTANCE>(&__ImageBase))
 
 namespace Krys
 {
@@ -64,8 +67,13 @@ namespace Krys
     DestroyWindow(fakeWND);
   }
 
-  WindowsWindow::WindowsWindow(const char *name, int width, int height, HINSTANCE instance, LPSTR cmdLine, int nShowCmd)
-      : Window(name, width, height), dc(0), cmdLine(cmdLine), nShowCmd(nShowCmd)
+  Ref<Window> Window::Create(const char *name, int width, int height)
+  {
+    return CreateRef<WindowsWindow>(name, width, height, HINST_THISCOMPONENT);
+  }
+
+  WindowsWindow::WindowsWindow(const char *name, int width, int height, HINSTANCE instance)
+      : Window(name, width, height), dc(0)
   {
     WNDCLASSA windowClass = {};
     windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;

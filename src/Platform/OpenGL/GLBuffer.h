@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Krystal.h"
+#include "Core.h"
 #include "GL.h"
 #include "Graphics/Buffer.h"
 #include "Graphics/GraphicsContext.h"

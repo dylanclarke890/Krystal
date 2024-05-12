@@ -11,6 +11,7 @@
 
 namespace Krys
 {
+
   class Application
   {
   private:
@@ -21,7 +22,7 @@ namespace Krys
     Ref<Camera> Camera;
 
   public:
-    Application(float targetFps, Ref<Window> window);
+    Application(const char *name, int width, int height, float targetFps);
     void Run();
     void Shutdown();
 
