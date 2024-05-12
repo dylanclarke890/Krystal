@@ -4,7 +4,7 @@
 
 #include "Krystal.h"
 #include "WindowsWindow.h"
-#include "Events/ApplicationEvent.h"
+#include "Events/ApplicationEvents.h"
 #include "OpenGL/GLGraphicsContext.h"
 
 #include "Input/Input.h"

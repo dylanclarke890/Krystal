@@ -116,8 +116,10 @@ namespace Krys
     dispatcher.Dispatch<MouseButtonPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseButtonEvent));
     dispatcher.Dispatch<MouseScrollEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseScrollEvent));
     dispatcher.Dispatch<MouseMoveEvent>(KRYS_BIND_EVENT_FN(Application::OnMouseMove));
+
     dispatcher.Dispatch<KeyPressedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
     dispatcher.Dispatch<KeyReleasedEvent>(KRYS_BIND_EVENT_FN(Application::OnKeyEvent));
+
     dispatcher.Dispatch<ShutdownEvent>(KRYS_BIND_EVENT_FN(Application::OnShutdownEvent));
     dispatcher.Dispatch<ResizeEvent>(KRYS_BIND_EVENT_FN(Application::OnResizeEvent));
 

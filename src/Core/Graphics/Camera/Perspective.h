@@ -3,7 +3,7 @@
 #include "Graphics/Camera/Camera.h"
 #include "Input/Input.h"
 #include "Misc/Time.h"
-#include "Events/MouseEvent.h"
+#include "Events/MouseEvents.h"
 
 namespace Krys
 {

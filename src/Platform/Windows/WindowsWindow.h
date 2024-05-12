@@ -2,8 +2,8 @@
 #include <windows.h>
 
 #include "Window.h"
-#include "Events/MouseEvent.h"
-#include "Events/KeyEvent.h"
+#include "Events/MouseEvents.h"
+#include "Events/KeyEvents.h"
 
 namespace Krys
 {

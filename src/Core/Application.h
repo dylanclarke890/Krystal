@@ -3,9 +3,9 @@
 #include "Window.h"
 #include "Input/Input.h"
 #include "Events/Events.h"
-#include "Events/ApplicationEvent.h"
-#include "Events/MouseEvent.h"
-#include "Events/KeyEvent.h"
+#include "Events/ApplicationEvents.h"
+#include "Events/MouseEvents.h"
+#include "Events/KeyEvents.h"
 #include "Graphics/GraphicsContext.h"
 #include "Graphics/Camera/Perspective.h"
 
