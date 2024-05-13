@@ -34,7 +34,6 @@ namespace Krys
       return m_LastFrameMs / 1000.0f;
     }
 
-  private:
     static void Increment(float ms) noexcept
     {
       m_LastFrameMs = ms;

@@ -15,24 +15,25 @@ namespace Krys
   class Application
   {
   private:
-    Ref<Window> window;
-    Ref<GraphicsContext> ctx;
-    bool IsRunning;
     float TargetFrameTimeMs;
-    Ref<Camera> Camera;
+    bool IsRunning;
+
+  protected:
+    Ref<Window> Window;
+    Ref<GraphicsContext> Context;
 
   public:
     Application(const char *name, int width, int height, float targetFps);
-    void Run();
-    void Shutdown();
+    virtual ~Application() = default;
+
+    virtual void Startup();
+    virtual void Run();
+    virtual void Update(float dt) = 0;
+    virtual void Shutdown();
+    virtual void OnEvent(Event &event);
 
   private:
-    void OnEvent(Event &event);
-    bool OnMouseButtonEvent(MouseButtonEvent &event);
-    bool OnKeyEvent(KeyEvent &event);
-    bool OnMouseScrollEvent(MouseScrollEvent &event);
     bool OnResizeEvent(ResizeEvent &event);
     bool OnShutdownEvent(ShutdownEvent &event);
-    bool OnMouseMove(Event &event);
   };
 }

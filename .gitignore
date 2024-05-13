@@ -2,3 +2,4 @@
 /build
 src/ThirdParty/glm/doc/*
 data/log.txt
+.vscode/Krystal.code-workspace

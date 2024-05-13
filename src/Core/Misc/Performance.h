@@ -17,6 +17,7 @@ namespace Krys
     static float TicksToMilliseconds(int64 ticks);
   };
 
+#ifdef KRYS_ENABLE_PERFORMANCE_CHECKS
   class PerformanceTimer
   {
   private:
@@ -40,4 +41,5 @@ namespace Krys
       KRYS_INFO("%s took %.02fms.", name, ms);
     }
   };
+  #endif
 }
