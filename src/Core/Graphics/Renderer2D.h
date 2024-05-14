@@ -8,11 +8,13 @@
 
 namespace Krys
 {
+  // TODO: we're in the Krys namespace. Prefix these with REN2D instead.
   constexpr uint KRYS_MAX_TRIANGLES = 10000;
   constexpr uint KRYS_MAX_QUADS = KRYS_MAX_TRIANGLES / 2;
   constexpr uint KRYS_MAX_VERTICES = KRYS_MAX_QUADS * 4;
   constexpr uint KRYS_MAX_INDICES = KRYS_MAX_QUADS * 6;
   constexpr uint KRYS_MAX_TEXTURE_SLOTS = 32; // TODO: get this from the graphics API.
+  static Vec4 KRYS_DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
 
   struct VertexData
   {
@@ -48,17 +50,13 @@ namespace Krys
     static void Shutdown();
 
     static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color);
-    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture);
-    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture, Vec4 &tint);
-    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<SubTexture2D> subTexture);
-    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<SubTexture2D> subTexture, Vec4 &tint);
+    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture, Vec4 &tint = KRYS_DEFAULT_COLOR);
+    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<SubTexture2D> subTexture, Vec4 &tint = KRYS_DEFAULT_COLOR);
     // TODO: tiling factor
 
     static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, Vec4 &tint);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, Vec4 &tint = KRYS_DEFAULT_COLOR);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint = KRYS_DEFAULT_COLOR);
     // TODO: tiling factor
 
     static void BeginScene(Ref<Camera> camera);
