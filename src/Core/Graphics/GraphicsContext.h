@@ -33,7 +33,6 @@ namespace Krys
     EqualOrGreater
   };
 
-  // TODO: consider renaming this to BufferClearFlags or similar
   enum class ClearFlags : ushort
   {
     None = 0,
