@@ -73,6 +73,7 @@ namespace Krys
       m_CameraSpeed = speed;
     }
 
+    // TODO: this should be in the camera controller instead
     void OnUpdate(float dt) noexcept override
     {
       bool recalc = false;
@@ -158,6 +159,9 @@ namespace Krys
 
     bool OnMouseButtonPressedEvent(MouseButtonPressedEvent &event) noexcept
     {
+      // TODO: we need to be able to capture mouse movement
+      // so that releasing the mouse button outside of the window
+      // doesn't cause issues
       if (event.Button == MouseButton::Left)
       {
         m_MoveCamera = true;
