@@ -10,7 +10,6 @@ namespace Krys
 {
   static PBYTE PrevKeyState, KeyState;
   static bool *PrevMouseButtonState, *MouseButtonState;
-  // TODO: use std::array instead.
   static std::vector<KeyCode> VirtualKeyMap;
   static std::vector<BYTE> KeyCodeMap;
 
