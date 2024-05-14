@@ -7,7 +7,7 @@ namespace Krys
 {
 #pragma region Constants
 
-  constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * KRYS_MAX_VERTICES;
+  constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * REN2D_MAX_VERTICES;
   constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
   constexpr Vec4 QUAD_LOCAL_SPACE_VERTICES[] = {{-0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, 0.5f, 0.0f, 1.0f}, {-0.5f, 0.5f, 0.0f, 1.0f}};
 
@@ -29,15 +29,15 @@ namespace Krys
   Ref<VertexBuffer> Renderer2D::VertexBuffer;
   Ref<IndexBuffer> Renderer2D::IndexBuffer;
 
-  Unique<std::array<VertexData, KRYS_MAX_VERTICES>> Renderer2D::Vertices;
+  Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Renderer2D::Vertices;
   uint Renderer2D::VertexCount;
 
-  Unique<std::array<uint32, KRYS_MAX_INDICES>> Renderer2D::Indices;
+  Unique<std::array<uint32, REN2D_MAX_INDICES>> Renderer2D::Indices;
   uint Renderer2D::IndexCount;
 
   Ref<Shader> Renderer2D::Shader;
 
-  Unique<std::array<Ref<Texture2D>, KRYS_MAX_TEXTURE_SLOTS>> Renderer2D::TextureSlots;
+  Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> Renderer2D::TextureSlots;
   int Renderer2D::TextureSlotIndex;
   Ref<Texture2D> Renderer2D::WhiteTexture;
 
@@ -60,21 +60,21 @@ namespace Krys
                      BufferLayoutType::Interleaved));
     VertexArray->AddVertexBuffer(VertexBuffer);
 
-    IndexBuffer = Context->CreateIndexBuffer(KRYS_MAX_INDICES);
+    IndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
     VertexArray->SetIndexBuffer(IndexBuffer);
 
-    Vertices = CreateUnique<std::array<VertexData, KRYS_MAX_VERTICES>>();
-    Indices = CreateUnique<std::array<uint32, KRYS_MAX_INDICES>>();
+    Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
+    Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
 
     Shader = Context->CreateShader();
     Shader->Bind();
     Shader->Load("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
     Shader->Link();
 
-    int samplers[KRYS_MAX_TEXTURE_SLOTS]{};
-    for (uint32_t i = 0; i < KRYS_MAX_TEXTURE_SLOTS; i++)
+    int samplers[REN2D_MAX_TEXTURE_SLOTS]{};
+    for (uint32_t i = 0; i < REN2D_MAX_TEXTURE_SLOTS; i++)
       samplers[i] = i;
-    Shader->SetUniform("u_Textures", samplers, KRYS_MAX_TEXTURE_SLOTS);
+    Shader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
 
     Texture2DSettings whiteTextureSettings{};
     whiteTextureSettings.Width = 1;
@@ -85,7 +85,7 @@ namespace Krys
     uint32_t whiteTextureData = 0xffffffff;
     WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-    TextureSlots = CreateUnique<std::array<Ref<Texture2D>, KRYS_MAX_TEXTURE_SLOTS>>();
+    TextureSlots = CreateUnique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>>();
     (*TextureSlots.get())[0] = WhiteTexture;
 
     Reset();
@@ -211,7 +211,7 @@ namespace Krys
 
   void Renderer2D::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
   {
-    if (VertexCount + vertexCount >= KRYS_MAX_VERTICES || IndexCount + indexCount >= KRYS_MAX_INDICES)
+    if (VertexCount + vertexCount >= REN2D_MAX_VERTICES || IndexCount + indexCount >= REN2D_MAX_INDICES)
     {
       NextBatch();
     }
@@ -242,7 +242,7 @@ namespace Krys
 
     if (textureSlotIndex == -1)
     {
-      if (TextureSlotIndex == KRYS_MAX_TEXTURE_SLOTS - 1)
+      if (TextureSlotIndex == REN2D_MAX_TEXTURE_SLOTS - 1)
       {
         NextBatch();
       }

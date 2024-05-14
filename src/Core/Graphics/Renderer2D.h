@@ -8,13 +8,12 @@
 
 namespace Krys
 {
-  // TODO: we're in the Krys namespace. Prefix these with REN2D instead.
-  constexpr uint KRYS_MAX_TRIANGLES = 10000;
-  constexpr uint KRYS_MAX_QUADS = KRYS_MAX_TRIANGLES / 2;
-  constexpr uint KRYS_MAX_VERTICES = KRYS_MAX_QUADS * 4;
-  constexpr uint KRYS_MAX_INDICES = KRYS_MAX_QUADS * 6;
-  constexpr uint KRYS_MAX_TEXTURE_SLOTS = 32; // TODO: get this from the graphics API.
-  static Vec4 KRYS_DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
+  constexpr uint REN2D_MAX_TRIANGLES = 10000;
+  constexpr uint REN2D_MAX_QUADS = REN2D_MAX_TRIANGLES / 2;
+  constexpr uint REN2D_MAX_VERTICES = REN2D_MAX_QUADS * 4;
+  constexpr uint REN2D_MAX_INDICES = REN2D_MAX_QUADS * 6;
+  constexpr uint REN2D_MAX_TEXTURE_SLOTS = 32; // TODO: get this from the graphics API.
+  static Vec4 REN2D_DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
 
   struct VertexData
   {
@@ -35,13 +34,13 @@ namespace Krys
     static Ref<VertexBuffer> VertexBuffer;
     static Ref<IndexBuffer> IndexBuffer;
 
-    static Unique<std::array<VertexData, KRYS_MAX_VERTICES>> Vertices;
+    static Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Vertices;
     static uint VertexCount;
 
-    static Unique<std::array<uint32, KRYS_MAX_INDICES>> Indices;
+    static Unique<std::array<uint32, REN2D_MAX_INDICES>> Indices;
     static uint IndexCount;
 
-    static Unique<std::array<Ref<Texture2D>, KRYS_MAX_TEXTURE_SLOTS>> TextureSlots;
+    static Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> TextureSlots;
     static int TextureSlotIndex;
     static Ref<Texture2D> WhiteTexture;
 
@@ -50,14 +49,12 @@ namespace Krys
     static void Shutdown();
 
     static void DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation = 0.0f);
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = KRYS_DEFAULT_COLOR);
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = KRYS_DEFAULT_COLOR);
-    // TODO: tiling factor
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation = 0.0f);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = KRYS_DEFAULT_COLOR);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = KRYS_DEFAULT_COLOR);
-    // TODO: tiling factor
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     static void BeginScene(Ref<Camera> camera);
     static void NextBatch();
