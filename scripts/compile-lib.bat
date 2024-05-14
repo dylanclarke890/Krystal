@@ -7,6 +7,8 @@ echo Started at%krystal_start_time%.
 IF NOT EXIST .\build mkdir .\build
 pushd .\build
 
+IF NOT EXIST .\obj mkdir .\obj
+
 set krystal_defines=^
 -DKRYS_ENABLE_ASSERTS=1 ^
 -DKRYS_ENABLE_LOGGING=1 ^
@@ -41,7 +43,7 @@ K:\src\Core\Application.cpp
 
 set krystal_disabled_warnings=-wd4100 -wd4201
 
-set krystal_compiler_flags=-c -nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++latest
+set krystal_compiler_flags=-c -Foobj\ -nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++latest
 
 set krystal_linker_flags=-nologo -OUT:Krystal.lib
 
@@ -54,7 +56,7 @@ cl ^
 %krystal_include_directories%
 
 :: Link object files into a static library
-lib %krystal_linker_flags% *.obj
+lib %krystal_linker_flags% ./obj/*.obj
 
 popd
 
