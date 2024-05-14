@@ -2,7 +2,7 @@
 
 set krystal_start_time=%time%
 echo Compiling 'Krystal'.
-echo Started at%krystal_start_time%.
+echo Started at %krystal_start_time%.
 
 IF NOT EXIST .\build mkdir .\build
 pushd .\build
@@ -71,6 +71,6 @@ set krystal_end_time=%time%
 set /A "krystal_start_in_seconds=((%krystal_start_time:~0,2%*3600)+(%krystal_start_time:~3,2%*60)+%krystal_start_time:~6,2%)"
 set /A "krystal_end_in_seconds=((%krystal_end_time:~0,2%*3600)+(%krystal_end_time:~3,2%*60)+%krystal_end_time:~6,2%)"
 set /A "krystal_compilation_duration_in_seconds=%krystal_end_in_seconds%-%krystal_start_in_seconds%"
-echo Finished at%krystal_end_time% (%krystal_compilation_duration_in_seconds%s).
+echo Finished at %krystal_end_time% (%krystal_compilation_duration_in_seconds%s).
 
 exit /b %krystal_compilation_error%

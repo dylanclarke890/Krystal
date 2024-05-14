@@ -37,7 +37,7 @@ namespace Krys
 
     static Unique<std::array<VertexData, KRYS_MAX_VERTICES>> Vertices;
     static uint VertexCount;
-    
+
     static Unique<std::array<uint32, KRYS_MAX_INDICES>> Indices;
     static uint IndexCount;
 
@@ -49,14 +49,14 @@ namespace Krys
     static void Init(Ref<GraphicsContext> ctx);
     static void Shutdown();
 
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color);
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, Vec4 &tint = KRYS_DEFAULT_COLOR);
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint = KRYS_DEFAULT_COLOR);
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation = 0.0f);
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = KRYS_DEFAULT_COLOR);
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = KRYS_DEFAULT_COLOR);
     // TODO: tiling factor
 
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, Vec4 &tint = KRYS_DEFAULT_COLOR);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint = KRYS_DEFAULT_COLOR);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation = 0.0f);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = KRYS_DEFAULT_COLOR);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = KRYS_DEFAULT_COLOR);
     // TODO: tiling factor
 
     static void BeginScene(Ref<Camera> camera);
@@ -67,8 +67,8 @@ namespace Krys
     static void Reset();
     static void Flush();
 
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
+    static void DrawQuad(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
 
     static void AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount);
     static int GetTextureSlotIndex(Ref<Texture2D> texture);

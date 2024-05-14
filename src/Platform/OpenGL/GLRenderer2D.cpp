@@ -12,8 +12,12 @@ namespace Krys
   constexpr Vec4 QUAD_LOCAL_SPACE_VERTICES[] = {{-0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, 0.5f, 0.0f, 1.0f}, {-0.5f, 0.5f, 0.0f, 1.0f}};
 
   constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
-  constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.0f, 0.5f, 0.0f, 1.0f}, {0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}};
+  constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.5f, 0.0f, 1.0f}};
   constexpr int DEFAULT_TEXTURE_SLOT_INDEX = 0;
+  constexpr Vec3 ROTATE_AXIS_X = Vec3(1.0f, 0.0f, 0.0f);
+  constexpr Vec3 ROTATE_AXIS_Y = Vec3(0.0f, 1.0f, 0.0f);
+  constexpr Vec3 ROTATE_AXIS_Z = Vec3(0.0f, 0.0f, 1.0f);
+  constexpr Mat4 MAT4_I = Mat4(1.0f);
 
 #pragma endregion Constants
 
@@ -96,26 +100,25 @@ namespace Krys
 
 #pragma region Drawing Triangles
 
-  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color)
+  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation)
   {
-    DrawTriangle(pos, size, color, DEFAULT_TEXTURE_SLOT_INDEX, TRIANGLE_DEFAULT_TEXTURE_COORDS);
+    DrawTriangle(pos, size, rotation, color, DEFAULT_TEXTURE_SLOT_INDEX, TRIANGLE_DEFAULT_TEXTURE_COORDS);
   }
 
-  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, Vec4 &tint)
+  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation, Vec4 &tint)
   {
-    DrawTriangle(pos, size, tint, GetTextureSlotIndex(texture), TRIANGLE_DEFAULT_TEXTURE_COORDS);
+    DrawTriangle(pos, size, rotation, tint, GetTextureSlotIndex(texture), TRIANGLE_DEFAULT_TEXTURE_COORDS);
   }
 
-  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint)
+  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation, Vec4 &tint)
   {
     auto texture = subTexture->GetTexture();
-    DrawTriangle(pos, size, tint, GetTextureSlotIndex(texture), subTexture->GetTextureCoords());
+    DrawTriangle(pos, size, rotation, tint, GetTextureSlotIndex(texture), subTexture->GetTextureCoords());
   }
 
-  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
+  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
   {
-    Mat4 model = glm::translate(glm::mat4(1.0f), {pos.x, pos.y, pos.z}) *
-                 glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
+    Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, 1.0f});
 
     VertexData vertices[] = {
         {model * TRIANGLE_LOCAL_SPACE_VERTICES[0], color, textureCoords[0], textureSlotIndex},
@@ -131,26 +134,25 @@ namespace Krys
 
 #pragma region Drawing Quads
 
-  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color)
+  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation)
   {
-    DrawQuad(pos, size, color, DEFAULT_TEXTURE_SLOT_INDEX, QUAD_DEFAULT_TEXTURE_COORDS);
+    DrawQuad(pos, size, rotation, color, DEFAULT_TEXTURE_SLOT_INDEX, QUAD_DEFAULT_TEXTURE_COORDS);
   }
 
-  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, Vec4 &tint)
+  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation, Vec4 &tint)
   {
-    DrawQuad(pos, size, tint, GetTextureSlotIndex(texture), QUAD_DEFAULT_TEXTURE_COORDS);
+    DrawQuad(pos, size, rotation, tint, GetTextureSlotIndex(texture), QUAD_DEFAULT_TEXTURE_COORDS);
   }
 
-  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint)
+  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation, Vec4 &tint)
   {
     auto texture = subTexture->GetTexture();
-    DrawQuad(pos, size, tint, GetTextureSlotIndex(texture), subTexture->GetTextureCoords());
+    DrawQuad(pos, size, rotation, tint, GetTextureSlotIndex(texture), subTexture->GetTextureCoords());
   }
 
-  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
+  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
   {
-    Mat4 model = glm::translate(glm::mat4(1.0f), {pos.x, pos.y, pos.z}) *
-                 glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
+    Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, 1.0f});
 
     VertexData vertices[] = {
         {model * QUAD_LOCAL_SPACE_VERTICES[0], color, textureCoords[0], textureSlotIndex},
