@@ -39,9 +39,9 @@ namespace Krys
     {
       // KRYS_LOG("Delta Time: %f", Time::GetDeltaMs());
       int64 startCounter = Performance::GetTicks();
-
-      Update(elapsedMs);
-
+      {
+        Update(elapsedMs);
+      }
       int64 endCounter = Performance::GetTicks();
       elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
 
