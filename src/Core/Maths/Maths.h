@@ -42,6 +42,7 @@ namespace Krys
   {
     float Left, Right, Bottom, Top;
 
+    RectBounds() = default;
     constexpr RectBounds(float left, float right, float bottom, float top)
         : Left(left), Right(right), Bottom(bottom), Top(top) {}
 

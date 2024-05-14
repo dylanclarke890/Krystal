@@ -4,7 +4,7 @@
 
 #include "Core.h"
 #include "Graphics/GraphicsContext.h"
-#include "Graphics/Camera/Perspective.h"
+#include "Graphics/Camera/Camera.h"
 
 namespace Krys
 {
@@ -18,7 +18,7 @@ namespace Krys
 
   struct VertexData
   {
-    Vec3 Position;
+    Vec4 Position;
     Vec4 Color;
     Vec2 TextureCoords;
     int TextureSlotIndex;
@@ -49,9 +49,9 @@ namespace Krys
     static void Init(Ref<GraphicsContext> ctx);
     static void Shutdown();
 
-    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Vec4 &color);
-    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<Texture2D> texture, Vec4 &tint = KRYS_DEFAULT_COLOR);
-    static void DrawTriangle(Vec3 &posA, Vec3 &posB, Vec3 &posC, Ref<SubTexture2D> subTexture, Vec4 &tint = KRYS_DEFAULT_COLOR);
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color);
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, Vec4 &tint = KRYS_DEFAULT_COLOR);
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, Vec4 &tint = KRYS_DEFAULT_COLOR);
     // TODO: tiling factor
 
     static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color);
@@ -66,6 +66,10 @@ namespace Krys
   private:
     static void Reset();
     static void Flush();
+
+    static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
+    static void DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
+
     static void AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount);
     static int GetTextureSlotIndex(Ref<Texture2D> texture);
   };

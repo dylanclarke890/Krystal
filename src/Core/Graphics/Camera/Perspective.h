@@ -24,7 +24,22 @@ namespace Krys
     float m_MovementSensitivity;
 
   public:
-    PerspectiveCamera(float fovAngle, float aspectRatio, float zNear, float zFar) noexcept
+    PerspectiveCamera(int width, int height, float fovAngle,
+                      float zNear = 0.0f, float zFar = 100.0f) noexcept
+        : Camera(Vec3(0.0f), zNear, zFar),
+          m_CameraFront(Vec3(0.0f, 0.0f, -1.0f)), m_CameraUp(Vec3(0.0f, 1.0f, 0.0f)),
+          m_CameraSpeed(5.0f), m_Yaw(0), m_Pitch(0),
+          m_FovAngle(fovAngle), m_AspectRatio(static_cast<float>(width) / static_cast<float>(height)),
+          m_MoveCamera(false), m_LastMousePosition(0.0f), m_MovementSensitivity(0.1f)
+    {
+      CalculateCameraVectors();
+      CalculateViewMatrix();
+      CalculateProjectionMatrix();
+      CalculateViewProjectionMatrix();
+    }
+
+    PerspectiveCamera(float aspectRatio, float fovAngle,
+                      float zNear = 0.0f, float zFar = 100.0f) noexcept
         : Camera(Vec3(0.0f), zNear, zFar),
           m_CameraFront(Vec3(0.0f, 0.0f, -1.0f)), m_CameraUp(Vec3(0.0f, 1.0f, 0.0f)),
           m_CameraSpeed(5.0f), m_Yaw(0), m_Pitch(0),

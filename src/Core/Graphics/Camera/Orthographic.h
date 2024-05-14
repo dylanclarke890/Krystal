@@ -4,6 +4,9 @@
 
 namespace Krys
 {
+  // TODO: test rotation
+  // TODO: camera controls
+  // TODO: camera controller
   class OrthographicCamera : public Camera
   {
   private:
@@ -11,6 +14,17 @@ namespace Krys
     RectBounds m_Bounds;
 
   public:
+    OrthographicCamera(int width, int height, float zNear = 0.0f, float zFar = 100.0f) noexcept
+        : Camera(Vec3(0.0f), zNear, zFar), m_Rotation(0.0f), m_Bounds({})
+    {
+      m_Bounds.Right = static_cast<float>(width);
+      m_Bounds.Bottom = static_cast<float>(height);
+
+      CalculateViewMatrix();
+      CalculateProjectionMatrix();
+      CalculateViewProjectionMatrix();
+    }
+
     OrthographicCamera(const RectBounds &bounds, float zNear, float zFar) noexcept
         : Camera(Vec3(0.0f), zNear, zFar), m_Rotation(0.0f), m_Bounds(bounds)
     {
