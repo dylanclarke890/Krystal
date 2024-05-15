@@ -14,10 +14,6 @@ namespace Krys
   constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
   constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.5f, 0.0f, 1.0f}};
   constexpr int DEFAULT_TEXTURE_SLOT_INDEX = 0;
-  constexpr Vec3 ROTATE_AXIS_X = Vec3(1.0f, 0.0f, 0.0f);
-  constexpr Vec3 ROTATE_AXIS_Y = Vec3(0.0f, 1.0f, 0.0f);
-  constexpr Vec3 ROTATE_AXIS_Z = Vec3(0.0f, 0.0f, 1.0f);
-  constexpr Mat4 MAT4_I = Mat4(1.0f);
 
 #pragma endregion Constants
 
@@ -215,8 +211,6 @@ namespace Krys
     {
       NextBatch();
     }
-
-    // Translate * Rotate * Scale * vector_to_transform.
 
     auto &vertexBuffer = *Vertices;
     for (size_t i = 0; i < vertexCount; i++)

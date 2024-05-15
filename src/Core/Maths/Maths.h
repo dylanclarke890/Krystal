@@ -21,6 +21,11 @@ namespace Krys
   constexpr float PI32 = 3.1415927f;
   constexpr double PI64 = 3.141592653589793;
 
+  constexpr Mat4 MAT4_I = Mat4(1.0f);
+  constexpr Vec3 ROTATE_AXIS_X = Vec3(1.0f, 0.0f, 0.0f);
+  constexpr Vec3 ROTATE_AXIS_Y = Vec3(0.0f, 1.0f, 0.0f);
+  constexpr Vec3 ROTATE_AXIS_Z = Vec3(0.0f, 0.0f, 1.0f);
+
   inline constexpr float DegToRad(float degrees) noexcept
   {
     constexpr float ratio = PI32 * 2.0f / 360.0f;
