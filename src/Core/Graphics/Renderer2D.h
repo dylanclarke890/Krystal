@@ -51,14 +51,17 @@ namespace Krys
     static void DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation = 0.0f);
     static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
     static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
+    // TODO: Tiling factor
 
     static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation = 0.0f);
     static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
     static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
+    // TODO: Tiling factor
 
     static void DrawCube(Vec3 &pos, Vec3 &size, Vec4 &color, float rotation = 0.0f);
     static void DrawCube(Vec3 &pos, Vec3 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
     static void DrawCube(Vec3 &pos, Vec3 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
+    // TODO: Tiling factor
 
     static void BeginScene(Ref<Camera> camera);
     static void NextBatch();

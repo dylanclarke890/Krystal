@@ -131,8 +131,6 @@ namespace Krys
 
     dc = GetDC(hWnd);
     ctx = CreateRef<GLGraphicsContext>(dc, hWnd, instance);
-    ctx->Init();
-    ctx->SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

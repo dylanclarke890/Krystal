@@ -26,6 +26,9 @@ namespace Krys
 
   void Application::Startup()
   {
+    Context->Init();
+    Context->SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
+
     Input::Init();
     Window->Show();
   }
