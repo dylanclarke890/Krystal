@@ -19,8 +19,8 @@ namespace Krys
   public:
     PerspectiveCamera(int width, int height, float fovAngle,
                       float zNear = 0.0f, float zFar = 100.0f) noexcept
-        : Camera(Vec3(0.0f), zNear, zFar),
-          Front(Vec3(0.0f, 0.0f, -1.0f)), Up(Vec3(0.0f, 1.0f, 0.0f)),
+        : Camera(Vec3(0.0f, 0.0f, 1.0f), zNear, zFar),
+          Front(Vec3(0.0f)), Up(Vec3(0.0f, 1.0f, 0.0f)),
           Yaw(0), Pitch(0),
           FovAngle(fovAngle), AspectRatio(static_cast<float>(width) / static_cast<float>(height))
     {
@@ -32,8 +32,8 @@ namespace Krys
 
     PerspectiveCamera(float aspectRatio, float fovAngle,
                       float zNear = 0.0f, float zFar = 100.0f) noexcept
-        : Camera(Vec3(0.0f), zNear, zFar),
-          Front(Vec3(0.0f, 0.0f, -1.0f)), Up(Vec3(0.0f, 1.0f, 0.0f)),
+        : Camera(Vec3(0.0f, 0.0f, 1.0f), zNear, zFar),
+          Front(Vec3(0.0f)), Up(Vec3(0.0f, 1.0f, 0.0f)),
           Yaw(0), Pitch(0),
           FovAngle(fovAngle), AspectRatio(aspectRatio)
     {
