@@ -187,15 +187,12 @@ namespace Krys
   void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
   {
     Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, 1.0f});
-    static Vec4 RED = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
-    static Vec4 GREEN = Vec4(0.0f, 1.0f, 0.0f, 1.0f);
-    static Vec4 BLUE = Vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
     VertexData vertices[] = {
         {model * QUAD_LOCAL_SPACE_VERTICES[0], color, textureCoords[0], textureSlotIndex},
-        {model * QUAD_LOCAL_SPACE_VERTICES[1], RED, textureCoords[1], textureSlotIndex},
-        {model * QUAD_LOCAL_SPACE_VERTICES[2], GREEN, textureCoords[2], textureSlotIndex},
-        {model * QUAD_LOCAL_SPACE_VERTICES[3], BLUE, textureCoords[3], textureSlotIndex},
+        {model * QUAD_LOCAL_SPACE_VERTICES[1], color, textureCoords[1], textureSlotIndex},
+        {model * QUAD_LOCAL_SPACE_VERTICES[2], color, textureCoords[2], textureSlotIndex},
+        {model * QUAD_LOCAL_SPACE_VERTICES[3], color, textureCoords[3], textureSlotIndex},
     };
 
     uint32 indices[] = {VertexCount, VertexCount + 1, VertexCount + 2, VertexCount + 2, VertexCount + 3, VertexCount + 0};
@@ -222,48 +219,44 @@ namespace Krys
 
   void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
   {
-    static Vec4 RED = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
-    static Vec4 GREEN = Vec4(0.0f, 1.0f, 0.0f, 1.0f);
-    static Vec4 BLUE = Vec4(0.0f, 0.0f, 1.0f, 1.0f);
-
     Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, size.z});
 
     VertexData vertices[] = {
         // Front face
         {model * CUBE_LOCAL_SPACE_VERTICES[0], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[1], RED, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[2], GREEN, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[3], BLUE, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[1], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[2], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[3], color, textureCoords[3], textureSlotIndex},
 
         // Back face
         {model * CUBE_LOCAL_SPACE_VERTICES[4], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[5], RED, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[6], GREEN, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[7], BLUE, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[5], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[6], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[7], color, textureCoords[3], textureSlotIndex},
 
         // Left face
         {model * CUBE_LOCAL_SPACE_VERTICES[8], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[9], RED, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[10], GREEN, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[11], BLUE, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[9], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[10], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[11], color, textureCoords[3], textureSlotIndex},
 
         // Right face
         {model * CUBE_LOCAL_SPACE_VERTICES[12], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[13], RED, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[14], GREEN, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[15], BLUE, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[13], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[14], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[15], color, textureCoords[3], textureSlotIndex},
 
         // Top face
         {model * CUBE_LOCAL_SPACE_VERTICES[16], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[17], RED, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[18], GREEN, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[19], BLUE, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[17], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[18], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[19], color, textureCoords[3], textureSlotIndex},
 
         // Bottom face
         {model * CUBE_LOCAL_SPACE_VERTICES[20], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[21], RED, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[22], GREEN, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[23], BLUE, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[21], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[22], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[23], color, textureCoords[3], textureSlotIndex},
     };
 
     uint32 indices[] = {
