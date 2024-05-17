@@ -55,6 +55,7 @@ namespace Krys
       {0.5f, -0.5f, -0.5f, 1.0f}, // 22
       {-0.5f, -0.5f, -0.5f, 1.0f} // 23
   };
+
   constexpr Vec3 CUBE_NORMALS[] = {
       {0.0f, 0.0f, 1.0f}, // Front face
       {0.0f, 0.0f, 1.0f},

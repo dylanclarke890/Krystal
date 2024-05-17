@@ -2,9 +2,9 @@
 
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec3 normal;
-layout(location = 1) in vec4 color;
-layout(location = 2) in vec2 textureCoord;
-layout(location = 3) in int textureSlotIndex;
+layout(location = 2) in vec4 color;
+layout(location = 3) in vec2 textureCoord;
+layout(location = 4) in int textureSlotIndex;
 
 out vec4 v_Color;
 out vec3 v_Normal;
