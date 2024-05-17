@@ -18,6 +18,7 @@ namespace Krys
   struct VertexData
   {
     Vec4 Position;
+    Vec3 Normal;
     Vec4 Color;
     Vec2 TextureCoords;
     int TextureSlotIndex;
