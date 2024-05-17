@@ -23,16 +23,25 @@ namespace Krys
     int TextureSlotIndex;
   };
 
+  struct LightSourceVertexData
+  {
+    Vec4 Position;
+  };
+
   class Renderer2D
   {
   private:
     static Ref<GraphicsContext> Context;
 
-    static Ref<Shader> Shader;
+    static Ref<Shader> ObjectShader;
+    static Ref<VertexArray> ObjectVertexArray;
+    static Ref<VertexBuffer> ObjectVertexBuffer;
+    static Ref<IndexBuffer> ObjectIndexBuffer;
 
-    static Ref<VertexArray> VertexArray;
-    static Ref<VertexBuffer> VertexBuffer;
-    static Ref<IndexBuffer> IndexBuffer;
+    static Ref<Shader> LightSourceShader;
+    static Ref<VertexArray> LightSourceVertexArray;
+    static Ref<VertexBuffer> LightSourceVertexBuffer;
+    static Ref<IndexBuffer> LightSourceIndexBuffer;
 
     static Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Vertices;
     static uint VertexCount;
@@ -62,6 +71,10 @@ namespace Krys
     static void DrawCube(Vec3 &pos, Vec3 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
     static void DrawCube(Vec3 &pos, Vec3 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
     // TODO: Tiling factor
+
+    // TODO: temp
+    static void SetLightSourceColor(Vec4 &color);
+    static void DrawLightSourceCube(Vec3 &pos, Vec3 &size, float rotation = 0.0f);
 
     static void BeginScene(Ref<Camera> camera);
     static void NextBatch();

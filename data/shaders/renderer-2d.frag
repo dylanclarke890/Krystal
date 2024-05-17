@@ -7,6 +7,7 @@ flat in int v_TextureSlotIndex;
 out vec4 o_Color;
 
 uniform sampler2D u_Textures[32];
+uniform vec4 u_LightColor;
 
 void main()
 {
@@ -46,4 +47,6 @@ void main()
     case 30: o_Color *= texture(u_Textures[30], v_TextureCoord); break;
     case 31: o_Color *= texture(u_Textures[31], v_TextureCoord); break;
   }
+  
+  o_Color *= u_LightColor;
 }

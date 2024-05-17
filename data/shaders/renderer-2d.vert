@@ -9,11 +9,11 @@ out vec4 v_Color;
 out vec2 v_TextureCoord;
 flat out int v_TextureSlotIndex;
 
-uniform mat4 u_Transform;
+uniform mat4 u_ViewProjection;
 
 void main()
 {
-	gl_Position = u_Transform * position;
+  gl_Position = u_ViewProjection * position;
   v_Color = color;
   v_TextureCoord = textureCoord;
   v_TextureSlotIndex = textureSlotIndex;
