@@ -74,12 +74,17 @@ namespace Krys
     // TODO: Tiling factor
 
     // TODO: temp
-    static void SetLightSourceColor(Vec4 &color);
     static void SetLightSourcePosition(Vec3 &position);
-    static void SetLightSourceAmbientStrength(float strength);
+    static void SetLightSourceDiffuse(Vec3 &diffuse);
+    static void SetLightSourceAmbient(Vec3 &diffuse);
+    static void SetLightSourceSpecular(Vec3 &diffuse);
     static void DrawLightSourceCube(Vec3 &pos, Vec3 &size, float rotation = 0.0f);
-    static void SetLightSourceSpecularStrength(float strength);
-    static void SetLightSourceShineStrength(int strength);
+
+    // TODO: temp
+    static void SetMaterialDiffuse(Vec3 &diffuse);
+    static void SetMaterialAmbient(Vec3 &diffuse);
+    static void SetMaterialSpecular(Vec3 &diffuse);
+    static void SetMaterialShine(float shine);
 
     static void BeginScene(Ref<Camera> camera);
     static void NextBatch();

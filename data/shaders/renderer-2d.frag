@@ -1,5 +1,20 @@
 #version 450
 
+struct Light {
+  vec3 Position;
+
+  vec3 Ambient;
+  vec3 Diffuse;
+  vec3 Specular;
+};
+
+struct Material {
+    vec3 Ambient;
+    vec3 Diffuse;
+    vec3 Specular;
+    float Shininess;
+};
+
 in vec3 v_FragmentPosition;
 in vec4 v_Color;
 in vec3 v_Normal;
@@ -12,12 +27,8 @@ uniform sampler2D u_Textures[32];
 
 uniform vec3 u_CameraPosition;
 
-uniform vec4 u_LightColor;
-uniform vec3 u_LightPosition;
-
-uniform float u_AmbientStrength;
-uniform float u_SpecularStrength;
-uniform int u_ShineStrength;
+uniform Material u_Material;
+uniform Light u_Light;
 
 void main()
 {
@@ -60,19 +71,19 @@ void main()
   }
 
   // Ambient lighting
-  vec3 ambient = u_AmbientStrength * vec3(u_LightColor);
+  vec3 ambient = u_Light.Ambient * u_Material.Ambient;
 
   // Diffuse lighting
   vec3 norm = normalize(v_Normal);
-  vec3 lightDir = normalize(u_LightPosition - v_FragmentPosition);
+  vec3 lightDir = normalize(u_Light.Position - v_FragmentPosition);
   float diff = max(dot(norm, lightDir), 0.0);
-  vec3 diffuse = diff * vec3(u_LightColor);
+  vec3 diffuse = u_Light.Diffuse * (diff * u_Material.Diffuse);
 
   // Specular lighting
   vec3 viewDir = normalize(u_CameraPosition - v_FragmentPosition);
   vec3 reflectDir = reflect(-lightDir, norm);
-  float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_ShineStrength);
-  vec3 specular = u_SpecularStrength * spec * vec3(u_LightColor);
+  float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.Shininess);
+  vec3 specular = u_Light.Specular * (u_Material.Specular * spec);
 
   // Combine results
   vec3 lighting = (ambient + diffuse + specular) * vec3(v_Color) * vec3(texColor);

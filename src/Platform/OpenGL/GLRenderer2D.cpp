@@ -471,29 +471,44 @@ namespace Krys
     glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, nullptr);
   }
 
-  void Renderer2D::SetLightSourceColor(Vec4 &color)
-  {
-    ObjectShader->SetUniform("u_LightColor", color);
-  }
-
-  void Renderer2D::SetLightSourceAmbientStrength(float strength)
-  {
-    ObjectShader->SetUniform("u_AmbientStrength", strength);
-  }
-
-  void Renderer2D::SetLightSourceSpecularStrength(float strength)
-  {
-    ObjectShader->SetUniform("u_SpecularStrength", strength);
-  }
-
-  void Renderer2D::SetLightSourceShineStrength(int strength)
-  {
-    ObjectShader->SetUniform("u_ShineStrength", strength);
-  }
-
   void Renderer2D::SetLightSourcePosition(Vec3 &position)
   {
-    ObjectShader->SetUniform("u_LightPosition", position);
+    ObjectShader->SetUniform("u_Light.Position", position);
+  }
+
+  void Renderer2D::SetLightSourceAmbient(Vec3 &ambient)
+  {
+    ObjectShader->SetUniform("u_Light.Ambient", ambient);
+  }
+
+  void Renderer2D::SetLightSourceDiffuse(Vec3 &diffuse)
+  {
+    ObjectShader->SetUniform("u_Light.Diffuse", diffuse);
+  }
+
+  void Renderer2D::SetLightSourceSpecular(Vec3 &specular)
+  {
+    ObjectShader->SetUniform("u_Light.Specular", specular);
+  }
+
+  void Renderer2D::SetMaterialAmbient(Vec3 &ambient)
+  {
+    ObjectShader->SetUniform("u_Material.Ambient", ambient);
+  }
+
+  void Renderer2D::SetMaterialDiffuse(Vec3 &diffuse)
+  {
+    ObjectShader->SetUniform("u_Material.Diffuse", diffuse);
+  }
+
+  void Renderer2D::SetMaterialSpecular(Vec3 &specular)
+  {
+    ObjectShader->SetUniform("u_Material.Specular", specular);
+  }
+
+  void Renderer2D::SetMaterialShine(float shine)
+  {
+    ObjectShader->SetUniform("u_Material.Shininess", shine);
   }
 
 #pragma endregion Lighting
