@@ -21,7 +21,12 @@ namespace Krys
   constexpr float PI32 = 3.1415927f;
   constexpr double PI64 = 3.141592653589793;
 
+  /// @brief Mat4 Identity Matrix.
   constexpr Mat4 MAT4_I = Mat4(1.0f);
+
+  /// @brief Mat3 Identity Matrix.
+  constexpr Mat3 MAT3_I = Mat3(1.0f);
+
   constexpr Vec3 ROTATE_AXIS_X = Vec3(1.0f, 0.0f, 0.0f);
   constexpr Vec3 ROTATE_AXIS_Y = Vec3(0.0f, 1.0f, 0.0f);
   constexpr Vec3 ROTATE_AXIS_Z = Vec3(0.0f, 0.0f, 1.0f);

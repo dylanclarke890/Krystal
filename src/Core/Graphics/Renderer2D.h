@@ -75,7 +75,11 @@ namespace Krys
 
     // TODO: temp
     static void SetLightSourceColor(Vec4 &color);
+    static void SetLightSourcePosition(Vec3 &position);
+    static void SetLightSourceAmbientStrength(float strength);
     static void DrawLightSourceCube(Vec3 &pos, Vec3 &size, float rotation = 0.0f);
+    static void SetLightSourceSpecularStrength(float strength);
+    static void SetLightSourceShineStrength(int strength);
 
     static void BeginScene(Ref<Camera> camera);
     static void NextBatch();

@@ -10,11 +10,11 @@ namespace Krys
   constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * REN2D_MAX_VERTICES;
 
   constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
-  constexpr Vec3 QUAD_NORMALS[] = {{-0.5f, -0.5f, 0.0f}, {0.5f, -0.5f, 0.0f}, {0.5f, 0.5f, 0.0f}, {-0.5f, 0.5f, 0.0f}};
+  constexpr Vec3 QUAD_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
   constexpr Vec4 QUAD_LOCAL_SPACE_VERTICES[] = {{-0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, 0.5f, 0.0f, 1.0f}, {-0.5f, 0.5f, 0.0f, 1.0f}};
 
   constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
-  constexpr Vec3 TRIANGLE_NORMALS[] = {{0.0f, 0.0f, 0.0f}, {0.5f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}};
+  constexpr Vec3 TRIANGLE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
   constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.5f, 0.0f, 1.0f}};
   constexpr int DEFAULT_TEXTURE_SLOT_INDEX = 0;
 
@@ -55,7 +55,6 @@ namespace Krys
       {0.5f, -0.5f, -0.5f, 1.0f}, // 22
       {-0.5f, -0.5f, -0.5f, 1.0f} // 23
   };
-
   constexpr Vec3 CUBE_NORMALS[] = {
       {0.0f, 0.0f, 1.0f}, // Front face
       {0.0f, 0.0f, 1.0f},
@@ -137,10 +136,8 @@ namespace Krys
     ObjectVertexArray->SetIndexBuffer(ObjectIndexBuffer);
 
     ObjectShader = Context->CreateShader();
-    ObjectShader->Bind();
     ObjectShader->Load("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
     ObjectShader->Link();
-    ObjectShader->SetUniform("u_AmbientStrength", 0.1f);
 
     // Lighting shader
     uint32 lightingVertexBufferSize = sizeof(LightSourceVertexData) * 24;
@@ -153,7 +150,6 @@ namespace Krys
     LightSourceVertexArray->SetIndexBuffer(LightSourceIndexBuffer);
 
     LightSourceShader = Context->CreateShader();
-    LightSourceShader->Bind();
     LightSourceShader->Load("shaders/light-source.vert", "shaders/light-source.frag");
     LightSourceShader->Link();
 
@@ -208,14 +204,15 @@ namespace Krys
   void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
   {
     Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, 1.0f});
+    Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
 
-    VertexData vertices[] = {
-        {model * TRIANGLE_LOCAL_SPACE_VERTICES[0], TRIANGLE_NORMALS[0], color, textureCoords[0], textureSlotIndex},
-        {model * TRIANGLE_LOCAL_SPACE_VERTICES[1], TRIANGLE_NORMALS[1], color, textureCoords[1], textureSlotIndex},
-        {model * TRIANGLE_LOCAL_SPACE_VERTICES[2], TRIANGLE_NORMALS[2], color, textureCoords[2], textureSlotIndex},
+    VertexData vertices[3] = {
+        {model * TRIANGLE_LOCAL_SPACE_VERTICES[0], normal * TRIANGLE_NORMALS[0], color, textureCoords[0], textureSlotIndex},
+        {model * TRIANGLE_LOCAL_SPACE_VERTICES[1], normal * TRIANGLE_NORMALS[1], color, textureCoords[1], textureSlotIndex},
+        {model * TRIANGLE_LOCAL_SPACE_VERTICES[2], normal * TRIANGLE_NORMALS[2], color, textureCoords[2], textureSlotIndex},
     };
 
-    uint32 indices[] = {VertexCount, VertexCount + 1, VertexCount + 2};
+    uint32 indices[3] = {VertexCount, VertexCount + 1, VertexCount + 2};
     AddVertices(&vertices[0], 3, &indices[0], 3);
   }
 
@@ -242,15 +239,16 @@ namespace Krys
   void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
   {
     Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, 1.0f});
+    Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
 
-    VertexData vertices[] = {
-        {model * QUAD_LOCAL_SPACE_VERTICES[0], QUAD_NORMALS[0], color, textureCoords[0], textureSlotIndex},
-        {model * QUAD_LOCAL_SPACE_VERTICES[1], QUAD_NORMALS[1], color, textureCoords[1], textureSlotIndex},
-        {model * QUAD_LOCAL_SPACE_VERTICES[2], QUAD_NORMALS[2], color, textureCoords[2], textureSlotIndex},
-        {model * QUAD_LOCAL_SPACE_VERTICES[3], QUAD_NORMALS[3], color, textureCoords[3], textureSlotIndex},
+    VertexData vertices[4] = {
+        {model * QUAD_LOCAL_SPACE_VERTICES[0], normal * QUAD_NORMALS[0], color, textureCoords[0], textureSlotIndex},
+        {model * QUAD_LOCAL_SPACE_VERTICES[1], normal * QUAD_NORMALS[1], color, textureCoords[1], textureSlotIndex},
+        {model * QUAD_LOCAL_SPACE_VERTICES[2], normal * QUAD_NORMALS[2], color, textureCoords[2], textureSlotIndex},
+        {model * QUAD_LOCAL_SPACE_VERTICES[3], normal * QUAD_NORMALS[3], color, textureCoords[3], textureSlotIndex},
     };
 
-    uint32 indices[] = {VertexCount, VertexCount + 1, VertexCount + 2, VertexCount + 2, VertexCount + 3, VertexCount + 0};
+    uint32 indices[6] = {VertexCount, VertexCount + 1, VertexCount + 2, VertexCount + 2, VertexCount + 3, VertexCount + 0};
     AddVertices(&vertices[0], 4, &indices[0], 6);
   }
 
@@ -277,43 +275,43 @@ namespace Krys
   void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
   {
     Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, size.z});
+    Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
 
     VertexData vertices[24] = {
         // Front face
-        {model * CUBE_LOCAL_SPACE_VERTICES[0], CUBE_NORMALS[0], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[1], CUBE_NORMALS[1], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[2], CUBE_NORMALS[2], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[3], CUBE_NORMALS[3], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[0], normal * CUBE_NORMALS[0], color, textureCoords[0], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[1], normal * CUBE_NORMALS[1], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[2], normal * CUBE_NORMALS[2], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[3], normal * CUBE_NORMALS[3], color, textureCoords[3], textureSlotIndex},
 
         // Back face
-        {model * CUBE_LOCAL_SPACE_VERTICES[4], CUBE_NORMALS[4], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[5], CUBE_NORMALS[5], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[6], CUBE_NORMALS[6], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[7], CUBE_NORMALS[7], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[4], normal * CUBE_NORMALS[4], color, textureCoords[0], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[5], normal * CUBE_NORMALS[5], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[6], normal * CUBE_NORMALS[6], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[7], normal * CUBE_NORMALS[7], color, textureCoords[3], textureSlotIndex},
 
         // Left face
-        {model * CUBE_LOCAL_SPACE_VERTICES[8], CUBE_NORMALS[8], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[9], CUBE_NORMALS[9], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[10], CUBE_NORMALS[10], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[11], CUBE_NORMALS[11], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[8], normal * CUBE_NORMALS[8], color, textureCoords[0], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[9], normal * CUBE_NORMALS[9], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[10], normal * CUBE_NORMALS[10], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[11], normal * CUBE_NORMALS[11], color, textureCoords[3], textureSlotIndex},
 
         // Right face
-        {model * CUBE_LOCAL_SPACE_VERTICES[12], CUBE_NORMALS[12], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[13], CUBE_NORMALS[13], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[14], CUBE_NORMALS[14], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[15], CUBE_NORMALS[15], color, textureCoords[3], textureSlotIndex},
-
+        {model * CUBE_LOCAL_SPACE_VERTICES[12], normal * CUBE_NORMALS[12], color, textureCoords[0], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[13], normal * CUBE_NORMALS[13], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[14], normal * CUBE_NORMALS[14], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[15], normal * CUBE_NORMALS[15], color, textureCoords[3], textureSlotIndex},
         // Top face
-        {model * CUBE_LOCAL_SPACE_VERTICES[16], CUBE_NORMALS[16], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[17], CUBE_NORMALS[17], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[18], CUBE_NORMALS[18], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[19], CUBE_NORMALS[19], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[16], normal * CUBE_NORMALS[16], color, textureCoords[0], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[17], normal * CUBE_NORMALS[17], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[18], normal * CUBE_NORMALS[18], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[19], normal * CUBE_NORMALS[19], color, textureCoords[3], textureSlotIndex},
 
         // Bottom face
-        {model * CUBE_LOCAL_SPACE_VERTICES[20], CUBE_NORMALS[20], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[21], CUBE_NORMALS[21], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[22], CUBE_NORMALS[22], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[23], CUBE_NORMALS[23], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[20], normal * CUBE_NORMALS[20], color, textureCoords[0], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[21], normal * CUBE_NORMALS[21], color, textureCoords[1], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[22], normal * CUBE_NORMALS[22], color, textureCoords[2], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[23], normal * CUBE_NORMALS[23], color, textureCoords[3], textureSlotIndex},
     };
 
     uint32 indices[36] = {
@@ -370,6 +368,8 @@ namespace Krys
   }
 
 #pragma endregion Drawing Cubes
+
+#pragma region Lighting
 
   void Renderer2D::DrawLightSourceCube(Vec3 &pos, Vec3 &size, float rotation)
   {
@@ -476,6 +476,28 @@ namespace Krys
     ObjectShader->SetUniform("u_LightColor", color);
   }
 
+  void Renderer2D::SetLightSourceAmbientStrength(float strength)
+  {
+    ObjectShader->SetUniform("u_AmbientStrength", strength);
+  }
+
+  void Renderer2D::SetLightSourceSpecularStrength(float strength)
+  {
+    ObjectShader->SetUniform("u_SpecularStrength", strength);
+  }
+
+  void Renderer2D::SetLightSourceShineStrength(int strength)
+  {
+    ObjectShader->SetUniform("u_ShineStrength", strength);
+  }
+
+  void Renderer2D::SetLightSourcePosition(Vec3 &position)
+  {
+    ObjectShader->SetUniform("u_LightPosition", position);
+  }
+
+#pragma endregion Lighting
+
   void Renderer2D::Reset()
   {
     VertexCount = 0;
@@ -486,8 +508,9 @@ namespace Krys
   void Renderer2D::BeginScene(Ref<Camera> camera)
   {
     auto &viewProjection = camera->GetViewProjection();
-    ObjectShader->SetUniform("u_ViewProjection", viewProjection);
     LightSourceShader->SetUniform("u_ViewProjection", viewProjection);
+    ObjectShader->SetUniform("u_ViewProjection", viewProjection);
+    ObjectShader->SetUniform("u_CameraPosition", camera->GetPosition());
 
     Reset();
   }
