@@ -16,8 +16,6 @@ namespace Krys
   constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
   constexpr Vec3 TRIANGLE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
   constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.5f, 0.0f, 1.0f}};
-  constexpr int DEFAULT_TEXTURE_SLOT_INDEX = 0;
-  constexpr int DEFAULT_SPECULAR_TEXTURE_SLOT_INDEX = 0;
 
   constexpr Vec4 CUBE_LOCAL_SPACE_VERTICES[] = {
       // Front face
@@ -125,12 +123,14 @@ namespace Krys
     ObjectVertexBuffer = Context->CreateVertexBuffer(VERTEX_BUFFER_SIZE);
     ObjectVertexBuffer->SetLayout(
         BufferLayout(VERTEX_BUFFER_SIZE,
-                     {{ShaderDataType::Float4, "position"},
-                      {ShaderDataType::Float3, "normal"},
-                      {ShaderDataType::Float4, "color"},
-                      {ShaderDataType::Float2, "textureCoord"},
-                      {ShaderDataType::Int, "textureSlotIndex"},
-                      {ShaderDataType::Int, "specularTextureSlotIndex"}}));
+                     {{ShaderDataType::Float4, "i_ModelPosition"},
+                      {ShaderDataType::Float3, "i_Normal"},
+                      {ShaderDataType::Float4, "i_Color"},
+                      {ShaderDataType::Float2, "i_TextureCoord"},
+                      {ShaderDataType::Int, "i_TextureSlot"},
+                      {ShaderDataType::Int, "i_SpecularSlot"},
+                      {ShaderDataType::Int, "i_EmissionSlot"},
+                      {ShaderDataType::Float, "i_Shininess"}}));
     ObjectIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
 
     ObjectVertexArray = Context->CreateVertexArray();
@@ -144,7 +144,7 @@ namespace Krys
     // Lighting shader
     uint32 lightingVertexBufferSize = sizeof(LightSourceVertexData) * 24;
     LightSourceVertexBuffer = Context->CreateVertexBuffer(lightingVertexBufferSize);
-    LightSourceVertexBuffer->SetLayout(BufferLayout(lightingVertexBufferSize, {{ShaderDataType::Float4, "position"}}));
+    LightSourceVertexBuffer->SetLayout(BufferLayout(lightingVertexBufferSize, {{ShaderDataType::Float4, "i_ModelPosition"}}));
     LightSourceIndexBuffer = Context->CreateIndexBuffer(36);
 
     LightSourceVertexArray = Context->CreateVertexArray();
@@ -187,145 +187,169 @@ namespace Krys
 
 #pragma region Drawing Triangles
 
-  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation)
+  void Renderer2D::DrawTriangle(Ref<Transform> transform, Vec4 &color)
   {
-    DrawTriangle(pos, size, rotation, color, DEFAULT_TEXTURE_SLOT_INDEX, TRIANGLE_DEFAULT_TEXTURE_COORDS);
+    TextureData textureData{TRIANGLE_DEFAULT_TEXTURE_COORDS, color};
+    DrawTriangle(transform, textureData);
   }
 
-  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation, Vec4 &tint)
+  void Renderer2D::DrawTriangle(Ref<Transform> transform, Ref<Material> material)
   {
-    DrawTriangle(pos, size, rotation, tint, GetTextureSlotIndex(texture), TRIANGLE_DEFAULT_TEXTURE_COORDS);
+    TextureData textureData{TRIANGLE_DEFAULT_TEXTURE_COORDS, material->Tint};
+    textureData.Texture = GetTextureSlotIndex(material->Diffuse);
+    textureData.Specular = GetTextureSlotIndex(material->Specular);
+    textureData.Emission = GetTextureSlotIndex(material->Emission);
+    textureData.Shininess = material->Shininess;
+    DrawTriangle(transform, textureData);
   }
 
-  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation, Vec4 &tint)
+  void Renderer2D::DrawTriangle(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
   {
-    auto texture = subTexture->GetTexture();
-    DrawTriangle(pos, size, rotation, tint, GetTextureSlotIndex(texture), subTexture->GetTextureCoords());
+    TextureData textureData{subTexture->GetTextureCoords(), tint};
+    textureData.Texture = GetTextureSlotIndex(subTexture->GetTexture());
+    DrawTriangle(transform, textureData);
   }
 
-  void Renderer2D::DrawTriangle(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
+  void Renderer2D::DrawTriangle(Ref<Transform> transform, TextureData &textureData)
   {
-    Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, 1.0f});
+    const uint vertex_count = 3;
+    const uint index_count = 3;
+
+    Mat4 model = transform->GetModel();
     Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
 
-    VertexData vertices[3] = {
-        {model * TRIANGLE_LOCAL_SPACE_VERTICES[0], normal * TRIANGLE_NORMALS[0], color, textureCoords[0], textureSlotIndex},
-        {model * TRIANGLE_LOCAL_SPACE_VERTICES[1], normal * TRIANGLE_NORMALS[1], color, textureCoords[1], textureSlotIndex},
-        {model * TRIANGLE_LOCAL_SPACE_VERTICES[2], normal * TRIANGLE_NORMALS[2], color, textureCoords[2], textureSlotIndex},
+    auto &td = textureData;
+    VertexData vertices[vertex_count] = {
+        {model * TRIANGLE_LOCAL_SPACE_VERTICES[0], normal * TRIANGLE_NORMALS[0], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * TRIANGLE_LOCAL_SPACE_VERTICES[1], normal * TRIANGLE_NORMALS[1], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * TRIANGLE_LOCAL_SPACE_VERTICES[2], normal * TRIANGLE_NORMALS[2], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
     };
 
-    uint32 indices[3] = {VertexCount, VertexCount + 1, VertexCount + 2};
-    AddVertices(&vertices[0], 3, &indices[0], 3);
+    uint32 indices[index_count] = {VertexCount, VertexCount + 1, VertexCount + 2};
+    AddVertices(&vertices[0], vertex_count, &indices[0], index_count);
   }
 
 #pragma endregion Drawing Triangles
 
 #pragma region Drawing Quads
 
-  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation)
+  void Renderer2D::DrawQuad(Ref<Transform> transform, Vec4 &color)
   {
-    DrawQuad(pos, size, rotation, color, DEFAULT_TEXTURE_SLOT_INDEX, QUAD_DEFAULT_TEXTURE_COORDS);
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, color};
+    DrawQuad(transform, textureData);
   }
 
-  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation, Vec4 &tint)
+  void Renderer2D::DrawQuad(Ref<Transform> transform, Ref<Material> material)
   {
-    DrawQuad(pos, size, rotation, tint, GetTextureSlotIndex(texture), QUAD_DEFAULT_TEXTURE_COORDS);
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, material->Tint};
+    textureData.Texture = GetTextureSlotIndex(material->Diffuse);
+    textureData.Specular = GetTextureSlotIndex(material->Specular);
+    textureData.Emission = GetTextureSlotIndex(material->Emission);
+    textureData.Shininess = material->Shininess;
+    DrawQuad(transform, textureData);
   }
 
-  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation, Vec4 &tint)
+  void Renderer2D::DrawQuad(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
   {
-    auto texture = subTexture->GetTexture();
-    DrawQuad(pos, size, rotation, tint, GetTextureSlotIndex(texture), subTexture->GetTextureCoords());
+    TextureData textureData{subTexture->GetTextureCoords(), tint};
+    textureData.Texture = GetTextureSlotIndex(subTexture->GetTexture());
+    DrawQuad(transform, textureData);
   }
 
-  void Renderer2D::DrawQuad(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
+  void Renderer2D::DrawQuad(Ref<Transform> transform, TextureData &textureData)
   {
-    Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, 1.0f});
+    const uint vertex_count = 4;
+    const uint index_count = 6;
+
+    Mat4 model = transform->GetModel();
     Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
 
-    VertexData vertices[4] = {
-        {model * QUAD_LOCAL_SPACE_VERTICES[0], normal * QUAD_NORMALS[0], color, textureCoords[0], textureSlotIndex},
-        {model * QUAD_LOCAL_SPACE_VERTICES[1], normal * QUAD_NORMALS[1], color, textureCoords[1], textureSlotIndex},
-        {model * QUAD_LOCAL_SPACE_VERTICES[2], normal * QUAD_NORMALS[2], color, textureCoords[2], textureSlotIndex},
-        {model * QUAD_LOCAL_SPACE_VERTICES[3], normal * QUAD_NORMALS[3], color, textureCoords[3], textureSlotIndex},
+    auto &td = textureData;
+    VertexData vertices[vertex_count] = {
+        {model * QUAD_LOCAL_SPACE_VERTICES[0], normal * QUAD_NORMALS[0], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * QUAD_LOCAL_SPACE_VERTICES[1], normal * QUAD_NORMALS[1], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * QUAD_LOCAL_SPACE_VERTICES[2], normal * QUAD_NORMALS[2], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * QUAD_LOCAL_SPACE_VERTICES[3], normal * QUAD_NORMALS[3], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
     };
 
-    uint32 indices[6] = {VertexCount, VertexCount + 1, VertexCount + 2, VertexCount + 2, VertexCount + 3, VertexCount + 0};
-    AddVertices(&vertices[0], 4, &indices[0], 6);
+    uint32 indices[index_count] = {VertexCount, VertexCount + 1, VertexCount + 2, VertexCount + 2, VertexCount + 3, VertexCount + 0};
+    AddVertices(&vertices[0], vertex_count, &indices[0], index_count);
   }
 
 #pragma endregion Drawing Quads
 
 #pragma region Drawing Cubes
 
-  void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, Vec4 &color, float rotation)
+  void Renderer2D::DrawCube(Ref<Transform> transform, Vec4 &color)
   {
-    DrawCube(pos, size, rotation, color,
-             DEFAULT_TEXTURE_SLOT_INDEX,
-             DEFAULT_SPECULAR_TEXTURE_SLOT_INDEX,
-             QUAD_DEFAULT_TEXTURE_COORDS);
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, color};
+    DrawCube(transform, textureData);
   }
 
-  void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, Ref<Texture2D> texture, Ref<Texture2D> specularTexture, float rotation, Vec4 &tint)
+  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<Material> material)
   {
-    DrawCube(pos, size, rotation, tint,
-             GetTextureSlotIndex(texture),
-             specularTexture ? GetTextureSlotIndex(specularTexture) : DEFAULT_SPECULAR_TEXTURE_SLOT_INDEX,
-             QUAD_DEFAULT_TEXTURE_COORDS);
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, material->Tint};
+    textureData.Texture = GetTextureSlotIndex(material->Diffuse);
+    textureData.Specular = GetTextureSlotIndex(material->Specular);
+    textureData.Emission = GetTextureSlotIndex(material->Emission);
+    textureData.Shininess = material->Shininess;
+    DrawCube(transform, textureData);
   }
 
-  void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, Ref<SubTexture2D> subTexture, float rotation, Vec4 &tint)
+  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
   {
-    auto texture = subTexture->GetTexture();
-    DrawCube(pos, size, rotation, tint,
-             GetTextureSlotIndex(texture),
-             DEFAULT_SPECULAR_TEXTURE_SLOT_INDEX,
-             subTexture->GetTextureCoords());
+    TextureData textureData{subTexture->GetTextureCoords(), tint};
+    textureData.Texture = GetTextureSlotIndex(subTexture->GetTexture());
+    DrawCube(transform, textureData);
   }
 
-  void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, float rotation, Vec4 &color, int textureSlotIndex, int specularTextureSlotIndex, const Vec2 *textureCoords)
+  void Renderer2D::DrawCube(Ref<Transform> transform, TextureData &textureData)
   {
-    Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, size.z});
+    const uint vertex_count = 24;
+    const uint index_count = 36;
+
+    Mat4 model = transform->GetModel();
     Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
 
-    VertexData vertices[24] = {
+    auto &td = textureData;
+    VertexData vertices[vertex_count] = {
         // Front face
-        {model * CUBE_LOCAL_SPACE_VERTICES[0], normal * CUBE_NORMALS[0], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[1], normal * CUBE_NORMALS[1], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[2], normal * CUBE_NORMALS[2], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[3], normal * CUBE_NORMALS[3], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[0], normal * CUBE_NORMALS[0], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[1], normal * CUBE_NORMALS[1], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[2], normal * CUBE_NORMALS[2], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[3], normal * CUBE_NORMALS[3], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
 
         // Back face
-        {model * CUBE_LOCAL_SPACE_VERTICES[4], normal * CUBE_NORMALS[4], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[5], normal * CUBE_NORMALS[5], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[6], normal * CUBE_NORMALS[6], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[7], normal * CUBE_NORMALS[7], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[4], normal * CUBE_NORMALS[4], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[5], normal * CUBE_NORMALS[5], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[6], normal * CUBE_NORMALS[6], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[7], normal * CUBE_NORMALS[7], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
 
         // Left face
-        {model * CUBE_LOCAL_SPACE_VERTICES[8], normal * CUBE_NORMALS[8], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[9], normal * CUBE_NORMALS[9], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[10], normal * CUBE_NORMALS[10], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[11], normal * CUBE_NORMALS[11], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[8], normal * CUBE_NORMALS[8], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[9], normal * CUBE_NORMALS[9], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[10], normal * CUBE_NORMALS[10], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[11], normal * CUBE_NORMALS[11], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
 
         // Right face
-        {model * CUBE_LOCAL_SPACE_VERTICES[12], normal * CUBE_NORMALS[12], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[13], normal * CUBE_NORMALS[13], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[14], normal * CUBE_NORMALS[14], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[15], normal * CUBE_NORMALS[15], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[12], normal * CUBE_NORMALS[12], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[13], normal * CUBE_NORMALS[13], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[14], normal * CUBE_NORMALS[14], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[15], normal * CUBE_NORMALS[15], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
         // Top face
-        {model * CUBE_LOCAL_SPACE_VERTICES[16], normal * CUBE_NORMALS[16], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[17], normal * CUBE_NORMALS[17], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[18], normal * CUBE_NORMALS[18], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[19], normal * CUBE_NORMALS[19], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[16], normal * CUBE_NORMALS[16], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[17], normal * CUBE_NORMALS[17], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[18], normal * CUBE_NORMALS[18], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[19], normal * CUBE_NORMALS[19], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
 
         // Bottom face
-        {model * CUBE_LOCAL_SPACE_VERTICES[20], normal * CUBE_NORMALS[20], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[21], normal * CUBE_NORMALS[21], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[22], normal * CUBE_NORMALS[22], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[23], normal * CUBE_NORMALS[23], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[20], normal * CUBE_NORMALS[20], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[21], normal * CUBE_NORMALS[21], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[22], normal * CUBE_NORMALS[22], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
+        {model * CUBE_LOCAL_SPACE_VERTICES[23], normal * CUBE_NORMALS[23], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
     };
 
-    uint32 indices[36] = {
+    uint32 indices[index_count] = {
         // Front face
         VertexCount,
         VertexCount + 1,
@@ -375,18 +399,21 @@ namespace Krys
         VertexCount + 20,
     };
 
-    AddVertices(&vertices[0], 24, &indices[0], 36);
+    AddVertices(&vertices[0], vertex_count, &indices[0], index_count);
   }
 
 #pragma endregion Drawing Cubes
 
 #pragma region Lighting
 
-  void Renderer2D::DrawLightSourceCube(Vec3 &pos, Vec3 &size, float rotation)
+  void Renderer2D::DrawLightSourceCube(Ref<Transform> transform)
   {
-    Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, size.z});
+    const uint vertex_count = 24;
+    const uint index_count = 36;
 
-    LightSourceVertexData vertices[24] = {
+    Mat4 model = transform->GetModel();
+
+    LightSourceVertexData vertices[vertex_count] = {
         // Front face
         {model * CUBE_LOCAL_SPACE_VERTICES[0]},
         {model * CUBE_LOCAL_SPACE_VERTICES[1]},
@@ -424,7 +451,7 @@ namespace Krys
         {model * CUBE_LOCAL_SPACE_VERTICES[23]},
     };
 
-    uint32 indices[36] = {
+    uint32 indices[index_count] = {
         // Front face
         0,
         1,
@@ -476,40 +503,30 @@ namespace Krys
 
     LightSourceShader->Bind();
     LightSourceVertexArray->Bind();
-    LightSourceVertexBuffer->SetData(&vertices[0], 24 * sizeof(LightSourceVertexData));
-    LightSourceIndexBuffer->SetData(indices, 36);
+    LightSourceVertexBuffer->SetData(&vertices[0], vertex_count * sizeof(LightSourceVertexData));
+    LightSourceIndexBuffer->SetData(indices, index_count);
 
-    glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
   }
 
-  void Renderer2D::SetLightSourcePosition(Vec3 &position)
+  void Renderer2D::SetLightSourcePosition(Vec3 position)
   {
     ObjectShader->SetUniform("u_Light.Position", position);
   }
 
-  void Renderer2D::SetLightSourceAmbient(Vec3 &ambient)
+  void Renderer2D::SetLightSourceAmbient(Vec3 ambient)
   {
     ObjectShader->SetUniform("u_Light.Ambient", ambient);
   }
 
-  void Renderer2D::SetLightSourceDiffuse(Vec3 &diffuse)
+  void Renderer2D::SetLightSourceDiffuse(Vec3 diffuse)
   {
     ObjectShader->SetUniform("u_Light.Diffuse", diffuse);
   }
 
-  void Renderer2D::SetLightSourceSpecular(Vec3 &specular)
+  void Renderer2D::SetLightSourceSpecular(Vec3 specular)
   {
     ObjectShader->SetUniform("u_Light.Specular", specular);
-  }
-
-  void Renderer2D::SetMaterialSpecular(Vec3 &specular)
-  {
-    ObjectShader->SetUniform("u_Material.Specular", specular);
-  }
-
-  void Renderer2D::SetMaterialShine(float shine)
-  {
-    ObjectShader->SetUniform("u_Material.Shininess", shine);
   }
 
 #pragma endregion Lighting
@@ -518,7 +535,7 @@ namespace Krys
   {
     VertexCount = 0;
     IndexCount = 0;
-    TextureSlotIndex = 1; // 0 == WhiteTexture
+    TextureSlotIndex = 0;
   }
 
   void Renderer2D::BeginScene(Ref<Camera> camera)
@@ -578,6 +595,10 @@ namespace Krys
   int Renderer2D::GetTextureSlotIndex(Ref<Texture2D> texture)
   {
     int textureSlotIndex = -1;
+
+    if (!texture)
+      return textureSlotIndex;
+
     auto &textureSlots = *TextureSlots;
     for (int i = 0; i < TextureSlotIndex; i++)
     {

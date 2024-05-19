@@ -5,6 +5,8 @@
 #include "Core.h"
 #include "Graphics/GraphicsContext.h"
 #include "Graphics/Camera/Camera.h"
+#include "Graphics/Transform.h"
+#include "Graphics/Material.h"
 
 namespace Krys
 {
@@ -23,16 +25,28 @@ namespace Krys
     Vec2 TextureCoords;
     int TextureSlotIndex;
     int SpecularTextureSlotIndex;
-  };
-
-  struct LightSourceVertexData
-  {
-    Vec4 Position;
+    int EmissionTextureSlotIndex;
+    float Shininess;
   };
 
   class Renderer2D
   {
   private:
+    struct LightSourceVertexData
+    {
+      Vec4 Position;
+    };
+
+    struct TextureData
+    {
+      const Vec2 *TextureCoords;
+      Vec4 Tint;
+      int Texture = -1;
+      int Specular = -1;
+      int Emission = -1;
+      float Shininess = 128.0f;
+    };
+
     static Ref<GraphicsContext> Context;
 
     static Ref<Shader> ObjectShader;
@@ -59,32 +73,24 @@ namespace Krys
     static void Init(Ref<GraphicsContext> ctx);
     static void Shutdown();
 
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation = 0.0f);
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
-    // TODO: Tiling factor
+    static void DrawTriangle(Ref<Transform> transform, Vec4 &color);
+    static void DrawTriangle(Ref<Transform> transform, Ref<Material> material);
+    static void DrawTriangle(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Vec4 &color, float rotation = 0.0f);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
-    static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
-    // TODO: Tiling factor
+    static void DrawQuad(Ref<Transform> transform, Vec4 &color);
+    static void DrawQuad(Ref<Transform> transform, Ref<Material> material);
+    static void DrawQuad(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
-    // TODO: temp
-    static void DrawCube(Vec3 &pos, Vec3 &size, Vec4 &color, float rotation = 0.0f);
-    static void DrawCube(Vec3 &pos, Vec3 &size, Ref<Texture2D> texture, Ref<Texture2D> specularTexture = nullptr, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
-    static void DrawCube(Vec3 &pos, Vec3 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
-    // TODO: Tiling factor
+    static void DrawCube(Ref<Transform> transform, Vec4 &color);
+    static void DrawCube(Ref<Transform> transform, Ref<Material> material);
+    static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     // TODO: temp
-    static void SetLightSourcePosition(Vec3 &position);
-    static void SetLightSourceDiffuse(Vec3 &diffuse);
-    static void SetLightSourceAmbient(Vec3 &diffuse);
-    static void SetLightSourceSpecular(Vec3 &diffuse);
-    static void DrawLightSourceCube(Vec3 &pos, Vec3 &size, float rotation = 0.0f);
-
-    // TODO: temp
-    static void SetMaterialSpecular(Vec3 &diffuse);
-    static void SetMaterialShine(float shine);
+    static void SetLightSourcePosition(Vec3 position);
+    static void SetLightSourceDiffuse(Vec3 diffuse);
+    static void SetLightSourceAmbient(Vec3 diffuse);
+    static void SetLightSourceSpecular(Vec3 diffuse);
+    static void DrawLightSourceCube(Ref<Transform> transform);
 
     static void BeginScene(Ref<Camera> camera);
     static void NextBatch();
@@ -94,9 +100,9 @@ namespace Krys
     static void Reset();
     static void Flush();
 
-    static void DrawQuad(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
-    static void DrawTriangle(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
-    static void DrawCube(Vec3 &pos, Vec3 &size, float rotation, Vec4 &color, int textureSlotIndex, int specularTextureSlotIndex, const Vec2 *textureCoords);
+    static void DrawQuad(Ref<Transform> transform, TextureData &textureData);
+    static void DrawTriangle(Ref<Transform> transform, TextureData &textureData);
+    static void DrawCube(Ref<Transform> transform, TextureData &textureData);
 
     static void AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount);
     static int GetTextureSlotIndex(Ref<Texture2D> texture);

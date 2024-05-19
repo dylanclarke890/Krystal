@@ -8,122 +8,105 @@ struct Light {
   vec3 Specular;
 };
 
-struct Material {
-  float Shininess;
-};
-
 in vec3 v_FragmentPosition;
 in vec4 v_Color;
 in vec3 v_Normal;
 in vec2 v_TextureCoord;
-flat in int v_TextureSlotIndex;
-flat in int v_SpecularTextureSlotIndex;
+flat in int v_TextureSlot;
+flat in int v_SpecularSlot;
+flat in int v_EmissionSlot;
+flat in float v_Shininess;
 
 out vec4 o_Color;
 
+uniform int u_UseAmbientLighting = 1;
+uniform int u_UseDiffuseLighting = 1;
+uniform int u_UseSpecularLighting = 1;
+uniform int u_UseEmissionLighting = 1;
+uniform Light u_Light;
+uniform vec3 u_CameraPosition;
 uniform sampler2D u_Textures[32];
 
-uniform vec3 u_CameraPosition;
-
-uniform Material u_Material;
-uniform Light u_Light;
+vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor)
+{
+  switch(textureSlotIndex)
+  {
+    case  0: return texture(u_Textures[ 0], v_TextureCoord);
+    case  1: return texture(u_Textures[ 1], v_TextureCoord);
+    case  2: return texture(u_Textures[ 2], v_TextureCoord);
+    case  3: return texture(u_Textures[ 3], v_TextureCoord);
+    case  4: return texture(u_Textures[ 4], v_TextureCoord);
+    case  5: return texture(u_Textures[ 5], v_TextureCoord);
+    case  6: return texture(u_Textures[ 6], v_TextureCoord);
+    case  7: return texture(u_Textures[ 7], v_TextureCoord);
+    case  8: return texture(u_Textures[ 8], v_TextureCoord);
+    case  9: return texture(u_Textures[ 9], v_TextureCoord);
+    case 10: return texture(u_Textures[10], v_TextureCoord);
+    case 11: return texture(u_Textures[11], v_TextureCoord);
+    case 12: return texture(u_Textures[12], v_TextureCoord);
+    case 13: return texture(u_Textures[13], v_TextureCoord);
+    case 14: return texture(u_Textures[14], v_TextureCoord);
+    case 15: return texture(u_Textures[15], v_TextureCoord);
+    case 16: return texture(u_Textures[16], v_TextureCoord);
+    case 17: return texture(u_Textures[17], v_TextureCoord);
+    case 18: return texture(u_Textures[18], v_TextureCoord);
+    case 19: return texture(u_Textures[19], v_TextureCoord);
+    case 20: return texture(u_Textures[20], v_TextureCoord);
+    case 21: return texture(u_Textures[21], v_TextureCoord);
+    case 22: return texture(u_Textures[22], v_TextureCoord);
+    case 23: return texture(u_Textures[23], v_TextureCoord);
+    case 24: return texture(u_Textures[24], v_TextureCoord);
+    case 25: return texture(u_Textures[25], v_TextureCoord);
+    case 26: return texture(u_Textures[26], v_TextureCoord);
+    case 27: return texture(u_Textures[27], v_TextureCoord);
+    case 28: return texture(u_Textures[28], v_TextureCoord);
+    case 29: return texture(u_Textures[29], v_TextureCoord);
+    case 30: return texture(u_Textures[30], v_TextureCoord);
+    case 31: return texture(u_Textures[31], v_TextureCoord);
+    default: return defaultColor;
+  }
+}
 
 void main()
 {
-  vec4 texColor;
-  switch(v_TextureSlotIndex)
+  vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0));
+  vec3 normal = normalize(v_Normal);
+  vec3 lightDirection = normalize(u_Light.Position - v_FragmentPosition);
+
+  o_Color = textureSample * v_Color;
+  vec3 lighting = vec3(0.0, 0.0, 0.0);
+
+  if (u_UseAmbientLighting == 1)
   {
-    case  0: texColor = texture(u_Textures[ 0], v_TextureCoord); break;
-    case  1: texColor = texture(u_Textures[ 1], v_TextureCoord); break;
-    case  2: texColor = texture(u_Textures[ 2], v_TextureCoord); break;
-    case  3: texColor = texture(u_Textures[ 3], v_TextureCoord); break;
-    case  4: texColor = texture(u_Textures[ 4], v_TextureCoord); break;
-    case  5: texColor = texture(u_Textures[ 5], v_TextureCoord); break;
-    case  6: texColor = texture(u_Textures[ 6], v_TextureCoord); break;
-    case  7: texColor = texture(u_Textures[ 7], v_TextureCoord); break;
-    case  8: texColor = texture(u_Textures[ 8], v_TextureCoord); break;
-    case  9: texColor = texture(u_Textures[ 9], v_TextureCoord); break;
-    case 10: texColor = texture(u_Textures[10], v_TextureCoord); break;
-    case 11: texColor = texture(u_Textures[11], v_TextureCoord); break;
-    case 12: texColor = texture(u_Textures[12], v_TextureCoord); break;
-    case 13: texColor = texture(u_Textures[13], v_TextureCoord); break;
-    case 14: texColor = texture(u_Textures[14], v_TextureCoord); break;
-    case 15: texColor = texture(u_Textures[15], v_TextureCoord); break;
-    case 16: texColor = texture(u_Textures[16], v_TextureCoord); break;
-    case 17: texColor = texture(u_Textures[17], v_TextureCoord); break;
-    case 18: texColor = texture(u_Textures[18], v_TextureCoord); break;
-    case 19: texColor = texture(u_Textures[19], v_TextureCoord); break;
-    case 20: texColor = texture(u_Textures[20], v_TextureCoord); break;
-    case 21: texColor = texture(u_Textures[21], v_TextureCoord); break;
-    case 22: texColor = texture(u_Textures[22], v_TextureCoord); break;
-    case 23: texColor = texture(u_Textures[23], v_TextureCoord); break;
-    case 24: texColor = texture(u_Textures[24], v_TextureCoord); break;
-    case 25: texColor = texture(u_Textures[25], v_TextureCoord); break;
-    case 26: texColor = texture(u_Textures[26], v_TextureCoord); break;
-    case 27: texColor = texture(u_Textures[27], v_TextureCoord); break;
-    case 28: texColor = texture(u_Textures[28], v_TextureCoord); break;
-    case 29: texColor = texture(u_Textures[29], v_TextureCoord); break;
-    case 30: texColor = texture(u_Textures[30], v_TextureCoord); break;
-    case 31: texColor = texture(u_Textures[31], v_TextureCoord); break;
-    default: texColor = vec4(1.0); // Fallback to white color if texture slot index is invalid
+    lighting += u_Light.Ambient * vec3(o_Color);
   }
 
-  vec4 specularTextureSample;
-  switch(v_SpecularTextureSlotIndex)
+  if (u_UseDiffuseLighting == 1)
   {
-    case  0: specularTextureSample = vec4(0.0, 0.0, 0.0, 0.0); break; // Some specular lighting.
-    case  1: specularTextureSample = texture(u_Textures[ 1], v_TextureCoord); break;
-    case  2: specularTextureSample = texture(u_Textures[ 2], v_TextureCoord); break;
-    case  3: specularTextureSample = texture(u_Textures[ 3], v_TextureCoord); break;
-    case  4: specularTextureSample = texture(u_Textures[ 4], v_TextureCoord); break;
-    case  5: specularTextureSample = texture(u_Textures[ 5], v_TextureCoord); break;
-    case  6: specularTextureSample = texture(u_Textures[ 6], v_TextureCoord); break;
-    case  7: specularTextureSample = texture(u_Textures[ 7], v_TextureCoord); break;
-    case  8: specularTextureSample = texture(u_Textures[ 8], v_TextureCoord); break;
-    case  9: specularTextureSample = texture(u_Textures[ 9], v_TextureCoord); break;
-    case 10: specularTextureSample = texture(u_Textures[10], v_TextureCoord); break;
-    case 11: specularTextureSample = texture(u_Textures[11], v_TextureCoord); break;
-    case 12: specularTextureSample = texture(u_Textures[12], v_TextureCoord); break;
-    case 13: specularTextureSample = texture(u_Textures[13], v_TextureCoord); break;
-    case 14: specularTextureSample = texture(u_Textures[14], v_TextureCoord); break;
-    case 15: specularTextureSample = texture(u_Textures[15], v_TextureCoord); break;
-    case 16: specularTextureSample = texture(u_Textures[16], v_TextureCoord); break;
-    case 17: specularTextureSample = texture(u_Textures[17], v_TextureCoord); break;
-    case 18: specularTextureSample = texture(u_Textures[18], v_TextureCoord); break;
-    case 19: specularTextureSample = texture(u_Textures[19], v_TextureCoord); break;
-    case 20: specularTextureSample = texture(u_Textures[20], v_TextureCoord); break;
-    case 21: specularTextureSample = texture(u_Textures[21], v_TextureCoord); break;
-    case 22: specularTextureSample = texture(u_Textures[22], v_TextureCoord); break;
-    case 23: specularTextureSample = texture(u_Textures[23], v_TextureCoord); break;
-    case 24: specularTextureSample = texture(u_Textures[24], v_TextureCoord); break;
-    case 25: specularTextureSample = texture(u_Textures[25], v_TextureCoord); break;
-    case 26: specularTextureSample = texture(u_Textures[26], v_TextureCoord); break;
-    case 27: specularTextureSample = texture(u_Textures[27], v_TextureCoord); break;
-    case 28: specularTextureSample = texture(u_Textures[28], v_TextureCoord); break;
-    case 29: specularTextureSample = texture(u_Textures[29], v_TextureCoord); break;
-    case 30: specularTextureSample = texture(u_Textures[30], v_TextureCoord); break;
-    case 31: specularTextureSample = texture(u_Textures[31], v_TextureCoord); break;
-    default: specularTextureSample = vec4(0.0); break; // No specular lighting by default.
+
+    float diffuseFactor = max(dot(normal, lightDirection), 0.0);
+    lighting += u_Light.Diffuse * diffuseFactor * vec3(o_Color);
   }
 
-  texColor *= v_Color;
+  if (u_UseSpecularLighting == 1)
+  {
+    vec4 specularSample = GetTextureSample(v_SpecularSlot, vec4(0.5));
+    vec3 viewDirection = normalize(u_CameraPosition - v_FragmentPosition);
+    vec3 reflectDirection = reflect(-lightDirection, normal);
+    float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), v_Shininess);
+    lighting += u_Light.Specular * specularFactor * vec3(specularSample);
+  }
 
-  // Ambient lighting
-  vec3 ambient = u_Light.Ambient * vec3(texColor);
+  if (u_UseEmissionLighting == 1)
+  {
+    vec4 emissionSample = GetTextureSample(v_EmissionSlot, vec4(0.0));
+    // Add emission component
+    lighting += vec3(emissionSample);
+  }
 
-  // Diffuse lighting
-  vec3 norm = normalize(v_Normal);
-  vec3 lightDir = normalize(u_Light.Position - v_FragmentPosition);
-  float diff = max(dot(norm, lightDir), 0.0);
-  vec3 diffuse = u_Light.Diffuse * diff * vec3(texColor);
-
-  // Specular lighting
-  vec3 viewDir = normalize(u_CameraPosition - v_FragmentPosition);
-  vec3 reflectDir = reflect(-lightDir, norm);
-  float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.Shininess);
-  vec3 specular = u_Light.Specular * vec3(specularTextureSample) * spec;
-
-  // Combine results
-  vec3 lighting = (ambient + diffuse + specular);
-  o_Color = vec4(lighting, texColor.a);
+  if (u_UseAmbientLighting == 1 || u_UseDiffuseLighting == 1 ||
+      u_UseSpecularLighting == 1 || u_UseEmissionLighting == 1)
+  {
+    o_Color = vec4(lighting, o_Color.a);
+  }
 }
