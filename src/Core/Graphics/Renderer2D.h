@@ -22,6 +22,7 @@ namespace Krys
     Vec4 Color;
     Vec2 TextureCoords;
     int TextureSlotIndex;
+    int SpecularTextureSlotIndex;
   };
 
   struct LightSourceVertexData
@@ -68,8 +69,9 @@ namespace Krys
     static void DrawQuad(Vec3 &pos, Vec2 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
     // TODO: Tiling factor
 
+    // TODO: temp
     static void DrawCube(Vec3 &pos, Vec3 &size, Vec4 &color, float rotation = 0.0f);
-    static void DrawCube(Vec3 &pos, Vec3 &size, Ref<Texture2D> texture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
+    static void DrawCube(Vec3 &pos, Vec3 &size, Ref<Texture2D> texture, Ref<Texture2D> specularTexture = nullptr, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
     static void DrawCube(Vec3 &pos, Vec3 &size, Ref<SubTexture2D> subTexture, float rotation = 0.0f, Vec4 &tint = REN2D_DEFAULT_COLOR);
     // TODO: Tiling factor
 
@@ -81,8 +83,6 @@ namespace Krys
     static void DrawLightSourceCube(Vec3 &pos, Vec3 &size, float rotation = 0.0f);
 
     // TODO: temp
-    static void SetMaterialDiffuse(Vec3 &diffuse);
-    static void SetMaterialAmbient(Vec3 &diffuse);
     static void SetMaterialSpecular(Vec3 &diffuse);
     static void SetMaterialShine(float shine);
 
@@ -96,7 +96,7 @@ namespace Krys
 
     static void DrawQuad(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
     static void DrawTriangle(Vec3 &pos, Vec2 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
-    static void DrawCube(Vec3 &pos, Vec3 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords);
+    static void DrawCube(Vec3 &pos, Vec3 &size, float rotation, Vec4 &color, int textureSlotIndex, int specularTextureSlotIndex, const Vec2 *textureCoords);
 
     static void AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount);
     static int GetTextureSlotIndex(Ref<Texture2D> texture);

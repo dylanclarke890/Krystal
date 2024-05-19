@@ -17,6 +17,7 @@ namespace Krys
   constexpr Vec3 TRIANGLE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
   constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.5f, 0.0f, 1.0f}};
   constexpr int DEFAULT_TEXTURE_SLOT_INDEX = 0;
+  constexpr int DEFAULT_SPECULAR_TEXTURE_SLOT_INDEX = 0;
 
   constexpr Vec4 CUBE_LOCAL_SPACE_VERTICES[] = {
       // Front face
@@ -128,7 +129,8 @@ namespace Krys
                       {ShaderDataType::Float3, "normal"},
                       {ShaderDataType::Float4, "color"},
                       {ShaderDataType::Float2, "textureCoord"},
-                      {ShaderDataType::Int, "textureSlotIndex"}}));
+                      {ShaderDataType::Int, "textureSlotIndex"},
+                      {ShaderDataType::Int, "specularTextureSlotIndex"}}));
     ObjectIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
 
     ObjectVertexArray = Context->CreateVertexArray();
@@ -258,60 +260,69 @@ namespace Krys
 
   void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, Vec4 &color, float rotation)
   {
-    DrawCube(pos, size, rotation, color, DEFAULT_TEXTURE_SLOT_INDEX, QUAD_DEFAULT_TEXTURE_COORDS);
+    DrawCube(pos, size, rotation, color,
+             DEFAULT_TEXTURE_SLOT_INDEX,
+             DEFAULT_SPECULAR_TEXTURE_SLOT_INDEX,
+             QUAD_DEFAULT_TEXTURE_COORDS);
   }
 
-  void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, Ref<Texture2D> texture, float rotation, Vec4 &tint)
+  void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, Ref<Texture2D> texture, Ref<Texture2D> specularTexture, float rotation, Vec4 &tint)
   {
-    DrawCube(pos, size, rotation, tint, GetTextureSlotIndex(texture), QUAD_DEFAULT_TEXTURE_COORDS);
+    DrawCube(pos, size, rotation, tint,
+             GetTextureSlotIndex(texture),
+             specularTexture ? GetTextureSlotIndex(specularTexture) : DEFAULT_SPECULAR_TEXTURE_SLOT_INDEX,
+             QUAD_DEFAULT_TEXTURE_COORDS);
   }
 
   void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, Ref<SubTexture2D> subTexture, float rotation, Vec4 &tint)
   {
     auto texture = subTexture->GetTexture();
-    DrawCube(pos, size, rotation, tint, GetTextureSlotIndex(texture), subTexture->GetTextureCoords());
+    DrawCube(pos, size, rotation, tint,
+             GetTextureSlotIndex(texture),
+             DEFAULT_SPECULAR_TEXTURE_SLOT_INDEX,
+             subTexture->GetTextureCoords());
   }
 
-  void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, float rotation, Vec4 &color, int textureSlotIndex, const Vec2 *textureCoords)
+  void Renderer2D::DrawCube(Vec3 &pos, Vec3 &size, float rotation, Vec4 &color, int textureSlotIndex, int specularTextureSlotIndex, const Vec2 *textureCoords)
   {
     Mat4 model = glm::translate(MAT4_I, pos) * glm::rotate(MAT4_I, glm::radians(rotation), ROTATE_AXIS_Z) * glm::scale(MAT4_I, {size.x, size.y, size.z});
     Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
 
     VertexData vertices[24] = {
         // Front face
-        {model * CUBE_LOCAL_SPACE_VERTICES[0], normal * CUBE_NORMALS[0], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[1], normal * CUBE_NORMALS[1], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[2], normal * CUBE_NORMALS[2], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[3], normal * CUBE_NORMALS[3], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[0], normal * CUBE_NORMALS[0], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[1], normal * CUBE_NORMALS[1], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[2], normal * CUBE_NORMALS[2], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[3], normal * CUBE_NORMALS[3], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
 
         // Back face
-        {model * CUBE_LOCAL_SPACE_VERTICES[4], normal * CUBE_NORMALS[4], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[5], normal * CUBE_NORMALS[5], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[6], normal * CUBE_NORMALS[6], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[7], normal * CUBE_NORMALS[7], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[4], normal * CUBE_NORMALS[4], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[5], normal * CUBE_NORMALS[5], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[6], normal * CUBE_NORMALS[6], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[7], normal * CUBE_NORMALS[7], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
 
         // Left face
-        {model * CUBE_LOCAL_SPACE_VERTICES[8], normal * CUBE_NORMALS[8], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[9], normal * CUBE_NORMALS[9], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[10], normal * CUBE_NORMALS[10], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[11], normal * CUBE_NORMALS[11], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[8], normal * CUBE_NORMALS[8], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[9], normal * CUBE_NORMALS[9], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[10], normal * CUBE_NORMALS[10], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[11], normal * CUBE_NORMALS[11], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
 
         // Right face
-        {model * CUBE_LOCAL_SPACE_VERTICES[12], normal * CUBE_NORMALS[12], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[13], normal * CUBE_NORMALS[13], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[14], normal * CUBE_NORMALS[14], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[15], normal * CUBE_NORMALS[15], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[12], normal * CUBE_NORMALS[12], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[13], normal * CUBE_NORMALS[13], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[14], normal * CUBE_NORMALS[14], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[15], normal * CUBE_NORMALS[15], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
         // Top face
-        {model * CUBE_LOCAL_SPACE_VERTICES[16], normal * CUBE_NORMALS[16], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[17], normal * CUBE_NORMALS[17], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[18], normal * CUBE_NORMALS[18], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[19], normal * CUBE_NORMALS[19], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[16], normal * CUBE_NORMALS[16], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[17], normal * CUBE_NORMALS[17], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[18], normal * CUBE_NORMALS[18], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[19], normal * CUBE_NORMALS[19], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
 
         // Bottom face
-        {model * CUBE_LOCAL_SPACE_VERTICES[20], normal * CUBE_NORMALS[20], color, textureCoords[0], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[21], normal * CUBE_NORMALS[21], color, textureCoords[1], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[22], normal * CUBE_NORMALS[22], color, textureCoords[2], textureSlotIndex},
-        {model * CUBE_LOCAL_SPACE_VERTICES[23], normal * CUBE_NORMALS[23], color, textureCoords[3], textureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[20], normal * CUBE_NORMALS[20], color, textureCoords[0], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[21], normal * CUBE_NORMALS[21], color, textureCoords[1], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[22], normal * CUBE_NORMALS[22], color, textureCoords[2], textureSlotIndex, specularTextureSlotIndex},
+        {model * CUBE_LOCAL_SPACE_VERTICES[23], normal * CUBE_NORMALS[23], color, textureCoords[3], textureSlotIndex, specularTextureSlotIndex},
     };
 
     uint32 indices[36] = {
@@ -489,16 +500,6 @@ namespace Krys
   void Renderer2D::SetLightSourceSpecular(Vec3 &specular)
   {
     ObjectShader->SetUniform("u_Light.Specular", specular);
-  }
-
-  void Renderer2D::SetMaterialAmbient(Vec3 &ambient)
-  {
-    ObjectShader->SetUniform("u_Material.Ambient", ambient);
-  }
-
-  void Renderer2D::SetMaterialDiffuse(Vec3 &diffuse)
-  {
-    ObjectShader->SetUniform("u_Material.Diffuse", diffuse);
   }
 
   void Renderer2D::SetMaterialSpecular(Vec3 &specular)
