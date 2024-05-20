@@ -29,6 +29,7 @@ namespace Krys
     virtual void Startup();
     virtual void Run();
     virtual void Update(float dt) = 0;
+    void StopRunning() { IsRunning = false; }
     virtual void Shutdown();
     virtual void OnEvent(Event &event);
 

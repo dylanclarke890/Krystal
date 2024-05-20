@@ -1,11 +1,15 @@
 #version 450
 
 struct Light {
-  vec3 Position;
+  vec4 Position;
 
   vec3 Ambient;
   vec3 Diffuse;
   vec3 Specular;
+
+  float Constant;
+  float Linear;
+  float Quadratic;
 };
 
 in vec3 v_FragmentPosition;
@@ -22,7 +26,8 @@ out vec4 o_Color;
 uniform int u_UseAmbientLighting = 1;
 uniform int u_UseDiffuseLighting = 1;
 uniform int u_UseSpecularLighting = 1;
-uniform int u_UseEmissionLighting = 1;
+uniform int u_UseEmissionLighting = 0;
+uniform int u_UseAttenuation = 1;
 uniform Light u_Light;
 uniform vec3 u_CameraPosition;
 uniform sampler2D u_Textures[32];
@@ -71,36 +76,59 @@ void main()
 {
   vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0));
   vec3 normal = normalize(v_Normal);
-  vec3 lightDirection = normalize(u_Light.Position - v_FragmentPosition);
+
+  vec3 lightDirection;
+  if (u_Light.Position.w == 0.0)
+  {
+    // Directional light
+    lightDirection = normalize(vec3(-u_Light.Position));
+  }
+  else 
+  {
+    // Point light
+    lightDirection = normalize(vec3(u_Light.Position) - v_FragmentPosition);
+  }
 
   o_Color = textureSample * v_Color;
-  vec3 lighting = vec3(0.0, 0.0, 0.0);
 
+  vec3 ambient = vec3(0.0);
   if (u_UseAmbientLighting == 1)
   {
-    lighting += u_Light.Ambient * vec3(o_Color);
+    ambient = u_Light.Ambient * vec3(o_Color);
   }
 
+  vec3 diffuse = vec3(0.0);
   if (u_UseDiffuseLighting == 1)
   {
-
     float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-    lighting += u_Light.Diffuse * diffuseFactor * vec3(o_Color);
+    diffuse = u_Light.Diffuse * diffuseFactor * vec3(o_Color);
   }
 
+  vec3 specular = vec3(0.0);
   if (u_UseSpecularLighting == 1)
   {
-    vec4 specularSample = GetTextureSample(v_SpecularSlot, vec4(0.5));
+    vec4 specularSample = GetTextureSample(v_SpecularSlot, vec4(0.2));
     vec3 viewDirection = normalize(u_CameraPosition - v_FragmentPosition);
     vec3 reflectDirection = reflect(-lightDirection, normal);
     float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), v_Shininess);
-    lighting += u_Light.Specular * specularFactor * vec3(specularSample);
+    specular = u_Light.Specular * specularFactor * vec3(specularSample);
   }
+
+  vec3 lighting = vec3(0.0);
+  if (u_UseAttenuation == 1)
+  {
+    float distance = length(vec3(u_Light.Position) - v_FragmentPosition);
+    float attenuation = 1.0 / (u_Light.Constant + u_Light.Linear * distance + u_Light.Quadratic * (distance * distance));  
+    ambient *= attenuation;
+    diffuse *= attenuation;
+    specular *= attenuation;
+  }
+
+  lighting = ambient + diffuse + specular;
 
   if (u_UseEmissionLighting == 1)
   {
     vec4 emissionSample = GetTextureSample(v_EmissionSlot, vec4(0.0));
-    // Add emission component
     lighting += vec3(emissionSample);
   }
 

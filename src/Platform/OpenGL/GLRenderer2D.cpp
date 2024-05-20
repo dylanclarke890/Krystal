@@ -509,7 +509,7 @@ namespace Krys
     glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
   }
 
-  void Renderer2D::SetLightSourcePosition(Vec3 position)
+  void Renderer2D::SetLightSourcePosition(Vec4 position)
   {
     ObjectShader->SetUniform("u_Light.Position", position);
   }
@@ -527,6 +527,13 @@ namespace Krys
   void Renderer2D::SetLightSourceSpecular(Vec3 specular)
   {
     ObjectShader->SetUniform("u_Light.Specular", specular);
+  }
+
+  void Renderer2D::SetLightSourceAttenuation(float constant, float linear, float quadratic)
+  {
+    ObjectShader->SetUniform("u_Light.Constant", constant);
+    ObjectShader->SetUniform("u_Light.Linear", linear);
+    ObjectShader->SetUniform("u_Light.Quadratic", quadratic);
   }
 
 #pragma endregion Lighting

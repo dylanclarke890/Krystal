@@ -2,6 +2,14 @@
 
 #include "Misc/PlatformDetection.h"
 
+// TODO: fix defines
+// -------- DEFINES --------
+#define KRYS_ENABLE_ASSERTS 1
+#define KRYS_ENABLE_LOGGING 1
+#define KRYS_ENABLE_DEBUG_BREAK 1
+#define KRYS_ENABLE_PERFORMANCE_CHECKS 1
+// -------- DEFINES --------
+
 // --------- TYPES ----------
 #include <stdint.h>
 

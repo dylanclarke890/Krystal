@@ -86,10 +86,11 @@ namespace Krys
     static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     // TODO: temp
-    static void SetLightSourcePosition(Vec3 position);
+    static void SetLightSourcePosition(Vec4 position);
     static void SetLightSourceDiffuse(Vec3 diffuse);
     static void SetLightSourceAmbient(Vec3 diffuse);
     static void SetLightSourceSpecular(Vec3 diffuse);
+    static void SetLightSourceAttenuation(float constant, float linear, float quadratic);
     static void DrawLightSourceCube(Ref<Transform> transform);
 
     static void BeginScene(Ref<Camera> camera);

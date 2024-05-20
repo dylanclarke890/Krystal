@@ -14,15 +14,14 @@ namespace Krys
 
     void Run()
     {
-      KRYS_ASSERT(App, "App must not be null");
-
-      KRYS_LOG("Starting up Application...")
+      KRYS_ASSERT(App, "App cannot be null");
+      KRYS_LOG("Starting up Application...");
       App->Startup();
 
-      KRYS_LOG("Running Application...")
+      KRYS_LOG("Running Application...");
       App->Run();
 
-      KRYS_LOG("Shutting down Application...")
+      KRYS_LOG("Shutting down Application...");
       App->Shutdown();
     }
   };
