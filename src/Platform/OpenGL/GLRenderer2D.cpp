@@ -193,13 +193,13 @@ namespace Krys
     DrawTriangle(transform, textureData);
   }
 
-  void Renderer2D::DrawTriangle(Ref<Transform> transform, Ref<Material> material)
+  void Renderer2D::DrawTriangle(Ref<Transform> transform, Ref<Mesh> mesh)
   {
-    TextureData textureData{TRIANGLE_DEFAULT_TEXTURE_COORDS, material->Tint};
-    textureData.Texture = GetTextureSlotIndex(material->Diffuse);
-    textureData.Specular = GetTextureSlotIndex(material->Specular);
-    textureData.Emission = GetTextureSlotIndex(material->Emission);
-    textureData.Shininess = material->Shininess;
+    TextureData textureData{TRIANGLE_DEFAULT_TEXTURE_COORDS, mesh->Tint};
+    textureData.Texture = GetTextureSlotIndex(mesh->Diffuse);
+    textureData.Specular = GetTextureSlotIndex(mesh->Specular);
+    textureData.Emission = GetTextureSlotIndex(mesh->Emission);
+    textureData.Shininess = mesh->Shininess;
     DrawTriangle(transform, textureData);
   }
 
@@ -239,13 +239,13 @@ namespace Krys
     DrawQuad(transform, textureData);
   }
 
-  void Renderer2D::DrawQuad(Ref<Transform> transform, Ref<Material> material)
+  void Renderer2D::DrawQuad(Ref<Transform> transform, Ref<Mesh> mesh)
   {
-    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, material->Tint};
-    textureData.Texture = GetTextureSlotIndex(material->Diffuse);
-    textureData.Specular = GetTextureSlotIndex(material->Specular);
-    textureData.Emission = GetTextureSlotIndex(material->Emission);
-    textureData.Shininess = material->Shininess;
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, mesh->Tint};
+    textureData.Texture = GetTextureSlotIndex(mesh->Diffuse);
+    textureData.Specular = GetTextureSlotIndex(mesh->Specular);
+    textureData.Emission = GetTextureSlotIndex(mesh->Emission);
+    textureData.Shininess = mesh->Shininess;
     DrawQuad(transform, textureData);
   }
 
@@ -286,13 +286,13 @@ namespace Krys
     DrawCube(transform, textureData);
   }
 
-  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<Material> material)
+  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<Mesh> mesh)
   {
-    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, material->Tint};
-    textureData.Texture = GetTextureSlotIndex(material->Diffuse);
-    textureData.Specular = GetTextureSlotIndex(material->Specular);
-    textureData.Emission = GetTextureSlotIndex(material->Emission);
-    textureData.Shininess = material->Shininess;
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, mesh->Tint};
+    textureData.Texture = GetTextureSlotIndex(mesh->Diffuse);
+    textureData.Specular = GetTextureSlotIndex(mesh->Specular);
+    textureData.Emission = GetTextureSlotIndex(mesh->Emission);
+    textureData.Shininess = mesh->Shininess;
     DrawCube(transform, textureData);
   }
 
@@ -582,7 +582,7 @@ namespace Krys
     auto &textureSlots = *TextureSlots;
     for (int i = 0; i < TextureSlotIndex; i++)
     {
-      if (textureSlots[i]->GetRendererId() == texture->GetRendererId())
+      if (textureSlots[i]->GetId() == texture->GetId())
       {
         textureSlotIndex = i;
         break;

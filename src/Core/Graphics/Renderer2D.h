@@ -6,7 +6,7 @@
 #include "Graphics/GraphicsContext.h"
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Transform.h"
-#include "Graphics/Material.h"
+#include "Graphics/Mesh.h"
 
 namespace Krys
 {
@@ -74,15 +74,15 @@ namespace Krys
     static void Shutdown();
 
     static void DrawTriangle(Ref<Transform> transform, Vec4 &color);
-    static void DrawTriangle(Ref<Transform> transform, Ref<Material> material);
+    static void DrawTriangle(Ref<Transform> transform, Ref<Mesh> material);
     static void DrawTriangle(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     static void DrawQuad(Ref<Transform> transform, Vec4 &color);
-    static void DrawQuad(Ref<Transform> transform, Ref<Material> material);
+    static void DrawQuad(Ref<Transform> transform, Ref<Mesh> material);
     static void DrawQuad(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     static void DrawCube(Ref<Transform> transform, Vec4 &color);
-    static void DrawCube(Ref<Transform> transform, Ref<Material> material);
+    static void DrawCube(Ref<Transform> transform, Ref<Mesh> material);
     static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     // TODO: temp

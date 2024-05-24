@@ -5,7 +5,7 @@
 
 namespace Krys
 {
-  class Material
+  class Mesh
   {
   public:
     Ref<Texture2D> Diffuse;
@@ -14,7 +14,11 @@ namespace Krys
     Vec4 Tint;
     float Shininess;
 
-    Material(Ref<Texture2D> texture, Ref<Texture2D> specularMap = nullptr, Ref<Texture2D> emissionMap = nullptr)
+    Mesh(Ref<Texture2D> texture, Ref<Texture2D> specularMap = nullptr, Ref<Texture2D> emissionMap = nullptr)
         : Diffuse(texture), Specular(specularMap), Emission(emissionMap), Tint(1.0f), Shininess(0.0f) {}
+  };
+
+  class Material
+  {
   };
 }
