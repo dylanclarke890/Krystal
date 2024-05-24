@@ -2,7 +2,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-#include <gl.h>
+#include <glad/gl.h>
 
 namespace Krys
 {

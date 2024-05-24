@@ -1,4 +1,4 @@
-#include <gl.h>
+#include <glad/gl.h>
 
 #include "Graphics/Renderer2D.h"
 #include "Misc/Time.h"

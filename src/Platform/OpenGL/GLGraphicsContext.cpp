@@ -6,8 +6,8 @@
 #include "GLTexture2D.h"
 #include "Graphics/SubTexture2D.h"
 
-#include <gl.h>
-#include <wgl.h>
+#include <glad/gl.h>
+#include <glad/wgl.h>
 
 namespace Krys
 {

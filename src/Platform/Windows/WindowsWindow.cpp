@@ -1,6 +1,6 @@
 #include <windowsx.h>
 
-#include <wgl.h>
+#include <glad/wgl.h>
 
 #include "Core.h"
 #include "WindowsWindow.h"
