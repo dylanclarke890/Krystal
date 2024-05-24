@@ -44,7 +44,7 @@ namespace Krys
       int Texture = -1;
       int Specular = -1;
       int Emission = -1;
-      float Shininess = 128.0f;
+      float Shininess = 32.0f;
     };
 
     static Ref<GraphicsContext> Context;
@@ -86,11 +86,7 @@ namespace Krys
     static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     // TODO: temp
-    static void SetLightSourcePosition(Vec4 position);
-    static void SetLightSourceDiffuse(Vec3 diffuse);
-    static void SetLightSourceAmbient(Vec3 diffuse);
-    static void SetLightSourceSpecular(Vec3 diffuse);
-    static void SetLightSourceAttenuation(float constant, float linear, float quadratic);
+    static Ref<Shader> GetObjectShader() { return ObjectShader; }
     static void DrawLightSourceCube(Ref<Transform> transform);
 
     static void BeginScene(Ref<Camera> camera);

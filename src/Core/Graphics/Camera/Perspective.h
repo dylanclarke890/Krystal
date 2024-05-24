@@ -43,6 +43,11 @@ namespace Krys
       CalculateViewProjectionMatrix();
     }
 
+    Vec3 GetFront() const noexcept
+    {
+      return Front;
+    }
+
     void SetPitch(float pitchAngle) noexcept
     {
       Pitch = pitchAngle;
