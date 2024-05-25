@@ -301,11 +301,6 @@ namespace Krys
     return CreateRef<GLTexture2D>(filepath);
   }
 
-  Ref<Texture2D> GLGraphicsContext::CreateTexture2D(Texture2DSettings settings)
-  {
-    return CreateRef<GLTexture2D>(settings);
-  }
-
   Ref<SubTexture2D> GLGraphicsContext::CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize)
   {
     return CreateRef<SubTexture2D>(texture, coords, cellSize, spriteSize);

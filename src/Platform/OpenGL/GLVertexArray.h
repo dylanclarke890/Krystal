@@ -8,7 +8,7 @@ namespace Krys
   class GLVertexArray : public VertexArray
   {
   private:
-    GLRendererId Id;
+    uint Id;
     uint32 VertexBufferIndex = 0;
     std::vector<Ref<VertexBuffer>> VertexBuffers;
     Ref<IndexBuffer> ZBuffer;

@@ -51,7 +51,7 @@ namespace Krys
 
   void GLShader::Add(ShaderType type, const char *source)
   {
-    GLRendererId id = glCreateShader(ToGLShaderType(type));
+    uint id = glCreateShader(ToGLShaderType(type));
     glShaderSource(id, 1, &source, NULL);
     glCompileShader(id);
 
@@ -187,7 +187,7 @@ namespace Krys
     case ShaderType::Geometry:
       return GL_GEOMETRY_SHADER;
     default:
-      KRYS_ASSERT(false, "Invalid ShaderType!");
+      KRYS_ASSERT(false, "Invalid ShaderType!", 0);
       return 0;
     }
   }

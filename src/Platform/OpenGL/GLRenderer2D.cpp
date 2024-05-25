@@ -109,7 +109,6 @@ namespace Krys
 
   Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> Renderer2D::TextureSlots;
   int Renderer2D::TextureSlotIndex;
-  Ref<Texture2D> Renderer2D::WhiteTexture;
 
 #pragma endregion Static Member Initialisation
 
@@ -158,22 +157,11 @@ namespace Krys
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
 
+    TextureSlots = CreateUnique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>>();
     int samplers[REN2D_MAX_TEXTURE_SLOTS]{};
     for (uint32_t i = 0; i < REN2D_MAX_TEXTURE_SLOTS; i++)
       samplers[i] = i;
     ObjectShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
-
-    Texture2DSettings whiteTextureSettings{};
-    whiteTextureSettings.Width = 1;
-    whiteTextureSettings.Height = 1;
-    whiteTextureSettings.Format = Texture2DFormat::RGBA8;
-    WhiteTexture = Context->CreateTexture2D(whiteTextureSettings);
-
-    uint32_t whiteTextureData = 0xffffffff;
-    WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
-
-    TextureSlots = CreateUnique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>>();
-    (*TextureSlots.get())[0] = WhiteTexture;
 
     Reset();
   }
@@ -193,13 +181,13 @@ namespace Krys
     DrawTriangle(transform, textureData);
   }
 
-  void Renderer2D::DrawTriangle(Ref<Transform> transform, Ref<Mesh> mesh)
+  void Renderer2D::DrawTriangle(Ref<Transform> transform, Ref<Material> material)
   {
-    TextureData textureData{TRIANGLE_DEFAULT_TEXTURE_COORDS, mesh->Tint};
-    textureData.Texture = GetTextureSlotIndex(mesh->Diffuse);
-    textureData.Specular = GetTextureSlotIndex(mesh->Specular);
-    textureData.Emission = GetTextureSlotIndex(mesh->Emission);
-    textureData.Shininess = mesh->Shininess;
+    TextureData textureData{TRIANGLE_DEFAULT_TEXTURE_COORDS, material->Tint};
+    textureData.Texture = GetTextureSlotIndex(material->Diffuse);
+    textureData.Specular = GetTextureSlotIndex(material->Specular);
+    textureData.Emission = GetTextureSlotIndex(material->Emission);
+    textureData.Shininess = material->Shininess;
     DrawTriangle(transform, textureData);
   }
 
@@ -239,13 +227,13 @@ namespace Krys
     DrawQuad(transform, textureData);
   }
 
-  void Renderer2D::DrawQuad(Ref<Transform> transform, Ref<Mesh> mesh)
+  void Renderer2D::DrawQuad(Ref<Transform> transform, Ref<Material> material)
   {
-    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, mesh->Tint};
-    textureData.Texture = GetTextureSlotIndex(mesh->Diffuse);
-    textureData.Specular = GetTextureSlotIndex(mesh->Specular);
-    textureData.Emission = GetTextureSlotIndex(mesh->Emission);
-    textureData.Shininess = mesh->Shininess;
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, material->Tint};
+    textureData.Texture = GetTextureSlotIndex(material->Diffuse);
+    textureData.Specular = GetTextureSlotIndex(material->Specular);
+    textureData.Emission = GetTextureSlotIndex(material->Emission);
+    textureData.Shininess = material->Shininess;
     DrawQuad(transform, textureData);
   }
 
@@ -286,13 +274,13 @@ namespace Krys
     DrawCube(transform, textureData);
   }
 
-  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<Mesh> mesh)
+  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<Material> material)
   {
-    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, mesh->Tint};
-    textureData.Texture = GetTextureSlotIndex(mesh->Diffuse);
-    textureData.Specular = GetTextureSlotIndex(mesh->Specular);
-    textureData.Emission = GetTextureSlotIndex(mesh->Emission);
-    textureData.Shininess = mesh->Shininess;
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, material->Tint};
+    textureData.Texture = GetTextureSlotIndex(material->Diffuse);
+    textureData.Specular = GetTextureSlotIndex(material->Specular);
+    textureData.Emission = GetTextureSlotIndex(material->Emission);
+    textureData.Shininess = material->Shininess;
     DrawCube(transform, textureData);
   }
 

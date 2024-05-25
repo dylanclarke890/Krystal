@@ -6,93 +6,90 @@
 
 namespace Krys
 {
-  GLTexture2D::GLTexture2D(Texture2DSettings settings)
-      : m_RendererId(0), m_Path(nullptr),
-        m_Width(settings.Width), m_Height(settings.Height),
-        m_InternalFormat(0), m_DataFormat(0)
+  GLTexture2D::GLTexture2D(const char *path)
+      : InternalFormat(0), DataFormat(0)
   {
-    m_DataFormat = ToGLDataFormat(settings.Format);
-    m_InternalFormat = ToGLInternalDataFormat(settings.Format);
+    Path = path;
+    Width = 0;
+    Height = 0;
+    // TODO: is this a safe assumption?
+    Type = TextureType::Diffuse;
 
-    glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererId);
-    glTextureStorage2D(m_RendererId, 1, m_InternalFormat, m_Width, m_Height);
-
-    // TODO: make these configurable
-    glTextureParameteri(m_RendererId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(m_RendererId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    // TODO: make these configurable
-    glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    if (settings.GenerateMipMaps)
-      GenerateMipmaps();
+    Load();
   }
 
-  GLTexture2D::GLTexture2D(const char *path)
-      : m_RendererId(0), m_Path(path),
-        m_Width(0), m_Height(0),
-        m_InternalFormat(0), m_DataFormat(0)
+  GLTexture2D::GLTexture2D(TextureType type, const char *path)
+      : InternalFormat(0), DataFormat(0)
   {
-    int width, height, channels;
-    stbi_set_flip_vertically_on_load(true);
-    stbi_uc *data = stbi_load(path, &width, &height, &channels, 0);
+    Type = type;
+    Path = path;
+    Width = 0;
+    Height = 0;
 
-    KRYS_ASSERT(data, "Failed to load image!");
-
-    m_Width = width;
-    m_Height = height;
-
-    if (channels == 4)
-    {
-      m_InternalFormat = GL_RGBA8;
-      m_DataFormat = GL_RGBA;
-    }
-    else if (channels == 3)
-    {
-      m_InternalFormat = GL_RGB8;
-      m_DataFormat = GL_RGB;
-    }
-
-    KRYS_ASSERT(m_InternalFormat, "UnsupportedFormat: Internal format.");
-    KRYS_ASSERT(m_DataFormat, "UnsupportedFormat: Data format.");
-
-    glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererId);
-    glTextureStorage2D(m_RendererId, 1, m_InternalFormat, m_Width, m_Height);
-
-    glTextureParameteri(m_RendererId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(m_RendererId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTextureSubImage2D(m_RendererId, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
-
-    stbi_image_free(data);
+    Load();
   }
 
   GLTexture2D::~GLTexture2D()
   {
-    glDeleteTextures(1, &m_RendererId);
+    glDeleteTextures(1, &Id);
   }
 
   void GLTexture2D::Bind(uint32 slot) const
   {
-    glBindTextureUnit(slot, m_RendererId);
+    glBindTextureUnit(slot, Id);
   }
 
   void GLTexture2D::SetData(void *data, uint32 size)
   {
-    KRYS_ASSERT(m_Width * m_Height * (m_DataFormat == GL_RGBA ? 4 : 3) == size, "Data must be entire texture!");
+    KRYS_ASSERT(Width * Height * (DataFormat == GL_RGBA ? 4 : 3) == size, "Data must be entire texture!", 0);
     //                                             ^ bytes per pixel
-    glTextureSubImage2D(m_RendererId, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
+    glTextureSubImage2D(Id, 0, 0, 0, Width, Height, DataFormat, GL_UNSIGNED_BYTE, data);
   }
 
   void GLTexture2D::GenerateMipmaps()
   {
-    glGenerateTextureMipmap(m_RendererId);
+    glGenerateTextureMipmap(Id);
     // TODO: make this configurable
-    glTextureParameteri(m_RendererId, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  }
+
+  void GLTexture2D::Load()
+  {
+    int width, height, channels;
+    stbi_set_flip_vertically_on_load(true);
+    stbi_uc *data = stbi_load(Path, &width, &height, &channels, 0);
+
+    KRYS_ASSERT(data, "Failed to load image!", 0);
+
+    Width = width;
+    Height = height;
+
+    if (channels == 4)
+    {
+      InternalFormat = GL_RGBA8;
+      DataFormat = GL_RGBA;
+    }
+    else if (channels == 3)
+    {
+      InternalFormat = GL_RGB8;
+      DataFormat = GL_RGB;
+    }
+
+    KRYS_ASSERT(InternalFormat, "UnsupportedFormat: Internal format.", 0);
+    KRYS_ASSERT(DataFormat, "UnsupportedFormat: Data format.", 0);
+
+    glCreateTextures(GL_TEXTURE_2D, 1, &Id);
+    glTextureStorage2D(Id, 1, InternalFormat, Width, Height);
+
+    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glTextureParameteri(Id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTextureParameteri(Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTextureSubImage2D(Id, 0, 0, 0, Width, Height, DataFormat, GL_UNSIGNED_BYTE, data);
+
+    stbi_image_free(data);
   }
 
   GLenum GLTexture2D::ToGLDataFormat(Texture2DFormat format)
@@ -104,7 +101,7 @@ namespace Krys
     case Texture2DFormat::RGBA8:
       return GL_RGBA;
     default:
-      KRYS_ASSERT(false, "Unknown data format");
+      KRYS_ASSERT(false, "Unknown data format", 0);
       return 0;
     }
   }
@@ -118,7 +115,7 @@ namespace Krys
     case Texture2DFormat::RGBA8:
       return GL_RGBA8;
     default:
-      KRYS_ASSERT(false, "Unknown data format");
+      KRYS_ASSERT(false, "Unknown data format", 0);
       return 0;
     }
   }

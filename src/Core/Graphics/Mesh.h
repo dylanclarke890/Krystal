@@ -5,7 +5,7 @@
 
 namespace Krys
 {
-  class Mesh
+  class Material
   {
   public:
     Ref<Texture2D> Diffuse;
@@ -14,11 +14,49 @@ namespace Krys
     Vec4 Tint;
     float Shininess;
 
-    Mesh(Ref<Texture2D> texture, Ref<Texture2D> specularMap = nullptr, Ref<Texture2D> emissionMap = nullptr)
+    Material(Ref<Texture2D> texture, Ref<Texture2D> specularMap = nullptr, Ref<Texture2D> emissionMap = nullptr)
         : Diffuse(texture), Specular(specularMap), Emission(emissionMap), Tint(1.0f), Shininess(0.0f) {}
   };
 
-  class Material
+  struct Vertex
   {
+    Vec3 Position;
+    Vec3 Normal;
+    Vec2 TextureCoords;
+  };
+
+  class Mesh
+  {
+  protected:
+    std::vector<Vertex> Vertices;
+    std::vector<uint32> Indices;
+    std::vector<Ref<Texture2D>> Textures;
+
+  public:
+    Mesh(std::vector<Vertex> &vertices, std::vector<uint32> &indices, std::vector<Ref<Texture2D>> &textures)
+        : Vertices(vertices), Indices(indices), Textures(textures)
+    {
+      Setup();
+    }
+
+    virtual ~Mesh() = default;
+
+    const std::vector<Ref<Texture2D>> GetTextures() const noexcept
+    {
+      return Textures;
+    }
+
+    const std::vector<uint32> GetIndices() const noexcept
+    {
+      return Indices;
+    }
+
+    const std::vector<Vertex> GetVertices() const noexcept
+    {
+      return Vertices;
+    }
+
+    virtual void Setup() = 0;
+    virtual void Draw(Ref<Shader> shader) const = 0;
   };
 }

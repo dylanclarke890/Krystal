@@ -10,7 +10,7 @@ namespace Krys
   class GLIndexBuffer : public IndexBuffer
   {
   private:
-    GLRendererId Id;
+    uint Id;
     uint Count;
 
   public:
@@ -29,7 +29,7 @@ namespace Krys
   class GLVertexBuffer : public VertexBuffer
   {
   private:
-    GLRendererId Id;
+    uint Id;
     BufferLayout Layout;
 
   public:

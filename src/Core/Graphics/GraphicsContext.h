@@ -88,7 +88,6 @@ namespace Krys
     virtual Ref<Shader> CreateShader() = 0;
 
     virtual Ref<Texture2D> CreateTexture2D(const char *filepath) = 0;
-    virtual Ref<Texture2D> CreateTexture2D(Texture2DSettings settings) = 0;
     virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) = 0;
 
 #pragma endregion Graphics Objects

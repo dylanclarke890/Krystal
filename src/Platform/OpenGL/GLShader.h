@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "Krystal.h"
 #include "Graphics/Shader.h"
 #include "GL.h"
 
@@ -10,8 +11,8 @@ namespace Krys
   class GLShader : public Shader
   {
   private:
-    GLRendererId Id;
-    std::vector<GLRendererId> Shaders;
+    uint Id;
+    std::vector<uint> Shaders;
 
   public:
     GLShader();

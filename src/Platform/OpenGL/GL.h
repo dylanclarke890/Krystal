@@ -11,8 +11,3 @@ struct ARBExtensions
   PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = nullptr;
   PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
 };
-
-namespace Krys
-{
-  typedef GLuint GLRendererId;
-}
