@@ -4,3 +4,7 @@
 src/ThirdParty/glm/doc/*
 data/log.txt
 .vscode/Krystal.code-workspace
+assimpd.lib
+assimpd.pdb
+zlibstaticd.lib
+zlibstaticd.pdb

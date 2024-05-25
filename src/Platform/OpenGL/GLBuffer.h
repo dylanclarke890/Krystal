@@ -7,6 +7,7 @@
 
 namespace Krys
 {
+
   class GLIndexBuffer : public IndexBuffer
   {
   private:

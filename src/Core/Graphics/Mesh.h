@@ -33,12 +33,6 @@ namespace Krys
     std::vector<Ref<Texture2D>> Textures;
 
   public:
-    Mesh(std::vector<Vertex> &vertices, std::vector<uint32> &indices, std::vector<Ref<Texture2D>> &textures)
-        : Vertices(vertices), Indices(indices), Textures(textures)
-    {
-      Setup();
-    }
-
     virtual ~Mesh() = default;
 
     const std::vector<Ref<Texture2D>> GetTextures() const noexcept

@@ -13,7 +13,8 @@ set krystal_defines=^
 -DKRYS_ENABLE_ASSERTS=1 ^
 -DKRYS_ENABLE_LOGGING=1 ^
 -DKRYS_ENABLE_DEBUG_BREAK=1 ^
--DKRYS_ENABLE_PERFORMANCE_CHECKS=1
+-DKRYS_ENABLE_PERFORMANCE_CHECKS=1 ^
+-D_ITERATOR_DEBUG_LEVEL=2
 
 set krystal_include_directories=^
 /I "K:\src" ^
@@ -27,6 +28,7 @@ set krystal_include_directories=^
 set krystal_source_files=^
 K:\src\ThirdParty\Glad\src\gl.c ^
 K:\src\ThirdParty\Glad\src\wgl.c ^
+K:\src\Platform\OpenGL\GLModel.cpp ^
 K:\src\Platform\OpenGL\GLTexture2D.cpp ^
 K:\src\Platform\OpenGL\GLRenderer2D.cpp ^
 K:\src\Platform\OpenGL\GLShader.cpp ^
@@ -43,7 +45,7 @@ K:\src\Core\Application.cpp
 
 set krystal_disabled_warnings=-wd4100 -wd4201
 
-set krystal_compiler_flags=-c -Foobj\ -nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++latest
+set krystal_compiler_flags=-c -Foobj\ -nologo -Zi -Oi -O2 -FC -W4 -WX -MP -EHsc -std:c++latest -MTd
 
 set krystal_linker_flags=-nologo -OUT:Krystal.lib
 

@@ -51,16 +51,16 @@ namespace Krys
     return logLevel;
   }
 
-  const char *Logger::FormatLogMessage(const char *message)
+  std::string Logger::FormatLogMessage(const char *message)
   {
     std::ostringstream ss;
     ss << ToString(logLevel) << ": " << message << "\n";
-    return ss.str().c_str();
+    return ss.str();
   }
 
-  void Logger::Output(const char *message)
+  void Logger::Output(std::string message)
   {
-    OutputDebugStringA(message);
+    OutputDebugStringA(message.c_str());
     if (logFile.is_open())
       logFile << message;
   }

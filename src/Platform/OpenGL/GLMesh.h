@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Krystal.h"
 #include "Graphics/Mesh.h"
 
@@ -15,17 +17,26 @@ namespace Krys
     Ref<GLIndexBuffer> IndexBuffer;
 
   public:
+    GLMesh(std::vector<Vertex> &vertices, std::vector<uint32> &indices, std::vector<Ref<Texture2D>> &textures)
+    {
+      Vertices = vertices;
+      Indices = indices;
+      Textures = textures;
+
+      Setup();
+    }
+
     void Setup() override
     {
       auto bufferSize = Vertices.size() * sizeof(Vertex);
-      VertexBuffer = CreateRef<GLVertexBuffer>(Vertices.data(), bufferSize);
+      VertexBuffer = CreateRef<GLVertexBuffer>(reinterpret_cast<float *>(Vertices.data()), static_cast<uint32>(bufferSize));
       VertexBuffer->SetLayout(
-          BufferLayout(bufferSize,
+          BufferLayout(static_cast<uint32>(bufferSize),
                        {{ShaderDataType::Float3, "i_Position"},
                         {ShaderDataType::Float3, "i_Normal"},
-                        {ShaderDataType::Float2, "i_TextureCoord"}}));
+                        {ShaderDataType::Float2, "i_TextureCoords"}}));
 
-      IndexBuffer = CreateRef<GLIndexBuffer>(Indices.data(), Indices.size());
+      IndexBuffer = CreateRef<GLIndexBuffer>(Indices.data(), static_cast<uint32>(Indices.size()));
 
       VertexArray = CreateRef<GLVertexArray>();
       VertexArray->AddVertexBuffer(VertexBuffer);
@@ -45,22 +56,25 @@ namespace Krys
         {
         case TextureType::Diffuse:
         {
-          shader->SetUniform(("u_DiffuseTextures[" + std::to_string(diffuseSlot++) + "]").c_str(), textureSlot);
+          std::string uniformName = "u_DiffuseTextures[" + std::to_string(diffuseSlot++) + "]";
+          shader->SetUniform(uniformName.c_str(), textureSlot);
           break;
         }
         case TextureType::Specular:
         {
-          shader->SetUniform(("u_SpecularTextures[" + std::to_string(specularSlot++) + "]").c_str(), textureSlot);
+          std::string uniformName = "u_SpecularTextures[" + std::to_string(specularSlot++) + "]";
+          shader->SetUniform(uniformName.c_str(), textureSlot);
           break;
         }
         case TextureType::Emission:
         {
-          shader->SetUniform(("u_EmissionTextures[" + std::to_string(emissionSlot++) + "]").c_str(), textureSlot);
+          std::string uniformName = "u_EmissionTextures[" + std::to_string(emissionSlot++) + "]";
+          shader->SetUniform(uniformName.c_str(), textureSlot);
           break;
         }
         default:
         {
-          KRYS_ASSERT(false, "TextureType not recognised", 0);
+          KRYS_ASSERT(false, "TextureType not recognised");
           break;
         }
         }
@@ -74,7 +88,7 @@ namespace Krys
       shader->SetUniform("u_TotalEmissionTextures", emissionSlot + 1);
 
       VertexArray->Bind();
-      glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+      glDrawElements(GL_TRIANGLES, static_cast<int>(Indices.size()), GL_UNSIGNED_INT, 0);
       VertexArray->Unbind();
     }
   };

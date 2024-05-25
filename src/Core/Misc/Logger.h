@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <string>
 #include <mutex>
 
 namespace Krys
@@ -33,8 +34,8 @@ namespace Krys
     static std::ofstream logFile;
     static LogLevel logLevel;
 
-    static const char *FormatLogMessage(const char *message);
-    static void Output(const char *message);
+    static std::string FormatLogMessage(const char *message);
+    static void Output(std::string message);
 
     static const char *ToString(LogLevel level);
   };

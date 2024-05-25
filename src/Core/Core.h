@@ -139,6 +139,7 @@ namespace Krys
 
 // ------- PERFORMANCE ------
 #ifdef KRYS_ENABLE_PERFORMANCE_CHECKS
+#include "Misc/Performance.h"
 #define KRYS_PERFORMANCE_TIMER(name) PerformanceTimer perfTimer##__LINE__(name);
 #else
 #define KRYS_PERFORMANCE_TIMER(name)
