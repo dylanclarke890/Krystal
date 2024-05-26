@@ -68,7 +68,7 @@ namespace Krys
 
     virtual void SetClearDepth(float value) = 0;
     virtual void SetDepthRange(float dNear, float dFar) = 0;
-    virtual void SetDepthBufferEnabled(bool enable) = 0;
+    virtual void SetDepthBufferWritingEnabled(bool enable) = 0;
     virtual void SetDepthTestingEnabled(bool enable) = 0;
     virtual void SetDepthTestFunc(DepthTestFunc func) = 0;
     virtual void SetDepthClampingEnabled(bool enable) = 0;

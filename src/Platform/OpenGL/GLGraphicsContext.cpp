@@ -203,7 +203,7 @@ namespace Krys
     }
   }
 
-  void GLGraphicsContext::SetDepthBufferEnabled(bool enable)
+  void GLGraphicsContext::SetDepthBufferWritingEnabled(bool enable)
   {
     glDepthMask(enable);
   }

@@ -31,12 +31,13 @@ namespace Krys
     void SetFaceCulling(CullMode mode) override;
     void SetWindingOrder(WindingOrder mode) override;
 
-    void SetDepthBufferEnabled(bool enable) override;
-    void SetClearDepth(float value) override;
     void SetDepthTestingEnabled(bool enable) override;
+    void SetDepthTestFunc(DepthTestFunc func) override;
+    // NOTE: This only has an effect if depth testing is enabled.
+    void SetDepthBufferWritingEnabled(bool enable) override;
+    void SetClearDepth(float value) override;
     void SetDepthRange(float dNear, float dFar) override;
     void SetDepthClampingEnabled(bool enable) override;
-    void SetDepthTestFunc(DepthTestFunc func) override;
 
     void SetWireframeModeEnabled(bool enable) override;
 
