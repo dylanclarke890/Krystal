@@ -110,6 +110,8 @@ namespace Krys
   Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> Renderer2D::TextureSlots;
   int Renderer2D::TextureSlotIndex;
 
+  Ref<Shader> Renderer2D::ShaderInUse;
+
 #pragma endregion Static Member Initialisation
 
 #pragma region Lifecycle Methods
@@ -489,7 +491,7 @@ namespace Krys
         20,
     };
 
-    LightSourceShader->Bind();
+    ShaderInUse->Bind();
     LightSourceVertexArray->Bind();
     LightSourceVertexBuffer->SetData(&vertices[0], vertex_count * sizeof(LightSourceVertexData));
     LightSourceIndexBuffer->SetData(indices, index_count);
@@ -506,12 +508,13 @@ namespace Krys
     TextureSlotIndex = 0;
   }
 
-  void Renderer2D::BeginScene(Ref<Camera> camera)
+  void Renderer2D::BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse)
   {
     auto &viewProjection = camera->GetViewProjection();
-    LightSourceShader->SetUniform("u_ViewProjection", viewProjection);
-    ObjectShader->SetUniform("u_ViewProjection", viewProjection);
-    ObjectShader->SetUniform("u_CameraPosition", camera->GetPosition());
+    LightSourceShader->TrySetUniform("u_ViewProjection", viewProjection);
+    ShaderInUse = shaderToUse ? shaderToUse : LightSourceShader;
+    ObjectShader->TrySetUniform("u_ViewProjection", viewProjection);
+    ObjectShader->TrySetUniform("u_CameraPosition", camera->GetPosition());
 
     Reset();
   }

@@ -236,29 +236,109 @@ namespace Krys
 
   void GLGraphicsContext::SetDepthTestFunc(DepthTestFunc func)
   {
-    int glFunc = [&]()
+    int glFunc = [&func]()
     {
       switch (func)
       {
+      case DepthTestFunc::Never:
+        return GL_NEVER;
       case DepthTestFunc::Always:
         return GL_ALWAYS;
+      case DepthTestFunc::Less:
+        return GL_LESS;
+      case DepthTestFunc::EqualOrLess:
+        return GL_LEQUAL;
       case DepthTestFunc::EqualOrGreater:
         return GL_GEQUAL;
       case DepthTestFunc::Greater:
         return GL_GREATER;
-      case DepthTestFunc::EqualOrLess:
-        return GL_LEQUAL;
-      case DepthTestFunc::Less:
-        return GL_LESS;
-      case DepthTestFunc::Never:
-        return GL_NEVER;
       default:
-        KRYS_ASSERT(false, "Invalid depth func!");
+        KRYS_ASSERT(false, "Invalid depth func!", 0);
         return 0;
       }
     }();
 
     glDepthFunc(glFunc);
+  }
+
+  void GLGraphicsContext::SetStencilTestFunc(StencilTestFunc func, uint8 ref, uint8 mask)
+  {
+    int glFunc = [&func]()
+    {
+      switch (func)
+      {
+      case StencilTestFunc::Always:
+        return GL_ALWAYS;
+      case StencilTestFunc::Never:
+        return GL_NEVER;
+      case StencilTestFunc::Less:
+        return GL_LESS;
+      case StencilTestFunc::EqualOrLess:
+        return GL_LEQUAL;
+      case StencilTestFunc::Equal:
+        return GL_EQUAL;
+      case StencilTestFunc::NotEqual:
+        return GL_NOTEQUAL;
+      case StencilTestFunc::EqualOrGreater:
+        return GL_GEQUAL;
+      case StencilTestFunc::Greater:
+        return GL_GREATER;
+      default:
+        KRYS_ASSERT(false, "Invalid stencil func!", 0);
+        return 0;
+      }
+    }();
+
+    glStencilFunc(glFunc, ref, mask);
+  }
+
+  void GLGraphicsContext::SetStencilOperation(StencilOperation fail, StencilOperation zFail, StencilOperation zPass)
+  {
+    auto ToOpenGLStencilOp = [](StencilOperation op) -> int
+    {
+      switch (op)
+      {
+      case StencilOperation::Keep:
+        return GL_KEEP;
+      case StencilOperation::Zero:
+        return GL_ZERO;
+      case StencilOperation::Replace:
+        return GL_REPLACE;
+      case StencilOperation::Decrement:
+        return GL_DECR;
+      case StencilOperation::Increment:
+        return GL_INCR;
+      case StencilOperation::DecrementWithWrap:
+        return GL_DECR_WRAP;
+      case StencilOperation::IncrementWithWrap:
+        return GL_INCR_WRAP;
+      case StencilOperation::Invert:
+        return GL_INVERT;
+      default:
+        KRYS_ASSERT(false, "Invalid stencil op!", 0);
+        return 0;
+      }
+    };
+
+    glStencilOp(ToOpenGLStencilOp(fail), ToOpenGLStencilOp(zFail), ToOpenGLStencilOp(zPass));
+  }
+
+  void GLGraphicsContext::SetStencilTestingEnabled(bool enable)
+  {
+    if (enable)
+      glEnable(GL_STENCIL_TEST);
+    else
+      glDisable(GL_STENCIL_TEST);
+  }
+
+  void GLGraphicsContext::SetStencilBufferWritingEnabled(bool enable)
+  {
+    glStencilMask(enable ? 0xFF : 0x00);
+  }
+
+  void GLGraphicsContext::SetStencilBufferBitMask(uint8 mask)
+  {
+    glStencilMask(mask);
   }
 
   void GLGraphicsContext::SetWireframeModeEnabled(bool enable)

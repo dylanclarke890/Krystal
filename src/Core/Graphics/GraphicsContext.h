@@ -29,8 +29,32 @@ namespace Krys
     Always,
     Less,
     EqualOrLess,
-    Greater,
-    EqualOrGreater
+    EqualOrGreater,
+    Greater
+  };
+
+  enum class StencilTestFunc : ushort
+  {
+    Never,
+    Always,
+    Less,
+    EqualOrLess,
+    Equal,
+    NotEqual,
+    EqualOrGreater,
+    Greater
+  };
+
+  enum class StencilOperation : ushort
+  {
+    Keep,
+    Zero,
+    Replace,
+    Increment,
+    IncrementWithWrap,
+    Decrement,
+    DecrementWithWrap,
+    Invert
   };
 
   enum class ClearFlags : ushort
@@ -72,6 +96,14 @@ namespace Krys
     virtual void SetDepthTestingEnabled(bool enable) = 0;
     virtual void SetDepthTestFunc(DepthTestFunc func) = 0;
     virtual void SetDepthClampingEnabled(bool enable) = 0;
+
+    virtual void SetStencilTestFunc(StencilTestFunc func, uint8 ref, uint8 mask) = 0;
+    virtual void SetStencilOperation(StencilOperation fail, StencilOperation zFail, StencilOperation zPass) = 0;
+    virtual void SetStencilTestingEnabled(bool enable) = 0;
+    virtual void SetStencilBufferWritingEnabled(bool enable) = 0;
+    // Similar to `SetStencilBufferWritingEnabled`, but takes a custom mask to be
+    // ANDed with the stencil value to be written
+    virtual void SetStencilBufferBitMask(uint8 mask) = 0;
 
     virtual void SetWireframeModeEnabled(bool enable) = 0;
 #pragma endregion State Settings

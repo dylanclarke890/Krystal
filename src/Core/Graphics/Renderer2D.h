@@ -68,6 +68,8 @@ namespace Krys
     static Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> TextureSlots;
     static int TextureSlotIndex;
 
+    static Ref<Shader> ShaderInUse;
+
   public:
     static void Init(Ref<GraphicsContext> ctx);
     static void Shutdown();
@@ -88,7 +90,7 @@ namespace Krys
     static Ref<Shader> GetObjectShader() { return ObjectShader; }
     static void DrawLightSourceCube(Ref<Transform> transform);
 
-    static void BeginScene(Ref<Camera> camera);
+    static void BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse = nullptr);
     static void NextBatch();
     static void EndScene();
 

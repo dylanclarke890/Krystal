@@ -39,6 +39,15 @@ namespace Krys
     void SetDepthRange(float dNear, float dFar) override;
     void SetDepthClampingEnabled(bool enable) override;
 
+    void SetStencilTestFunc(StencilTestFunc func, uint8 ref, uint8 mask) override;
+    void SetStencilOperation(StencilOperation fail, StencilOperation zFail, StencilOperation zPass) override;
+    void SetStencilTestingEnabled(bool enable) override;
+    // NOTE: This only has an effect if stencil testing is enabled.
+    void SetStencilBufferWritingEnabled(bool enable) override;
+    // Similar to `SetStencilBufferWritingEnabled`, but takes a custom mask to be
+    // ANDed with the stencil value to be written
+    void SetStencilBufferBitMask(uint8 mask) override;
+
     void SetWireframeModeEnabled(bool enable) override;
 
 #pragma endregion State Settings
