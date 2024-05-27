@@ -14,7 +14,7 @@ namespace Krys
 
     void Run()
     {
-      KRYS_ASSERT(App, "App cannot be null");
+      KRYS_ASSERT(App, "App cannot be null", 0);
       KRYS_LOG("Starting up Application...");
       App->Startup();
 

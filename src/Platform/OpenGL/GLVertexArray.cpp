@@ -31,7 +31,7 @@ namespace Krys
       return GL_BOOL;
     }
 
-    KRYS_ASSERT(false, "Unknown ShaderDataType!");
+    KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
     return 0;
   }
 
@@ -57,7 +57,7 @@ namespace Krys
 
   void GLVertexArray::AddVertexBuffer(Ref<VertexBuffer> buffer)
   {
-    KRYS_ASSERT(buffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
+    KRYS_ASSERT(buffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!", 0);
 
     glBindVertexArray(Id);
     buffer->Bind();
@@ -119,7 +119,7 @@ namespace Krys
         break;
       }
       default:
-        KRYS_ASSERT(false, "Unknown ShaderDataType!");
+        KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
       }
     }
 

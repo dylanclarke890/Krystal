@@ -74,7 +74,7 @@ namespace Krys
         }
         default:
         {
-          KRYS_ASSERT(false, "TextureType not recognised");
+          KRYS_ASSERT(false, "TextureType not recognised", 0);
           break;
         }
         }

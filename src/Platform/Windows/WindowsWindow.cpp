@@ -25,7 +25,7 @@ namespace Krys
     wc.lpszClassName = "wgl_extension_loader_class";
 
     auto registerSuccess = RegisterClassA(&wc);
-    KRYS_ASSERT(registerSuccess, "unable to register temporary window class");
+    KRYS_ASSERT(registerSuccess, "unable to register temporary window class", 0);
 
     HWND fakeWND = CreateWindowA(
         wc.lpszClassName, "Fake Window",   // window class, title
@@ -36,7 +36,7 @@ namespace Krys
         instance, NULL);                   // instance, param
 
     HDC fakeDC = GetDC(fakeWND); // Device Context
-    KRYS_ASSERT(fakeDC, "Device context was not valid");
+    KRYS_ASSERT(fakeDC, "Device context was not valid", 0);
 
     // specifiy an arbitray PFD with OpenGL capabilities
     PIXELFORMATDESCRIPTOR fakePFD = {0};
@@ -45,21 +45,21 @@ namespace Krys
     fakePFD.dwFlags = PFD_SUPPORT_OPENGL;          // OpenGL support
 
     int fakePFDID = ChoosePixelFormat(fakeDC, &fakePFD);
-    KRYS_ASSERT(fakePFDID != 0, "ChoosePixelFormat() failed.");
+    KRYS_ASSERT(fakePFDID != 0, "ChoosePixelFormat() failed.", 0);
 
     BOOL setPixelFormatSuccess = SetPixelFormat(fakeDC, fakePFDID, &fakePFD);
-    KRYS_ASSERT(setPixelFormatSuccess, "Failed to set the pixel format");
+    KRYS_ASSERT(setPixelFormatSuccess, "Failed to set the pixel format", 0);
 
     // TODO: DescribePixelFormat?
 
     HGLRC fakeRC = wglCreateContext(fakeDC);
-    KRYS_ASSERT(fakeRC, "Failed to create OpenGL context");
+    KRYS_ASSERT(fakeRC, "Failed to create OpenGL context", 0);
 
     BOOL makeCurrentSuccess = wglMakeCurrent(fakeDC, fakeRC);
-    KRYS_ASSERT(makeCurrentSuccess, "Failed to make OpenGL context current");
+    KRYS_ASSERT(makeCurrentSuccess, "Failed to make OpenGL context current", 0);
 
     int32 wglVersion = gladLoaderLoadWGL(fakeDC);
-    KRYS_ASSERT(wglVersion != 0, "glad WGL loader failed.");
+    KRYS_ASSERT(wglVersion != 0, "glad WGL loader failed.", 0);
 
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(fakeRC);

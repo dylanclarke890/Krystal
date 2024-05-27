@@ -67,7 +67,7 @@ namespace Krys
         return 1;
       }
 
-      KRYS_ASSERT(false, "Unknown ShaderDataType!");
+      KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
       return 0;
     }
 
@@ -100,7 +100,7 @@ namespace Krys
         return 1;
       }
 
-      KRYS_ASSERT(false, "Unknown ShaderDataType!");
+      KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
       return 0;
     }
   };
@@ -144,7 +144,7 @@ namespace Krys
       uint32 vertexSize = 0;
       for (auto &element : m_Elements)
         vertexSize += element.Size;
-      KRYS_ASSERT(vertexSize != 0, "Invalid element size!");
+      KRYS_ASSERT(vertexSize != 0, "Invalid element size!", 0);
 
       switch (m_LayoutType)
       {
@@ -173,7 +173,7 @@ namespace Krys
         break;
       }
       default:
-        KRYS_ASSERT(false, "Unrecognised BufferLayoutType!");
+        KRYS_ASSERT(false, "Unrecognised BufferLayoutType!", 0);
         break;
       }
     }

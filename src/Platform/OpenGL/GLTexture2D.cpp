@@ -41,7 +41,7 @@ namespace Krys
 
   void GLTexture2D::SetData(void *data, uint32 size)
   {
-    KRYS_ASSERT(Width * Height * (DataFormat == GL_RGBA ? 4 : 3) == size, "Data must be entire texture!");
+    KRYS_ASSERT(Width * Height * (DataFormat == GL_RGBA ? 4 : 3) == size, "Data must be entire texture!", 0);
     //                                             ^ bytes per pixel
     glTextureSubImage2D(Id, 0, 0, 0, Width, Height, DataFormat, GL_UNSIGNED_BYTE, data);
   }
@@ -59,7 +59,7 @@ namespace Krys
     stbi_set_flip_vertically_on_load(true);
     stbi_uc *data = stbi_load(Path, &width, &height, &channels, 0);
 
-    KRYS_ASSERT(data, "Failed to load image!");
+    KRYS_ASSERT(data, "Failed to load image!", 0);
 
     Width = width;
     Height = height;
@@ -75,8 +75,8 @@ namespace Krys
       DataFormat = GL_RGB;
     }
 
-    KRYS_ASSERT(InternalFormat, "UnsupportedFormat: Internal format.");
-    KRYS_ASSERT(DataFormat, "UnsupportedFormat: Data format.");
+    KRYS_ASSERT(InternalFormat, "UnsupportedFormat: Internal format.", 0);
+    KRYS_ASSERT(DataFormat, "UnsupportedFormat: Data format.", 0);
 
     glCreateTextures(GL_TEXTURE_2D, 1, &Id);
     glTextureStorage2D(Id, 1, InternalFormat, Width, Height);
@@ -101,7 +101,7 @@ namespace Krys
     case Texture2DFormat::RGBA8:
       return GL_RGBA;
     default:
-      KRYS_ASSERT(false, "Unknown data format");
+      KRYS_ASSERT(false, "Unknown data format", 0);
       return 0;
     }
   }
@@ -115,7 +115,7 @@ namespace Krys
     case Texture2DFormat::RGBA8:
       return GL_RGBA8;
     default:
-      KRYS_ASSERT(false, "Unknown data format");
+      KRYS_ASSERT(false, "Unknown data format", 0);
       return 0;
     }
   }

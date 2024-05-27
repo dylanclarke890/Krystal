@@ -31,7 +31,7 @@ namespace Krys
       return;
     }
 
-    KRYS_ASSERT(false, "Unknown severity level!");
+    KRYS_ASSERT(false, "Unknown severity level!", 0);
   }
 #endif
 
@@ -70,17 +70,16 @@ namespace Krys
         dc, i_pixel_format_attrib_list, 0, 1, &pixel_format_idx,
         &pixel_format_count);
 
-    KRYS_ASSERT(chooseFormatSuccess && pixel_format_count && pixel_format_count,
-                "Cannot find an appropriate pixel format.");
+    KRYS_ASSERT(chooseFormatSuccess && pixel_format_count && pixel_format_count, "Cannot find an appropriate pixel format.", 0);
 
     // set actual pixel format to device context
     PIXELFORMATDESCRIPTOR pfd{};
     auto describeFormatSuccess = DescribePixelFormat(
         dc, pixel_format_idx, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
-    KRYS_ASSERT(describeFormatSuccess, "Unable to describe pixel format.");
+    KRYS_ASSERT(describeFormatSuccess, "Unable to describe pixel format.", 0);
 
     auto setPixelFormatSuccess = SetPixelFormat(dc, pixel_format_idx, &pfd);
-    KRYS_ASSERT(setPixelFormatSuccess, "Unable to set pixel format.");
+    KRYS_ASSERT(setPixelFormatSuccess, "Unable to set pixel format.", 0);
 
     const uint32 OPENGL_MAJOR = 3;
     const uint32 OPENGL_MINOR = 3;
@@ -94,10 +93,10 @@ namespace Krys
     openGLContext = wglCreateContextAttribsARB(dc, 0, attributes);
 
     auto makeCurrentSucess = wglMakeCurrent(dc, openGLContext);
-    KRYS_ASSERT(makeCurrentSucess, "Failed to make the OpenGL context current.");
+    KRYS_ASSERT(makeCurrentSucess, "Failed to make the OpenGL context current.", 0);
 
     int32 version = gladLoaderLoadGL();
-    KRYS_ASSERT(version, "Failed to load OpenGL functions.");
+    KRYS_ASSERT(version, "Failed to load OpenGL functions.", 0);
 
     KRYS_INFO("OPENGL - initialised:");
 
@@ -134,7 +133,7 @@ namespace Krys
     if (flags & ClearFlags::Stencil)
       glFlags |= GL_STENCIL_BUFFER_BIT;
 
-    KRYS_ASSERT(glFlags != 0, "Invalid flags!");
+    KRYS_ASSERT(glFlags != 0, "Invalid flags!", 0);
 
     glClear(glFlags);
   }
@@ -182,7 +181,7 @@ namespace Krys
       break;
     }
     default:
-      KRYS_ASSERT(false, "Invalid CullMode!");
+      KRYS_ASSERT(false, "Invalid CullMode!", 0);
       break;
     }
   }
@@ -198,7 +197,7 @@ namespace Krys
       glFrontFace(GL_CCW);
       break;
     default:
-      KRYS_ASSERT(false, "Invalid CullMode!");
+      KRYS_ASSERT(false, "Invalid CullMode!", 0);
       break;
     }
   }
