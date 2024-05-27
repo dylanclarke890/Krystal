@@ -69,9 +69,6 @@ void main()
   vec3 normal = normalize(v_Normal);
 
   vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0)) * v_Color;
-  if (textureSample.a < 0.1) 
-    discard;
-  
   vec3 diffuseSample = vec3(textureSample);
   vec3 specularSample = vec3(GetTextureSample(v_SpecularSlot, vec4(0.2)));
   vec3 emissionSample = vec3(GetTextureSample(v_EmissionSlot, vec4(0.0)));

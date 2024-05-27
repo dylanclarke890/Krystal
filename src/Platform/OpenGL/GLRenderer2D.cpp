@@ -1,4 +1,6 @@
 #include <glad/gl.h>
+#include <execution>
+#include <algorithm>
 
 #include "Graphics/Renderer2D.h"
 #include "Misc/Time.h"
@@ -111,6 +113,7 @@ namespace Krys
   int Renderer2D::TextureSlotIndex;
 
   Ref<Shader> Renderer2D::ShaderInUse;
+  Vec4 Renderer2D::SceneCameraPosition;
 
 #pragma endregion Static Member Initialisation
 
@@ -514,6 +517,7 @@ namespace Krys
     LightSourceShader->TrySetUniform("u_ViewProjection", viewProjection);
     ShaderInUse = shaderToUse ? shaderToUse : LightSourceShader;
     ObjectShader->TrySetUniform("u_ViewProjection", viewProjection);
+    SceneCameraPosition = Vec4(camera->GetPosition(), 1.0f);
     ObjectShader->TrySetUniform("u_CameraPosition", camera->GetPosition());
 
     Reset();
@@ -532,6 +536,7 @@ namespace Krys
 
     ObjectShader->Bind();
     ObjectVertexArray->Bind();
+
     ObjectVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
     ObjectIndexBuffer->SetData(Indices->data(), IndexCount);
 

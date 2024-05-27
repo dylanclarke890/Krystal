@@ -6,6 +6,68 @@
 
 namespace Krys
 {
+  static auto ToGLTextureMagnifyMode = [](TextureMagnifyMode mode)
+  {
+    switch (mode)
+    {
+    case TextureMagnifyMode::Nearest:
+      return GL_NEAREST;
+    case TextureMagnifyMode::Linear:
+      return GL_LINEAR;
+    default:
+    {
+      KRYS_ASSERT(false, "Unknown TextureMagnifyMode", 0);
+      return 0;
+    }
+    }
+  };
+
+  static auto ToGLTextureMinifyMode = [](TextureMinifyMode mode)
+  {
+    switch (mode)
+    {
+    case TextureMinifyMode::Nearest:
+      return GL_NEAREST;
+    case TextureMinifyMode::NearestMipmapNearest:
+      return GL_NEAREST_MIPMAP_NEAREST;
+    case TextureMinifyMode::NearestMipmapLinear:
+      return GL_NEAREST_MIPMAP_LINEAR;
+    case TextureMinifyMode::Linear:
+      return GL_LINEAR;
+    case TextureMinifyMode::LinearMipmapNearest:
+      return GL_LINEAR_MIPMAP_NEAREST;
+    case TextureMinifyMode::LinearMipmapLinear:
+      return GL_LINEAR_MIPMAP_LINEAR;
+    default:
+    {
+      KRYS_ASSERT(false, "Unknown TextureMinifyMode", 0);
+      return 0;
+    }
+    }
+  };
+
+  static auto ToGLTextureWrapMode = [](TextureWrapMode mode)
+  {
+    switch (mode)
+    {
+    case TextureWrapMode::Repeat:
+      return GL_REPEAT;
+    case TextureWrapMode::MirroredRepeat:
+      return GL_MIRRORED_REPEAT;
+    case TextureWrapMode::ClampToEdge:
+      return GL_CLAMP_TO_EDGE;
+    case TextureWrapMode::MirroredClampToEdge:
+      return GL_MIRROR_CLAMP_TO_EDGE;
+    case TextureWrapMode::ClampToBorder:
+      return GL_CLAMP_TO_BORDER;
+    default:
+    {
+      KRYS_ASSERT(false, "Unknown TextureWrapMode", 0);
+      return 0;
+    }
+    }
+  };
+
   GLTexture2D::GLTexture2D(const char *path)
       : InternalFormat(0), DataFormat(0)
   {
@@ -34,23 +96,54 @@ namespace Krys
     glDeleteTextures(1, &Id);
   }
 
-  void GLTexture2D::Bind(uint32 slot) const
+  void GLTexture2D::Bind(uint32 slot) const noexcept
   {
     glBindTextureUnit(slot, Id);
   }
 
-  void GLTexture2D::SetData(void *data, uint32 size)
+  void GLTexture2D::SetData(void *data, uint32 size) noexcept
   {
     KRYS_ASSERT(Width * Height * (DataFormat == GL_RGBA ? 4 : 3) == size, "Data must be entire texture!", 0);
     //                                             ^ bytes per pixel
     glTextureSubImage2D(Id, 0, 0, 0, Width, Height, DataFormat, GL_UNSIGNED_BYTE, data);
   }
 
-  void GLTexture2D::GenerateMipmaps()
+  void GLTexture2D::SetFilterModes(TextureMinifyMode min, TextureMagnifyMode mag) noexcept
+  {
+    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, ToGLTextureMinifyMode(min));
+    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, ToGLTextureMagnifyMode(mag));
+  }
+
+  void GLTexture2D::SetMagnifyMode(TextureMagnifyMode mode) noexcept
+  {
+    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, ToGLTextureMagnifyMode(mode));
+  }
+
+  void GLTexture2D::SetMinifyMode(TextureMinifyMode mode) noexcept
+  {
+    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, ToGLTextureMinifyMode(mode));
+  }
+
+  void GLTexture2D::SetTextureWrapS(TextureWrapMode mode) noexcept
+  {
+    glTextureParameteri(Id, GL_TEXTURE_WRAP_S, ToGLTextureWrapMode(mode));
+  }
+
+  void GLTexture2D::SetTextureWrapT(TextureWrapMode mode) noexcept
+  {
+    glTextureParameteri(Id, GL_TEXTURE_WRAP_T, ToGLTextureWrapMode(mode));
+  }
+
+  void GLTexture2D::SetTextureWrapModes(TextureWrapMode s, TextureWrapMode t) noexcept
+  {
+    glTextureParameteri(Id, GL_TEXTURE_WRAP_S, ToGLTextureWrapMode(s));
+    glTextureParameteri(Id, GL_TEXTURE_WRAP_T, ToGLTextureWrapMode(t));
+  }
+
+  void GLTexture2D::GenerateMipmaps(TextureMinifyMode mode) noexcept
   {
     glGenerateTextureMipmap(Id);
-    // TODO: make this configurable
-    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, ToGLTextureMinifyMode(mode));
   }
 
   void GLTexture2D::Load()

@@ -69,6 +69,7 @@ namespace Krys
     static int TextureSlotIndex;
 
     static Ref<Shader> ShaderInUse;
+    static Vec4 SceneCameraPosition;
 
   public:
     static void Init(Ref<GraphicsContext> ctx);

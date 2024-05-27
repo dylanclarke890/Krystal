@@ -19,12 +19,14 @@ namespace Krys
 
   enum class WindingOrder : ushort
   {
+    None = 0,
     Clockwise,
     CounterClockwise
   };
 
   enum class DepthTestFunc : ushort
   {
+    None = 0,
     Never,
     Always,
     Less,
@@ -35,6 +37,7 @@ namespace Krys
 
   enum class StencilTestFunc : ushort
   {
+    None = 0,
     Never,
     Always,
     Less,
@@ -47,6 +50,7 @@ namespace Krys
 
   enum class StencilOperation : ushort
   {
+    None = 0,
     Keep,
     Zero,
     Replace,
@@ -55,6 +59,35 @@ namespace Krys
     Decrement,
     DecrementWithWrap,
     Invert
+  };
+
+  enum class BlendFactor : ushort
+  {
+    None = 0,
+    Zero,
+    One,
+    SourceColor,
+    OneMinusSourceColor,
+    DestinationColor,
+    OneMinusDestinationColor,
+    SourceAlpha,
+    OneMinusSourceAlpha,
+    DestinationAlpha,
+    OneMinusDestinationAlpha,
+    ConstantColor,
+    OneMinusConstantColor,
+    ConstantAlpha,
+    OneMinusConstantAlpha
+  };
+
+  enum class BlendEquation : ushort
+  {
+    None = 0,
+    Add,
+    Subtract,
+    ReverseSubtract,
+    Min,
+    Max
   };
 
   enum class ClearFlags : ushort
@@ -79,48 +112,55 @@ namespace Krys
   {
   public:
     virtual ~GraphicsContext() = default;
-    virtual void Init() = 0;
-    virtual void Clear(ClearFlags flags = ClearFlags::Color) = 0;
+    virtual void Init() noexcept = 0;
+    virtual void Clear(ClearFlags flags = ClearFlags::Color) noexcept = 0;
 
 #pragma region State Settings
-    virtual void SetClearColor(Vec4 &color) = 0;
-    virtual void SetClearColor(Vec4 color) = 0;
-    virtual void SetViewport(int width, int height) = 0;
+    virtual void SetClearColor(Vec4 &color) noexcept = 0;
+    virtual void SetClearColor(Vec4 color) noexcept = 0;
+    virtual void SetViewport(int width, int height) noexcept = 0;
 
-    virtual void SetFaceCulling(CullMode mode) = 0;
-    virtual void SetWindingOrder(WindingOrder mode) = 0;
+    virtual void SetFaceCullingEnabled(bool enable) noexcept = 0;
+    virtual void SetFaceCulling(CullMode mode) noexcept = 0;
+    virtual void SetWindingOrder(WindingOrder mode) noexcept = 0;
 
-    virtual void SetClearDepth(float value) = 0;
-    virtual void SetDepthRange(float dNear, float dFar) = 0;
-    virtual void SetDepthBufferWritingEnabled(bool enable) = 0;
-    virtual void SetDepthTestingEnabled(bool enable) = 0;
-    virtual void SetDepthTestFunc(DepthTestFunc func) = 0;
-    virtual void SetDepthClampingEnabled(bool enable) = 0;
+    virtual void SetClearDepth(float value) noexcept = 0;
+    virtual void SetDepthRange(float dNear, float dFar) noexcept = 0;
+    virtual void SetDepthBufferWritingEnabled(bool enable) noexcept = 0;
+    virtual void SetDepthTestingEnabled(bool enable) noexcept = 0;
+    virtual void SetDepthTestFunc(DepthTestFunc func) noexcept = 0;
+    virtual void SetDepthClampingEnabled(bool enable) noexcept = 0;
 
-    virtual void SetStencilTestFunc(StencilTestFunc func, uint8 ref, uint8 mask) = 0;
-    virtual void SetStencilOperation(StencilOperation fail, StencilOperation zFail, StencilOperation zPass) = 0;
-    virtual void SetStencilTestingEnabled(bool enable) = 0;
-    virtual void SetStencilBufferWritingEnabled(bool enable) = 0;
+    virtual void SetStencilTestFunc(StencilTestFunc func, uint8 ref, uint8 mask) noexcept = 0;
+    virtual void SetStencilOperation(StencilOperation fail, StencilOperation zFail, StencilOperation zPass) noexcept = 0;
+    virtual void SetStencilTestingEnabled(bool enable) noexcept = 0;
+    virtual void SetStencilBufferWritingEnabled(bool enable) noexcept = 0;
     // Similar to `SetStencilBufferWritingEnabled`, but takes a custom mask to be
     // ANDed with the stencil value to be written
-    virtual void SetStencilBufferBitMask(uint8 mask) = 0;
+    virtual void SetStencilBufferBitMask(uint8 mask) noexcept = 0;
 
-    virtual void SetWireframeModeEnabled(bool enable) = 0;
+    virtual void SetBlendingEnabled(bool enable) noexcept = 0;
+    virtual void SetBlendFunc(BlendFactor srcFactor, BlendFactor dstFactor) noexcept = 0;
+    virtual void SetBlendFunc(BlendFactor rgbSrcFactor, BlendFactor rgbDstFactor, BlendFactor alphaSrcFactor, BlendFactor alphaDstFactor) noexcept = 0;
+    virtual void SetBlendEquation(BlendEquation equation) noexcept = 0;
+    virtual void SetBlendColor(Vec4 color) noexcept = 0;
+
+    virtual void SetWireframeModeEnabled(bool enable) noexcept = 0;
 #pragma endregion State Settings
 
 #pragma region Graphics Objects
-    virtual Ref<IndexBuffer> CreateIndexBuffer(uint32 count) = 0;
-    virtual Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) = 0;
+    virtual Ref<IndexBuffer> CreateIndexBuffer(uint32 count) noexcept = 0;
+    virtual Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) noexcept = 0;
 
-    virtual Ref<VertexBuffer> CreateVertexBuffer(uint32 size) = 0;
-    virtual Ref<VertexBuffer> CreateVertexBuffer(float *vertices, uint32 size) = 0;
+    virtual Ref<VertexBuffer> CreateVertexBuffer(uint32 size) noexcept = 0;
+    virtual Ref<VertexBuffer> CreateVertexBuffer(float *vertices, uint32 size) noexcept = 0;
 
-    virtual Ref<VertexArray> CreateVertexArray() = 0;
+    virtual Ref<VertexArray> CreateVertexArray() noexcept = 0;
 
     virtual Ref<Shader> CreateShader() = 0;
 
-    virtual Ref<Texture2D> CreateTexture2D(const char *filepath) = 0;
-    virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) = 0;
+    virtual Ref<Texture2D> CreateTexture2D(const char *filepath) noexcept = 0;
+    virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept = 0;
 
 #pragma endregion Graphics Objects
   };
