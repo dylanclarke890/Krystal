@@ -60,6 +60,7 @@ namespace Krys
 #pragma endregion State Settings
 
 #pragma region Graphics Objects
+
     Ref<IndexBuffer> CreateIndexBuffer(uint32 count) noexcept override;
     Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) noexcept override;
 
@@ -72,6 +73,9 @@ namespace Krys
 
     Ref<Texture2D> CreateTexture2D(const char *filepath) noexcept override;
     Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept override;
+
+    Ref<Framebuffer> CreateFramebuffer() noexcept override;
+
 #pragma endregion Graphics Objects
   };
 }

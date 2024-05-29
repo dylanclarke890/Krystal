@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Graphics/Texture2D.h"
 #include "GL.h"
 
@@ -11,6 +13,7 @@ namespace Krys
   public:
     GLTexture2D(const char *filepath);
     GLTexture2D(TextureType type, const char *filepath);
+    GLTexture2D(int width, int height);
     ~GLTexture2D();
 
     void Bind(uint32 slot = 0) const noexcept override;

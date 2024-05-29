@@ -2,10 +2,11 @@
 
 #include "Core.h"
 #include "Buffer.h"
-#include "VertexArray.h"
+#include "Platform/OpenGL/GLFramebuffer.h"
 #include "Shader.h"
-#include "Texture2D.h"
 #include "SubTexture2D.h"
+#include "Texture2D.h"
+#include "VertexArray.h"
 
 namespace Krys
 {
@@ -149,6 +150,7 @@ namespace Krys
 #pragma endregion State Settings
 
 #pragma region Graphics Objects
+
     virtual Ref<IndexBuffer> CreateIndexBuffer(uint32 count) noexcept = 0;
     virtual Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) noexcept = 0;
 
@@ -161,6 +163,8 @@ namespace Krys
 
     virtual Ref<Texture2D> CreateTexture2D(const char *filepath) noexcept = 0;
     virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept = 0;
+
+    virtual Ref<Framebuffer> CreateFramebuffer() noexcept = 0;
 
 #pragma endregion Graphics Objects
   };

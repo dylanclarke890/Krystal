@@ -91,6 +91,20 @@ namespace Krys
     Load();
   }
 
+  GLTexture2D::GLTexture2D(int width, int height)
+  {
+    Type = TextureType::Diffuse;
+    Path = "N/A";
+    Width = width;
+    Height = height;
+
+    glCreateTextures(GL_TEXTURE_2D, 1, &Id);
+    glTextureStorage2D(Id, 1, GL_RGB, Width, Height);
+
+    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  }
+
   GLTexture2D::~GLTexture2D()
   {
     glDeleteTextures(1, &Id);

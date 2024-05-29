@@ -1,10 +1,11 @@
+#include "Graphics/SubTexture2D.h"
+
 #include "GLGraphicsContext.h"
-#include "OpenGL/GLGraphicsContext.h"
 #include "GLBuffer.h"
 #include "GLVertexArray.h"
 #include "GLShader.h"
 #include "GLTexture2D.h"
-#include "Graphics/SubTexture2D.h"
+#include "GLFramebuffer.h"
 
 #include <glad/gl.h>
 #include <glad/wgl.h>
@@ -469,5 +470,10 @@ namespace Krys
   Ref<SubTexture2D> GLGraphicsContext::CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept
   {
     return CreateRef<SubTexture2D>(texture, coords, cellSize, spriteSize);
+  }
+
+  Ref<Framebuffer> GLGraphicsContext::CreateFramebuffer() noexcept
+  {
+    return CreateRef<GLFramebuffer>();
   }
 }
