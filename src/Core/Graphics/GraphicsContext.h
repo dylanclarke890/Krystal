@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "Buffer.h"
-#include "Platform/OpenGL/GLFramebuffer.h"
+#include "Framebuffer.h"
 #include "Shader.h"
 #include "SubTexture2D.h"
 #include "Texture2D.h"

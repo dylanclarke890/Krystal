@@ -99,7 +99,7 @@ namespace Krys
     Height = height;
 
     glCreateTextures(GL_TEXTURE_2D, 1, &Id);
-    glTextureStorage2D(Id, 1, GL_RGB, Width, Height);
+    glTextureStorage2D(Id, 1, GL_RGB8, Width, Height);
 
     glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
