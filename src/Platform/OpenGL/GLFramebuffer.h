@@ -34,6 +34,8 @@ namespace Krys
     void AddColorAttachment(int width, int height) noexcept override
     {
       Ref<Texture2D> texture = CreateRef<GLTexture2D>(width, height);
+      texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToEdge);
+
       glNamedFramebufferTexture(Id, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + ColorAttachments.size()), texture->GetId(), 0);
       ColorAttachments.push_back(texture);
     }
