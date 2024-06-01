@@ -463,6 +463,15 @@ namespace Krys
     return CreateRef<GLShader>();
   }
 
+  Ref<Shader> GLGraphicsContext::CreateShader(const char *vertexFilepath, const char *fragmentFilepath)
+  {
+    auto shader = CreateRef<GLShader>();
+    shader->Load(vertexFilepath, fragmentFilepath);
+    shader->Link();
+
+    return shader;
+  }
+
   Ref<Texture2D> GLGraphicsContext::CreateTexture2D(const char *filepath) noexcept
   {
     return CreateRef<GLTexture2D>(filepath);

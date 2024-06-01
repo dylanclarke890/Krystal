@@ -57,19 +57,19 @@ namespace Krys
         case TextureType::Diffuse:
         {
           std::string uniformName = "u_DiffuseTextures[" + std::to_string(diffuseSlot++) + "]";
-          shader->SetUniform(uniformName.c_str(), textureSlot);
+          shader->TrySetUniform(uniformName.c_str(), textureSlot);
           break;
         }
         case TextureType::Specular:
         {
           std::string uniformName = "u_SpecularTextures[" + std::to_string(specularSlot++) + "]";
-          shader->SetUniform(uniformName.c_str(), textureSlot);
+          shader->TrySetUniform(uniformName.c_str(), textureSlot);
           break;
         }
         case TextureType::Emission:
         {
           std::string uniformName = "u_EmissionTextures[" + std::to_string(emissionSlot++) + "]";
-          shader->SetUniform(uniformName.c_str(), textureSlot);
+          shader->TrySetUniform(uniformName.c_str(), textureSlot);
           break;
         }
         default:
@@ -83,9 +83,9 @@ namespace Krys
         textureSlot++;
       }
 
-      shader->SetUniform("u_TotalDiffuseTextures", diffuseSlot + 1);
-      shader->SetUniform("u_TotalSpecularTextures", specularSlot + 1);
-      shader->SetUniform("u_TotalEmissionTextures", emissionSlot + 1);
+      shader->TrySetUniform("u_TotalDiffuseTextures", diffuseSlot + 1);
+      shader->TrySetUniform("u_TotalSpecularTextures", specularSlot + 1);
+      shader->TrySetUniform("u_TotalEmissionTextures", emissionSlot + 1);
 
       VertexArray->Bind();
       glDrawElements(GL_TRIANGLES, static_cast<int>(Indices.size()), GL_UNSIGNED_INT, 0);

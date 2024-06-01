@@ -294,6 +294,12 @@ namespace Krys
     DrawCube(transform, textureData);
   }
 
+  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap)
+  {
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, REN2D_DEFAULT_COLOR};
+    DrawCube(transform, textureData);
+  }
+
   void Renderer2D::DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
   {
     TextureData textureData{subTexture->GetTextureCoords(), tint};

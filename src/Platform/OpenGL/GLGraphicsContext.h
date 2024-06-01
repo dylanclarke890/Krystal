@@ -70,6 +70,7 @@ namespace Krys
     Ref<VertexArray> CreateVertexArray() noexcept override;
 
     Ref<Shader> CreateShader() noexcept override;
+    Ref<Shader> CreateShader(const char *vertexFilepath, const char *fragmentFilepath) override;
 
     Ref<Texture2D> CreateTexture2D(const char *filepath) noexcept override;
     Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept override;

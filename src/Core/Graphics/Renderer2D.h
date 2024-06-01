@@ -87,6 +87,7 @@ namespace Krys
 
     static void DrawCube(Ref<Transform> transform, Vec4 &color);
     static void DrawCube(Ref<Transform> transform, Ref<Material> material);
+    static void DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap);
     static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     // TODO: temp
