@@ -75,6 +75,8 @@ namespace Krys
     static void Init(Ref<GraphicsContext> ctx);
     static void Shutdown();
 
+    static void DrawIndexed(uint count);
+
     static void DrawTriangle(Ref<Transform> transform, Vec4 &color);
     static void DrawTriangle(Ref<Transform> transform, Ref<Material> material);
     static void DrawTriangle(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);

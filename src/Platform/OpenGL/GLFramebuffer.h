@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Graphics/Framebuffer.h"
-#include "GLTexture2D.h"
+#include "Textures/GLTexture2D.h"
 
 namespace Krys
 {

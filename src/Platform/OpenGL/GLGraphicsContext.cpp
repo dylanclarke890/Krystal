@@ -1,10 +1,11 @@
-#include "Graphics/SubTexture2D.h"
+#include "Graphics/Textures/SubTexture2D.h"
 
 #include "GLGraphicsContext.h"
 #include "GLBuffer.h"
 #include "GLVertexArray.h"
 #include "GLShader.h"
-#include "GLTexture2D.h"
+#include "Textures/GLTexture2D.h"
+#include "Textures/GLTextureCubemap.h"
 #include "GLFramebuffer.h"
 
 #include <glad/gl.h>
@@ -475,5 +476,10 @@ namespace Krys
   Ref<Framebuffer> GLGraphicsContext::CreateFramebuffer() noexcept
   {
     return CreateRef<GLFramebuffer>();
+  }
+
+  Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(std::vector<std::string> paths) noexcept
+  {
+    return CreateRef<GLTextureCubemap>(paths);
   }
 }

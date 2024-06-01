@@ -3,7 +3,7 @@
 #include "Core.h"
 
 #include "Maths/Maths.h"
-#include "Graphics/Texture2D.h"
+#include "Graphics/Textures/Texture2D.h"
 
 namespace Krys
 {

@@ -4,9 +4,10 @@
 #include "Buffer.h"
 #include "Framebuffer.h"
 #include "Shader.h"
-#include "SubTexture2D.h"
-#include "Texture2D.h"
 #include "VertexArray.h"
+#include "Textures/SubTexture2D.h"
+#include "Textures/Texture2D.h"
+#include "Textures/TextureCubemap.h"
 
 namespace Krys
 {
@@ -163,6 +164,7 @@ namespace Krys
 
     virtual Ref<Texture2D> CreateTexture2D(const char *filepath) noexcept = 0;
     virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept = 0;
+    virtual Ref<TextureCubemap> CreateTextureCubemap(std::vector<std::string> paths) noexcept = 0;
 
     virtual Ref<Framebuffer> CreateFramebuffer() noexcept = 0;
 

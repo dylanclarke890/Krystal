@@ -1,7 +1,7 @@
 #include "Graphics/Model.h"
 
 #include "GLMesh.h"
-#include "GLTexture2D.h"
+#include "Textures/GLTexture2D.h"
 
 namespace Krys
 {

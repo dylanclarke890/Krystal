@@ -178,6 +178,11 @@ namespace Krys
 
 #pragma endregion Lifecycle Methods
 
+  void Renderer2D::DrawIndexed(uint count)
+  {
+    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+  }
+
 #pragma region Drawing Triangles
 
   void Renderer2D::DrawTriangle(Ref<Transform> transform, Vec4 &color)

@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "Core.h"
-#include "Texture2D.h"
+#include "Textures/Texture2D.h"
 
 namespace Krys
 {
