@@ -8,9 +8,22 @@ in vec3 v_Position;
 uniform vec3 u_CameraPosition;
 uniform samplerCube skyboxTexture;
 
-void main()
+void Reflect()
 {
   vec3 I = normalize(v_Position - u_CameraPosition);
   vec3 R = reflect(I, normalize(v_Normal));
   o_Color = vec4(texture(skyboxTexture, R).rgb, 1.0);
+}
+
+void Refract()
+{
+  float ratio = 1.00 / 1.52;
+  vec3 I = normalize(v_Position - u_CameraPosition);
+  vec3 R = refract(I, normalize(v_Normal), ratio);
+  o_Color = vec4(texture(skyboxTexture, R).rgb, 1.0);
+}
+
+void main()
+{
+  Refract();
 }
