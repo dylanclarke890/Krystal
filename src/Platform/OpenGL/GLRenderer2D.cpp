@@ -494,7 +494,7 @@ namespace Krys
         20,
     };
 
-    ShaderInUse->Bind();
+    LightSourceShader->Bind();
     LightSourceVertexArray->Bind();
     LightSourceVertexBuffer->SetData(&vertices[0], vertex_count * sizeof(LightSourceVertexData));
     LightSourceIndexBuffer->SetData(indices, index_count);
@@ -515,10 +515,10 @@ namespace Krys
   {
     auto &viewProjection = camera->GetViewProjection();
     LightSourceShader->TrySetUniform("u_ViewProjection", viewProjection);
-    ShaderInUse = shaderToUse ? shaderToUse : LightSourceShader;
-    ObjectShader->TrySetUniform("u_ViewProjection", viewProjection);
+    ShaderInUse = shaderToUse ? shaderToUse : ObjectShader;
+    ShaderInUse->TrySetUniform("u_ViewProjection", viewProjection);
     SceneCameraPosition = Vec4(camera->GetPosition(), 1.0f);
-    ObjectShader->TrySetUniform("u_CameraPosition", camera->GetPosition());
+    ShaderInUse->TrySetUniform("u_CameraPosition", camera->GetPosition());
 
     Reset();
   }
@@ -534,7 +534,7 @@ namespace Krys
     if (VertexCount == 0)
       return;
 
-    ObjectShader->Bind();
+    ShaderInUse->Bind();
     ObjectVertexArray->Bind();
 
     ObjectVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
