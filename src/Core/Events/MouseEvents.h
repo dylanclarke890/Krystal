@@ -11,6 +11,9 @@ namespace Krys
     bool Ctrl, Shift, Alt;
     uint32 Buttons;
 
+    MouseEvent()
+        : X(0), Y(0), Ctrl(false), Shift(false), Alt(false), Buttons(0) {}
+
     EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
   };
 
@@ -26,7 +29,7 @@ namespace Krys
   {
     // TODO: double click?
   public:
-    MouseButtonEvent(MouseButton button) : Button(button) {}
+    MouseButtonEvent(MouseButton button) : MouseEvent(), Button(button) {}
     MouseButton Button;
   };
 
