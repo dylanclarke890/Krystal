@@ -30,4 +30,13 @@ namespace Krys
     virtual const BufferLayout &GetLayout() const = 0;
     virtual void SetLayout(const BufferLayout &layout) = 0;
   };
+
+  class UniformBuffer
+  {
+  public:
+    virtual ~UniformBuffer() = default;
+
+    virtual void Bind() = 0;
+    virtual void SetData(const void *data, uint32 size) = 0;
+  };
 }

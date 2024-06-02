@@ -83,4 +83,26 @@ namespace Krys
   {
     Layout = layout;
   }
+
+  GLUniformBuffer::GLUniformBuffer(uint32 size, uint32 binding)
+  {
+    glCreateBuffers(1, &Id);
+    glNamedBufferData(Id, size, nullptr, GL_DYNAMIC_DRAW);
+    glBindBufferBase(GL_UNIFORM_BUFFER, binding, Id);
+  }
+
+  GLUniformBuffer::~GLUniformBuffer()
+  {
+    glDeleteBuffers(1, &Id);
+  }
+
+  void GLUniformBuffer::Bind()
+  {
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+  }
+
+  void GLUniformBuffer::SetData(const void *data, uint32 size)
+  {
+    glNamedBufferSubData(Id, 0, size, data);
+  }
 }

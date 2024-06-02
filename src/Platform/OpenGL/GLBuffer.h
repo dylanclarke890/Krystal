@@ -46,4 +46,17 @@ namespace Krys
     const BufferLayout &GetLayout() const override;
     void SetLayout(const BufferLayout &layout) override;
   };
+
+  class GLUniformBuffer : public UniformBuffer
+  {
+  private:
+    uint Id;
+
+  public:
+    GLUniformBuffer(uint32 size, uint32 binding);
+    ~GLUniformBuffer() override;
+    void SetData(const void *data, uint32 size) override;
+
+    void Bind() override;
+  };
 }
