@@ -35,7 +35,7 @@ namespace Krys
     BufferElement() = default;
 
     BufferElement(ShaderDataType type, const char *name, bool normalized = false)
-        : Name(name), Type(type), Size(GetSizeOfShaderDataType(type)), Normalized(normalized)
+        : Name(name), Type(type), Size(GetSizeOfShaderDataType(type)), Normalized(normalized), Stride(0), Offset(0)
     {
     }
 
@@ -65,10 +65,12 @@ namespace Krys
         return 4;
       case ShaderDataType::Bool:
         return 1;
+      default:
+      {
+        KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
+        return 0;
       }
-
-      KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
-      return 0;
+      }
     }
 
   private:
@@ -98,10 +100,12 @@ namespace Krys
         return 4 * 4;
       case ShaderDataType::Bool:
         return 1;
+      default:
+      {
+        KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
+        return 0;
       }
-
-      KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
-      return 0;
+      }
     }
   };
 

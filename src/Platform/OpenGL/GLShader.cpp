@@ -77,6 +77,11 @@ namespace Krys
       case ShaderType::Fragment:
         shaderType = "fragment";
         break;
+      default:
+      {
+        KRYS_ASSERT(false, "Unknown ShaderType!", 0);
+        break;
+      }
       }
 
       KRYS_ASSERT(false, "Compile failure in %s shader:\n%s", shaderType, infoLog);

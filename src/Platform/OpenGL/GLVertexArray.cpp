@@ -29,10 +29,12 @@ namespace Krys
       return GL_INT;
     case ShaderDataType::Bool:
       return GL_BOOL;
+    default:
+    {
+      KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
+      return 0;
     }
-
-    KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
-    return 0;
+    }
   }
 
   GLVertexArray::GLVertexArray()

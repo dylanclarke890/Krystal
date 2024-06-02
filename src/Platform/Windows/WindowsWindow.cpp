@@ -328,9 +328,9 @@ namespace Krys
 
       ResizeEvent event;
       event.Width = width;
-      Width = width;
       event.Height = height;
-      height = Height;
+      Width = width;
+      Height = height;
 
       KRYS_EVENT_CALLBACK();
 
