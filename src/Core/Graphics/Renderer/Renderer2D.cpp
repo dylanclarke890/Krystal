@@ -1,8 +1,7 @@
-#include <glad/gl.h>
 #include <execution>
 #include <algorithm>
 
-#include "Graphics/Renderer2D.h"
+#include "Renderer2D.h"
 #include "Misc/Time.h"
 
 namespace Krys
@@ -505,7 +504,7 @@ namespace Krys
     LightSourceVertexBuffer->SetData(&vertices[0], vertex_count * sizeof(LightSourceVertexData));
     LightSourceIndexBuffer->SetData(indices, index_count);
 
-    glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
+    Context->DrawIndices(index_count, DrawMode::Triangles);
   }
 
 #pragma endregion Lighting

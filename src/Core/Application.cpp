@@ -7,7 +7,6 @@
 #include "Input/KeyCodes.h"
 
 #include "Graphics/Camera/Perspective.h"
-#include "Graphics/Renderer2D.h"
 #include "Graphics/Shader.h"
 #include "Graphics/VertexArray.h"
 

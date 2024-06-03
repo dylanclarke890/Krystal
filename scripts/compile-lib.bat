@@ -31,7 +31,6 @@ K:\src\ThirdParty\Glad\src\wgl.c ^
 K:\src\Platform\OpenGL\GLModel.cpp ^
 K:\src\Platform\OpenGL\Textures\GLTexture2D.cpp ^
 K:\src\Platform\OpenGL\Textures\GLTextureCubemap.cpp ^
-K:\src\Platform\OpenGL\GLRenderer2D.cpp ^
 K:\src\Platform\OpenGL\GLShader.cpp ^
 K:\src\Platform\OpenGL\GLVertexArray.cpp ^
 K:\src\Platform\OpenGL\GLBuffer.cpp ^
@@ -41,6 +40,7 @@ K:\src\Platform\Windows\WindowsPerformance.cpp ^
 K:\src\Platform\Windows\WindowsLogger.cpp ^
 K:\src\Platform\Windows\WindowsInput.cpp ^
 K:\src\Platform\Windows\WindowsWindow.cpp ^
+K:\src\Core\Graphics\Renderer\Renderer2D.cpp ^
 K:\src\Core\Misc\Time.cpp ^
 K:\src\Core\Application.cpp
 
