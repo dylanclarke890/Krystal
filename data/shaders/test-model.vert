@@ -9,7 +9,12 @@ out vec3 v_Normal;
 out vec3 v_FragmentPosition;
 
 uniform mat4 u_Model;
-uniform mat4 u_ViewProjection;
+
+layout (std140, binding = 0) uniform Shared
+{
+  mat4 u_ViewProjection;
+  vec3 u_CameraPosition;
+};
 
 void main()
 {

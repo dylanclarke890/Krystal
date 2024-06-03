@@ -53,10 +53,15 @@ struct SpotLight
   float Quadratic;
 };
 
+layout (std140, binding = 0) uniform Shared
+{
+  mat4 u_ViewProjection;
+  vec3 u_CameraPosition;
+};
+
 uniform PointLight u_PointLight;
 uniform DirectionalLight u_DirectionalLight;
 uniform SpotLight u_SpotLight;
-uniform vec3 u_CameraPosition;
 uniform sampler2D u_Textures[32];
 
 vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor);

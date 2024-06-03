@@ -5,7 +5,12 @@ out vec4 o_Color;
 in vec3 v_Normal;
 in vec3 v_Position;
 
-uniform vec3 u_CameraPosition;
+layout (std140, binding = 0) uniform Shared
+{
+  mat4 u_ViewProjection;
+  vec3 u_CameraPosition;
+};
+
 uniform samplerCube skyboxTexture;
 
 void Reflect()

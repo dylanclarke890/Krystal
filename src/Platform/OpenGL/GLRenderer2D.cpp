@@ -97,6 +97,7 @@ namespace Krys
   Ref<VertexArray> Renderer2D::ObjectVertexArray;
   Ref<VertexBuffer> Renderer2D::ObjectVertexBuffer;
   Ref<IndexBuffer> Renderer2D::ObjectIndexBuffer;
+  Ref<UniformBuffer> Renderer2D::ObjectUniformBuffer;
 
   Ref<Shader> Renderer2D::LightSourceShader;
   Ref<VertexArray> Renderer2D::LightSourceVertexArray;
@@ -140,10 +141,11 @@ namespace Krys
     ObjectVertexArray = Context->CreateVertexArray();
     ObjectVertexArray->AddVertexBuffer(ObjectVertexBuffer);
     ObjectVertexArray->SetIndexBuffer(ObjectIndexBuffer);
+    ObjectUniformBuffer = Context->CreateUniformBuffer(0,
+                                                       {{UniformDataType::Mat4, "u_ViewProjection"},
+                                                        {UniformDataType::Vec3, "u_CameraPosition"}});
 
-    ObjectShader = Context->CreateShader();
-    ObjectShader->Load("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
-    ObjectShader->Link();
+    ObjectShader = Context->CreateShader("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
 
     // Lighting shader
     uint32 lightingVertexBufferSize = sizeof(LightSourceVertexData) * 24;
@@ -155,9 +157,7 @@ namespace Krys
     LightSourceVertexArray->AddVertexBuffer(LightSourceVertexBuffer);
     LightSourceVertexArray->SetIndexBuffer(LightSourceIndexBuffer);
 
-    LightSourceShader = Context->CreateShader();
-    LightSourceShader->Load("shaders/light-source.vert", "shaders/light-source.frag");
-    LightSourceShader->Link();
+    LightSourceShader = Context->CreateShader("shaders/light-source.vert", "shaders/light-source.frag");
 
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
@@ -524,13 +524,11 @@ namespace Krys
 
   void Renderer2D::BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse)
   {
-    auto &viewProjection = camera->GetViewProjection();
-    LightSourceShader->TrySetUniform("u_ViewProjection", viewProjection);
-    ShaderInUse = shaderToUse ? shaderToUse : ObjectShader;
-    ShaderInUse->TrySetUniform("u_ViewProjection", viewProjection);
-    SceneCameraPosition = Vec4(camera->GetPosition(), 1.0f);
-    ShaderInUse->TrySetUniform("u_CameraPosition", camera->GetPosition());
+    ObjectUniformBuffer->SetData("u_ViewProjection", &camera->GetViewProjection());
+    ObjectUniformBuffer->SetData("u_CameraPosition", &camera->GetPosition());
 
+    ShaderInUse = shaderToUse ? shaderToUse : ObjectShader;
+    SceneCameraPosition = Vec4(camera->GetPosition(), 1.0f);
     Reset();
   }
 

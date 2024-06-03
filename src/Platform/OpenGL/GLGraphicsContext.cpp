@@ -463,6 +463,16 @@ namespace Krys
     return CreateRef<GLShader>();
   }
 
+  Ref<UniformBuffer> GLGraphicsContext::CreateUniformBuffer(uint32 size, uint32 binding) noexcept
+  {
+    return CreateRef<GLUniformBuffer>(size, binding);
+  }
+
+  Ref<UniformBuffer> GLGraphicsContext::CreateUniformBuffer(uint32 binding, UniformBufferLayout layout) noexcept
+  {
+    return CreateRef<GLUniformBuffer>(binding, layout);
+  }
+
   Ref<Shader> GLGraphicsContext::CreateShader(const char *vertexFilepath, const char *fragmentFilepath)
   {
     auto shader = CreateRef<GLShader>();

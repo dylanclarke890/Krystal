@@ -46,7 +46,7 @@ K:\src\Core\Application.cpp
 
 set krystal_disabled_warnings=-wd4100 -wd4201
 
-set krystal_compiler_flags=-c -Foobj\ -nologo -Zi -Oi -O2 -FC -W4 -WX -MP -EHsc -std:c++latest -MTd
+set krystal_compiler_flags=-c -Foobj\ -nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++latest -MTd
 
 set krystal_linker_flags=-nologo -OUT:Krystal.lib
 

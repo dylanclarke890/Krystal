@@ -67,6 +67,9 @@ namespace Krys
     Ref<VertexBuffer> CreateVertexBuffer(uint32 size) noexcept override;
     Ref<VertexBuffer> CreateVertexBuffer(float *vertices, uint32 size) noexcept override;
 
+    Ref<UniformBuffer> CreateUniformBuffer(uint32 size, uint32 binding) noexcept override;
+    Ref<UniformBuffer> CreateUniformBuffer(uint32 binding, UniformBufferLayout layout) noexcept override;
+
     Ref<VertexArray> CreateVertexArray() noexcept override;
 
     Ref<Shader> CreateShader() noexcept override;

@@ -2,7 +2,11 @@
 
 layout(location = 0) in vec4 i_ModelPosition;
 
-uniform mat4 u_ViewProjection;
+layout (std140, binding = 0) uniform Shared
+{
+  mat4 u_ViewProjection;
+  vec3 u_CameraPosition;
+};
 
 void main()
 {

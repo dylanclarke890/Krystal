@@ -18,7 +18,11 @@ flat out int v_SpecularSlot;
 flat out int v_EmissionSlot;
 flat out float v_Shininess;
 
-uniform mat4 u_ViewProjection;
+layout (std140, binding = 0) uniform Shared
+{
+  mat4 u_ViewProjection;
+  vec3 u_CameraPosition;
+};
 
 void main()
 {

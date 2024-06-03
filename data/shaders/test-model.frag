@@ -20,7 +20,11 @@ in vec3 v_FragmentPosition;
 
 out vec4 o_Color;
 
-uniform vec3 u_CameraPosition;
+layout (std140, binding = 0) uniform Shared
+{
+  mat4 u_ViewProjection;
+  vec3 u_CameraPosition;
+};
 
 uniform sampler2D u_DiffuseTextures[8];
 uniform int u_TotalDiffuseTextures;

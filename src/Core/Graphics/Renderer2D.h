@@ -53,6 +53,7 @@ namespace Krys
     static Ref<VertexArray> ObjectVertexArray;
     static Ref<VertexBuffer> ObjectVertexBuffer;
     static Ref<IndexBuffer> ObjectIndexBuffer;
+    static Ref<UniformBuffer> ObjectUniformBuffer;
 
     static Ref<Shader> LightSourceShader;
     static Ref<VertexArray> LightSourceVertexArray;

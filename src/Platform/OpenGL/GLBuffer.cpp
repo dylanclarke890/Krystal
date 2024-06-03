@@ -91,6 +91,16 @@ namespace Krys
     glBindBufferBase(GL_UNIFORM_BUFFER, binding, Id);
   }
 
+  Krys::GLUniformBuffer::GLUniformBuffer(uint32 binding, UniformBufferLayout layout)
+  {
+    glCreateBuffers(1, &Id);
+
+    SetLayout(layout);
+    auto &last = layout.GetElements().back();
+    glNamedBufferData(Id, last.AlignedOffset + last.LayoutSize, nullptr, GL_DYNAMIC_DRAW);
+    glBindBufferBase(GL_UNIFORM_BUFFER, binding, Id);
+  }
+
   GLUniformBuffer::~GLUniformBuffer()
   {
     glDeleteBuffers(1, &Id);
@@ -101,8 +111,32 @@ namespace Krys
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
   }
 
-  void GLUniformBuffer::SetData(const void *data, uint32 size)
+  void GLUniformBuffer::SetData(const void *data, uint32 size, uint32 offset)
   {
-    glNamedBufferSubData(Id, 0, size, data);
+    glNamedBufferSubData(Id, offset, size, data);
+  }
+
+  void GLUniformBuffer::SetData(const std::string &name, const void *data)
+  {
+    for (auto element : Layout.GetElements())
+    {
+      if (name == element.Name)
+      {
+        glNamedBufferSubData(Id, element.AlignedOffset, element.LayoutSize, data);
+        return;
+      }
+    }
+    KRYS_ASSERT(false, "Unable to find element in layout with name %s", name.c_str());
+  }
+
+  const UniformBufferLayout &GLUniformBuffer::GetLayout() const
+  {
+    return Layout;
+  }
+
+  void GLUniformBuffer::SetLayout(const UniformBufferLayout &layout)
+  {
+    KRYS_ASSERT(layout.GetElements().size(), "Uniform buffer has no layout!", 0);
+    Layout = layout;
   }
 }
