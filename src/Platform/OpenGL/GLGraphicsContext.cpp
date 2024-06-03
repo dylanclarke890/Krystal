@@ -77,8 +77,26 @@ namespace Krys
     }
   };
 
+  static auto ToGLDrawMode = [](DrawMode mode) -> int
+  {
+    switch (mode)
+    {
+    case DrawMode::Points:
+      return GL_POINTS;
+    case DrawMode::Triangles:
+      return GL_TRIANGLES;
+    default:
+    {
+      KRYS_ASSERT(false, "Unknown draw mode!", 0);
+      return 0;
+    }
+    }
+  };
+
   GLGraphicsContext::GLGraphicsContext(HDC deviceContext, HWND window, HINSTANCE instance)
-      : hWnd(window), instance(instance), dc(deviceContext), openGLContext(0) {}
+      : hWnd(window), instance(instance), dc(deviceContext), openGLContext(0)
+  {
+  }
 
   GLGraphicsContext::~GLGraphicsContext()
   {
@@ -482,6 +500,16 @@ namespace Krys
     return shader;
   }
 
+  Ref<Shader> GLGraphicsContext::CreateShader(const char *vertexFilepath, const char *fragmentFilepath, const char *geoFilepath)
+  {
+    auto shader = CreateRef<GLShader>();
+    shader->Load(vertexFilepath, fragmentFilepath);
+    shader->Load(ShaderType::Geometry, geoFilepath);
+    shader->Link();
+
+    return shader;
+  }
+
   Ref<Texture2D> GLGraphicsContext::CreateTexture2D(const char *filepath) noexcept
   {
     return CreateRef<GLTexture2D>(filepath);
@@ -500,5 +528,15 @@ namespace Krys
   Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(std::vector<std::string> paths) noexcept
   {
     return CreateRef<GLTextureCubemap>(paths);
+  }
+
+  void GLGraphicsContext::DrawVertices(size_t count, DrawMode mode) noexcept
+  {
+    glDrawArrays(ToGLDrawMode(mode), 0, static_cast<GLsizei>(count));
+  }
+
+  void GLGraphicsContext::DrawIndexed(size_t count, DrawMode mode) noexcept
+  {
+    glDrawElements(ToGLDrawMode(mode), static_cast<GLsizei>(count), GL_UNSIGNED_INT, nullptr);
   }
 }

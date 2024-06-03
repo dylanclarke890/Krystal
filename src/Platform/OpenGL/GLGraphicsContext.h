@@ -56,11 +56,9 @@ namespace Krys
     void SetBlendColor(Vec4 color) noexcept override;
 
     void SetWireframeModeEnabled(bool enable) noexcept override;
-
 #pragma endregion State Settings
 
 #pragma region Graphics Objects
-
     Ref<IndexBuffer> CreateIndexBuffer(uint32 count) noexcept override;
     Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) noexcept override;
 
@@ -74,13 +72,18 @@ namespace Krys
 
     Ref<Shader> CreateShader() noexcept override;
     Ref<Shader> CreateShader(const char *vertexFilepath, const char *fragmentFilepath) override;
+    Ref<Shader> CreateShader(const char *vertexFilepath, const char *fragmentFilepath, const char *geoFilepath) override;
 
     Ref<Texture2D> CreateTexture2D(const char *filepath) noexcept override;
     Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept override;
     Ref<TextureCubemap> CreateTextureCubemap(std::vector<std::string> paths) noexcept override;
 
     Ref<Framebuffer> CreateFramebuffer() noexcept override;
-
 #pragma endregion Graphics Objects
+
+#pragma region Primitive Drawing
+    void DrawVertices(size_t count, DrawMode mode = DrawMode::Triangles) noexcept override;
+    void DrawIndexed(size_t count, DrawMode mode = DrawMode::Triangles) noexcept override;
+#pragma endregion Primitive Drawing
   };
 }

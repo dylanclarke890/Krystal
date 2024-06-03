@@ -110,6 +110,13 @@ namespace Krys
     return (static_cast<uint>(a) & static_cast<uint>(b));
   }
 
+  enum class DrawMode : ushort
+  {
+    None = 0,
+    Points,
+    Triangles
+  };
+
   class GraphicsContext
   {
   public:
@@ -151,7 +158,6 @@ namespace Krys
 #pragma endregion State Settings
 
 #pragma region Graphics Objects
-
     virtual Ref<IndexBuffer> CreateIndexBuffer(uint32 count) noexcept = 0;
     virtual Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) noexcept = 0;
 
@@ -165,13 +171,18 @@ namespace Krys
 
     virtual Ref<Shader> CreateShader() = 0;
     virtual Ref<Shader> CreateShader(const char *vertexFilepath, const char *fragmentFilepath) = 0;
+    virtual Ref<Shader> CreateShader(const char *vertexFilepath, const char *fragmentFilepath, const char *geoFilepath) = 0;
 
     virtual Ref<Texture2D> CreateTexture2D(const char *filepath) noexcept = 0;
     virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept = 0;
     virtual Ref<TextureCubemap> CreateTextureCubemap(std::vector<std::string> paths) noexcept = 0;
 
     virtual Ref<Framebuffer> CreateFramebuffer() noexcept = 0;
-
 #pragma endregion Graphics Objects
+
+#pragma region Primitive Drawing
+    virtual void DrawVertices(size_t count, DrawMode mode = DrawMode::Triangles) noexcept = 0;
+    virtual void DrawIndexed(size_t count, DrawMode mode = DrawMode::Triangles) noexcept = 0;
+#pragma endregion Primitive Drawing
   };
 }
