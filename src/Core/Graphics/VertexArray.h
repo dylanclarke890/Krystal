@@ -16,9 +16,11 @@ namespace Krys
     virtual void Unbind() const = 0;
 
     virtual void AddVertexBuffer(Ref<VertexBuffer> buffer) = 0;
+    virtual void AddInstanceArrayBuffer(Ref<InstanceArrayBuffer> buffer) = 0;
     virtual void SetIndexBuffer(Ref<IndexBuffer> buffer) = 0;
 
     virtual const std::vector<Ref<VertexBuffer>> &GetVertexBuffers() const = 0;
+    virtual const std::vector<Ref<InstanceArrayBuffer>> &GetInstanceArrayBuffers() const = 0;
     virtual const Ref<IndexBuffer> GetIndexBuffer() = 0;
   };
 }

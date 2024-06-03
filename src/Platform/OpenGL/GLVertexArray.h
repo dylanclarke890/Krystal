@@ -9,8 +9,9 @@ namespace Krys
   {
   private:
     uint Id;
-    uint32 VertexBufferIndex = 0;
+    uint32 AttributeIndex = 0;
     std::vector<Ref<VertexBuffer>> VertexBuffers;
+    std::vector<Ref<InstanceArrayBuffer>> InstanceArrayBuffers;
     Ref<IndexBuffer> ZBuffer;
 
   public:
@@ -21,9 +22,11 @@ namespace Krys
     void Unbind() const override;
 
     void AddVertexBuffer(Ref<VertexBuffer> buffer) override;
+    void AddInstanceArrayBuffer(Ref<InstanceArrayBuffer> buffer) override;
     void SetIndexBuffer(Ref<IndexBuffer> buffer) override;
 
     const std::vector<Ref<VertexBuffer>> &GetVertexBuffers() const override;
+    const std::vector<Ref<InstanceArrayBuffer>> &GetInstanceArrayBuffers() const override;
     const Ref<IndexBuffer> GetIndexBuffer() override;
   };
 }

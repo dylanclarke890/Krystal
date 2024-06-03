@@ -28,13 +28,10 @@ namespace Krys
 
     void Setup() override
     {
-      auto bufferSize = Vertices.size() * sizeof(Vertex);
-      VertexBuffer = CreateRef<GLVertexBuffer>(reinterpret_cast<float *>(Vertices.data()), static_cast<uint32>(bufferSize));
-      VertexBuffer->SetLayout(
-          BufferLayout(static_cast<uint32>(bufferSize),
-                       {{ShaderDataType::Float3, "i_Position"},
-                        {ShaderDataType::Float3, "i_Normal"},
-                        {ShaderDataType::Float2, "i_TextureCoords"}}));
+      VertexBuffer = CreateRef<GLVertexBuffer>(reinterpret_cast<float *>(Vertices.data()), static_cast<uint32>(Vertices.size() * sizeof(Vertex)));
+      VertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float3, "i_Position"},
+                                                  {ShaderDataType::Float3, "i_Normal"},
+                                                  {ShaderDataType::Float2, "i_TextureCoords"}}));
 
       IndexBuffer = CreateRef<GLIndexBuffer>(Indices.data(), static_cast<uint32>(Indices.size()));
 

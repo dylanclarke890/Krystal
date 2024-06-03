@@ -471,6 +471,16 @@ namespace Krys
     return CreateRef<GLVertexBuffer>(vertices, size);
   }
 
+  Ref<InstanceArrayBuffer> GLGraphicsContext::CreateInstanceArrayBuffer(uint32 size) noexcept
+  {
+    return CreateRef<GLInstanceArrayBuffer>(size);
+  }
+
+  Ref<InstanceArrayBuffer> GLGraphicsContext::CreateInstanceArrayBuffer(void *data, uint32 size) noexcept
+  {
+    return CreateRef<GLInstanceArrayBuffer>(data, size);
+  }
+
   Ref<VertexArray> GLGraphicsContext::CreateVertexArray() noexcept
   {
     return CreateRef<GLVertexArray>();

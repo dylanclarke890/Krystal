@@ -74,12 +74,12 @@ namespace Krys
     glNamedBufferSubData(Id, 0, size, data);
   }
 
-  const BufferLayout &GLVertexBuffer::GetLayout() const
+  const VertexBufferLayout &GLVertexBuffer::GetLayout() const
   {
     return Layout;
   }
 
-  void GLVertexBuffer::SetLayout(const BufferLayout &layout)
+  void GLVertexBuffer::SetLayout(const VertexBufferLayout &layout)
   {
     Layout = layout;
   }
@@ -137,6 +137,48 @@ namespace Krys
   void GLUniformBuffer::SetLayout(const UniformBufferLayout &layout)
   {
     KRYS_ASSERT(layout.GetElements().size(), "Uniform buffer has no layout!", 0);
+    Layout = layout;
+  }
+
+  GLInstanceArrayBuffer::GLInstanceArrayBuffer(uint32 size)
+  {
+    glCreateBuffers(1, &Id);
+    glNamedBufferData(Id, size, nullptr, GL_DYNAMIC_DRAW);
+  }
+
+  GLInstanceArrayBuffer::GLInstanceArrayBuffer(void *data, uint32 size)
+  {
+    glCreateBuffers(1, &Id);
+    glNamedBufferData(Id, size, data, GL_DYNAMIC_DRAW);
+  }
+
+  GLInstanceArrayBuffer::~GLInstanceArrayBuffer()
+  {
+    glDeleteBuffers(1, &Id);
+  }
+
+  void GLInstanceArrayBuffer::Bind()
+  {
+    glBindBuffer(GL_ARRAY_BUFFER, Id);
+  }
+
+  void GLInstanceArrayBuffer::Unbind()
+  {
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+  }
+
+  void GLInstanceArrayBuffer::SetData(const void *data, uint32 size)
+  {
+    glNamedBufferSubData(Id, 0, size, data);
+  }
+
+  const InstanceArrayBufferLayout &GLInstanceArrayBuffer::GetLayout() const
+  {
+    return Layout;
+  }
+
+  void GLInstanceArrayBuffer::SetLayout(const InstanceArrayBufferLayout &layout)
+  {
     Layout = layout;
   }
 }

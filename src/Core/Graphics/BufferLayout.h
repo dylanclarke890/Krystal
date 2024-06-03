@@ -23,162 +23,131 @@ namespace Krys
     Bool
   };
 
-  struct BufferElement
+  static uint32 GetSizeOfShaderDataType(ShaderDataType type)
+  {
+    switch (type)
+    {
+    case ShaderDataType::Float:
+      return 4;
+    case ShaderDataType::Float2:
+      return 4 * 2;
+    case ShaderDataType::Float3:
+      return 4 * 3;
+    case ShaderDataType::Float4:
+      return 4 * 4;
+    case ShaderDataType::Mat3:
+      return 4 * 3 * 3;
+    case ShaderDataType::Mat4:
+      return 4 * 4 * 4;
+    case ShaderDataType::Int:
+      return 4;
+    case ShaderDataType::Int2:
+      return 4 * 2;
+    case ShaderDataType::Int3:
+      return 4 * 3;
+    case ShaderDataType::Int4:
+      return 4 * 4;
+    case ShaderDataType::Bool:
+      return 1;
+    default:
+    {
+      KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
+      return 0;
+    }
+    }
+  }
+
+  static uint8 GetComponentCountOfShaderDataType(ShaderDataType type)
+  {
+    switch (type)
+    {
+    case ShaderDataType::Float:
+      return 1;
+    case ShaderDataType::Float2:
+      return 2;
+    case ShaderDataType::Float3:
+      return 3;
+    case ShaderDataType::Float4:
+      return 4;
+    case ShaderDataType::Mat3:
+      return 3; // 3* float3
+    case ShaderDataType::Mat4:
+      return 4; // 4* float4
+    case ShaderDataType::Int:
+      return 1;
+    case ShaderDataType::Int2:
+      return 2;
+    case ShaderDataType::Int3:
+      return 3;
+    case ShaderDataType::Int4:
+      return 4;
+    case ShaderDataType::Bool:
+      return 1;
+    default:
+    {
+      KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
+      return 0;
+    }
+    }
+  }
+
+  struct VertexBufferElement
   {
     const char *Name;
     ShaderDataType Type;
+    bool Normalized;
     uint32 Size;
     uint32 Stride;
     size_t Offset;
-    bool Normalized;
 
-    BufferElement() = default;
-
-    BufferElement(ShaderDataType type, const char *name, bool normalized = false)
-        : Name(name), Type(type), Size(GetSizeOfShaderDataType(type)), Normalized(normalized), Stride(0), Offset(0)
+    VertexBufferElement() = default;
+    VertexBufferElement(ShaderDataType type, const char *name, bool normalized = false)
+        : Name(name), Type(type), Normalized(normalized),
+          Size(GetSizeOfShaderDataType(type)), Stride(0), Offset(0)
     {
     }
 
     uint8 GetComponentCount() const
     {
-      switch (Type)
-      {
-      case ShaderDataType::Float:
-        return 1;
-      case ShaderDataType::Float2:
-        return 2;
-      case ShaderDataType::Float3:
-        return 3;
-      case ShaderDataType::Float4:
-        return 4;
-      case ShaderDataType::Mat3:
-        return 3; // 3* float3
-      case ShaderDataType::Mat4:
-        return 4; // 4* float4
-      case ShaderDataType::Int:
-        return 1;
-      case ShaderDataType::Int2:
-        return 2;
-      case ShaderDataType::Int3:
-        return 3;
-      case ShaderDataType::Int4:
-        return 4;
-      case ShaderDataType::Bool:
-        return 1;
-      default:
-      {
-        KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
-        return 0;
-      }
-      }
-    }
-
-  private:
-    static uint32 GetSizeOfShaderDataType(ShaderDataType type)
-    {
-      switch (type)
-      {
-      case ShaderDataType::Float:
-        return 4;
-      case ShaderDataType::Float2:
-        return 4 * 2;
-      case ShaderDataType::Float3:
-        return 4 * 3;
-      case ShaderDataType::Float4:
-        return 4 * 4;
-      case ShaderDataType::Mat3:
-        return 4 * 3 * 3;
-      case ShaderDataType::Mat4:
-        return 4 * 4 * 4;
-      case ShaderDataType::Int:
-        return 4;
-      case ShaderDataType::Int2:
-        return 4 * 2;
-      case ShaderDataType::Int3:
-        return 4 * 3;
-      case ShaderDataType::Int4:
-        return 4 * 4;
-      case ShaderDataType::Bool:
-        return 1;
-      default:
-      {
-        KRYS_ASSERT(false, "Unknown ShaderDataType!", 0);
-        return 0;
-      }
-      }
+      return GetComponentCountOfShaderDataType(Type);
     }
   };
 
-  enum class BufferLayoutType
-  {
-    // Attributes are interleaved in memory (i.e. [pos, color], [pos, color]).
-    Interleaved = 0,
-    // Attributes are contiguous in memory (i.e. [pos, pos], [color, color]).
-    Contiguous = 1
-  };
-
-  class BufferLayout
+  class VertexBufferLayout
   {
   private:
-    std::vector<BufferElement> m_Elements;
-    uint32 m_BufferSize;
-    BufferLayoutType m_LayoutType;
+    std::vector<VertexBufferElement> Elements;
 
   public:
-    BufferLayout() = default;
+    VertexBufferLayout() = default;
 
-    BufferLayout(
-        uint32 bufferSize,
-        std::initializer_list<BufferElement> elements,
-        BufferLayoutType layoutType = BufferLayoutType::Interleaved)
-        : m_Elements(elements), m_BufferSize(bufferSize), m_LayoutType(layoutType)
+    VertexBufferLayout(std::initializer_list<VertexBufferElement> elements) : Elements(elements)
     {
       CalculateOffsetsAndStride();
     }
 
-    const std::vector<BufferElement> &GetElements() const { return m_Elements; }
-    std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
-    std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
-    std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
-    std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
+    const std::vector<VertexBufferElement> &GetElements() const { return Elements; }
+    std::vector<VertexBufferElement>::iterator begin() { return Elements.begin(); }
+    std::vector<VertexBufferElement>::iterator end() { return Elements.end(); }
+    std::vector<VertexBufferElement>::const_iterator begin() const { return Elements.begin(); }
+    std::vector<VertexBufferElement>::const_iterator end() const { return Elements.end(); }
 
   private:
     void CalculateOffsetsAndStride()
     {
-      uint32 vertexSize = 0;
-      for (auto &element : m_Elements)
-        vertexSize += element.Size;
-      KRYS_ASSERT(vertexSize != 0, "Invalid element size!", 0);
+      KRYS_ASSERT(Elements.size(), "VertexBufferLayout has no elements", 0);
 
-      switch (m_LayoutType)
+      uint32 vertexSize = 0;
+      for (auto &element : Elements)
+        vertexSize += element.Size;
+      KRYS_ASSERT(vertexSize, "vertexSize was 0", 0);
+
+      uint32 offset = 0;
+      for (auto &element : Elements)
       {
-      case BufferLayoutType::Interleaved:
-      {
-        uint32 offset = 0;
-        for (auto &element : m_Elements)
-        {
-          element.Offset = offset;
-          offset += element.Size;
-          element.Stride = vertexSize;
-        }
-        break;
-      }
-      // TODO: this doesn't work when we don't fill up all of the buffer.
-      case BufferLayoutType::Contiguous:
-      {
-        uint32 offset = 0;
-        uint32 numElements = m_BufferSize / vertexSize;
-        for (auto &element : m_Elements)
-        {
-          element.Offset = offset;
-          offset += element.Size * numElements;
-          element.Stride = element.Size;
-        }
-        break;
-      }
-      default:
-        KRYS_ASSERT(false, "Unrecognised BufferLayoutType!", 0);
-        break;
+        element.Offset = offset;
+        offset += element.Size;
+        element.Stride = vertexSize;
       }
     }
   };
@@ -296,6 +265,72 @@ namespace Krys
     static uint32 AlignOffset(uint32 offset, uint32 alignment)
     {
       return (offset + alignment - 1) & ~(alignment - 1);
+    }
+  };
+
+  constexpr uint32 UPDATE_ATTRIBUTE_PER_VERTEX = 0;
+  constexpr uint32 UPDATE_ATTRIBUTE_PER_INSTANCE = 1;
+
+  struct InstanceArrayElement
+  {
+    const char *Name;
+    ShaderDataType Type;
+    uint32 AttributeUsageFrequency;
+    bool Normalized;
+    uint32 Size;
+    uint32 Stride;
+    size_t Offset;
+
+    InstanceArrayElement() = default;
+    InstanceArrayElement(ShaderDataType type, const char *name, uint32 attributeUsageFrequency = UPDATE_ATTRIBUTE_PER_VERTEX, bool normalized = false)
+        : Name(name), Type(type), AttributeUsageFrequency(attributeUsageFrequency), Normalized(normalized),
+          Size(GetSizeOfShaderDataType(type)), Stride(0), Offset(0)
+    {
+    }
+
+    uint8 GetComponentCount() const
+    {
+      return GetComponentCountOfShaderDataType(Type);
+    }
+  };
+
+  struct InstanceArrayBufferLayout
+  {
+  private:
+    std::vector<InstanceArrayElement> Elements;
+
+  public:
+    InstanceArrayBufferLayout() = default;
+
+    InstanceArrayBufferLayout(std::initializer_list<InstanceArrayElement> elements)
+        : Elements(elements)
+    {
+      CalculateOffsetsAndSize();
+    }
+
+    const std::vector<InstanceArrayElement> &GetElements() const { return Elements; }
+    std::vector<InstanceArrayElement>::iterator begin() { return Elements.begin(); }
+    std::vector<InstanceArrayElement>::iterator end() { return Elements.end(); }
+    std::vector<InstanceArrayElement>::const_iterator begin() const { return Elements.begin(); }
+    std::vector<InstanceArrayElement>::const_iterator end() const { return Elements.end(); }
+
+  private:
+    void CalculateOffsetsAndSize()
+    {
+      KRYS_ASSERT(Elements.size(), "InstanceArrayBufferLayout has no elements", 0);
+
+      uint32 vertexSize = 0;
+      for (auto &element : Elements)
+        vertexSize += element.Size;
+      KRYS_ASSERT(vertexSize, "vertexSize was 0", 0);
+
+      uint32 offset = 0;
+      for (auto &element : Elements)
+      {
+        element.Offset = offset;
+        offset += element.Size;
+        element.Stride = vertexSize;
+      }
     }
   };
 }

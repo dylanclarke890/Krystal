@@ -8,8 +8,6 @@ namespace Krys
 {
 #pragma region Constants
 
-  constexpr uint VERTEX_BUFFER_SIZE = sizeof(VertexData) * REN2D_MAX_VERTICES;
-
   constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
   constexpr Vec3 QUAD_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
   constexpr Vec4 QUAD_LOCAL_SPACE_VERTICES[] = {{-0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, 0.5f, 0.0f, 1.0f}, {-0.5f, 0.5f, 0.0f, 1.0f}};
@@ -124,17 +122,15 @@ namespace Krys
     Context = ctx;
 
     // Object shader
-    ObjectVertexBuffer = Context->CreateVertexBuffer(VERTEX_BUFFER_SIZE);
-    ObjectVertexBuffer->SetLayout(
-        BufferLayout(VERTEX_BUFFER_SIZE,
-                     {{ShaderDataType::Float4, "i_ModelPosition"},
-                      {ShaderDataType::Float3, "i_Normal"},
-                      {ShaderDataType::Float4, "i_Color"},
-                      {ShaderDataType::Float2, "i_TextureCoord"},
-                      {ShaderDataType::Int, "i_TextureSlot"},
-                      {ShaderDataType::Int, "i_SpecularSlot"},
-                      {ShaderDataType::Int, "i_EmissionSlot"},
-                      {ShaderDataType::Float, "i_Shininess"}}));
+    ObjectVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
+    ObjectVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float4, "i_ModelPosition"},
+                                                      {ShaderDataType::Float3, "i_Normal"},
+                                                      {ShaderDataType::Float4, "i_Color"},
+                                                      {ShaderDataType::Float2, "i_TextureCoord"},
+                                                      {ShaderDataType::Int, "i_TextureSlot"},
+                                                      {ShaderDataType::Int, "i_SpecularSlot"},
+                                                      {ShaderDataType::Int, "i_EmissionSlot"},
+                                                      {ShaderDataType::Float, "i_Shininess"}}));
     ObjectIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
 
     ObjectVertexArray = Context->CreateVertexArray();
@@ -147,9 +143,8 @@ namespace Krys
     ObjectShader = Context->CreateShader("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
 
     // Lighting shader
-    uint32 lightingVertexBufferSize = sizeof(LightSourceVertexData) * 24;
-    LightSourceVertexBuffer = Context->CreateVertexBuffer(lightingVertexBufferSize);
-    LightSourceVertexBuffer->SetLayout(BufferLayout(lightingVertexBufferSize, {{ShaderDataType::Float4, "i_ModelPosition"}}));
+    LightSourceVertexBuffer = Context->CreateVertexBuffer(sizeof(LightSourceVertexData) * 24);
+    LightSourceVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float4, "i_ModelPosition"}}));
     LightSourceIndexBuffer = Context->CreateIndexBuffer(36);
 
     LightSourceVertexArray = Context->CreateVertexArray();

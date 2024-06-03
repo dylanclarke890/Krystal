@@ -27,8 +27,8 @@ namespace Krys
 
     virtual void SetData(const void *data, uint32 size) = 0;
 
-    virtual const BufferLayout &GetLayout() const = 0;
-    virtual void SetLayout(const BufferLayout &layout) = 0;
+    virtual const VertexBufferLayout &GetLayout() const = 0;
+    virtual void SetLayout(const VertexBufferLayout &layout) = 0;
   };
 
   class UniformBuffer
@@ -43,5 +43,18 @@ namespace Krys
 
     virtual const UniformBufferLayout &GetLayout() const = 0;
     virtual void SetLayout(const UniformBufferLayout &layout) = 0;
+  };
+
+  class InstanceArrayBuffer
+  {
+  public:
+    virtual ~InstanceArrayBuffer() = default;
+
+    virtual void Bind() = 0;
+    virtual void Unbind() = 0;
+    virtual void SetData(const void *data, uint32 size) = 0;
+
+    virtual const InstanceArrayBufferLayout &GetLayout() const = 0;
+    virtual void SetLayout(const InstanceArrayBufferLayout &layout) = 0;
   };
 }

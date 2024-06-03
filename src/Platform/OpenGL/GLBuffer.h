@@ -31,7 +31,7 @@ namespace Krys
   {
   private:
     uint Id;
-    BufferLayout Layout;
+    VertexBufferLayout Layout;
 
   public:
     GLVertexBuffer(uint32 size);
@@ -43,8 +43,8 @@ namespace Krys
 
     void SetData(const void *data, uint32 size) override;
 
-    const BufferLayout &GetLayout() const override;
-    void SetLayout(const BufferLayout &layout) override;
+    const VertexBufferLayout &GetLayout() const override;
+    void SetLayout(const VertexBufferLayout &layout) override;
   };
 
   class GLUniformBuffer : public UniformBuffer
@@ -65,5 +65,25 @@ namespace Krys
     void SetLayout(const UniformBufferLayout &layout) override;
 
     void Bind() override;
+  };
+
+  class GLInstanceArrayBuffer : public InstanceArrayBuffer
+  {
+  private:
+    uint Id;
+    InstanceArrayBufferLayout Layout;
+
+  public:
+    GLInstanceArrayBuffer(uint32 size);
+    GLInstanceArrayBuffer(void *data, uint32 size);
+    ~GLInstanceArrayBuffer() override;
+
+    void Bind() override;
+    void Unbind() override;
+
+    void SetData(const void *data, uint32 size) override;
+
+    const InstanceArrayBufferLayout &GetLayout() const override;
+    void SetLayout(const InstanceArrayBufferLayout &layout) override;
   };
 }
