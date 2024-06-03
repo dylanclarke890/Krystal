@@ -548,7 +548,7 @@ namespace Krys
     for (int i = 0; i < TextureSlotIndex; i++)
       textureSlots[i]->Bind(i);
 
-    Context->DrawIndexed(IndexCount, DrawMode::Triangles);
+    Context->DrawIndices(IndexCount, DrawMode::Triangles);
   }
 
   void Renderer2D::EndScene()

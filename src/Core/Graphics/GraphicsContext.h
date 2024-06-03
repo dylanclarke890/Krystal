@@ -182,7 +182,10 @@ namespace Krys
 
 #pragma region Primitive Drawing
     virtual void DrawVertices(size_t count, DrawMode mode = DrawMode::Triangles) noexcept = 0;
-    virtual void DrawIndexed(size_t count, DrawMode mode = DrawMode::Triangles) noexcept = 0;
+    virtual void DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, DrawMode mode = DrawMode::Triangles) noexcept = 0;
+
+    virtual void DrawIndices(size_t count, DrawMode mode = DrawMode::Triangles) noexcept = 0;
+    virtual void DrawIndicesInstanced(size_t instanceCount, size_t indexCount, DrawMode mode = DrawMode::Triangles) noexcept = 0;
 #pragma endregion Primitive Drawing
   };
 }

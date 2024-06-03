@@ -535,8 +535,18 @@ namespace Krys
     glDrawArrays(ToGLDrawMode(mode), 0, static_cast<GLsizei>(count));
   }
 
-  void GLGraphicsContext::DrawIndexed(size_t count, DrawMode mode) noexcept
+  void GLGraphicsContext::DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, DrawMode mode) noexcept
+  {
+    glDrawArraysInstanced(ToGLDrawMode(mode), 0, static_cast<GLsizei>(vertexCount), static_cast<GLsizei>(instanceCount));
+  }
+
+  void GLGraphicsContext::DrawIndices(size_t count, DrawMode mode) noexcept
   {
     glDrawElements(ToGLDrawMode(mode), static_cast<GLsizei>(count), GL_UNSIGNED_INT, nullptr);
+  }
+
+  void GLGraphicsContext::DrawIndicesInstanced(size_t instanceCount, size_t indexCount, DrawMode mode) noexcept
+  {
+    glDrawElementsInstanced(ToGLDrawMode(mode), static_cast<GLsizei>(indexCount), GL_UNSIGNED_INT, nullptr, static_cast<GLsizei>(instanceCount));
   }
 }
