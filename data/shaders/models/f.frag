@@ -66,6 +66,10 @@ void main()
     lighting += CalcPointLight(u_PointLight, normalize(v_Normal), vec3(diffuseSample), specularSample);
     o_Color = vec4(lighting, diffuseSample.a);
   }
+  else
+  {
+    o_Color = diffuseSample;
+  }
 }
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
