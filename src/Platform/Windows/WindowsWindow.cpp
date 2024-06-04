@@ -59,7 +59,7 @@ namespace Krys
     KRYS_ASSERT(makeCurrentSuccess, "Failed to make OpenGL context current", 0);
 
     int32 wglVersion = gladLoaderLoadWGL(fakeDC);
-    KRYS_ASSERT(wglVersion != 0, "glad WGL loader failed.", 0);
+    KRYS_ASSERT(wglVersion, "glad WGL loader failed.", 0);
 
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(fakeRC);

@@ -129,6 +129,8 @@ namespace Krys
     virtual void SetClearColor(Vec4 color) noexcept = 0;
     virtual void SetViewport(int width, int height) noexcept = 0;
 
+    virtual void SetMultisamplingEnabled(bool enable) noexcept = 0;
+
     virtual void SetFaceCullingEnabled(bool enable) noexcept = 0;
     virtual void SetFaceCulling(CullMode mode) noexcept = 0;
     virtual void SetWindingOrder(WindingOrder mode) noexcept = 0;

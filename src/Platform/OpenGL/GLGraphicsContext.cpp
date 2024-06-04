@@ -37,6 +37,14 @@ namespace Krys
   }
 #endif
 
+  static auto EnableFeature = [](GLenum feature, bool enable) -> void
+  {
+    if (enable)
+      glEnable(feature);
+    else
+      glDisable(feature);
+  };
+
   static auto ToGLBlendFactor = [](BlendFactor factor) -> int
   {
     switch (factor)
@@ -114,12 +122,13 @@ namespace Krys
         WGL_DOUBLE_BUFFER_ARB, GL_TRUE,        // PFD_DOUBLEBUFFER
         WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB, // PFD_TYPE_RGBA
         WGL_COLOR_BITS_ARB, 32,                // 32 color bits
+        WGL_ALPHA_BITS_ARB, 8,                 // 8 alpha bits
         WGL_DEPTH_BITS_ARB, 24,                // 24 depth bits
         // require that the driver supports the pixel format
         WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
         // MSAA16
         WGL_SAMPLE_BUFFERS_ARB, GL_TRUE,
-        WGL_SAMPLES_ARB, 16,
+        WGL_SAMPLES_ARB, 4,
         0 // end
     };
 
@@ -213,12 +222,14 @@ namespace Krys
     glViewport(0, 0, width, height);
   }
 
+  void GLGraphicsContext::SetMultisamplingEnabled(bool enable) noexcept
+  {
+    EnableFeature(GL_MULTISAMPLE, enable);
+  }
+
   void GLGraphicsContext::SetFaceCullingEnabled(bool enable) noexcept
   {
-    if (enable)
-      glEnable(GL_CULL_FACE);
-    else
-      glDisable(GL_CULL_FACE);
+    EnableFeature(GL_CULL_FACE, enable);
   }
 
   void GLGraphicsContext::SetFaceCulling(CullMode mode) noexcept
@@ -271,10 +282,7 @@ namespace Krys
 
   void GLGraphicsContext::SetDepthTestingEnabled(bool enable) noexcept
   {
-    if (enable)
-      glEnable(GL_DEPTH_TEST);
-    else
-      glDisable(GL_DEPTH_TEST);
+    EnableFeature(GL_DEPTH_TEST, enable);
   }
 
   void GLGraphicsContext::SetDepthRange(float dNear, float dFar) noexcept
@@ -284,10 +292,7 @@ namespace Krys
 
   void GLGraphicsContext::SetDepthClampingEnabled(bool enable) noexcept
   {
-    if (enable)
-      glEnable(GL_DEPTH_CLAMP);
-    else
-      glDisable(GL_DEPTH_CLAMP);
+    EnableFeature(GL_DEPTH_CLAMP, enable);
   }
 
   void GLGraphicsContext::SetDepthTestFunc(DepthTestFunc func) noexcept
@@ -381,10 +386,7 @@ namespace Krys
 
   void GLGraphicsContext::SetStencilTestingEnabled(bool enable) noexcept
   {
-    if (enable)
-      glEnable(GL_STENCIL_TEST);
-    else
-      glDisable(GL_STENCIL_TEST);
+    EnableFeature(GL_STENCIL_TEST, enable);
   }
 
   void GLGraphicsContext::SetStencilBufferWritingEnabled(bool enable) noexcept
@@ -399,10 +401,7 @@ namespace Krys
 
   void GLGraphicsContext::SetBlendingEnabled(bool enable) noexcept
   {
-    if (enable)
-      glEnable(GL_BLEND);
-    else
-      glDisable(GL_BLEND);
+    EnableFeature(GL_BLEND, enable);
   }
 
   void GLGraphicsContext::SetBlendFunc(BlendFactor srcFactor, BlendFactor dstFactor) noexcept

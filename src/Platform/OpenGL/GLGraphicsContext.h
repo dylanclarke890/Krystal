@@ -28,6 +28,8 @@ namespace Krys
     void SetClearColor(Vec4 color) noexcept override;
     void SetViewport(int width, int height) noexcept override;
 
+    void SetMultisamplingEnabled(bool enable) noexcept override;
+
     void SetFaceCullingEnabled(bool enable) noexcept override;
     void SetFaceCulling(CullMode mode) noexcept override;
     void SetWindingOrder(WindingOrder mode) noexcept override;
