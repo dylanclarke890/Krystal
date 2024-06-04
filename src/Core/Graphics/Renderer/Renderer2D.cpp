@@ -96,11 +96,6 @@ namespace Krys
   Ref<IndexBuffer> Renderer2D::ObjectIndexBuffer;
   Ref<UniformBuffer> Renderer2D::ObjectUniformBuffer;
 
-  Ref<Shader> Renderer2D::LightSourceShader;
-  Ref<VertexArray> Renderer2D::LightSourceVertexArray;
-  Ref<VertexBuffer> Renderer2D::LightSourceVertexBuffer;
-  Ref<IndexBuffer> Renderer2D::LightSourceIndexBuffer;
-
   Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Renderer2D::Vertices;
   uint Renderer2D::VertexCount;
 
@@ -140,18 +135,7 @@ namespace Krys
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
 
-    ObjectShader = Context->CreateShader("shaders/renderer-2d.vert", "shaders/renderer-2d.frag");
-
-    // Lighting shader
-    LightSourceVertexBuffer = Context->CreateVertexBuffer(sizeof(LightSourceVertexData) * 24);
-    LightSourceVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float4, "i_ModelPosition"}}));
-    LightSourceIndexBuffer = Context->CreateIndexBuffer(36);
-
-    LightSourceVertexArray = Context->CreateVertexArray();
-    LightSourceVertexArray->AddVertexBuffer(LightSourceVertexBuffer);
-    LightSourceVertexArray->SetIndexBuffer(LightSourceIndexBuffer);
-
-    LightSourceShader = Context->CreateShader("shaders/light-source.vert", "shaders/light-source.frag");
+    ObjectShader = Context->CreateShader("shaders/renderer-2d/v.vert", "shaders/renderer-2d/f.frag");
 
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
@@ -396,113 +380,6 @@ namespace Krys
   }
 
 #pragma endregion Drawing Cubes
-
-#pragma region Lighting
-
-  void Renderer2D::DrawLightSourceCube(Ref<Transform> transform)
-  {
-    const uint vertex_count = 24;
-    const uint index_count = 36;
-
-    Mat4 model = transform->GetModel();
-
-    LightSourceVertexData vertices[vertex_count] = {
-        // Front face
-        {model * CUBE_LOCAL_SPACE_VERTICES[0]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[1]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[2]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[3]},
-
-        // Back face
-        {model * CUBE_LOCAL_SPACE_VERTICES[4]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[5]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[6]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[7]},
-
-        // Left face
-        {model * CUBE_LOCAL_SPACE_VERTICES[8]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[9]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[10]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[11]},
-
-        // Right face
-        {model * CUBE_LOCAL_SPACE_VERTICES[12]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[13]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[14]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[15]},
-
-        // Top face
-        {model * CUBE_LOCAL_SPACE_VERTICES[16]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[17]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[18]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[19]},
-
-        // Bottom face
-        {model * CUBE_LOCAL_SPACE_VERTICES[20]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[21]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[22]},
-        {model * CUBE_LOCAL_SPACE_VERTICES[23]},
-    };
-
-    uint32 indices[index_count] = {
-        // Front face
-        0,
-        1,
-        2,
-        2,
-        3,
-        0,
-
-        // Back face
-        4,
-        5,
-        6,
-        6,
-        7,
-        4,
-
-        // Left face
-        8,
-        9,
-        10,
-        10,
-        11,
-        8,
-
-        // Right face
-        12,
-        13,
-        14,
-        14,
-        15,
-        12,
-
-        // Top face
-        16,
-        17,
-        18,
-        18,
-        19,
-        16,
-
-        // Bottom face
-        20,
-        21,
-        22,
-        22,
-        23,
-        20,
-    };
-
-    LightSourceShader->Bind();
-    LightSourceVertexArray->Bind();
-    LightSourceVertexBuffer->SetData(&vertices[0], vertex_count * sizeof(LightSourceVertexData));
-    LightSourceIndexBuffer->SetData(indices, index_count);
-
-    Context->DrawIndices(index_count, DrawMode::Triangles);
-  }
-
-#pragma endregion Lighting
 
   void Renderer2D::Reset()
   {

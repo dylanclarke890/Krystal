@@ -32,11 +32,6 @@ namespace Krys
   class Renderer2D
   {
   private:
-    struct LightSourceVertexData
-    {
-      Vec4 Position;
-    };
-
     struct TextureData
     {
       const Vec2 *TextureCoords;
@@ -54,11 +49,6 @@ namespace Krys
     static Ref<VertexBuffer> ObjectVertexBuffer;
     static Ref<IndexBuffer> ObjectIndexBuffer;
     static Ref<UniformBuffer> ObjectUniformBuffer;
-
-    static Ref<Shader> LightSourceShader;
-    static Ref<VertexArray> LightSourceVertexArray;
-    static Ref<VertexBuffer> LightSourceVertexBuffer;
-    static Ref<IndexBuffer> LightSourceIndexBuffer;
 
     static Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Vertices;
     static uint VertexCount;
@@ -88,10 +78,6 @@ namespace Krys
     static void DrawCube(Ref<Transform> transform, Ref<Material> material);
     static void DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap);
     static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
-
-    // TODO: temp
-    static Ref<Shader> GetObjectShader() { return ObjectShader; }
-    static void DrawLightSourceCube(Ref<Transform> transform);
 
     static void BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse = nullptr);
     static void NextBatch();
