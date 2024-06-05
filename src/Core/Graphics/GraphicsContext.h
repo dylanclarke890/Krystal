@@ -8,121 +8,17 @@
 #include "Textures/SubTexture2D.h"
 #include "Textures/Texture2D.h"
 #include "Textures/TextureCubemap.h"
+#include "Graphics/Enums.h"
 
 namespace Krys
 {
-  enum class CullMode : ushort
-  {
-    None = 0,
-    Front,
-    Back,
-    FrontAndBack
-  };
-
-  enum class WindingOrder : ushort
-  {
-    None = 0,
-    Clockwise,
-    CounterClockwise
-  };
-
-  enum class DepthTestFunc : ushort
-  {
-    None = 0,
-    Never,
-    Always,
-    Less,
-    EqualOrLess,
-    EqualOrGreater,
-    Greater
-  };
-
-  enum class StencilTestFunc : ushort
-  {
-    None = 0,
-    Never,
-    Always,
-    Less,
-    EqualOrLess,
-    Equal,
-    NotEqual,
-    EqualOrGreater,
-    Greater
-  };
-
-  enum class StencilOperation : ushort
-  {
-    None = 0,
-    Keep,
-    Zero,
-    Replace,
-    Increment,
-    IncrementWithWrap,
-    Decrement,
-    DecrementWithWrap,
-    Invert
-  };
-
-  enum class BlendFactor : ushort
-  {
-    None = 0,
-    Zero,
-    One,
-    SourceColor,
-    OneMinusSourceColor,
-    DestinationColor,
-    OneMinusDestinationColor,
-    SourceAlpha,
-    OneMinusSourceAlpha,
-    DestinationAlpha,
-    OneMinusDestinationAlpha,
-    ConstantColor,
-    OneMinusConstantColor,
-    ConstantAlpha,
-    OneMinusConstantAlpha
-  };
-
-  enum class BlendEquation : ushort
-  {
-    None = 0,
-    Add,
-    Subtract,
-    ReverseSubtract,
-    Min,
-    Max
-  };
-
-  enum class ClearFlags : ushort
-  {
-    None = 0,
-    Color = 1,
-    Depth = 2,
-    Stencil = 4
-  };
-
-  inline ClearFlags operator|(ClearFlags a, ClearFlags b)
-  {
-    return static_cast<ClearFlags>(static_cast<uint>(a) | static_cast<uint>(b));
-  }
-
-  inline bool operator&(ClearFlags a, ClearFlags b)
-  {
-    return (static_cast<uint>(a) & static_cast<uint>(b));
-  }
-
-  enum class DrawMode : ushort
-  {
-    None = 0,
-    Points,
-    Triangles
-  };
 
   class GraphicsContext
   {
   public:
     virtual ~GraphicsContext() = default;
     virtual void Init() noexcept = 0;
-    virtual void Clear(ClearFlags flags = ClearFlags::Color) noexcept = 0;
+    virtual void Clear(RenderBuffer flags = RenderBuffer::Color) noexcept = 0;
 
 #pragma region State Settings
     virtual void SetClearColor(Vec4 &color) noexcept = 0;
@@ -182,7 +78,7 @@ namespace Krys
     virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept = 0;
     virtual Ref<TextureCubemap> CreateTextureCubemap(std::vector<std::string> paths) noexcept = 0;
 
-    virtual Ref<Framebuffer> CreateFramebuffer() noexcept = 0;
+    virtual Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples) noexcept = 0;
 #pragma endregion Graphics Objects
 
 #pragma region Primitive Drawing

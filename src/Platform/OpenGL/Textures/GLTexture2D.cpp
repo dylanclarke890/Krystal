@@ -10,6 +10,7 @@ namespace Krys
     Path = path;
     Width = 0;
     Height = 0;
+    Samples = 1;
     // TODO: is this a safe assumption?
     Type = TextureType::Diffuse;
 
@@ -22,22 +23,32 @@ namespace Krys
     Path = path;
     Width = 0;
     Height = 0;
+    Samples = 1;
 
     Load();
   }
 
-  GLTexture2D::GLTexture2D(int width, int height)
+  GLTexture2D::GLTexture2D(int width, int height, int samples)
   {
     Type = TextureType::Diffuse;
     Path = "N/A";
     Width = width;
     Height = height;
+    Samples = samples;
 
-    glCreateTextures(GL_TEXTURE_2D, 1, &Id);
-    glTextureStorage2D(Id, 1, GL_RGB8, Width, Height);
+    if (IsMultisampled())
+    {
+      glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &Id);
+      glTextureStorage2DMultisample(Id, samples, GL_RGBA8, width, height, GL_TRUE);
+    }
+    else
+    {
+      glCreateTextures(GL_TEXTURE_2D, 1, &Id);
+      glTextureStorage2D(Id, 1, GL_RGBA8, Width, Height);
 
-    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    }
   }
 
   GLTexture2D::~GLTexture2D()
@@ -108,14 +119,22 @@ namespace Krys
       dataFormat = GL_RGB;
     }
 
-    glCreateTextures(GL_TEXTURE_2D, 1, &Id);
-    glTextureStorage2D(Id, 1, internalFormat, Width, Height);
+    if (IsMultisampled())
+    {
+      glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &Id);
+      glTextureStorage2DMultisample(Id, Samples, internalFormat, width, height, GL_TRUE);
+    }
+    else
+    {
+      glCreateTextures(GL_TEXTURE_2D, 1, &Id);
+      glTextureStorage2D(Id, 1, GL_RGB8, Width, Height);
 
-    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTextureParameteri(Id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTextureParameteri(Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
 
     glTextureSubImage2D(Id, 0, 0, 0, Width, Height, dataFormat, GL_UNSIGNED_BYTE, data);
 

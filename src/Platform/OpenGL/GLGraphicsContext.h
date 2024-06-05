@@ -21,7 +21,7 @@ namespace Krys
     ~GLGraphicsContext() override;
 
     void Init() noexcept override;
-    void Clear(ClearFlags flags = ClearFlags::Color) noexcept override;
+    void Clear(RenderBuffer flags = RenderBuffer::Color) noexcept override;
 
 #pragma region State Settings
     void SetClearColor(Vec4 &color) noexcept override;
@@ -83,7 +83,7 @@ namespace Krys
     Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept override;
     Ref<TextureCubemap> CreateTextureCubemap(std::vector<std::string> paths) noexcept override;
 
-    Ref<Framebuffer> CreateFramebuffer() noexcept override;
+    Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples) noexcept override;
 #pragma endregion Graphics Objects
 
 #pragma region Primitive Drawing

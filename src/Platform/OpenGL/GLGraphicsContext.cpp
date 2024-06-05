@@ -187,19 +187,19 @@ namespace Krys
 #endif
   }
 
-  void GLGraphicsContext::Clear(ClearFlags flags) noexcept
+  void GLGraphicsContext::Clear(RenderBuffer flags) noexcept
   {
-    if (flags == ClearFlags::None)
+    if (flags == RenderBuffer::None)
       return;
 
     int glFlags = 0;
-    if (flags & ClearFlags::Color)
+    if (flags & RenderBuffer::Color)
       glFlags |= GL_COLOR_BUFFER_BIT;
 
-    if (flags & ClearFlags::Depth)
+    if (flags & RenderBuffer::Depth)
       glFlags |= GL_DEPTH_BUFFER_BIT;
 
-    if (flags & ClearFlags::Stencil)
+    if (flags & RenderBuffer::Stencil)
       glFlags |= GL_STENCIL_BUFFER_BIT;
 
     KRYS_ASSERT(glFlags != 0, "Invalid flags!", 0);
@@ -529,9 +529,9 @@ namespace Krys
     return CreateRef<SubTexture2D>(texture, coords, cellSize, spriteSize);
   }
 
-  Ref<Framebuffer> GLGraphicsContext::CreateFramebuffer() noexcept
+  Ref<Framebuffer> GLGraphicsContext::CreateFramebuffer(uint32 width, uint32 height, uint32 samples) noexcept
   {
-    return CreateRef<GLFramebuffer>();
+    return CreateRef<GLFramebuffer>(width, height, samples);
   }
 
   Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(std::vector<std::string> paths) noexcept

@@ -8,6 +8,7 @@ namespace Krys
   {
   protected:
     uint Id;
+    uint32 Samples;
     TextureType Type;
     uint Width, Height;
     const char *Path;
@@ -15,24 +16,29 @@ namespace Krys
   public:
     virtual ~Texture2D() = default;
 
-    uint GetId() const noexcept
+    NO_DISCARD uint GetId() const noexcept
     {
       return Id;
     }
 
-    TextureType GetType() const noexcept
+    NO_DISCARD TextureType GetType() const noexcept
     {
       return Type;
     }
 
-    uint32 GetWidth() const noexcept
+    NO_DISCARD uint32 GetWidth() const noexcept
     {
       return Width;
     }
 
-    uint32 GetHeight() const noexcept
+    NO_DISCARD uint32 GetHeight() const noexcept
     {
       return Height;
+    }
+
+    NO_DISCARD bool IsMultisampled() const noexcept
+    {
+      return Samples > 1;
     }
 
     virtual void Bind(uint32 slot = 0) const noexcept = 0;
