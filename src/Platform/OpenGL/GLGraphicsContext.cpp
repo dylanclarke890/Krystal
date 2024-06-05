@@ -21,16 +21,19 @@ namespace Krys
     {
     case GL_DEBUG_SEVERITY_HIGH:
       KRYS_CRITICAL(message);
-      return;
+      KRYS_ASSERT(false, "OpenGL Error (HIGH).", 0);
+      break;
     case GL_DEBUG_SEVERITY_MEDIUM:
       KRYS_ERROR(message);
-      return;
+      KRYS_ASSERT(false, "OpenGL Error (MED).", 0);
+      break;
     case GL_DEBUG_SEVERITY_LOW:
       KRYS_WARN(message);
-      return;
+      KRYS_ASSERT(false, "OpenGL Error (LOW).", 0);
+      break;
     case GL_DEBUG_SEVERITY_NOTIFICATION:
       KRYS_INFO(message);
-      return;
+      break;
     }
 
     KRYS_ASSERT(false, "Unknown severity level!", 0);
