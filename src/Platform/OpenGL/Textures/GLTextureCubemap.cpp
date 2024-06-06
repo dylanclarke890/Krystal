@@ -4,7 +4,7 @@
 
 namespace Krys
 {
-  GLTextureCubemap::GLTextureCubemap(std::vector<std::string> faces)
+  GLTextureCubemap::GLTextureCubemap(std::vector<string> faces)
   {
     KRYS_ASSERT(faces.size() == 6, "Cube map must have exactly 6 textures", 0);
 

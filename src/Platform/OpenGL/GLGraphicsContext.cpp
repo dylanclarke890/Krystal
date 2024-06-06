@@ -503,7 +503,7 @@ namespace Krys
     return CreateRef<GLUniformBuffer>(binding, layout);
   }
 
-  Ref<Shader> GLGraphicsContext::CreateShader(const char *vertexFilepath, const char *fragmentFilepath)
+  Ref<Shader> GLGraphicsContext::CreateShader(const string &vertexFilepath, const string &fragmentFilepath)
   {
     auto shader = CreateRef<GLShader>();
     shader->Load(vertexFilepath, fragmentFilepath);
@@ -512,7 +512,7 @@ namespace Krys
     return shader;
   }
 
-  Ref<Shader> GLGraphicsContext::CreateShader(const char *vertexFilepath, const char *fragmentFilepath, const char *geoFilepath)
+  Ref<Shader> GLGraphicsContext::CreateShader(const string &vertexFilepath, const string &fragmentFilepath, const string &geoFilepath)
   {
     auto shader = CreateRef<GLShader>();
     shader->Load(vertexFilepath, fragmentFilepath);
@@ -522,7 +522,7 @@ namespace Krys
     return shader;
   }
 
-  Ref<Texture2D> GLGraphicsContext::CreateTexture2D(const char *filepath) noexcept
+  Ref<Texture2D> GLGraphicsContext::CreateTexture2D(const string &filepath) noexcept
   {
     return CreateRef<GLTexture2D>(filepath);
   }
@@ -537,7 +537,7 @@ namespace Krys
     return CreateRef<GLFramebuffer>(width, height, samples);
   }
 
-  Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(std::vector<std::string> paths) noexcept
+  Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(std::vector<string> paths) noexcept
   {
     return CreateRef<GLTextureCubemap>(paths);
   }

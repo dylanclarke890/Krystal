@@ -11,7 +11,7 @@ namespace Krys
     uint32 Samples;
     TextureType Type;
     uint Width, Height;
-    const char *Path;
+    string Path;
 
   public:
     virtual ~Texture2D() = default;

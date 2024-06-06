@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Types.h"
 #include "Misc/PlatformDetection.h"
 
 // TODO: fix defines
@@ -9,33 +10,6 @@
 #define KRYS_ENABLE_DEBUG_BREAK 1
 #define KRYS_ENABLE_PERFORMANCE_CHECKS 1
 // -------- DEFINES --------
-
-// --------- TYPES ----------
-#include <stdint.h>
-#include <string>
-
-namespace Krys
-{
-  typedef int8_t int8;
-  typedef int16_t int16;
-  typedef int32_t int32;
-  typedef int64_t int64;
-
-  typedef unsigned short ushort;
-  typedef unsigned int uint;
-  typedef uint8_t uint8;
-  typedef uint16_t uint16;
-  typedef uint32_t uint32;
-  typedef uint64_t uint64;
-
-  typedef std::string string;
-}
-
-typedef float float32;
-typedef double float64;
-
-typedef unsigned char uchar;
-// --------- TYPES ----------
 
 // ------ DEBUG BREAK -------
 #ifdef KRYS_ENABLE_DEBUG_BREAK
@@ -110,26 +84,7 @@ typedef unsigned char uchar;
 // -------- ASSERTS ---------
 
 // --- MEMORY MANAGEMENT ----
-#include <memory>
-namespace Krys
-{
-  template <typename T>
-  using Unique = std::unique_ptr<T>;
 
-  template <typename T, typename... Args>
-  constexpr Unique<T> CreateUnique(Args &&...args)
-  {
-    return std::make_unique<T>(std::forward<Args>(args)...);
-  }
-
-  template <typename T>
-  using Ref = std::shared_ptr<T>;
-  template <typename T, typename... Args>
-  constexpr Ref<T> CreateRef(Args &&...args)
-  {
-    return std::make_shared<T>(std::forward<Args>(args)...);
-  }
-}
 // --- MEMORY MANAGEMENT ----
 
 // ------- MISC/UTILS -------

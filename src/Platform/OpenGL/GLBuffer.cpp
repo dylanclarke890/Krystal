@@ -116,7 +116,7 @@ namespace Krys
     glNamedBufferSubData(Id, offset, size, data);
   }
 
-  void GLUniformBuffer::SetData(const std::string &name, const void *data)
+  void GLUniformBuffer::SetData(const string &name, const void *data)
   {
     for (auto element : Layout.GetElements())
     {

@@ -53,20 +53,20 @@ namespace Krys
         {
         case TextureType::Diffuse:
         {
-          std::string uniformName = "u_DiffuseTextures[" + std::to_string(diffuseSlot++) + "]";
-          shader->TrySetUniform(uniformName.c_str(), textureSlot);
+          string uniformName = "u_DiffuseTextures[" + std::to_string(diffuseSlot++) + "]";
+          shader->TrySetUniform(uniformName, textureSlot);
           break;
         }
         case TextureType::Specular:
         {
-          std::string uniformName = "u_SpecularTextures[" + std::to_string(specularSlot++) + "]";
-          shader->TrySetUniform(uniformName.c_str(), textureSlot);
+          string uniformName = "u_SpecularTextures[" + std::to_string(specularSlot++) + "]";
+          shader->TrySetUniform(uniformName, textureSlot);
           break;
         }
         case TextureType::Emission:
         {
-          std::string uniformName = "u_EmissionTextures[" + std::to_string(emissionSlot++) + "]";
-          shader->TrySetUniform(uniformName.c_str(), textureSlot);
+          string uniformName = "u_EmissionTextures[" + std::to_string(emissionSlot++) + "]";
+          shader->TrySetUniform(uniformName, textureSlot);
           break;
         }
         default:

@@ -17,7 +17,7 @@
 
 namespace Krys
 {
-  Application::Application(const char *name, int width, int height, float targetFps)
+  Application::Application(const string &name, int width, int height, float targetFps)
       : Window(Window::Create(name, width, height)), Context(Window->GetGraphicsContext()),
         IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps)
   {

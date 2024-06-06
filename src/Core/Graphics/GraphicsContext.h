@@ -71,12 +71,12 @@ namespace Krys
     virtual Ref<VertexArray> CreateVertexArray() noexcept = 0;
 
     virtual Ref<Shader> CreateShader() = 0;
-    virtual Ref<Shader> CreateShader(const char *vertexFilepath, const char *fragmentFilepath) = 0;
-    virtual Ref<Shader> CreateShader(const char *vertexFilepath, const char *fragmentFilepath, const char *geoFilepath) = 0;
+    virtual Ref<Shader> CreateShader(const string &vertexFilepath, const string &fragmentFilepath) = 0;
+    virtual Ref<Shader> CreateShader(const string &vertexFilepath, const string &fragmentFilepath, const string &geoFilepath) = 0;
 
-    virtual Ref<Texture2D> CreateTexture2D(const char *filepath) noexcept = 0;
+    virtual Ref<Texture2D> CreateTexture2D(const string &filepath) noexcept = 0;
     virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept = 0;
-    virtual Ref<TextureCubemap> CreateTextureCubemap(std::vector<std::string> paths) noexcept = 0;
+    virtual Ref<TextureCubemap> CreateTextureCubemap(std::vector<string> paths) noexcept = 0;
 
     virtual Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples) noexcept = 0;
 #pragma endregion Graphics Objects

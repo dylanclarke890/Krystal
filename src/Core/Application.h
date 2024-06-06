@@ -23,7 +23,7 @@ namespace Krys
     Ref<GraphicsContext> Context;
 
   public:
-    Application(const char *name, int width, int height, float targetFps);
+    Application(const string &name, int width, int height, float targetFps);
     virtual ~Application() = default;
 
     virtual void Startup();

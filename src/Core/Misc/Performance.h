@@ -21,11 +21,11 @@ namespace Krys
   class PerformanceTimer
   {
   private:
-    const char *name;
+    string name;
     int64 startCounter;
 
   public:
-    PerformanceTimer(const char *name)
+    PerformanceTimer(const string &name)
         : name(name), startCounter(Performance::GetTicks()) {}
     ~PerformanceTimer()
     {
@@ -38,7 +38,7 @@ namespace Krys
 
       float64 ms = (((1000.0f * (float64)counterElapsed) / (float64)tickFrequency));
 
-      KRYS_INFO("%s took %.02fms.", name, ms);
+      KRYS_INFO("%s took %.02fms.", name.c_str(), ms);
     }
   };
   #endif

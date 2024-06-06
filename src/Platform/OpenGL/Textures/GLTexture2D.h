@@ -8,8 +8,8 @@ namespace Krys
   class GLTexture2D : public Texture2D
   {
   public:
-    GLTexture2D(const char *filepath);
-    GLTexture2D(TextureType type, const char *filepath);
+    GLTexture2D(const string &filepath);
+    GLTexture2D(TextureType type, const string &filepath);
     GLTexture2D(int width, int height, int samples);
     ~GLTexture2D();
 

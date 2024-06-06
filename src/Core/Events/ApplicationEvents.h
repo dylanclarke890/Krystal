@@ -14,8 +14,7 @@ namespace Krys
   class ResizeEvent : public Event
   {
   public:
-    int Width;
-    int Height;
+    int Width, Height;
 
     EVENT_CLASS_TYPE(Resize)
     EVENT_CLASS_CATEGORY(EventCategoryApp)

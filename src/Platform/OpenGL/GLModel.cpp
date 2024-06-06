@@ -10,7 +10,7 @@ namespace Krys
     return CreateRef<GLMesh>(vertices, indices, textures);
   }
 
-  Ref<Texture2D> Model::CreateTexture(TextureType type, const char *path)
+  Ref<Texture2D> Model::CreateTexture(TextureType type, const string &path)
   {
     return CreateRef<GLTexture2D>(type, path);
   }

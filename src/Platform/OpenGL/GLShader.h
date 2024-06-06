@@ -21,30 +21,30 @@ namespace Krys
     void Bind() override;
     void Unbind() override;
 
-    void Load(ShaderType type, const char *filepath) override;
-    void Load(const char *vertexFilepath, const char *fragmentFilepath) override;
-    void Add(ShaderType type, const char *source) override;
+    void Load(ShaderType type, const string &filepath) override;
+    void Load(const string &vertexFilepath, const string &fragmentFilepath) override;
+    void Add(ShaderType type, const string &source) override;
 
     void Link() override;
 
-    void SetUniform(const char *name, int value) override;
-    void TrySetUniform(const char *name, int value) override;
-    void SetUniform(const char *name, float value) override;
-    void TrySetUniform(const char *name, float value) override;
-    void SetUniform(const char *name, int *values, uint32_t count) override;
-    void TrySetUniform(const char *name, int *values, uint32_t count) override;
-    void SetUniform(const char *name, float *values, uint32_t count) override;
-    void TrySetUniform(const char *name, float *values, uint32_t count) override;
-    void SetUniform(const char *name, const Vec2 &value) override;
-    void TrySetUniform(const char *name, const Vec2 &value) override;
-    void SetUniform(const char *name, const Vec3 &value) override;
-    void TrySetUniform(const char *name, const Vec3 &value) override;
-    void SetUniform(const char *name, const Vec4 &value) override;
-    void TrySetUniform(const char *name, const Vec4 &value) override;
-    void SetUniform(const char *name, const Mat3 &matrix) override;
-    void TrySetUniform(const char *name, const Mat3 &matrix) override;
-    void SetUniform(const char *name, const Mat4 &matrix) override;
-    void TrySetUniform(const char *name, const Mat4 &matrix) override;
+    void SetUniform(const string &name, int value) override;
+    void TrySetUniform(const string &name, int value) override;
+    void SetUniform(const string &name, float value) override;
+    void TrySetUniform(const string &name, float value) override;
+    void SetUniform(const string &name, int *values, uint32_t count) override;
+    void TrySetUniform(const string &name, int *values, uint32_t count) override;
+    void SetUniform(const string &name, float *values, uint32_t count) override;
+    void TrySetUniform(const string &name, float *values, uint32_t count) override;
+    void SetUniform(const string &name, const Vec2 &value) override;
+    void TrySetUniform(const string &name, const Vec2 &value) override;
+    void SetUniform(const string &name, const Vec3 &value) override;
+    void TrySetUniform(const string &name, const Vec3 &value) override;
+    void SetUniform(const string &name, const Vec4 &value) override;
+    void TrySetUniform(const string &name, const Vec4 &value) override;
+    void SetUniform(const string &name, const Mat3 &matrix) override;
+    void TrySetUniform(const string &name, const Mat3 &matrix) override;
+    void SetUniform(const string &name, const Mat4 &matrix) override;
+    void TrySetUniform(const string &name, const Mat4 &matrix) override;
 
   private:
     static GLenum ToGLShaderType(ShaderType type);

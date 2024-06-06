@@ -93,7 +93,7 @@ namespace Krys
 
   struct VertexBufferElement
   {
-    const char *Name;
+    string Name;
     ShaderDataType Type;
     bool Normalized;
     uint32 Size;
@@ -101,7 +101,7 @@ namespace Krys
     size_t Offset;
 
     VertexBufferElement() = default;
-    VertexBufferElement(ShaderDataType type, const char *name, bool normalized = false)
+    VertexBufferElement(ShaderDataType type, const string &name, bool normalized = false)
         : Name(name), Type(type), Normalized(normalized),
           Size(GetSizeOfShaderDataType(type)), Stride(0), Offset(0)
     {
@@ -166,7 +166,7 @@ namespace Krys
 
   struct UniformBufferElement
   {
-    std::string Name;
+    string Name;
     UniformDataType Type;
     // Only used by array types
     uint32 Count;
@@ -174,7 +174,7 @@ namespace Krys
     uint32 AlignedOffset;
     uint32 LayoutSize;
 
-    UniformBufferElement(UniformDataType type, const std::string &name, uint32 count = 1)
+    UniformBufferElement(UniformDataType type, const string &name, uint32 count = 1)
         : Name(name), Type(type), Count(count), BaseAlignment(0), AlignedOffset(0), LayoutSize(0) {}
   };
 
@@ -273,7 +273,7 @@ namespace Krys
 
   struct InstanceArrayElement
   {
-    const char *Name;
+    string Name;
     ShaderDataType Type;
     uint32 AttributeUsageFrequency;
     bool Normalized;
@@ -282,7 +282,7 @@ namespace Krys
     size_t Offset;
 
     InstanceArrayElement() = default;
-    InstanceArrayElement(ShaderDataType type, const char *name, uint32 attributeUsageFrequency = UPDATE_ATTRIBUTE_PER_VERTEX, bool normalized = false)
+    InstanceArrayElement(ShaderDataType type, const string &name, uint32 attributeUsageFrequency = UPDATE_ATTRIBUTE_PER_VERTEX, bool normalized = false)
         : Name(name), Type(type), AttributeUsageFrequency(attributeUsageFrequency), Normalized(normalized),
           Size(GetSizeOfShaderDataType(type)), Stride(0), Offset(0)
     {

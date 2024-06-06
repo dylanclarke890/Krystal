@@ -9,7 +9,7 @@ namespace Krys
   std::ofstream Logger::logFile("log.txt");
   LogLevel Logger::logLevel = LogLevel::Info;
 
-  void Logger::Log(const char *format, ...)
+  void Logger::Log(const char* format, ...)
   {
     char buffer[1024];
     va_list args;
@@ -51,21 +51,21 @@ namespace Krys
     return logLevel;
   }
 
-  std::string Logger::FormatLogMessage(const char *message)
+  string Logger::FormatLogMessage(const string &message)
   {
     std::ostringstream ss;
     ss << ToString(logLevel) << ": " << message << "\n";
     return ss.str();
   }
 
-  void Logger::Output(std::string message)
+  void Logger::Output(const string &message)
   {
     OutputDebugStringA(message.c_str());
     if (logFile.is_open())
       logFile << message;
   }
 
-  const char *Logger::ToString(LogLevel level)
+  string Logger::ToString(LogLevel level)
   {
     switch (level)
     {

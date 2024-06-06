@@ -67,19 +67,19 @@ namespace Krys
     DestroyWindow(fakeWND);
   }
 
-  Ref<Window> Window::Create(const char *name, int width, int height)
+  Ref<Window> Window::Create(const string &name, int width, int height)
   {
     return CreateRef<WindowsWindow>(name, width, height, HINST_THISCOMPONENT);
   }
 
-  WindowsWindow::WindowsWindow(const char *name, int width, int height, HINSTANCE instance)
+  WindowsWindow::WindowsWindow(const string &name, int width, int height, HINSTANCE instance)
       : Window(name, width, height), dc(0)
   {
     WNDCLASSA windowClass = {};
     windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
     windowClass.lpfnWndProc = &WindowsWindow::StaticWindowProc;
     windowClass.hInstance = instance;
-    windowClass.lpszClassName = name;
+    windowClass.lpszClassName = name.c_str();
     windowClass.cbWndExtra = sizeof(WindowsWindow *);
 
     if (!RegisterClassA(&windowClass))

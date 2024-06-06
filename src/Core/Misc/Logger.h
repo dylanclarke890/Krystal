@@ -3,8 +3,9 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <string>
 #include <mutex>
+
+#include "Types.h"
 
 namespace Krys
 {
@@ -24,8 +25,8 @@ namespace Krys
     Logger(Logger &) = delete;
     ~Logger() = delete;
 
-    static void Log(const char *format, ...);
-    static void Log(LogLevel level, const char *format, ...);
+    static void Log(const char *formatformat, ...);
+    static void Log(LogLevel level, const char *formatformat, ...);
     static void SetLogLevel(LogLevel level);
     static LogLevel GetLogLevel();
 
@@ -34,9 +35,9 @@ namespace Krys
     static std::ofstream logFile;
     static LogLevel logLevel;
 
-    static std::string FormatLogMessage(const char *message);
-    static void Output(std::string message);
+    static string FormatLogMessage(const string &message);
+    static void Output(const string &message);
 
-    static const char *ToString(LogLevel level);
+    static string ToString(LogLevel level);
   };
 }

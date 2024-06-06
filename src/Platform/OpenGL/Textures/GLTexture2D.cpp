@@ -5,7 +5,7 @@
 
 namespace Krys
 {
-  GLTexture2D::GLTexture2D(const char *path)
+  GLTexture2D::GLTexture2D(const string &path)
   {
     Path = path;
     Width = 0;
@@ -17,7 +17,7 @@ namespace Krys
     Load();
   }
 
-  GLTexture2D::GLTexture2D(TextureType type, const char *path)
+  GLTexture2D::GLTexture2D(TextureType type, const string &path)
   {
     Type = type;
     Path = path;
@@ -103,7 +103,7 @@ namespace Krys
   {
     int width, height, channels;
     stbi_set_flip_vertically_on_load(true);
-    stbi_uc *data = stbi_load(Path, &width, &height, &channels, 0);
+    stbi_uc *data = stbi_load(Path.c_str(), &width, &height, &channels, 0);
 
     KRYS_ASSERT(data, "Failed to load image!", 0);
     KRYS_ASSERT(channels == 3 || channels == 4, "Unsupported number of color channels.", 0);

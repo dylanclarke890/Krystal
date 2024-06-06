@@ -12,7 +12,7 @@ namespace Krys
   class Window
   {
   private:
-    const char *Name;
+    string Name;
 
   protected:
     EventCallbackFn eventCallback;
@@ -21,11 +21,11 @@ namespace Krys
 
   public:
     Window() = delete;
-    Window(const char *name, int width, int height)
+    Window(const string &name, int width, int height)
         : Name(name), Width(width), Height(height), ctx(nullptr) {}
     virtual ~Window() = default;
 
-    const char *GetName() const { return Name; }
+    const string &GetName() const { return Name; }
     int GetWidth() const { return Width; }
     int GetHeight() const { return Height; }
     Ref<GraphicsContext> GetGraphicsContext() const { return ctx; }
@@ -40,6 +40,6 @@ namespace Krys
       eventCallback = callback;
     }
 
-    static Ref<Window> Create(const char *name, int width, int height);
+    static Ref<Window> Create(const string &name, int width, int height);
   };
 }

@@ -59,7 +59,7 @@ namespace Krys
     ~GLUniformBuffer() override;
 
     void SetData(const void *data, uint32 size, uint32 offset) override;
-    void SetData(const std::string &name, const void *data) override;
+    void SetData(const string &name, const void *data) override;
 
     const UniformBufferLayout &GetLayout() const override;
     void SetLayout(const UniformBufferLayout &layout) override;

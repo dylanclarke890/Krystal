@@ -76,12 +76,12 @@ namespace Krys
     Ref<VertexArray> CreateVertexArray() noexcept override;
 
     Ref<Shader> CreateShader() noexcept override;
-    Ref<Shader> CreateShader(const char *vertexFilepath, const char *fragmentFilepath) override;
-    Ref<Shader> CreateShader(const char *vertexFilepath, const char *fragmentFilepath, const char *geoFilepath) override;
+    Ref<Shader> CreateShader(const string &vertexFilepath, const string &fragmentFilepath) override;
+    Ref<Shader> CreateShader(const string &vertexFilepath, const string &fragmentFilepath, const string &geoFilepath) override;
 
-    Ref<Texture2D> CreateTexture2D(const char *filepath) noexcept override;
+    Ref<Texture2D> CreateTexture2D(const string &filepath) noexcept override;
     Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept override;
-    Ref<TextureCubemap> CreateTextureCubemap(std::vector<std::string> paths) noexcept override;
+    Ref<TextureCubemap> CreateTextureCubemap(std::vector<string> paths) noexcept override;
 
     Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples) noexcept override;
 #pragma endregion Graphics Objects

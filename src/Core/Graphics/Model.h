@@ -14,16 +14,16 @@
 
 namespace Krys
 {
-  static std::unordered_map<std::string, Ref<Texture2D>> LoadedTextures;
+  static std::unordered_map<string, Ref<Texture2D>> LoadedTextures;
 
   class Model
   {
   private:
     std::vector<Ref<Mesh>> Meshes;
-    std::string directory;
+    string directory;
 
   public:
-    Model(std::string path)
+    Model(const string &path)
     {
       Load(path);
     }
@@ -35,7 +35,7 @@ namespace Krys
     }
 
   private:
-    void Load(std::string path)
+    void Load(const string &path)
     {
       KRYS_PERFORMANCE_TIMER("Loading Model");
 
@@ -120,7 +120,7 @@ namespace Krys
         // TODO: this is currently relative to the directory
         aiString path;
         material->GetTexture(assimpType, i, &path);
-        std::string filepath = directory + "/" + path.C_Str();
+        string filepath = directory + "/" + path.C_Str();
 
         if (LoadedTextures.find(filepath) == LoadedTextures.end())
         {
@@ -138,6 +138,6 @@ namespace Krys
     // TODO: forward args
     // TODO: move to context somehow
     static Ref<Mesh> CreateMesh(std::vector<Vertex> &vertices, std::vector<uint32> &indices, std::vector<Ref<Texture2D>> &textures);
-    static Ref<Texture2D> CreateTexture(TextureType type, const char *path);
+    static Ref<Texture2D> CreateTexture(TextureType type, const string &path);
   };
 }
