@@ -12,6 +12,7 @@
 
 // --------- TYPES ----------
 #include <stdint.h>
+#include <string>
 
 namespace Krys
 {
@@ -26,6 +27,8 @@ namespace Krys
   typedef uint16_t uint16;
   typedef uint32_t uint32;
   typedef uint64_t uint64;
+
+  typedef std::string string;
 }
 
 typedef float float32;
@@ -112,6 +115,7 @@ namespace Krys
 {
   template <typename T>
   using Unique = std::unique_ptr<T>;
+
   template <typename T, typename... Args>
   constexpr Unique<T> CreateUnique(Args &&...args)
   {

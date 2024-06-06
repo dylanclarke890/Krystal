@@ -29,7 +29,7 @@ namespace Krys
     float Shininess;
   };
 
-  class Renderer2D
+  class Renderer
   {
   private:
     struct TextureData

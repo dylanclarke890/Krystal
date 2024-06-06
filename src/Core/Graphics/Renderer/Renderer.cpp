@@ -1,7 +1,7 @@
 #include <execution>
 #include <algorithm>
 
-#include "Renderer2D.h"
+#include "Renderer.h"
 #include "Misc/Time.h"
 
 namespace Krys
@@ -88,31 +88,31 @@ namespace Krys
 
 #pragma region Static Member Initialisation
 
-  Ref<GraphicsContext> Renderer2D::Context;
+  Ref<GraphicsContext> Renderer::Context;
 
-  Ref<Shader> Renderer2D::ObjectShader;
-  Ref<VertexArray> Renderer2D::ObjectVertexArray;
-  Ref<VertexBuffer> Renderer2D::ObjectVertexBuffer;
-  Ref<IndexBuffer> Renderer2D::ObjectIndexBuffer;
-  Ref<UniformBuffer> Renderer2D::ObjectUniformBuffer;
+  Ref<Shader> Renderer::ObjectShader;
+  Ref<VertexArray> Renderer::ObjectVertexArray;
+  Ref<VertexBuffer> Renderer::ObjectVertexBuffer;
+  Ref<IndexBuffer> Renderer::ObjectIndexBuffer;
+  Ref<UniformBuffer> Renderer::ObjectUniformBuffer;
 
-  Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Renderer2D::Vertices;
-  uint Renderer2D::VertexCount;
+  Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Renderer::Vertices;
+  uint Renderer::VertexCount;
 
-  Unique<std::array<uint32, REN2D_MAX_INDICES>> Renderer2D::Indices;
-  uint Renderer2D::IndexCount;
+  Unique<std::array<uint32, REN2D_MAX_INDICES>> Renderer::Indices;
+  uint Renderer::IndexCount;
 
-  Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> Renderer2D::TextureSlots;
-  int Renderer2D::TextureSlotIndex;
+  Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> Renderer::TextureSlots;
+  int Renderer::TextureSlotIndex;
 
-  Ref<Shader> Renderer2D::ShaderInUse;
-  Vec4 Renderer2D::SceneCameraPosition;
+  Ref<Shader> Renderer::ShaderInUse;
+  Vec4 Renderer::SceneCameraPosition;
 
 #pragma endregion Static Member Initialisation
 
 #pragma region Lifecycle Methods
 
-  void Renderer2D::Init(Ref<GraphicsContext> ctx)
+  void Renderer::Init(Ref<GraphicsContext> ctx)
   {
     Context = ctx;
 
@@ -149,7 +149,7 @@ namespace Krys
     Reset();
   }
 
-  void Renderer2D::Shutdown()
+  void Renderer::Shutdown()
   {
     // Everything is static and will get cleaned up when the program terminates, nothing needed for now.
   }
@@ -158,13 +158,13 @@ namespace Krys
 
 #pragma region Drawing Triangles
 
-  void Renderer2D::DrawTriangle(Ref<Transform> transform, Vec4 &color)
+  void Renderer::DrawTriangle(Ref<Transform> transform, Vec4 &color)
   {
     TextureData textureData{TRIANGLE_DEFAULT_TEXTURE_COORDS, color};
     DrawTriangle(transform, textureData);
   }
 
-  void Renderer2D::DrawTriangle(Ref<Transform> transform, Ref<Material> material)
+  void Renderer::DrawTriangle(Ref<Transform> transform, Ref<Material> material)
   {
     TextureData textureData{TRIANGLE_DEFAULT_TEXTURE_COORDS, material->Tint};
     textureData.Texture = GetTextureSlotIndex(material->Diffuse);
@@ -174,14 +174,14 @@ namespace Krys
     DrawTriangle(transform, textureData);
   }
 
-  void Renderer2D::DrawTriangle(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
+  void Renderer::DrawTriangle(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
   {
     TextureData textureData{subTexture->GetTextureCoords(), tint};
     textureData.Texture = GetTextureSlotIndex(subTexture->GetTexture());
     DrawTriangle(transform, textureData);
   }
 
-  void Renderer2D::DrawTriangle(Ref<Transform> transform, TextureData &textureData)
+  void Renderer::DrawTriangle(Ref<Transform> transform, TextureData &textureData)
   {
     const uint vertex_count = 3;
     const uint index_count = 3;
@@ -204,13 +204,13 @@ namespace Krys
 
 #pragma region Drawing Quads
 
-  void Renderer2D::DrawQuad(Ref<Transform> transform, Vec4 &color)
+  void Renderer::DrawQuad(Ref<Transform> transform, Vec4 &color)
   {
     TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, color};
     DrawQuad(transform, textureData);
   }
 
-  void Renderer2D::DrawQuad(Ref<Transform> transform, Ref<Material> material)
+  void Renderer::DrawQuad(Ref<Transform> transform, Ref<Material> material)
   {
     TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, material->Tint};
     textureData.Texture = GetTextureSlotIndex(material->Diffuse);
@@ -220,14 +220,14 @@ namespace Krys
     DrawQuad(transform, textureData);
   }
 
-  void Renderer2D::DrawQuad(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
+  void Renderer::DrawQuad(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
   {
     TextureData textureData{subTexture->GetTextureCoords(), tint};
     textureData.Texture = GetTextureSlotIndex(subTexture->GetTexture());
     DrawQuad(transform, textureData);
   }
 
-  void Renderer2D::DrawQuad(Ref<Transform> transform, TextureData &textureData)
+  void Renderer::DrawQuad(Ref<Transform> transform, TextureData &textureData)
   {
     const uint vertex_count = 4;
     const uint index_count = 6;
@@ -251,13 +251,13 @@ namespace Krys
 
 #pragma region Drawing Cubes
 
-  void Renderer2D::DrawCube(Ref<Transform> transform, Vec4 &color)
+  void Renderer::DrawCube(Ref<Transform> transform, Vec4 &color)
   {
     TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, color};
     DrawCube(transform, textureData);
   }
 
-  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<Material> material)
+  void Renderer::DrawCube(Ref<Transform> transform, Ref<Material> material)
   {
     TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, material->Tint};
     textureData.Texture = GetTextureSlotIndex(material->Diffuse);
@@ -267,20 +267,20 @@ namespace Krys
     DrawCube(transform, textureData);
   }
 
-  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap)
+  void Renderer::DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap)
   {
     TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, REN2D_DEFAULT_COLOR};
     DrawCube(transform, textureData);
   }
 
-  void Renderer2D::DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
+  void Renderer::DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint)
   {
     TextureData textureData{subTexture->GetTextureCoords(), tint};
     textureData.Texture = GetTextureSlotIndex(subTexture->GetTexture());
     DrawCube(transform, textureData);
   }
 
-  void Renderer2D::DrawCube(Ref<Transform> transform, TextureData &textureData)
+  void Renderer::DrawCube(Ref<Transform> transform, TextureData &textureData)
   {
     const uint vertex_count = 24;
     const uint index_count = 36;
@@ -381,14 +381,14 @@ namespace Krys
 
 #pragma endregion Drawing Cubes
 
-  void Renderer2D::Reset()
+  void Renderer::Reset()
   {
     VertexCount = 0;
     IndexCount = 0;
     TextureSlotIndex = 0;
   }
 
-  void Renderer2D::BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse)
+  void Renderer::BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse)
   {
     ObjectUniformBuffer->SetData("u_ViewProjection", &camera->GetViewProjection());
     ObjectUniformBuffer->SetData("u_CameraPosition", &camera->GetPosition());
@@ -398,13 +398,13 @@ namespace Krys
     Reset();
   }
 
-  void Renderer2D::NextBatch()
+  void Renderer::NextBatch()
   {
     Flush();
     Reset();
   }
 
-  void Renderer2D::Flush()
+  void Renderer::Flush()
   {
     if (VertexCount == 0)
       return;
@@ -422,12 +422,12 @@ namespace Krys
     Context->DrawIndices(IndexCount, DrawMode::Triangles);
   }
 
-  void Renderer2D::EndScene()
+  void Renderer::EndScene()
   {
     Flush();
   }
 
-  void Renderer2D::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
+  void Renderer::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
   {
     if (VertexCount + vertexCount >= REN2D_MAX_VERTICES || IndexCount + indexCount >= REN2D_MAX_INDICES)
     {
@@ -443,7 +443,7 @@ namespace Krys
       indexBuffer[IndexCount++] = indices[i];
   }
 
-  int Renderer2D::GetTextureSlotIndex(Ref<Texture2D> texture)
+  int Renderer::GetTextureSlotIndex(Ref<Texture2D> texture)
   {
     int textureSlotIndex = -1;
 
