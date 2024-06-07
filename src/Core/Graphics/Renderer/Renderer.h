@@ -7,6 +7,7 @@
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Transform.h"
 #include "Graphics/Mesh.h"
+#include "Graphics/Lighting/LightManager.h"
 
 namespace Krys
 {
@@ -44,6 +45,7 @@ namespace Krys
 
     static Ref<GraphicsContext> Context;
 
+    static Ref<Shader> PhongShader;
     static Ref<Shader> ObjectShader;
     static Ref<VertexArray> ObjectVertexArray;
     static Ref<VertexBuffer> ObjectVertexBuffer;
@@ -63,6 +65,8 @@ namespace Krys
     static Vec4 SceneCameraPosition;
 
   public:
+    static LightManager Lights;
+
     static void Init(Ref<GraphicsContext> ctx);
     static void Shutdown();
 

@@ -97,7 +97,7 @@ namespace Krys
 
     SetLayout(layout);
     auto &last = layout.GetElements().back();
-    glNamedBufferData(Id, last.AlignedOffset + last.LayoutSize, nullptr, GL_DYNAMIC_DRAW);
+    glNamedBufferData(Id, (last.AlignedOffset + last.LayoutSize) * layout.GetCount(), nullptr, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_UNIFORM_BUFFER, binding, Id);
   }
 
@@ -116,6 +116,7 @@ namespace Krys
     glNamedBufferSubData(Id, offset, size, data);
   }
 
+  // TODO: this is fine if we only have one set of elements in the buffer, not really if we have multiple though.
   void GLUniformBuffer::SetData(const string &name, const void *data)
   {
     for (auto element : Layout.GetElements())

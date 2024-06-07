@@ -90,6 +90,7 @@ namespace Krys
 
   Ref<GraphicsContext> Renderer::Context;
 
+  Ref<Shader> Renderer::PhongShader;
   Ref<Shader> Renderer::ObjectShader;
   Ref<VertexArray> Renderer::ObjectVertexArray;
   Ref<VertexBuffer> Renderer::ObjectVertexBuffer;
@@ -107,6 +108,8 @@ namespace Krys
 
   Ref<Shader> Renderer::ShaderInUse;
   Vec4 Renderer::SceneCameraPosition;
+
+  LightManager Renderer::Lights;
 
 #pragma endregion Static Member Initialisation
 
@@ -135,6 +138,7 @@ namespace Krys
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
 
+    PhongShader = Context->CreateShader("shaders/lighting/phong.vert", "shaders/lighting/phong.frag");
     ObjectShader = Context->CreateShader("shaders/renderer-2d/v.vert", "shaders/renderer-2d/f.frag");
 
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
@@ -144,7 +148,11 @@ namespace Krys
     int samplers[REN2D_MAX_TEXTURE_SLOTS]{};
     for (uint32_t i = 0; i < REN2D_MAX_TEXTURE_SLOTS; i++)
       samplers[i] = i;
+
     ObjectShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
+    PhongShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
+
+    Lights.Init(Context);
 
     Reset();
   }
@@ -393,7 +401,7 @@ namespace Krys
     ObjectUniformBuffer->SetData("u_ViewProjection", &camera->GetViewProjection());
     ObjectUniformBuffer->SetData("u_CameraPosition", &camera->GetPosition());
 
-    ShaderInUse = shaderToUse ? shaderToUse : ObjectShader;
+    ShaderInUse = shaderToUse ? shaderToUse : PhongShader;
     SceneCameraPosition = Vec4(camera->GetPosition(), 1.0f);
     Reset();
   }

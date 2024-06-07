@@ -182,16 +182,18 @@ namespace Krys
   {
   private:
     std::vector<UniformBufferElement> Elements;
+    uint32 Count;
 
   public:
     UniformBufferLayout() = default;
 
-    UniformBufferLayout(std::initializer_list<UniformBufferElement> elements)
-        : Elements(elements)
+    UniformBufferLayout(std::initializer_list<UniformBufferElement> layout, uint32 count = 1)
+        : Elements(layout), Count(count)
     {
       CalculateOffsetsAndSize();
     }
 
+    uint32 GetCount() const noexcept { return Count; }
     const std::vector<UniformBufferElement> &GetElements() const { return Elements; }
     std::vector<UniformBufferElement>::iterator begin() { return Elements.begin(); }
     std::vector<UniformBufferElement>::iterator end() { return Elements.end(); }
