@@ -96,8 +96,7 @@ namespace Krys
     glCreateBuffers(1, &Id);
 
     SetLayout(layout);
-    auto &last = layout.GetElements().back();
-    glNamedBufferData(Id, (last.AlignedOffset + last.LayoutSize) * layout.GetCount(), nullptr, GL_DYNAMIC_DRAW);
+    glNamedBufferData(Id, layout.GetSize(), nullptr, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_UNIFORM_BUFFER, binding, Id);
   }
 
@@ -111,23 +110,127 @@ namespace Krys
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
   }
 
-  void GLUniformBuffer::SetData(const void *data, uint32 size, uint32 offset)
+  void GLUniformBuffer::SetData(const string &name, bool value)
   {
-    glNamedBufferSubData(Id, offset, size, data);
+    auto info = GetAttributeInfo(name);
+    KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
+    int paddedValue = value;
+    glNamedBufferSubData(Id, info.Offset, info.Size, &paddedValue);
   }
 
-  // TODO: this is fine if we only have one set of elements in the buffer, not really if we have multiple though.
-  void GLUniformBuffer::SetData(const string &name, const void *data)
+  void GLUniformBuffer::SetData(const string &name, int value)
   {
-    for (auto element : Layout.GetElements())
+    auto info = GetAttributeInfo(name);
+    KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
+    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+  }
+
+  void GLUniformBuffer::SetData(const string &name, size_t value)
+  {
+    auto info = GetAttributeInfo(name);
+    KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
+    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+  }
+
+  void GLUniformBuffer::SetData(const string &name, float value)
+  {
+    auto info = GetAttributeInfo(name);
+    KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
+    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+  }
+
+  void GLUniformBuffer::SetData(const string &name, const Vec2 &value)
+  {
+    auto info = GetAttributeInfo(name);
+    KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
+    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+  }
+
+  void GLUniformBuffer::SetData(const string &name, const Vec3 &value)
+  {
+    auto info = GetAttributeInfo(name);
+    KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
+    Vec4 paddedValue = {value, 0.0f};
+    glNamedBufferSubData(Id, info.Offset, info.Size, &paddedValue);
+  }
+
+  void GLUniformBuffer::SetData(const string &name, const Vec4 &value)
+  {
+    auto info = GetAttributeInfo(name);
+    KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
+    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+  }
+
+  void GLUniformBuffer::SetData(const string &name, const Mat3 &value)
+  {
+    KRYS_ASSERT(false, "TODO: Implement me!", 0);
+  }
+
+  void GLUniformBuffer::SetData(const string &name, const Mat4 &value)
+  {
+    auto info = GetAttributeInfo(name);
+    KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
+    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+  }
+
+  GLUniformBuffer::AttributeInfo GLUniformBuffer::GetAttributeInfo(const string &name) const noexcept
+  {
+    size_t bracketOpenPos = name.find("[");
+    size_t dotPos = name.find(".");
+    if (bracketOpenPos != string::npos && (dotPos == string::npos || bracketOpenPos < dotPos))
     {
-      if (name == element.Name)
-      {
-        glNamedBufferSubData(Id, element.AlignedOffset, element.LayoutSize, data);
-        return;
-      }
+      // Handle arrays
+      string arrayName = name.substr(0, bracketOpenPos);
+      size_t bracketClosePos = name.find("]");
+      uint32 arrayIndex = std::stoi(name.substr(bracketOpenPos + 1, bracketClosePos - bracketOpenPos - 1));
+      string remaining = name.substr(bracketClosePos + 1);
+
+      for (const auto &element : Layout)
+        if (element.Name == arrayName)
+        {
+          auto elementSize = element.LayoutSize;
+          auto offset = element.AlignedOffset + elementSize * arrayIndex;
+          GLUniformBuffer::AttributeInfo info = {offset, elementSize};
+
+          if (!remaining.empty() && remaining[0] == '.')
+            return GetAttributeInfo(remaining.substr(1), element.Layout, info);
+          return info;
+        }
     }
-    KRYS_ASSERT(false, "Unable to find element in layout with name %s", name.c_str());
+    else if (dotPos != string::npos)
+    {
+      // Handle nested structures
+      string structName = name.substr(0, dotPos);
+      string remaining = name.substr(dotPos + 1);
+
+      for (const auto &element : Layout)
+        if (element.Name == structName)
+        {
+          GLUniformBuffer::AttributeInfo attributeInfo = {element.AlignedOffset, 0};
+          return GetAttributeInfo(remaining, element.Layout, attributeInfo);
+        }
+    }
+    else
+    {
+      for (const auto &element : Layout)
+        if (element.Name == name)
+          return {element.AlignedOffset, element.LayoutSize, true};
+    }
+
+    return {};
+  }
+
+  GLUniformBuffer::AttributeInfo GLUniformBuffer::GetAttributeInfo(const string &name, UniformStructLayout layout, AttributeInfo info) const noexcept
+  {
+    for (const auto &element : layout)
+      if (element.Name == name)
+      {
+        info.Offset += element.AlignedOffset;
+        info.Size = element.LayoutSize;
+        info.Found = true;
+        return info;
+      }
+    return info;
   }
 
   const UniformBufferLayout &GLUniformBuffer::GetLayout() const

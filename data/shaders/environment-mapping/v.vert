@@ -15,7 +15,7 @@ out vec3 v_Position;
 layout (std140, binding = 0) uniform Shared
 {
   mat4 u_ViewProjection;
-  vec3 u_CameraPosition;
+  vec4 u_CameraPosition;
 };
 
 uniform mat4 u_Model;

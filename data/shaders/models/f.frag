@@ -23,7 +23,7 @@ out vec4 o_Color;
 layout (std140, binding = 0) uniform Shared
 {
   mat4 u_ViewProjection;
-  vec3 u_CameraPosition;
+  vec4 u_CameraPosition;
 };
 
 uniform sampler2D u_DiffuseTextures[8];
@@ -84,7 +84,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 spec
   float diffuseFactor = max(dot(normal, lightDirection), 0.0);
   vec3 diffuse = light.Diffuse * diffuseFactor * diffuseSample;
 
-  vec3 viewDirection = normalize(u_CameraPosition - v_FragmentPosition);
+  vec3 viewDirection = normalize(vec3(u_CameraPosition) - v_FragmentPosition);
   vec3 reflectDirection = reflect(-lightDirection, normal);
   float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), u_Shininess);
   vec3 specular = light.Specular * specularFactor * specularSample;

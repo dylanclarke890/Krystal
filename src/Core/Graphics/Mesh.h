@@ -15,7 +15,7 @@ namespace Krys
     float Shininess;
 
     Material(Ref<Texture2D> texture, Ref<Texture2D> specularMap = nullptr, Ref<Texture2D> emissionMap = nullptr)
-        : Diffuse(texture), Specular(specularMap), Emission(emissionMap), Tint(1.0f), Shininess(0.0f) {}
+        : Diffuse(texture), Specular(specularMap), Emission(emissionMap), Tint(1.0f), Shininess(2.0f) {}
   };
 
   struct Vertex

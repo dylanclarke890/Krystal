@@ -8,7 +8,6 @@
 
 namespace Krys
 {
-
   class LightManager
   {
   private:
@@ -16,87 +15,91 @@ namespace Krys
     std::vector<PointLight> PointLights;
     std::vector<DirectionalLight> DirectionalLights;
 
-    Ref<UniformBuffer> PointLightBuffer, SpotLightBuffer, DirectionalLightBuffer, LightCountsBuffer;
+    Ref<UniformBuffer> LightBuffer;
     Ref<GraphicsContext> Context;
 
   public:
     LightManager()
-        : SpotLights({}), PointLights({}), DirectionalLights({}),
-          PointLightBuffer(0), SpotLightBuffer(0), DirectionalLightBuffer(0), LightCountsBuffer(0),
-          Context(0)
+        : SpotLights({}), PointLights({}), DirectionalLights({}), LightBuffer(0), Context(0)
     {
     }
 
     void Init(Ref<GraphicsContext> context)
     {
       Context = context;
-      DirectionalLightBuffer = Context->CreateUniformBuffer(DirectionalLightBufferBinding, DirectionalLightBufferLayout);
-      PointLightBuffer = Context->CreateUniformBuffer(PointLightBufferBinding, PointLightBufferLayout);
-      SpotLightBuffer = Context->CreateUniformBuffer(SpotLightBufferBinding, SpotLightBufferLayout);
-      LightCountsBuffer = Context->CreateUniformBuffer(LightCountsBufferBinding, LightCountsBufferLayout);
-
-      UpdateLightCountsBuffer();
-    }
-
-    void AddSpotLight(const SpotLight &light)
-    {
-      SpotLights.push_back(light);
-      UpdateSpotLightBuffer();
-    }
-
-    void AddPointLight(const PointLight &light)
-    {
-      PointLights.push_back(light);
-      UpdatePointLightBuffer();
+      LightBuffer = Context->CreateUniformBuffer(LightBufferBinding, LightBufferLayout);
     }
 
     void AddDirectionalLight(const DirectionalLight &light)
     {
+      auto index = DirectionalLights.size();
       DirectionalLights.push_back(light);
-      UpdateDirectionalLightBuffer();
+
+      string elementName = "u_DirectionalLights[" + std::to_string(index) + "].";
+      LightBuffer->SetData(elementName + "Ambient", light.Ambient);
+      LightBuffer->SetData(elementName + "Diffuse", light.Diffuse);
+      LightBuffer->SetData(elementName + "Specular", light.Specular);
+
+      LightBuffer->SetData(elementName + "Enabled", light.Enabled);
+      LightBuffer->SetData(elementName + "Intensity", light.Intensity);
+
+      LightBuffer->SetData(elementName + "Direction", light.Direction);
+
+      LightBuffer->SetData("u_DirectionalLightCount", DirectionalLights.size());
     }
 
-    void BindUBOs()
+    void AddPointLight(const PointLight &light)
     {
-      DirectionalLightBuffer->Bind();
-      PointLightBuffer->Bind();
-      SpotLightBuffer->Bind();
-      LightCountsBuffer->Bind();
+      auto index = PointLights.size();
+      PointLights.push_back(light);
+
+      string elementName = "u_PointLights[" + std::to_string(index) + "].";
+      LightBuffer->SetData(elementName + "Ambient", light.Ambient);
+      LightBuffer->SetData(elementName + "Diffuse", light.Diffuse);
+      LightBuffer->SetData(elementName + "Specular", light.Specular);
+
+      LightBuffer->SetData(elementName + "Enabled", light.Enabled);
+      LightBuffer->SetData(elementName + "Intensity", light.Intensity);
+
+      LightBuffer->SetData(elementName + "Constant", light.Constant);
+      LightBuffer->SetData(elementName + "Linear", light.Linear);
+      LightBuffer->SetData(elementName + "Quadratic", light.Quadratic);
+
+      LightBuffer->SetData(elementName + "Position", light.Position);
+
+      LightBuffer->SetData("u_PointLightCount", PointLights.size());
     }
 
-  private:
-    void UpdateSpotLightBuffer()
+    void AddSpotLight(const SpotLight &light)
     {
-      SpotLightBuffer->SetData(SpotLights.data(), static_cast<uint32>(SpotLights.size() * sizeof(SpotLight)));
-      UpdateLightCountsBuffer();
+      auto index = SpotLights.size();
+      SpotLights.push_back(light);
+
+      string elementName = "u_SpotLights[" + std::to_string(index) + "].";
+      LightBuffer->SetData(elementName + "Ambient", light.Ambient);
+      LightBuffer->SetData(elementName + "Diffuse", light.Diffuse);
+      LightBuffer->SetData(elementName + "Specular", light.Specular);
+
+      LightBuffer->SetData(elementName + "Enabled", light.Enabled);
+      LightBuffer->SetData(elementName + "Intensity", light.Intensity);
+
+      LightBuffer->SetData(elementName + "Constant", light.Constant);
+      LightBuffer->SetData(elementName + "Linear", light.Linear);
+      LightBuffer->SetData(elementName + "Quadratic", light.Quadratic);
+
+      LightBuffer->SetData(elementName + "Direction", light.Direction);
+      LightBuffer->SetData(elementName + "Position", light.Position);
+
+      LightBuffer->SetData("u_SpotLightCount", SpotLights.size());
     }
 
-    void UpdatePointLightBuffer()
+    void Bind()
     {
-      PointLightBuffer->SetData(PointLights.data(), static_cast<uint32>(PointLights.size() * sizeof(PointLight)));
-      UpdateLightCountsBuffer();
+      LightBuffer->Bind();
     }
 
-    void UpdateDirectionalLightBuffer()
-    {
-      DirectionalLightBuffer->SetData(DirectionalLights.data(), static_cast<uint32>(DirectionalLights.size() * sizeof(DirectionalLight)));
-      UpdateLightCountsBuffer();
-    }
-
-    void UpdateLightCountsBuffer()
-    {
-      struct LightCounts
-      {
-        int DirectionalLightCount;
-        int PointLightCount;
-        int SpotLightCount;
-      } lightCounts;
-
-      lightCounts.DirectionalLightCount = static_cast<int>(DirectionalLights.size());
-      lightCounts.PointLightCount = static_cast<int>(PointLights.size());
-      lightCounts.SpotLightCount = static_cast<int>(SpotLights.size());
-
-      LightCountsBuffer->SetData(&lightCounts, sizeof(LightCounts));
-    }
+    const std::vector<DirectionalLight> &GetDirectionalLights() { return DirectionalLights; }
+    const std::vector<SpotLight> &GetSpotLights() { return SpotLights; }
+    const std::vector<PointLight> &GetPointLights() { return PointLights; }
   };
 }

@@ -398,8 +398,8 @@ namespace Krys
 
   void Renderer::BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse)
   {
-    ObjectUniformBuffer->SetData("u_ViewProjection", &camera->GetViewProjection());
-    ObjectUniformBuffer->SetData("u_CameraPosition", &camera->GetPosition());
+    ObjectUniformBuffer->SetData("u_ViewProjection", camera->GetViewProjection());
+    ObjectUniformBuffer->SetData("u_CameraPosition", camera->GetPosition());
 
     ShaderInUse = shaderToUse ? shaderToUse : PhongShader;
     SceneCameraPosition = Vec4(camera->GetPosition(), 1.0f);

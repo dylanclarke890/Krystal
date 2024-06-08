@@ -12,7 +12,7 @@ layout(location = 7) in float i_Shininess;
 layout (std140, binding = 0) uniform Shared
 {
   mat4 u_ViewProjection;
-  vec3 u_CameraPosition;
+  vec4 u_CameraPosition;
 };
 
 out vec3 v_FragmentPosition;

@@ -53,59 +53,59 @@ namespace Krys
     float OuterCutoff;
   };
 
-  constexpr uint32 DirectionalLightBufferBinding = 7;
-  constexpr uint32 PointLightBufferBinding = 8;
-  constexpr uint32 SpotLightBufferBinding = 9;
-  constexpr uint32 LightCountsBufferBinding = 10;
+  constexpr uint32 LightBufferBinding = 7;
+  constexpr uint32 MaxDirectionalLights = 5;
+  constexpr uint32 MaxPointLights = 32;
+  constexpr uint32 MaxSpotLights = 32;
 
-  static UniformBufferLayout DirectionalLightBufferLayout =
-      UniformBufferLayout({{UniformDataType::Vec3, "Ambient"},
-                           {UniformDataType::Vec3, "Diffuse"},
-                           {UniformDataType::Vec3, "Specular"},
+  static UniformStructLayout DirectionalLightStructLayout = {
+      {{UniformDataType::Vec3, "Ambient"},
+       {UniformDataType::Vec3, "Diffuse"},
+       {UniformDataType::Vec3, "Specular"},
 
-                           {UniformDataType::Scalar, "Enabled"},
-                           {UniformDataType::Scalar, "Intensity"},
+       {UniformDataType::Scalar, "Enabled"},
+       {UniformDataType::Scalar, "Intensity"},
 
-                           {UniformDataType::Vec3, "Direction"}},
-                          5);
+       {UniformDataType::Vec3, "Direction"}}};
 
-  static UniformBufferLayout PointLightBufferLayout =
-      UniformBufferLayout({{UniformDataType::Vec3, "Ambient"},
-                           {UniformDataType::Vec3, "Diffuse"},
-                           {UniformDataType::Vec3, "Specular"},
+  static UniformStructLayout PointLightStructLayout = {
+      {{UniformDataType::Vec3, "Ambient"},
+       {UniformDataType::Vec3, "Diffuse"},
+       {UniformDataType::Vec3, "Specular"},
 
-                           {UniformDataType::Scalar, "Constant"},
-                           {UniformDataType::Scalar, "Linear"},
-                           {UniformDataType::Scalar, "Quadratic"},
+       {UniformDataType::Scalar, "Constant"},
+       {UniformDataType::Scalar, "Linear"},
+       {UniformDataType::Scalar, "Quadratic"},
 
-                           {UniformDataType::Scalar, "Enabled"},
-                           {UniformDataType::Scalar, "Intensity"},
+       {UniformDataType::Scalar, "Enabled"},
+       {UniformDataType::Scalar, "Intensity"},
 
-                           {UniformDataType::Vec3, "Position"}},
-                          32);
+       {UniformDataType::Vec3, "Position"}}};
 
-  static UniformBufferLayout SpotLightBufferLayout =
-      UniformBufferLayout({{UniformDataType::Vec3, "Ambient"},
-                           {UniformDataType::Vec3, "Diffuse"},
-                           {UniformDataType::Vec3, "Specular"},
+  static UniformStructLayout SpotLightStructLayout =
+      {{UniformDataType::Vec3, "Ambient"},
+       {UniformDataType::Vec3, "Diffuse"},
+       {UniformDataType::Vec3, "Specular"},
 
-                           {UniformDataType::Scalar, "Constant"},
-                           {UniformDataType::Scalar, "Linear"},
-                           {UniformDataType::Scalar, "Quadratic"},
+       {UniformDataType::Scalar, "Constant"},
+       {UniformDataType::Scalar, "Linear"},
+       {UniformDataType::Scalar, "Quadratic"},
 
-                           {UniformDataType::Scalar, "Enabled"},
-                           {UniformDataType::Scalar, "Intensity"},
+       {UniformDataType::Scalar, "Enabled"},
+       {UniformDataType::Scalar, "Intensity"},
 
-                           {UniformDataType::Vec3, "Direction"},
-                           {UniformDataType::Vec3, "Position"},
+       {UniformDataType::Vec3, "Direction"},
+       {UniformDataType::Vec3, "Position"},
 
-                           {UniformDataType::Scalar, "InnerCutoff"},
-                           {UniformDataType::Scalar, "OuterCutoff"}},
-                          32);
+       {UniformDataType::Scalar, "InnerCutoff"},
+       {UniformDataType::Scalar, "OuterCutoff"}};
 
-  static UniformBufferLayout LightCountsBufferLayout =
-      UniformBufferLayout({{UniformDataType::Scalar, "DirectionalLightCount"},
-                           {UniformDataType::Scalar, "PointLightCount"},
-                           {UniformDataType::Scalar, "SpotLightCount"}},
-                          1);
+  static UniformBufferLayout LightBufferLayout = {
+      {UniformDataType::Struct, "u_DirectionalLights", DirectionalLightStructLayout, MaxDirectionalLights},
+      {UniformDataType::Struct, "u_PointLights", PointLightStructLayout, MaxPointLights},
+      {UniformDataType::Struct, "u_SpotLights", SpotLightStructLayout, MaxSpotLights},
+      {UniformDataType::Scalar, "u_DirectionalLightCount"},
+      {UniformDataType::Scalar, "u_PointLightCount"},
+      {UniformDataType::Scalar, "u_SpotLightCount"},
+      {UniformDataType::Scalar, "u_UseBlinnLighting"}};
 }

@@ -162,106 +162,196 @@ namespace Krys
     Array,
     Mat3,
     Mat4,
+    Struct
+  };
+
+  static uint32 CalculateBaseAlignment(UniformDataType type)
+  {
+    const uint32 N = 4;
+    return ([&]()
+            {
+        switch (type)
+        {
+            case UniformDataType::Scalar:
+                return N;
+            case UniformDataType::Vec2:
+                return 2 * N;
+            case UniformDataType::Vec3:
+            case UniformDataType::Vec4:
+                return 4 * N;
+            case UniformDataType::Mat3:
+                return 4 * N; // Each column is a vec4
+            case UniformDataType::Mat4:
+                return 4 * N; // Each column is a vec4
+            case UniformDataType::Array:
+                return 4 * N; // Each element in an array of scalars/vectors has the alignment of a vec4
+            default:
+              KRYS_ASSERT(false, "Unknown UniformDataType!", 0);
+              return uint32(0);
+        } })();
+  }
+
+  static uint32 CalculateStd140LayoutSize(UniformDataType type, uint32 count)
+  {
+    const uint32 N = 4;
+    return ([&]()
+            {
+        switch (type)
+        {
+            case UniformDataType::Scalar:
+                return N;
+            case UniformDataType::Vec2:
+                return 2 * N;
+            case UniformDataType::Vec3:
+            case UniformDataType::Vec4:
+                return 4 * N;
+            case UniformDataType::Mat3:
+              return 4 * N * 3; // Each column is a vec4
+            case UniformDataType::Mat4:
+              return 4 * N * 4; // Each column is a vec4
+            case UniformDataType::Array:
+              return 4 * N * count; // Each element in an array of scalars/vectors has the alignment of a vec4
+            default:
+              KRYS_ASSERT(false, "Unknown UniformDataType!", 0);
+              return uint32(0);
+        } })();
+  }
+
+  struct UniformStructElement
+  {
+    UniformDataType Type;
+    string Name;
+    uint32 Count;
+
+    uint32 BaseAlignment, LayoutSize, AlignedOffset;
+
+    UniformStructElement(UniformDataType type, const string &name, uint32 count = 1)
+        : Type(type), Name(name), Count(count)
+    {
+      BaseAlignment = CalculateBaseAlignment(type);
+      LayoutSize = CalculateStd140LayoutSize(type, count);
+    }
+  };
+
+  struct UniformStructLayout
+  {
+  private:
+    std::vector<UniformStructElement> Layout;
+
+  public:
+    UniformStructLayout() = default;
+
+    UniformStructLayout(std::initializer_list<UniformStructElement> layout)
+        : Layout(layout)
+    {
+      CalculateOffsetsAndSize();
+    }
+
+    uint32 GetSize() const noexcept { return CalculateTotalSize(); }
+    const std::vector<UniformStructElement> &GetElements() const noexcept { return Layout; }
+    std::vector<UniformStructElement>::iterator begin() { return Layout.begin(); }
+    std::vector<UniformStructElement>::iterator end() { return Layout.end(); }
+    std::vector<UniformStructElement>::const_iterator begin() const { return Layout.begin(); }
+    std::vector<UniformStructElement>::const_iterator end() const { return Layout.end(); }
+
+    uint32 CalculateBaseAlignment() const
+    {
+      uint32 maxAlignment = 0;
+      for (const auto &element : Layout)
+      {
+        if (element.BaseAlignment > maxAlignment)
+          maxAlignment = element.BaseAlignment;
+      }
+      return maxAlignment;
+    }
+
+    uint32 CalculateTotalSize() const
+    {
+      uint32 totalSize = 0;
+      for (const auto &element : Layout)
+      {
+        totalSize = AlignOffset(totalSize, element.BaseAlignment);
+        totalSize += element.LayoutSize;
+      }
+      return AlignOffset(totalSize, 16); // Ensure the structure itself is aligned to a 16-byte boundary
+    }
+
+  private:
+    void CalculateOffsetsAndSize()
+    {
+      uint32 alignedOffset = 0;
+      for (auto &element : Layout)
+      {
+        element.AlignedOffset = alignedOffset = AlignOffset(alignedOffset, element.BaseAlignment);
+        alignedOffset += element.LayoutSize;
+      }
+    }
+
+    static uint32 AlignOffset(uint32 offset, uint32 alignment)
+    {
+      return (offset + alignment - 1) & ~(alignment - 1);
+    }
   };
 
   struct UniformBufferElement
   {
-    string Name;
     UniformDataType Type;
-    // Only used by array types
+    string Name;
     uint32 Count;
-    uint32 BaseAlignment;
-    uint32 AlignedOffset;
-    uint32 LayoutSize;
+    UniformStructLayout Layout;
+
+    uint32 BaseAlignment, LayoutSize, AlignedOffset;
 
     UniformBufferElement(UniformDataType type, const string &name, uint32 count = 1)
-        : Name(name), Type(type), Count(count), BaseAlignment(0), AlignedOffset(0), LayoutSize(0) {}
+        : Type(type), Name(name), Count(count), Layout()
+    {
+      BaseAlignment = CalculateBaseAlignment(Type);
+      LayoutSize = CalculateStd140LayoutSize(Type, Count);
+    }
+
+    UniformBufferElement(UniformDataType type, const string &name, UniformStructLayout layout, uint32 count = 1)
+        : Type(type), Name(name), Count(count), Layout(layout)
+    {
+      BaseAlignment = layout.CalculateBaseAlignment();
+      LayoutSize = layout.CalculateTotalSize();
+    }
   };
 
   struct UniformBufferLayout
   {
   private:
-    std::vector<UniformBufferElement> Elements;
-    uint32 Count;
+    std::vector<UniformBufferElement> Layout;
+    uint32 Size;
 
   public:
     UniformBufferLayout() = default;
 
-    UniformBufferLayout(std::initializer_list<UniformBufferElement> layout, uint32 count = 1)
-        : Elements(layout), Count(count)
+    UniformBufferLayout(std::initializer_list<UniformBufferElement> layout)
+        : Layout(layout), Size(0)
     {
       CalculateOffsetsAndSize();
     }
 
-    uint32 GetCount() const noexcept { return Count; }
-    const std::vector<UniformBufferElement> &GetElements() const { return Elements; }
-    std::vector<UniformBufferElement>::iterator begin() { return Elements.begin(); }
-    std::vector<UniformBufferElement>::iterator end() { return Elements.end(); }
-    std::vector<UniformBufferElement>::const_iterator begin() const { return Elements.begin(); }
-    std::vector<UniformBufferElement>::const_iterator end() const { return Elements.end(); }
+    uint32 GetSize() const noexcept { return Size; }
+    const std::vector<UniformBufferElement> &GetElements() const noexcept { return Layout; }
+    std::vector<UniformBufferElement>::iterator begin() { return Layout.begin(); }
+    std::vector<UniformBufferElement>::iterator end() { return Layout.end(); }
+    std::vector<UniformBufferElement>::const_iterator begin() const { return Layout.begin(); }
+    std::vector<UniformBufferElement>::const_iterator end() const { return Layout.end(); }
 
   private:
     void CalculateOffsetsAndSize()
     {
-      KRYS_ASSERT(Elements.size(), "UniformBufferLayout has no elements", 0);
+      KRYS_ASSERT(Layout.size(), "UniformBufferLayout has no elements", 0);
 
       uint32 alignedOffset = 0;
-      for (auto &element : Elements)
+      for (auto &element : Layout)
       {
-        element.BaseAlignment = BaseAlignmentOf(element.Type, element.Count);
-        alignedOffset = AlignOffset(alignedOffset, element.BaseAlignment);
-        element.AlignedOffset = alignedOffset;
-        element.LayoutSize += Std140LayoutSizeOf(element.Type, element.Count);
-        alignedOffset += element.LayoutSize;
+        element.AlignedOffset = alignedOffset = AlignOffset(alignedOffset, element.BaseAlignment);
+        alignedOffset += element.LayoutSize * element.Count;
       }
-    }
 
-    static uint32 BaseAlignmentOf(UniformDataType type, uint32 count)
-    {
-      const uint32 N = 4;
-      switch (type)
-      {
-      case UniformDataType::Scalar:
-        return N;
-      case UniformDataType::Vec2:
-        return 2 * N;
-      case UniformDataType::Vec3:
-      case UniformDataType::Vec4:
-        return 4 * N;
-      case UniformDataType::Mat3:
-        return 4 * N; // Each column is a vec4
-      case UniformDataType::Mat4:
-        return 4 * N; // Each column is a vec4
-      case UniformDataType::Array:
-        return 4 * N; // Each element in an array of scalars/vectors has the alignment of a vec4
-      default:
-        KRYS_ASSERT(false, "Unknown UniformDataType!", 0);
-        return uint32(0);
-      }
-    }
-
-    static uint32 Std140LayoutSizeOf(UniformDataType type, uint32 count)
-    {
-      const uint32 N = 4;
-      switch (type)
-      {
-      case UniformDataType::Scalar:
-        return N;
-      case UniformDataType::Vec2:
-        return 2 * N;
-      case UniformDataType::Vec3:
-      case UniformDataType::Vec4:
-        return 4 * N;
-      case UniformDataType::Mat3:
-        return 4 * N * 3; // 3 columns, each column is a vec4
-      case UniformDataType::Mat4:
-        return 4 * N * 4; // 4 columns, each column is a vec4
-      case UniformDataType::Array:
-        return 4 * N * count; // Each element in an array has the size of a vec4
-      default:
-        KRYS_ASSERT(false, "Unknown UniformDataType!", 0);
-        return uint32(0);
-      }
+      Size = alignedOffset;
     }
 
     static uint32 AlignOffset(uint32 offset, uint32 alignment)
