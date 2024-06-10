@@ -26,6 +26,7 @@ namespace Krys
     virtual void SetViewport(int width, int height) noexcept = 0;
 
     virtual void SetMultisamplingEnabled(bool enable) noexcept = 0;
+    virtual void SetGammaCorrectionEnabled(bool enable) noexcept = 0;
 
     virtual void SetFaceCullingEnabled(bool enable) noexcept = 0;
     virtual void SetFaceCulling(CullMode mode) noexcept = 0;

@@ -29,6 +29,7 @@ namespace Krys
     void SetViewport(int width, int height) noexcept override;
 
     void SetMultisamplingEnabled(bool enable) noexcept override;
+    void SetGammaCorrectionEnabled(bool enable) noexcept override;
 
     void SetFaceCullingEnabled(bool enable) noexcept override;
     void SetFaceCulling(CullMode mode) noexcept override;

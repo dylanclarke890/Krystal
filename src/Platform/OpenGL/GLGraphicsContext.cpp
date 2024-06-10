@@ -117,7 +117,6 @@ namespace Krys
   void GLGraphicsContext::Init() noexcept
   {
     // TODO: check we have the settings that we want.
-
     // desired pixel format attributes
     const int32 i_pixel_format_attrib_list[] = {
         WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,       // PFD_DRAW_TO_WINDOW
@@ -228,6 +227,11 @@ namespace Krys
   void GLGraphicsContext::SetMultisamplingEnabled(bool enable) noexcept
   {
     EnableFeature(GL_MULTISAMPLE, enable);
+  }
+
+  void GLGraphicsContext::SetGammaCorrectionEnabled(bool enable) noexcept
+  {
+    EnableFeature(GL_FRAMEBUFFER_SRGB, enable);
   }
 
   void GLGraphicsContext::SetFaceCullingEnabled(bool enable) noexcept
