@@ -53,7 +53,7 @@ namespace Krys
     float OuterCutoff;
   };
 
-  constexpr uint32 LightBufferBinding = 7;
+  constexpr uint32 LightBufferBinding = 1;
   constexpr uint32 MaxDirectionalLights = 5;
   constexpr uint32 MaxPointLights = 32;
   constexpr uint32 MaxSpotLights = 32;
@@ -82,23 +82,23 @@ namespace Krys
 
        {UniformDataType::Vec3, "Position"}}};
 
-  static UniformStructLayout SpotLightStructLayout =
-      {{UniformDataType::Vec3, "Ambient"},
-       {UniformDataType::Vec3, "Diffuse"},
-       {UniformDataType::Vec3, "Specular"},
+  static UniformStructLayout SpotLightStructLayout = {
+      {UniformDataType::Vec3, "Ambient"},
+      {UniformDataType::Vec3, "Diffuse"},
+      {UniformDataType::Vec3, "Specular"},
 
-       {UniformDataType::Scalar, "Constant"},
-       {UniformDataType::Scalar, "Linear"},
-       {UniformDataType::Scalar, "Quadratic"},
+      {UniformDataType::Scalar, "Constant"},
+      {UniformDataType::Scalar, "Linear"},
+      {UniformDataType::Scalar, "Quadratic"},
 
-       {UniformDataType::Scalar, "Enabled"},
-       {UniformDataType::Scalar, "Intensity"},
+      {UniformDataType::Scalar, "Enabled"},
+      {UniformDataType::Scalar, "Intensity"},
 
-       {UniformDataType::Vec3, "Direction"},
-       {UniformDataType::Vec3, "Position"},
+      {UniformDataType::Vec3, "Direction"},
+      {UniformDataType::Vec3, "Position"},
 
-       {UniformDataType::Scalar, "InnerCutoff"},
-       {UniformDataType::Scalar, "OuterCutoff"}};
+      {UniformDataType::Scalar, "InnerCutoff"},
+      {UniformDataType::Scalar, "OuterCutoff"}};
 
   static UniformBufferLayout LightBufferLayout = {
       {UniformDataType::Struct, "u_DirectionalLights", DirectionalLightStructLayout, MaxDirectionalLights},
@@ -107,5 +107,5 @@ namespace Krys
       {UniformDataType::Scalar, "u_DirectionalLightCount"},
       {UniformDataType::Scalar, "u_PointLightCount"},
       {UniformDataType::Scalar, "u_SpotLightCount"},
-      {UniformDataType::Scalar, "u_UseBlinnLighting"}};
+      {UniformDataType::Scalar, "u_UseBlinnLightingModel"}};
 }

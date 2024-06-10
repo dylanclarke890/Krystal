@@ -18,9 +18,12 @@ namespace Krys
     Ref<UniformBuffer> LightBuffer;
     Ref<GraphicsContext> Context;
 
+    LightingModel ActiveLightingModel;
+
   public:
     LightManager()
-        : SpotLights({}), PointLights({}), DirectionalLights({}), LightBuffer(0), Context(0)
+        : SpotLights({}), PointLights({}), DirectionalLights({}),
+          LightBuffer(0), Context(0), ActiveLightingModel(LightingModel::Phong)
     {
     }
 
@@ -91,6 +94,12 @@ namespace Krys
       LightBuffer->SetData(elementName + "Position", light.Position);
 
       LightBuffer->SetData("u_SpotLightCount", SpotLights.size());
+    }
+
+    void SetLightingModel(LightingModel model)
+    {
+      ActiveLightingModel = model;
+      LightBuffer->SetData("u_UseBlinnLightingModel", model == LightingModel::BlinnPhong);
     }
 
     void Bind()

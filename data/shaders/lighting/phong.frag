@@ -67,7 +67,7 @@ layout (std140, binding = 0) uniform Shared
   vec4 u_CameraPosition;
 };
 
-layout (std140, binding = 7) uniform Lights
+layout (std140, binding = 1) uniform Lights
 {
   DirectionalLight u_DirectionalLights[MAX_DIRECTIONAL_LIGHTS];
   PointLight u_PointLights[MAX_POINT_LIGHTS];
@@ -75,7 +75,7 @@ layout (std140, binding = 7) uniform Lights
   int u_DirectionalLightCount;
   int u_PointLightCount;
   int u_SpotLightCount;
-  bool u_UseBlinnLighting;
+  bool u_UseBlinnLightingModel;
 };
 
 uniform sampler2D u_Textures[32];
@@ -86,28 +86,29 @@ vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
+vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, vec3 specularSample);
 
 void main()
 {
   vec3 normal = normalize(v_Normal);
-
   vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0)) * v_Color;
-
   vec3 diffuseSample = vec3(textureSample);
   vec3 specularSample = vec3(GetTextureSample(v_SpecularSlot, vec4(0.2)));
   vec3 emissionSample = vec3(GetTextureSample(v_EmissionSlot, vec4(0.0)));
 
   vec3 lighting = vec3(0.0);
-  for (int i = 0; i < u_DirectionalLightCount; i++) {
-    lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample);
-  }
+  { 
+   for (int i = 0; i < u_DirectionalLightCount; i++) {
+      lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample);
+    }
 
-  for (int i = 0; i < u_PointLightCount; i++) {
-    lighting += CalcPointLight(u_PointLights[i], normal, diffuseSample, specularSample);
-  }
+    for (int i = 0; i < u_PointLightCount; i++) {
+      lighting += CalcPointLight(u_PointLights[i], normal, diffuseSample, specularSample);
+    }
 
-  for (int i = 0; i < u_SpotLightCount; i++) {
-    lighting += CalcSpotLight(u_SpotLights[i], normal, diffuseSample, specularSample);
+    for (int i = 0; i < u_SpotLightCount; i++) {
+      lighting += CalcSpotLight(u_SpotLights[i], normal, diffuseSample, specularSample);
+    }
   }
 
   o_Color = vec4(lighting, 1.0);
@@ -153,32 +154,6 @@ vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor)
   }
 }
 
-vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
-{
-  if (!light.Enabled)
-    return vec3(0.0);
-
-  vec3 lightDirection = normalize(vec3(light.Position) - v_FragmentPosition);
-
-  vec3 ambient = vec3(light.Ambient) * diffuseSample;
-
-  float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-  vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
-
-  vec3 viewDirection = normalize(vec3(u_CameraPosition) - v_FragmentPosition);
-  vec3 reflectDirection = reflect(-lightDirection, normal);
-  float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), v_Shininess);
-  vec3 specular = vec3(light.Specular) * specularFactor * specularSample;
-
-  float distance = length(vec3(light.Position) - v_FragmentPosition);
-  float attenuation = 1.0 / (light.Constant + light.Linear * distance + light.Quadratic * (distance * distance));  
-  ambient *= attenuation;
-  diffuse *= attenuation;
-  specular *= attenuation;
-
-  return ambient + diffuse + specular;
-}
-
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
 {
   if (!light.Enabled)
@@ -191,12 +166,32 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSampl
   float diffuseFactor = max(dot(normal, lightDirection), 0.0);
   vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
 
-  vec3 viewDirection = normalize(vec3(u_CameraPosition) - v_FragmentPosition);
-  vec3 reflectDirection = reflect(-lightDirection, normal);
-  float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), v_Shininess);
-  vec3 specular = vec3(light.Specular) * specularFactor * specularSample;
+  vec3 specular = CalcSpecularFactor(vec3(light.Specular), lightDirection, normal, specularSample);
 
-  return ambient + diffuse + specular;
+  return (ambient + diffuse + specular) * light.Intensity;
+}
+
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
+{
+  if (!light.Enabled)
+    return vec3(0.0);
+
+  vec3 lightDirection = normalize(vec3(light.Position) - v_FragmentPosition);
+
+  vec3 ambient = vec3(light.Ambient) * diffuseSample;
+
+  float diffuseFactor = max(dot(normal, lightDirection), 0.0);
+  vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
+
+  vec3 specular = CalcSpecularFactor(vec3(light.Specular), lightDirection, normal, specularSample);
+
+  float distance = length(vec3(light.Position) - v_FragmentPosition);
+  float attenuation = 1.0 / (light.Constant + light.Linear * distance + light.Quadratic * (distance * distance));  
+  ambient *= attenuation;
+  diffuse *= attenuation;
+  specular *= attenuation;
+
+  return (ambient + diffuse + specular) * light.Intensity;
 }
 
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample) {
@@ -216,10 +211,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specul
     float diffuseFactor = max(dot(normal, lightDirection), 0.0);
     vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
     
-    vec3 viewDirection = normalize(vec3(u_CameraPosition) - v_FragmentPosition);
-    vec3 reflectDirection = reflect(-lightDirection, normal);  
-    float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), v_Shininess);
-    vec3 specular = vec3(light.Specular) * specularFactor * specularSample;
+    vec3 specular = CalcSpecularFactor(vec3(light.Specular), lightDirection, normal, specularSample);
     
     float distance = length(vec3(light.Position) - v_FragmentPosition);
     float attenuation = 1.0 / (light.Constant + light.Linear * distance + light.Quadratic * (distance * distance));  
@@ -227,24 +219,29 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specul
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
     
-    return ambient + diffuse + specular;
+    return (ambient + diffuse + specular) * light.Intensity;
   }
   else
   {
-    return vec3(light.Ambient) * diffuseSample;
+    return (vec3(light.Ambient) * diffuseSample) * light.Intensity;
   }
 }
 
-float CalcSpecularFactor(vec3 lightDirection, vec3 viewDirection, vec3 normal)
+vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, vec3 specularSample)
 {
-  if (u_UseBlinnLighting)
+  vec3 viewDirection = normalize(vec3(u_CameraPosition) - v_FragmentPosition);
+
+  float specularFactor = 0.0;
+  if (u_UseBlinnLightingModel)
   {
     vec3 halfwayDirection = normalize(lightDirection + viewDirection);  
-    return pow(max(dot(normal, halfwayDirection), 0.0), v_Shininess);
+    specularFactor = pow(max(dot(normal, halfwayDirection), 0.0), v_Shininess);
   }
   else
   {
     vec3 reflectDirection = reflect(-lightDirection, normal);
-    return pow(max(dot(viewDirection, reflectDirection), 0.0), v_Shininess);
+    specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), v_Shininess);
   }
+
+  return lightSpecular * specularFactor * specularSample;
 }

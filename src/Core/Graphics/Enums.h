@@ -117,4 +117,11 @@ namespace Krys
     Draw,
     ReadAndDraw
   };
+
+  enum class LightingModel
+  {
+    None = 0,
+    Phong,
+    BlinnPhong
+  };
 }
