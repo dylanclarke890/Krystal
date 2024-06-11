@@ -8,6 +8,7 @@ namespace Krys
   {
   protected:
     uint Id;
+    TextureInternalFormat InternalFormat;
 
   public:
     virtual ~TextureCubemap() = default;
@@ -15,6 +16,11 @@ namespace Krys
     uint GetId() const noexcept
     {
       return Id;
+    }
+
+    TextureInternalFormat GetInternalFormat() const noexcept
+    {
+      return InternalFormat;
     }
 
     virtual void Bind(uint32 slot = 0) const noexcept = 0;

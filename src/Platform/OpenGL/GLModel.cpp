@@ -12,6 +12,6 @@ namespace Krys
 
   Ref<Texture2D> Model::CreateTexture(TextureType type, const string &path)
   {
-    return CreateRef<GLTexture2D>(type, path);
+    return CreateRef<GLTexture2D>(path, type);
   }
 }

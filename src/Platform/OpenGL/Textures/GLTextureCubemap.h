@@ -11,7 +11,7 @@ namespace Krys
   class GLTextureCubemap : public TextureCubemap
   {
   public:
-    GLTextureCubemap(std::array<string, 6> faces);
+    GLTextureCubemap(std::array<string, 6> faces, TextureInternalFormat internalFormat = TextureInternalFormat::Auto);
     ~GLTextureCubemap() override;
 
     void Bind(uint32 slot = 0) const noexcept override;

@@ -66,4 +66,44 @@ namespace Krys
     }
     }
   };
+
+  static auto ToGLDataFormat = [](TextureInternalFormat internalFormat)
+  {
+    switch (internalFormat)
+    {
+    case TextureInternalFormat::RGB:
+    case TextureInternalFormat::SRGB:
+      return GL_RGB;
+    case TextureInternalFormat::RGBA:
+    case TextureInternalFormat::SRGBA:
+      return GL_RGBA;
+    case TextureInternalFormat::Auto:
+    default:
+    {
+      KRYS_ASSERT(false, "Unsupported TextureInternalFormat", 0);
+      return 0;
+    }
+    }
+  };
+
+  static auto ToGLInternalFormat = [](TextureInternalFormat internalFormat)
+  {
+    switch (internalFormat)
+    {
+    case TextureInternalFormat::RGB:
+      return GL_RGB8;
+    case TextureInternalFormat::SRGB:
+      return GL_SRGB8;
+    case TextureInternalFormat::RGBA:
+      return GL_RGBA8;
+    case TextureInternalFormat::SRGBA:
+      return GL_SRGB8_ALPHA8;
+    case TextureInternalFormat::Auto:
+    default:
+    {
+      KRYS_ASSERT(false, "Unsupported TextureInternalFormat", 0);
+      return 0;
+    }
+    }
+  };
 }

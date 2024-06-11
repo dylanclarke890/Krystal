@@ -4,8 +4,10 @@
 
 namespace Krys
 {
-  GLTextureCubemap::GLTextureCubemap(std::array<string, 6> faces)
+  GLTextureCubemap::GLTextureCubemap(std::array<string, 6> faces, TextureInternalFormat internalFormat)
   {
+    InternalFormat = internalFormat;
+
     glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &Id);
 
     stbi_set_flip_vertically_on_load(false);
@@ -16,16 +18,17 @@ namespace Krys
     KRYS_ASSERT(data[0], "Failed to load first face!", 0);
     KRYS_ASSERT(channels == 3 || channels == 4, "Unsupported number of color channels.", 0);
 
-    auto internalFormat = GL_RGBA8;
-    auto dataFormat = GL_RGBA;
-    if (channels == 3)
+    if (InternalFormat == TextureInternalFormat::Auto)
     {
-      internalFormat = GL_RGB8;
-      dataFormat = GL_RGB;
+      InternalFormat = TextureInternalFormat::RGBA;
+      if (channels == 3)
+      {
+        InternalFormat = TextureInternalFormat::RGB;
+      }
     }
 
-    glTextureStorage2D(Id, 1, internalFormat, width, height);
-    glTextureSubImage3D(Id, 0, 0, 0, 0, width, height, 1, dataFormat, GL_UNSIGNED_BYTE, data);
+    glTextureStorage2D(Id, 1, ToGLInternalFormat(InternalFormat), width, height);
+    glTextureSubImage3D(Id, 0, 0, 0, 0, width, height, 1, ToGLDataFormat(InternalFormat), GL_UNSIGNED_BYTE, data);
     stbi_image_free(data);
 
     for (uint i = 1; i < faces.size(); i++)
@@ -34,7 +37,7 @@ namespace Krys
       data = stbi_load(faces[i].c_str(), &fWidth, &fHeight, &fChannels, 0);
       KRYS_ASSERT(fWidth == width && fHeight == height && fChannels == channels, "Face %d does not have matching dimensions or channels", i);
 
-      glTextureSubImage3D(Id, 0, 0, 0, i, width, height, 1, dataFormat, GL_UNSIGNED_BYTE, data);
+      glTextureSubImage3D(Id, 0, 0, 0, i, width, height, 1, ToGLDataFormat(InternalFormat), GL_UNSIGNED_BYTE, data);
       stbi_image_free(data);
     }
 

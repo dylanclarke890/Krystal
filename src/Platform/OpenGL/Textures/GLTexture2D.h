@@ -9,8 +9,8 @@ namespace Krys
   {
   public:
     GLTexture2D(const string &filepath);
-    GLTexture2D(TextureType type, const string &filepath);
-    GLTexture2D(int width, int height, int samples);
+    GLTexture2D(const string &filepath, TextureType type, TextureInternalFormat internalFormat = TextureInternalFormat::Auto);
+    GLTexture2D(int width, int height, int samples, TextureInternalFormat internalFormat = TextureInternalFormat::RGBA);
     ~GLTexture2D();
 
     void Bind(uint32 slot = 0) const noexcept override;

@@ -39,4 +39,14 @@ namespace Krys
     Specular,
     Emission
   };
+
+  enum class TextureInternalFormat
+  {
+    None = 0,
+    Auto,
+    RGB,
+    RGBA,
+    SRGB,
+    SRGBA
+  };
 }

@@ -10,6 +10,7 @@ namespace Krys
     uint Id;
     uint32 Samples;
     TextureType Type;
+    TextureInternalFormat InternalFormat;
     uint Width, Height;
     string Path;
 
@@ -24,6 +25,11 @@ namespace Krys
     NO_DISCARD TextureType GetType() const noexcept
     {
       return Type;
+    }
+
+    NO_DISCARD TextureInternalFormat GetInternalFormat() const noexcept
+    {
+      return InternalFormat;
     }
 
     NO_DISCARD uint32 GetWidth() const noexcept

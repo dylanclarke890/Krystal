@@ -11,40 +11,44 @@ namespace Krys
     Width = 0;
     Height = 0;
     Samples = 1;
-    // TODO: is this a safe assumption?
     Type = TextureType::Diffuse;
+    InternalFormat = TextureInternalFormat::Auto;
 
     Load();
   }
 
-  GLTexture2D::GLTexture2D(TextureType type, const string &path)
+  GLTexture2D::GLTexture2D(const string &path, TextureType type, TextureInternalFormat internalFormat)
   {
-    Type = type;
     Path = path;
     Width = 0;
     Height = 0;
     Samples = 1;
+    Type = type;
+    InternalFormat = internalFormat;
 
     Load();
   }
 
-  GLTexture2D::GLTexture2D(int width, int height, int samples)
+  GLTexture2D::GLTexture2D(int width, int height, int samples, TextureInternalFormat internalFormat)
   {
-    Type = TextureType::Diffuse;
     Path = "N/A";
     Width = width;
     Height = height;
     Samples = samples;
+    Type = TextureType::Diffuse;
+
+    InternalFormat = internalFormat;
+    KRYS_ASSERT(InternalFormat != TextureInternalFormat::None && InternalFormat != TextureInternalFormat::Auto, "TextureInternal format cannot be deduced.", 0);
 
     if (IsMultisampled())
     {
       glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &Id);
-      glTextureStorage2DMultisample(Id, samples, GL_RGBA8, width, height, GL_TRUE);
+      glTextureStorage2DMultisample(Id, samples, ToGLInternalFormat(InternalFormat), width, height, GL_TRUE);
     }
     else
     {
       glCreateTextures(GL_TEXTURE_2D, 1, &Id);
-      glTextureStorage2D(Id, 1, GL_RGBA8, Width, Height);
+      glTextureStorage2D(Id, 1, ToGLInternalFormat(InternalFormat), Width, Height);
 
       glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -111,23 +115,24 @@ namespace Krys
     Width = width;
     Height = height;
 
-    auto internalFormat = GL_RGBA8;
-    auto dataFormat = GL_RGBA;
-    if (channels == 3)
+    if (InternalFormat == TextureInternalFormat::Auto)
     {
-      internalFormat = GL_RGB8;
-      dataFormat = GL_RGB;
+      InternalFormat = Type == TextureType::Diffuse ? TextureInternalFormat::SRGBA : TextureInternalFormat::RGBA;
+      if (channels == 3)
+      {
+        InternalFormat = Type == TextureType::Diffuse ? TextureInternalFormat::SRGB : TextureInternalFormat::RGB;
+      }
     }
 
     if (IsMultisampled())
     {
       glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &Id);
-      glTextureStorage2DMultisample(Id, Samples, internalFormat, width, height, GL_TRUE);
+      glTextureStorage2DMultisample(Id, Samples, ToGLInternalFormat(InternalFormat), width, height, GL_TRUE);
     }
     else
     {
       glCreateTextures(GL_TEXTURE_2D, 1, &Id);
-      glTextureStorage2D(Id, 1, GL_RGB8, Width, Height);
+      glTextureStorage2D(Id, 1, ToGLInternalFormat(InternalFormat), Width, Height);
 
       glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -136,7 +141,7 @@ namespace Krys
       glTextureParameteri(Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
     }
 
-    glTextureSubImage2D(Id, 0, 0, 0, Width, Height, dataFormat, GL_UNSIGNED_BYTE, data);
+    glTextureSubImage2D(Id, 0, 0, 0, Width, Height, ToGLDataFormat(InternalFormat), GL_UNSIGNED_BYTE, data);
 
     stbi_image_free(data);
   }
