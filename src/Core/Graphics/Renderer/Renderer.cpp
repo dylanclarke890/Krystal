@@ -90,17 +90,23 @@ namespace Krys
 
   Ref<GraphicsContext> Renderer::Context;
 
-  Ref<Shader> Renderer::PhongShader;
-  Ref<Shader> Renderer::ObjectShader;
-  Ref<VertexArray> Renderer::ObjectVertexArray;
-  Ref<VertexBuffer> Renderer::ObjectVertexBuffer;
-  Ref<IndexBuffer> Renderer::ObjectIndexBuffer;
-  Ref<UniformBuffer> Renderer::ObjectUniformBuffer;
+  Ref<Shader> Renderer::DefaultShader;
+  Ref<Shader> Renderer::LightingShader;
+  Ref<Shader> Renderer::SkyboxShader;
+
+  Ref<VertexArray> Renderer::DefaultVertexArray;
+  Ref<VertexArray> Renderer::SkyboxVertexArray;
+
+  Ref<VertexBuffer> Renderer::DefaultVertexBuffer;
+  Ref<VertexBuffer> Renderer::SkyboxVertexBuffer;
+  Ref<IndexBuffer> Renderer::DefaultIndexBuffer;
+  Ref<UniformBuffer> Renderer::SharedUniformBuffer;
+
+  Ref<TextureCubemap> Renderer::SkyboxCubemap;
 
   Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Renderer::Vertices;
-  uint Renderer::VertexCount;
-
   Unique<std::array<uint32, REN2D_MAX_INDICES>> Renderer::Indices;
+  uint Renderer::VertexCount;
   uint Renderer::IndexCount;
 
   Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> Renderer::TextureSlots;
@@ -120,26 +126,26 @@ namespace Krys
     Context = ctx;
 
     // Object shader
-    ObjectVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
-    ObjectVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float4, "i_ModelPosition"},
-                                                      {ShaderDataType::Float3, "i_Normal"},
-                                                      {ShaderDataType::Float4, "i_Color"},
-                                                      {ShaderDataType::Float2, "i_TextureCoord"},
-                                                      {ShaderDataType::Int, "i_TextureSlot"},
-                                                      {ShaderDataType::Int, "i_SpecularSlot"},
-                                                      {ShaderDataType::Int, "i_EmissionSlot"},
-                                                      {ShaderDataType::Float, "i_Shininess"}}));
-    ObjectIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
+    DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
+    DefaultVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float4, "i_ModelPosition"},
+                                                       {ShaderDataType::Float3, "i_Normal"},
+                                                       {ShaderDataType::Float4, "i_Color"},
+                                                       {ShaderDataType::Float2, "i_TextureCoord"},
+                                                       {ShaderDataType::Int, "i_TextureSlot"},
+                                                       {ShaderDataType::Int, "i_SpecularSlot"},
+                                                       {ShaderDataType::Int, "i_EmissionSlot"},
+                                                       {ShaderDataType::Float, "i_Shininess"}}));
+    DefaultIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
 
-    ObjectVertexArray = Context->CreateVertexArray();
-    ObjectVertexArray->AddVertexBuffer(ObjectVertexBuffer);
-    ObjectVertexArray->SetIndexBuffer(ObjectIndexBuffer);
-    ObjectUniformBuffer = Context->CreateUniformBuffer(0,
+    DefaultVertexArray = Context->CreateVertexArray();
+    DefaultVertexArray->AddVertexBuffer(DefaultVertexBuffer);
+    DefaultVertexArray->SetIndexBuffer(DefaultIndexBuffer);
+    SharedUniformBuffer = Context->CreateUniformBuffer(0,
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
 
-    PhongShader = Context->CreateShader("shaders/lighting/phong.vert", "shaders/lighting/phong.frag");
-    ObjectShader = Context->CreateShader("shaders/renderer-2d/v.vert", "shaders/renderer-2d/f.frag");
+    LightingShader = Context->CreateShader("shaders/lighting/phong.vert", "shaders/lighting/phong.frag");
+    DefaultShader = Context->CreateShader("shaders/renderer-2d/v.vert", "shaders/renderer-2d/f.frag");
 
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
@@ -149,12 +155,89 @@ namespace Krys
     for (uint32_t i = 0; i < REN2D_MAX_TEXTURE_SLOTS; i++)
       samplers[i] = i;
 
-    ObjectShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
-    PhongShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
+    DefaultShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
+    LightingShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
 
     Lights.Init(Context);
 
     Reset();
+  }
+
+  void Renderer::SetSkybox(std::array<string, 6> pathsToFaces)
+  {
+    // TODO: do this better
+    KRYS_ASSERT(!SkyboxVertexArray, "Skybox already set", 0);
+
+    float skyboxVertices[108] = {
+        // positions
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+
+        -1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+
+        -1.0f, 1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f};
+
+    SkyboxVertexArray = Context->CreateVertexArray();
+    SkyboxVertexBuffer = Context->CreateVertexBuffer(skyboxVertices, sizeof(skyboxVertices));
+    SkyboxVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float3, "a_Position"}}));
+    SkyboxVertexArray->AddVertexBuffer(SkyboxVertexBuffer);
+
+    SkyboxShader = Context->CreateShader("shaders/skybox/v.vert", "shaders/skybox/f.frag");
+    SkyboxCubemap = Context->CreateTextureCubemap(pathsToFaces);
+  }
+
+  void Renderer::DrawSkybox(Ref<Camera> camera)
+  {
+    KRYS_ASSERT(SkyboxVertexArray, "Skybox has not been set", 0);
+    
+    auto view = Mat4(Mat3(camera->GetView()));
+    auto viewProjection = camera->GetProjection() * view;
+
+    // TODO: save and restore the depth test func
+    Context->SetDepthTestFunc(DepthTestFunc::EqualOrLess);
+    {
+      SkyboxVertexArray->Bind();
+      SkyboxCubemap->Bind();
+      SkyboxShader->Bind();
+      SkyboxShader->SetUniform("u_ViewProjection", viewProjection);
+      Context->DrawVertices(36);
+    }
+    Context->SetDepthTestFunc(DepthTestFunc::Less);
   }
 
   void Renderer::Shutdown()
@@ -398,10 +481,10 @@ namespace Krys
 
   void Renderer::BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse)
   {
-    ObjectUniformBuffer->SetData("u_ViewProjection", camera->GetViewProjection());
-    ObjectUniformBuffer->SetData("u_CameraPosition", camera->GetPosition());
+    SharedUniformBuffer->SetData("u_ViewProjection", camera->GetViewProjection());
+    SharedUniformBuffer->SetData("u_CameraPosition", camera->GetPosition());
 
-    ShaderInUse = shaderToUse ? shaderToUse : PhongShader;
+    ShaderInUse = shaderToUse ? shaderToUse : LightingShader;
     SceneCameraPosition = Vec4(camera->GetPosition(), 1.0f);
     Reset();
   }
@@ -418,10 +501,10 @@ namespace Krys
       return;
 
     ShaderInUse->Bind();
-    ObjectVertexArray->Bind();
+    DefaultVertexArray->Bind();
 
-    ObjectVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
-    ObjectIndexBuffer->SetData(Indices->data(), IndexCount);
+    DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
+    DefaultIndexBuffer->SetData(Indices->data(), IndexCount);
 
     auto &textureSlots = *TextureSlots;
     for (int i = 0; i < TextureSlotIndex; i++)

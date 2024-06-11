@@ -534,7 +534,7 @@ namespace Krys
     return CreateRef<GLFramebuffer>(width, height, samples);
   }
 
-  Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(std::vector<string> paths) noexcept
+  Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(std::array<string, 6> paths) noexcept
   {
     return CreateRef<GLTextureCubemap>(paths);
   }

@@ -77,7 +77,7 @@ namespace Krys
 
     virtual Ref<Texture2D> CreateTexture2D(const string &filepath) noexcept = 0;
     virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept = 0;
-    virtual Ref<TextureCubemap> CreateTextureCubemap(std::vector<string> paths) noexcept = 0;
+    virtual Ref<TextureCubemap> CreateTextureCubemap(std::array<string, 6> paths) noexcept = 0;
 
     virtual Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples) noexcept = 0;
 #pragma endregion Graphics Objects

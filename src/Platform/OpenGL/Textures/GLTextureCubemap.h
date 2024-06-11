@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <array>
 #include <string>
 
 #include "Graphics/Textures/TextureCubemap.h"
@@ -11,7 +11,7 @@ namespace Krys
   class GLTextureCubemap : public TextureCubemap
   {
   public:
-    GLTextureCubemap(std::vector<string> faces);
+    GLTextureCubemap(std::array<string, 6> faces);
     ~GLTextureCubemap() override;
 
     void Bind(uint32 slot = 0) const noexcept override;

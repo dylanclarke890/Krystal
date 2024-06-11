@@ -45,18 +45,19 @@ namespace Krys
 
     static Ref<GraphicsContext> Context;
 
-    static Ref<Shader> PhongShader;
-    static Ref<Shader> ObjectShader;
-    static Ref<VertexArray> ObjectVertexArray;
-    static Ref<VertexBuffer> ObjectVertexBuffer;
-    static Ref<IndexBuffer> ObjectIndexBuffer;
-    static Ref<UniformBuffer> ObjectUniformBuffer;
+    static Ref<Shader> DefaultShader, LightingShader, SkyboxShader;
+
+    static Ref<VertexArray> DefaultVertexArray, SkyboxVertexArray;
+
+    static Ref<VertexBuffer> DefaultVertexBuffer, SkyboxVertexBuffer;
+    static Ref<IndexBuffer> DefaultIndexBuffer;
+    static Ref<UniformBuffer> SharedUniformBuffer;
+
+    static Ref<TextureCubemap> SkyboxCubemap;
 
     static Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Vertices;
-    static uint VertexCount;
-
     static Unique<std::array<uint32, REN2D_MAX_INDICES>> Indices;
-    static uint IndexCount;
+    static uint VertexCount, IndexCount;
 
     static Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> TextureSlots;
     static int TextureSlotIndex;
@@ -82,6 +83,9 @@ namespace Krys
     static void DrawCube(Ref<Transform> transform, Ref<Material> material);
     static void DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap);
     static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
+
+    static void SetSkybox(std::array<string, 6> pathsToFaces);
+    static void DrawSkybox(Ref<Camera> camera);
 
     static void BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse = nullptr);
     static void NextBatch();

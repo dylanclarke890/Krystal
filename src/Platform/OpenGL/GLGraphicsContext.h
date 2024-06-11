@@ -82,7 +82,7 @@ namespace Krys
 
     Ref<Texture2D> CreateTexture2D(const string &filepath) noexcept override;
     Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept override;
-    Ref<TextureCubemap> CreateTextureCubemap(std::vector<string> paths) noexcept override;
+    Ref<TextureCubemap> CreateTextureCubemap(std::array<string, 6> paths) noexcept override;
 
     Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples) noexcept override;
 #pragma endregion Graphics Objects

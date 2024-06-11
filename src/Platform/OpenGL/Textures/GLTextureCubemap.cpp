@@ -4,10 +4,8 @@
 
 namespace Krys
 {
-  GLTextureCubemap::GLTextureCubemap(std::vector<string> faces)
+  GLTextureCubemap::GLTextureCubemap(std::array<string, 6> faces)
   {
-    KRYS_ASSERT(faces.size() == 6, "Cube map must have exactly 6 textures", 0);
-
     glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &Id);
 
     stbi_set_flip_vertically_on_load(false);
