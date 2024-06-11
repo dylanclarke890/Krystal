@@ -116,9 +116,8 @@ namespace Krys
 
   void GLGraphicsContext::Init() noexcept
   {
-    // TODO: check we have the settings that we want.
     // desired pixel format attributes
-    const int32 i_pixel_format_attrib_list[] = {
+    const int32 pixelFormatAttribList[] = {
         WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,       // PFD_DRAW_TO_WINDOW
         WGL_SUPPORT_OPENGL_ARB, GL_TRUE,       // PFD_SUPPORT_OPENGL
         WGL_DOUBLE_BUFFER_ARB, GL_TRUE,        // PFD_DOUBLEBUFFER
@@ -133,37 +132,31 @@ namespace Krys
         WGL_SAMPLES_ARB, 4,
         0 // end
     };
+    int32 pixelFormatId;
+    uint pixelFormatCount;
 
-    int32 pixel_format_idx;
-    uint pixel_format_count;
-
-    auto chooseFormatSuccess = wglChoosePixelFormatARB(
-        dc, i_pixel_format_attrib_list, 0, 1, &pixel_format_idx,
-        &pixel_format_count);
-
-    KRYS_ASSERT(chooseFormatSuccess && pixel_format_count && pixel_format_count, "Cannot find an appropriate pixel format.", 0);
+    BOOL chooseFormatSuccess = wglChoosePixelFormatARB(dc, pixelFormatAttribList, 0, 1, &pixelFormatId, &pixelFormatCount);
+    KRYS_ASSERT(chooseFormatSuccess && pixelFormatId && pixelFormatCount, "Cannot find an appropriate pixel format.", 0);
 
     // set actual pixel format to device context
     PIXELFORMATDESCRIPTOR pfd{};
-    auto describeFormatSuccess = DescribePixelFormat(
-        dc, pixel_format_idx, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+    BOOL describeFormatSuccess = DescribePixelFormat(dc, pixelFormatId, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
     KRYS_ASSERT(describeFormatSuccess, "Unable to describe pixel format.", 0);
 
-    auto setPixelFormatSuccess = SetPixelFormat(dc, pixel_format_idx, &pfd);
+    BOOL setPixelFormatSuccess = SetPixelFormat(dc, pixelFormatId, &pfd);
     KRYS_ASSERT(setPixelFormatSuccess, "Unable to set pixel format.", 0);
 
     const uint32 OPENGL_MAJOR = 3;
     const uint32 OPENGL_MINOR = 3;
 
-    int32 attributes[] = {
+    int32 contextAttributes[] = {
         WGL_CONTEXT_MAJOR_VERSION_ARB, OPENGL_MAJOR,
         WGL_CONTEXT_MINOR_VERSION_ARB, OPENGL_MINOR,
         0 // end
     };
+    openGLContext = wglCreateContextAttribsARB(dc, 0, contextAttributes);
 
-    openGLContext = wglCreateContextAttribsARB(dc, 0, attributes);
-
-    auto makeCurrentSucess = wglMakeCurrent(dc, openGLContext);
+    BOOL makeCurrentSucess = wglMakeCurrent(dc, openGLContext);
     KRYS_ASSERT(makeCurrentSucess, "Failed to make the OpenGL context current.", 0);
 
     int32 version = gladLoaderLoadGL();
