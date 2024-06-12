@@ -96,6 +96,7 @@ namespace Krys
   Ref<Framebuffer> Renderer::DepthFramebuffer;
 
   Ref<Shader> Renderer::DefaultShader;
+  Ref<Shader> Renderer::DepthShader;
   Ref<Shader> Renderer::SkyboxShader;
 
   Ref<VertexArray> Renderer::DefaultVertexArray;
@@ -154,7 +155,8 @@ namespace Krys
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
 
-    DefaultShader = Context->CreateShader("shaders/lighting/phong.vert", "shaders/lighting/phong.frag");
+    DefaultShader = Context->CreateShader("shaders/renderer/default.vert", "shaders/lighting/default.frag");
+    DepthShader = Context->CreateShader("shaders/renderer/depth.vert", "shaders/lighting/depth.frag");
 
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();

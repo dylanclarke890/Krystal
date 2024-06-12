@@ -45,17 +45,12 @@ namespace Krys
     };
 
     static Ref<GraphicsContext> Context;
-
     static Ref<Framebuffer> ScreenFramebuffer, DepthFramebuffer;
-
-    static Ref<Shader> DefaultShader, SkyboxShader;
-
+    static Ref<Shader> DefaultShader, DepthShader, SkyboxShader;
     static Ref<VertexArray> DefaultVertexArray, SkyboxVertexArray;
-
     static Ref<VertexBuffer> DefaultVertexBuffer, SkyboxVertexBuffer;
     static Ref<IndexBuffer> DefaultIndexBuffer;
     static Ref<UniformBuffer> SharedUniformBuffer;
-
     static Ref<TextureCubemap> SkyboxCubemap;
 
     static Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Vertices;
