@@ -47,6 +47,7 @@ namespace Krys
     RGB,
     RGBA,
     SRGB,
-    SRGBA
+    SRGBA,
+    Depth
   };
 }

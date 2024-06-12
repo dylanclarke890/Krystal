@@ -77,6 +77,8 @@ namespace Krys
     case TextureInternalFormat::RGBA:
     case TextureInternalFormat::SRGBA:
       return GL_RGBA;
+    case TextureInternalFormat::Depth:
+      return GL_DEPTH_COMPONENT;
     case TextureInternalFormat::Auto:
     default:
     {
@@ -98,6 +100,8 @@ namespace Krys
       return GL_RGBA8;
     case TextureInternalFormat::SRGBA:
       return GL_SRGB8_ALPHA8;
+    case TextureInternalFormat::Depth:
+      return GL_DEPTH_COMPONENT24;
     case TextureInternalFormat::Auto:
     default:
     {

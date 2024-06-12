@@ -93,12 +93,12 @@ namespace Krys
     Stencil = 4
   };
 
-  inline RenderBuffer operator|(RenderBuffer a, RenderBuffer b)
+  inline constexpr RenderBuffer operator|(RenderBuffer a, RenderBuffer b)
   {
     return static_cast<RenderBuffer>(static_cast<uint>(a) | static_cast<uint>(b));
   }
 
-  inline bool operator&(RenderBuffer a, RenderBuffer b)
+  inline constexpr bool operator&(RenderBuffer a, RenderBuffer b)
   {
     return (static_cast<uint>(a) & static_cast<uint>(b));
   }

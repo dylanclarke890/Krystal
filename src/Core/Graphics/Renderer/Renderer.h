@@ -3,6 +3,7 @@
 #include <array>
 
 #include "Core.h"
+#include "Window.h"
 #include "Graphics/GraphicsContext.h"
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Transform.h"
@@ -45,7 +46,9 @@ namespace Krys
 
     static Ref<GraphicsContext> Context;
 
-    static Ref<Shader> DefaultShader, LightingShader, SkyboxShader;
+    static Ref<Framebuffer> ScreenFramebuffer, DepthFramebuffer;
+
+    static Ref<Shader> DefaultShader, SkyboxShader;
 
     static Ref<VertexArray> DefaultVertexArray, SkyboxVertexArray;
 
@@ -63,12 +66,11 @@ namespace Krys
     static int TextureSlotIndex;
 
     static Ref<Shader> ShaderInUse;
-    static Vec4 SceneCameraPosition;
 
   public:
     static LightManager Lights;
 
-    static void Init(Ref<GraphicsContext> ctx);
+    static void Init(Ref<Window> window, Ref<GraphicsContext> ctx);
     static void Shutdown();
 
     static void DrawTriangle(Ref<Transform> transform, Vec4 &color);

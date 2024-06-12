@@ -16,6 +16,7 @@ namespace Krys
     uint32 Id;
     uint32 Width, Height, Samples;
     std::vector<Ref<Texture2D>> ColorAttachments;
+    Ref<Texture2D> DepthAttachment;
 
   public:
     virtual ~Framebuffer() = default;
@@ -23,6 +24,7 @@ namespace Krys
     virtual void Unbind() noexcept = 0;
 
     virtual void AddColorAttachment() noexcept = 0;
+    virtual void AddDepthAttachment() noexcept = 0;
     virtual void AddDepthStencilAttachment() noexcept = 0;
 
     virtual void BlitTo(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept = 0;
@@ -50,6 +52,11 @@ namespace Krys
     {
       KRYS_ASSERT(index < ColorAttachments.size(), "Index out of bounds", 0);
       return ColorAttachments[index];
+    }
+
+    Ref<Texture2D> GetDepthAttachment()
+    {
+      return DepthAttachment;
     }
   };
 }

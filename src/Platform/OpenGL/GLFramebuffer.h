@@ -85,6 +85,19 @@ namespace Krys
       ColorAttachments.push_back(texture);
     }
 
+    void AddDepthAttachment() noexcept override
+    {
+      KRYS_ASSERT(!DepthAttachment, "Already has a depth attachment", 0);
+
+      Ref<Texture2D> texture = CreateRef<GLTexture2D>(Width, Height, Samples, TextureInternalFormat::Depth);
+      glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
+      // TODO: we're assuming that this is a depth only framebuffer.
+      glNamedFramebufferDrawBuffer(Id, GL_NONE);
+      glNamedFramebufferReadBuffer(Id, GL_NONE);
+
+      DepthAttachment = texture;
+    }
+
     void AddDepthStencilAttachment() noexcept override
     {
       // TODO: this is created assuming it isn't being sampled from as we don't have a class to represent this with yet.

@@ -84,14 +84,18 @@ namespace Krys
       {0.0f, -1.0f, 0.0f},
       {0.0f, -1.0f, 0.0f}};
 
+  constexpr RenderBuffer RENDER_BUFFERS_ALL = RenderBuffer::Color | RenderBuffer::Depth | RenderBuffer::Stencil;
 #pragma endregion Constants
 
 #pragma region Static Member Initialisation
 
-  Ref<GraphicsContext> Renderer::Context;
+  Ref<GraphicsContext>
+      Renderer::Context;
+
+  Ref<Framebuffer> Renderer::ScreenFramebuffer;
+  Ref<Framebuffer> Renderer::DepthFramebuffer;
 
   Ref<Shader> Renderer::DefaultShader;
-  Ref<Shader> Renderer::LightingShader;
   Ref<Shader> Renderer::SkyboxShader;
 
   Ref<VertexArray> Renderer::DefaultVertexArray;
@@ -113,19 +117,25 @@ namespace Krys
   int Renderer::TextureSlotIndex;
 
   Ref<Shader> Renderer::ShaderInUse;
-  Vec4 Renderer::SceneCameraPosition;
 
   LightManager Renderer::Lights;
 
 #pragma endregion Static Member Initialisation
 
+// TODO: Add `OnEvent` method for resizing framebuffers etc.
 #pragma region Lifecycle Methods
 
-  void Renderer::Init(Ref<GraphicsContext> ctx)
+  void Renderer::Init(Ref<Window> window, Ref<GraphicsContext> ctx)
   {
     Context = ctx;
 
-    // Object shader
+    DepthFramebuffer = Context->CreateFramebuffer(1024, 1024, 1);
+    DepthFramebuffer->AddDepthAttachment();
+
+    ScreenFramebuffer = Context->CreateFramebuffer(window->GetWidth(), window->GetHeight(), 4);
+    ScreenFramebuffer->AddColorAttachment();
+    ScreenFramebuffer->AddDepthStencilAttachment();
+
     DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
     DefaultVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float4, "i_ModelPosition"},
                                                        {ShaderDataType::Float3, "i_Normal"},
@@ -144,8 +154,7 @@ namespace Krys
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
 
-    LightingShader = Context->CreateShader("shaders/lighting/phong.vert", "shaders/lighting/phong.frag");
-    DefaultShader = Context->CreateShader("shaders/renderer-2d/v.vert", "shaders/renderer-2d/f.frag");
+    DefaultShader = Context->CreateShader("shaders/lighting/phong.vert", "shaders/lighting/phong.frag");
 
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
@@ -154,9 +163,10 @@ namespace Krys
     int samplers[REN2D_MAX_TEXTURE_SLOTS]{};
     for (uint32_t i = 0; i < REN2D_MAX_TEXTURE_SLOTS; i++)
       samplers[i] = i;
+    // Last texture slot is reserved for depth pass texture.
+    (*TextureSlots)[REN2D_MAX_TEXTURE_SLOTS - 1] = DepthFramebuffer->GetDepthAttachment();
 
     DefaultShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
-    LightingShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
 
     Lights.Init(Context);
 
@@ -484,8 +494,7 @@ namespace Krys
     SharedUniformBuffer->SetData("u_ViewProjection", camera->GetViewProjection());
     SharedUniformBuffer->SetData("u_CameraPosition", camera->GetPosition());
 
-    ShaderInUse = shaderToUse ? shaderToUse : LightingShader;
-    SceneCameraPosition = Vec4(camera->GetPosition(), 1.0f);
+    ShaderInUse = shaderToUse ? shaderToUse : DefaultShader;
     Reset();
   }
 
@@ -510,7 +519,24 @@ namespace Krys
     for (int i = 0; i < TextureSlotIndex; i++)
       textureSlots[i]->Bind(i);
 
+    Context->SetViewport(DepthFramebuffer->GetWidth(), DepthFramebuffer->GetHeight());
+    DepthFramebuffer->Bind();
+    Context->Clear(RenderBuffer::Depth);
     Context->DrawIndices(IndexCount, DrawMode::Triangles);
+
+    Context->SetViewport(ScreenFramebuffer->GetWidth(), ScreenFramebuffer->GetHeight());
+    ScreenFramebuffer->Bind();
+    Context->Clear(RENDER_BUFFERS_ALL);
+    Context->DrawIndices(IndexCount, DrawMode::Triangles);
+    ScreenFramebuffer->Unbind();
+
+    RectBounds bounds;
+    bounds.Left = 0;
+    bounds.Bottom = 0;
+    bounds.Right = static_cast<float>(ScreenFramebuffer->GetWidth());
+    bounds.Top = static_cast<float>(ScreenFramebuffer->GetHeight());
+    ScreenFramebuffer->BlitToScreen(bounds, bounds, RENDER_BUFFERS_ALL);
+    // Any post processing effects can be done here instead of blitting
   }
 
   void Renderer::EndScene()
@@ -553,7 +579,8 @@ namespace Krys
 
     if (textureSlotIndex == -1)
     {
-      if (TextureSlotIndex == REN2D_MAX_TEXTURE_SLOTS - 1)
+      // Last texture slot is reserved for depth pass texture.
+      if (TextureSlotIndex == REN2D_MAX_TEXTURE_SLOTS - 2)
       {
         NextBatch();
       }
