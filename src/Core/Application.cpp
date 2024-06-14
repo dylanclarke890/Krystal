@@ -32,6 +32,18 @@ namespace Krys
     Window->Show();
   }
 
+  void Application::BeginFrame()
+  {
+    Window->BeginFrame();
+    Input::BeginFrame();
+  }
+
+  void Application::EndFrame()
+  {
+    Window->EndFrame();
+    Input::EndFrame();
+  }
+
   void Application::Run()
   {
     IsRunning = true;
@@ -39,11 +51,12 @@ namespace Krys
 
     while (IsRunning)
     {
-      // KRYS_LOG("Delta Time: %f", Time::GetDeltaMs());
       int64 startCounter = Performance::GetTicks();
+      BeginFrame();
       {
-        Update(elapsedMs);
+        Update(elapsedMs / 1000.0f);
       }
+      EndFrame();
       int64 endCounter = Performance::GetTicks();
       elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
 

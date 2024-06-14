@@ -101,6 +101,8 @@ namespace Krys
     void AddDepthStencilAttachment() noexcept override
     {
       // TODO: this is created assuming it isn't being sampled from as we don't have a class to represent this with yet.
+      // Also we can't actually sample render buffer objects, consider having ColorAttachmentType so we can
+      // optimise where possible
       uint rbo;
       glCreateRenderbuffers(1, &rbo);
       if (Samples > 1)
@@ -110,14 +112,21 @@ namespace Krys
       glNamedFramebufferRenderbuffer(Id, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
     }
 
+    NO_DISCARD bool IsComplete() noexcept override
+    {
+      GLenum status = glCheckNamedFramebufferStatus(Id, GL_FRAMEBUFFER);
+      return status == GL_FRAMEBUFFER_COMPLETE;
+    }
+
     void BlitTo(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
     {
       Blit(Id, other->GetId(), src, dst, mask);
     }
 
-    void BlitFrom(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
+    void BlitTo(Ref<Framebuffer> other, int width, int height, RenderBuffer mask) noexcept override
     {
-      Blit(other->GetId(), Id, src, dst, mask);
+      RectBounds bounds = {0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)};
+      Blit(Id, other->GetId(), bounds, bounds, mask);
     }
 
     void BlitToScreen(RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
@@ -125,9 +134,32 @@ namespace Krys
       Blit(Id, 0, src, dst, mask);
     }
 
+    void BlitToScreen(int width, int height, RenderBuffer mask) noexcept override
+    {
+      RectBounds bounds = {0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)};
+      Blit(Id, 0, bounds, bounds, mask);
+    }
+
+    void BlitFrom(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
+    {
+      Blit(other->GetId(), Id, src, dst, mask);
+    }
+
+    void BlitFrom(Ref<Framebuffer> other, int width, int height, RenderBuffer mask) noexcept override
+    {
+      RectBounds bounds = {0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)};
+      Blit(other->GetId(), Id, bounds, bounds, mask);
+    }
+
     void BlitFromScreen(RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
     {
       Blit(0, Id, src, dst, mask);
+    }
+
+    void BlitFromScreen(int width, int height, RenderBuffer mask) noexcept override
+    {
+      RectBounds bounds = {0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)};
+      Blit(0, Id, bounds, bounds, mask);
     }
 
     static void Blit(uint32 a, uint32 b, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept
@@ -135,11 +167,10 @@ namespace Krys
       auto IntCast = [](float val)
       { return static_cast<int>(val); };
 
-      int glMask = ToGLBufferFlags(mask);
       glBlitNamedFramebuffer(a, b,
                              IntCast(src.Left), IntCast(src.Bottom), IntCast(src.Right), IntCast(src.Top),
                              IntCast(dst.Left), IntCast(dst.Bottom), IntCast(dst.Right), IntCast(dst.Top),
-                             glMask, GL_NEAREST);
+                             ToGLBufferFlags(mask), GL_NEAREST);
     }
   };
 }

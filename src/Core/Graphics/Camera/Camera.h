@@ -22,7 +22,7 @@ namespace Krys
       return Position;
     }
 
-    void SetPosition(Vec3 position) noexcept
+    void SetPosition(const Vec3 &position) noexcept
     {
       Position = position;
       CalculateViewMatrix();

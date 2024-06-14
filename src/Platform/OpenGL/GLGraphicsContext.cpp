@@ -202,12 +202,7 @@ namespace Krys
     glClear(glFlags);
   }
 
-  void GLGraphicsContext::SetClearColor(Vec4 &color) noexcept
-  {
-    glClearColor(color.x, color.y, color.z, color.a);
-  }
-
-  void GLGraphicsContext::SetClearColor(Vec4 color) noexcept
+  void GLGraphicsContext::SetClearColor(const Vec4 &color) noexcept
   {
     glClearColor(color.x, color.y, color.z, color.a);
   }

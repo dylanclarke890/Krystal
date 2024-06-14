@@ -24,8 +24,7 @@ namespace Krys
     void Clear(RenderBuffer flags = RenderBuffer::Color) noexcept override;
 
 #pragma region State Settings
-    void SetClearColor(Vec4 &color) noexcept override;
-    void SetClearColor(Vec4 color) noexcept override;
+    void SetClearColor(const Vec4 &color) noexcept override;
     void SetViewport(int width, int height) noexcept override;
 
     void SetMultisamplingEnabled(bool enable) noexcept override;

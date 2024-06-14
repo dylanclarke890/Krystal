@@ -117,10 +117,10 @@ namespace Krys
 
     if (InternalFormat == TextureInternalFormat::Auto)
     {
-      InternalFormat = Type == TextureType::Diffuse ? TextureInternalFormat::SRGBA : TextureInternalFormat::RGBA;
+      InternalFormat = TextureInternalFormat::RGBA;
       if (channels == 3)
       {
-        InternalFormat = Type == TextureType::Diffuse ? TextureInternalFormat::SRGB : TextureInternalFormat::RGB;
+        InternalFormat = TextureInternalFormat::RGB;
       }
     }
 

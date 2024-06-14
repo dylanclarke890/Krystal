@@ -7,7 +7,6 @@
 namespace Krys
 {
 #pragma region Constants
-
   constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
   constexpr Vec3 QUAD_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
   constexpr Vec4 QUAD_LOCAL_SPACE_VERTICES[] = {{-0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, 0.5f, 0.0f, 1.0f}, {-0.5f, 0.5f, 0.0f, 1.0f}};
@@ -84,26 +83,39 @@ namespace Krys
       {0.0f, -1.0f, 0.0f},
       {0.0f, -1.0f, 0.0f}};
 
-  constexpr RenderBuffer RENDER_BUFFERS_ALL = RenderBuffer::Color | RenderBuffer::Depth | RenderBuffer::Stencil;
+  static float SCREEN_QUAD_VERTICES[] = {
+      //       Pos    Tex coords
+      -1.0f, 1.0f, 0.0f, 1.0f,
+      -1.0f, -1.0f, 0.0f, 0.0f,
+      1.0f, -1.0f, 1.0f, 0.0f,
+      -1.0f, 1.0f, 0.0f, 1.0f,
+      1.0f, -1.0f, 1.0f, 0.0f,
+      1.0f, 1.0f, 1.0f, 1.0f};
+
 #pragma endregion Constants
 
 #pragma region Static Member Initialisation
 
-  Ref<GraphicsContext>
-      Renderer::Context;
+  Ref<GraphicsContext> Renderer::Context;
 
-  Ref<Framebuffer> Renderer::ScreenFramebuffer;
-  Ref<Framebuffer> Renderer::DepthFramebuffer;
+  Ref<Framebuffer> Renderer::DefaultFramebuffer;
+  Ref<Framebuffer> Renderer::DepthPassFramebuffer;
+  Ref<Framebuffer> Renderer::PostProcessingFramebuffer;
 
   Ref<Shader> Renderer::DefaultShader;
-  Ref<Shader> Renderer::DepthShader;
+  Ref<Shader> Renderer::DepthPassShader;
+  Ref<Shader> Renderer::LightSourceShader;
   Ref<Shader> Renderer::SkyboxShader;
+  Ref<Shader> Renderer::PostProcessingShader;
 
   Ref<VertexArray> Renderer::DefaultVertexArray;
+  Ref<VertexArray> Renderer::PostProcessingVertexArray;
   Ref<VertexArray> Renderer::SkyboxVertexArray;
 
   Ref<VertexBuffer> Renderer::DefaultVertexBuffer;
+  Ref<VertexBuffer> Renderer::PostProcessingVertexBuffer;
   Ref<VertexBuffer> Renderer::SkyboxVertexBuffer;
+
   Ref<IndexBuffer> Renderer::DefaultIndexBuffer;
   Ref<UniformBuffer> Renderer::SharedUniformBuffer;
 
@@ -117,8 +129,13 @@ namespace Krys
   Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> Renderer::TextureSlots;
   int Renderer::TextureSlotIndex;
 
-  Ref<Shader> Renderer::ShaderInUse;
+  Ref<Shader> Renderer::ActiveShader;
+  Ref<Camera> Renderer::ActiveCamera;
+  Ref<OrthographicCamera> Renderer::DepthPassCamera;
+  bool Renderer::IsPostProcessingEnabled;
+  bool Renderer::IsWireFrameDrawingEnabled;
 
+  Ref<Transform> Renderer::LightSourceTransform;
   LightManager Renderer::Lights;
 
 #pragma endregion Static Member Initialisation
@@ -130,33 +147,54 @@ namespace Krys
   {
     Context = ctx;
 
-    DepthFramebuffer = Context->CreateFramebuffer(1024, 1024, 1);
-    DepthFramebuffer->AddDepthAttachment();
+    DefaultFramebuffer = Context->CreateFramebuffer(window->GetWidth(), window->GetHeight(), 4);
+    DefaultFramebuffer->AddColorAttachment();
+    DefaultFramebuffer->AddDepthStencilAttachment();
 
-    ScreenFramebuffer = Context->CreateFramebuffer(window->GetWidth(), window->GetHeight(), 4);
-    ScreenFramebuffer->AddColorAttachment();
-    ScreenFramebuffer->AddDepthStencilAttachment();
+    PostProcessingFramebuffer = Context->CreateFramebuffer(window->GetWidth(), window->GetHeight(), 1);
+    PostProcessingFramebuffer->AddColorAttachment();
+    PostProcessingFramebuffer->AddDepthStencilAttachment();
+
+    DepthPassFramebuffer = Context->CreateFramebuffer(1024, 1024, 1);
+    DepthPassFramebuffer->AddDepthAttachment();
+
+    RectBounds depthPassCameraBounds = {-10.0f, 10.0f, -10.0f, 10.0f};
+    DepthPassCamera = CreateRef<OrthographicCamera>(depthPassCameraBounds, 1.0f, 7.5f);
+    DepthPassCamera->SetPosition(Vec3(-2.0f, 4.0f, -1.0f));
+    DepthPassCamera->SetRotation(0.0f);
 
     DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
-    DefaultVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float4, "i_ModelPosition"},
-                                                       {ShaderDataType::Float3, "i_Normal"},
-                                                       {ShaderDataType::Float4, "i_Color"},
-                                                       {ShaderDataType::Float2, "i_TextureCoord"},
-                                                       {ShaderDataType::Int, "i_TextureSlot"},
-                                                       {ShaderDataType::Int, "i_SpecularSlot"},
-                                                       {ShaderDataType::Int, "i_EmissionSlot"},
-                                                       {ShaderDataType::Float, "i_Shininess"}}));
+    DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_ModelPosition"},
+                                     {ShaderDataType::Float3, "i_Normal"},
+                                     {ShaderDataType::Float4, "i_Color"},
+                                     {ShaderDataType::Float2, "i_TextureCoord"},
+                                     {ShaderDataType::Int, "i_TextureSlot"},
+                                     {ShaderDataType::Int, "i_SpecularSlot"},
+                                     {ShaderDataType::Int, "i_EmissionSlot"},
+                                     {ShaderDataType::Float, "i_Shininess"}}});
+
+    PostProcessingVertexBuffer = Context->CreateVertexBuffer(SCREEN_QUAD_VERTICES, sizeof(SCREEN_QUAD_VERTICES));
+    PostProcessingVertexBuffer->SetLayout({{{ShaderDataType::Float2, "i_Position"},
+                                            {ShaderDataType::Float2, "i_TextureCoord"}}});
+
     DefaultIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
 
     DefaultVertexArray = Context->CreateVertexArray();
     DefaultVertexArray->AddVertexBuffer(DefaultVertexBuffer);
     DefaultVertexArray->SetIndexBuffer(DefaultIndexBuffer);
+
+    PostProcessingVertexArray = Context->CreateVertexArray();
+    PostProcessingVertexArray->AddVertexBuffer(PostProcessingVertexBuffer);
+
     SharedUniformBuffer = Context->CreateUniformBuffer(0,
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
 
-    DefaultShader = Context->CreateShader("shaders/renderer/default.vert", "shaders/lighting/default.frag");
-    DepthShader = Context->CreateShader("shaders/renderer/depth.vert", "shaders/lighting/depth.frag");
+    DefaultShader = Context->CreateShader("shaders/renderer/default.vert", "shaders/renderer/default.frag");
+    DepthPassShader = Context->CreateShader("shaders/renderer/depth.vert", "shaders/renderer/depth.frag");
+    LightSourceShader = Context->CreateShader("shaders/renderer/light-source.vert", "shaders/renderer/light-source.frag");
+    SkyboxShader = Context->CreateShader("shaders/renderer/skybox.vert", "shaders/renderer/skybox.frag");
+    PostProcessingShader = Context->CreateShader("shaders/renderer/post.vert", "shaders/renderer/post.frag");
 
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
@@ -165,91 +203,14 @@ namespace Krys
     int samplers[REN2D_MAX_TEXTURE_SLOTS]{};
     for (uint32_t i = 0; i < REN2D_MAX_TEXTURE_SLOTS; i++)
       samplers[i] = i;
-    // Last texture slot is reserved for depth pass texture.
-    (*TextureSlots)[REN2D_MAX_TEXTURE_SLOTS - 1] = DepthFramebuffer->GetDepthAttachment();
 
     DefaultShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
+    PostProcessingShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
 
     Lights.Init(Context);
+    LightSourceTransform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f));
 
     Reset();
-  }
-
-  void Renderer::SetSkybox(std::array<string, 6> pathsToFaces)
-  {
-    // TODO: do this better
-    KRYS_ASSERT(!SkyboxVertexArray, "Skybox already set", 0);
-
-    float skyboxVertices[108] = {
-        // positions
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-
-        -1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, 1.0f,
-        -1.0f, -1.0f, 1.0f,
-
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-
-        -1.0f, -1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, 1.0f,
-
-        -1.0f, 1.0f, -1.0f,
-        1.0f, 1.0f, -1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, -1.0f,
-
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f};
-
-    SkyboxVertexArray = Context->CreateVertexArray();
-    SkyboxVertexBuffer = Context->CreateVertexBuffer(skyboxVertices, sizeof(skyboxVertices));
-    SkyboxVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float3, "a_Position"}}));
-    SkyboxVertexArray->AddVertexBuffer(SkyboxVertexBuffer);
-
-    SkyboxShader = Context->CreateShader("shaders/skybox/v.vert", "shaders/skybox/f.frag");
-    SkyboxCubemap = Context->CreateTextureCubemap(pathsToFaces);
-  }
-
-  void Renderer::DrawSkybox(Ref<Camera> camera)
-  {
-    KRYS_ASSERT(SkyboxVertexArray, "Skybox has not been set", 0);
-    
-    auto view = Mat4(Mat3(camera->GetView()));
-    auto viewProjection = camera->GetProjection() * view;
-
-    // TODO: save and restore the depth test func
-    Context->SetDepthTestFunc(DepthTestFunc::EqualOrLess);
-    {
-      SkyboxVertexArray->Bind();
-      SkyboxCubemap->Bind();
-      SkyboxShader->Bind();
-      SkyboxShader->SetUniform("u_ViewProjection", viewProjection);
-      Context->DrawVertices(36);
-    }
-    Context->SetDepthTestFunc(DepthTestFunc::Less);
   }
 
   void Renderer::Shutdown()
@@ -484,20 +445,99 @@ namespace Krys
 
 #pragma endregion Drawing Cubes
 
+#pragma region Skybox
+
+  void Renderer::SetSkybox(std::array<string, 6> pathsToFaces)
+  {
+    // TODO: do this better
+    KRYS_ASSERT(!SkyboxVertexArray, "Skybox already set", 0);
+
+    float skyboxVertices[108] = {
+        // positions
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+
+        -1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+
+        -1.0f, 1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f};
+
+    SkyboxVertexArray = Context->CreateVertexArray();
+    SkyboxVertexBuffer = Context->CreateVertexBuffer(skyboxVertices, sizeof(skyboxVertices));
+    SkyboxVertexBuffer->SetLayout(VertexBufferLayout({{ShaderDataType::Float3, "a_Position"}}));
+    SkyboxVertexArray->AddVertexBuffer(SkyboxVertexBuffer);
+
+    SkyboxCubemap = Context->CreateTextureCubemap(pathsToFaces);
+  }
+
+#pragma endregion Skybox
+
+  void Renderer::SetPostProcessingEnabled(bool enabled)
+  {
+    IsPostProcessingEnabled = enabled;
+  }
+
+  void Renderer::SetWireFrameModeEnabled(bool enabled)
+  {
+    IsWireFrameDrawingEnabled = enabled;
+  }
+
+  void Renderer::BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse)
+  {
+    KRYS_ASSERT(camera, "Cannot begin scene with a null camera.", 0);
+    ActiveCamera = camera;
+    ActiveShader = shaderToUse ? shaderToUse : DefaultShader;
+
+    SharedUniformBuffer->SetData("u_ViewProjection", camera->GetViewProjection());
+    SharedUniformBuffer->SetData("u_CameraPosition", camera->GetPosition());
+
+    Reset();
+  }
+
+  void Renderer::EndScene()
+  {
+    Flush();
+  }
+
   void Renderer::Reset()
   {
     VertexCount = 0;
     IndexCount = 0;
     TextureSlotIndex = 0;
-  }
-
-  void Renderer::BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse)
-  {
-    SharedUniformBuffer->SetData("u_ViewProjection", camera->GetViewProjection());
-    SharedUniformBuffer->SetData("u_CameraPosition", camera->GetPosition());
-
-    ShaderInUse = shaderToUse ? shaderToUse : DefaultShader;
-    Reset();
   }
 
   void Renderer::NextBatch()
@@ -511,39 +551,103 @@ namespace Krys
     if (VertexCount == 0)
       return;
 
-    ShaderInUse->Bind();
-    DefaultVertexArray->Bind();
-
-    DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
-    DefaultIndexBuffer->SetData(Indices->data(), IndexCount);
-
     auto &textureSlots = *TextureSlots;
     for (int i = 0; i < TextureSlotIndex; i++)
       textureSlots[i]->Bind(i);
 
-    Context->SetViewport(DepthFramebuffer->GetWidth(), DepthFramebuffer->GetHeight());
-    DepthFramebuffer->Bind();
-    Context->Clear(RenderBuffer::Depth);
-    Context->DrawIndices(IndexCount, DrawMode::Triangles);
+    DefaultVertexArray->Bind();
+    DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
+    DefaultIndexBuffer->SetData(Indices->data(), IndexCount);
 
-    Context->SetViewport(ScreenFramebuffer->GetWidth(), ScreenFramebuffer->GetHeight());
-    ScreenFramebuffer->Bind();
-    Context->Clear(RENDER_BUFFERS_ALL);
-    Context->DrawIndices(IndexCount, DrawMode::Triangles);
-    ScreenFramebuffer->Unbind();
+    if (IsWireFrameDrawingEnabled)
+      Context->SetWireframeModeEnabled(true);
 
-    RectBounds bounds;
-    bounds.Left = 0;
-    bounds.Bottom = 0;
-    bounds.Right = static_cast<float>(ScreenFramebuffer->GetWidth());
-    bounds.Top = static_cast<float>(ScreenFramebuffer->GetHeight());
-    ScreenFramebuffer->BlitToScreen(bounds, bounds, RENDER_BUFFERS_ALL);
-    // Any post processing effects can be done here instead of blitting
-  }
+    // Depth Pass
+    {
+      DepthPassFramebuffer->Bind();
+      Context->SetViewport(DepthPassFramebuffer->GetWidth(), DepthPassFramebuffer->GetHeight());
+      Context->Clear(RenderBuffer::Depth);
 
-  void Renderer::EndScene()
-  {
-    Flush();
+      DepthPassShader->Bind();
+      DepthPassShader->SetUniform("u_LightViewProjection", DepthPassCamera->GetViewProjection());
+      Context->DrawIndices(IndexCount, DrawMode::Triangles);
+    }
+
+    // Geometry Pass
+    {
+      DefaultFramebuffer->Bind();
+      Context->SetViewport(DefaultFramebuffer->GetWidth(), DefaultFramebuffer->GetHeight());
+      Context->Clear(RenderBuffer::All);
+
+      ActiveShader->Bind();
+      Context->DrawIndices(IndexCount, DrawMode::Triangles);
+    }
+
+    // Draw Lights
+    {
+      LightSourceShader->Bind();
+      Reset();
+
+      for (auto pointLight : Renderer::Lights.GetPointLights())
+      {
+        if (!pointLight.Enabled)
+          continue;
+        LightSourceTransform->Position = pointLight.Position;
+        Renderer::DrawCube(LightSourceTransform, Colors::Blue);
+      }
+
+      for (auto spotLight : Renderer::Lights.GetSpotLights())
+      {
+        if (!spotLight.Enabled)
+          continue;
+        LightSourceTransform->Position = spotLight.Position;
+        Renderer::DrawCube(LightSourceTransform, Colors::Yellow);
+      }
+
+      DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
+      DefaultIndexBuffer->SetData(Indices->data(), IndexCount);
+      Context->DrawIndices(IndexCount, DrawMode::Triangles);
+    }
+
+    // Draw Skybox
+    if (SkyboxCubemap)
+    {
+      // TODO: save and restore the depth test func that's set before we draw the skybox
+
+      auto view = Mat4(Mat3(ActiveCamera->GetView()));
+      auto viewProjection = ActiveCamera->GetProjection() * view;
+      Context->SetDepthTestFunc(DepthTestFunc::EqualOrLess);
+      {
+        SkyboxVertexArray->Bind();
+        SkyboxCubemap->Bind();
+        SkyboxShader->Bind();
+        SkyboxShader->SetUniform("u_ViewProjection", viewProjection);
+        Context->DrawVertices(36);
+      }
+      Context->SetDepthTestFunc(DepthTestFunc::Less);
+    }
+
+    if (IsWireFrameDrawingEnabled)
+      Context->SetWireframeModeEnabled(false);
+
+    // Post Processing / Output to Screen
+    DefaultFramebuffer->Unbind();
+    if (IsPostProcessingEnabled)
+    {
+      DefaultFramebuffer->BlitTo(PostProcessingFramebuffer,
+                                 DefaultFramebuffer->GetWidth(), DefaultFramebuffer->GetHeight(),
+                                 RenderBuffer::All);
+
+      PostProcessingShader->Bind();
+      PostProcessingVertexArray->Bind();
+      PostProcessingFramebuffer->GetColorAttachment()->Bind();
+      Context->DrawVertices(6, DrawMode::Triangles);
+    }
+    else
+    {
+      DefaultFramebuffer->BlitToScreen(DefaultFramebuffer->GetWidth(), DefaultFramebuffer->GetHeight(),
+                                       RenderBuffer::All);
+    }
   }
 
   void Renderer::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
@@ -581,8 +685,7 @@ namespace Krys
 
     if (textureSlotIndex == -1)
     {
-      // Last texture slot is reserved for depth pass texture.
-      if (TextureSlotIndex == REN2D_MAX_TEXTURE_SLOTS - 2)
+      if (TextureSlotIndex == REN2D_MAX_TEXTURE_SLOTS - 1)
       {
         NextBatch();
       }

@@ -5,7 +5,9 @@
 #include "Core.h"
 #include "Window.h"
 #include "Graphics/GraphicsContext.h"
+#include "Graphics/Colors.h"
 #include "Graphics/Camera/Camera.h"
+#include "Graphics/Camera/Orthographic.h"
 #include "Graphics/Transform.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/Lighting/LightManager.h"
@@ -45,10 +47,10 @@ namespace Krys
     };
 
     static Ref<GraphicsContext> Context;
-    static Ref<Framebuffer> ScreenFramebuffer, DepthFramebuffer;
-    static Ref<Shader> DefaultShader, DepthShader, SkyboxShader;
-    static Ref<VertexArray> DefaultVertexArray, SkyboxVertexArray;
-    static Ref<VertexBuffer> DefaultVertexBuffer, SkyboxVertexBuffer;
+    static Ref<Framebuffer> DefaultFramebuffer, DepthPassFramebuffer, PostProcessingFramebuffer;
+    static Ref<Shader> DefaultShader, DepthPassShader, LightSourceShader, SkyboxShader, PostProcessingShader;
+    static Ref<VertexArray> DefaultVertexArray, PostProcessingVertexArray, SkyboxVertexArray;
+    static Ref<VertexBuffer> DefaultVertexBuffer, PostProcessingVertexBuffer, SkyboxVertexBuffer;
     static Ref<IndexBuffer> DefaultIndexBuffer;
     static Ref<UniformBuffer> SharedUniformBuffer;
     static Ref<TextureCubemap> SkyboxCubemap;
@@ -60,7 +62,12 @@ namespace Krys
     static Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> TextureSlots;
     static int TextureSlotIndex;
 
-    static Ref<Shader> ShaderInUse;
+    static Ref<Shader> ActiveShader;
+    static Ref<Camera> ActiveCamera;
+    static Ref<OrthographicCamera> DepthPassCamera;
+    static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled;
+
+    static Ref<Transform> LightSourceTransform;
 
   public:
     static LightManager Lights;
@@ -82,7 +89,8 @@ namespace Krys
     static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
 
     static void SetSkybox(std::array<string, 6> pathsToFaces);
-    static void DrawSkybox(Ref<Camera> camera);
+    static void SetPostProcessingEnabled(bool enabled);
+    static void SetWireFrameModeEnabled(bool enabled);
 
     static void BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse = nullptr);
     static void NextBatch();
