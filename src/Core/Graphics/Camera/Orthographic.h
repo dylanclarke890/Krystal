@@ -7,7 +7,7 @@
 
 namespace Krys
 {
-  // TODO: test rotation
+  // TODO: we need to handle perspective division if we use this camera with our current shaders (is this right? I really don't know)
   class OrthographicCamera : public Camera
   {
     friend class OrthographicCameraController;

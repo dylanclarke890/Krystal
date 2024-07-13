@@ -107,5 +107,6 @@ namespace Krys
       {UniformDataType::Scalar, "u_DirectionalLightCount"},
       {UniformDataType::Scalar, "u_PointLightCount"},
       {UniformDataType::Scalar, "u_SpotLightCount"},
-      {UniformDataType::Scalar, "u_UseBlinnLightingModel"}};
+      {UniformDataType::Scalar, "u_UseBlinnLightingModel"},
+      {UniformDataType::Scalar, "u_LightingEnabled"}};
 }

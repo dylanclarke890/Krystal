@@ -76,6 +76,7 @@ layout (std140, binding = 1) uniform Lights
   int u_PointLightCount;
   int u_SpotLightCount;
   bool u_UseBlinnLightingModel;
+  bool u_LightingEnabled;
 };
 
 uniform sampler2D u_Textures[32];
@@ -99,6 +100,7 @@ void main()
   vec3 emissionSample = vec3(GetTextureSample(v_EmissionSlot, vec4(0.0)));
 
   vec3 lighting = vec3(0.0);
+  if (u_LightingEnabled)
   { 
    for (int i = 0; i < u_DirectionalLightCount; i++) {
       lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample);
@@ -111,6 +113,10 @@ void main()
     for (int i = 0; i < u_SpotLightCount; i++) {
       lighting += CalcSpotLight(u_SpotLights[i], normal, diffuseSample, specularSample);
     }
+  }
+  else 
+  {
+    lighting = diffuseSample;
   }
 
   o_Color = vec4(lighting, 1.0);
