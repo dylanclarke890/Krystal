@@ -333,6 +333,7 @@ namespace Krys
 
   void Renderer::DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap)
   {
+    // TODO: ?? Implement this you fool (jk love you bitch)
     TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, REN2D_DEFAULT_COLOR};
     DrawCube(transform, textureData);
   }
@@ -613,7 +614,6 @@ namespace Krys
     if (SkyboxCubemap)
     {
       // TODO: save and restore the depth test func that's set before we draw the skybox
-
       auto view = Mat4(Mat3(ActiveCamera->GetView()));
       auto viewProjection = ActiveCamera->GetProjection() * view;
       Context->SetDepthTestFunc(DepthTestFunc::EqualOrLess);
