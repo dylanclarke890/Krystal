@@ -102,6 +102,11 @@ namespace Krys
       LightBuffer->SetData("u_UseBlinnLightingModel", model == LightingModel::BlinnPhong);
     }
 
+    void Enable(bool enabled = true)
+    {
+      LightBuffer->SetData("u_LightingEnabled", enabled);
+    }
+
     void Bind()
     {
       LightBuffer->Bind();

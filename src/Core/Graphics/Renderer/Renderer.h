@@ -19,6 +19,7 @@ namespace Krys
   constexpr uint REN2D_MAX_VERTICES = REN2D_MAX_QUADS * 4;
   constexpr uint REN2D_MAX_INDICES = REN2D_MAX_QUADS * 6;
   constexpr uint REN2D_MAX_TEXTURE_SLOTS = 32; // TODO: get this from the graphics API.
+  constexpr uint REN2D_RESERVED_TEXTURE_SLOTS = 1;
   static Vec4 REN2D_DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
 
   struct VertexData
@@ -64,7 +65,7 @@ namespace Krys
 
     static Ref<Shader> ActiveShader;
     static Ref<Camera> ActiveCamera;
-    static Ref<OrthographicCamera> DepthPassCamera;
+    static Mat4 DirectionalLightSpaceMatrix;
     static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled;
 
     static Ref<Transform> LightSourceTransform;

@@ -1,9 +1,9 @@
-#version 330 core
+#version 450 core
 layout (location = 0) in vec4 i_ModelPosition;
 
-uniform mat4 u_LightViewProjection;
+uniform mat4 u_DirectionalLightSpaceMatrix;
 
 void main()
 {
-    gl_Position = u_LightViewProjection * i_ModelPosition;
+    gl_Position = u_DirectionalLightSpaceMatrix * i_ModelPosition;
 }

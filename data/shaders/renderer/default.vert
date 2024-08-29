@@ -14,8 +14,10 @@ layout (std140, binding = 0) uniform Shared
   mat4 u_ViewProjection;
   vec4 u_CameraPosition;
 };
+uniform mat4 u_DirectionalLightSpaceMatrix;
 
 out vec3 v_FragmentPosition;
+out vec4 v_DirectionalLightSpaceFragmentPosition;
 out vec4 v_Color;
 out vec3 v_Normal;
 out vec2 v_TextureCoord;
@@ -28,6 +30,7 @@ void main()
 {
   gl_Position = u_ViewProjection * i_ModelPosition;
   v_FragmentPosition = vec3(i_ModelPosition);
+  v_DirectionalLightSpaceFragmentPosition = u_DirectionalLightSpaceMatrix * vec4(v_FragmentPosition, 1.0);
   v_Normal = i_Normal;
   v_Color = i_Color;
   v_TextureCoord = i_TextureCoord;

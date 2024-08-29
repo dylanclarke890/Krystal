@@ -53,6 +53,7 @@ struct SpotLight
 };
 
 in vec3 v_FragmentPosition;
+in vec4 v_DirectionalLightSpaceFragmentPosition;
 in vec4 v_Color;
 in vec3 v_Normal;
 in vec2 v_TextureCoord;
@@ -85,11 +86,12 @@ out vec4 o_Color;
 
 vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
-vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
+vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample, float shadow);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, vec3 specularSample);
 vec3 CalcGammaCorrection(vec3 color);
 float CalcAttenuation(vec4 lightPosition, float linear, float quadratic, float constant);
+float CalcShadow(vec4 lightSpaceFragmentPosition);
 
 void main()
 {
@@ -97,13 +99,15 @@ void main()
   vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0)) * v_Color;
   vec3 diffuseSample = vec3(textureSample);
   vec3 specularSample = vec3(GetTextureSample(v_SpecularSlot, vec4(0.3)));
+  // TODO: this is currently unused.
   vec3 emissionSample = vec3(GetTextureSample(v_EmissionSlot, vec4(0.0)));
 
   vec3 lighting = vec3(0.0);
+  float directionalShadow = CalcShadow(v_DirectionalLightSpaceFragmentPosition);
   if (u_LightingEnabled)
   { 
    for (int i = 0; i < u_DirectionalLightCount; i++) {
-      lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample);
+      lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample, directionalShadow);
     }
 
     for (int i = 0; i < u_PointLightCount; i++) {
@@ -162,7 +166,7 @@ vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor)
   }
 }
 
-vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
+vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample, float shadow)
 {
   if (!light.Enabled)
     return vec3(0.0);
@@ -176,7 +180,7 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSampl
 
   vec3 specular = CalcSpecularFactor(vec3(light.Specular), lightDirection, normal, specularSample);
 
-  return (ambient + diffuse + specular) * light.Intensity;
+  return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
 }
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
@@ -263,3 +267,19 @@ vec3 CalcGammaCorrection(vec3 color)
   const float gamma = 2.2;
   return pow(vec3(color), vec3(1.0/gamma));
 }
+
+float CalcShadow(vec4 lightSpaceFragmentPosition)
+{
+  // perform perspective divide and transform to [0,1] range
+  vec3 projectionCoords = lightSpaceFragmentPosition.xyz / lightSpaceFragmentPosition.w;
+  projectionCoords = projectionCoords * 0.5 + 0.5;
+
+  // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+  float closestDepth = texture(u_Textures[0], projectionCoords.xy).r; 
+  // get depth of current fragment from light's perspective
+  float currentDepth = projectionCoords.z;
+
+  float bias = 0.005;
+  float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+  return shadow;
+}  

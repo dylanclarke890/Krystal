@@ -14,7 +14,6 @@ namespace Krys
   constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
   constexpr Vec3 TRIANGLE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
   constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.5f, 0.0f, 1.0f}};
-
   constexpr Vec4 CUBE_LOCAL_SPACE_VERTICES[] = {
       // Front face
       {-0.5f, -0.5f, 0.5f, 1.0f}, // 0
@@ -131,7 +130,7 @@ namespace Krys
 
   Ref<Shader> Renderer::ActiveShader;
   Ref<Camera> Renderer::ActiveCamera;
-  Ref<OrthographicCamera> Renderer::DepthPassCamera;
+  Mat4 Renderer::DirectionalLightSpaceMatrix;
   bool Renderer::IsPostProcessingEnabled;
   bool Renderer::IsWireFrameDrawingEnabled;
 
@@ -158,11 +157,6 @@ namespace Krys
     DepthPassFramebuffer = Context->CreateFramebuffer(1024, 1024, 1);
     DepthPassFramebuffer->AddDepthAttachment();
 
-    RectBounds depthPassCameraBounds = {-10.0f, 10.0f, -10.0f, 10.0f};
-    DepthPassCamera = CreateRef<OrthographicCamera>(depthPassCameraBounds, 1.0f, 7.5f);
-    DepthPassCamera->SetPosition(Vec3(-2.0f, 4.0f, -1.0f));
-    DepthPassCamera->SetRotation(0.0f);
-
     DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
     DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_ModelPosition"},
                                      {ShaderDataType::Float3, "i_Normal"},
@@ -186,7 +180,8 @@ namespace Krys
     PostProcessingVertexArray = Context->CreateVertexArray();
     PostProcessingVertexArray->AddVertexBuffer(PostProcessingVertexBuffer);
 
-    SharedUniformBuffer = Context->CreateUniformBuffer(0,
+    uint32 sharedUniformBufferBinding = 0;
+    SharedUniformBuffer = Context->CreateUniformBuffer(sharedUniformBufferBinding,
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
 
@@ -201,7 +196,7 @@ namespace Krys
 
     TextureSlots = CreateUnique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>>();
     int samplers[REN2D_MAX_TEXTURE_SLOTS]{};
-    for (uint32_t i = 0; i < REN2D_MAX_TEXTURE_SLOTS; i++)
+    for (uint32 i = 0; i < REN2D_MAX_TEXTURE_SLOTS; i++)
       samplers[i] = i;
 
     DefaultShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
@@ -209,6 +204,13 @@ namespace Krys
 
     Lights.Init(Context);
     LightSourceTransform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f));
+
+    // TODO: this probably needs moving to the lights manager.
+    Mat4 directionalLightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+    Mat4 directionalLightView = glm::lookAt(Vec3(-2.0f, 4.0f, -1.0f),
+                                            Vec3(0.0f, 0.0f, 0.0f),
+                                            Vec3(0.0f, 1.0f, 0.0f));
+    DirectionalLightSpaceMatrix = directionalLightProjection * directionalLightView;
 
     Reset();
   }
@@ -553,7 +555,7 @@ namespace Krys
       return;
 
     auto &textureSlots = *TextureSlots;
-    for (int i = 0; i < TextureSlotIndex; i++)
+    for (int i = REN2D_RESERVED_TEXTURE_SLOTS; i < TextureSlotIndex; i++)
       textureSlots[i]->Bind(i);
 
     DefaultVertexArray->Bind();
@@ -570,17 +572,21 @@ namespace Krys
       Context->Clear(RenderBuffer::Depth);
 
       DepthPassShader->Bind();
-      DepthPassShader->SetUniform("u_LightViewProjection", DepthPassCamera->GetViewProjection());
+      DepthPassShader->SetUniform("u_DirectionalLightSpaceMatrix", DirectionalLightSpaceMatrix);
       Context->DrawIndices(IndexCount, DrawMode::Triangles);
     }
 
     // Geometry Pass
     {
       DefaultFramebuffer->Bind();
+
       Context->SetViewport(DefaultFramebuffer->GetWidth(), DefaultFramebuffer->GetHeight());
       Context->Clear(RenderBuffer::All);
 
       ActiveShader->Bind();
+      DepthPassFramebuffer->GetDepthAttachment()->Bind(0);
+      ActiveShader->SetUniform("u_DirectionalLightSpaceMatrix", DirectionalLightSpaceMatrix);
+
       Context->DrawIndices(IndexCount, DrawMode::Triangles);
     }
 
@@ -640,7 +646,8 @@ namespace Krys
 
       PostProcessingShader->Bind();
       PostProcessingVertexArray->Bind();
-      PostProcessingFramebuffer->GetColorAttachment()->Bind();
+
+      PostProcessingFramebuffer->GetColorAttachment()->Bind(0);
       Context->DrawVertices(6, DrawMode::Triangles);
     }
     else
@@ -666,6 +673,7 @@ namespace Krys
       indexBuffer[IndexCount++] = indices[i];
   }
 
+  /* Adds a new texture to the current batch or retrieves it's index if it already exist. NOT to be used for reserved texture slots.*/
   int Renderer::GetTextureSlotIndex(Ref<Texture2D> texture)
   {
     int textureSlotIndex = -1;
@@ -674,7 +682,7 @@ namespace Krys
       return textureSlotIndex;
 
     auto &textureSlots = *TextureSlots;
-    for (int i = 0; i < TextureSlotIndex; i++)
+    for (int i = REN2D_RESERVED_TEXTURE_SLOTS; i < TextureSlotIndex; i++)
     {
       if (textureSlots[i]->GetId() == texture->GetId())
       {
@@ -685,7 +693,7 @@ namespace Krys
 
     if (textureSlotIndex == -1)
     {
-      if (TextureSlotIndex == REN2D_MAX_TEXTURE_SLOTS - 1)
+      if (TextureSlotIndex == REN2D_MAX_TEXTURE_SLOTS - (1 + REN2D_RESERVED_TEXTURE_SLOTS))
       {
         NextBatch();
       }
