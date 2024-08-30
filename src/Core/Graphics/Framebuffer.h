@@ -27,6 +27,13 @@ namespace Krys
     virtual void AddDepthAttachment() noexcept = 0;
     virtual void AddDepthStencilAttachment() noexcept = 0;
 
+    virtual void DisableReadBuffer() noexcept = 0;
+    virtual void DisableWriteBuffers() noexcept = 0;
+    virtual void SetReadBuffer(uint attachmentIndex) noexcept = 0;
+    virtual void SetWriteBuffer(uint attachmentIndex) noexcept = 0;
+    
+    // TODO: something like the following - SetWriteBuffers(uint* attachmentIndices, uint count) noexcept = 0;
+
     NO_DISCARD virtual bool IsComplete() noexcept = 0;
 
     virtual void BlitTo(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept = 0;

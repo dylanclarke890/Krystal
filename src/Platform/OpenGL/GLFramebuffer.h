@@ -77,6 +77,7 @@ namespace Krys
 
     void AddColorAttachment() noexcept override
     {
+      // TODO: validate ColorAttachments.size() against GL_MAX_COLOR_ATTACHMENTS
       Ref<Texture2D> texture = CreateRef<GLTexture2D>(Width, Height, Samples);
       if (Samples == 1)
         texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToEdge);
@@ -91,13 +92,9 @@ namespace Krys
 
       Ref<Texture2D> texture = CreateRef<GLTexture2D>(Width, Height, Samples, TextureInternalFormat::Depth);
       texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToBorder);
-      texture->SetBorderColor({ 1.0f, 1.0f, 1.0f, 1.0f });
-      
-      glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
+      texture->SetBorderColor({1.0f, 1.0f, 1.0f, 1.0f});
 
-      // TODO: we're assuming that this is a depth only framebuffer.
-      glNamedFramebufferDrawBuffer(Id, GL_NONE);
-      glNamedFramebufferReadBuffer(Id, GL_NONE);
+      glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
 
       DepthAttachment = texture;
     }
@@ -114,6 +111,28 @@ namespace Krys
       else
         glNamedRenderbufferStorage(rbo, GL_DEPTH24_STENCIL8, Width, Height);
       glNamedFramebufferRenderbuffer(Id, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+    }
+
+    void DisableReadBuffer() noexcept override
+    {
+      glNamedFramebufferReadBuffer(Id, GL_NONE);
+    }
+
+    void DisableWriteBuffers() noexcept override
+    {
+      glNamedFramebufferDrawBuffer(Id, GL_NONE);
+    }
+
+    void SetReadBuffer(uint attachmentIndex) noexcept override
+    {
+      KRYS_ASSERT(attachmentIndex >= 0 && attachmentIndex < ColorAttachments.size(), "Index out of range: Max is %d, %d received", ColorAttachments.size() - 1, attachmentIndex);
+      glNamedFramebufferReadBuffer(Id, GL_COLOR_ATTACHMENT0 + attachmentIndex);
+    }
+
+    void SetWriteBuffer(uint attachmentIndex) noexcept override
+    {
+      KRYS_ASSERT(attachmentIndex >= 0 && attachmentIndex < ColorAttachments.size(), "Index out of range: Max is %d, %d received", ColorAttachments.size() - 1, attachmentIndex);
+      glNamedFramebufferDrawBuffer(Id, GL_COLOR_ATTACHMENT0 + attachmentIndex);
     }
 
     NO_DISCARD bool IsComplete() noexcept override

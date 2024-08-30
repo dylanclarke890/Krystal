@@ -156,6 +156,8 @@ namespace Krys
 
     DepthPassFramebuffer = Context->CreateFramebuffer(1024, 1024, 1);
     DepthPassFramebuffer->AddDepthAttachment();
+    DepthPassFramebuffer->DisableReadBuffer();
+    DepthPassFramebuffer->DisableWriteBuffers();
 
     DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
     DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_ModelPosition"},
@@ -180,8 +182,8 @@ namespace Krys
     PostProcessingVertexArray = Context->CreateVertexArray();
     PostProcessingVertexArray->AddVertexBuffer(PostProcessingVertexBuffer);
 
-    uint32 sharedUniformBufferBinding = 0;
-    SharedUniformBuffer = Context->CreateUniformBuffer(sharedUniformBufferBinding,
+    const uint32 SHARED_UNIFORM_BUFFER_BINDING = 0;
+    SharedUniformBuffer = Context->CreateUniformBuffer(SHARED_UNIFORM_BUFFER_BINDING,
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
 

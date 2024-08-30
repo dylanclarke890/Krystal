@@ -98,5 +98,6 @@ namespace Krys
 
   void GLTextureCubemap::Load()
   {
+    // TODO: implement?
   }
 }
