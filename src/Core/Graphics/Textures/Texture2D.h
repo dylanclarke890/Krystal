@@ -2,6 +2,8 @@
 
 #include "Texture.h"
 
+#include "Maths/Maths.h"
+
 namespace Krys
 {
   class Texture2D
@@ -57,6 +59,7 @@ namespace Krys
     virtual void SetTextureWrapT(TextureWrapMode mode) noexcept = 0;
     virtual void SetTextureWrapModes(TextureWrapMode s, TextureWrapMode t) noexcept = 0;
 
+    virtual void SetBorderColor(const Vec4 &color) noexcept = 0;
     virtual void GenerateMipmaps(TextureMinifyMode mode = TextureMinifyMode::LinearMipmapLinear) noexcept = 0;
   };
 }

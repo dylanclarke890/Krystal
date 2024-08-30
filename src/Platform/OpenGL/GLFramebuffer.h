@@ -90,7 +90,11 @@ namespace Krys
       KRYS_ASSERT(!DepthAttachment, "Already has a depth attachment", 0);
 
       Ref<Texture2D> texture = CreateRef<GLTexture2D>(Width, Height, Samples, TextureInternalFormat::Depth);
+      texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToBorder);
+      texture->SetBorderColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+      
       glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
+
       // TODO: we're assuming that this is a depth only framebuffer.
       glNamedFramebufferDrawBuffer(Id, GL_NONE);
       glNamedFramebufferReadBuffer(Id, GL_NONE);

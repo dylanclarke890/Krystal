@@ -540,7 +540,7 @@ namespace Krys
   {
     VertexCount = 0;
     IndexCount = 0;
-    TextureSlotIndex = 0;
+    TextureSlotIndex = REN2D_RESERVED_TEXTURE_SLOTS;
   }
 
   void Renderer::NextBatch()
@@ -571,9 +571,13 @@ namespace Krys
       Context->SetViewport(DepthPassFramebuffer->GetWidth(), DepthPassFramebuffer->GetHeight());
       Context->Clear(RenderBuffer::Depth);
 
-      DepthPassShader->Bind();
-      DepthPassShader->SetUniform("u_DirectionalLightSpaceMatrix", DirectionalLightSpaceMatrix);
-      Context->DrawIndices(IndexCount, DrawMode::Triangles);
+      Context->SetFaceCulling(CullMode::Front);
+      {
+        DepthPassShader->Bind();
+        DepthPassShader->SetUniform("u_DirectionalLightSpaceMatrix", DirectionalLightSpaceMatrix);
+        Context->DrawIndices(IndexCount, DrawMode::Triangles);
+      }
+      Context->SetFaceCulling(CullMode::Back);
     }
 
     // Geometry Pass
@@ -673,9 +677,10 @@ namespace Krys
       indexBuffer[IndexCount++] = indices[i];
   }
 
-  /* Adds a new texture to the current batch or retrieves it's index if it already exist. NOT to be used for reserved texture slots.*/
+  /* Adds a new texture to the current batch or retrieves it's index if it already exists. NOT to be used for reserved texture slots.*/
   int Renderer::GetTextureSlotIndex(Ref<Texture2D> texture)
   {
+    // TODO: rework the reserved texture slots logic, this approach seems buggy af
     int textureSlotIndex = -1;
 
     if (!texture)

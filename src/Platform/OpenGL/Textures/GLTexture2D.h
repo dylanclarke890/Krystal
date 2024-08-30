@@ -23,6 +23,9 @@ namespace Krys
     void SetTextureWrapT(TextureWrapMode mode) noexcept override;
     void SetTextureWrapModes(TextureWrapMode s, TextureWrapMode t) noexcept override;
 
+    void SetBorderColor(const Vec4 &color) noexcept override;
+
+
     void GenerateMipmaps(TextureMinifyMode mode) noexcept override;
 
   private:
