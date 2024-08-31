@@ -4,6 +4,23 @@
 
 namespace Krys
 {
+  class Texture
+  {
+  protected:
+    uint Id;
+
+  public:
+    Texture() = default;
+    virtual ~Texture() = default;
+
+    NO_DISCARD uint GetId() const noexcept
+    {
+      return Id;
+    }
+
+    virtual void Bind(uint32 slot = 0) const noexcept = 0;
+  };
+
   enum class TextureMagnifyMode : ushort
   {
     None = 0,

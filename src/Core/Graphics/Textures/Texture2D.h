@@ -6,10 +6,9 @@
 
 namespace Krys
 {
-  class Texture2D
+  class Texture2D : public Texture
   {
   protected:
-    uint Id;
     uint32 Samples;
     TextureType Type;
     TextureInternalFormat InternalFormat;
@@ -18,11 +17,6 @@ namespace Krys
 
   public:
     virtual ~Texture2D() = default;
-
-    NO_DISCARD uint GetId() const noexcept
-    {
-      return Id;
-    }
 
     NO_DISCARD TextureType GetType() const noexcept
     {

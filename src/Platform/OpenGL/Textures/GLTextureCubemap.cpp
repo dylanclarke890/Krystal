@@ -43,6 +43,23 @@ namespace Krys
 
     glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTextureParameteri(Id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(Id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(Id, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+  }
+
+  GLTextureCubemap::GLTextureCubemap(uint width, uint height, TextureInternalFormat internalFormat)
+  {
+    InternalFormat = internalFormat;
+
+    glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &Id);
+
+    glTextureStorage2D(Id, 1, ToGLInternalFormat(internalFormat), width, height);
+
+    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
     glTextureParameteri(Id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTextureParameteri(Id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTextureParameteri(Id, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -94,6 +111,12 @@ namespace Krys
     glTextureParameteri(Id, GL_TEXTURE_WRAP_S, ToGLTextureWrapMode(s));
     glTextureParameteri(Id, GL_TEXTURE_WRAP_T, ToGLTextureWrapMode(t));
     glTextureParameteri(Id, GL_TEXTURE_WRAP_R, ToGLTextureWrapMode(r));
+  }
+
+  void GLTextureCubemap::SetBorderColor(const Vec4 &color) noexcept
+  {
+    float borderColor[4] = {color.r, color.g, color.b, color.a};
+    glTextureParameterfv(Id, GL_TEXTURE_BORDER_COLOR, borderColor);
   }
 
   void GLTextureCubemap::Load()

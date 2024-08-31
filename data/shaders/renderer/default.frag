@@ -81,17 +81,22 @@ layout (std140, binding = 1) uniform Lights
 };
 
 uniform sampler2D u_Textures[32];
+uniform samplerCube u_CubeDepthMap;
+
+uniform float u_FarPlane;
+uniform vec3 u_LightPosition;
 
 out vec4 o_Color;
 
 vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
+float CalcOmniDirectionalShadow(vec3 fragmentPosition);
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
+float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, vec3 specularSample);
 vec3 CalcGammaCorrection(vec3 color);
 float CalcAttenuation(vec4 lightPosition, float linear, float quadratic, float constant);
-float CalcShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection);
 
 void main()
 {
@@ -179,7 +184,7 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSampl
 
   vec3 specular = CalcSpecularFactor(vec3(light.Specular), lightDirection, normal, specularSample);
 
-  float shadow = CalcShadow(v_DirectionalLightSpaceFragmentPosition, normal, lightDirection);
+  float shadow = CalcDirectionalShadow(v_DirectionalLightSpaceFragmentPosition, normal, lightDirection);
 
   return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
 }
@@ -203,7 +208,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 spec
   diffuse *= attenuation;
   specular *= attenuation;
 
-  return (ambient + diffuse + specular) * light.Intensity;
+  float shadow = CalcOmniDirectionalShadow(v_FragmentPosition);
+
+  return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
 }
 
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
@@ -269,7 +276,7 @@ vec3 CalcGammaCorrection(vec3 color)
   return pow(vec3(color), vec3(1.0/gamma));
 }
 
-float CalcShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection)
+float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection)
 {
   // perform perspective divide and transform to [0,1] range
   vec3 projectionCoords = lightSpaceFragmentPosition.xyz / lightSpaceFragmentPosition.w;
@@ -297,4 +304,21 @@ float CalcShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirecti
   }
   shadow /= 9.0;
   return shadow;
-}  
+}
+
+float CalcOmniDirectionalShadow(vec3 fragmentPosition)
+{
+  // get vector between fragment position and light position
+  vec3 fragToLight = fragmentPosition - u_LightPosition;
+  // use the light to fragment vector to sample from the depth map    
+  float closestDepth = texture(u_CubeDepthMap, fragToLight).r;
+  // it is currently in linear range between [0,1]. Re-transform back to original value
+  closestDepth *= u_FarPlane;
+  // now get current linear depth as the length between the fragment and light position
+  float currentDepth = length(fragToLight);
+  // now test for shadows
+  float bias = 0.05; 
+  float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
+
+  return shadow;
+} 

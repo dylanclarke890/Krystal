@@ -19,7 +19,7 @@ namespace Krys
   constexpr uint REN2D_MAX_VERTICES = REN2D_MAX_QUADS * 4;
   constexpr uint REN2D_MAX_INDICES = REN2D_MAX_QUADS * 6;
   constexpr uint REN2D_MAX_TEXTURE_SLOTS = 32; // TODO: get this from the graphics API.
-  constexpr uint REN2D_RESERVED_TEXTURE_SLOTS = 1;
+  constexpr uint REN2D_RESERVED_TEXTURE_SLOTS = 2;
   static Vec4 REN2D_DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
 
   struct VertexData
@@ -48,8 +48,9 @@ namespace Krys
     };
 
     static Ref<GraphicsContext> Context;
-    static Ref<Framebuffer> DefaultFramebuffer, DepthPassFramebuffer, PostProcessingFramebuffer;
-    static Ref<Shader> DefaultShader, DepthPassShader, LightSourceShader, SkyboxShader, PostProcessingShader;
+    static Ref<Framebuffer> DefaultFramebuffer, DirectionalShadowMapFramebuffer, OmniDirectionalShadowMapFramebuffer, PostProcessingFramebuffer;
+    static Ref<Shader> DefaultShader, DirectionalShadowMapShader, OmniDirectionalShadowMapShader,
+        LightSourceShader, SkyboxShader, PostProcessingShader, ActiveShader;
     static Ref<VertexArray> DefaultVertexArray, PostProcessingVertexArray, SkyboxVertexArray;
     static Ref<VertexBuffer> DefaultVertexBuffer, PostProcessingVertexBuffer, SkyboxVertexBuffer;
     static Ref<IndexBuffer> DefaultIndexBuffer;
@@ -63,9 +64,7 @@ namespace Krys
     static Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> TextureSlots;
     static int TextureSlotIndex;
 
-    static Ref<Shader> ActiveShader;
     static Ref<Camera> ActiveCamera;
-    static Mat4 DirectionalLightSpaceMatrix;
     static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled;
 
     static Ref<Transform> LightSourceTransform;

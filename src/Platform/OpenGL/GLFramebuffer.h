@@ -99,6 +99,19 @@ namespace Krys
       DepthAttachment = texture;
     }
 
+    void AddDepthCubemapAttachment() noexcept override
+    {
+      KRYS_ASSERT(!DepthAttachment, "Already has a depth attachment", 0);
+
+      Ref<GLTextureCubemap> texture = CreateRef<GLTextureCubemap>(Width, Height, TextureInternalFormat::Depth);
+      texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder);
+      texture->SetBorderColor({1.0f, 1.0f, 1.0f, 1.0f});
+
+      glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
+
+      DepthAttachment = texture;
+    }
+
     void AddDepthStencilAttachment() noexcept override
     {
       // TODO: this is created assuming it isn't being sampled from as we don't have a class to represent this with yet.

@@ -96,12 +96,12 @@ namespace Krys
 
   inline constexpr RenderBuffer operator|(RenderBuffer a, RenderBuffer b)
   {
-    return static_cast<RenderBuffer>(static_cast<uint>(a) | static_cast<uint>(b));
+    return static_cast<RenderBuffer>(static_cast<ushort>(a) | static_cast<ushort>(b));
   }
 
   inline constexpr bool operator&(RenderBuffer a, RenderBuffer b)
   {
-    return (static_cast<uint>(a) & static_cast<uint>(b));
+    return (static_cast<ushort>(a) & static_cast<ushort>(b));
   }
 
   enum class DrawMode : ushort

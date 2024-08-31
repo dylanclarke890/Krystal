@@ -100,7 +100,7 @@ namespace Krys
   void GLTexture2D::SetBorderColor(const Vec4 &color) noexcept
   {
     float borderColor[4] = {color.r, color.g, color.b, color.a};
-    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+    glTextureParameterfv(Id, GL_TEXTURE_BORDER_COLOR, borderColor);
   }
 
   void GLTexture2D::GenerateMipmaps(TextureMinifyMode mode) noexcept

@@ -8,15 +8,13 @@
 
 namespace Krys
 {
-
-
   class Framebuffer
   {
   protected:
     uint32 Id;
     uint32 Width, Height, Samples;
     std::vector<Ref<Texture2D>> ColorAttachments;
-    Ref<Texture2D> DepthAttachment;
+    Ref<Texture> DepthAttachment;
 
   public:
     virtual ~Framebuffer() = default;
@@ -25,6 +23,7 @@ namespace Krys
 
     virtual void AddColorAttachment() noexcept = 0;
     virtual void AddDepthAttachment() noexcept = 0;
+    virtual void AddDepthCubemapAttachment() noexcept = 0;
     virtual void AddDepthStencilAttachment() noexcept = 0;
 
     virtual void DisableReadBuffer() noexcept = 0;
@@ -67,7 +66,7 @@ namespace Krys
       return ColorAttachments[index];
     }
 
-    NO_DISCARD Ref<Texture2D> GetDepthAttachment()
+    NO_DISCARD Ref<Texture> GetDepthAttachment()
     {
       return DepthAttachment;
     }

@@ -5,5 +5,5 @@ uniform mat4 u_DirectionalLightSpaceMatrix;
 
 void main()
 {
-    gl_Position = u_DirectionalLightSpaceMatrix * i_ModelPosition;
+  gl_Position = u_DirectionalLightSpaceMatrix * i_ModelPosition;
 }

@@ -12,6 +12,7 @@ namespace Krys
   {
   public:
     GLTextureCubemap(std::array<string, 6> faces, TextureInternalFormat internalFormat = TextureInternalFormat::Auto);
+    GLTextureCubemap(uint width, uint height, TextureInternalFormat internalFormat);
     ~GLTextureCubemap() override;
 
     void Bind(uint32 slot = 0) const noexcept override;
@@ -24,6 +25,8 @@ namespace Krys
     void SetTextureWrapT(TextureWrapMode mode) noexcept override;
     void SetTextureWrapR(TextureWrapMode mode) noexcept override;
     void SetTextureWrapModes(TextureWrapMode s, TextureWrapMode t, TextureWrapMode r) noexcept override;
+
+    void SetBorderColor(const Vec4 &color) noexcept override;
 
   private:
     void Load();

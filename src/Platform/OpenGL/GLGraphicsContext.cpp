@@ -34,9 +34,10 @@ namespace Krys
     case GL_DEBUG_SEVERITY_NOTIFICATION:
       KRYS_INFO(message);
       break;
+    default:
+      KRYS_ASSERT(false, "Unknown severity level!", 0);
+      break;
     }
-
-    KRYS_ASSERT(false, "Unknown severity level!", 0);
   }
 #endif
 
@@ -532,6 +533,11 @@ namespace Krys
   Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(std::array<string, 6> paths) noexcept
   {
     return CreateRef<GLTextureCubemap>(paths);
+  }
+
+  Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(uint width, uint height, TextureInternalFormat format) noexcept
+  {
+    return CreateRef<GLTextureCubemap>(width, height, format);
   }
 
   void GLGraphicsContext::DrawVertices(size_t count, DrawMode mode) noexcept
