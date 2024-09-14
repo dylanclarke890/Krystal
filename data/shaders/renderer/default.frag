@@ -110,22 +110,17 @@ void main()
   vec3 lighting = vec3(0.0);
   if (u_LightingEnabled)
   { 
-    lighting = CalcPointLight(u_PointLights[0], normal, diffuseSample, specularSample);
-    // vec3 fragToLight = v_FragmentPosition - u_LightPosition;
-    // float distanceToLight = length(fragToLight);
-    // // lighting = distanceToLight / u_FarPlane == 1.0 ? vec3(distanceToLight / u_FarPlane) : vec3(0.2, 0.5, 0.9);
-    // lighting = vec3(distanceToLight / u_FarPlane);
-  //  for (int i = 0; i < u_DirectionalLightCount; i++) {
-  //     lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample);
-  //   }
+   for (int i = 0; i < u_DirectionalLightCount; i++) {
+      lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample);
+    }
 
-  //   for (int i = 0; i < u_PointLightCount; i++) {
-  //     lighting += CalcPointLight(u_PointLights[i], normal, diffuseSample, specularSample);
-  //   }
+    for (int i = 0; i < u_PointLightCount; i++) {
+      lighting += CalcPointLight(u_PointLights[i], normal, diffuseSample, specularSample);
+    }
 
-  //   for (int i = 0; i < u_SpotLightCount; i++) {
-  //     lighting += CalcSpotLight(u_SpotLights[i], normal, diffuseSample, specularSample);
-  //   }
+    for (int i = 0; i < u_SpotLightCount; i++) {
+      lighting += CalcSpotLight(u_SpotLights[i], normal, diffuseSample, specularSample);
+    }
 
   }
   else 
