@@ -328,24 +328,19 @@ float CalcOmniDirectionalShadow()
   vec3 fragToLight = v_FragmentPosition - u_LightPosition;
   float currentDepth = length(fragToLight);
 
-  float shadow  = 0.0;
-  float bias    = 0.05; 
-  float samples = 4.0;
-  float offset  = 0.1;
-  for (float x = -offset; x < offset; x += offset / (samples * 0.5))
+  float shadow = 0.0;
+  float bias   = 0.15;
+  int samples  = 20;
+  float viewDistance = length(vec3(u_CameraPosition) - v_FragmentPosition);
+  float diskRadius = 0.05;
+  for (int i = 0; i < samples; ++i)
   {
-      for (float y = -offset; y < offset; y += offset / (samples * 0.5))
-      {
-          for (float z = -offset; z < offset; z += offset / (samples * 0.5))
-          {
-              float closestDepth = texture(u_CubeDepthMap, fragToLight + vec3(x, y, z)).r; 
-              closestDepth *= u_FarPlane;   // undo mapping [0;1]
-              if(currentDepth - bias > closestDepth)
-                  shadow += 1.0;
-          }
-      }
+    float closestDepth = texture(u_CubeDepthMap, fragToLight + sampleOffsetDirections[i] * diskRadius).r;
+    closestDepth *= u_FarPlane;   // undo mapping [0;1]
+    if(currentDepth - bias > closestDepth)
+      shadow += 1.0;
   }
-  shadow /= (samples * samples * samples);
+  shadow /= float(samples); 
 
   return shadow;
 }  
