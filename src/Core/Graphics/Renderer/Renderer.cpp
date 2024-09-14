@@ -171,7 +171,7 @@ namespace Krys
     KRYS_ASSERT(OmniDirectionalShadowMapFramebuffer->IsComplete(), "OmniDirectionalShadowMapFramebuffer Incomplete", 0);
 
     DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
-    DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_ModelPosition"},
+    DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_WorldSpacePosition"},
                                      {ShaderDataType::Float3, "i_Normal"},
                                      {ShaderDataType::Float4, "i_Color"},
                                      {ShaderDataType::Float2, "i_TextureCoord"},
@@ -209,13 +209,13 @@ namespace Krys
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
 
     TextureSlots = CreateUnique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>>();
-    int samplers[REN2D_MAX_TEXTURE_SLOTS]{};
-    for (uint32 i = 0; i < REN2D_MAX_TEXTURE_SLOTS; i++)
+    int samplers[REN2D_MAX_TEXTURE_SLOTS - 1]{};
+    for (uint32 i = 0; i < REN2D_MAX_TEXTURE_SLOTS - 1; i++)
       samplers[i] = i;
 
-    DefaultShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
-    PostProcessingShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS);
-    DefaultShader->SetUniform("u_CubeDepthMap", 1);
+    DefaultShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS - 1);
+    PostProcessingShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS - 1);
+    DefaultShader->TrySetUniform("u_CubeDepthMap", 31);
 
     Lights.Init(Context);
     LightSourceTransform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f));
@@ -224,14 +224,14 @@ namespace Krys
     Mat4 directionalLightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
     Mat4 directionalLightView = glm::lookAt(Vec3(-2.0f, 4.0f, -1.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
     Mat4 directionalLightSpaceMatrix = directionalLightProjection * directionalLightView;
-    DirectionalShadowMapShader->SetUniform("u_DirectionalLightSpaceMatrix", directionalLightSpaceMatrix);
-    DefaultShader->SetUniform("u_DirectionalLightSpaceMatrix", directionalLightSpaceMatrix);
+    DirectionalShadowMapShader->TrySetUniform("u_DirectionalLightSpaceMatrix", directionalLightSpaceMatrix);
+    DefaultShader->TrySetUniform("u_DirectionalLightSpaceMatrix", directionalLightSpaceMatrix);
 
     float omniDirectionalShadowMapAspectRatio = static_cast<float>(SHADOW_MAP_RESOLUTION) / static_cast<float>(SHADOW_MAP_RESOLUTION);
     float omniDirectionalShadowMapFarPlane = 25.0f;
     Mat4 omniDirectionalShadowMapProjection = glm::perspective(glm::radians(90.0f), omniDirectionalShadowMapAspectRatio, 1.0f, omniDirectionalShadowMapFarPlane);
 
-    Vec3 lightPos = Vec3(0.0f, 6.0f, 0.0f);
+    Vec3 lightPos = Vec3(0.0f, 0.0f, 0.0f);
     Mat4 omniDirectionalLightSpaceMatrices[6] = {
         omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0)),
         omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(-1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0)),
@@ -240,10 +240,23 @@ namespace Krys
         omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, 0.0, 1.0), Vec3(0.0, -1.0, 0.0)),
         omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, 0.0, -1.0), Vec3(0.0, -1.0, 0.0))};
 
+    // Mat4 omniDirectionalLightSpaceMatrices[6] = {
+    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
+    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
+    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
+    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
+    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
+    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0))};
+
     for (uint i = 0; i < 6; i++)
       OmniDirectionalShadowMapShader->SetUniform("u_ShadowMatrices[" + std::to_string(i) + "]", omniDirectionalLightSpaceMatrices[i]);
-    OmniDirectionalShadowMapShader->SetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
-    OmniDirectionalShadowMapShader->SetUniform("u_LightPosition", lightPos);
+    OmniDirectionalShadowMapShader->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
+    OmniDirectionalShadowMapShader->TrySetUniform("u_LightPosition", lightPos);
+
+    DefaultShader->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
+    DefaultShader->TrySetUniform("u_LightPosition", lightPos);
+
+    Context->SetDepthTestingEnabled(true);
 
     Reset();
   }
@@ -413,6 +426,7 @@ namespace Krys
         {model * CUBE_LOCAL_SPACE_VERTICES[13], normal * CUBE_NORMALS[13], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
         {model * CUBE_LOCAL_SPACE_VERTICES[14], normal * CUBE_NORMALS[14], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
         {model * CUBE_LOCAL_SPACE_VERTICES[15], normal * CUBE_NORMALS[15], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
+
         // Top face
         {model * CUBE_LOCAL_SPACE_VERTICES[16], normal * CUBE_NORMALS[16], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
         {model * CUBE_LOCAL_SPACE_VERTICES[17], normal * CUBE_NORMALS[17], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
@@ -598,8 +612,7 @@ namespace Krys
     if (IsWireFrameDrawingEnabled)
       Context->SetWireframeModeEnabled(true);
 
-    // Depth Pass
-    Context->SetFaceCulling(CullMode::Front);
+    // Depth Passes
     {
       // Directional
       {
@@ -607,8 +620,12 @@ namespace Krys
         Context->SetViewport(DirectionalShadowMapFramebuffer->GetWidth(), DirectionalShadowMapFramebuffer->GetHeight());
         Context->Clear(RenderBuffer::Depth);
 
-        DirectionalShadowMapShader->Bind();
-        Context->DrawIndices(IndexCount, DrawMode::Triangles);
+        Context->SetFaceCulling(CullMode::Front);
+        {
+          DirectionalShadowMapShader->Bind();
+          Context->DrawIndices(IndexCount, DrawMode::Triangles);
+        }
+        Context->SetFaceCulling(CullMode::Back);
       }
 
       // Omnidirectional
@@ -621,7 +638,6 @@ namespace Krys
         Context->DrawIndices(IndexCount, DrawMode::Triangles);
       }
     }
-    Context->SetFaceCulling(CullMode::Back);
 
     // Geometry Pass
     {
@@ -632,7 +648,7 @@ namespace Krys
 
       ActiveShader->Bind();
       DirectionalShadowMapFramebuffer->GetDepthAttachment()->Bind(0);
-      OmniDirectionalShadowMapFramebuffer->GetDepthAttachment()->Bind(1);
+      OmniDirectionalShadowMapFramebuffer->GetDepthAttachment()->Bind(31);
 
       Context->DrawIndices(IndexCount, DrawMode::Triangles);
     }

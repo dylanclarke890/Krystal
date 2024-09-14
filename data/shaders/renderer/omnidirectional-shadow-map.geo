@@ -8,10 +8,10 @@ out vec4 g_FragmentPosition; // g_FragmentPosition from GS (output per emitverte
 
 void main()
 {
-  for(int face = 0; face < 6; ++face)
+  for (int face = 0; face < 6; ++face)
   {
     gl_Layer = face; // built-in variable that specifies to which face we render.
-    for(int i = 0; i < 3; i++) // for each triangle vertex
+    for (int i = 0; i < 3; i++) // for each triangle vertex
     {
       g_FragmentPosition = gl_in[i].gl_Position;
       gl_Position = u_ShadowMatrices[face] * g_FragmentPosition;

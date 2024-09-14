@@ -90,7 +90,7 @@ out vec4 o_Color;
 
 vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
-float CalcOmniDirectionalShadow(vec3 fragmentPosition);
+float CalcOmniDirectionalShadow();
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
@@ -110,17 +110,23 @@ void main()
   vec3 lighting = vec3(0.0);
   if (u_LightingEnabled)
   { 
-   for (int i = 0; i < u_DirectionalLightCount; i++) {
-      lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample);
-    }
+    lighting = CalcPointLight(u_PointLights[0], normal, diffuseSample, specularSample);
+    // vec3 fragToLight = v_FragmentPosition - u_LightPosition;
+    // float distanceToLight = length(fragToLight);
+    // // lighting = distanceToLight / u_FarPlane == 1.0 ? vec3(distanceToLight / u_FarPlane) : vec3(0.2, 0.5, 0.9);
+    // lighting = vec3(distanceToLight / u_FarPlane);
+  //  for (int i = 0; i < u_DirectionalLightCount; i++) {
+  //     lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample);
+  //   }
 
-    for (int i = 0; i < u_PointLightCount; i++) {
-      lighting += CalcPointLight(u_PointLights[i], normal, diffuseSample, specularSample);
-    }
+  //   for (int i = 0; i < u_PointLightCount; i++) {
+  //     lighting += CalcPointLight(u_PointLights[i], normal, diffuseSample, specularSample);
+  //   }
 
-    for (int i = 0; i < u_SpotLightCount; i++) {
-      lighting += CalcSpotLight(u_SpotLights[i], normal, diffuseSample, specularSample);
-    }
+  //   for (int i = 0; i < u_SpotLightCount; i++) {
+  //     lighting += CalcSpotLight(u_SpotLights[i], normal, diffuseSample, specularSample);
+  //   }
+
   }
   else 
   {
@@ -208,9 +214,10 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 spec
   diffuse *= attenuation;
   specular *= attenuation;
 
-  float shadow = CalcOmniDirectionalShadow(v_FragmentPosition);
+  float shadow = CalcOmniDirectionalShadow();
+  // return vec3(shadow);
 
-  return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
+  return (ambient + ((1.0 - shadow) * (diffuse + specular))) * light.Intensity;
 }
 
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
@@ -306,19 +313,20 @@ float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 l
   return shadow;
 }
 
-float CalcOmniDirectionalShadow(vec3 fragmentPosition)
+float CalcOmniDirectionalShadow()
 {
   // get vector between fragment position and light position
-  vec3 fragToLight = fragmentPosition - u_LightPosition;
+  vec3 fragToLight = v_FragmentPosition - u_LightPosition;
+  float currentDepth = length(fragToLight);
+
   // use the light to fragment vector to sample from the depth map    
   float closestDepth = texture(u_CubeDepthMap, fragToLight).r;
-  // it is currently in linear range between [0,1]. Re-transform back to original value
+  // it is currently between [0,1]. Re-transform back to original value using u_FarPlane
   closestDepth *= u_FarPlane;
-  // now get current linear depth as the length between the fragment and light position
-  float currentDepth = length(fragToLight);
+
   // now test for shadows
-  float bias = 0.05; 
-  float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
+  float bias = 0.05;
+  float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 
   return shadow;
-} 
+}  

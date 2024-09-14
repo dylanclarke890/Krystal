@@ -1,6 +1,6 @@
 #version 450 core
 
-layout(location = 0) in vec4 i_ModelPosition;
+layout(location = 0) in vec4 i_WorldSpacePosition;
 layout(location = 1) in vec3 i_Normal;
 layout(location = 2) in vec4 i_Color;
 layout(location = 3) in vec2 i_TextureCoord;
@@ -28,8 +28,8 @@ flat out float v_Shininess;
 
 void main()
 {
-  gl_Position = u_ViewProjection * i_ModelPosition;
-  v_FragmentPosition = vec3(i_ModelPosition);
+  gl_Position = u_ViewProjection * i_WorldSpacePosition;
+  v_FragmentPosition = vec3(i_WorldSpacePosition);
   v_DirectionalLightSpaceFragmentPosition = u_DirectionalLightSpaceMatrix * vec4(v_FragmentPosition, 1.0);
   v_Normal = i_Normal;
   v_Color = i_Color;

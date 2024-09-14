@@ -91,7 +91,7 @@ namespace Krys
       KRYS_ASSERT(!DepthAttachment, "Already has a depth attachment", 0);
 
       Ref<Texture2D> texture = CreateRef<GLTexture2D>(Width, Height, Samples, TextureInternalFormat::Depth);
-      texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToBorder);
+      texture->SetTextureWrapModes(TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder);
       texture->SetBorderColor({1.0f, 1.0f, 1.0f, 1.0f});
 
       glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
@@ -104,8 +104,8 @@ namespace Krys
       KRYS_ASSERT(!DepthAttachment, "Already has a depth attachment", 0);
 
       Ref<GLTextureCubemap> texture = CreateRef<GLTextureCubemap>(Width, Height, TextureInternalFormat::Depth);
-      texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder);
-      texture->SetBorderColor({1.0f, 1.0f, 1.0f, 1.0f});
+      texture->SetTextureWrapModes(TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder);
+      texture->SetBorderColor({0.0f, 1.0f, 0.0f, 1.0f});
 
       glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
 
