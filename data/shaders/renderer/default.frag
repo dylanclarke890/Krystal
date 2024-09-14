@@ -84,13 +84,12 @@ uniform sampler2D u_Textures[32];
 uniform samplerCube u_CubeDepthMap;
 
 uniform float u_FarPlane;
-uniform vec3 u_LightPosition;
 
 out vec4 o_Color;
 
 vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
-float CalcOmniDirectionalShadow();
+float CalcOmniDirectionalShadow(vec3 lightPosition);
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
@@ -195,7 +194,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 spec
   if (!light.Enabled)
     return vec3(0.0);
 
-  vec3 lightDirection = normalize(vec3(light.Position) - v_FragmentPosition);
+  vec3 lightPosition = vec3(light.Position);
+  vec3 lightDirection = normalize(lightPosition - v_FragmentPosition);
 
   vec3 ambient = vec3(light.Ambient) * diffuseSample;
 
@@ -209,7 +209,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 spec
   diffuse *= attenuation;
   specular *= attenuation;
 
-  float shadow = CalcOmniDirectionalShadow();
+  float shadow = CalcOmniDirectionalShadow(lightPosition);
   // return vec3(shadow);
 
   return (ambient + ((1.0 - shadow) * (diffuse + specular))) * light.Intensity;
@@ -317,10 +317,10 @@ vec3 sampleOffsetDirections[20] = vec3[]
    vec3( 0,  1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0,  1, -1)
 ); 
 
-float CalcOmniDirectionalShadow()
+float CalcOmniDirectionalShadow(vec3 lightPosition)
 {
   // get vector between fragment position and light position
-  vec3 fragToLight = v_FragmentPosition - u_LightPosition;
+  vec3 fragToLight = v_FragmentPosition - lightPosition;
   float currentDepth = length(fragToLight);
 
   float shadow = 0.0;

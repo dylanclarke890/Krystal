@@ -240,19 +240,12 @@ namespace Krys
         omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, 0.0, 1.0), Vec3(0.0, -1.0, 0.0)),
         omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, 0.0, -1.0), Vec3(0.0, -1.0, 0.0))};
 
-    // Mat4 omniDirectionalLightSpaceMatrices[6] = {
-    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
-    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
-    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
-    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
-    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
-    //     omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0))};
-
     for (uint i = 0; i < 6; i++)
       OmniDirectionalShadowMapShader->SetUniform("u_ShadowMatrices[" + std::to_string(i) + "]", omniDirectionalLightSpaceMatrices[i]);
     OmniDirectionalShadowMapShader->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
+    // TODO: get the light position from the lights uniform buffer
     OmniDirectionalShadowMapShader->TrySetUniform("u_LightPosition", lightPos);
-
+    // TODO: add u_FarPlane as a light property
     DefaultShader->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
     DefaultShader->TrySetUniform("u_LightPosition", lightPos);
 
