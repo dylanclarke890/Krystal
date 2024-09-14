@@ -313,20 +313,39 @@ float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 l
   return shadow;
 }
 
+vec3 sampleOffsetDirections[20] = vec3[]
+(
+   vec3( 1,  1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1,  1,  1), 
+   vec3( 1,  1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1,  1, -1),
+   vec3( 1,  1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1,  1,  0),
+   vec3( 1,  0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1,  0, -1),
+   vec3( 0,  1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0,  1, -1)
+); 
+
 float CalcOmniDirectionalShadow()
 {
   // get vector between fragment position and light position
   vec3 fragToLight = v_FragmentPosition - u_LightPosition;
   float currentDepth = length(fragToLight);
 
-  // use the light to fragment vector to sample from the depth map    
-  float closestDepth = texture(u_CubeDepthMap, fragToLight).r;
-  // it is currently between [0,1]. Re-transform back to original value using u_FarPlane
-  closestDepth *= u_FarPlane;
-
-  // now test for shadows
-  float bias = 0.05;
-  float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+  float shadow  = 0.0;
+  float bias    = 0.05; 
+  float samples = 4.0;
+  float offset  = 0.1;
+  for (float x = -offset; x < offset; x += offset / (samples * 0.5))
+  {
+      for (float y = -offset; y < offset; y += offset / (samples * 0.5))
+      {
+          for (float z = -offset; z < offset; z += offset / (samples * 0.5))
+          {
+              float closestDepth = texture(u_CubeDepthMap, fragToLight + vec3(x, y, z)).r; 
+              closestDepth *= u_FarPlane;   // undo mapping [0;1]
+              if(currentDepth - bias > closestDepth)
+                  shadow += 1.0;
+          }
+      }
+  }
+  shadow /= (samples * samples * samples);
 
   return shadow;
 }  
