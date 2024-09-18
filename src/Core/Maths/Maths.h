@@ -31,6 +31,8 @@ namespace Krys
   constexpr Vec3 ROTATE_AXIS_Y = Vec3(0.0f, 1.0f, 0.0f);
   constexpr Vec3 ROTATE_AXIS_Z = Vec3(0.0f, 0.0f, 1.0f);
 
+  const uint TRIANGLE_VERTEX_COUNT = 3;
+
   inline constexpr float DegToRad(float degrees) noexcept
   {
     constexpr float ratio = PI32 * 2.0f / 360.0f;

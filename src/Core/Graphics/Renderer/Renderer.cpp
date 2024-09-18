@@ -8,12 +8,13 @@ namespace Krys
 {
 #pragma region Constants
   constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
-  constexpr Vec3 QUAD_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
+  constexpr Vec3 QUAD_SURFACE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
   constexpr Vec4 QUAD_LOCAL_SPACE_VERTICES[] = {{-0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, 0.5f, 0.0f, 1.0f}, {-0.5f, 0.5f, 0.0f, 1.0f}};
 
   constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
-  constexpr Vec3 TRIANGLE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
+  constexpr Vec3 TRIANGLE_SURFACE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
   constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.5f, 0.0f, 1.0f}};
+
   constexpr Vec4 CUBE_LOCAL_SPACE_VERTICES[] = {
       // Front face
       {-0.5f, -0.5f, 0.5f, 1.0f}, // 0
@@ -51,7 +52,7 @@ namespace Krys
       {0.5f, -0.5f, -0.5f, 1.0f}, // 22
       {-0.5f, -0.5f, -0.5f, 1.0f} // 23
   };
-  constexpr Vec3 CUBE_NORMALS[] = {
+  constexpr Vec3 CUBE_SURFACE_NORMALS[] = {
       {0.0f, 0.0f, 1.0f}, // Front face
       {0.0f, 0.0f, 1.0f},
       {0.0f, 0.0f, 1.0f},
@@ -90,6 +91,22 @@ namespace Krys
       -1.0f, 1.0f, 0.0f, 1.0f,
       1.0f, -1.0f, 1.0f, 0.0f,
       1.0f, 1.0f, 1.0f, 1.0f};
+
+  constexpr auto AssignOneVertex = [](const Vec4 &position, const Vec3 &surfaceNormal, const TextureData &textureData)
+  {
+    VertexData vertex;
+
+    vertex.Position = position;
+    vertex.SurfaceNormal = surfaceNormal;
+    vertex.Color = textureData.Tint;
+    vertex.TextureSlotIndex = textureData.Texture;
+    vertex.SpecularTextureSlotIndex = textureData.Specular;
+    vertex.EmissionTextureSlotIndex = textureData.Emission;
+    vertex.NormalTextureSlotIndex = textureData.Normal;
+    vertex.Shininess = textureData.Shininess;
+
+    return vertex;
+  };
 
 #pragma endregion Constants
 
@@ -171,14 +188,16 @@ namespace Krys
     KRYS_ASSERT(OmniDirectionalShadowMapFramebuffer->IsComplete(), "OmniDirectionalShadowMapFramebuffer Incomplete", 0);
 
     DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
-    DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_WorldSpacePosition"},
+    DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_Position"},
                                      {ShaderDataType::Float3, "i_Normal"},
                                      {ShaderDataType::Float4, "i_Color"},
                                      {ShaderDataType::Float2, "i_TextureCoord"},
                                      {ShaderDataType::Int, "i_TextureSlot"},
                                      {ShaderDataType::Int, "i_SpecularSlot"},
                                      {ShaderDataType::Int, "i_EmissionSlot"},
-                                     {ShaderDataType::Float, "i_Shininess"}}});
+                                     {ShaderDataType::Int, "i_NormalSlot"},
+                                     {ShaderDataType::Float, "i_Shininess"},
+                                     {ShaderDataType::Float3, "i_Tangent"}}});
 
     PostProcessingVertexBuffer = Context->CreateVertexBuffer(SCREEN_QUAD_VERTICES, sizeof(SCREEN_QUAD_VERTICES));
     PostProcessingVertexBuffer->SetLayout({{{ShaderDataType::Float2, "i_Position"},
@@ -243,11 +262,11 @@ namespace Krys
     for (uint i = 0; i < 6; i++)
       OmniDirectionalShadowMapShader->SetUniform("u_ShadowMatrices[" + std::to_string(i) + "]", omniDirectionalLightSpaceMatrices[i]);
     OmniDirectionalShadowMapShader->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
+
     // TODO: get the light position from the lights uniform buffer
     OmniDirectionalShadowMapShader->TrySetUniform("u_LightPosition", lightPos);
     // TODO: add u_FarPlane as a light property
     DefaultShader->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
-    DefaultShader->TrySetUniform("u_LightPosition", lightPos);
 
     Context->SetDepthTestingEnabled(true);
 
@@ -288,20 +307,31 @@ namespace Krys
 
   void Renderer::DrawTriangle(Ref<Transform> transform, TextureData &textureData)
   {
-    const uint vertex_count = 3;
-    const uint index_count = 3;
+    constexpr auto AssignOneTriangleVertex = [](int index, Mat4 &model, Mat3 &normalMatrix, TextureData &textureData)
+    {
+      Vec4 position = model * TRIANGLE_LOCAL_SPACE_VERTICES[index];
+      Vec3 normal = normalMatrix * TRIANGLE_SURFACE_NORMALS[index];
 
-    Mat4 model = transform->GetModel();
-    Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
+      VertexData vertex = AssignOneVertex(position, normal, textureData);
+      vertex.TextureCoords = textureData.TextureCoords[index];
 
-    auto &td = textureData;
-    VertexData vertices[vertex_count] = {
-        {model * TRIANGLE_LOCAL_SPACE_VERTICES[0], normal * TRIANGLE_NORMALS[0], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * TRIANGLE_LOCAL_SPACE_VERTICES[1], normal * TRIANGLE_NORMALS[1], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * TRIANGLE_LOCAL_SPACE_VERTICES[2], normal * TRIANGLE_NORMALS[2], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
+      return vertex;
     };
 
-    uint32 indices[index_count] = {VertexCount, VertexCount + 1, VertexCount + 2};
+    Mat4 model = transform->GetModel();
+    Mat3 normalMatrix = Mat3(glm::transpose(glm::inverse(model)));
+
+    const uint vertex_count = TRIANGLE_VERTEX_COUNT;
+    VertexData vertices[TRIANGLE_VERTEX_COUNT] = {
+        AssignOneTriangleVertex(0, model, normalMatrix, textureData),
+        AssignOneTriangleVertex(1, model, normalMatrix, textureData),
+        AssignOneTriangleVertex(2, model, normalMatrix, textureData),
+    };
+
+    CalcTangentSpace(vertices[0], vertices[1], vertices[2], normalMatrix);
+
+    const uint index_count = TRIANGLE_VERTEX_COUNT;
+    uint32 indices[TRIANGLE_VERTEX_COUNT] = {VertexCount, VertexCount + 1, VertexCount + 2};
     AddVertices(&vertices[0], vertex_count, &indices[0], index_count);
   }
 
@@ -334,21 +364,41 @@ namespace Krys
 
   void Renderer::DrawQuad(Ref<Transform> transform, TextureData &textureData)
   {
-    const uint vertex_count = 4;
-    const uint index_count = 6;
+    constexpr auto AssignOneQuadVertex = [](int index, Mat4 &model, Mat3 &normalMatrix, TextureData &textureData)
+    {
+      Vec4 position = model * QUAD_LOCAL_SPACE_VERTICES[index];
+      Vec3 normal = normalMatrix * QUAD_SURFACE_NORMALS[index];
 
-    Mat4 model = transform->GetModel();
-    Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
+      VertexData vertex = AssignOneVertex(position, normal, textureData);
+      vertex.TextureCoords = textureData.TextureCoords[index];
 
-    auto &td = textureData;
-    VertexData vertices[vertex_count] = {
-        {model * QUAD_LOCAL_SPACE_VERTICES[0], normal * QUAD_NORMALS[0], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * QUAD_LOCAL_SPACE_VERTICES[1], normal * QUAD_NORMALS[1], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * QUAD_LOCAL_SPACE_VERTICES[2], normal * QUAD_NORMALS[2], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * QUAD_LOCAL_SPACE_VERTICES[3], normal * QUAD_NORMALS[3], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
+      return vertex;
     };
 
-    uint32 indices[index_count] = {VertexCount, VertexCount + 1, VertexCount + 2, VertexCount + 2, VertexCount + 3, VertexCount + 0};
+    Mat4 model = transform->GetModel();
+    Mat3 normalMatrix = Mat3(glm::transpose(glm::inverse(model)));
+
+    const uint vertex_count = 4;
+    VertexData vertices[vertex_count] = {
+        AssignOneQuadVertex(0, model, normalMatrix, textureData),
+        AssignOneQuadVertex(1, model, normalMatrix, textureData),
+        AssignOneQuadVertex(2, model, normalMatrix, textureData),
+        AssignOneQuadVertex(3, model, normalMatrix, textureData),
+    };
+
+    const int triangle1[TRIANGLE_VERTEX_COUNT] = {0, 1, 2};
+    const int triangle2[TRIANGLE_VERTEX_COUNT] = {2, 3, 0};
+
+#define CALC_TRIANGLE_TANGENT_SPACE(triangle) CalcTangentSpace(vertices[triangle[0]], vertices[triangle[1]], vertices[triangle[2]], normalMatrix)
+    CALC_TRIANGLE_TANGENT_SPACE(triangle1);
+    CALC_TRIANGLE_TANGENT_SPACE(triangle2);
+
+    const uint index_count = 6;
+    uint32 indices[index_count] = {
+        VertexCount + triangle1[0], VertexCount + triangle1[1], VertexCount + triangle1[2], // Triangle 1
+        VertexCount + triangle2[0], VertexCount + triangle2[1], VertexCount + triangle2[2], // Triangle 2
+    };
+
     AddVertices(&vertices[0], vertex_count, &indices[0], index_count);
   }
 
@@ -368,6 +418,7 @@ namespace Krys
     textureData.Texture = GetTextureSlotIndex(material->Diffuse);
     textureData.Specular = GetTextureSlotIndex(material->Specular);
     textureData.Emission = GetTextureSlotIndex(material->Emission);
+    textureData.Normal = GetTextureSlotIndex(material->Normal);
     textureData.Shininess = material->Shininess;
     DrawCube(transform, textureData);
   }
@@ -388,99 +439,124 @@ namespace Krys
 
   void Renderer::DrawCube(Ref<Transform> transform, TextureData &textureData)
   {
-    const uint vertex_count = 24;
-    const uint index_count = 36;
+    constexpr auto AssignOneCubeVertex = [](int index, int textureCoordIndex, Mat4 &model, Mat3 &normalMatrix, TextureData &textureData)
+    {
+      Vec4 position = model * CUBE_LOCAL_SPACE_VERTICES[index];
+      Vec3 normal = normalMatrix * CUBE_SURFACE_NORMALS[index];
 
-    Mat4 model = transform->GetModel();
-    Mat3 normal = Mat3(glm::transpose(glm::inverse(model)));
+      VertexData vertex = AssignOneVertex(position, normal, textureData);
+      vertex.TextureCoords = textureData.TextureCoords[textureCoordIndex];
 
-    auto &td = textureData;
-    VertexData vertices[vertex_count] = {
-        // Front face
-        {model * CUBE_LOCAL_SPACE_VERTICES[0], normal * CUBE_NORMALS[0], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[1], normal * CUBE_NORMALS[1], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[2], normal * CUBE_NORMALS[2], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[3], normal * CUBE_NORMALS[3], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
-
-        // Back face
-        {model * CUBE_LOCAL_SPACE_VERTICES[4], normal * CUBE_NORMALS[4], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[5], normal * CUBE_NORMALS[5], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[6], normal * CUBE_NORMALS[6], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[7], normal * CUBE_NORMALS[7], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
-
-        // Left face
-        {model * CUBE_LOCAL_SPACE_VERTICES[8], normal * CUBE_NORMALS[8], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[9], normal * CUBE_NORMALS[9], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[10], normal * CUBE_NORMALS[10], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[11], normal * CUBE_NORMALS[11], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
-
-        // Right face
-        {model * CUBE_LOCAL_SPACE_VERTICES[12], normal * CUBE_NORMALS[12], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[13], normal * CUBE_NORMALS[13], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[14], normal * CUBE_NORMALS[14], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[15], normal * CUBE_NORMALS[15], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
-
-        // Top face
-        {model * CUBE_LOCAL_SPACE_VERTICES[16], normal * CUBE_NORMALS[16], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[17], normal * CUBE_NORMALS[17], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[18], normal * CUBE_NORMALS[18], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[19], normal * CUBE_NORMALS[19], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
-
-        // Bottom face
-        {model * CUBE_LOCAL_SPACE_VERTICES[20], normal * CUBE_NORMALS[20], td.Tint, td.TextureCoords[0], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[21], normal * CUBE_NORMALS[21], td.Tint, td.TextureCoords[1], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[22], normal * CUBE_NORMALS[22], td.Tint, td.TextureCoords[2], td.Texture, td.Specular, td.Emission, td.Shininess},
-        {model * CUBE_LOCAL_SPACE_VERTICES[23], normal * CUBE_NORMALS[23], td.Tint, td.TextureCoords[3], td.Texture, td.Specular, td.Emission, td.Shininess},
+      return vertex;
     };
 
+    Mat4 model = transform->GetModel();
+    Mat3 normalMatrix = Mat3(glm::transpose(glm::inverse(model)));
+
+    const uint vertex_count = 24;
+    VertexData vertices[vertex_count] = {
+        AssignOneCubeVertex(0, 0, model, normalMatrix, textureData),
+        AssignOneCubeVertex(1, 1, model, normalMatrix, textureData),
+        AssignOneCubeVertex(2, 2, model, normalMatrix, textureData),
+        AssignOneCubeVertex(3, 3, model, normalMatrix, textureData), // Front face
+
+        AssignOneCubeVertex(4, 0, model, normalMatrix, textureData),
+        AssignOneCubeVertex(5, 1, model, normalMatrix, textureData),
+        AssignOneCubeVertex(6, 2, model, normalMatrix, textureData),
+        AssignOneCubeVertex(7, 3, model, normalMatrix, textureData), // Back face
+
+        AssignOneCubeVertex(8, 0, model, normalMatrix, textureData),
+        AssignOneCubeVertex(9, 1, model, normalMatrix, textureData),
+        AssignOneCubeVertex(10, 2, model, normalMatrix, textureData),
+        AssignOneCubeVertex(11, 3, model, normalMatrix, textureData), // Left face
+
+        AssignOneCubeVertex(12, 0, model, normalMatrix, textureData),
+        AssignOneCubeVertex(13, 1, model, normalMatrix, textureData),
+        AssignOneCubeVertex(14, 2, model, normalMatrix, textureData),
+        AssignOneCubeVertex(15, 3, model, normalMatrix, textureData), // Right face
+
+        AssignOneCubeVertex(16, 0, model, normalMatrix, textureData),
+        AssignOneCubeVertex(17, 1, model, normalMatrix, textureData),
+        AssignOneCubeVertex(18, 2, model, normalMatrix, textureData),
+        AssignOneCubeVertex(19, 3, model, normalMatrix, textureData), // Top face
+
+        AssignOneCubeVertex(20, 0, model, normalMatrix, textureData),
+        AssignOneCubeVertex(21, 1, model, normalMatrix, textureData),
+        AssignOneCubeVertex(22, 2, model, normalMatrix, textureData),
+        AssignOneCubeVertex(23, 3, model, normalMatrix, textureData), // Bottom face
+    };
+
+    const int frontTriangle1[TRIANGLE_VERTEX_COUNT] = {0, 1, 2};
+    const int frontTriangle2[TRIANGLE_VERTEX_COUNT] = {2, 3, 0};
+    const int backTriangle1[TRIANGLE_VERTEX_COUNT] = {4, 5, 6};
+    const int backTriangle2[TRIANGLE_VERTEX_COUNT] = {6, 7, 4};
+    const int leftTriangle1[TRIANGLE_VERTEX_COUNT] = {8, 9, 10};
+    const int leftTriangle2[TRIANGLE_VERTEX_COUNT] = {10, 11, 8};
+    const int rightTriangle1[TRIANGLE_VERTEX_COUNT] = {12, 13, 14};
+    const int rightTriangle2[TRIANGLE_VERTEX_COUNT] = {14, 15, 12};
+    const int topTriangle1[TRIANGLE_VERTEX_COUNT] = {16, 17, 18};
+    const int topTriangle2[TRIANGLE_VERTEX_COUNT] = {18, 19, 16};
+    const int bottomTriangle1[TRIANGLE_VERTEX_COUNT] = {20, 21, 22};
+    const int bottomTriangle2[TRIANGLE_VERTEX_COUNT] = {22, 23, 20};
+
+#define CALC_TRIANGLE_TANGENT_SPACE(triangle) CalcTangentSpace(vertices[triangle[0]], vertices[triangle[1]], vertices[triangle[2]], normalMatrix)
+
+    CALC_TRIANGLE_TANGENT_SPACE(frontTriangle1);
+    CALC_TRIANGLE_TANGENT_SPACE(frontTriangle2);
+    CALC_TRIANGLE_TANGENT_SPACE(backTriangle1);
+    CALC_TRIANGLE_TANGENT_SPACE(backTriangle2);
+    CALC_TRIANGLE_TANGENT_SPACE(leftTriangle1);
+    CALC_TRIANGLE_TANGENT_SPACE(leftTriangle2);
+    CALC_TRIANGLE_TANGENT_SPACE(rightTriangle1);
+    CALC_TRIANGLE_TANGENT_SPACE(rightTriangle2);
+    CALC_TRIANGLE_TANGENT_SPACE(topTriangle1);
+    CALC_TRIANGLE_TANGENT_SPACE(topTriangle2);
+    CALC_TRIANGLE_TANGENT_SPACE(bottomTriangle1);
+    CALC_TRIANGLE_TANGENT_SPACE(bottomTriangle2);
+
+    const uint index_count = 36;
     uint32 indices[index_count] = {
-        // Front face
-        VertexCount,
-        VertexCount + 1,
-        VertexCount + 2,
-        VertexCount + 2,
-        VertexCount + 3,
-        VertexCount,
+        VertexCount + frontTriangle1[0],
+        VertexCount + frontTriangle1[1],
+        VertexCount + frontTriangle1[2], // Front face 1
+        VertexCount + frontTriangle2[0],
+        VertexCount + frontTriangle2[1],
+        VertexCount + frontTriangle2[2], // Front face 2
 
-        // Back face
-        VertexCount + 4,
-        VertexCount + 5,
-        VertexCount + 6,
-        VertexCount + 6,
-        VertexCount + 7,
-        VertexCount + 4,
+        VertexCount + backTriangle1[0],
+        VertexCount + backTriangle1[1],
+        VertexCount + backTriangle1[2], // Back face 1
+        VertexCount + backTriangle2[0],
+        VertexCount + backTriangle2[1],
+        VertexCount + backTriangle2[2], // Back face 2
 
-        // Left face
-        VertexCount + 8,
-        VertexCount + 9,
-        VertexCount + 10,
-        VertexCount + 10,
-        VertexCount + 11,
-        VertexCount + 8,
+        VertexCount + leftTriangle1[0],
+        VertexCount + leftTriangle1[1],
+        VertexCount + leftTriangle1[2], // Left face 1
+        VertexCount + leftTriangle2[0],
+        VertexCount + leftTriangle2[1],
+        VertexCount + leftTriangle2[2], // Left face 2
 
-        // Right face
-        VertexCount + 12,
-        VertexCount + 13,
-        VertexCount + 14,
-        VertexCount + 14,
-        VertexCount + 15,
-        VertexCount + 12,
+        VertexCount + rightTriangle1[0],
+        VertexCount + rightTriangle1[1],
+        VertexCount + rightTriangle1[2], // Right face 1
+        VertexCount + rightTriangle2[0],
+        VertexCount + rightTriangle2[1],
+        VertexCount + rightTriangle2[2], // Right face 2
 
-        // Top face
-        VertexCount + 16,
-        VertexCount + 17,
-        VertexCount + 18,
-        VertexCount + 18,
-        VertexCount + 19,
-        VertexCount + 16,
+        VertexCount + topTriangle1[0],
+        VertexCount + topTriangle1[1],
+        VertexCount + topTriangle1[2], // Top face 1
+        VertexCount + topTriangle2[0],
+        VertexCount + topTriangle2[1],
+        VertexCount + topTriangle2[2], // Top face 2
 
-        // Bottom face
-        VertexCount + 20,
-        VertexCount + 21,
-        VertexCount + 22,
-        VertexCount + 22,
-        VertexCount + 23,
-        VertexCount + 20,
+        VertexCount + bottomTriangle1[0],
+        VertexCount + bottomTriangle1[1],
+        VertexCount + bottomTriangle1[2], // Bottom face 1
+        VertexCount + bottomTriangle2[0],
+        VertexCount + bottomTriangle2[1],
+        VertexCount + bottomTriangle2[2], // Bottom face 2
     };
 
     AddVertices(&vertices[0], vertex_count, &indices[0], index_count);

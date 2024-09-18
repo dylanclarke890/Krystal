@@ -57,9 +57,13 @@ in vec4 v_DirectionalLightSpaceFragmentPosition;
 in vec4 v_Color;
 in vec3 v_Normal;
 in vec2 v_TextureCoord;
+in vec3 v_TangentLightPosition;
+in vec3 v_TangentCameraPosition;
+in vec3 v_TangentFragmentPosition;
 flat in int v_TextureSlot;
 flat in int v_SpecularSlot;
 flat in int v_EmissionSlot;
+flat in int v_NormalSlot;
 flat in float v_Shininess;
 
 layout (std140, binding = 0) uniform Shared
@@ -100,7 +104,16 @@ float CalcAttenuation(vec4 lightPosition, float linear, float quadratic, float c
 
 void main()
 {
-  vec3 normal = normalize(v_Normal);
+  vec3 normal; // normal is in tangent space
+  if (v_NormalSlot == -1)
+  {
+    normal = normalize(v_Normal);
+  } 
+  else 
+  {
+    normal = GetTextureSample(v_NormalSlot, vec4(v_Normal, 1.0)).rgb;
+    normal = normalize(normal * 2.0 - 1.0);
+  }
 
   vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0)) * v_Color;
   vec3 diffuseSample = vec3(textureSample);
@@ -190,10 +203,10 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 spec
 {
   if (!light.Enabled) return vec3(0.0);
 
-  vec3 lightPosition = vec3(light.Position);
-  vec3 lightDirection = normalize(lightPosition - v_FragmentPosition);
+  vec3 lightPosition = v_TangentLightPosition;
+  vec3 lightDirection = normalize(lightPosition - v_TangentFragmentPosition);
   float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-  float attenuation = CalcAttenuation(light.Position, light.Linear, light.Quadratic, light.Constant);
+  float attenuation = CalcAttenuation(vec4(lightPosition, 1.0), light.Linear, light.Quadratic, light.Constant);
 
   vec3 ambient = vec3(light.Ambient) * diffuseSample * attenuation;
   vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample * attenuation;
@@ -207,7 +220,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specul
 {
   if (!light.Enabled) return vec3(0.0);
 
-  vec3 lightDirection = normalize(vec3(light.Position) - v_FragmentPosition);
+  vec3 lightDirection = normalize(vec3(light.Position) - v_TangentFragmentPosition);
   float theta = dot(lightDirection, normalize(-vec3(light.Direction)));
   float epsilon = light.InnerCutoff - light.OuterCutoff;
   float intensity = clamp((theta - light.OuterCutoff) / epsilon, 0.0, 1.0);
@@ -231,13 +244,13 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specul
 
 float CalcAttenuation(vec4 lightPosition, float linear, float quadratic, float constant)
 {
-  float distance = length(vec3(lightPosition) - v_FragmentPosition);
+  float distance = length(vec3(lightPosition) - v_TangentFragmentPosition);
   return 1.0 / (constant + linear * distance + quadratic * (distance));  
 }
 
 vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, vec3 specularSample)
 {
-  vec3 viewDirection = normalize(vec3(u_CameraPosition) - v_FragmentPosition);
+  vec3 viewDirection = normalize(v_TangentCameraPosition - v_FragmentPosition);
 
   float specularFactor = 0.0;
   if (u_UseBlinnLightingModel)
@@ -308,9 +321,9 @@ float CalcOmniDirectionalShadow(vec3 lightPosition)
   float shadow = 0.0;
   float bias   = 0.15;
   int samples  = 20;
-  float viewDistance = length(vec3(u_CameraPosition) - v_FragmentPosition);
+  float viewDistance = length(v_TangentCameraPosition - v_TangentFragmentPosition);
   float diskRadius = 0.05;
-  for (int i = 0; i < samples; ++i)
+  for (int i = 0; i < samples; i++)
   {
     float closestDepth = texture(u_CubeDepthMap, fragToLight + sampleOffsetDirections[i] * diskRadius).r;
     closestDepth *= u_FarPlane;   // undo mapping [0;1]

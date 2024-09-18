@@ -117,7 +117,7 @@ namespace Krys
 
     KRYS_ASSERT(data, "Failed to load image!", 0);
     KRYS_ASSERT(channels == 3 || channels == 4, "Unsupported number of color channels.", 0);
-
+    
     Width = width;
     Height = height;
 

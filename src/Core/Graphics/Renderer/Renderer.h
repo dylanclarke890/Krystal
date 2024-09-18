@@ -25,30 +25,56 @@ namespace Krys
   struct VertexData
   {
     Vec4 Position;
-    Vec3 Normal;
+    Vec3 SurfaceNormal;
     Vec4 Color;
     Vec2 TextureCoords;
     int TextureSlotIndex;
     int SpecularTextureSlotIndex;
     int EmissionTextureSlotIndex;
+    int NormalTextureSlotIndex;
     float Shininess;
+    Vec3 Tangent;
   };
+
+  struct TextureData
+  {
+    const Vec2 *TextureCoords;
+    Vec4 Tint;
+    int Texture = -1;
+    int Specular = -1;
+    int Emission = -1;
+    int Normal = -1;
+    float Shininess = 32.0f;
+  };
+
+  inline static void CalcTangentSpace(VertexData &v1, VertexData &v2, VertexData &v3, Mat3 &normalMatrix) noexcept
+  {
+    Vec3 edge1 = v2.Position - v1.Position;
+    Vec3 edge2 = v3.Position - v1.Position;
+
+    Vec2 deltaUV1 = v2.TextureCoords - v1.TextureCoords;
+    Vec2 deltaUV2 = v3.TextureCoords - v1.TextureCoords;
+
+    float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+    Vec3 tangent;
+    tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+    tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+    tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+
+    tangent = glm::normalize(normalMatrix * tangent);
+
+    v1.Tangent = tangent;
+    v2.Tangent = tangent;
+    v3.Tangent = tangent;
+  }
 
   class Renderer
   {
   private:
-    struct TextureData
-    {
-      const Vec2 *TextureCoords;
-      Vec4 Tint;
-      int Texture = -1;
-      int Specular = -1;
-      int Emission = -1;
-      float Shininess = 32.0f;
-    };
-
     static Ref<GraphicsContext> Context;
-    static Ref<Framebuffer> DefaultFramebuffer, DirectionalShadowMapFramebuffer, OmniDirectionalShadowMapFramebuffer, PostProcessingFramebuffer;
+    static Ref<Framebuffer> DefaultFramebuffer, DirectionalShadowMapFramebuffer,
+        OmniDirectionalShadowMapFramebuffer, PostProcessingFramebuffer;
     static Ref<Shader> DefaultShader, DirectionalShadowMapShader, OmniDirectionalShadowMapShader,
         LightSourceShader, SkyboxShader, PostProcessingShader, ActiveShader;
     static Ref<VertexArray> DefaultVertexArray, PostProcessingVertexArray, SkyboxVertexArray;
