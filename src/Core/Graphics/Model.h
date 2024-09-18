@@ -40,7 +40,8 @@ namespace Krys
       KRYS_PERFORMANCE_TIMER("Loading Model");
 
       Assimp::Importer import;
-      const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+      const aiScene *scene = import.ReadFile(path,
+                                             aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
       if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
       {
@@ -137,6 +138,7 @@ namespace Krys
 
     // TODO: forward args
     // TODO: move to context somehow
+    // TODO: handle normal maps
     static Ref<Mesh> CreateMesh(std::vector<Vertex> &vertices, std::vector<uint32> &indices, std::vector<Ref<Texture2D>> &textures);
     static Ref<Texture2D> CreateTexture(TextureType type, const string &path);
   };
