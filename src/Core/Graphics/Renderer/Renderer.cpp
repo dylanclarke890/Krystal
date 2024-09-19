@@ -97,12 +97,13 @@ namespace Krys
     VertexData vertex;
 
     vertex.Position = position;
-    vertex.SurfaceNormal = surfaceNormal;
+    vertex.Normal = surfaceNormal;
     vertex.Color = textureData.Tint;
     vertex.TextureSlotIndex = textureData.Texture;
     vertex.SpecularTextureSlotIndex = textureData.Specular;
     vertex.EmissionTextureSlotIndex = textureData.Emission;
     vertex.NormalTextureSlotIndex = textureData.Normal;
+    vertex.DisplacementTextureSlotIndex = textureData.Displacement;
     vertex.Shininess = textureData.Shininess;
 
     return vertex;
@@ -196,6 +197,7 @@ namespace Krys
                                      {ShaderDataType::Int, "i_SpecularSlot"},
                                      {ShaderDataType::Int, "i_EmissionSlot"},
                                      {ShaderDataType::Int, "i_NormalSlot"},
+                                     {ShaderDataType::Int, "i_DisplacementSlot"},
                                      {ShaderDataType::Float, "i_Shininess"},
                                      {ShaderDataType::Float3, "i_Tangent"}}});
 
@@ -293,6 +295,8 @@ namespace Krys
     TextureData textureData{TRIANGLE_DEFAULT_TEXTURE_COORDS, material->Tint};
     textureData.Texture = GetTextureSlotIndex(material->Diffuse);
     textureData.Specular = GetTextureSlotIndex(material->Specular);
+    textureData.Normal = GetTextureSlotIndex(material->Normal);
+    textureData.Displacement = GetTextureSlotIndex(material->Displacement);
     textureData.Emission = GetTextureSlotIndex(material->Emission);
     textureData.Shininess = material->Shininess;
     DrawTriangle(transform, textureData);
@@ -351,6 +355,8 @@ namespace Krys
     textureData.Texture = GetTextureSlotIndex(material->Diffuse);
     textureData.Specular = GetTextureSlotIndex(material->Specular);
     textureData.Emission = GetTextureSlotIndex(material->Emission);
+    textureData.Normal = GetTextureSlotIndex(material->Normal);
+    textureData.Displacement = GetTextureSlotIndex(material->Displacement);
     textureData.Shininess = material->Shininess;
     DrawQuad(transform, textureData);
   }
@@ -419,6 +425,7 @@ namespace Krys
     textureData.Specular = GetTextureSlotIndex(material->Specular);
     textureData.Emission = GetTextureSlotIndex(material->Emission);
     textureData.Normal = GetTextureSlotIndex(material->Normal);
+    textureData.Displacement = GetTextureSlotIndex(material->Displacement);
     textureData.Shininess = material->Shininess;
     DrawCube(transform, textureData);
   }

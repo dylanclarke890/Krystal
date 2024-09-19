@@ -9,8 +9,9 @@ layout(location = 4) in int i_TextureSlot;
 layout(location = 5) in int i_SpecularSlot;
 layout(location = 6) in int i_EmissionSlot;
 layout(location = 7) in int i_NormalSlot;
-layout(location = 8) in float i_Shininess;
-layout(location = 9) in vec3 i_Tangent;
+layout(location = 8) in int i_DisplacementSlot;
+layout(location = 9) in float i_Shininess;
+layout(location = 10) in vec3 i_Tangent;
 
 layout (std140, binding = 0) uniform Shared
 {
@@ -96,6 +97,7 @@ flat out int v_TextureSlot;
 flat out int v_SpecularSlot;
 flat out int v_EmissionSlot;
 flat out int v_NormalSlot;
+flat out int v_DisplacementSlot;
 flat out float v_Shininess;
 
 void main()
@@ -109,6 +111,7 @@ void main()
   v_SpecularSlot = i_SpecularSlot;
   v_EmissionSlot = i_EmissionSlot;
   v_NormalSlot = i_NormalSlot;
+  v_DisplacementSlot = i_DisplacementSlot;
   v_Shininess = i_Shininess;
 
   vec3 T = normalize(i_Tangent);

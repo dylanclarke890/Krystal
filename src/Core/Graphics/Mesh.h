@@ -12,6 +12,7 @@ namespace Krys
     Ref<Texture2D> Specular;
     Ref<Texture2D> Emission;
     Ref<Texture2D> Normal;
+    Ref<Texture2D> Displacement;
     Vec4 Tint;
     float Shininess;
 

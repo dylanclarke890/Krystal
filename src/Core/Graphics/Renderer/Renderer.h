@@ -25,13 +25,14 @@ namespace Krys
   struct VertexData
   {
     Vec4 Position;
-    Vec3 SurfaceNormal;
+    Vec3 Normal;
     Vec4 Color;
     Vec2 TextureCoords;
     int TextureSlotIndex;
     int SpecularTextureSlotIndex;
     int EmissionTextureSlotIndex;
     int NormalTextureSlotIndex;
+    int DisplacementTextureSlotIndex;
     float Shininess;
     Vec3 Tangent;
   };
@@ -44,6 +45,7 @@ namespace Krys
     int Specular = -1;
     int Emission = -1;
     int Normal = -1;
+    int Displacement = -1;
     float Shininess = 32.0f;
   };
 

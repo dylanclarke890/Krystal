@@ -64,6 +64,7 @@ flat in int v_TextureSlot;
 flat in int v_SpecularSlot;
 flat in int v_EmissionSlot;
 flat in int v_NormalSlot;
+flat in int v_DisplacementSlot;
 flat in float v_Shininess;
 
 layout (std140, binding = 0) uniform Shared
@@ -87,10 +88,11 @@ layout (std140, binding = 1) uniform Lights
 uniform sampler2D u_Textures[32];
 uniform samplerCube u_CubeDepthMap;
 uniform float u_FarPlane;
+uniform float u_ParallaxHeightScale = 0.05;
 
 out vec4 o_Color;
 
-vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor);
+vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec2 textureCoord);
 
 float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection);
 float CalcOmniDirectionalShadow(vec3 lightPosition);
@@ -101,9 +103,13 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specul
 vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, vec3 specularSample);
 vec3 CalcGammaCorrection(vec3 color);
 float CalcAttenuation(vec4 lightPosition, float linear, float quadratic, float constant);
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 
 void main()
 {
+  vec3 viewDirection = normalize(v_TangentCameraPosition - v_TangentFragmentPosition);
+  vec2 textureCoord = ParallaxMapping(v_TextureCoord, viewDirection);
+
   vec3 normal; // normal is in tangent space
   if (v_NormalSlot == -1)
   {
@@ -111,14 +117,14 @@ void main()
   } 
   else 
   {
-    normal = GetTextureSample(v_NormalSlot, vec4(v_Normal, 1.0)).rgb;
+    normal = GetTextureSample(v_NormalSlot, vec4(v_Normal, 1.0), textureCoord).rgb;
     normal = normalize(normal * 2.0 - 1.0);
   }
 
-  vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0)) * v_Color;
-  vec3 diffuseSample = vec3(textureSample);
-  vec3 specularSample = vec3(GetTextureSample(v_SpecularSlot, vec4(0.3)));
-  vec3 emissionSample = vec3(GetTextureSample(v_EmissionSlot, vec4(0.0))); // TODO: this is currently unused.
+  vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0), textureCoord) * v_Color;
+  vec3 diffuseSample = textureSample.rgb;
+  vec3 specularSample = GetTextureSample(v_SpecularSlot, vec4(0.3), textureCoord).rgb;
+  vec3 emissionSample = GetTextureSample(v_EmissionSlot, vec4(0.0), textureCoord).rgb; // TODO: this is currently unused.
 
   vec3 lighting = vec3(0.0);
   if (u_LightingEnabled)
@@ -144,42 +150,42 @@ void main()
   o_Color = vec4(lighting, 1.0);
 }
 
-vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor)
+vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec2 textureCoord)
 {
   switch(textureSlotIndex)
   {
-    case  0: return texture(u_Textures[ 0], v_TextureCoord);
-    case  1: return texture(u_Textures[ 1], v_TextureCoord);
-    case  2: return texture(u_Textures[ 2], v_TextureCoord);
-    case  3: return texture(u_Textures[ 3], v_TextureCoord);
-    case  4: return texture(u_Textures[ 4], v_TextureCoord);
-    case  5: return texture(u_Textures[ 5], v_TextureCoord);
-    case  6: return texture(u_Textures[ 6], v_TextureCoord);
-    case  7: return texture(u_Textures[ 7], v_TextureCoord);
-    case  8: return texture(u_Textures[ 8], v_TextureCoord);
-    case  9: return texture(u_Textures[ 9], v_TextureCoord);
-    case 10: return texture(u_Textures[10], v_TextureCoord);
-    case 11: return texture(u_Textures[11], v_TextureCoord);
-    case 12: return texture(u_Textures[12], v_TextureCoord);
-    case 13: return texture(u_Textures[13], v_TextureCoord);
-    case 14: return texture(u_Textures[14], v_TextureCoord);
-    case 15: return texture(u_Textures[15], v_TextureCoord);
-    case 16: return texture(u_Textures[16], v_TextureCoord);
-    case 17: return texture(u_Textures[17], v_TextureCoord);
-    case 18: return texture(u_Textures[18], v_TextureCoord);
-    case 19: return texture(u_Textures[19], v_TextureCoord);
-    case 20: return texture(u_Textures[20], v_TextureCoord);
-    case 21: return texture(u_Textures[21], v_TextureCoord);
-    case 22: return texture(u_Textures[22], v_TextureCoord);
-    case 23: return texture(u_Textures[23], v_TextureCoord);
-    case 24: return texture(u_Textures[24], v_TextureCoord);
-    case 25: return texture(u_Textures[25], v_TextureCoord);
-    case 26: return texture(u_Textures[26], v_TextureCoord);
-    case 27: return texture(u_Textures[27], v_TextureCoord);
-    case 28: return texture(u_Textures[28], v_TextureCoord);
-    case 29: return texture(u_Textures[29], v_TextureCoord);
-    case 30: return texture(u_Textures[30], v_TextureCoord);
-    case 31: return texture(u_Textures[31], v_TextureCoord);
+    case  0: return texture(u_Textures[ 0], textureCoord);
+    case  1: return texture(u_Textures[ 1], textureCoord);
+    case  2: return texture(u_Textures[ 2], textureCoord);
+    case  3: return texture(u_Textures[ 3], textureCoord);
+    case  4: return texture(u_Textures[ 4], textureCoord);
+    case  5: return texture(u_Textures[ 5], textureCoord);
+    case  6: return texture(u_Textures[ 6], textureCoord);
+    case  7: return texture(u_Textures[ 7], textureCoord);
+    case  8: return texture(u_Textures[ 8], textureCoord);
+    case  9: return texture(u_Textures[ 9], textureCoord);
+    case 10: return texture(u_Textures[10], textureCoord);
+    case 11: return texture(u_Textures[11], textureCoord);
+    case 12: return texture(u_Textures[12], textureCoord);
+    case 13: return texture(u_Textures[13], textureCoord);
+    case 14: return texture(u_Textures[14], textureCoord);
+    case 15: return texture(u_Textures[15], textureCoord);
+    case 16: return texture(u_Textures[16], textureCoord);
+    case 17: return texture(u_Textures[17], textureCoord);
+    case 18: return texture(u_Textures[18], textureCoord);
+    case 19: return texture(u_Textures[19], textureCoord);
+    case 20: return texture(u_Textures[20], textureCoord);
+    case 21: return texture(u_Textures[21], textureCoord);
+    case 22: return texture(u_Textures[22], textureCoord);
+    case 23: return texture(u_Textures[23], textureCoord);
+    case 24: return texture(u_Textures[24], textureCoord);
+    case 25: return texture(u_Textures[25], textureCoord);
+    case 26: return texture(u_Textures[26], textureCoord);
+    case 27: return texture(u_Textures[27], textureCoord);
+    case 28: return texture(u_Textures[28], textureCoord);
+    case 29: return texture(u_Textures[29], textureCoord);
+    case 30: return texture(u_Textures[30], textureCoord);
+    case 31: return texture(u_Textures[31], textureCoord);
     default: return defaultColor;
   }
 }
@@ -333,4 +339,14 @@ float CalcOmniDirectionalShadow(vec3 lightPosition)
   shadow /= float(samples); 
 
   return shadow;
-}  
+}
+
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) 
+{
+  if (v_DisplacementSlot == -1)
+    return texCoords;
+
+  float height =  GetTextureSample(v_DisplacementSlot, vec4(1.0), texCoords).r;    
+  vec2 p = viewDir.xy / viewDir.z * (height * u_ParallaxHeightScale);
+  return texCoords - p;   
+}
