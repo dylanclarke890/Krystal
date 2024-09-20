@@ -152,6 +152,7 @@ namespace Krys
   Ref<Camera> Renderer::ActiveCamera;
   bool Renderer::IsPostProcessingEnabled;
   bool Renderer::IsWireFrameDrawingEnabled;
+  bool Renderer::IsHDRFramebuffer;
 
   Ref<Transform> Renderer::LightSourceTransform;
   LightManager Renderer::Lights;
@@ -161,17 +162,18 @@ namespace Krys
 // TODO: Add `OnEvent` method for resizing framebuffers etc.
 #pragma region Lifecycle Methods
 
-  void Renderer::Init(Ref<Window> window, Ref<GraphicsContext> ctx)
+  void Renderer::Init(Ref<Window> window, Ref<GraphicsContext> ctx, bool hdrFramebuffer)
   {
     Context = ctx;
+    IsHDRFramebuffer = hdrFramebuffer;
 
     DefaultFramebuffer = Context->CreateFramebuffer(window->GetWidth(), window->GetHeight(), 4);
-    DefaultFramebuffer->AddColorAttachment();
+    DefaultFramebuffer->AddColorAttachment(IsHDRFramebuffer ? TextureInternalFormat::RGBA16F : TextureInternalFormat::RGBA);
     DefaultFramebuffer->AddDepthStencilAttachment();
     KRYS_ASSERT(DefaultFramebuffer->IsComplete(), "DefaultFramebuffer Incomplete", 0);
 
     PostProcessingFramebuffer = Context->CreateFramebuffer(window->GetWidth(), window->GetHeight(), 1);
-    PostProcessingFramebuffer->AddColorAttachment();
+    PostProcessingFramebuffer->AddColorAttachment(IsHDRFramebuffer ? TextureInternalFormat::RGBA16F : TextureInternalFormat::RGBA);
     PostProcessingFramebuffer->AddDepthStencilAttachment();
     KRYS_ASSERT(PostProcessingFramebuffer->IsComplete(), "PostProcessingFramebuffer Incomplete", 0);
 
@@ -723,6 +725,7 @@ namespace Krys
       Context->Clear(RenderBuffer::All);
 
       ActiveShader->Bind();
+      ActiveShader->TrySetUniform("u_IsHDREnabled", IsHDRFramebuffer);
       DirectionalShadowMapFramebuffer->GetDepthAttachment()->Bind(0);
       OmniDirectionalShadowMapFramebuffer->GetDepthAttachment()->Bind(31);
 
@@ -772,6 +775,7 @@ namespace Krys
       Context->SetDepthTestFunc(DepthTestFunc::Less);
     }
 
+    // Otherwise we incorrectly render the screen quad in wireframe mode
     if (IsWireFrameDrawingEnabled)
       Context->SetWireframeModeEnabled(false);
 
@@ -784,6 +788,8 @@ namespace Krys
                                  RenderBuffer::All);
 
       PostProcessingShader->Bind();
+      PostProcessingShader->TrySetUniform("u_IsHDREnabled", IsHDRFramebuffer);
+
       PostProcessingVertexArray->Bind();
 
       PostProcessingFramebuffer->GetColorAttachment()->Bind(0);

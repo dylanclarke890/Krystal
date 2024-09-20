@@ -77,8 +77,13 @@ namespace Krys
 
     void AddColorAttachment() noexcept override
     {
+      AddColorAttachment(TextureInternalFormat::RGBA);
+    }
+
+    void AddColorAttachment(TextureInternalFormat internalFormat) noexcept override
+    {
       // TODO: validate ColorAttachments.size() against GL_MAX_COLOR_ATTACHMENTS
-      Ref<Texture2D> texture = CreateRef<GLTexture2D>(Width, Height, Samples);
+      Ref<Texture2D> texture = CreateRef<GLTexture2D>(Width, Height, Samples, internalFormat);
       if (Samples == 1)
         texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToEdge);
 

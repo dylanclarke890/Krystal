@@ -63,6 +63,7 @@ namespace Krys
     Auto,
     RGB,
     RGBA,
+    RGBA16F,
     SRGB,
     SRGBA,
     Depth

@@ -93,14 +93,15 @@ namespace Krys
     static int TextureSlotIndex;
 
     static Ref<Camera> ActiveCamera;
-    static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled;
+    static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled, IsHDRFramebuffer;
 
     static Ref<Transform> LightSourceTransform;
 
   public:
     static LightManager Lights;
 
-    static void Init(Ref<Window> window, Ref<GraphicsContext> ctx);
+    // TODO: add an init settings struct to pass instead
+    static void Init(Ref<Window> window, Ref<GraphicsContext> ctx, bool hdrFramebuffer);
     static void Shutdown();
 
     static void DrawTriangle(Ref<Transform> transform, Vec4 &color);

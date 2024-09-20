@@ -98,6 +98,8 @@ namespace Krys
       return GL_SRGB8;
     case TextureInternalFormat::RGBA:
       return GL_RGBA8;
+    case TextureInternalFormat::RGBA16F:
+      return GL_RGBA16F;
     case TextureInternalFormat::SRGBA:
       return GL_SRGB8_ALPHA8;
     case TextureInternalFormat::Depth:

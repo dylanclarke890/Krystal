@@ -22,6 +22,7 @@ namespace Krys
     virtual void Unbind() noexcept = 0;
 
     virtual void AddColorAttachment() noexcept = 0;
+    virtual void AddColorAttachment(TextureInternalFormat internalFormat) noexcept = 0;
     virtual void AddDepthAttachment() noexcept = 0;
     virtual void AddDepthCubemapAttachment() noexcept = 0;
     virtual void AddDepthStencilAttachment() noexcept = 0;
