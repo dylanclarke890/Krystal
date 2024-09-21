@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <functional>
+
 #include "Core.h"
 #include "Textures/Texture2D.h"
 #include "Graphics/Enums.h"
@@ -31,8 +33,7 @@ namespace Krys
     virtual void DisableWriteBuffers() noexcept = 0;
     virtual void SetReadBuffer(uint attachmentIndex) noexcept = 0;
     virtual void SetWriteBuffer(uint attachmentIndex) noexcept = 0;
-    
-    // TODO: something like the following - SetWriteBuffers(uint* attachmentIndices, uint count) noexcept = 0;
+    virtual void SetWriteBuffers(const std::vector<uint> &attachmentIndices) noexcept = 0;
 
     NO_DISCARD virtual bool IsComplete() noexcept = 0;
 
@@ -70,6 +71,101 @@ namespace Krys
     NO_DISCARD Ref<Texture> GetDepthAttachment()
     {
       return DepthAttachment;
+    }
+  };
+
+  class PingPongFramebuffer
+  {
+  private:
+    Ref<Framebuffer> A, B;
+    std::function<void()> OnBeforeRenderPasses;
+    std::function<void()> OnRenderStep;
+    std::function<void()> OnAfterRenderPasses;
+
+  public:
+    PingPongFramebuffer(Ref<Framebuffer> a, Ref<Framebuffer> b)
+        : A(a), B(b), OnBeforeRenderPasses(nullptr), OnRenderStep(nullptr), OnAfterRenderPasses(nullptr)
+    {
+      KRYS_ASSERT(a->GetWidth() == b->GetWidth() && a->GetHeight() == b->GetHeight(), "Framebuffers must be the same size", 0);
+    }
+
+    Ref<Texture> ExecutePasses(Ref<Texture> initialTexture, uint amount)
+    {
+      KRYS_ASSERT(initialTexture && amount > 0, "invalid arguments", 0);
+      KRYS_ASSERT(OnRenderStep, "OnRenderStep must be set", 0);
+
+      if (OnBeforeRenderPasses)
+        OnBeforeRenderPasses();
+
+      auto current = A;
+      auto other = B;
+      bool first = true;
+      for (uint i = 0; i < amount; i++)
+      {
+        current->Bind();
+        if (first)
+          initialTexture->Bind();
+        else
+          other->GetColorAttachment()->Bind();
+
+        OnRenderStep();
+
+        if (i != amount)
+        {
+          if (current == A)
+          {
+            current = B;
+            other = A;
+          }
+          else
+          {
+            current = A;
+            other = B;
+          }
+        }
+
+        first = false;
+      }
+
+      if (OnAfterRenderPasses)
+        OnAfterRenderPasses();
+
+      current->Unbind();
+      return current->GetColorAttachment();
+    }
+
+    void SetBeforeRenderPassesCallback(std::function<void()> func)
+    {
+      KRYS_ASSERT(func, "func must not be null", 0);
+      OnBeforeRenderPasses = func;
+    }
+
+    void SetRenderStepCallback(std::function<void()> func)
+    {
+      KRYS_ASSERT(func, "func must not be null", 0);
+      OnRenderStep = func;
+    }
+
+    void SetAfterRenderPassesCallback(std::function<void()> func)
+    {
+      KRYS_ASSERT(func, "func must not be null", 0);
+      OnAfterRenderPasses = func;
+    }
+
+    NO_DISCARD bool IsComplete() noexcept
+    {
+      KRYS_ASSERT(A && B, "A or B framebuffer is null", 0);
+      return A->IsComplete() && B->IsComplete();
+    }
+
+    NO_DISCARD uint32 GetWidth() const noexcept
+    {
+      return A->GetWidth();
+    }
+
+    NO_DISCARD uint32 GetHeight() const noexcept
+    {
+      return A->GetHeight();
     }
   };
 }

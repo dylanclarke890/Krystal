@@ -1,6 +1,6 @@
 #version 450
 
-layout(location = 0) in vec4 i_WorldSpacePosition;
+layout(location = 0) in vec4 i_Position;
 layout(location = 1) in vec3 i_Normal;
 layout(location = 2) in vec4 i_Color;
 layout(location = 3) in vec2 i_TextureCoord;
@@ -23,6 +23,6 @@ uniform mat4 u_Model;
 void main()
 {
   v_Normal = i_Normal;
-  v_Position = vec3(i_WorldSpacePosition);
-  gl_Position = u_ViewProjection * i_WorldSpacePosition;
+  v_Position = vec3(i_Position);
+  gl_Position = u_ViewProjection * i_Position;
 }

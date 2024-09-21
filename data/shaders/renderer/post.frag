@@ -5,7 +5,6 @@ in vec2 v_TextureCoord;
 out vec4 o_Color;
 
 uniform sampler2D u_Textures[32];
-uniform bool u_IsHDREnabled;
 uniform float u_Exposure = 1.0;
 
 vec4 ToneMapping(vec3 color);
@@ -21,12 +20,11 @@ void main()
     o_Color = vec4(vec3(depthValue), 1.0);
   */
 
-  o_Color = texture(u_Textures[0], v_TextureCoord);
+  vec3 hdrColor = texture(u_Textures[0], v_TextureCoord).rgb;      
+  vec3 bloomColor = texture(u_Textures[1], v_TextureCoord).rgb;
+  hdrColor += bloomColor; // additive blending
 
-  if (u_IsHDREnabled) 
-  {
-    o_Color = ToneMapping(o_Color.rgb);
-  }
+  o_Color = vec4(hdrColor, 1.0); //ToneMapping(texture(u_Textures[0], v_TextureCoord).rgb);
 }
 
 vec4 ToneMapping(vec3 color)

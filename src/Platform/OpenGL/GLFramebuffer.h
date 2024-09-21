@@ -153,6 +153,20 @@ namespace Krys
       glNamedFramebufferDrawBuffer(Id, GL_COLOR_ATTACHMENT0 + attachmentIndex);
     }
 
+    void SetWriteBuffers(const std::vector<uint> &attachmentIndices) noexcept override
+    {
+      KRYS_ASSERT(attachmentIndices.size(), "No attachments specified.", 0);
+
+      std::vector<GLenum> attachments;
+      for (auto attachmentIndex : attachmentIndices)
+      {
+        KRYS_ASSERT(attachmentIndex >= 0 && attachmentIndex < ColorAttachments.size(), "Index out of range: Max is %d, %d received", ColorAttachments.size() - 1, attachmentIndex);
+        attachments.push_back(GL_COLOR_ATTACHMENT0 + attachmentIndex);
+      }
+
+      glNamedFramebufferDrawBuffers(Id, static_cast<GLsizei>(attachments.size()), attachments.data());
+    }
+
     NO_DISCARD bool IsComplete() noexcept override
     {
       GLenum status = glCheckNamedFramebufferStatus(Id, GL_FRAMEBUFFER);

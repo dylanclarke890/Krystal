@@ -75,12 +75,15 @@ namespace Krys
   {
   private:
     static Ref<GraphicsContext> Context;
-    static Ref<Framebuffer> DefaultFramebuffer, DirectionalShadowMapFramebuffer,
-        OmniDirectionalShadowMapFramebuffer, PostProcessingFramebuffer;
+    static Ref<Window> AppWindow;
+    static Ref<Framebuffer> MultiSampleFramebuffer, SingleSampleFramebuffer,
+        DirectionalShadowMapFramebuffer, OmniDirectionalShadowMapFramebuffer,
+        ExtractBrightnessFramebuffer, PostProcessingFramebuffer;
     static Ref<Shader> DefaultShader, DirectionalShadowMapShader, OmniDirectionalShadowMapShader,
-        LightSourceShader, SkyboxShader, PostProcessingShader, ActiveShader;
-    static Ref<VertexArray> DefaultVertexArray, PostProcessingVertexArray, SkyboxVertexArray;
-    static Ref<VertexBuffer> DefaultVertexBuffer, PostProcessingVertexBuffer, SkyboxVertexBuffer;
+        LightSourceShader, SkyboxShader, PostProcessingShader, ActiveShader, ExtractBrightnessShader, GaussianBlurShader;
+    static Ref<PingPongFramebuffer> GaussianBlurFramebuffer;
+    static Ref<VertexArray> DefaultVertexArray, ScreenQuadVertexArray, SkyboxVertexArray;
+    static Ref<VertexBuffer> DefaultVertexBuffer, ScreenQuadVertexBuffer, SkyboxVertexBuffer;
     static Ref<IndexBuffer> DefaultIndexBuffer;
     static Ref<UniformBuffer> SharedUniformBuffer;
     static Ref<TextureCubemap> SkyboxCubemap;
@@ -93,7 +96,7 @@ namespace Krys
     static int TextureSlotIndex;
 
     static Ref<Camera> ActiveCamera;
-    static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled, IsHDRFramebuffer;
+    static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled;
 
     static Ref<Transform> LightSourceTransform;
 
@@ -101,7 +104,7 @@ namespace Krys
     static LightManager Lights;
 
     // TODO: add an init settings struct to pass instead
-    static void Init(Ref<Window> window, Ref<GraphicsContext> ctx, bool hdrFramebuffer);
+    static void Init(Ref<Window> window, Ref<GraphicsContext> ctx);
     static void Shutdown();
 
     static void DrawTriangle(Ref<Transform> transform, Vec4 &color);
@@ -126,6 +129,10 @@ namespace Krys
     static void EndScene();
 
   private:
+    static void CreateFramebuffers();
+    static void CreateShaders();
+    static void InitLighting();
+
     static void Reset();
     static void Flush();
 

@@ -79,7 +79,12 @@ namespace Krys
     virtual Ref<TextureCubemap> CreateTextureCubemap(std::array<string, 6> paths) noexcept = 0;
     virtual Ref<TextureCubemap> CreateTextureCubemap(uint width, uint height, TextureInternalFormat internalFormat) noexcept = 0;
 
-    virtual Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples) noexcept = 0;
+    virtual Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples = 1) noexcept = 0;
+    Ref<PingPongFramebuffer> CreatePingPongFramebuffer(Ref<Framebuffer> a, Ref<Framebuffer> b) noexcept
+    {
+      return CreateRef<PingPongFramebuffer>(a, b);
+    }
+
 #pragma endregion Graphics Objects
 
 #pragma region Primitive Drawing

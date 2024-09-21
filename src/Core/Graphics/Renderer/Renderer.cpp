@@ -83,6 +83,8 @@ namespace Krys
       {0.0f, -1.0f, 0.0f},
       {0.0f, -1.0f, 0.0f}};
 
+  constexpr uint SHADOW_MAP_RESOLUTION = 1024;
+
   static float SCREEN_QUAD_VERTICES[] = {
       //       Pos    Tex coords
       -1.0f, 1.0f, 0.0f, 1.0f,
@@ -94,7 +96,7 @@ namespace Krys
 
   constexpr auto AssignOneVertex = [](const Vec4 &position, const Vec3 &surfaceNormal, const TextureData &textureData)
   {
-    VertexData vertex;
+    VertexData vertex{};
 
     vertex.Position = position;
     vertex.Normal = surfaceNormal;
@@ -114,11 +116,15 @@ namespace Krys
 #pragma region Static Member Initialisation
 
   Ref<GraphicsContext> Renderer::Context;
+  Ref<Window> Renderer::AppWindow;
 
-  Ref<Framebuffer> Renderer::DefaultFramebuffer;
+  Ref<Framebuffer> Renderer::MultiSampleFramebuffer;
+  Ref<Framebuffer> Renderer::SingleSampleFramebuffer;
   Ref<Framebuffer> Renderer::DirectionalShadowMapFramebuffer;
   Ref<Framebuffer> Renderer::OmniDirectionalShadowMapFramebuffer;
+  Ref<Framebuffer> Renderer::ExtractBrightnessFramebuffer;
   Ref<Framebuffer> Renderer::PostProcessingFramebuffer;
+  Ref<PingPongFramebuffer> Renderer::GaussianBlurFramebuffer;
 
   Ref<Shader> Renderer::DefaultShader;
   Ref<Shader> Renderer::DirectionalShadowMapShader;
@@ -126,14 +132,16 @@ namespace Krys
   Ref<Shader> Renderer::LightSourceShader;
   Ref<Shader> Renderer::SkyboxShader;
   Ref<Shader> Renderer::PostProcessingShader;
+  Ref<Shader> Renderer::ExtractBrightnessShader;
+  Ref<Shader> Renderer::GaussianBlurShader;
   Ref<Shader> Renderer::ActiveShader;
 
   Ref<VertexArray> Renderer::DefaultVertexArray;
-  Ref<VertexArray> Renderer::PostProcessingVertexArray;
+  Ref<VertexArray> Renderer::ScreenQuadVertexArray;
   Ref<VertexArray> Renderer::SkyboxVertexArray;
 
   Ref<VertexBuffer> Renderer::DefaultVertexBuffer;
-  Ref<VertexBuffer> Renderer::PostProcessingVertexBuffer;
+  Ref<VertexBuffer> Renderer::ScreenQuadVertexBuffer;
   Ref<VertexBuffer> Renderer::SkyboxVertexBuffer;
 
   Ref<IndexBuffer> Renderer::DefaultIndexBuffer;
@@ -152,7 +160,6 @@ namespace Krys
   Ref<Camera> Renderer::ActiveCamera;
   bool Renderer::IsPostProcessingEnabled;
   bool Renderer::IsWireFrameDrawingEnabled;
-  bool Renderer::IsHDRFramebuffer;
 
   Ref<Transform> Renderer::LightSourceTransform;
   LightManager Renderer::Lights;
@@ -162,33 +169,13 @@ namespace Krys
 // TODO: Add `OnEvent` method for resizing framebuffers etc.
 #pragma region Lifecycle Methods
 
-  void Renderer::Init(Ref<Window> window, Ref<GraphicsContext> ctx, bool hdrFramebuffer)
+  void Renderer::Init(Ref<Window> window, Ref<GraphicsContext> ctx)
   {
     Context = ctx;
-    IsHDRFramebuffer = hdrFramebuffer;
+    AppWindow = window;
 
-    DefaultFramebuffer = Context->CreateFramebuffer(window->GetWidth(), window->GetHeight(), 4);
-    DefaultFramebuffer->AddColorAttachment(IsHDRFramebuffer ? TextureInternalFormat::RGBA16F : TextureInternalFormat::RGBA);
-    DefaultFramebuffer->AddDepthStencilAttachment();
-    KRYS_ASSERT(DefaultFramebuffer->IsComplete(), "DefaultFramebuffer Incomplete", 0);
-
-    PostProcessingFramebuffer = Context->CreateFramebuffer(window->GetWidth(), window->GetHeight(), 1);
-    PostProcessingFramebuffer->AddColorAttachment(IsHDRFramebuffer ? TextureInternalFormat::RGBA16F : TextureInternalFormat::RGBA);
-    PostProcessingFramebuffer->AddDepthStencilAttachment();
-    KRYS_ASSERT(PostProcessingFramebuffer->IsComplete(), "PostProcessingFramebuffer Incomplete", 0);
-
-    const uint SHADOW_MAP_RESOLUTION = 1024;
-    DirectionalShadowMapFramebuffer = Context->CreateFramebuffer(SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION, 1);
-    DirectionalShadowMapFramebuffer->AddDepthAttachment();
-    DirectionalShadowMapFramebuffer->DisableReadBuffer();
-    DirectionalShadowMapFramebuffer->DisableWriteBuffers();
-    KRYS_ASSERT(DirectionalShadowMapFramebuffer->IsComplete(), "DirectionalShadowMapFramebuffer Incomplete", 0);
-
-    OmniDirectionalShadowMapFramebuffer = Context->CreateFramebuffer(SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION, 1);
-    OmniDirectionalShadowMapFramebuffer->AddDepthCubemapAttachment();
-    OmniDirectionalShadowMapFramebuffer->DisableReadBuffer();
-    OmniDirectionalShadowMapFramebuffer->DisableWriteBuffers();
-    KRYS_ASSERT(OmniDirectionalShadowMapFramebuffer->IsComplete(), "OmniDirectionalShadowMapFramebuffer Incomplete", 0);
+    CreateFramebuffers();
+    CreateShaders();
 
     DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
     DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_Position"},
@@ -203,9 +190,9 @@ namespace Krys
                                      {ShaderDataType::Float, "i_Shininess"},
                                      {ShaderDataType::Float3, "i_Tangent"}}});
 
-    PostProcessingVertexBuffer = Context->CreateVertexBuffer(SCREEN_QUAD_VERTICES, sizeof(SCREEN_QUAD_VERTICES));
-    PostProcessingVertexBuffer->SetLayout({{{ShaderDataType::Float2, "i_Position"},
-                                            {ShaderDataType::Float2, "i_TextureCoord"}}});
+    ScreenQuadVertexBuffer = Context->CreateVertexBuffer(SCREEN_QUAD_VERTICES, sizeof(SCREEN_QUAD_VERTICES));
+    ScreenQuadVertexBuffer->SetLayout({{{ShaderDataType::Float2, "i_Position"},
+                                        {ShaderDataType::Float2, "i_TextureCoord"}}});
 
     DefaultIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
 
@@ -213,20 +200,13 @@ namespace Krys
     DefaultVertexArray->AddVertexBuffer(DefaultVertexBuffer);
     DefaultVertexArray->SetIndexBuffer(DefaultIndexBuffer);
 
-    PostProcessingVertexArray = Context->CreateVertexArray();
-    PostProcessingVertexArray->AddVertexBuffer(PostProcessingVertexBuffer);
+    ScreenQuadVertexArray = Context->CreateVertexArray();
+    ScreenQuadVertexArray->AddVertexBuffer(ScreenQuadVertexBuffer);
 
     const uint32 SHARED_UNIFORM_BUFFER_BINDING = 0;
     SharedUniformBuffer = Context->CreateUniformBuffer(SHARED_UNIFORM_BUFFER_BINDING,
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
-
-    DefaultShader = Context->CreateShader("shaders/renderer/default.vert", "shaders/renderer/default.frag");
-    DirectionalShadowMapShader = Context->CreateShader("shaders/renderer/directional-shadow-map.vert", "shaders/renderer/directional-shadow-map.frag");
-    OmniDirectionalShadowMapShader = Context->CreateShader("shaders/renderer/omnidirectional-shadow-map.vert", "shaders/renderer/omnidirectional-shadow-map.frag", "shaders/renderer/omnidirectional-shadow-map.geo");
-    LightSourceShader = Context->CreateShader("shaders/renderer/light-source.vert", "shaders/renderer/light-source.frag");
-    SkyboxShader = Context->CreateShader("shaders/renderer/skybox.vert", "shaders/renderer/skybox.frag");
-    PostProcessingShader = Context->CreateShader("shaders/renderer/post.vert", "shaders/renderer/post.frag");
 
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
@@ -240,6 +220,85 @@ namespace Krys
     PostProcessingShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS - 1);
     DefaultShader->TrySetUniform("u_CubeDepthMap", 31);
 
+    InitLighting();
+
+    Context->SetDepthTestingEnabled(true);
+
+    Reset();
+  }
+
+  void Renderer::Shutdown()
+  {
+    // Everything is static and will get cleaned up when the program terminates, nothing needed for now.
+  }
+
+  void Renderer::CreateFramebuffers()
+  {
+    MultiSampleFramebuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight(), 4);
+    MultiSampleFramebuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    MultiSampleFramebuffer->AddDepthStencilAttachment();
+    KRYS_ASSERT(MultiSampleFramebuffer->IsComplete(), "MultiSampleFramebuffer Incomplete", 0);
+
+    SingleSampleFramebuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight(), 1);
+    SingleSampleFramebuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    SingleSampleFramebuffer->AddDepthStencilAttachment();
+    KRYS_ASSERT(SingleSampleFramebuffer->IsComplete(), "SingleSampleFramebuffer Incomplete", 0);
+
+    ExtractBrightnessFramebuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight(), 1);
+    ExtractBrightnessFramebuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    KRYS_ASSERT(ExtractBrightnessFramebuffer->IsComplete(), "ExtractBrightnessFramebuffer Incomplete", 0);
+
+    PostProcessingFramebuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight(), 1);
+    PostProcessingFramebuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    KRYS_ASSERT(PostProcessingFramebuffer->IsComplete(), "PostProcessingFramebuffer Incomplete", 0);
+
+    DirectionalShadowMapFramebuffer = Context->CreateFramebuffer(SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION, 1);
+    DirectionalShadowMapFramebuffer->AddDepthAttachment();
+    DirectionalShadowMapFramebuffer->DisableReadBuffer();
+    DirectionalShadowMapFramebuffer->DisableWriteBuffers();
+    KRYS_ASSERT(DirectionalShadowMapFramebuffer->IsComplete(), "DirectionalShadowMapFramebuffer Incomplete", 0);
+
+    OmniDirectionalShadowMapFramebuffer = Context->CreateFramebuffer(SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION, 1);
+    OmniDirectionalShadowMapFramebuffer->AddDepthCubemapAttachment();
+    OmniDirectionalShadowMapFramebuffer->DisableReadBuffer();
+    OmniDirectionalShadowMapFramebuffer->DisableWriteBuffers();
+    KRYS_ASSERT(OmniDirectionalShadowMapFramebuffer->IsComplete(), "OmniDirectionalShadowMapFramebuffer Incomplete", 0);
+
+    {
+      auto pingPongBufferA = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
+      auto pingPongBufferB = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
+
+      pingPongBufferA->AddColorAttachment(TextureInternalFormat::RGBA16F);
+      pingPongBufferB->AddColorAttachment(TextureInternalFormat::RGBA16F);
+
+      GaussianBlurFramebuffer = Context->CreatePingPongFramebuffer(pingPongBufferA, pingPongBufferB);
+      KRYS_ASSERT(GaussianBlurFramebuffer->IsComplete(), "GaussianBlurFramebuffer Incomplete", 0);
+
+      GaussianBlurFramebuffer->SetBeforeRenderPassesCallback([&]()
+                                                             { GaussianBlurShader->Bind(); });
+
+      bool horizontal = false;
+      GaussianBlurFramebuffer->SetRenderStepCallback([&]()
+                                                     { GaussianBlurShader->SetUniform("u_BlurHorizontally", horizontal);
+                                                       Context->DrawVertices(6, DrawMode::Triangles);
+                                                       horizontal = !horizontal; });
+    }
+  }
+
+  void Renderer::CreateShaders()
+  {
+    DefaultShader = Context->CreateShader("shaders/renderer/default.vert", "shaders/renderer/default.frag");
+    DirectionalShadowMapShader = Context->CreateShader("shaders/renderer/directional-shadow-map.vert", "shaders/renderer/directional-shadow-map.frag");
+    OmniDirectionalShadowMapShader = Context->CreateShader("shaders/renderer/omnidirectional-shadow-map.vert", "shaders/renderer/omnidirectional-shadow-map.frag", "shaders/renderer/omnidirectional-shadow-map.geo");
+    LightSourceShader = Context->CreateShader("shaders/renderer/light-source.vert", "shaders/renderer/light-source.frag");
+    SkyboxShader = Context->CreateShader("shaders/renderer/skybox.vert", "shaders/renderer/skybox.frag");
+    PostProcessingShader = Context->CreateShader("shaders/renderer/post.vert", "shaders/renderer/post.frag");
+    ExtractBrightnessShader = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/renderer/extract-brightness.frag");
+    GaussianBlurShader = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/effects/gaussian-blur.frag");
+  }
+
+  void Renderer::InitLighting()
+  {
     Lights.Init(Context);
     LightSourceTransform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f));
 
@@ -271,15 +330,6 @@ namespace Krys
     OmniDirectionalShadowMapShader->TrySetUniform("u_LightPosition", lightPos);
     // TODO: add u_FarPlane as a light property
     DefaultShader->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
-
-    Context->SetDepthTestingEnabled(true);
-
-    Reset();
-  }
-
-  void Renderer::Shutdown()
-  {
-    // Everything is static and will get cleaned up when the program terminates, nothing needed for now.
   }
 
 #pragma endregion Lifecycle Methods
@@ -719,13 +769,11 @@ namespace Krys
 
     // Geometry Pass
     {
-      DefaultFramebuffer->Bind();
-
-      Context->SetViewport(DefaultFramebuffer->GetWidth(), DefaultFramebuffer->GetHeight());
+      MultiSampleFramebuffer->Bind();
+      Context->SetViewport(MultiSampleFramebuffer->GetWidth(), MultiSampleFramebuffer->GetHeight());
       Context->Clear(RenderBuffer::All);
 
       ActiveShader->Bind();
-      ActiveShader->TrySetUniform("u_IsHDREnabled", IsHDRFramebuffer);
       DirectionalShadowMapFramebuffer->GetDepthAttachment()->Bind(0);
       OmniDirectionalShadowMapFramebuffer->GetDepthAttachment()->Bind(31);
 
@@ -780,25 +828,37 @@ namespace Krys
       Context->SetWireframeModeEnabled(false);
 
     // Post Processing / Output to Screen
-    DefaultFramebuffer->Unbind();
+    MultiSampleFramebuffer->Unbind();
     if (IsPostProcessingEnabled)
     {
-      DefaultFramebuffer->BlitTo(PostProcessingFramebuffer,
-                                 DefaultFramebuffer->GetWidth(), DefaultFramebuffer->GetHeight(),
-                                 RenderBuffer::All);
+      ScreenQuadVertexArray->Bind();
 
+      // Resolve multi sampled content
+      MultiSampleFramebuffer->BlitTo(SingleSampleFramebuffer,
+                                     MultiSampleFramebuffer->GetWidth(), MultiSampleFramebuffer->GetHeight(),
+                                     RenderBuffer::All);
+
+      // Collect brightness info
+      ExtractBrightnessFramebuffer->Bind();
+      Context->SetViewport(ExtractBrightnessFramebuffer->GetWidth(), ExtractBrightnessFramebuffer->GetHeight());
+      ExtractBrightnessShader->Bind();
+      SingleSampleFramebuffer->GetColorAttachment()->Bind();
+      Context->DrawVertices(6, DrawMode::Triangles);
+
+      Context->SetViewport(GaussianBlurFramebuffer->GetWidth(), GaussianBlurFramebuffer->GetHeight());
+      auto blurredBrightness = GaussianBlurFramebuffer->ExecutePasses(ExtractBrightnessFramebuffer->GetColorAttachment(), 10);
+
+      // Composite/output
+      Context->SetViewport(AppWindow->GetWidth(), AppWindow->GetHeight());
+      SingleSampleFramebuffer->GetColorAttachment()->Bind();
+      blurredBrightness->Bind(1);
       PostProcessingShader->Bind();
-      PostProcessingShader->TrySetUniform("u_IsHDREnabled", IsHDRFramebuffer);
-
-      PostProcessingVertexArray->Bind();
-
-      PostProcessingFramebuffer->GetColorAttachment()->Bind(0);
       Context->DrawVertices(6, DrawMode::Triangles);
     }
     else
     {
-      DefaultFramebuffer->BlitToScreen(DefaultFramebuffer->GetWidth(), DefaultFramebuffer->GetHeight(),
-                                       RenderBuffer::All);
+      MultiSampleFramebuffer->BlitToScreen(MultiSampleFramebuffer->GetWidth(), MultiSampleFramebuffer->GetHeight(),
+                                           RenderBuffer::All);
     }
   }
 
