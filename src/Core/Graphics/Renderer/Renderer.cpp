@@ -849,6 +849,7 @@ namespace Krys
       auto blurredBrightness = GaussianBlurFramebuffer->ExecutePasses(ExtractBrightnessFramebuffer->GetColorAttachment(), 10);
 
       // Composite/output
+      Context->BindScreenFramebuffer(FramebufferBindType::Draw);
       Context->SetViewport(AppWindow->GetWidth(), AppWindow->GetHeight());
       SingleSampleFramebuffer->GetColorAttachment()->Bind();
       blurredBrightness->Bind(1);

@@ -203,6 +203,11 @@ namespace Krys
     glClear(glFlags);
   }
 
+  void GLGraphicsContext::BindScreenFramebuffer(FramebufferBindType bindType) noexcept
+  {
+    glBindFramebuffer(ToGLFramebufferBindType(bindType), 0);
+  }
+
   void GLGraphicsContext::SetClearColor(const Vec4 &color) noexcept
   {
     glClearColor(color.x, color.y, color.z, color.a);

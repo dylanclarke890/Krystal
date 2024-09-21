@@ -102,7 +102,7 @@ namespace Krys
       bool first = true;
       for (uint i = 0; i < amount; i++)
       {
-        current->Bind();
+        current->Bind(FramebufferBindType::Draw);
         if (first)
           initialTexture->Bind();
         else

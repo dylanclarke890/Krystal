@@ -21,6 +21,8 @@ namespace Krys
     virtual void Clear(RenderBuffer flags = RenderBuffer::Color) noexcept = 0;
 
 #pragma region State Settings
+    virtual void BindScreenFramebuffer(FramebufferBindType bindType = FramebufferBindType::ReadAndDraw) noexcept = 0;
+
     virtual void SetClearColor(const Vec4 &color) noexcept = 0;
     virtual void SetViewport(int width, int height) noexcept = 0;
 
