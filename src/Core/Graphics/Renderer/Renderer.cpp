@@ -164,6 +164,8 @@ namespace Krys
   Ref<Transform> Renderer::LightSourceTransform;
   LightManager Renderer::Lights;
 
+  DeferredRendererData Renderer::DeferredRenderer;
+
 #pragma endregion Static Member Initialisation
 
 // TODO: Add `OnEvent` method for resizing framebuffers etc.
@@ -219,11 +221,10 @@ namespace Krys
     DefaultShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS - 1);
     PostProcessingShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS - 1);
     DefaultShader->TrySetUniform("u_CubeDepthMap", 31);
-
-    InitLighting();
-
     Context->SetDepthTestingEnabled(true);
 
+    InitLighting();
+    InitDeferredRenderer();
     Reset();
   }
 
@@ -332,6 +333,19 @@ namespace Krys
     DefaultShader->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
   }
 
+  void Renderer::InitDeferredRenderer()
+  {
+    auto gBuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
+    auto gPosition = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    auto gNormal = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    auto gAlbedoSpec = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA);
+    gBuffer->SetWriteBuffers({0, 1, 2});
+    gBuffer->AddDepthAttachment();
+
+    KRYS_ASSERT(gBuffer->IsComplete(), "GBuffer is incomplete!", 0);
+
+    DeferredRenderer = DeferredRendererData{gBuffer, gPosition, gNormal, gAlbedoSpec};
+  }
 #pragma endregion Lifecycle Methods
 
 #pragma region Drawing Triangles

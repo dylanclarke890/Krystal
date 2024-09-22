@@ -75,12 +75,12 @@ namespace Krys
       BoundAs = FramebufferBindType::None;
     }
 
-    void AddColorAttachment() noexcept override
+    Ref<Texture2D> AddColorAttachment() noexcept override
     {
-      AddColorAttachment(TextureInternalFormat::RGBA);
+      return AddColorAttachment(TextureInternalFormat::RGBA);
     }
 
-    void AddColorAttachment(TextureInternalFormat internalFormat) noexcept override
+    Ref<Texture2D> AddColorAttachment(TextureInternalFormat internalFormat) noexcept override
     {
       // TODO: validate ColorAttachments.size() against GL_MAX_COLOR_ATTACHMENTS
       Ref<Texture2D> texture = CreateRef<GLTexture2D>(Width, Height, Samples, internalFormat);
@@ -89,9 +89,11 @@ namespace Krys
 
       glNamedFramebufferTexture(Id, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + ColorAttachments.size()), texture->GetId(), 0);
       ColorAttachments.push_back(texture);
+
+      return texture;
     }
 
-    void AddDepthAttachment() noexcept override
+    Ref<Texture2D> AddDepthAttachment() noexcept override
     {
       KRYS_ASSERT(!DepthAttachment, "Already has a depth attachment", 0);
 
@@ -102,9 +104,11 @@ namespace Krys
       glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
 
       DepthAttachment = texture;
+
+      return texture;
     }
 
-    void AddDepthCubemapAttachment() noexcept override
+    Ref<TextureCubemap> AddDepthCubemapAttachment() noexcept override
     {
       KRYS_ASSERT(!DepthAttachment, "Already has a depth attachment", 0);
 
@@ -115,6 +119,8 @@ namespace Krys
       glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
 
       DepthAttachment = texture;
+
+      return texture;
     }
 
     void AddDepthStencilAttachment() noexcept override

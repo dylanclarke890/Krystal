@@ -49,6 +49,12 @@ namespace Krys
     float Shininess = 32.0f;
   };
 
+  struct DeferredRendererData
+  {
+    Ref<Framebuffer> GBuffer;
+    Ref<Texture2D> GPosition, GNormal, GAlbedoSpecular;
+  };
+
   inline static void CalcTangentSpace(VertexData &v1, VertexData &v2, VertexData &v3, Mat3 &normalMatrix) noexcept
   {
     Vec3 edge1 = v2.Position - v1.Position;
@@ -100,10 +106,11 @@ namespace Krys
 
     static Ref<Transform> LightSourceTransform;
 
+    static DeferredRendererData DeferredRenderer;
+
   public:
     static LightManager Lights;
 
-    // TODO: add an init settings struct to pass instead
     static void Init(Ref<Window> window, Ref<GraphicsContext> ctx);
     static void Shutdown();
 
@@ -132,8 +139,10 @@ namespace Krys
     static void CreateFramebuffers();
     static void CreateShaders();
     static void InitLighting();
+    static void InitDeferredRenderer();
 
-    static void Reset();
+    static void
+    Reset();
     static void Flush();
 
     static void DrawQuad(Ref<Transform> transform, TextureData &textureData);

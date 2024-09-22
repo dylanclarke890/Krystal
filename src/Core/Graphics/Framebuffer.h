@@ -5,6 +5,7 @@
 
 #include "Core.h"
 #include "Textures/Texture2D.h"
+#include "Textures/TextureCubemap.h"
 #include "Graphics/Enums.h"
 #include "Maths/Maths.h"
 
@@ -23,10 +24,10 @@ namespace Krys
     virtual void Bind(FramebufferBindType bindType = FramebufferBindType::ReadAndDraw) noexcept = 0;
     virtual void Unbind() noexcept = 0;
 
-    virtual void AddColorAttachment() noexcept = 0;
-    virtual void AddColorAttachment(TextureInternalFormat internalFormat) noexcept = 0;
-    virtual void AddDepthAttachment() noexcept = 0;
-    virtual void AddDepthCubemapAttachment() noexcept = 0;
+    virtual Ref<Texture2D> AddColorAttachment() noexcept = 0;
+    virtual Ref<Texture2D> AddColorAttachment(TextureInternalFormat internalFormat) noexcept = 0;
+    virtual Ref<Texture2D> AddDepthAttachment() noexcept = 0;
+    virtual Ref<TextureCubemap> AddDepthCubemapAttachment() noexcept = 0;
     virtual void AddDepthStencilAttachment() noexcept = 0;
 
     virtual void DisableReadBuffer() noexcept = 0;
