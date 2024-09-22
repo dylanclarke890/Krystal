@@ -10,10 +10,10 @@ namespace Krys::IO
 {
   namespace fs = std::filesystem;
 
-  std::vector<FileInfo> ListFiles(const string &directory, std::vector<string> extensions, bool recursive)
+  std::vector<FileInfo> ListFiles(const string &directory, std::vector<string> extensions, bool recursive) noexcept
   {
     KRYS_PERFORMANCE_TIMER("ListFiles");
-    KRYS_ASSERT(Exists(directory), "Directory '%s' does not exist", directory.c_str());
+    KRYS_ASSERT(PathExists(directory), "Directory '%s' does not exist", directory.c_str());
 
     std::error_code error{};
     std::vector<FileInfo> entries{};
@@ -52,9 +52,9 @@ namespace Krys::IO
     return entries;
   }
 
-  FileInfo GetFileInfo(const string &filepath)
+  FileInfo GetPathInfo(const string &filepath) noexcept
   {
-    KRYS_ASSERT(Exists(filepath), "Path '%s' does not exist", filepath.c_str());
+    KRYS_ASSERT(PathExists(filepath), "Path '%s' does not exist", filepath.c_str());
 
     auto fsPath = fs::path(filepath);
     string name{fsPath.stem().string()};
@@ -67,17 +67,33 @@ namespace Krys::IO
     return fileInfo;
   }
 
-  bool Exists(const string &path)
+  bool PathExists(const string &path) noexcept
   {
     std::error_code error{};
     return fs::exists(path, error);
   }
 
-  string ReadFileText(const string &path)
+  bool IsDirectory(const string &path) noexcept
   {
-    KRYS_ASSERT(Exists(path), "File '%s' does not exist", path.c_str());
+    KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.c_str());
 
-    std::ifstream fileStream(path, std::ios::in);
+    std::error_code error{};
+    return fs::directory_entry(path, error).is_directory(error);
+  }
+
+  bool IsFile(const string &path) noexcept
+  {
+    KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.c_str());
+
+    std::error_code error{};
+    return fs::directory_entry(path, error).is_regular_file(error);
+  }
+
+  string ReadFileText(const string &path) noexcept
+  {
+    KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.c_str());
+
+    std::ifstream fileStream(path);
     if (!fileStream.is_open())
     {
       KRYS_LOG("Unable to open %s. Are you in the right directory?", path.c_str());
@@ -91,8 +107,10 @@ namespace Krys::IO
     return buffer.str();
   }
 
-  bool WriteFileText(const string &path, const string &content)
+  bool WriteFileText(const string &path, const string &content) noexcept
   {
+    KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.c_str());
+
     std::ofstream fileStream(path);
     if (!fileStream.is_open())
     {

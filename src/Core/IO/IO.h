@@ -18,13 +18,35 @@ namespace Krys::IO
   /// @param recursive If true will also search subdirectories.
   /// @param extensions Optional list of extensions to filter by.
   /// @return The list of regular files that match the search criteria.
-  std::vector<FileInfo> ListFiles(const string &directory, std::vector<string> extensions = {}, bool recursive = false);
+  std::vector<FileInfo> ListFiles(const string &directory, std::vector<string> extensions = {}, bool recursive = false) noexcept;
 
-  FileInfo GetFileInfo(const string &path);
+  /// @brief Get information about a path
+  /// @param path The path to check.
+  /// @return Info about the path, such as name, extension and whether it is a directory.
+  FileInfo GetPathInfo(const string &path) noexcept;
 
-  bool Exists(const string &path);
+  /// @brief Check whether a path exists.
+  /// @param path The path to check.
+  /// @return True if the path exists.
+  bool PathExists(const string &path) noexcept;
 
-  string ReadFileText(const string &path);
+  /// @brief Check whether a path is a directory.
+  /// @param path The path to check.
+  /// @return True if the path is a directory.
+  bool IsDirectory(const string &path) noexcept;
 
-  bool WriteFileText(const string &path, const string &content);
+  /// @brief Check whether a path is a regular file.
+  /// @param path The path to check.
+  /// @return True if the path is a regular file.
+  bool IsFile(const string &path) noexcept;
+
+  /// @brief Get the contents of a file as a string.
+  /// @param path The path to the file to read.
+  /// @return The contents as a string.
+  string ReadFileText(const string &path) noexcept;
+
+  /// @brief Write text to a file.
+  /// @param path The path to check.
+  /// @return True if the write was successful.
+  bool WriteFileText(const string &path, const string &content) noexcept;
 }
