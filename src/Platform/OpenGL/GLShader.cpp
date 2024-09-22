@@ -1,8 +1,6 @@
-#include <fstream>
-#include <sstream>
-
 #include "GLShader.h"
 #include "Core.h"
+#include "IO/IO.h"
 
 namespace Krys
 {
@@ -27,19 +25,8 @@ namespace Krys
 
   void GLShader::Load(ShaderType type, const string &filepath)
   {
-    std::ifstream fileStream(filepath, std::ios::in);
-    bool isOpen = fileStream.is_open();
-
-    KRYS_ASSERT(isOpen, "Unable to open %s. Are you in the right directory?", filepath.c_str());
-    if (!isOpen)
-      return;
-
-    std::stringstream sstr;
-    sstr << fileStream.rdbuf();
-    fileStream.close();
-
-    auto sourceStr = sstr.str();
-    Add(type, sourceStr);
+    string source = IO::ReadFileText(filepath);
+    Add(type, source);
   }
 
   void GLShader::Load(const string &vertexFilepath, const string &fragmentFilepath)

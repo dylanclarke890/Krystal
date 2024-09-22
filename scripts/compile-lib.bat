@@ -40,6 +40,7 @@ K:\src\Platform\Windows\WindowsPerformance.cpp ^
 K:\src\Platform\Windows\WindowsLogger.cpp ^
 K:\src\Platform\Windows\WindowsInput.cpp ^
 K:\src\Platform\Windows\WindowsWindow.cpp ^
+K:\src\Core\IO\IO.cpp ^
 K:\src\Core\Graphics\Renderer\Renderer.cpp ^
 K:\src\Core\Misc\Time.cpp ^
 K:\src\Core\Application.cpp
