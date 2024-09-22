@@ -55,6 +55,7 @@ namespace Krys::IO
   FileInfo GetPathInfo(const stringview &filepath) noexcept
   {
     KRYS_ASSERT(PathExists(filepath), "Path '%s' does not exist", filepath.data());
+    KRYS_PERFORMANCE_TIMER("GetPathInfo");
 
     auto fsPath = fs::path(filepath);
     stringview name{fsPath.stem().string()};
@@ -69,6 +70,8 @@ namespace Krys::IO
 
   bool PathExists(const stringview &path) noexcept
   {
+    KRYS_PERFORMANCE_TIMER("PathExists");
+
     std::error_code error{};
     return fs::exists(path, error);
   }
@@ -76,6 +79,7 @@ namespace Krys::IO
   bool IsDirectory(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
+    KRYS_PERFORMANCE_TIMER("IsDirectory");
 
     std::error_code error{};
     return fs::directory_entry(path, error).is_directory(error);
@@ -84,14 +88,16 @@ namespace Krys::IO
   bool IsFile(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
+    KRYS_PERFORMANCE_TIMER("IsFile");
 
     std::error_code error{};
     return fs::directory_entry(path, error).is_regular_file(error);
   }
 
-  string ReadFileText(const stringview &path) noexcept
+  stringview ReadFileText(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.data());
+    KRYS_PERFORMANCE_TIMER("ReadFileText");
 
     std::ifstream fileStream(path.data());
     if (!fileStream.is_open())
@@ -104,12 +110,13 @@ namespace Krys::IO
     buffer << fileStream.rdbuf();
     fileStream.close();
 
-    return buffer.str();
+    return buffer.view();
   }
 
   bool WriteFileText(const stringview &path, const stringview &content) noexcept
   {
     KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.data());
+    KRYS_PERFORMANCE_TIMER("WriteFileText");
 
     std::ofstream fileStream(path.data());
     if (!fileStream.is_open())

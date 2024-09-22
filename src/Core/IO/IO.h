@@ -43,7 +43,7 @@ namespace Krys::IO
   /// @brief Get the contents of a file as a string.
   /// @param path The path to the file to read.
   /// @return The contents as a string.
-  string ReadFileText(const stringview &path) noexcept;
+  stringview ReadFileText(const stringview &path) noexcept;
 
   /// @brief Write text to a file.
   /// @param path The path to check.
