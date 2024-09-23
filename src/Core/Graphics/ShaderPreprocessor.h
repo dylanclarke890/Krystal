@@ -10,6 +10,7 @@ namespace Krys
   const string SHADER_ROOT_DIR{"shaders/"};
   const string IMPORT_TOKEN{"#import"};
 
+  ///@brief Resolves custom glsl tokens.
   class ShaderPreprocessor
   {
   public:
