@@ -21,9 +21,9 @@ namespace Krys
     void Bind() override;
     void Unbind() override;
 
-    void Load(ShaderType type, const string &filepath) override;
-    void Load(const string &vertexFilepath, const string &fragmentFilepath) override;
-    void Add(ShaderType type, const string &source) override;
+    void Load(ShaderType type, const stringview &filepath) override;
+    void Load(const stringview &vertexFilepath, const stringview &fragmentFilepath) override;
+    void Add(ShaderType type, const stringview &source) override;
 
     void Link() override;
 

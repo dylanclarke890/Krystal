@@ -73,8 +73,8 @@ namespace Krys
     virtual Ref<VertexArray> CreateVertexArray() noexcept = 0;
 
     virtual Ref<Shader> CreateShader() = 0;
-    virtual Ref<Shader> CreateShader(const string &vertexFilepath, const string &fragmentFilepath) = 0;
-    virtual Ref<Shader> CreateShader(const string &vertexFilepath, const string &fragmentFilepath, const string &geoFilepath) = 0;
+    virtual Ref<Shader> CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath) = 0;
+    virtual Ref<Shader> CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath, const stringview &geoFilepath) = 0;
 
     virtual Ref<Texture2D> CreateTexture2D(const string &filepath) noexcept = 0;
     virtual Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept = 0;

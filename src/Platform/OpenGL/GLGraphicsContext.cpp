@@ -501,7 +501,7 @@ namespace Krys
     return CreateRef<GLUniformBuffer>(binding, layout);
   }
 
-  Ref<Shader> GLGraphicsContext::CreateShader(const string &vertexFilepath, const string &fragmentFilepath)
+  Ref<Shader> GLGraphicsContext::CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath)
   {
     auto shader = CreateRef<GLShader>();
     shader->Load(vertexFilepath, fragmentFilepath);
@@ -510,7 +510,7 @@ namespace Krys
     return shader;
   }
 
-  Ref<Shader> GLGraphicsContext::CreateShader(const string &vertexFilepath, const string &fragmentFilepath, const string &geoFilepath)
+  Ref<Shader> GLGraphicsContext::CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath, const stringview &geoFilepath)
   {
     auto shader = CreateRef<GLShader>();
     shader->Load(vertexFilepath, fragmentFilepath);

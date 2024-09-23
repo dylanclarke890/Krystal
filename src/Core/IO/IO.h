@@ -40,10 +40,10 @@ namespace Krys::IO
   /// @return True if the path is a regular file.
   bool IsFile(const stringview &path) noexcept;
 
-  /// @brief Get the contents of a file as a string.
+  /// @brief Get the contents of a file as text.
   /// @param path The path to the file to read.
-  /// @return The contents as a string.
-  stringview ReadFileText(const stringview &path) noexcept;
+  /// @return The contents of the file.
+  string ReadFileText(const stringview &path) noexcept;
 
   /// @brief Write text to a file.
   /// @param path The path to check.

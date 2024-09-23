@@ -1,0 +1,27 @@
+-- BEGIN EXPORT ReinhardToneMapping
+
+vec3 ReinhardToneMapping(vec3 color)
+{
+  return color / (color + vec3(1.0));
+}
+
+-- END EXPORT ReinhardToneMapping
+
+-- BEGIN EXPORT ExposureToneMapping
+
+vec3 ExposureToneMapping(vec3 color, float exposure)
+{
+  return vec3(1.0) - exp(-color * exposure);
+}
+
+-- END EXPORT ExposureToneMapping
+
+-- BEGIN EXPORT GammaCorrection
+
+vec3 GammaCorrection(vec3 color)
+{
+  const float gamma = 2.2;
+  return pow(color, vec3(1.0 / gamma));
+}
+
+-- END EXPORT GammaCorrection

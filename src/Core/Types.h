@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <string_view>
 #include <memory>
 
 namespace Krys
@@ -23,6 +24,7 @@ namespace Krys
 
   typedef unsigned char uchar;
   typedef std::string string;
+  typedef std::string_view stringview;
 
   template <typename T>
   using Unique = std::unique_ptr<T>;

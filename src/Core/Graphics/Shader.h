@@ -20,9 +20,9 @@ namespace Krys
     virtual void Bind() = 0;
     virtual void Unbind() = 0;
 
-    virtual void Load(const string &vertexFilepath, const string &fragmentFilepath) = 0;
-    virtual void Load(ShaderType type, const string &filepath) = 0;
-    virtual void Add(ShaderType type, const string &source) = 0;
+    virtual void Load(const stringview &vertexFilepath, const stringview &fragmentFilepath) = 0;
+    virtual void Load(ShaderType type, const stringview &filepath) = 0;
+    virtual void Add(ShaderType type, const stringview &source) = 0;
 
     virtual void Link() = 0;
 

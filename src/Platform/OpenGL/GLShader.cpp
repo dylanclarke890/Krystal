@@ -1,6 +1,6 @@
 #include "GLShader.h"
 #include "Core.h"
-#include "IO/IO.h"
+#include "Graphics/ShaderPreprocessor.h"
 
 namespace Krys
 {
@@ -23,22 +23,23 @@ namespace Krys
     glUseProgram(0);
   }
 
-  void GLShader::Load(ShaderType type, const string &filepath)
+  void GLShader::Load(ShaderType type, const stringview &filepath)
   {
-    string source = IO::ReadFileText(filepath);
+    ShaderPreprocessor preprocessor{filepath};
+    stringview source = preprocessor.ResolveImports();
     Add(type, source);
   }
 
-  void GLShader::Load(const string &vertexFilepath, const string &fragmentFilepath)
+  void GLShader::Load(const stringview &vertexFilepath, const stringview &fragmentFilepath)
   {
     Load(ShaderType::Vertex, vertexFilepath);
     Load(ShaderType::Fragment, fragmentFilepath);
   }
 
-  void GLShader::Add(ShaderType type, const string &source)
+  void GLShader::Add(ShaderType type, const stringview &source)
   {
     uint id = glCreateShader(ToGLShaderType(type));
-    const char *src = source.c_str();
+    const char *src = source.data();
     glShaderSource(id, 1, &src, NULL);
     glCompileShader(id);
 

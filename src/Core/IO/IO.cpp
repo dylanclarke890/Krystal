@@ -94,7 +94,7 @@ namespace Krys::IO
     return fs::directory_entry(path, error).is_regular_file(error);
   }
 
-  stringview ReadFileText(const stringview &path) noexcept
+  string ReadFileText(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.data());
     KRYS_PERFORMANCE_TIMER("ReadFileText");
@@ -110,7 +110,7 @@ namespace Krys::IO
     buffer << fileStream.rdbuf();
     fileStream.close();
 
-    return buffer.view();
+    return buffer.str();
   }
 
   bool WriteFileText(const stringview &path, const stringview &content) noexcept
