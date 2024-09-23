@@ -29,16 +29,16 @@ namespace Krys::IO
 
     const auto ProcessEntry = [&](const fs::directory_entry &entry) -> void
     {
-      stringview path{entry.path().string()};
+      string path{entry.path().string()};
       if (error)
       {
         KRYS_ASSERT(false, "Error iterating through directory '%s': %s", path.data(), error.message().c_str());
       }
 
-      stringview extension{entry.path().extension().string()};
+      string extension{entry.path().extension().string()};
       if (entry.is_regular_file(error) && HasValidExtension(extension))
       {
-        stringview name{entry.path().stem().string()};
+        string name{entry.path().stem().string()};
         entries.push_back({name, extension, path});
         KRYS_LOG("N: %s, E: %s, P: %s", name.data(), extension.data(), path.data());
       }
@@ -58,11 +58,7 @@ namespace Krys::IO
     KRYS_PERFORMANCE_TIMER("GetPathInfo");
 
     auto fsPath = fs::path(filepath);
-    stringview name{fsPath.stem().string()};
-    stringview extension{fsPath.extension().string()};
-    stringview path{fsPath.string()};
-
-    FileInfo fileInfo{name, extension, path};
+    FileInfo fileInfo{fsPath.stem().string(), fsPath.extension().string(), fsPath.string()};
     fileInfo.IsDirectory = fs::directory_entry(fsPath).is_directory();
 
     return fileInfo;

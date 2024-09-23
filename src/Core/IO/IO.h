@@ -7,9 +7,9 @@ namespace Krys::IO
 {
   struct FileInfo
   {
-    stringview Name;
-    stringview Extension;
-    stringview Path;
+    string Name;
+    string Extension;
+    string Path;
     bool IsDirectory = false;
   };
 
