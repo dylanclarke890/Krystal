@@ -5,11 +5,7 @@ out vec4 o_Color;
 in vec3 v_Normal;
 in vec3 v_Position;
 
-layout (std140, binding = 0) uniform Shared
-{
-  mat4 u_ViewProjection;
-  vec4 u_CameraPosition;
-};
+#import "uniform-buffers.krys";
 
 uniform samplerCube skyboxTexture;
 

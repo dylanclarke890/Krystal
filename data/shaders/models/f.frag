@@ -20,11 +20,7 @@ in vec3 v_FragmentPosition;
 
 out vec4 o_Color;
 
-layout (std140, binding = 0) uniform Shared
-{
-  mat4 u_ViewProjection;
-  vec4 u_CameraPosition;
-};
+#import "uniform-buffers.krys";
 
 uniform sampler2D u_DiffuseTextures[8];
 uniform int u_TotalDiffuseTextures;

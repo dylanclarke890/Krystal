@@ -3,11 +3,7 @@
 layout(location = 0) in vec4 i_Position;
 layout(location = 2) in vec4 i_Color;
 
-layout (std140, binding = 0) uniform Shared
-{
-  mat4 u_ViewProjection;
-  vec4 u_CameraPosition;
-};
+#import "uniform-buffers.krys";
 
 out vec4 v_Color;
 

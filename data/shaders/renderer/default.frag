@@ -1,6 +1,7 @@
 #version 450 core
 
 #import "uniform-buffers.krys";
+#import "sampler2d-textures.krys";
 
 in vec3 v_FragmentPosition;
 in vec4 v_DirectionalLightSpaceFragmentPosition;
@@ -17,18 +18,14 @@ flat in int v_NormalSlot;
 flat in int v_DisplacementSlot;
 flat in float v_Shininess;
 
-uniform sampler2D u_Textures[32];
 uniform samplerCube u_CubeDepthMap;
 uniform float u_FarPlane;
 uniform float u_ParallaxHeightScale = 0.1;
 
 out vec4 o_Color;
 
-vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec2 textureCoord);
-
 float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection);
 float CalcOmniDirectionalShadow(vec3 lightPosition);
-
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
@@ -80,46 +77,6 @@ void main()
   }
 
   o_Color = vec4(lighting, 1.0);
-}
-
-vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec2 textureCoord)
-{
-  switch(textureSlotIndex)
-  {
-    case  0: return texture(u_Textures[ 0], textureCoord);
-    case  1: return texture(u_Textures[ 1], textureCoord);
-    case  2: return texture(u_Textures[ 2], textureCoord);
-    case  3: return texture(u_Textures[ 3], textureCoord);
-    case  4: return texture(u_Textures[ 4], textureCoord);
-    case  5: return texture(u_Textures[ 5], textureCoord);
-    case  6: return texture(u_Textures[ 6], textureCoord);
-    case  7: return texture(u_Textures[ 7], textureCoord);
-    case  8: return texture(u_Textures[ 8], textureCoord);
-    case  9: return texture(u_Textures[ 9], textureCoord);
-    case 10: return texture(u_Textures[10], textureCoord);
-    case 11: return texture(u_Textures[11], textureCoord);
-    case 12: return texture(u_Textures[12], textureCoord);
-    case 13: return texture(u_Textures[13], textureCoord);
-    case 14: return texture(u_Textures[14], textureCoord);
-    case 15: return texture(u_Textures[15], textureCoord);
-    case 16: return texture(u_Textures[16], textureCoord);
-    case 17: return texture(u_Textures[17], textureCoord);
-    case 18: return texture(u_Textures[18], textureCoord);
-    case 19: return texture(u_Textures[19], textureCoord);
-    case 20: return texture(u_Textures[20], textureCoord);
-    case 21: return texture(u_Textures[21], textureCoord);
-    case 22: return texture(u_Textures[22], textureCoord);
-    case 23: return texture(u_Textures[23], textureCoord);
-    case 24: return texture(u_Textures[24], textureCoord);
-    case 25: return texture(u_Textures[25], textureCoord);
-    case 26: return texture(u_Textures[26], textureCoord);
-    case 27: return texture(u_Textures[27], textureCoord);
-    case 28: return texture(u_Textures[28], textureCoord);
-    case 29: return texture(u_Textures[29], textureCoord);
-    case 30: return texture(u_Textures[30], textureCoord);
-    case 31: return texture(u_Textures[31], textureCoord);
-    default: return defaultColor;
-  }
 }
 
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)

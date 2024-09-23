@@ -1,5 +1,8 @@
 #version 450 core
 
+#import "uniform-buffers.krys";
+#import "calculate-tbn.krys";
+
 // NOTE: position, normal, tangent should be passed in world space. 
 layout(location = 0) in vec4 i_Position;
 layout(location = 1) in vec3 i_Normal;
@@ -12,76 +15,6 @@ layout(location = 7) in int i_NormalSlot;
 layout(location = 8) in int i_DisplacementSlot;
 layout(location = 9) in float i_Shininess;
 layout(location = 10) in vec3 i_Tangent;
-
-layout (std140, binding = 0) uniform Shared
-{
-  mat4 u_ViewProjection;
-  vec4 u_CameraPosition;
-};
-
-#define MAX_DIRECTIONAL_LIGHTS 5
-#define MAX_POINT_LIGHTS 32
-#define MAX_SPOT_LIGHTS 32
-
-struct DirectionalLight
-{
-  vec4 Ambient;
-  vec4 Diffuse;
-  vec4 Specular;
-
-  bool Enabled;
-  float Intensity;
-
-  vec4 Direction;
-};
-
-struct PointLight
-{
-  vec4 Ambient;
-  vec4 Diffuse;
-  vec4 Specular;
-
-  float Constant;
-  float Linear;
-  float Quadratic;
-
-  bool Enabled;
-  float Intensity;
-
-  vec4 Position;
-};
-
-struct SpotLight
-{
-  vec4 Ambient;
-  vec4 Diffuse;
-  vec4 Specular;
-
-  float Constant;
-  float Linear;
-  float Quadratic;
-
-  bool Enabled;
-  float Intensity;
-
-  vec4 Direction;
-  vec4 Position;
-
-  float InnerCutoff;
-  float OuterCutoff;
-};
-
-layout (std140, binding = 1) uniform Lights
-{
-  DirectionalLight u_DirectionalLights[MAX_DIRECTIONAL_LIGHTS];
-  PointLight u_PointLights[MAX_POINT_LIGHTS];
-  SpotLight u_SpotLights[MAX_SPOT_LIGHTS];
-  int u_DirectionalLightCount;
-  int u_PointLightCount;
-  int u_SpotLightCount;
-  bool u_UseBlinnLightingModel;
-  bool u_LightingEnabled;
-};
 
 uniform mat4 u_DirectionalLightSpaceMatrix;
 
@@ -114,13 +47,7 @@ void main()
   v_DisplacementSlot = i_DisplacementSlot;
   v_Shininess = i_Shininess;
 
-  vec3 T = normalize(i_Tangent);
-  vec3 N = normalize(i_Normal);
-
-  T = normalize(T - dot(T, N) * N);
-  vec3 B = cross(N, T);
-  
-  mat3 TBN = transpose(mat3(T, B, N));   
+  mat3 TBN = CalcTBN(i_Tangent, i_Normal);
   v_TangentLightPosition     = TBN * vec3(u_PointLights[0].Position.xyz);
   v_TangentCameraPosition    = TBN * vec3(u_CameraPosition);
   v_TangentFragmentPosition  = TBN * v_FragmentPosition;
