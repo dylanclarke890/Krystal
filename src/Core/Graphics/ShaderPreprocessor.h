@@ -1,57 +1,68 @@
 #pragma once
 
 #include "Core.h"
-
 #include "IO/IO.h"
+#include <unordered_map>
+#include <sstream>
 
 namespace Krys
 {
-  /// @brief Resolves custom imports for shaders.
+  const string SHADER_ROOT_DIR{"shaders/"};
+  const string IMPORT_TOKEN{"#import"};
+
   class ShaderPreprocessor
   {
-  private:
-    stringview _path;
-    string _src;
-
   public:
-    ShaderPreprocessor(const stringview &path)
-        : _path(path), _src(IO::ReadFileText(_path))
+    /// @brief Resolves custom imports for shaders, including recursive imports.
+    static string ResolveImports(const stringview &path, string &src)
     {
-      KRYS_LOG("ShaderPreprocessor created for path %s", _path.data());
+      KRYS_PERFORMANCE_TIMER("ResolveImports");
+      KRYS_ASSERT(!src.empty(), "Source was empty", 0);
+      KRYS_ASSERT(!path.empty(), "Path was empty", 0);
+
+      std::unordered_map<string, bool> imported;
+      return ResolveImports(string(path), src, imported);
     }
 
-    stringview ResolveImports()
+  private:
+    /// @brief Resolves imports recursively, ensuring that files are not imported multiple times.
+    static string ResolveImports(const string &path, string &src, std::unordered_map<string, bool> &imported)
     {
-      KRYS_ASSERT(!_src.empty(), "Source was empty", 0);
-      KRYS_PERFORMANCE_TIMER("ResolveImports");
-
-      auto importStart = _src.find("#import");
-      if (importStart == _src.npos)
-        return _src;
-
-      while (importStart != _src.npos)
+      if (imported.find(path) != imported.end())
       {
-        auto importEnd = _src.find(";", importStart);
-        KRYS_ASSERT(importEnd != _src.npos, "End of import statement was not found or was in an unexpected place.", 0);
+        KRYS_LOG("File '%s' already imported, skipping.", path.data());
+        return "";
+      }
 
-        auto importStatement = _src.substr(importStart, importEnd - importStart + 1); // Include the semicolon
-        KRYS_LOG("Found import statement: %s", importStatement.data());
+      imported[path] = true;
+
+      auto importStart = src.find(IMPORT_TOKEN);
+      while (importStart != src.npos)
+      {
+        auto importEnd = src.find(";", importStart);
+        KRYS_ASSERT(importEnd != src.npos, "End of import statement was not found", 0);
+
+        auto importStatement = src.substr(importStart, importEnd - importStart + 1); // Include the semicolon
+        KRYS_LOG("Found import statement: %s", importStatement.c_str());
 
         auto pathStart = importStatement.find("\"");
         auto pathEnd = importStatement.find("\"", pathStart + 1);
         KRYS_ASSERT(pathStart != importStatement.npos && pathEnd != importStatement.npos, "Import path not found", 0);
 
-        auto importPath = importStatement.substr(pathStart + 1, pathEnd - pathStart - 1); // Extract the file path
-        KRYS_LOG("Resolving import: %s", importPath.data());
+        auto importPath = importStatement.substr(pathStart + 1, pathEnd - pathStart - 1);
+        string fullImportPath = SHADER_ROOT_DIR + importPath;
+        KRYS_LOG("Resolving import: %s", fullImportPath.c_str());
 
-        const string SHADER_ROOT_DIR{"shaders/"};
-        string importSrc = IO::ReadFileText(SHADER_ROOT_DIR + importPath);
-        _src.replace(importStart, importEnd - importStart + 1, importSrc);
+        string importSrc = IO::ReadFileText(fullImportPath);
+        KRYS_ASSERT(!importSrc.empty(), "Failed to read imported file: %s", fullImportPath.c_str());
 
-        importStart = _src.find("#import", importEnd);
+        importSrc = ResolveImports(importPath, importSrc, imported);
+        src.replace(importStart, importEnd - importStart + 1, importSrc);
+
+        importStart = src.find(IMPORT_TOKEN, importStart + importSrc.length());
       }
 
-      return _src;
+      return src;
     }
   };
 }

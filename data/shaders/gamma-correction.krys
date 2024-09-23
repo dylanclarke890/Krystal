@@ -1,0 +1,5 @@
+vec3 GammaCorrection(vec3 color) 
+{
+  const float gamma = 2.2;
+  return pow(color, vec3(1.0 / gamma));
+}

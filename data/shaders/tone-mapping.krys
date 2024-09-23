@@ -1,0 +1,18 @@
+#import "gamma-correction.krys";
+
+vec3 ReinhardToneMapping(vec3 color)
+{
+  return color / (color + vec3(1.0));
+}
+
+vec3 ExposureToneMapping(vec3 color, float exposure)
+{
+  return vec3(1.0) - exp(-color * exposure);
+}
+
+vec4 ToneMapping(vec3 color, float exposure)
+{
+  vec3 mapped = exposure == 1.0 ? ReinhardToneMapping(color) : ExposureToneMapping(color, exposure);
+  mapped = GammaCorrection(mapped);
+  return vec4(mapped.rgb, 1.0);
+}

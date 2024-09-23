@@ -30,7 +30,6 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 spec
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, vec3 specularSample);
-vec3 CalcGammaCorrection(vec3 color);
 float CalcAttenuation(vec4 lightPosition, float linear, float quadratic, float constant);
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 
@@ -160,12 +159,6 @@ vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, ve
   }
 
   return lightSpecular * specularFactor * specularSample;
-}
-
-vec3 CalcGammaCorrection(vec3 color)
-{
-  const float gamma = 2.2;
-  return pow(vec3(color), vec3(1.0/gamma));
 }
 
 // TODO: this assumes that the first texture slot is used for the directional shadow map which probably isn't true anymore.
