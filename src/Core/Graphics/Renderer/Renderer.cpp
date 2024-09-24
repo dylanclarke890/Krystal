@@ -84,6 +84,7 @@ namespace Krys
       {0.0f, -1.0f, 0.0f}};
 
   constexpr uint SHADOW_MAP_RESOLUTION = 1024;
+  constexpr uint32 SHARED_UNIFORM_BUFFER_BINDING = 0;
 
   static float SCREEN_QUAD_VERTICES[] = {
       //       Pos    Tex coords
@@ -93,6 +94,7 @@ namespace Krys
       -1.0f, 1.0f, 0.0f, 1.0f,
       1.0f, -1.0f, 1.0f, 0.0f,
       1.0f, 1.0f, 1.0f, 1.0f};
+  const int CUBEMAP_SLOTS = 2;
 
   constexpr auto AssignOneVertex = [](const Vec4 &position, const Vec3 &surfaceNormal, const TextureData &textureData)
   {
@@ -154,8 +156,7 @@ namespace Krys
   uint Renderer::VertexCount;
   uint Renderer::IndexCount;
 
-  Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> Renderer::TextureSlots;
-  int Renderer::TextureSlotIndex;
+  ActiveTextureUnits Renderer::TextureUnits;
 
   Ref<Camera> Renderer::ActiveCamera;
   bool Renderer::IsPostProcessingEnabled;
@@ -164,6 +165,7 @@ namespace Krys
   Ref<Transform> Renderer::LightSourceTransform;
   LightManager Renderer::Lights;
 
+  RenderMode Renderer::CurrentRenderMode;
   DeferredRendererData Renderer::DeferredRenderer;
 
 #pragma endregion Static Member Initialisation
@@ -176,56 +178,24 @@ namespace Krys
     Context = ctx;
     AppWindow = window;
 
-    CreateFramebuffers();
-    CreateShaders();
-
-    DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
-    DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_Position"},
-                                     {ShaderDataType::Float3, "i_Normal"},
-                                     {ShaderDataType::Float4, "i_Color"},
-                                     {ShaderDataType::Float2, "i_TextureCoord"},
-                                     {ShaderDataType::Int, "i_TextureSlot"},
-                                     {ShaderDataType::Int, "i_SpecularSlot"},
-                                     {ShaderDataType::Int, "i_EmissionSlot"},
-                                     {ShaderDataType::Int, "i_NormalSlot"},
-                                     {ShaderDataType::Int, "i_DisplacementSlot"},
-                                     {ShaderDataType::Float, "i_Shininess"},
-                                     {ShaderDataType::Float3, "i_Tangent"}}});
-
-    ScreenQuadVertexBuffer = Context->CreateVertexBuffer(SCREEN_QUAD_VERTICES, sizeof(SCREEN_QUAD_VERTICES));
-    ScreenQuadVertexBuffer->SetLayout({{{ShaderDataType::Float2, "i_Position"},
-                                        {ShaderDataType::Float2, "i_TextureCoord"}}});
-
-    DefaultIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
-
-    DefaultVertexArray = Context->CreateVertexArray();
-    DefaultVertexArray->AddVertexBuffer(DefaultVertexBuffer);
-    DefaultVertexArray->SetIndexBuffer(DefaultIndexBuffer);
-
-    ScreenQuadVertexArray = Context->CreateVertexArray();
-    ScreenQuadVertexArray->AddVertexBuffer(ScreenQuadVertexBuffer);
-
-    const uint32 SHARED_UNIFORM_BUFFER_BINDING = 0;
-    SharedUniformBuffer = Context->CreateUniformBuffer(SHARED_UNIFORM_BUFFER_BINDING,
-                                                       {{UniformDataType::Mat4, "u_ViewProjection"},
-                                                        {UniformDataType::Vec3, "u_CameraPosition"}});
-
     Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
     Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
 
-    TextureSlots = CreateUnique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>>();
-    int samplers[REN2D_MAX_TEXTURE_SLOTS - 1]{};
-    for (uint32 i = 0; i < REN2D_MAX_TEXTURE_SLOTS - 1; i++)
-      samplers[i] = i;
-
-    DefaultShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS - 1);
-    PostProcessingShader->SetUniform("u_Textures", samplers, REN2D_MAX_TEXTURE_SLOTS - 1);
-    DefaultShader->TrySetUniform("u_CubeDepthMap", 31);
-    Context->SetDepthTestingEnabled(true);
-
-    InitLighting();
+    InitTextureUnits();
     InitDeferredRenderer();
+    InitFramebuffers();
+    InitShaders();
+    InitBuffers();
+    InitVertexArrays();
+    InitLighting();
     Reset();
+
+    TextureUnits.SetSamplerUniforms({DefaultShader, PostProcessingShader});
+
+    // TODO: stop hardcoding this
+    DefaultShader->TrySetUniform("u_OmniDirectionalShadowMapIndex", 30);
+    Context->SetDepthTestingEnabled(true);
+    CurrentRenderMode = RenderMode::Forward;
   }
 
   void Renderer::Shutdown()
@@ -233,7 +203,11 @@ namespace Krys
     // Everything is static and will get cleaned up when the program terminates, nothing needed for now.
   }
 
-  void Renderer::CreateFramebuffers()
+#pragma endregion Lifecycle Methods
+
+#pragma region Init Helpers
+
+  void Renderer::InitFramebuffers()
   {
     MultiSampleFramebuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight(), 4);
     MultiSampleFramebuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
@@ -286,7 +260,7 @@ namespace Krys
     }
   }
 
-  void Renderer::CreateShaders()
+  void Renderer::InitShaders()
   {
     DefaultShader = Context->CreateShader("shaders/renderer/default.vert", "shaders/renderer/default.frag");
     DirectionalShadowMapShader = Context->CreateShader("shaders/renderer/directional-shadow-map.vert", "shaders/renderer/directional-shadow-map.frag");
@@ -296,6 +270,84 @@ namespace Krys
     PostProcessingShader = Context->CreateShader("shaders/renderer/post.vert", "shaders/renderer/post.frag");
     ExtractBrightnessShader = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/renderer/extract-brightness.frag");
     GaussianBlurShader = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/effects/gaussian-blur.frag");
+  }
+
+  void Renderer::InitBuffers()
+  {
+    DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
+    DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_Position"},
+                                     {ShaderDataType::Float3, "i_Normal"},
+                                     {ShaderDataType::Float4, "i_Color"},
+                                     {ShaderDataType::Float2, "i_TextureCoord"},
+                                     {ShaderDataType::Int, "i_TextureSlot"},
+                                     {ShaderDataType::Int, "i_SpecularSlot"},
+                                     {ShaderDataType::Int, "i_EmissionSlot"},
+                                     {ShaderDataType::Int, "i_NormalSlot"},
+                                     {ShaderDataType::Int, "i_DisplacementSlot"},
+                                     {ShaderDataType::Float, "i_Shininess"},
+                                     {ShaderDataType::Float3, "i_Tangent"}}});
+
+    ScreenQuadVertexBuffer = Context->CreateVertexBuffer(SCREEN_QUAD_VERTICES, sizeof(SCREEN_QUAD_VERTICES));
+    ScreenQuadVertexBuffer->SetLayout({{{ShaderDataType::Float2, "i_Position"},
+                                        {ShaderDataType::Float2, "i_TextureCoord"}}});
+
+    DefaultIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
+
+    SharedUniformBuffer = Context->CreateUniformBuffer(SHARED_UNIFORM_BUFFER_BINDING,
+                                                       {{UniformDataType::Mat4, "u_ViewProjection"},
+                                                        {UniformDataType::Vec3, "u_CameraPosition"}});
+  }
+
+  void Renderer::InitVertexArrays()
+  {
+    DefaultVertexArray = Context->CreateVertexArray();
+    DefaultVertexArray->AddVertexBuffer(DefaultVertexBuffer);
+    DefaultVertexArray->SetIndexBuffer(DefaultIndexBuffer);
+
+    ScreenQuadVertexArray = Context->CreateVertexArray();
+    ScreenQuadVertexArray->AddVertexBuffer(ScreenQuadVertexBuffer);
+  }
+
+  void Renderer::InitTextureUnits()
+  {
+    const int maxTextureUnits = Context->QueryCapabilities().MaxTextureImageUnits;
+
+    std::vector<int> samplers2D(maxTextureUnits - CUBEMAP_SLOTS);
+    for (int i = 0; i < maxTextureUnits - CUBEMAP_SLOTS; i++)
+      samplers2D[i] = i;
+
+    std::vector<int> samplersCubemap(CUBEMAP_SLOTS);
+    for (int i = 0; i < CUBEMAP_SLOTS; i++)
+      samplersCubemap[i] = maxTextureUnits - CUBEMAP_SLOTS + i;
+
+    TextureUnits = ActiveTextureUnits{};
+    TextureUnits.Texture2D.CurrentSlotIndex = 0;
+    TextureUnits.Texture2D.MaxSlots = maxTextureUnits - CUBEMAP_SLOTS;
+    TextureUnits.Texture2D.ReservedSlots = 1;
+    TextureUnits.Texture2D.BindingOffset = 0;
+    TextureUnits.Texture2D.Samplers = samplers2D;
+    TextureUnits.Texture2D.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.Texture2D.MaxSlots)};
+
+    TextureUnits.TextureCubemap.CurrentSlotIndex = 0;
+    TextureUnits.TextureCubemap.MaxSlots = CUBEMAP_SLOTS;
+    TextureUnits.TextureCubemap.ReservedSlots = 1;
+    TextureUnits.TextureCubemap.BindingOffset = TextureUnits.Texture2D.MaxSlots;
+    TextureUnits.TextureCubemap.Samplers = samplersCubemap;
+    TextureUnits.TextureCubemap.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.TextureCubemap.MaxSlots)};
+  }
+
+  void Renderer::InitDeferredRenderer()
+  {
+    auto gBuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
+    auto gPosition = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    auto gNormal = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    auto gAlbedoSpec = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA);
+    gBuffer->SetWriteBuffers({0, 1, 2});
+    gBuffer->AddDepthAttachment();
+
+    KRYS_ASSERT(gBuffer->IsComplete(), "GBuffer is incomplete!", 0);
+
+    DeferredRenderer = DeferredRendererData{gBuffer, gPosition, gNormal, gAlbedoSpec};
   }
 
   void Renderer::InitLighting()
@@ -333,20 +385,7 @@ namespace Krys
     DefaultShader->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
   }
 
-  void Renderer::InitDeferredRenderer()
-  {
-    auto gBuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
-    auto gPosition = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
-    auto gNormal = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
-    auto gAlbedoSpec = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA);
-    gBuffer->SetWriteBuffers({0, 1, 2});
-    gBuffer->AddDepthAttachment();
-
-    KRYS_ASSERT(gBuffer->IsComplete(), "GBuffer is incomplete!", 0);
-
-    DeferredRenderer = DeferredRendererData{gBuffer, gPosition, gNormal, gAlbedoSpec};
-  }
-#pragma endregion Lifecycle Methods
+#pragma endregion Init Helpers
 
 #pragma region Drawing Triangles
 
@@ -729,7 +768,12 @@ namespace Krys
   {
     VertexCount = 0;
     IndexCount = 0;
-    TextureSlotIndex = REN2D_RESERVED_TEXTURE_SLOTS;
+
+    TextureUnits.Texture2D.CurrentSlotIndex = TextureUnits.Texture2D.ReservedSlots;
+    TextureUnits.Texture2D.Slots[0] = DirectionalShadowMapFramebuffer->GetDepthAttachment();
+
+    TextureUnits.TextureCubemap.CurrentSlotIndex = TextureUnits.TextureCubemap.ReservedSlots;
+    TextureUnits.TextureCubemap.Slots[0] = OmniDirectionalShadowMapFramebuffer->GetDepthAttachment();
   }
 
   void Renderer::NextBatch()
@@ -743,9 +787,29 @@ namespace Krys
     if (VertexCount == 0)
       return;
 
-    auto &textureSlots = *TextureSlots;
-    for (int i = REN2D_RESERVED_TEXTURE_SLOTS; i < TextureSlotIndex; i++)
-      textureSlots[i]->Bind(i);
+    switch (CurrentRenderMode)
+    {
+    case RenderMode::Forward:
+    {
+      ForwardRender();
+      break;
+    }
+    case RenderMode::Deferred:
+    {
+      DeferredRender();
+      break;
+    }
+    default:
+    {
+      KRYS_ASSERT(false, "Unknown RenderMode", 0);
+      break;
+    }
+    }
+  }
+
+  void Renderer::ForwardRender()
+  {
+    TextureUnits.Bind();
 
     DefaultVertexArray->Bind();
     DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
@@ -788,9 +852,6 @@ namespace Krys
       Context->Clear(RenderBuffer::All);
 
       ActiveShader->Bind();
-      DirectionalShadowMapFramebuffer->GetDepthAttachment()->Bind(0);
-      OmniDirectionalShadowMapFramebuffer->GetDepthAttachment()->Bind(31);
-
       Context->DrawIndices(IndexCount, DrawMode::Triangles);
     }
 
@@ -877,6 +938,10 @@ namespace Krys
     }
   }
 
+  void Renderer::DeferredRender()
+  {
+  }
+
   void Renderer::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
   {
     if (VertexCount + vertexCount >= REN2D_MAX_VERTICES || IndexCount + indexCount >= REN2D_MAX_INDICES)
@@ -885,43 +950,52 @@ namespace Krys
     }
 
     auto &vertexBuffer = *Vertices;
-    for (size_t i = 0; i < vertexCount; i++)
+    for (uint i = 0; i < vertexCount; i++)
       vertexBuffer[VertexCount++] = vertices[i];
 
     auto &indexBuffer = *Indices;
-    for (size_t i = 0; i < indexCount; i++)
+    for (uint i = 0; i < indexCount; i++)
       indexBuffer[IndexCount++] = indices[i];
   }
 
-  /* Adds a new texture to the current batch or retrieves it's index if it already exists. NOT to be used for reserved texture slots.*/
   int Renderer::GetTextureSlotIndex(Ref<Texture2D> texture)
   {
-    // TODO: rework the reserved texture slots logic, this approach seems buggy af
-    int textureSlotIndex = -1;
+    return GetTextureSlotIndex(texture, TextureUnits.Texture2D);
+  }
 
+  int Renderer::GetTextureSlotIndex(Ref<TextureCubemap> texture)
+  {
+    return GetTextureSlotIndex(texture, TextureUnits.TextureCubemap);
+  }
+
+  int Renderer::GetTextureSlotIndex(Ref<Texture> texture, TextureBindingInfo &bindingInfo)
+  {
+    int index = -1;
     if (!texture)
-      return textureSlotIndex;
-
-    auto &textureSlots = *TextureSlots;
-    for (int i = REN2D_RESERVED_TEXTURE_SLOTS; i < TextureSlotIndex; i++)
     {
-      if (textureSlots[i]->GetId() == texture->GetId())
+      return index; // Texture can be null, no need to assert here.
+    }
+
+    for (int i = 0; i < bindingInfo.CurrentSlotIndex; i++)
+    {
+      if (texture->GetId() == bindingInfo.Slots[i]->GetId())
       {
-        textureSlotIndex = i;
+        index = i;
         break;
       }
     }
 
-    if (textureSlotIndex == -1)
+    if (index == -1)
     {
-      if (TextureSlotIndex == REN2D_MAX_TEXTURE_SLOTS - (1 + REN2D_RESERVED_TEXTURE_SLOTS))
+      if (!bindingInfo.HasSlotsRemaining())
       {
         NextBatch();
       }
-      textureSlotIndex = TextureSlotIndex++;
-      textureSlots[textureSlotIndex] = texture;
+
+      index = bindingInfo.CurrentSlotIndex++;
+      bindingInfo.Slots[index] = texture;
     }
 
-    return textureSlotIndex;
+    return index;
   }
 }

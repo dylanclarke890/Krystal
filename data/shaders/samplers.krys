@@ -1,4 +1,11 @@
-uniform sampler2D u_Textures[32];
+// TODO: parameters and compile time for loops for the switch statements
+
+#define MAX_TEXTURE_SLOTS 32
+#define MAX_CUBEMAP_SLOTS 2
+#define MAX_TEXTURE2D_SLOTS MAX_TEXTURE_SLOTS - MAX_CUBEMAP_SLOTS
+
+uniform sampler2D u_Textures[MAX_TEXTURE2D_SLOTS];
+uniform samplerCube u_Cubemaps[MAX_CUBEMAP_SLOTS];
 
 vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec2 textureCoord)
 {
@@ -34,8 +41,16 @@ vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec2 textureCoord
     case 27: return texture(u_Textures[27], textureCoord);
     case 28: return texture(u_Textures[28], textureCoord);
     case 29: return texture(u_Textures[29], textureCoord);
-    case 30: return texture(u_Textures[30], textureCoord);
-    case 31: return texture(u_Textures[31], textureCoord);
+    default: return defaultColor;
+  }
+}
+
+vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec3 textureCoord)
+{
+  switch(textureSlotIndex)
+  {
+    case 30: return texture(u_Cubemaps[ 0], textureCoord);
+    case 31: return texture(u_Cubemaps[ 1], textureCoord);
     default: return defaultColor;
   }
 }

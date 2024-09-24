@@ -1,7 +1,7 @@
 #version 450 core
 
 #import "uniform-buffers.krys";
-#import "sampler2d-textures.krys";
+#import "samplers.krys";
 
 in vec3 v_FragmentPosition;
 in vec4 v_DirectionalLightSpaceFragmentPosition;
@@ -18,7 +18,7 @@ flat in int v_NormalSlot;
 flat in int v_DisplacementSlot;
 flat in float v_Shininess;
 
-uniform samplerCube u_CubeDepthMap;
+uniform int u_OmniDirectionalShadowMapIndex;
 uniform float u_FarPlane;
 uniform float u_ParallaxHeightScale = 0.1;
 
@@ -213,7 +213,8 @@ float CalcOmniDirectionalShadow(vec3 lightPosition)
   float diskRadius = 0.05;
   for (int i = 0; i < samples; i++)
   {
-    float closestDepth = texture(u_CubeDepthMap, fragToLight + sampleOffsetDirections[i] * diskRadius).r;
+    float closestDepth = GetTextureSample(u_OmniDirectionalShadowMapIndex, vec4(0.0), 
+      fragToLight + sampleOffsetDirections[i] * diskRadius).r;
     closestDepth *= u_FarPlane;   // undo mapping [0;1]
     if(currentDepth - bias > closestDepth)
       shadow += 1.0;

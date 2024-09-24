@@ -1,6 +1,6 @@
 #version 450 core
 
-#import "sampler2d-textures.krys";
+#import "samplers.krys";
 #import "tone-mapping.krys";
   
 in vec2 v_TextureCoord;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <algorithm>
 
 #include "Core.h"
 #include "Window.h"
@@ -18,8 +19,7 @@ namespace Krys
   constexpr uint REN2D_MAX_QUADS = REN2D_MAX_TRIANGLES / 2;
   constexpr uint REN2D_MAX_VERTICES = REN2D_MAX_QUADS * 4;
   constexpr uint REN2D_MAX_INDICES = REN2D_MAX_QUADS * 6;
-  constexpr uint REN2D_MAX_TEXTURE_SLOTS = 32; // TODO: get this from the graphics API.
-  constexpr uint REN2D_RESERVED_TEXTURE_SLOTS = 2;
+  constexpr int REN2D_RESERVED_TEXTURE_SLOTS = 2;
   static Vec4 REN2D_DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
 
   struct VertexData
@@ -53,6 +53,57 @@ namespace Krys
   {
     Ref<Framebuffer> GBuffer;
     Ref<Texture2D> GPosition, GNormal, GAlbedoSpecular;
+  };
+
+  enum class RenderMode
+  {
+    Forward,
+    Deferred
+  };
+
+  struct TextureBindingInfo
+  {
+    std::vector<Ref<Texture>> Slots;
+    int CurrentSlotIndex, MaxSlots, ReservedSlots, BindingOffset;
+    std::vector<int> Samplers;
+
+    void Bind()
+    {
+      for (int i = 0; i < CurrentSlotIndex; i++)
+        Slots[i]->Bind(i + BindingOffset);
+    }
+
+    bool HasSlotsRemaining()
+    {
+      return MaxSlots - (CurrentSlotIndex + 1) > 0;
+    }
+  };
+
+  struct ActiveTextureUnits
+  {
+    TextureBindingInfo Texture2D;
+    TextureBindingInfo TextureCubemap;
+
+    void Bind()
+    {
+      Texture2D.Bind();
+      TextureCubemap.Bind();
+    }
+
+    void SetSamplerUniforms(std::vector<Ref<Shader>> shaders)
+    {
+      std::for_each(shaders.begin(), shaders.end(),
+                    [&](auto s)
+                    { SetSamplerUniforms(s); });
+    }
+
+    void SetSamplerUniforms(Ref<Shader> shader)
+    {
+      shader->TrySetUniform("u_Textures", Texture2D.Samplers.data(), Texture2D.MaxSlots);
+      shader->TrySetUniform("u_Cubemaps", TextureCubemap.Samplers.data(), TextureCubemap.MaxSlots);
+    }
+
+    NO_DISCARD int MaxUnits() const { return Texture2D.MaxSlots + TextureCubemap.MaxSlots; }
   };
 
   inline static void CalcTangentSpace(VertexData &v1, VertexData &v2, VertexData &v3, Mat3 &normalMatrix) noexcept
@@ -98,8 +149,7 @@ namespace Krys
     static Unique<std::array<uint32, REN2D_MAX_INDICES>> Indices;
     static uint VertexCount, IndexCount;
 
-    static Unique<std::array<Ref<Texture2D>, REN2D_MAX_TEXTURE_SLOTS>> TextureSlots;
-    static int TextureSlotIndex;
+    static ActiveTextureUnits TextureUnits;
 
     static Ref<Camera> ActiveCamera;
     static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled;
@@ -107,6 +157,7 @@ namespace Krys
     static Ref<Transform> LightSourceTransform;
 
     static DeferredRendererData DeferredRenderer;
+    static RenderMode CurrentRenderMode;
 
   public:
     static LightManager Lights;
@@ -136,20 +187,27 @@ namespace Krys
     static void EndScene();
 
   private:
-    static void CreateFramebuffers();
-    static void CreateShaders();
+    static void InitFramebuffers();
+    static void InitShaders();
+    static void InitBuffers();
+    static void InitVertexArrays();
     static void InitLighting();
     static void InitDeferredRenderer();
+    static void InitTextureUnits();
 
-    static void
-    Reset();
+    static void Reset();
     static void Flush();
+    static void ForwardRender();
+    static void DeferredRender();
 
     static void DrawQuad(Ref<Transform> transform, TextureData &textureData);
     static void DrawTriangle(Ref<Transform> transform, TextureData &textureData);
     static void DrawCube(Ref<Transform> transform, TextureData &textureData);
 
     static void AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount);
+
     static int GetTextureSlotIndex(Ref<Texture2D> texture);
+    static int GetTextureSlotIndex(Ref<TextureCubemap> texture);
+    static int GetTextureSlotIndex(Ref<Texture> texture, TextureBindingInfo &bindingInfo);
   };
 }
