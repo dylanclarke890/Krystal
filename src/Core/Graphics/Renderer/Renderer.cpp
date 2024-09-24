@@ -1,101 +1,8 @@
-#include <execution>
-#include <algorithm>
-
 #include "Renderer.h"
 #include "Misc/Time.h"
 
 namespace Krys
 {
-#pragma region Constants
-  constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
-  constexpr Vec3 QUAD_SURFACE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
-  constexpr Vec4 QUAD_LOCAL_SPACE_VERTICES[] = {{-0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, 0.5f, 0.0f, 1.0f}, {-0.5f, 0.5f, 0.0f, 1.0f}};
-
-  constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
-  constexpr Vec3 TRIANGLE_SURFACE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
-  constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.5f, 0.0f, 1.0f}};
-
-  constexpr Vec4 CUBE_LOCAL_SPACE_VERTICES[] = {
-      // Front face
-      {-0.5f, -0.5f, 0.5f, 1.0f}, // 0
-      {0.5f, -0.5f, 0.5f, 1.0f},  // 1
-      {0.5f, 0.5f, 0.5f, 1.0f},   // 2
-      {-0.5f, 0.5f, 0.5f, 1.0f},  // 3
-
-      // Back face
-      {-0.5f, -0.5f, -0.5f, 1.0f}, // 4
-      {0.5f, -0.5f, -0.5f, 1.0f},  // 5
-      {0.5f, 0.5f, -0.5f, 1.0f},   // 6
-      {-0.5f, 0.5f, -0.5f, 1.0f},  // 7
-
-      // Left face
-      {-0.5f, -0.5f, -0.5f, 1.0f}, // 8
-      {-0.5f, -0.5f, 0.5f, 1.0f},  // 9
-      {-0.5f, 0.5f, 0.5f, 1.0f},   // 10
-      {-0.5f, 0.5f, -0.5f, 1.0f},  // 11
-
-      // Right face
-      {0.5f, -0.5f, -0.5f, 1.0f}, // 12
-      {0.5f, -0.5f, 0.5f, 1.0f},  // 13
-      {0.5f, 0.5f, 0.5f, 1.0f},   // 14
-      {0.5f, 0.5f, -0.5f, 1.0f},  // 15
-
-      // Top face
-      {-0.5f, 0.5f, 0.5f, 1.0f},  // 16
-      {0.5f, 0.5f, 0.5f, 1.0f},   // 17
-      {0.5f, 0.5f, -0.5f, 1.0f},  // 18
-      {-0.5f, 0.5f, -0.5f, 1.0f}, // 19
-
-      // Bottom face
-      {-0.5f, -0.5f, 0.5f, 1.0f}, // 20
-      {0.5f, -0.5f, 0.5f, 1.0f},  // 21
-      {0.5f, -0.5f, -0.5f, 1.0f}, // 22
-      {-0.5f, -0.5f, -0.5f, 1.0f} // 23
-  };
-  constexpr Vec3 CUBE_SURFACE_NORMALS[] = {
-      {0.0f, 0.0f, 1.0f}, // Front face
-      {0.0f, 0.0f, 1.0f},
-      {0.0f, 0.0f, 1.0f},
-      {0.0f, 0.0f, 1.0f},
-
-      {0.0f, 0.0f, -1.0f}, // Back face
-      {0.0f, 0.0f, -1.0f},
-      {0.0f, 0.0f, -1.0f},
-      {0.0f, 0.0f, -1.0f},
-
-      {-1.0f, 0.0f, 0.0f}, // Left face
-      {-1.0f, 0.0f, 0.0f},
-      {-1.0f, 0.0f, 0.0f},
-      {-1.0f, 0.0f, 0.0f},
-
-      {1.0f, 0.0f, 0.0f}, // Right face
-      {1.0f, 0.0f, 0.0f},
-      {1.0f, 0.0f, 0.0f},
-      {1.0f, 0.0f, 0.0f},
-
-      {0.0f, 1.0f, 0.0f}, // Top face
-      {0.0f, 1.0f, 0.0f},
-      {0.0f, 1.0f, 0.0f},
-      {0.0f, 1.0f, 0.0f},
-
-      {0.0f, -1.0f, 0.0f}, // Bottom face
-      {0.0f, -1.0f, 0.0f},
-      {0.0f, -1.0f, 0.0f},
-      {0.0f, -1.0f, 0.0f}};
-
-  constexpr uint SHADOW_MAP_RESOLUTION = 1024;
-  constexpr uint32 SHARED_UNIFORM_BUFFER_BINDING = 0;
-
-  static float SCREEN_QUAD_VERTICES[] = {
-      //       Pos    Tex coords
-      -1.0f, 1.0f, 0.0f, 1.0f,
-      -1.0f, -1.0f, 0.0f, 0.0f,
-      1.0f, -1.0f, 1.0f, 0.0f,
-      -1.0f, 1.0f, 0.0f, 1.0f,
-      1.0f, -1.0f, 1.0f, 0.0f,
-      1.0f, 1.0f, 1.0f, 1.0f};
-  const int CUBEMAP_SLOTS = 2;
-
   constexpr auto AssignOneVertex = [](const Vec4 &position, const Vec3 &surfaceNormal, const TextureData &textureData)
   {
     VertexData vertex{};
@@ -112,8 +19,6 @@ namespace Krys
 
     return vertex;
   };
-
-#pragma endregion Constants
 
 #pragma region Static Member Initialisation
 
@@ -151,8 +56,8 @@ namespace Krys
 
   Ref<TextureCubemap> Renderer::SkyboxCubemap;
 
-  Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Renderer::Vertices;
-  Unique<std::array<uint32, REN2D_MAX_INDICES>> Renderer::Indices;
+  Unique<std::array<VertexData, RENDERER_MAX_VERTICES>> Renderer::Vertices;
+  Unique<std::array<uint32, RENDERER_MAX_INDICES>> Renderer::Indices;
   uint Renderer::VertexCount;
   uint Renderer::IndexCount;
 
@@ -178,22 +83,18 @@ namespace Krys
     Context = ctx;
     AppWindow = window;
 
-    Vertices = CreateUnique<std::array<VertexData, REN2D_MAX_VERTICES>>();
-    Indices = CreateUnique<std::array<uint32, REN2D_MAX_INDICES>>();
+    Vertices = CreateUnique<std::array<VertexData, RENDERER_MAX_VERTICES>>();
+    Indices = CreateUnique<std::array<uint32, RENDERER_MAX_INDICES>>();
 
     InitTextureUnits();
+    InitShaders();
     InitDeferredRenderer();
     InitFramebuffers();
-    InitShaders();
     InitBuffers();
     InitVertexArrays();
     InitLighting();
     Reset();
 
-    TextureUnits.SetSamplerUniforms({DefaultShader, PostProcessingShader});
-
-    // TODO: stop hardcoding this
-    DefaultShader->TrySetUniform("u_OmniDirectionalShadowMapIndex", 30);
     Context->SetDepthTestingEnabled(true);
     CurrentRenderMode = RenderMode::Forward;
   }
@@ -206,6 +107,62 @@ namespace Krys
 #pragma endregion Lifecycle Methods
 
 #pragma region Init Helpers
+
+  void Renderer::InitTextureUnits()
+  {
+    const int TOTAL_MAX_SLOTS = Context->QueryCapabilities().MaxTextureImageUnits;
+
+    std::vector<int> samplers2D(TOTAL_MAX_SLOTS - CUBEMAP_SLOTS);
+    for (int i = 0; i < TOTAL_MAX_SLOTS - CUBEMAP_SLOTS; i++)
+      samplers2D[i] = i;
+
+    std::vector<int> samplersCubemap(CUBEMAP_SLOTS);
+    for (int i = 0; i < CUBEMAP_SLOTS; i++)
+      samplersCubemap[i] = TOTAL_MAX_SLOTS - CUBEMAP_SLOTS + i;
+
+    TextureUnits = ActiveTextureUnits{};
+    TextureUnits.Texture2D.CurrentSlotIndex = 0;
+    TextureUnits.Texture2D.MaxSlots = TOTAL_MAX_SLOTS - CUBEMAP_SLOTS;
+    TextureUnits.Texture2D.ReservedSlots = 1;
+    TextureUnits.Texture2D.BindingOffset = 0;
+    TextureUnits.Texture2D.Samplers = samplers2D;
+    TextureUnits.Texture2D.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.Texture2D.MaxSlots)};
+
+    TextureUnits.TextureCubemap.CurrentSlotIndex = 0;
+    TextureUnits.TextureCubemap.MaxSlots = CUBEMAP_SLOTS;
+    TextureUnits.TextureCubemap.ReservedSlots = 1;
+    TextureUnits.TextureCubemap.BindingOffset = TextureUnits.Texture2D.MaxSlots;
+    TextureUnits.TextureCubemap.Samplers = samplersCubemap;
+    TextureUnits.TextureCubemap.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.TextureCubemap.MaxSlots)};
+  }
+
+  void Renderer::InitShaders()
+  {
+    DefaultShader = Context->CreateShader("shaders/renderer/default.vert", "shaders/renderer/default.frag");
+    DirectionalShadowMapShader = Context->CreateShader("shaders/renderer/directional-shadow-map.vert", "shaders/renderer/directional-shadow-map.frag");
+    OmniDirectionalShadowMapShader = Context->CreateShader("shaders/renderer/omnidirectional-shadow-map.vert", "shaders/renderer/omnidirectional-shadow-map.frag", "shaders/renderer/omnidirectional-shadow-map.geo");
+    LightSourceShader = Context->CreateShader("shaders/renderer/light-source.vert", "shaders/renderer/light-source.frag");
+    SkyboxShader = Context->CreateShader("shaders/renderer/skybox.vert", "shaders/renderer/skybox.frag");
+    PostProcessingShader = Context->CreateShader("shaders/renderer/post.vert", "shaders/renderer/post.frag");
+    ExtractBrightnessShader = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/renderer/extract-brightness.frag");
+    GaussianBlurShader = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/effects/gaussian-blur.frag");
+
+    TextureUnits.SetSamplerUniforms({DefaultShader, PostProcessingShader});
+  }
+
+  void Renderer::InitDeferredRenderer()
+  {
+    auto gBuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
+    auto gPosition = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    auto gNormal = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
+    auto gAlbedoSpec = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA);
+    gBuffer->SetWriteBuffers({0, 1, 2});
+    gBuffer->AddDepthAttachment();
+
+    KRYS_ASSERT(gBuffer->IsComplete(), "GBuffer is incomplete!", 0);
+
+    DeferredRenderer = DeferredRendererData{gBuffer, gPosition, gNormal, gAlbedoSpec};
+  }
 
   void Renderer::InitFramebuffers()
   {
@@ -260,21 +217,9 @@ namespace Krys
     }
   }
 
-  void Renderer::InitShaders()
-  {
-    DefaultShader = Context->CreateShader("shaders/renderer/default.vert", "shaders/renderer/default.frag");
-    DirectionalShadowMapShader = Context->CreateShader("shaders/renderer/directional-shadow-map.vert", "shaders/renderer/directional-shadow-map.frag");
-    OmniDirectionalShadowMapShader = Context->CreateShader("shaders/renderer/omnidirectional-shadow-map.vert", "shaders/renderer/omnidirectional-shadow-map.frag", "shaders/renderer/omnidirectional-shadow-map.geo");
-    LightSourceShader = Context->CreateShader("shaders/renderer/light-source.vert", "shaders/renderer/light-source.frag");
-    SkyboxShader = Context->CreateShader("shaders/renderer/skybox.vert", "shaders/renderer/skybox.frag");
-    PostProcessingShader = Context->CreateShader("shaders/renderer/post.vert", "shaders/renderer/post.frag");
-    ExtractBrightnessShader = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/renderer/extract-brightness.frag");
-    GaussianBlurShader = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/effects/gaussian-blur.frag");
-  }
-
   void Renderer::InitBuffers()
   {
-    DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * REN2D_MAX_VERTICES);
+    DefaultVertexBuffer = Context->CreateVertexBuffer(sizeof(VertexData) * RENDERER_MAX_VERTICES);
     DefaultVertexBuffer->SetLayout({{{ShaderDataType::Float4, "i_Position"},
                                      {ShaderDataType::Float3, "i_Normal"},
                                      {ShaderDataType::Float4, "i_Color"},
@@ -291,9 +236,9 @@ namespace Krys
     ScreenQuadVertexBuffer->SetLayout({{{ShaderDataType::Float2, "i_Position"},
                                         {ShaderDataType::Float2, "i_TextureCoord"}}});
 
-    DefaultIndexBuffer = Context->CreateIndexBuffer(REN2D_MAX_INDICES);
+    DefaultIndexBuffer = Context->CreateIndexBuffer(RENDERER_MAX_INDICES);
 
-    SharedUniformBuffer = Context->CreateUniformBuffer(SHARED_UNIFORM_BUFFER_BINDING,
+    SharedUniformBuffer = Context->CreateUniformBuffer(UNIFORM_BUFFER_BINDING_SHARED,
                                                        {{UniformDataType::Mat4, "u_ViewProjection"},
                                                         {UniformDataType::Vec3, "u_CameraPosition"}});
   }
@@ -308,51 +253,9 @@ namespace Krys
     ScreenQuadVertexArray->AddVertexBuffer(ScreenQuadVertexBuffer);
   }
 
-  void Renderer::InitTextureUnits()
-  {
-    const int maxTextureUnits = Context->QueryCapabilities().MaxTextureImageUnits;
-
-    std::vector<int> samplers2D(maxTextureUnits - CUBEMAP_SLOTS);
-    for (int i = 0; i < maxTextureUnits - CUBEMAP_SLOTS; i++)
-      samplers2D[i] = i;
-
-    std::vector<int> samplersCubemap(CUBEMAP_SLOTS);
-    for (int i = 0; i < CUBEMAP_SLOTS; i++)
-      samplersCubemap[i] = maxTextureUnits - CUBEMAP_SLOTS + i;
-
-    TextureUnits = ActiveTextureUnits{};
-    TextureUnits.Texture2D.CurrentSlotIndex = 0;
-    TextureUnits.Texture2D.MaxSlots = maxTextureUnits - CUBEMAP_SLOTS;
-    TextureUnits.Texture2D.ReservedSlots = 1;
-    TextureUnits.Texture2D.BindingOffset = 0;
-    TextureUnits.Texture2D.Samplers = samplers2D;
-    TextureUnits.Texture2D.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.Texture2D.MaxSlots)};
-
-    TextureUnits.TextureCubemap.CurrentSlotIndex = 0;
-    TextureUnits.TextureCubemap.MaxSlots = CUBEMAP_SLOTS;
-    TextureUnits.TextureCubemap.ReservedSlots = 1;
-    TextureUnits.TextureCubemap.BindingOffset = TextureUnits.Texture2D.MaxSlots;
-    TextureUnits.TextureCubemap.Samplers = samplersCubemap;
-    TextureUnits.TextureCubemap.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.TextureCubemap.MaxSlots)};
-  }
-
-  void Renderer::InitDeferredRenderer()
-  {
-    auto gBuffer = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
-    auto gPosition = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
-    auto gNormal = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA16F);
-    auto gAlbedoSpec = gBuffer->AddColorAttachment(TextureInternalFormat::RGBA);
-    gBuffer->SetWriteBuffers({0, 1, 2});
-    gBuffer->AddDepthAttachment();
-
-    KRYS_ASSERT(gBuffer->IsComplete(), "GBuffer is incomplete!", 0);
-
-    DeferredRenderer = DeferredRendererData{gBuffer, gPosition, gNormal, gAlbedoSpec};
-  }
-
   void Renderer::InitLighting()
   {
-    Lights.Init(Context);
+    Lights.Init(Context, TextureUnits);
     LightSourceTransform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f));
 
     // TODO: this probably needs moving to the lights manager.
@@ -538,7 +441,7 @@ namespace Krys
   void Renderer::DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap)
   {
     // TODO: ?? Implement this you fool (jk love you bitch)
-    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, REN2D_DEFAULT_COLOR};
+    TextureData textureData{QUAD_DEFAULT_TEXTURE_COORDS, RENDERER_DEFAULT_OBJECT_COLOR};
     DrawCube(transform, textureData);
   }
 
@@ -944,7 +847,7 @@ namespace Krys
 
   void Renderer::AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount)
   {
-    if (VertexCount + vertexCount >= REN2D_MAX_VERTICES || IndexCount + indexCount >= REN2D_MAX_INDICES)
+    if (VertexCount + vertexCount >= RENDERER_MAX_VERTICES || IndexCount + indexCount >= RENDERER_MAX_INDICES)
     {
       NextBatch();
     }

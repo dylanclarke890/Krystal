@@ -2,6 +2,7 @@
 
 #include "Maths/Maths.h"
 #include "Graphics/BufferLayout.h"
+#include "Graphics/Constants.h"
 
 namespace Krys
 {
@@ -53,11 +54,6 @@ namespace Krys
     float OuterCutoff;
   };
 
-  constexpr uint32 LightBufferBinding = 1;
-  constexpr uint32 MaxDirectionalLights = 5;
-  constexpr uint32 MaxPointLights = 32;
-  constexpr uint32 MaxSpotLights = 32;
-
   static UniformStructLayout DirectionalLightStructLayout = {
       {{UniformDataType::Vec3, "Ambient"},
        {UniformDataType::Vec3, "Diffuse"},
@@ -101,12 +97,14 @@ namespace Krys
       {UniformDataType::Scalar, "OuterCutoff"}};
 
   static UniformBufferLayout LightBufferLayout = {
-      {UniformDataType::Struct, "u_DirectionalLights", DirectionalLightStructLayout, MaxDirectionalLights},
-      {UniformDataType::Struct, "u_PointLights", PointLightStructLayout, MaxPointLights},
-      {UniformDataType::Struct, "u_SpotLights", SpotLightStructLayout, MaxSpotLights},
+      {UniformDataType::Struct, "u_DirectionalLights", DirectionalLightStructLayout, LIGHTING_MAX_DIRECTIONAL_LIGHTS},
+      {UniformDataType::Struct, "u_PointLights", PointLightStructLayout, LIGHTING_MAX_POINT_LIGHTS},
+      {UniformDataType::Struct, "u_SpotLights", SpotLightStructLayout, LIGHTING_MAX_SPOT_LIGHTS},
       {UniformDataType::Scalar, "u_DirectionalLightCount"},
       {UniformDataType::Scalar, "u_PointLightCount"},
       {UniformDataType::Scalar, "u_SpotLightCount"},
       {UniformDataType::Scalar, "u_UseBlinnLightingModel"},
-      {UniformDataType::Scalar, "u_LightingEnabled"}};
+      {UniformDataType::Scalar, "u_LightingEnabled"},
+      {UniformDataType::Scalar, "u_Texture2DShadowMapSlotIndex"},
+      {UniformDataType::Scalar, "u_CubemapShadowMapSlotIndex"}};
 }

@@ -1,10 +1,10 @@
 #pragma once
 
 #include <array>
-#include <algorithm>
 
 #include "Core.h"
 #include "Window.h"
+#include "Graphics/Constants.h"
 #include "Graphics/GraphicsContext.h"
 #include "Graphics/Colors.h"
 #include "Graphics/Camera/Camera.h"
@@ -15,97 +15,6 @@
 
 namespace Krys
 {
-  constexpr uint REN2D_MAX_TRIANGLES = 10000;
-  constexpr uint REN2D_MAX_QUADS = REN2D_MAX_TRIANGLES / 2;
-  constexpr uint REN2D_MAX_VERTICES = REN2D_MAX_QUADS * 4;
-  constexpr uint REN2D_MAX_INDICES = REN2D_MAX_QUADS * 6;
-  constexpr int REN2D_RESERVED_TEXTURE_SLOTS = 2;
-  static Vec4 REN2D_DEFAULT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
-
-  struct VertexData
-  {
-    Vec4 Position;
-    Vec3 Normal;
-    Vec4 Color;
-    Vec2 TextureCoords;
-    int TextureSlotIndex;
-    int SpecularTextureSlotIndex;
-    int EmissionTextureSlotIndex;
-    int NormalTextureSlotIndex;
-    int DisplacementTextureSlotIndex;
-    float Shininess;
-    Vec3 Tangent;
-  };
-
-  struct TextureData
-  {
-    const Vec2 *TextureCoords;
-    Vec4 Tint;
-    int Texture = -1;
-    int Specular = -1;
-    int Emission = -1;
-    int Normal = -1;
-    int Displacement = -1;
-    float Shininess = 32.0f;
-  };
-
-  struct DeferredRendererData
-  {
-    Ref<Framebuffer> GBuffer;
-    Ref<Texture2D> GPosition, GNormal, GAlbedoSpecular;
-  };
-
-  enum class RenderMode
-  {
-    Forward,
-    Deferred
-  };
-
-  struct TextureBindingInfo
-  {
-    std::vector<Ref<Texture>> Slots;
-    int CurrentSlotIndex, MaxSlots, ReservedSlots, BindingOffset;
-    std::vector<int> Samplers;
-
-    void Bind()
-    {
-      for (int i = 0; i < CurrentSlotIndex; i++)
-        Slots[i]->Bind(i + BindingOffset);
-    }
-
-    bool HasSlotsRemaining()
-    {
-      return MaxSlots - (CurrentSlotIndex + 1) > 0;
-    }
-  };
-
-  struct ActiveTextureUnits
-  {
-    TextureBindingInfo Texture2D;
-    TextureBindingInfo TextureCubemap;
-
-    void Bind()
-    {
-      Texture2D.Bind();
-      TextureCubemap.Bind();
-    }
-
-    void SetSamplerUniforms(std::vector<Ref<Shader>> shaders)
-    {
-      std::for_each(shaders.begin(), shaders.end(),
-                    [&](auto s)
-                    { SetSamplerUniforms(s); });
-    }
-
-    void SetSamplerUniforms(Ref<Shader> shader)
-    {
-      shader->TrySetUniform("u_Textures", Texture2D.Samplers.data(), Texture2D.MaxSlots);
-      shader->TrySetUniform("u_Cubemaps", TextureCubemap.Samplers.data(), TextureCubemap.MaxSlots);
-    }
-
-    NO_DISCARD int MaxUnits() const { return Texture2D.MaxSlots + TextureCubemap.MaxSlots; }
-  };
-
   inline static void CalcTangentSpace(VertexData &v1, VertexData &v2, VertexData &v3, Mat3 &normalMatrix) noexcept
   {
     Vec3 edge1 = v2.Position - v1.Position;
@@ -145,8 +54,8 @@ namespace Krys
     static Ref<UniformBuffer> SharedUniformBuffer;
     static Ref<TextureCubemap> SkyboxCubemap;
 
-    static Unique<std::array<VertexData, REN2D_MAX_VERTICES>> Vertices;
-    static Unique<std::array<uint32, REN2D_MAX_INDICES>> Indices;
+    static Unique<std::array<VertexData, RENDERER_MAX_VERTICES>> Vertices;
+    static Unique<std::array<uint32, RENDERER_MAX_INDICES>> Indices;
     static uint VertexCount, IndexCount;
 
     static ActiveTextureUnits TextureUnits;
@@ -167,16 +76,16 @@ namespace Krys
 
     static void DrawTriangle(Ref<Transform> transform, Vec4 &color);
     static void DrawTriangle(Ref<Transform> transform, Ref<Material> material);
-    static void DrawTriangle(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
+    static void DrawTriangle(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = RENDERER_DEFAULT_OBJECT_COLOR);
 
     static void DrawQuad(Ref<Transform> transform, Vec4 &color);
     static void DrawQuad(Ref<Transform> transform, Ref<Material> material);
-    static void DrawQuad(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
+    static void DrawQuad(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = RENDERER_DEFAULT_OBJECT_COLOR);
 
     static void DrawCube(Ref<Transform> transform, Vec4 &color);
     static void DrawCube(Ref<Transform> transform, Ref<Material> material);
     static void DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap);
-    static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = REN2D_DEFAULT_COLOR);
+    static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = RENDERER_DEFAULT_OBJECT_COLOR);
 
     static void SetSkybox(std::array<string, 6> pathsToFaces);
     static void SetPostProcessingEnabled(bool enabled);

@@ -23,14 +23,18 @@ namespace Krys
   public:
     LightManager()
         : SpotLights({}), PointLights({}), DirectionalLights({}),
-          LightBuffer(0), Context(0), ActiveLightingModel(LightingModel::Phong)
-    {
-    }
+          LightBuffer(nullptr), Context(nullptr), ActiveLightingModel(LightingModel::Phong) {}
 
-    void Init(Ref<GraphicsContext> context)
+    void Init(Ref<GraphicsContext> context, const ActiveTextureUnits &textureUnits)
     {
       Context = context;
-      LightBuffer = Context->CreateUniformBuffer(LightBufferBinding, LightBufferLayout);
+      LightBuffer = Context->CreateUniformBuffer(UNIFORM_BUFFER_BINDING_LIGHT, LightBufferLayout);
+
+      int reservedSlotIndex = textureUnits.Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT_SHADOW_MAP_2D);
+      LightBuffer->SetData("u_Texture2DShadowMapSlotIndex", reservedSlotIndex);
+
+      reservedSlotIndex = textureUnits.TextureCubemap.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT_SHADOW_CUBEMAP);
+      LightBuffer->SetData("u_CubemapShadowMapSlotIndex", reservedSlotIndex);
     }
 
     void AddDirectionalLight(const DirectionalLight &light)
