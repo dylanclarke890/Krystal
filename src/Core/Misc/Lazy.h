@@ -1,27 +1,29 @@
 #pragma once
 
 #include <functional>
+#include <optional>
 
 namespace Krys
 {
-  /// @brief Thin wrapper class that allows for lazy initialisation.
+  /// @brief Thin wrapper class that allows for lazy initialization.
   /// @tparam T
   template <typename T>
   class Lazy
   {
   private:
-    T _value;
+    std::optional<T> _value;
     std::function<T()> _func;
 
   public:
-    Lazy(std::function<T()> func) : _value(NULL), _func(func) {}
+    Lazy(std::function<T()> func) : _func(func) {}
 
-    T val()
+    /// @brief Returns a const reference to the lazily initialized value.
+    const T &val()
     {
-      if (!_value)
-        _value = func();
+      if (!_value) // Initialize if not already done
+        _value = _func();
 
-      return _value;
+      return *_value;
     }
   };
 }
