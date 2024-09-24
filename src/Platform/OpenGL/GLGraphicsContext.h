@@ -5,28 +5,32 @@
 #include "Core.h"
 #include "GL.h"
 #include "Graphics/GraphicsContext.h"
+#include "Misc/Lazy.h"
 
 namespace Krys
 {
   class GLGraphicsContext : public GraphicsContext
   {
   private:
-    HWND hWnd;
-    HINSTANCE instance;
-    HDC dc;
-    HGLRC openGLContext;
+    HWND _window;
+    HINSTANCE _instance;
+    HDC _deviceContext;
+    HGLRC _context;
+    Lazy<GraphicsCapabilities> _capabilities;
 
   public:
     GLGraphicsContext(HDC deviceContext, HWND window, HINSTANCE instance);
     ~GLGraphicsContext() override;
 
     void Init() noexcept override;
-    void Clear(RenderBuffer flags = RenderBuffer::Color) noexcept override;
+
+    const GraphicsCapabilities &QueryCapabilities() noexcept override;
 
 #pragma region State Settings
     void BindScreenFramebuffer(FramebufferBindType bindType) noexcept override;
 
     void SetClearColor(const Vec4 &color) noexcept override;
+    void Clear(RenderBuffer flags) noexcept override;
     void SetViewport(int width, int height) noexcept override;
 
     void SetMultisamplingEnabled(bool enable) noexcept override;
@@ -96,5 +100,8 @@ namespace Krys
     void DrawIndices(size_t count, DrawMode mode = DrawMode::Triangles) noexcept override;
     void DrawIndicesInstanced(size_t instanceCount, size_t indexCount, DrawMode mode = DrawMode::Triangles) noexcept override;
 #pragma endregion Primitive Drawing
+
+  private:
+    GraphicsCapabilities LoadGraphicsCapabilities() noexcept;
   };
 }

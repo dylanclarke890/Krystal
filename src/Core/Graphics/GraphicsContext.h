@@ -12,20 +12,47 @@
 
 namespace Krys
 {
+  // TODO: this *could* be more fine-grained. Some of the limits vary based on shader stage.
+  struct GraphicsCapabilities
+  {
+    int MaxDrawBuffers;
+    int MaxInputComponents;
+    int MaxOutputComponents;
+    int MaxTextureImageUnits;
+    int MaxTextureSize;
+    int MaxUniformComponents;
+    int MaxUniformBlocks;
+    int MaxVertexAttributes;
+
+    void Log() const
+    {
+      KRYS_LOG("Graphics Capabilities:");
+      KRYS_LOG("MaxDrawBuffers: %d", MaxDrawBuffers);
+      KRYS_LOG("MaxInputComponents: %d", MaxInputComponents);
+      KRYS_LOG("MaxOutputComponents: %d", MaxOutputComponents);
+      KRYS_LOG("MaxTextureImageUnits: %d", MaxTextureImageUnits);
+      KRYS_LOG("MaxTextureSize: %d", MaxTextureSize);
+      KRYS_LOG("MaxUniformComponents: %d", MaxUniformComponents);
+      KRYS_LOG("MaxUniformBlocks: %d", MaxUniformBlocks);
+      KRYS_LOG("MaxVertexAttributes: %d", MaxVertexAttributes);
+    }
+  };
 
   class GraphicsContext
   {
   public:
     virtual ~GraphicsContext() = default;
     virtual void Init() noexcept = 0;
-    virtual void Clear(RenderBuffer flags = RenderBuffer::Color) noexcept = 0;
+
+    virtual const GraphicsCapabilities &QueryCapabilities() noexcept = 0;
 
 #pragma region State Settings
-    virtual void BindScreenFramebuffer(FramebufferBindType bindType = FramebufferBindType::ReadAndDraw) noexcept = 0;
 
     virtual void SetClearColor(const Vec4 &color) noexcept = 0;
-    virtual void SetViewport(int width, int height) noexcept = 0;
+    virtual void Clear(RenderBuffer flags = RenderBuffer::Color) noexcept = 0;
+    virtual void BindScreenFramebuffer(FramebufferBindType bindType = FramebufferBindType::ReadAndDraw) noexcept = 0;
 
+    virtual void SetViewport(int width, int height) noexcept = 0;
     virtual void SetMultisamplingEnabled(bool enable) noexcept = 0;
     virtual void SetGammaCorrectionEnabled(bool enable) noexcept = 0;
 
@@ -44,8 +71,8 @@ namespace Krys
     virtual void SetStencilOperation(StencilOperation fail, StencilOperation zFail, StencilOperation zPass) noexcept = 0;
     virtual void SetStencilTestingEnabled(bool enable) noexcept = 0;
     virtual void SetStencilBufferWritingEnabled(bool enable) noexcept = 0;
-    // Similar to `SetStencilBufferWritingEnabled`, but takes a custom mask to be
-    // ANDed with the stencil value to be written
+    /// @brief Similar to `SetStencilBufferWritingEnabled`, but takes a custom mask to be
+    /// ANDed with the stencil value to be written.
     virtual void SetStencilBufferBitMask(uint8 mask) noexcept = 0;
 
     virtual void SetBlendingEnabled(bool enable) noexcept = 0;
@@ -58,6 +85,7 @@ namespace Krys
 #pragma endregion State Settings
 
 #pragma region Graphics Objects
+
     virtual Ref<IndexBuffer> CreateIndexBuffer(uint32 count) noexcept = 0;
     virtual Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) noexcept = 0;
 
@@ -82,10 +110,7 @@ namespace Krys
     virtual Ref<TextureCubemap> CreateTextureCubemap(uint width, uint height, TextureInternalFormat internalFormat) noexcept = 0;
 
     virtual Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples = 1) noexcept = 0;
-    Ref<PingPongFramebuffer> CreatePingPongFramebuffer(Ref<Framebuffer> a, Ref<Framebuffer> b) noexcept
-    {
-      return CreateRef<PingPongFramebuffer>(a, b);
-    }
+    Ref<PingPongFramebuffer> CreatePingPongFramebuffer(Ref<Framebuffer> a, Ref<Framebuffer> b) noexcept { return CreateRef<PingPongFramebuffer>(a, b); }
 
 #pragma endregion Graphics Objects
 

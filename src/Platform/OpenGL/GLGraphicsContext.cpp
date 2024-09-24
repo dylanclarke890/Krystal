@@ -106,13 +106,14 @@ namespace Krys
   };
 
   GLGraphicsContext::GLGraphicsContext(HDC deviceContext, HWND window, HINSTANCE instance)
-      : hWnd(window), instance(instance), dc(deviceContext), openGLContext(0)
+      : _window(window), _instance(instance), _deviceContext(deviceContext), _context(0), _capabilities([this]()
+                                                                                                        { return this->LoadGraphicsCapabilities(); })
   {
   }
 
   GLGraphicsContext::~GLGraphicsContext()
   {
-    wglDeleteContext(openGLContext);
+    wglDeleteContext(_context);
   }
 
   void GLGraphicsContext::Init() noexcept
@@ -136,15 +137,15 @@ namespace Krys
     int32 pixelFormatId;
     uint pixelFormatCount;
 
-    BOOL chooseFormatSuccess = wglChoosePixelFormatARB(dc, pixelFormatAttribList, 0, 1, &pixelFormatId, &pixelFormatCount);
+    BOOL chooseFormatSuccess = wglChoosePixelFormatARB(_deviceContext, pixelFormatAttribList, 0, 1, &pixelFormatId, &pixelFormatCount);
     KRYS_ASSERT(chooseFormatSuccess && pixelFormatId && pixelFormatCount, "Cannot find an appropriate pixel format.", 0);
 
     // set actual pixel format to device context
     PIXELFORMATDESCRIPTOR pfd{};
-    BOOL describeFormatSuccess = DescribePixelFormat(dc, pixelFormatId, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+    BOOL describeFormatSuccess = DescribePixelFormat(_deviceContext, pixelFormatId, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
     KRYS_ASSERT(describeFormatSuccess, "Unable to describe pixel format.", 0);
 
-    BOOL setPixelFormatSuccess = SetPixelFormat(dc, pixelFormatId, &pfd);
+    BOOL setPixelFormatSuccess = SetPixelFormat(_deviceContext, pixelFormatId, &pfd);
     KRYS_ASSERT(setPixelFormatSuccess, "Unable to set pixel format.", 0);
 
     const uint32 OPENGL_MAJOR = 3;
@@ -155,9 +156,9 @@ namespace Krys
         WGL_CONTEXT_MINOR_VERSION_ARB, OPENGL_MINOR,
         0 // end
     };
-    openGLContext = wglCreateContextAttribsARB(dc, 0, contextAttributes);
+    _context = wglCreateContextAttribsARB(_deviceContext, 0, contextAttributes);
 
-    BOOL makeCurrentSucess = wglMakeCurrent(dc, openGLContext);
+    BOOL makeCurrentSucess = wglMakeCurrent(_deviceContext, _context);
     KRYS_ASSERT(makeCurrentSucess, "Failed to make the OpenGL context current.", 0);
 
     int32 version = gladLoaderLoadGL();
@@ -181,6 +182,29 @@ namespace Krys
 
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 #endif
+  }
+
+  const GraphicsCapabilities &GLGraphicsContext::QueryCapabilities() noexcept
+  {
+    KRYS_PERFORMANCE_TIMER("QueryCapabilities");
+    return _capabilities.val();
+  }
+
+  GraphicsCapabilities GLGraphicsContext::LoadGraphicsCapabilities() noexcept
+  {
+    GraphicsCapabilities capabilities{};
+
+    glGetIntegerv(GL_MAX_DRAW_BUFFERS, &capabilities.MaxDrawBuffers);
+    glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, &capabilities.MaxInputComponents);
+    glGetIntegerv(GL_MAX_VERTEX_OUTPUT_COMPONENTS, &capabilities.MaxOutputComponents);
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &capabilities.MaxTextureImageUnits);
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &capabilities.MaxTextureSize);
+    glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &capabilities.MaxUniformComponents);
+    glGetIntegerv(GL_MAX_VERTEX_UNIFORM_BLOCKS, &capabilities.MaxUniformBlocks);
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &capabilities.MaxVertexAttributes);
+
+    capabilities.Log();
+    return capabilities;
   }
 
   void GLGraphicsContext::Clear(RenderBuffer flags) noexcept
