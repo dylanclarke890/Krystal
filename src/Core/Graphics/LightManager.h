@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Core.h"
-#include "Lights.h"
+#include "Graphics/Graphics.h"
 #include "Graphics/GraphicsContext.h"
 
 namespace Krys
@@ -28,7 +28,7 @@ namespace Krys
     void Init(Ref<GraphicsContext> context, const ActiveTextureUnits &textureUnits)
     {
       Context = context;
-      LightBuffer = Context->CreateUniformBuffer(UNIFORM_BUFFER_BINDING_LIGHT, LightBufferLayout);
+      LightBuffer = Context->CreateUniformBuffer(UNIFORM_BUFFER_BINDING_LIGHT, UNIFORM_BUFFER_LAYOUT_LIGHT);
 
       int reservedSlotIndex = textureUnits.Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT_SHADOW_MAP_2D);
       LightBuffer->SetData("u_Texture2DShadowMapSlotIndex", reservedSlotIndex);

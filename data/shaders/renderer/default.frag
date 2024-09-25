@@ -18,7 +18,6 @@ flat in int v_NormalSlot;
 flat in int v_DisplacementSlot;
 flat in float v_Shininess;
 
-uniform int u_OmniDirectionalShadowMapIndex;
 uniform float u_FarPlane;
 uniform float u_ParallaxHeightScale = 0.1;
 
@@ -213,7 +212,7 @@ float CalcOmniDirectionalShadow(vec3 lightPosition)
   float diskRadius = 0.05;
   for (int i = 0; i < samples; i++)
   {
-    float closestDepth = GetTextureSample(u_OmniDirectionalShadowMapIndex, vec4(0.0), 
+    float closestDepth = GetTextureSample(u_CubemapShadowMapSlotIndex, vec4(0.0), 
       fragToLight + sampleOffsetDirections[i] * diskRadius).r;
     closestDepth *= u_FarPlane;   // undo mapping [0;1]
     if(currentDepth - bias > closestDepth)

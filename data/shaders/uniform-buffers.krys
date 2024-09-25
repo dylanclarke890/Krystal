@@ -66,4 +66,6 @@ layout (std140, binding = 1) uniform Lights
   int u_SpotLightCount;
   bool u_UseBlinnLightingModel;
   bool u_LightingEnabled;
+  int u_Texture2DShadowMapSlotIndex;
+  int u_CubemapShadowMapSlotIndex;
 };

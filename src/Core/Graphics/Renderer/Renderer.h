@@ -4,14 +4,14 @@
 
 #include "Core.h"
 #include "Window.h"
-#include "Graphics/Constants.h"
+#include "Graphics/Graphics.h"
 #include "Graphics/GraphicsContext.h"
 #include "Graphics/Colors.h"
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Camera/Orthographic.h"
 #include "Graphics/Transform.h"
 #include "Graphics/Mesh.h"
-#include "Graphics/Lighting/LightManager.h"
+#include "Graphics/LightManager.h"
 
 namespace Krys
 {
@@ -37,17 +37,29 @@ namespace Krys
     v3.Tangent = tangent;
   }
 
+  struct RendererFramebuffers
+  {
+    Ref<Framebuffer> MultiSample, SingleSample,
+        DirectionalShadowMap, OmniDirectionalShadowMap,
+        ExtractBrightness, PostProcessing;
+
+    Ref<PingPongFramebuffer> GaussianBlur;
+  };
+
+  struct RendererShaders
+  {
+    Ref<Shader> Default, DirectionalShadowMap, OmniDirectionalShadowMap,
+        LightSource, Skybox, PostProcessing, ExtractBrightness, GaussianBlur;
+  };
+
   class Renderer
   {
   private:
     static Ref<GraphicsContext> Context;
     static Ref<Window> AppWindow;
-    static Ref<Framebuffer> MultiSampleFramebuffer, SingleSampleFramebuffer,
-        DirectionalShadowMapFramebuffer, OmniDirectionalShadowMapFramebuffer,
-        ExtractBrightnessFramebuffer, PostProcessingFramebuffer;
-    static Ref<Shader> DefaultShader, DirectionalShadowMapShader, OmniDirectionalShadowMapShader,
-        LightSourceShader, SkyboxShader, PostProcessingShader, ActiveShader, ExtractBrightnessShader, GaussianBlurShader;
-    static Ref<PingPongFramebuffer> GaussianBlurFramebuffer;
+    static RendererFramebuffers Framebuffers;
+    static RendererShaders Shaders;
+    static Ref<Shader> ActiveShader;
     static Ref<VertexArray> DefaultVertexArray, ScreenQuadVertexArray, SkyboxVertexArray;
     static Ref<VertexBuffer> DefaultVertexBuffer, ScreenQuadVertexBuffer, SkyboxVertexBuffer;
     static Ref<IndexBuffer> DefaultIndexBuffer;
@@ -62,8 +74,6 @@ namespace Krys
 
     static Ref<Camera> ActiveCamera;
     static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled;
-
-    static Ref<Transform> LightSourceTransform;
 
     static DeferredRendererData DeferredRenderer;
     static RenderMode CurrentRenderMode;
