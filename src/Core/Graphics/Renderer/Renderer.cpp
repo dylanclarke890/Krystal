@@ -232,27 +232,27 @@ namespace Krys
     Lights.Init(Context, TextureUnits);
 
     // TODO: this probably needs moving to the lights manager.
-    Mat4 directionalLightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
-    Mat4 directionalLightView = glm::lookAt(Vec3(-2.0f, 4.0f, -1.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
-    Mat4 directionalLightSpaceMatrix = directionalLightProjection * directionalLightView;
-    Shaders.DirectionalShadowMap->TrySetUniform("u_DirectionalLightSpaceMatrix", directionalLightSpaceMatrix);
-    Shaders.Default->TrySetUniform("u_DirectionalLightSpaceMatrix", directionalLightSpaceMatrix);
+    Mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+    Mat4 directionalLightView = glm::lookAt(Vec3(-2.0f, 4.0f, -1.0f), Vec3(0.0f), Vec3(0.0f, 1.0f, 0.0f));
+    Mat4 directionalLightSpaceMatrix = projection * directionalLightView;
+    Shaders.DirectionalShadowMap->TrySetUniform("u_LightSpaceMatrix", directionalLightSpaceMatrix);
+    Shaders.Default->TrySetUniform("u_LightSpaceMatrix", directionalLightSpaceMatrix);
 
-    float omniDirectionalShadowMapAspectRatio = static_cast<float>(SHADOW_MAP_RESOLUTION) / static_cast<float>(SHADOW_MAP_RESOLUTION);
-    float omniDirectionalShadowMapFarPlane = 25.0f;
-    Mat4 omniDirectionalShadowMapProjection = glm::perspective(glm::radians(90.0f), omniDirectionalShadowMapAspectRatio, 1.0f, omniDirectionalShadowMapFarPlane);
+    float aspectRatio = static_cast<float>(SHADOW_MAP_RESOLUTION) / static_cast<float>(SHADOW_MAP_RESOLUTION);
+    float farPlane = 25.0f;
+    projection = glm::perspective(glm::radians(90.0f), aspectRatio, 1.0f, farPlane);
 
-    Vec3 lightPos = Vec3(0.0f, 0.0f, 0.0f);
-    Mat4 omniDirectionalLightSpaceMatrices[6] = {
-        omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0)),
-        omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(-1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0)),
-        omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, 1.0, 0.0), Vec3(0.0, 0.0, 1.0)),
-        omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
-        omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, 0.0, 1.0), Vec3(0.0, -1.0, 0.0)),
-        omniDirectionalShadowMapProjection * glm::lookAt(lightPos, lightPos + Vec3(0.0, 0.0, -1.0), Vec3(0.0, -1.0, 0.0))};
+    Vec3 lightPosition = Vec3(0.0f, 0.0f, 0.0f);
+    Mat4 lightSpaceMatrices[6] = {
+        projection * glm::lookAt(lightPosition, lightPosition + Vec3(1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0)),
+        projection * glm::lookAt(lightPosition, lightPosition + Vec3(-1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0)),
+        projection * glm::lookAt(lightPosition, lightPosition + Vec3(0.0, 1.0, 0.0), Vec3(0.0, 0.0, 1.0)),
+        projection * glm::lookAt(lightPosition, lightPosition + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
+        projection * glm::lookAt(lightPosition, lightPosition + Vec3(0.0, 0.0, 1.0), Vec3(0.0, -1.0, 0.0)),
+        projection * glm::lookAt(lightPosition, lightPosition + Vec3(0.0, 0.0, -1.0), Vec3(0.0, -1.0, 0.0))};
 
     for (uint i = 0; i < 6; i++)
-      Shaders.OmniDirectionalShadowMap->SetUniform("u_ShadowMatrices[" + std::to_string(i) + "]", omniDirectionalLightSpaceMatrices[i]);
+      Shaders.OmniDirectionalShadowMap->SetUniform("u_LightSpaceMatrices[" + std::to_string(i) + "]", lightSpaceMatrices[i]);
   }
 
 #pragma endregion Init Helpers
@@ -730,7 +730,7 @@ namespace Krys
       Shaders.LightSource->Bind();
       Reset();
 
-      static Ref<Transform> LightSourceTransform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f));
+      static Ref<Transform> LightSourceTransform = CreateRef<Transform>(Vec3(0.0f), Vec3(0.1f));
 
       for (auto pointLight : Renderer::Lights.GetPointLights())
       {
