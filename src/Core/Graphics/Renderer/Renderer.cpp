@@ -253,10 +253,6 @@ namespace Krys
 
     for (uint i = 0; i < 6; i++)
       Shaders.OmniDirectionalShadowMap->SetUniform("u_ShadowMatrices[" + std::to_string(i) + "]", omniDirectionalLightSpaceMatrices[i]);
-    Shaders.OmniDirectionalShadowMap->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
-
-    // TODO: add u_FarPlane as a light property
-    Shaders.Default->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
   }
 
 #pragma endregion Init Helpers

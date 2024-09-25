@@ -18,13 +18,12 @@ flat in int v_NormalSlot;
 flat in int v_DisplacementSlot;
 flat in float v_Shininess;
 
-uniform float u_FarPlane;
 uniform float u_ParallaxHeightScale = 0.1;
 
 out vec4 o_Color;
 
 float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection);
-float CalcOmniDirectionalShadow(vec3 lightPosition);
+float CalcOmniDirectionalShadow(vec3 lightPosition, float farPlane);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
@@ -104,7 +103,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 spec
   vec3 ambient = vec3(light.Ambient) * diffuseSample * attenuation;
   vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample * attenuation;
   vec3 specular = CalcSpecularFactor(vec3(light.Specular), lightDirection, normal, specularSample) * attenuation;
-  float shadow = CalcOmniDirectionalShadow(lightPosition);
+  float shadow = CalcOmniDirectionalShadow(lightPosition, u_PointLights[0].FarPlane);
 
   return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
 }
@@ -191,7 +190,7 @@ float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 l
   return shadow;
 }
 
-float CalcOmniDirectionalShadow(vec3 lightPosition)
+float CalcOmniDirectionalShadow(vec3 lightPosition, float farPlane)
 {
   vec3 sampleOffsetDirections[20] = vec3[20]
   (
@@ -214,7 +213,7 @@ float CalcOmniDirectionalShadow(vec3 lightPosition)
   {
     float closestDepth = GetTextureSample(u_CubemapShadowMapSlotIndex, vec4(0.0), 
       fragToLight + sampleOffsetDirections[i] * diskRadius).r;
-    closestDepth *= u_FarPlane;   // undo mapping [0;1]
+    closestDepth *= farPlane;   // undo mapping [0;1]
     if(currentDepth - bias > closestDepth)
       shadow += 1.0;
   }

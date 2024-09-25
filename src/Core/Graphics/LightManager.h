@@ -65,12 +65,13 @@ namespace Krys
       LightBuffer->SetData(elementName + "Diffuse", light.Diffuse);
       LightBuffer->SetData(elementName + "Specular", light.Specular);
 
-      LightBuffer->SetData(elementName + "Enabled", light.Enabled);
-      LightBuffer->SetData(elementName + "Intensity", light.Intensity);
-
       LightBuffer->SetData(elementName + "Constant", light.Constant);
       LightBuffer->SetData(elementName + "Linear", light.Linear);
       LightBuffer->SetData(elementName + "Quadratic", light.Quadratic);
+
+      LightBuffer->SetData(elementName + "Enabled", light.Enabled);
+      LightBuffer->SetData(elementName + "Intensity", light.Intensity);
+      LightBuffer->SetData(elementName + "FarPlane", light.FarPlane);
 
       LightBuffer->SetData(elementName + "Position", light.Position);
 
