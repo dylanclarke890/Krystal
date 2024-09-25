@@ -255,8 +255,6 @@ namespace Krys
       Shaders.OmniDirectionalShadowMap->SetUniform("u_ShadowMatrices[" + std::to_string(i) + "]", omniDirectionalLightSpaceMatrices[i]);
     Shaders.OmniDirectionalShadowMap->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
 
-    // TODO: get the light position from the lights uniform buffer
-    Shaders.OmniDirectionalShadowMap->TrySetUniform("u_LightPosition", lightPos);
     // TODO: add u_FarPlane as a light property
     Shaders.Default->TrySetUniform("u_FarPlane", omniDirectionalShadowMapFarPlane);
   }
