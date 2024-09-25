@@ -14,6 +14,8 @@
 namespace Krys
 {
 #ifdef KRYS_ENABLE_LOGGING
+  constexpr uint GL_ERROR_CODE_SHADER_RECOMPILED = 131218;
+
   void OpenGLMessageCallback(uint source, uint type, uint id, uint severity, int length,
                              const char *message, const void *userParam)
   {
@@ -25,7 +27,7 @@ namespace Krys
       break;
     case GL_DEBUG_SEVERITY_MEDIUM:
       KRYS_ERROR(message);
-      KRYS_ASSERT(false, "OpenGL Error (MED).", 0);
+      KRYS_ASSERT(id == GL_ERROR_CODE_SHADER_RECOMPILED, "OpenGL Error (MED).", 0);
       break;
     case GL_DEBUG_SEVERITY_LOW:
       KRYS_WARN(message);
