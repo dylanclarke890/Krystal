@@ -37,10 +37,15 @@ namespace Krys
       LightBuffer->SetData("u_CubemapShadowMapSlotIndex", reservedSlotIndex);
     }
 
-    void AddDirectionalLight(const DirectionalLight &light)
+    void AddDirectionalLight(DirectionalLight &light)
     {
       auto index = DirectionalLights.size();
       DirectionalLights.push_back(light);
+
+      // TODO: allow bounds / near/far plane to be configurable
+      static Mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+      Mat4 view = glm::lookAt(light.Direction, Vec3(0.0f), Vec3(0.0f, 1.0f, 0.0f));
+      light.LightSpaceMatrix = projection * view;
 
       string elementName = "u_DirectionalLights[" + std::to_string(index) + "].";
       LightBuffer->SetData(elementName + "Ambient", light.Ambient);
@@ -51,6 +56,7 @@ namespace Krys
       LightBuffer->SetData(elementName + "Intensity", light.Intensity);
 
       LightBuffer->SetData(elementName + "Direction", light.Direction);
+      LightBuffer->SetData(elementName + "LightSpaceMatrix", projection * view);
 
       LightBuffer->SetData("u_DirectionalLightCount", DirectionalLights.size());
     }

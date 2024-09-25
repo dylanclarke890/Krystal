@@ -20,7 +20,6 @@ namespace Krys
   // --------- TEXTURE SLOTS ---------
 
   // ----------- LIGHTING ------------
-  // TODO: we should be able to handle this dynamically.
   constexpr uint32 LIGHTING_MAX_DIRECTIONAL_LIGHTS = 5;
   constexpr uint32 LIGHTING_MAX_POINT_LIGHTS = 32;
   constexpr uint32 LIGHTING_MAX_SPOT_LIGHTS = 32;
@@ -40,6 +39,7 @@ namespace Krys
     float Intensity;
 
     Vec3 Direction;
+    Mat4 LightSpaceMatrix;
   };
 
   static UniformStructLayout DirectionalLightStructLayout = {
@@ -50,7 +50,8 @@ namespace Krys
        {UniformDataType::Scalar, "Enabled"},
        {UniformDataType::Scalar, "Intensity"},
 
-       {UniformDataType::Vec3, "Direction"}}};
+       {UniformDataType::Vec3, "Direction"},
+       {UniformDataType::Mat4, "LightSpaceMatrix"}}};
 
   // ------- DIRECTIONAL LIGHT -------
   // --------- POINT LIGHT -----------

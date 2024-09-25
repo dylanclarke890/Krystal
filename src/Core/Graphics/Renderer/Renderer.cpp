@@ -231,16 +231,9 @@ namespace Krys
   {
     Lights.Init(Context, TextureUnits);
 
-    // TODO: this probably needs moving to the lights manager.
-    Mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
-    Mat4 directionalLightView = glm::lookAt(Vec3(-2.0f, 4.0f, -1.0f), Vec3(0.0f), Vec3(0.0f, 1.0f, 0.0f));
-    Mat4 directionalLightSpaceMatrix = projection * directionalLightView;
-    Shaders.DirectionalShadowMap->TrySetUniform("u_LightSpaceMatrix", directionalLightSpaceMatrix);
-    Shaders.Default->TrySetUniform("u_LightSpaceMatrix", directionalLightSpaceMatrix);
-
     float aspectRatio = static_cast<float>(SHADOW_MAP_RESOLUTION) / static_cast<float>(SHADOW_MAP_RESOLUTION);
     float farPlane = 25.0f;
-    projection = glm::perspective(glm::radians(90.0f), aspectRatio, 1.0f, farPlane);
+    Mat4 projection = glm::perspective(glm::radians(90.0f), aspectRatio, 1.0f, farPlane);
 
     Vec3 lightPosition = Vec3(0.0f, 0.0f, 0.0f);
     Mat4 lightSpaceMatrices[6] = {

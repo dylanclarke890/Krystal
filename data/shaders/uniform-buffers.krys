@@ -8,6 +8,7 @@ struct DirectionalLight
   float Intensity;
 
   vec4 Direction;
+  mat4 LightSpaceMatrix;
 };
 
 struct PointLight

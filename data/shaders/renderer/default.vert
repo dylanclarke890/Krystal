@@ -16,8 +16,6 @@ layout(location = 8) in int i_DisplacementSlot;
 layout(location = 9) in float i_Shininess;
 layout(location = 10) in vec3 i_Tangent;
 
-uniform mat4 u_LightSpaceMatrix;
-
 out vec3 v_FragmentPosition;
 out vec4 v_DirectionalLightSpaceFragmentPosition;
 out vec4 v_Color;
@@ -37,7 +35,7 @@ void main()
 {
   gl_Position = u_ViewProjection * i_Position;
   v_FragmentPosition = vec3(i_Position);
-  v_DirectionalLightSpaceFragmentPosition = u_LightSpaceMatrix * vec4(v_FragmentPosition, 1.0);
+  v_DirectionalLightSpaceFragmentPosition = u_DirectionalLights[0].LightSpaceMatrix * vec4(v_FragmentPosition, 1.0);
   v_Color = i_Color;
   v_TextureCoord = i_TextureCoord;
   v_TextureSlot = i_TextureSlot;
