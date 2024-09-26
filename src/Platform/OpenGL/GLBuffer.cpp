@@ -222,14 +222,47 @@ namespace Krys
 
   GLUniformBuffer::AttributeInfo GLUniformBuffer::GetAttributeInfo(const string &name, UniformStructLayout layout, AttributeInfo info) const noexcept
   {
-    for (const auto &element : layout)
-      if (element.Name == name)
+    size_t bracketOpenPos = name.find("[");
+    size_t dotPos = name.find(".");
+
+    // Handle array case
+    if (bracketOpenPos != string::npos && (dotPos == string::npos || bracketOpenPos < dotPos))
+    {
+      string arrayName = name.substr(0, bracketOpenPos);
+      size_t bracketClosePos = name.find("]");
+      uint32 arrayIndex = std::stoi(name.substr(bracketOpenPos + 1, bracketClosePos - bracketOpenPos - 1));
+      string remaining = name.substr(bracketClosePos + 1);
+
+      for (const auto &element : layout)
       {
-        info.Offset += element.AlignedOffset;
-        info.Size = element.LayoutSize;
-        info.Found = true;
-        return info;
+        if (element.Name == arrayName)
+        {
+          auto elementSize = element.LayoutSize;
+          auto offset = info.Offset + element.AlignedOffset + elementSize * arrayIndex;
+          info.Offset = offset;
+          info.Size = elementSize;
+          info.Found = true;
+
+          return info;
+        }
       }
+
+      KRYS_ASSERT(false, "Unexpected attribute: %s", name.c_str());
+    }
+    else
+    {
+      for (const auto &element : layout)
+      {
+        if (element.Name == name)
+        {
+          info.Offset += element.AlignedOffset;
+          info.Size = element.LayoutSize;
+          info.Found = true;
+          return info;
+        }
+      }
+    }
+
     return info;
   }
 
