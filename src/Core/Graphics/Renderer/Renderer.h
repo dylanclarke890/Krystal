@@ -11,7 +11,7 @@
 #include "Graphics/Camera/Orthographic.h"
 #include "Graphics/Transform.h"
 #include "Graphics/Mesh.h"
-#include "Graphics/LightManager.h"
+#include "Graphics/Renderer/LightManager.h"
 
 namespace Krys
 {

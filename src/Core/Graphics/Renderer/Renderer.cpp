@@ -230,22 +230,6 @@ namespace Krys
   void Renderer::InitLighting()
   {
     Lights.Init(Context, TextureUnits);
-
-    float aspectRatio = static_cast<float>(SHADOW_MAP_RESOLUTION) / static_cast<float>(SHADOW_MAP_RESOLUTION);
-    float farPlane = 25.0f;
-    Mat4 projection = glm::perspective(glm::radians(90.0f), aspectRatio, 1.0f, farPlane);
-
-    Vec3 lightPosition = Vec3(0.0f, 0.0f, 0.0f);
-    Mat4 lightSpaceMatrices[6] = {
-        projection * glm::lookAt(lightPosition, lightPosition + Vec3(1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0)),
-        projection * glm::lookAt(lightPosition, lightPosition + Vec3(-1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0)),
-        projection * glm::lookAt(lightPosition, lightPosition + Vec3(0.0, 1.0, 0.0), Vec3(0.0, 0.0, 1.0)),
-        projection * glm::lookAt(lightPosition, lightPosition + Vec3(0.0, -1.0, 0.0), Vec3(0.0, 0.0, -1.0)),
-        projection * glm::lookAt(lightPosition, lightPosition + Vec3(0.0, 0.0, 1.0), Vec3(0.0, -1.0, 0.0)),
-        projection * glm::lookAt(lightPosition, lightPosition + Vec3(0.0, 0.0, -1.0), Vec3(0.0, -1.0, 0.0))};
-
-    for (uint i = 0; i < 6; i++)
-      Shaders.OmniDirectionalShadowMap->SetUniform("u_LightSpaceMatrices[" + std::to_string(i) + "]", lightSpaceMatrices[i]);
   }
 
 #pragma endregion Init Helpers

@@ -1,3 +1,9 @@
+layout (std140, binding = 0) uniform Shared
+{
+  mat4 u_ViewProjection;
+  vec4 u_CameraPosition;
+};
+
 struct DirectionalLight
 {
   vec4 Ambient;
@@ -8,7 +14,6 @@ struct DirectionalLight
   float Intensity;
 
   vec4 Direction;
-  mat4 LightSpaceMatrix;
 };
 
 struct PointLight
@@ -48,26 +53,61 @@ struct SpotLight
   float OuterCutoff;
 };
 
-layout (std140, binding = 0) uniform Shared
+struct DirectionalShadowCaster
 {
-  mat4 u_ViewProjection;
-  vec4 u_CameraPosition;
+  float Bias;
+  int LightIndex;
+  vec2 NearFarPlane;
+  mat4 LightSpaceMatrix;
+};
+
+struct PointLightShadowCaster
+{
+  float Bias;
+  int LightIndex;
+  vec2 NearFarPlane;
+  mat4 LightSpaceMatrix[6];
+};
+
+struct SpotLightShadowCaster
+{
+  float Bias;
+  int LightIndex;
+  vec2 NearFarPlane;
+  mat4 LightSpaceMatrix;
 };
 
 #define MAX_DIRECTIONAL_LIGHTS 5
+#define MAX_DIRECTIONAL_SHADOW_CASTERS 2
+
 #define MAX_POINT_LIGHTS 32
+#define MAX_POINT_LIGHT_SHADOW_CASTERS 2
+
 #define MAX_SPOT_LIGHTS 32
+#define MAX_SPOT_LIGHT_SHADOW_CASTERS 5
 
 layout (std140, binding = 1) uniform Lights
 {
   DirectionalLight u_DirectionalLights[MAX_DIRECTIONAL_LIGHTS];
-  PointLight u_PointLights[MAX_POINT_LIGHTS];
-  SpotLight u_SpotLights[MAX_SPOT_LIGHTS];
+  DirectionalShadowCaster u_DirectionalShadowCasters[MAX_DIRECTIONAL_SHADOW_CASTERS];
   int u_DirectionalLightCount;
+  int u_DirectionalShadowCasterCount;
+
+  PointLight u_PointLights[MAX_POINT_LIGHTS];
+  PointLightShadowCaster u_PointLightShadowCasters[MAX_POINT_LIGHT_SHADOW_CASTERS];
   int u_PointLightCount;
+  int u_PointLightShadowCasterCount;
+
+  SpotLight u_SpotLights[MAX_SPOT_LIGHTS];
+  SpotLightShadowCaster u_SpotLightShadowCasters[MAX_SPOT_LIGHT_SHADOW_CASTERS];
   int u_SpotLightCount;
-  bool u_UseBlinnLightingModel;
-  bool u_LightingEnabled;
+  int u_SpotLightShadowCasterCount;
+
   int u_Texture2DShadowMapSlotIndex;
   int u_CubemapShadowMapSlotIndex;
+  
+  bool u_LightingEnabled;
+  bool u_ShadowsEnabled;
+
+  bool u_UseBlinnLightingModel;
 };
