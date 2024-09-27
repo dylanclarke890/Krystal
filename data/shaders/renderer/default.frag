@@ -159,7 +159,6 @@ vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, ve
   return lightSpecular * specularFactor * specularSample;
 }
 
-// TODO: this assumes that the first texture slot is used for the directional shadow map which probably isn't true anymore.
 float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection)
 {
   // perform perspective divide and transform to [0,1] range

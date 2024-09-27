@@ -72,12 +72,13 @@ namespace Krys
     Indices = CreateUnique<std::array<uint32, RENDERER_MAX_INDICES>>();
 
     InitTextureUnits();
+    Lights.Init(Context, TextureUnits);
+
     InitShaders();
     InitDeferredRenderer();
     InitFramebuffers();
     InitBuffers();
     InitVertexArrays();
-    InitLighting();
     Reset();
 
     Context->SetDepthTestingEnabled(true);
@@ -172,13 +173,13 @@ namespace Krys
     Framebuffers.PostProcessing->AddColorAttachment(TextureInternalFormat::RGBA16F);
     KRYS_ASSERT(Framebuffers.PostProcessing->IsComplete(), "PostProcessingFramebuffer Incomplete", 0);
 
-    Framebuffers.DirectionalShadowMap = Context->CreateFramebuffer(SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION, 1);
+    Framebuffers.DirectionalShadowMap = Context->CreateFramebuffer(LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, 1);
     Framebuffers.DirectionalShadowMap->AddDepthAttachment();
     Framebuffers.DirectionalShadowMap->DisableReadBuffer();
     Framebuffers.DirectionalShadowMap->DisableWriteBuffers();
     KRYS_ASSERT(Framebuffers.DirectionalShadowMap->IsComplete(), "DirectionalShadowMapFramebuffer Incomplete", 0);
 
-    Framebuffers.OmniDirectionalShadowMap = Context->CreateFramebuffer(SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION, 1);
+    Framebuffers.OmniDirectionalShadowMap = Context->CreateFramebuffer(LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, 1);
     Framebuffers.OmniDirectionalShadowMap->AddDepthCubemapAttachment();
     Framebuffers.OmniDirectionalShadowMap->DisableReadBuffer();
     Framebuffers.OmniDirectionalShadowMap->DisableWriteBuffers();
@@ -225,11 +226,6 @@ namespace Krys
 
     ScreenQuadVertexArray = Context->CreateVertexArray();
     ScreenQuadVertexArray->AddVertexBuffer(ScreenQuadVertexBuffer);
-  }
-
-  void Renderer::InitLighting()
-  {
-    Lights.Init(Context, TextureUnits);
   }
 
 #pragma endregion Init Helpers
@@ -617,7 +613,6 @@ namespace Krys
     IndexCount = 0;
 
     TextureUnits.Texture2D.CurrentSlotIndex = TextureUnits.Texture2D.ReservedSlots;
-    TextureUnits.Texture2D.Slots[0] = Framebuffers.DirectionalShadowMap->GetDepthAttachment();
 
     TextureUnits.TextureCubemap.CurrentSlotIndex = TextureUnits.TextureCubemap.ReservedSlots;
     TextureUnits.TextureCubemap.Slots[0] = Framebuffers.OmniDirectionalShadowMap->GetDepthAttachment();
@@ -677,6 +672,7 @@ namespace Krys
         {
           Shaders.DirectionalShadowMap->Bind();
           Context->DrawIndices(IndexCount, DrawMode::Triangles);
+          TextureUnits.Texture2D.Slots[0] = Framebuffers.DirectionalShadowMap->GetDepthAttachment();
         }
         Context->SetFaceCulling(CullMode::Back);
       }

@@ -206,9 +206,9 @@ namespace Krys
             case UniformDataType::Vec4:
                 return 4 * N;
             case UniformDataType::Mat3:
-              return 4 * N * 3; // Each column is a vec4
+              return (4 * N * 3) * count; // Each column is a vec4
             case UniformDataType::Mat4:
-              return 4 * N * 4; // Each column is a vec4
+              return (4 * N * 4) * count; // Each column is a vec4
             case UniformDataType::Array:
               return 4 * N * count; // Each element in an array of scalars/vectors has the alignment of a vec4
             default:

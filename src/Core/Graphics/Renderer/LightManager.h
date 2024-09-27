@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <unordered_map>
 
 #include "Core.h"
 #include "Graphics/Graphics.h"
@@ -19,9 +20,12 @@ namespace Krys
     typedef std::array<DirectionalLight, LIGHTING_MAX_DIRECTIONAL_LIGHTS> DirectionalLightArray;
     typedef std::array<DirectionalShadowCaster, LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS> DirectionalShadowCasterArray;
 
+    typedef std::unordered_map<int, Ref<Framebuffer>> ShadowMap2DFramebufferPool;
+    typedef std::unordered_map<int, Ref<Framebuffer>> ShadowMapCubemapFramebufferPool;
+
   private:
     Ref<GraphicsContext> Context;
-    Ref<UniformBuffer> LightsBuffer, ShadowsBuffer;
+    Ref<UniformBuffer> LightsBuffer;
 
     SpotLightArray SpotLights;
     SpotLightShadowCasterArray SpotLightShadowCasters;
@@ -35,15 +39,18 @@ namespace Krys
     DirectionalShadowCasterArray DirectionalShadowCasters;
     uint DirectionalLightIndex, DirectionalShadowCasterIndex;
 
+    ShadowMap2DFramebufferPool ShadowMaps;
+    ShadowMapCubemapFramebufferPool ShadowCubeMaps;
+
     LightingModel ActiveLightingModel;
 
   public:
     LightManager() noexcept
-        : Context(nullptr), LightsBuffer(nullptr), ShadowsBuffer(nullptr),
+        : Context(nullptr), LightsBuffer(nullptr),
           SpotLights({}), SpotLightShadowCasters({}), SpotLightIndex(0), SpotLightShadowCasterIndex(0),
           PointLights({}), PointLightShadowCasters({}), PointLightIndex(0), PointLightShadowCasterIndex(0),
           DirectionalLights({}), DirectionalShadowCasters({}), DirectionalLightIndex(0), DirectionalShadowCasterIndex(0),
-          ActiveLightingModel(LightingModel::Phong) {}
+          ShadowMaps({}), ShadowCubeMaps({}), ActiveLightingModel(LightingModel::Phong) {}
 
     void Init(Ref<GraphicsContext> context, const ActiveTextureUnits &textureUnits) noexcept
     {
@@ -75,7 +82,6 @@ namespace Krys
       LightsBuffer->SetData(prefix + "Enabled", light.Enabled);
       LightsBuffer->SetData(prefix + "Intensity", light.Intensity);
       LightsBuffer->SetData(prefix + "Direction", light.Direction);
-      LightsBuffer->SetData("u_DirectionalLightCount", static_cast<int>(DirectionalLightIndex));
 
       if (settings.CastShadows)
       {
@@ -92,11 +98,13 @@ namespace Krys
         prefix = "u_DirectionalShadowCasters[" + std::to_string(index) + "].";
         LightsBuffer->SetData(prefix + "Bias", caster.Bias);
         LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
+        LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
         LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
         LightsBuffer->SetData(prefix + "LightSpaceMatrix", caster.LightSpaceMatrix);
 
         LightsBuffer->SetData("u_DirectionalShadowCasterCount", static_cast<int>(DirectionalShadowCasterIndex));
       }
+      LightsBuffer->SetData("u_DirectionalLightCount", static_cast<int>(DirectionalLightIndex));
     }
 
     void AddLight(const PointLight &light, const LightSettings &settings) noexcept
@@ -115,8 +123,6 @@ namespace Krys
       LightsBuffer->SetData(prefix + "Intensity", light.Intensity);
       LightsBuffer->SetData(prefix + "FarPlane", light.FarPlane);
       LightsBuffer->SetData(prefix + "Position", light.Position);
-
-      LightsBuffer->SetData("u_PointLightCount", static_cast<int>(PointLightIndex));
 
       if (settings.CastShadows)
       {
@@ -139,12 +145,14 @@ namespace Krys
         prefix = "u_PointLightShadowCasters[" + std::to_string(index) + "].";
         LightsBuffer->SetData(prefix + "Bias", caster.Bias);
         LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
+        LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
         LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
         for (uint i = 0; i < 6; i++)
           LightsBuffer->SetData(prefix + "LightSpaceMatrices[" + std::to_string(i) + "]", caster.LightSpaceMatrices[i]);
 
         LightsBuffer->SetData("u_PointLightShadowCasterCount", static_cast<int>(PointLightShadowCasterIndex));
       }
+      LightsBuffer->SetData("u_PointLightCount", static_cast<int>(PointLightIndex));
     }
 
     void AddLight(const SpotLight &light, const LightSettings &settings) noexcept
@@ -163,7 +171,6 @@ namespace Krys
       LightsBuffer->SetData(prefix + "Quadratic", light.Quadratic);
       LightsBuffer->SetData(prefix + "Direction", light.Direction);
       LightsBuffer->SetData(prefix + "Position", light.Position);
-      LightsBuffer->SetData("u_SpotLightCount", static_cast<int>(SpotLightIndex));
 
       if (settings.CastShadows)
       {
@@ -182,11 +189,13 @@ namespace Krys
         prefix = "u_DirectionalShadowCasters[" + std::to_string(index) + "].";
         LightsBuffer->SetData(prefix + "Bias", caster.Bias);
         LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
+        LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
         LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
         LightsBuffer->SetData(prefix + "LightSpaceMatrix", caster.LightSpaceMatrix);
 
         LightsBuffer->SetData("u_SpotLightShadowCasterCount", static_cast<int>(SpotLightShadowCasterIndex));
       }
+      LightsBuffer->SetData("u_SpotLightCount", static_cast<int>(SpotLightIndex));
     }
 
     void SetLightingModel(LightingModel model) noexcept

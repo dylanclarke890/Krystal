@@ -93,12 +93,12 @@ namespace Krys
 
     NO_DISCARD bool HasSlotsRemaining() const noexcept
     {
-      return MaxSlots - (CurrentSlotIndex + 1) > 0;
+      return CurrentSlotIndex < MaxSlots;
     }
 
     NO_DISCARD int GetReservedSlotIndex(int i) const noexcept
     {
-      KRYS_ASSERT(i + 1 <= ReservedSlots, "Trying to access a reserved slot out of bounds", 0);
+      KRYS_ASSERT(i < ReservedSlots, "Trying to access a reserved slot out of bounds", 0);
       return BindingOffset + i;
     }
   };

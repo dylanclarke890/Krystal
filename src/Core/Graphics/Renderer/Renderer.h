@@ -106,13 +106,12 @@ namespace Krys
     static void EndScene();
 
   private:
-    static void InitFramebuffers();
+    static void InitTextureUnits();
     static void InitShaders();
+    static void InitDeferredRenderer();
+    static void InitFramebuffers();
     static void InitBuffers();
     static void InitVertexArrays();
-    static void InitLighting();
-    static void InitDeferredRenderer();
-    static void InitTextureUnits();
 
     static void Reset();
     static void Flush();

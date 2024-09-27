@@ -20,14 +20,14 @@ namespace Krys
   // --------- TEXTURE SLOTS ---------
 
   // ----------- LIGHTING ------------
-  constexpr uint32 LIGHTING_MAX_DIRECTIONAL_LIGHTS = 2;
-  constexpr uint32 LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS = 2;
+  constexpr uint32 LIGHTING_MAX_DIRECTIONAL_LIGHTS = 1;
+  constexpr uint32 LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS = 1;
 
-  constexpr uint32 LIGHTING_MAX_POINT_LIGHTS = 32;
-  constexpr uint32 LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS = 2;
+  constexpr uint32 LIGHTING_MAX_POINT_LIGHTS = 1;
+  constexpr uint32 LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS = 1;
 
-  constexpr uint32 LIGHTING_MAX_SPOT_LIGHTS = 32;
-  constexpr uint32 LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS = 5;
+  constexpr uint32 LIGHTING_MAX_SPOT_LIGHTS = 1;
+  constexpr uint32 LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS = 1;
 
   constexpr float LIGHTING_DEFAULT_SHADOW_BIAS = 0.005f;
   constexpr uint LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION = 1024;
@@ -47,7 +47,7 @@ namespace Krys
   {
     float Bias = LIGHTING_DEFAULT_SHADOW_BIAS;
     int LightIndex;
-    Vec2 NearFarPlane = Vec2(1.0f, 7.5f);
+    Vec2 NearFarPlane = Vec2(1.0f, 25.0f);
     int ShadowMapResolution = LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION;
   };
 
@@ -67,7 +67,7 @@ namespace Krys
 
   struct DirectionalShadowCaster : ShadowCaster
   {
-    RectBounds Bounds = {0.0f, 0.0f, 0.0f, 0.0f};
+    RectBounds Bounds = {-10.0f, 10.0f, -10.0f, 10.0f};
     Mat4 LightSpaceMatrix;
   };
 
@@ -85,8 +85,8 @@ namespace Krys
   static UniformStructLayout DirectionalShadowCasterStructLayout = {{
       {UniformDataType::Scalar, "Bias"},
       {UniformDataType::Scalar, "LightIndex"},
-      {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
+      {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Mat4, "LightSpaceMatrix"},
   }};
 
@@ -128,8 +128,8 @@ namespace Krys
   static UniformStructLayout PointLightShadowCasterStructLayout = {
       {UniformDataType::Scalar, "Bias"},
       {UniformDataType::Scalar, "LightIndex"},
-      {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
+      {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Mat4, "LightSpaceMatrices", 6},
   };
 
@@ -175,8 +175,8 @@ namespace Krys
   static UniformStructLayout SpotLightShadowCasterStructLayout = {
       {UniformDataType::Scalar, "Bias"},
       {UniformDataType::Scalar, "LightIndex"},
-      {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
+      {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Mat4, "LightSpaceMatrix"},
   };
 

@@ -237,7 +237,10 @@ namespace Krys
       {
         if (element.Name == arrayName)
         {
-          auto elementSize = element.LayoutSize;
+          // HACK: This is a little bit hacky; When we calculate the total std140 size of the buffer
+          // we cheat and multiply the size of the mat4 and mat3 types by count so the total size is correct
+          // means  we have to divide again here to get the size of a single one.
+          auto elementSize = element.LayoutSize / element.Count;
           auto offset = info.Offset + element.AlignedOffset + elementSize * arrayIndex;
           info.Offset = offset;
           info.Size = elementSize;

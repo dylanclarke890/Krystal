@@ -57,6 +57,7 @@ struct DirectionalShadowCaster
 {
   float Bias;
   int LightIndex;
+  int ShadowMapResolution;
   vec2 NearFarPlane;
   mat4 LightSpaceMatrix;
 };
@@ -65,26 +66,28 @@ struct PointLightShadowCaster
 {
   float Bias;
   int LightIndex;
+  int ShadowMapResolution;
   vec2 NearFarPlane;
-  mat4 LightSpaceMatrix[6];
+  mat4 LightSpaceMatrices[6];
 };
 
 struct SpotLightShadowCaster
 {
   float Bias;
   int LightIndex;
+  int ShadowMapResolution;
   vec2 NearFarPlane;
   mat4 LightSpaceMatrix;
 };
 
-#define MAX_DIRECTIONAL_LIGHTS 5
-#define MAX_DIRECTIONAL_SHADOW_CASTERS 2
+#define MAX_DIRECTIONAL_LIGHTS 1
+#define MAX_DIRECTIONAL_SHADOW_CASTERS 1
 
-#define MAX_POINT_LIGHTS 32
-#define MAX_POINT_LIGHT_SHADOW_CASTERS 2
+#define MAX_POINT_LIGHTS 1
+#define MAX_POINT_LIGHT_SHADOW_CASTERS 1
 
-#define MAX_SPOT_LIGHTS 32
-#define MAX_SPOT_LIGHT_SHADOW_CASTERS 5
+#define MAX_SPOT_LIGHTS 1
+#define MAX_SPOT_LIGHT_SHADOW_CASTERS 1
 
 layout (std140, binding = 1) uniform Lights
 {
@@ -105,7 +108,7 @@ layout (std140, binding = 1) uniform Lights
 
   int u_Texture2DShadowMapSlotIndex;
   int u_CubemapShadowMapSlotIndex;
-  
+
   bool u_LightingEnabled;
   bool u_ShadowsEnabled;
 

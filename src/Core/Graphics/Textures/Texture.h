@@ -19,6 +19,7 @@ namespace Krys
     }
 
     virtual void Bind(uint32 slot = 0) const noexcept = 0;
+    virtual void Unbind() const noexcept = 0;
   };
 
   enum class TextureMagnifyMode : ushort

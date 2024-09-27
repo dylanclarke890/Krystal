@@ -43,8 +43,6 @@ namespace Krys
       return Samples > 1;
     }
 
-    virtual void Bind(uint32 slot = 0) const noexcept = 0;
-
     virtual void SetFilterModes(TextureMinifyMode min, TextureMagnifyMode mag) noexcept = 0;
     virtual void SetMagnifyMode(TextureMagnifyMode mode) noexcept = 0;
     virtual void SetMinifyMode(TextureMinifyMode mode) noexcept = 0;
