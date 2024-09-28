@@ -82,7 +82,6 @@ namespace Krys
       LightsBuffer->SetData(prefix + "Enabled", light.Enabled);
       LightsBuffer->SetData(prefix + "Intensity", light.Intensity);
       LightsBuffer->SetData(prefix + "Direction", light.Direction);
-      LightsBuffer->SetData(prefix + "Position", light.Position);
 
       if (settings.CastShadows)
       {
@@ -93,7 +92,7 @@ namespace Krys
         DirectionalShadowCasters[index] = caster;
 
         Mat4 projection = glm::ortho(caster.Bounds.Left, caster.Bounds.Right, caster.Bounds.Bottom, caster.Bounds.Top, caster.NearFarPlane.x, caster.NearFarPlane.y);
-        Mat4 view = glm::lookAt(light.Position, Vec3(0.0f), Vec3(0.0f, 1.0f, 0.0f)); // TODO: configurable targets???
+        Mat4 view = glm::lookAt(-light.Direction * 10.0f, Vec3(0.0f), Vec3(1.0f, 0.0f, 0.0f)); // TODO: configurable target/up vectors
 
         caster.LightSpaceMatrix = projection * view;
 

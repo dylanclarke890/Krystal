@@ -143,7 +143,7 @@ float CalcAttenuation(vec4 lightPosition, float linear, float quadratic, float c
 
 vec3 CalcSpecularFactor(vec3 lightSpecular, vec3 lightDirection, vec3 normal, vec3 specularSample)
 {
-  vec3 viewDirection = normalize(v_TangentCameraPosition - v_FragmentPosition);
+  vec3 viewDirection = normalize(v_TangentCameraPosition - v_TangentFragmentPosition);
 
   float specularFactor = 0.0;
   if (u_UseBlinnLightingModel)
@@ -166,7 +166,8 @@ float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 l
   vec3 projectionCoords = lightSpaceFragmentPosition.xyz / lightSpaceFragmentPosition.w;
   projectionCoords = projectionCoords * 0.5 + 0.5;
 
-  if (projectionCoords.z > 1.0) {
+  if (projectionCoords.z > 1.0)
+  {
     return 0.0;
   } 
 
