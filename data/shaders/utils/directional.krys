@@ -1,4 +1,4 @@
-float DirectionalShadow(
+float Shadows(
   vec4 lightFragmentPosition,
   vec3 tangentLightDirection,
   vec3 tangentNormal,
@@ -33,7 +33,7 @@ float DirectionalShadow(
   return shadow;
 }
 
-vec3 DirectionalLighting(
+vec3 Lighting(
   DirectionalLight light,
   vec4 lightFragmentPosition,
   vec3 tangentFragmentPosition,
@@ -70,7 +70,7 @@ vec3 DirectionalLighting(
     useBlinnLighting
   );
   
-  float shadow = DirectionalShadow(lightFragmentPosition, tangentLightDirection, tangentNormal, shadowMap);
+  float shadow = Shadows(lightFragmentPosition, tangentLightDirection, tangentNormal, shadowMap);
   
   return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
 }

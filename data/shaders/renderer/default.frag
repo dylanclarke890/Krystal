@@ -5,6 +5,7 @@
 #import "utils/attenuation.krys";
 #import "utils/specular.krys";
 #import "utils/directional.krys";
+#import "utils/point-light.krys";
 
 in vec3 v_FragmentPosition;
 in vec4 v_DirectionalLightSpaceFragmentPosition;
@@ -22,10 +23,9 @@ flat in int v_NormalSlot;
 flat in int v_DisplacementSlot;
 flat in float v_Shininess;
 
+
 out vec4 o_Color;
 
-float CalcOmniDirectionalShadow(vec3 lightPosition, float farPlane);
-vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 
@@ -55,7 +55,7 @@ void main()
   { 
     for (int i = 0; i < u_DirectionalLightCount; i++)
     {
-      lighting += DirectionalLighting(
+      lighting += Lighting(
         u_DirectionalLights[i],
         v_DirectionalLightSpaceFragmentPosition,
         v_TangentFragmentPosition,
@@ -68,10 +68,25 @@ void main()
         u_Textures[0], // TODO: pass the index for the sampler in
         u_UseBlinnLightingModel);
     }
+
     for (int i = 0; i < u_PointLightCount; i++)
     {
-      lighting += CalcPointLight(u_PointLights[i], normal, diffuseSample, specularSample);
+      lighting += Lighting(
+        u_PointLights[i],
+        v_FragmentPosition,
+        v_TangentFragmentPosition,
+        v_TangentCameraPosition,
+        v_TangentLightPosition,
+        normal,
+        diffuseSample,
+        specularSample,
+        v_Shininess,
+        u_Cubemaps[0],
+        u_PointLightShadowCasters[0].NearFarPlane.y,
+        u_UseBlinnLightingModel
+      );
     }
+
     for (int i = 0; i < u_SpotLightCount; i++)
     {
       lighting += CalcSpotLight(u_SpotLights[i], normal, diffuseSample, specularSample);
@@ -83,30 +98,6 @@ void main()
   }
 
   o_Color = vec4(lighting, 1.0);
-}
-
-
-
-vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
-{
-  if (!light.Enabled) return vec3(0.0);
-
-  vec3 lightPosition = v_TangentLightPosition;
-  vec3 lightDirection = normalize(lightPosition - v_TangentFragmentPosition);
-  float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-
-  vec3 ambient = vec3(light.Ambient) * diffuseSample;
-  vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
-  vec3 specular = Specular(v_TangentCameraPosition, v_TangentFragmentPosition, lightDirection, normal, vec3(light.Specular), specularSample, v_Shininess, u_UseBlinnLightingModel);
-  
-  float attenuation = Attenuation(lightPosition, v_TangentFragmentPosition, light.Linear, light.Quadratic, light.Constant);
-  ambient *= attenuation;
-  diffuse *= attenuation;
-  specular *= attenuation;
-
-  float shadow = CalcOmniDirectionalShadow(lightPosition, u_PointLights[0].FarPlane);
-
-  return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
 }
 
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
@@ -136,38 +127,6 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specul
   {
     return vec3(light.Ambient) * diffuseSample * light.Intensity;
   }
-}
-
-float CalcOmniDirectionalShadow(vec3 lightPosition, float farPlane)
-{
-  vec3 sampleOffsetDirections[20] = vec3[20]
-  (
-    vec3( 1,  1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1,  1,  1), 
-    vec3( 1,  1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1,  1, -1),
-    vec3( 1,  1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1,  1,  0),
-    vec3( 1,  0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1,  0, -1),
-    vec3( 0,  1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0,  1, -1)
-  ); 
-
-  vec3 fragToLight = v_FragmentPosition - lightPosition;
-  float currentDepth = length(fragToLight);
-
-  float shadow = 0.0;
-  float bias   = 0.15;
-  int samples  = 20;
-  float viewDistance = length(v_TangentCameraPosition - v_TangentFragmentPosition);
-  float diskRadius = 0.05;
-  for (int i = 0; i < samples; i++)
-  {
-    float closestDepth = GetTextureSample(u_CubemapShadowMapSlotIndex, vec4(0.0), 
-      fragToLight + sampleOffsetDirections[i] * diskRadius).r;
-    closestDepth *= farPlane;   // undo mapping [0;1]
-    if(currentDepth - bias > closestDepth)
-      shadow += 1.0;
-  }
-  shadow /= float(samples); 
-
-  return shadow;
 }
 
 // TODO: artifacts from using the fancier version, fix in some way.
