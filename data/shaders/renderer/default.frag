@@ -6,16 +6,19 @@
 #import "utils/specular.krys";
 #import "utils/directional.krys";
 #import "utils/point-light.krys";
+#import "utils/spot-light.krys";
 
 in vec3 v_FragmentPosition;
 in vec4 v_DirectionalLightSpaceFragmentPosition;
 in vec4 v_Color;
 in vec3 v_Normal;
 in vec2 v_TextureCoord;
-in vec3 v_TangentLightPosition;
-in vec3 v_TangentLightDirection;
+in vec3 v_PointLightTangentLightPosition;
+in vec3 v_DirectionalTangentLightDirection;
 in vec3 v_TangentCameraPosition;
 in vec3 v_TangentFragmentPosition;
+in vec3 v_SpotLightTangentPosition;
+in vec3 v_SpotLightTangentDirection;
 flat in int v_TextureSlot;
 flat in int v_SpecularSlot;
 flat in int v_EmissionSlot;
@@ -26,7 +29,6 @@ flat in float v_Shininess;
 
 out vec4 o_Color;
 
-vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 
 void main()
@@ -48,7 +50,6 @@ void main()
   vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0), textureCoord) * v_Color;
   vec3 diffuseSample = textureSample.rgb;
   vec3 specularSample = GetTextureSample(v_SpecularSlot, vec4(0.3), textureCoord).rgb;
-  vec3 emissionSample = GetTextureSample(v_EmissionSlot, vec4(0.0), textureCoord).rgb; // TODO: this is currently unused.
 
   vec3 lighting = vec3(0.0);
   if (u_LightingEnabled)
@@ -60,7 +61,7 @@ void main()
         v_DirectionalLightSpaceFragmentPosition,
         v_TangentFragmentPosition,
         v_TangentCameraPosition,
-        v_TangentLightDirection,
+        v_DirectionalTangentLightDirection,
         normal,
         diffuseSample,
         specularSample,
@@ -76,20 +77,30 @@ void main()
         v_FragmentPosition,
         v_TangentFragmentPosition,
         v_TangentCameraPosition,
-        v_TangentLightPosition,
+        v_PointLightTangentLightPosition,
         normal,
         diffuseSample,
         specularSample,
         v_Shininess,
-        u_Cubemaps[0],
+        u_Cubemaps[0], // TODO: pass the index for the sampler in
         u_PointLightShadowCasters[0].NearFarPlane.y,
-        u_UseBlinnLightingModel
-      );
+        u_UseBlinnLightingModel);
     }
 
     for (int i = 0; i < u_SpotLightCount; i++)
     {
-      lighting += CalcSpotLight(u_SpotLights[i], normal, diffuseSample, specularSample);
+      lighting += Lighting(
+        u_SpotLights[i],
+        v_TangentFragmentPosition,
+        v_TangentCameraPosition,
+        v_SpotLightTangentPosition,
+        v_SpotLightTangentDirection,
+        normal,
+        diffuseSample,
+        specularSample,
+        v_Shininess,
+        u_Textures[1], // TODO: pass the index for the sampler in
+        u_UseBlinnLightingModel);
     }
   }
   else 
@@ -97,36 +108,10 @@ void main()
     lighting = diffuseSample;
   }
 
+  vec3 emissionSample = GetTextureSample(v_EmissionSlot, vec4(0.0), textureCoord).rgb;
+  lighting += emissionSample;
+
   o_Color = vec4(lighting, 1.0);
-}
-
-vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
-{
-  if (!light.Enabled) return vec3(0.0);
-
-  vec3 lightDirection = normalize(vec3(light.Position) - v_TangentFragmentPosition);
-  float theta = dot(lightDirection, normalize(-vec3(light.Direction)));
-  float epsilon = light.InnerCutoff - light.OuterCutoff;
-  float intensity = clamp((theta - light.OuterCutoff) / epsilon, 0.0, 1.0);
-  
-  if (theta > light.OuterCutoff)
-  {
-    float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-
-    vec3 ambient = vec3(light.Ambient) * diffuseSample;
-    vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
-    vec3 specular = Specular(v_TangentCameraPosition, v_TangentFragmentPosition, lightDirection, normal, vec3(light.Specular), specularSample, v_Shininess, u_UseBlinnLightingModel);
-    
-    float attenuation = Attenuation(vec3(light.Position), v_TangentFragmentPosition, light.Linear, light.Quadratic, light.Constant);
-    diffuse *= attenuation * intensity;
-    specular *= attenuation * intensity;
-    
-    return (ambient + diffuse + specular) * light.Intensity;
-  }
-  else
-  {
-    return vec3(light.Ambient) * diffuseSample * light.Intensity;
-  }
 }
 
 // TODO: artifacts from using the fancier version, fix in some way.
