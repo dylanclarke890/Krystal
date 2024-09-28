@@ -4,7 +4,7 @@ vec3 Lighting(
   vec3 tangentFragmentPosition,
   vec3 tangentCameraPosition,
   vec3 tangentLightPosition,
-  vec3 tangentLightDirection, // Direction the light source is looking
+  vec3 tangentLightDirection, // Direction the light source is looking at
   vec3 tangentNormal,
   vec3 diffuseSample,
   vec3 specularSample,
