@@ -26,15 +26,22 @@ flat in int v_NormalSlot;
 flat in int v_DisplacementSlot;
 flat in float v_Shininess;
 
+#import "utils/parallax-mapping.krys";
 
 out vec4 o_Color;
 
-vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
-
 void main()
 {
-  vec3 viewDirection = normalize(v_TangentCameraPosition - v_TangentFragmentPosition);
-  vec2 textureCoord = ParallaxMapping(v_TextureCoord, viewDirection);
+  vec2 textureCoords;
+  if (v_DisplacementSlot == -1)
+  {
+    textureCoords = v_TextureCoord;
+  }
+  else
+  {
+    vec3 viewDirection = normalize(v_TangentCameraPosition - v_TangentFragmentPosition);
+    textureCoords = ParallaxMapping(v_TextureCoord, viewDirection);
+  }
 
   vec3 normal;
   if (v_NormalSlot == -1)
@@ -43,13 +50,13 @@ void main()
   } 
   else 
   {
-    normal = GetTextureSample(v_NormalSlot, vec4(v_Normal, 1.0), textureCoord).rgb;
+    normal = GetTextureSample(v_NormalSlot, vec4(v_Normal, 1.0), textureCoords).rgb;
     normal = normalize(normal * 2.0 - 1.0);
   }
 
-  vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0), textureCoord) * v_Color;
+  vec4 textureSample = GetTextureSample(v_TextureSlot, vec4(1.0), textureCoords) * v_Color;
   vec3 diffuseSample = textureSample.rgb;
-  vec3 specularSample = GetTextureSample(v_SpecularSlot, vec4(0.3), textureCoord).rgb;
+  vec3 specularSample = GetTextureSample(v_SpecularSlot, vec4(0.3), textureCoords).rgb;
 
   vec3 lighting = vec3(0.0);
   if (u_LightingEnabled)
@@ -108,59 +115,8 @@ void main()
     lighting = diffuseSample;
   }
 
-  vec3 emissionSample = GetTextureSample(v_EmissionSlot, vec4(0.0), textureCoord).rgb;
+  vec3 emissionSample = GetTextureSample(v_EmissionSlot, vec4(0.0), textureCoords).rgb;
   lighting += emissionSample;
 
   o_Color = vec4(lighting, 1.0);
-}
-
-// TODO: artifacts from using the fancier version, fix in some way.
-vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) 
-{
-  if (v_DisplacementSlot == -1)
-    return texCoords;
-
-  // number of depth layers
-  const float minLayers = 32;
-  const float maxLayers = 64;
-  const float heightScale = 0.1;
-
-  float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));  
-  // calculate the size of each layer
-  float layerDepth = 1.0 / numLayers;
-  // depth of current layer
-  float currentLayerDepth = 0.0;
-  // the amount to shift the texture coordinates per layer (from vector P)
-  vec2 P = viewDir.xy / viewDir.z * heightScale; 
-  vec2 deltaTexCoords = P / numLayers;
-
-  // get initial values
-  vec2  currentTexCoords     = texCoords;
-  float currentDepthMapValue = GetTextureSample(v_DisplacementSlot, vec4(1.0), texCoords).r;
-    
-  while(currentLayerDepth < currentDepthMapValue)
-  {
-    // shift texture coordinates along direction of P
-    currentTexCoords -= deltaTexCoords;
-    // get depthmap value at current texture coordinates
-    currentDepthMapValue = GetTextureSample(v_DisplacementSlot, vec4(1.0), texCoords).r;
-    // get depth of next layer
-    currentLayerDepth += layerDepth;  
-  }
-
-    // get texture coordinates before collision (reverse operations)
-  vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
-
-  // get depth after and before collision for linear interpolation
-  float afterDepth  = currentDepthMapValue - currentLayerDepth;
-  float beforeDepth = GetTextureSample(v_DisplacementSlot, vec4(1.0), prevTexCoords).r - currentLayerDepth + layerDepth;
-
-  // interpolation of texture coordinates
-  float weight = afterDepth / (afterDepth - beforeDepth);
-  vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
-
-  if (finalTexCoords.x > 1.0 || finalTexCoords.y > 1.0 || finalTexCoords.x < 0.0 || finalTexCoords.y < 0.0)
-    discard;
-
-  return finalTexCoords;
 }
