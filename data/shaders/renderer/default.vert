@@ -1,7 +1,7 @@
 #version 450 core
 
 #import "uniform-buffers.krys";
-#import "calculate-tbn.krys";
+#import "utils/calculate-tbn.krys";
 
 // NOTE: position, normal, tangent should be passed in world space. 
 layout(location = 0) in vec4 i_Position;

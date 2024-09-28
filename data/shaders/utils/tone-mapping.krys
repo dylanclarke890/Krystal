@@ -1,4 +1,4 @@
-#import "gamma-correction.krys";
+#import "utils/gamma-correction.krys";
 
 vec3 ReinhardToneMapping(vec3 color)
 {
