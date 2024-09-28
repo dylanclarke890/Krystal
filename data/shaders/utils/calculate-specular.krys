@@ -1,0 +1,19 @@
+// IMPORTANT: cameraPosition, fragmentPosition, lightDirection and normal should be in tangent space.
+vec3 CalculateSpecular(vec3 cameraPosition, vec3 fragmentPosition, vec3 lightDirection, vec3 normal, vec3 lightSpecular, vec3 specularSample, float shininess, bool useBlinnLighting)
+{
+  vec3 viewDirection = normalize(cameraPosition - fragmentPosition);
+
+  float factor = 0.0;
+  if (useBlinnLighting)
+  {
+    vec3 halfwayDirection = normalize(lightDirection + viewDirection);  
+    factor = pow(max(dot(normal, halfwayDirection), 0.0), shininess);
+  }
+  else
+  {
+    vec3 reflectDirection = reflect(-lightDirection, normal);
+    factor = pow(max(dot(viewDirection, reflectDirection), 0.0), shininess);
+  }
+
+  return lightSpecular * factor * specularSample;
+}
