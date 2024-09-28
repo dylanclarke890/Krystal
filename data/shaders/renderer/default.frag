@@ -4,6 +4,7 @@
 #import "samplers.krys";
 #import "utils/attenuation.krys";
 #import "utils/specular.krys";
+#import "utils/directional.krys";
 
 in vec3 v_FragmentPosition;
 in vec4 v_DirectionalLightSpaceFragmentPosition;
@@ -23,10 +24,8 @@ flat in float v_Shininess;
 
 out vec4 o_Color;
 
-float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection);
 float CalcOmniDirectionalShadow(vec3 lightPosition, float farPlane);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
-vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample);
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 
@@ -56,7 +55,18 @@ void main()
   { 
     for (int i = 0; i < u_DirectionalLightCount; i++)
     {
-      lighting += CalcDirectionalLight(u_DirectionalLights[i], normal, diffuseSample, specularSample);
+      lighting += DirectionalLighting(
+        u_DirectionalLights[i],
+        v_DirectionalLightSpaceFragmentPosition,
+        v_TangentFragmentPosition,
+        v_TangentCameraPosition,
+        v_TangentLightDirection,
+        normal,
+        diffuseSample,
+        specularSample,
+        v_Shininess,
+        u_Textures[0], // TODO: pass the index for the sampler in
+        u_UseBlinnLightingModel);
     }
     for (int i = 0; i < u_PointLightCount; i++)
     {
@@ -75,20 +85,7 @@ void main()
   o_Color = vec4(lighting, 1.0);
 }
 
-vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
-{
-  if (!light.Enabled) return vec3(0.0);
 
-  vec3 lightDirection = normalize(v_TangentLightDirection);
-  float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-
-  vec3 ambient = vec3(light.Ambient) * diffuseSample;
-  vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
-  vec3 specular = Specular(v_TangentCameraPosition, v_TangentFragmentPosition, lightDirection, normal, vec3(light.Specular), specularSample, v_Shininess, u_UseBlinnLightingModel);
-  float shadow = CalcDirectionalShadow(v_DirectionalLightSpaceFragmentPosition, normal, lightDirection);
-  
-  return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
-}
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 specularSample)
 {
@@ -139,37 +136,6 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specul
   {
     return vec3(light.Ambient) * diffuseSample * light.Intensity;
   }
-}
-
-float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection)
-{
-  // perform perspective divide and transform to [0,1] range
-  vec3 projectionCoords = lightSpaceFragmentPosition.xyz / lightSpaceFragmentPosition.w;
-  projectionCoords = projectionCoords * 0.5 + 0.5;
-
-  if (projectionCoords.z > 1.0)
-  {
-    return 0.0;
-  } 
-
-  // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-  float closestDepth = texture(u_Textures[0], projectionCoords.xy).r; 
-  // get depth of current fragment from light's perspective
-  float currentDepth = projectionCoords.z;
-
-  float bias = max(0.05 * (1.0 - dot(normal, lightDirection)), 0.005);
-  float shadow = 0.0;
-  vec2 texelSize = 1.0 / textureSize(u_Textures[0], 0);
-  for (int x = -1; x <= 1; ++x)
-  {
-    for (int y = -1; y <= 1; ++y)
-    {
-      float pcfDepth = texture(u_Textures[0], projectionCoords.xy + vec2(x, y) * texelSize).r; 
-      shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
-    }    
-  }
-  shadow /= 9.0;
-  return shadow;
 }
 
 float CalcOmniDirectionalShadow(vec3 lightPosition, float farPlane)
