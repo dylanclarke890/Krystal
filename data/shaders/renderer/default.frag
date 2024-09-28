@@ -7,6 +7,7 @@
 #import "utils/directional.krys";
 #import "utils/point-light.krys";
 #import "utils/spot-light.krys";
+#import "utils/parallax-mapping.krys";
 
 in vec3 v_FragmentPosition;
 in vec4 v_DirectionalLightSpaceFragmentPosition;
@@ -26,8 +27,6 @@ flat in int v_NormalSlot;
 flat in int v_DisplacementSlot;
 flat in float v_Shininess;
 
-#import "utils/parallax-mapping.krys";
-
 out vec4 o_Color;
 
 void main()
@@ -40,7 +39,7 @@ void main()
   else
   {
     vec3 viewDirection = normalize(v_TangentCameraPosition - v_TangentFragmentPosition);
-    textureCoords = ParallaxMapping(v_TextureCoord, viewDirection);
+    textureCoords = ParallaxMapping(v_TextureCoord, viewDirection, v_DisplacementSlot);
   }
 
   vec3 normal;

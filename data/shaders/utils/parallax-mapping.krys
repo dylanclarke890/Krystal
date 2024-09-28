@@ -1,5 +1,6 @@
-vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirection) 
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirection, int displacementSlot) 
 {
+  const vec4 DEFAULT_DISPLACEMENT = vec4(1.0); // will go unused
   // number of depth layers
   const float minLayers = 16;
   const float maxLayers = 32;
@@ -14,12 +15,12 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirection)
   vec2 deltaTexCoords = P / numLayers;
 
   vec2  currentTexCoords     = texCoords;
-  float currentDepthMapValue = GetTextureSample(v_DisplacementSlot, vec4(1.0), texCoords).r;
+  float currentDepthMapValue = GetTextureSample(displacementSlot, DEFAULT_DISPLACEMENT, texCoords).r;
     
   while (currentLayerDepth < currentDepthMapValue)
   {
     currentTexCoords -= deltaTexCoords; // shift texture coordinates along direction of P
-    currentDepthMapValue = GetTextureSample(v_DisplacementSlot, vec4(1.0), currentTexCoords).r;
+    currentDepthMapValue = GetTextureSample(displacementSlot, DEFAULT_DISPLACEMENT, currentTexCoords).r;
     // get depth of next layer
     currentLayerDepth += layerDepth;  
   }
@@ -29,7 +30,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirection)
 
   // get depth after and before collision for linear interpolation
   float afterDepth  = currentDepthMapValue - currentLayerDepth;
-  float beforeDepth = GetTextureSample(v_DisplacementSlot, vec4(1.0), prevTexCoords).r - currentLayerDepth + layerDepth;
+  float beforeDepth = GetTextureSample(displacementSlot, DEFAULT_DISPLACEMENT, prevTexCoords).r - currentLayerDepth + layerDepth;
 
   // interpolation of texture coordinates
   float weight = afterDepth / (afterDepth - beforeDepth);
