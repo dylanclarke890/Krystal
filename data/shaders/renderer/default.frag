@@ -9,6 +9,7 @@ in vec4 v_Color;
 in vec3 v_Normal;
 in vec2 v_TextureCoord;
 in vec3 v_TangentLightPosition;
+in vec3 v_TangentLightDirection;
 in vec3 v_TangentCameraPosition;
 in vec3 v_TangentFragmentPosition;
 flat in int v_TextureSlot;
@@ -80,14 +81,14 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSampl
 {
   if (!light.Enabled) return vec3(0.0);
 
-  vec3 lightDirection = normalize(-vec3(light.Direction));
+  vec3 lightDirection = normalize(v_TangentLightDirection);
   float diffuseFactor = max(dot(normal, lightDirection), 0.0);
 
   vec3 ambient = vec3(light.Ambient) * diffuseSample;
   vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
   vec3 specular = CalcSpecularFactor(vec3(light.Specular), lightDirection, normal, specularSample);
   float shadow = CalcDirectionalShadow(v_DirectionalLightSpaceFragmentPosition, normal, lightDirection);
-
+  
   return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
 }
 

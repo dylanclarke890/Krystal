@@ -87,8 +87,26 @@ namespace Krys
 
     void Bind() const noexcept
     {
-      for (int i = 0; i < CurrentSlotIndex; i++)
+      for (int i = ReservedSlots; i < CurrentSlotIndex; i++)
         Slots[i]->Bind(i + BindingOffset);
+    }
+
+    void BindReserved() const noexcept
+    {
+      for (int i = 0; i < ReservedSlots; i++)
+        Slots[i]->Bind(i + BindingOffset);
+    }
+
+    void Unbind() const noexcept
+    {
+      for (int i = ReservedSlots; i < CurrentSlotIndex; i++)
+        Slots[i]->Unbind();
+    }
+
+    void UnbindReserved() const noexcept
+    {
+      for (int i = 0; i < ReservedSlots; i++)
+        Slots[i]->Unbind();
     }
 
     NO_DISCARD bool HasSlotsRemaining() const noexcept
@@ -112,6 +130,30 @@ namespace Krys
     {
       Texture2D.Bind();
       TextureCubemap.Bind();
+    }
+
+    void BindReserved() const noexcept
+    {
+      Texture2D.BindReserved();
+      TextureCubemap.BindReserved();
+    }
+
+    void Unbind() const noexcept
+    {
+      Texture2D.Unbind();
+      TextureCubemap.Unbind();
+    }
+
+    void UnbindReserved() const noexcept
+    {
+      Texture2D.UnbindReserved();
+      TextureCubemap.UnbindReserved();
+    }
+
+    void Reset() noexcept
+    {
+      Texture2D.CurrentSlotIndex = Texture2D.ReservedSlots;
+      TextureCubemap.CurrentSlotIndex = TextureCubemap.ReservedSlots;
     }
 
     void SetSamplerUniforms(std::vector<Ref<Shader>> shaders) noexcept

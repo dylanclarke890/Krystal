@@ -16,7 +16,7 @@ namespace Krys
     ~GLTextureCubemap() override;
 
     void Bind(uint32 slot = 0) const noexcept override;
-    void Unbind() const noexcept override = 0;
+    void Unbind() const noexcept override;
 
     void SetFilterModes(TextureMinifyMode min, TextureMagnifyMode mag) noexcept override;
     void SetMagnifyMode(TextureMagnifyMode mode) noexcept override;

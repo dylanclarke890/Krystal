@@ -63,6 +63,7 @@ namespace Krys
   struct DirectionalLight : Light
   {
     Vec3 Direction;
+    Vec3 Position;
   };
 
   struct DirectionalShadowCaster : ShadowCaster
@@ -80,6 +81,7 @@ namespace Krys
       {UniformDataType::Scalar, "Intensity"},
 
       {UniformDataType::Vec3, "Direction"},
+      {UniformDataType::Vec3, "Position"},
   }};
 
   static UniformStructLayout DirectionalShadowCasterStructLayout = {{
@@ -130,6 +132,7 @@ namespace Krys
       {UniformDataType::Scalar, "LightIndex"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
       {UniformDataType::Vec2, "NearFarPlane"},
+      // TODO: this should be an array instead.
       {UniformDataType::Mat4, "LightSpaceMatrices", 6},
   };
 

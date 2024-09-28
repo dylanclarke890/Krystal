@@ -75,6 +75,11 @@ namespace Krys
     glBindTextureUnit(slot, Id);
   }
 
+  void GLTextureCubemap::Unbind() const noexcept
+  {
+    glBindTextureUnit(0, Id);
+  }
+
   void GLTextureCubemap::SetFilterModes(TextureMinifyMode min, TextureMagnifyMode mag) noexcept
   {
     glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, ToGLTextureMinifyMode(min));

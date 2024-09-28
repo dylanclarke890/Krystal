@@ -21,6 +21,7 @@ out vec4 v_DirectionalLightSpaceFragmentPosition;
 out vec4 v_Color;
 out vec3 v_Normal;
 out vec2 v_TextureCoord;
+out vec3 v_TangentLightDirection;
 out vec3 v_TangentLightPosition;
 out vec3 v_TangentCameraPosition;
 out vec3 v_TangentFragmentPosition;
@@ -46,6 +47,7 @@ void main()
   v_Shininess = i_Shininess;
 
   mat3 TBN = CalcTBN(i_Tangent, i_Normal);
+  v_TangentLightDirection = TBN * normalize(-vec3(u_DirectionalLights[0].Direction.xyz));
   v_TangentLightPosition     = TBN * vec3(u_PointLights[0].Position.xyz);
   v_TangentCameraPosition    = TBN * vec3(u_CameraPosition);
   v_TangentFragmentPosition  = TBN * v_FragmentPosition;

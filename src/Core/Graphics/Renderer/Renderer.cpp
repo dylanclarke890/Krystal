@@ -185,6 +185,9 @@ namespace Krys
     Framebuffers.OmniDirectionalShadowMap->DisableWriteBuffers();
     KRYS_ASSERT(Framebuffers.OmniDirectionalShadowMap->IsComplete(), "OmniDirectionalShadowMapFramebuffer Incomplete", 0);
 
+    TextureUnits.Texture2D.Slots[0] = Framebuffers.DirectionalShadowMap->GetDepthAttachment();
+    TextureUnits.TextureCubemap.Slots[0] = Framebuffers.OmniDirectionalShadowMap->GetDepthAttachment();
+
     {
       auto pingPongBufferA = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
       auto pingPongBufferB = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
@@ -609,13 +612,9 @@ namespace Krys
 
   void Renderer::Reset()
   {
+    TextureUnits.Reset();
     VertexCount = 0;
     IndexCount = 0;
-
-    TextureUnits.Texture2D.CurrentSlotIndex = TextureUnits.Texture2D.ReservedSlots;
-
-    TextureUnits.TextureCubemap.CurrentSlotIndex = TextureUnits.TextureCubemap.ReservedSlots;
-    TextureUnits.TextureCubemap.Slots[0] = Framebuffers.OmniDirectionalShadowMap->GetDepthAttachment();
   }
 
   void Renderer::NextBatch()
@@ -652,6 +651,7 @@ namespace Krys
   void Renderer::ForwardRender()
   {
     TextureUnits.Bind();
+    TextureUnits.UnbindReserved();
 
     DefaultVertexArray->Bind();
     DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
@@ -672,7 +672,6 @@ namespace Krys
         {
           Shaders.DirectionalShadowMap->Bind();
           Context->DrawIndices(IndexCount, DrawMode::Triangles);
-          TextureUnits.Texture2D.Slots[0] = Framebuffers.DirectionalShadowMap->GetDepthAttachment();
         }
         Context->SetFaceCulling(CullMode::Back);
       }
@@ -687,6 +686,8 @@ namespace Krys
         Context->DrawIndices(IndexCount, DrawMode::Triangles);
       }
     }
+
+    TextureUnits.BindReserved();
 
     // Geometry Pass
     {
@@ -721,9 +722,12 @@ namespace Krys
         Renderer::DrawCube(LightSourceTransform, Colors::Yellow);
       }
 
-      DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
-      DefaultIndexBuffer->SetData(Indices->data(), IndexCount);
-      Context->DrawIndices(IndexCount, DrawMode::Triangles);
+      if (IndexCount > 0)
+      {
+        DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
+        DefaultIndexBuffer->SetData(Indices->data(), IndexCount);
+        Context->DrawIndices(IndexCount, DrawMode::Triangles);
+      }
     }
 
     // Draw Skybox
