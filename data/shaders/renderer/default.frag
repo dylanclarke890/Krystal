@@ -21,8 +21,6 @@ flat in int v_NormalSlot;
 flat in int v_DisplacementSlot;
 flat in float v_Shininess;
 
-uniform float u_ParallaxHeightScale = 0.1;
-
 out vec4 o_Color;
 
 float CalcDirectionalShadow(vec4 lightSpaceFragmentPosition, vec3 normal, vec3 lightDirection);
@@ -215,13 +213,15 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
   // number of depth layers
   const float minLayers = 32;
   const float maxLayers = 64;
+  const float heightScale = 0.1;
+
   float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));  
   // calculate the size of each layer
   float layerDepth = 1.0 / numLayers;
   // depth of current layer
   float currentLayerDepth = 0.0;
   // the amount to shift the texture coordinates per layer (from vector P)
-  vec2 P = viewDir.xy / viewDir.z * u_ParallaxHeightScale; 
+  vec2 P = viewDir.xy / viewDir.z * heightScale; 
   vec2 deltaTexCoords = P / numLayers;
 
   // get initial values
