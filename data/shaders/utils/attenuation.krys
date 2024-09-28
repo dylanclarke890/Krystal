@@ -1,5 +1,5 @@
 // IMPORTANT: lightPosition and fragmentPosition should be in tangent space.
-float CalculateAttenuation(vec3 lightPosition, vec3 fragmentPosition, float linear, float quadratic, float constant)
+float Attenuation(vec3 lightPosition, vec3 fragmentPosition, float linear, float quadratic, float constant)
 {
   float distance = length(lightPosition - fragmentPosition);
   return 1.0 / (constant + linear * distance + quadratic * (distance));  

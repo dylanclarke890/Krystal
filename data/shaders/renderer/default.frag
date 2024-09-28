@@ -2,8 +2,8 @@
 
 #import "uniform-buffers.krys";
 #import "samplers.krys";
-#import "utils/calculate-attenuation.krys";
-#import "utils/calculate-specular.krys";
+#import "utils/attenuation.krys";
+#import "utils/specular.krys";
 
 in vec3 v_FragmentPosition;
 in vec4 v_DirectionalLightSpaceFragmentPosition;
@@ -35,7 +35,7 @@ void main()
   vec3 viewDirection = normalize(v_TangentCameraPosition - v_TangentFragmentPosition);
   vec2 textureCoord = ParallaxMapping(v_TextureCoord, viewDirection);
 
-  vec3 normal; // normal is in tangent space
+  vec3 normal;
   if (v_NormalSlot == -1)
   {
     normal = normalize(v_Normal);
@@ -84,7 +84,7 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 diffuseSampl
 
   vec3 ambient = vec3(light.Ambient) * diffuseSample;
   vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
-  vec3 specular = CalculateSpecular(v_TangentCameraPosition, v_TangentFragmentPosition, lightDirection, normal, vec3(light.Specular), specularSample, v_Shininess, u_UseBlinnLightingModel);
+  vec3 specular = Specular(v_TangentCameraPosition, v_TangentFragmentPosition, lightDirection, normal, vec3(light.Specular), specularSample, v_Shininess, u_UseBlinnLightingModel);
   float shadow = CalcDirectionalShadow(v_DirectionalLightSpaceFragmentPosition, normal, lightDirection);
   
   return (ambient + (1.0 - shadow) * (diffuse + specular)) * light.Intensity;
@@ -100,9 +100,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 diffuseSample, vec3 spec
 
   vec3 ambient = vec3(light.Ambient) * diffuseSample;
   vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
-  vec3 specular = CalculateSpecular(v_TangentCameraPosition, v_TangentFragmentPosition, lightDirection, normal, vec3(light.Specular), specularSample, v_Shininess, u_UseBlinnLightingModel);
+  vec3 specular = Specular(v_TangentCameraPosition, v_TangentFragmentPosition, lightDirection, normal, vec3(light.Specular), specularSample, v_Shininess, u_UseBlinnLightingModel);
   
-  float attenuation = CalculateAttenuation(lightPosition, v_TangentFragmentPosition, light.Linear, light.Quadratic, light.Constant);
+  float attenuation = Attenuation(lightPosition, v_TangentFragmentPosition, light.Linear, light.Quadratic, light.Constant);
   ambient *= attenuation;
   diffuse *= attenuation;
   specular *= attenuation;
@@ -127,9 +127,9 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 diffuseSample, vec3 specul
 
     vec3 ambient = vec3(light.Ambient) * diffuseSample;
     vec3 diffuse = vec3(light.Diffuse) * diffuseFactor * diffuseSample;
-    vec3 specular = CalculateSpecular(v_TangentCameraPosition, v_TangentFragmentPosition, lightDirection, normal, vec3(light.Specular), specularSample, v_Shininess, u_UseBlinnLightingModel);
+    vec3 specular = Specular(v_TangentCameraPosition, v_TangentFragmentPosition, lightDirection, normal, vec3(light.Specular), specularSample, v_Shininess, u_UseBlinnLightingModel);
     
-    float attenuation = CalculateAttenuation(vec3(light.Position), v_TangentFragmentPosition, light.Linear, light.Quadratic, light.Constant);
+    float attenuation = Attenuation(vec3(light.Position), v_TangentFragmentPosition, light.Linear, light.Quadratic, light.Constant);
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
     
