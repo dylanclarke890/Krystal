@@ -110,7 +110,7 @@ namespace Krys
     TextureUnits = ActiveTextureUnits{};
     TextureUnits.Texture2D.CurrentSlotIndex = 0;
     TextureUnits.Texture2D.MaxSlots = max2DSamplers;
-    TextureUnits.Texture2D.ReservedSlots = 2;
+    TextureUnits.Texture2D.ReservedSlots = LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS + LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS;
     TextureUnits.Texture2D.BindingOffset = 0;
     TextureUnits.Texture2D.Samplers = samplers2D;
     TextureUnits.Texture2D.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.Texture2D.MaxSlots)};
@@ -840,11 +840,9 @@ namespace Krys
   {
     int index = -1;
     if (!texture)
-    {
       return index; // Texture can be null, no need to assert here.
-    }
 
-    for (int i = 0; i < bindingInfo.CurrentSlotIndex; i++)
+    for (int i = bindingInfo.ReservedSlots; i < bindingInfo.CurrentSlotIndex; i++)
     {
       if (texture->GetId() == bindingInfo.Slots[i]->GetId())
       {

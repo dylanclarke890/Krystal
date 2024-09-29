@@ -1,4 +1,4 @@
-// TODO: parameters and compile time for loops for the switch statements
+// TODO: parameters and compile time for loops for the switch/if else statements
 
 #define MAX_TEXTURE_SLOTS 32
 #define MAX_CUBEMAP_SLOTS 2
@@ -54,4 +54,20 @@ vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec3 textureCoord
     case 31: return texture(u_Cubemaps[ 1], textureCoord);
     default: return defaultColor;
   }
+}
+
+sampler2D Get2DSampler(int i)
+{
+  if (i == 0)
+    return u_Textures[0];
+  else 
+    return u_Textures[1];
+}
+
+samplerCube GetCubemapSampler(int i)
+{
+  if (i == 30)
+    return u_Cubemaps[0];
+  else 
+    return u_Cubemaps[1];
 }

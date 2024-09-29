@@ -25,14 +25,14 @@ namespace Krys
   // --------- TEXTURE SLOTS ---------
 
   // ----------- LIGHTING ------------
-  constexpr uint LIGHTING_MAX_DIRECTIONAL_LIGHTS = 1;
-  constexpr uint LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS = 1;
+  constexpr uint LIGHTING_MAX_DIRECTIONAL_LIGHTS = 2;
+  constexpr uint LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS = 2;
 
-  constexpr uint LIGHTING_MAX_POINT_LIGHTS = 1;
-  constexpr uint LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS = 1;
+  constexpr uint LIGHTING_MAX_POINT_LIGHTS = 2;
+  constexpr uint LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS = 2;
 
-  constexpr uint LIGHTING_MAX_SPOT_LIGHTS = 1;
-  constexpr uint LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS = 1;
+  constexpr uint LIGHTING_MAX_SPOT_LIGHTS = 2;
+  constexpr uint LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS = 2;
 
   constexpr float LIGHTING_DEFAULT_SHADOW_BIAS = 0.005f;
   constexpr uint LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION = 1024;

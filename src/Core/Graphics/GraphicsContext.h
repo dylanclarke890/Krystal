@@ -85,28 +85,33 @@ namespace Krys
     int CurrentSlotIndex, MaxSlots, ReservedSlots, BindingOffset;
     std::vector<int> Samplers;
 
+    // TODO: We can have empty reserved slots if we've not yet added the textures. Maybe rethink this approach.
     void Bind() const noexcept
     {
       for (int i = ReservedSlots; i < CurrentSlotIndex; i++)
-        Slots[i]->Bind(i + BindingOffset);
+        if (Slots[i])
+          Slots[i]->Bind(i + BindingOffset);
     }
 
     void BindReserved() const noexcept
     {
       for (int i = 0; i < ReservedSlots; i++)
-        Slots[i]->Bind(i + BindingOffset);
+        if (Slots[i])
+          Slots[i]->Bind(i + BindingOffset);
     }
 
     void Unbind() const noexcept
     {
       for (int i = ReservedSlots; i < CurrentSlotIndex; i++)
-        Slots[i]->Unbind();
+        if (Slots[i])
+          Slots[i]->Unbind();
     }
 
     void UnbindReserved() const noexcept
     {
       for (int i = 0; i < ReservedSlots; i++)
-        Slots[i]->Unbind();
+        if (Slots[i])
+          Slots[i]->Unbind();
     }
 
     NO_DISCARD bool HasSlotsRemaining() const noexcept

@@ -63,6 +63,7 @@ void main()
   { 
     for (int i = 0; i < u_DirectionalLightCount; i++)
     {
+      DirectionalShadowCaster caster = GetDirectionalShadowCaster(i);
       lighting += Lighting(
         u_DirectionalLights[i],
         v_DirectionalLightSpaceFragmentPosition,
@@ -73,12 +74,13 @@ void main()
         diffuseSample,
         specularSample,
         v_Shininess,
-        u_Textures[0], // TODO: pass the index for the sampler in
+        Get2DSampler(u_DirectionalShadowMapSlotIndex),
         u_UseBlinnLightingModel);
     }
 
     for (int i = 0; i < u_PointLightCount; i++)
     {
+      PointLightShadowCaster caster = GetPointLightShadowCaster(i);
       lighting += Lighting(
         u_PointLights[i],
         v_FragmentPosition,
@@ -89,13 +91,14 @@ void main()
         diffuseSample,
         specularSample,
         v_Shininess,
-        u_Cubemaps[0], // TODO: pass the index for the sampler in
-        u_PointLightShadowCasters[0].NearFarPlane.y,
+        GetCubemapSampler(u_PointLightShadowMapSlotIndex),
+        caster.NearFarPlane.y,
         u_UseBlinnLightingModel);
     }
 
     for (int i = 0; i < u_SpotLightCount; i++)
     {
+      SpotLightShadowCaster caster = GetSpotLightShadowCaster(i);
       lighting += Lighting(
         u_SpotLights[i],
         v_SpotLightLightSpaceFragmentPosition,
@@ -107,7 +110,7 @@ void main()
         diffuseSample,
         specularSample,
         v_Shininess,
-        u_Textures[1], // TODO: pass the index for the sampler in
+        Get2DSampler(u_SpotLightShadowMapSlotIndex),
         u_UseBlinnLightingModel);
     }
   }

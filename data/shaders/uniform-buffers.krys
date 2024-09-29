@@ -80,14 +80,14 @@ struct SpotLightShadowCaster
   mat4 LightSpaceMatrix;
 };
 
-#define MAX_DIRECTIONAL_LIGHTS 1
-#define MAX_DIRECTIONAL_SHADOW_CASTERS 1
+#define MAX_DIRECTIONAL_LIGHTS 2
+#define MAX_DIRECTIONAL_SHADOW_CASTERS 2
 
-#define MAX_POINT_LIGHTS 1
-#define MAX_POINT_LIGHT_SHADOW_CASTERS 1
+#define MAX_POINT_LIGHTS 2
+#define MAX_POINT_LIGHT_SHADOW_CASTERS 2
 
-#define MAX_SPOT_LIGHTS 1
-#define MAX_SPOT_LIGHT_SHADOW_CASTERS 1
+#define MAX_SPOT_LIGHTS 2
+#define MAX_SPOT_LIGHT_SHADOW_CASTERS 2
 
 layout (std140, binding = 1) uniform Lights
 {
@@ -115,3 +115,31 @@ layout (std140, binding = 1) uniform Lights
 
   bool u_UseBlinnLightingModel;
 };
+
+DirectionalShadowCaster GetDirectionalShadowCaster(int lightIndex)
+{
+  for (int i = 0; i < u_DirectionalShadowCasterCount; i++)
+  {
+    if (u_DirectionalShadowCasters[i].LightIndex == lightIndex)
+      return u_DirectionalShadowCasters[i];
+  }
+}
+
+PointLightShadowCaster GetPointLightShadowCaster(int lightIndex)
+{
+  for (int i = 0; i < u_PointLightShadowCasterCount; i++)
+  {
+    if (u_PointLightShadowCasters[i].LightIndex == lightIndex)
+      return u_PointLightShadowCasters[i];
+  }
+}
+
+
+SpotLightShadowCaster GetSpotLightShadowCaster(int lightIndex)
+{
+  for (int i = 0; i < u_SpotLightShadowCasterCount; i++)
+  {
+    if (u_SpotLightShadowCasters[i].LightIndex == lightIndex)
+      return u_SpotLightShadowCasters[i];
+  }
+}
