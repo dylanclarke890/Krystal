@@ -127,9 +127,9 @@ namespace Krys
   {
     Shaders = {};
     Shaders.Default = Context->CreateShader("shaders/renderer/default.vert", "shaders/renderer/default.frag");
-    Shaders.DirectionalShadowMap = Context->CreateShader("shaders/renderer/directional-shadow-map.vert", "shaders/renderer/directional-shadow-map.frag");
+    Shaders.DirectionalShadowMap = Context->CreateShader("shaders/renderer/directional-shadow-map.vert", "shaders/renderer/empty.frag");
     Shaders.PointLightShadowMap = Context->CreateShader("shaders/renderer/point-light-shadow-map.vert", "shaders/renderer/point-light-shadow-map.frag", "shaders/renderer/point-light-shadow-map.geo");
-    Shaders.SpotLightShadowMap = Context->CreateShader("shaders/renderer/spot-light-shadow-map.vert", "shaders/renderer/spot-light-shadow-map.frag");
+    Shaders.SpotLightShadowMap = Context->CreateShader("shaders/renderer/spot-light-shadow-map.vert", "shaders/renderer/empty.frag");
     Shaders.LightSource = Context->CreateShader("shaders/renderer/light-source.vert", "shaders/renderer/light-source.frag");
     Shaders.Skybox = Context->CreateShader("shaders/renderer/skybox.vert", "shaders/renderer/skybox.frag");
     Shaders.PostProcessing = Context->CreateShader("shaders/renderer/post.vert", "shaders/renderer/post.frag");
