@@ -58,6 +58,7 @@ struct DirectionalShadowCaster
   float Bias;
   int LightIndex;
   int ShadowMapResolution;
+  int ShadowMapSlotIndex;
   vec2 NearFarPlane;
   mat4 LightSpaceMatrix;
 };
@@ -67,6 +68,7 @@ struct PointLightShadowCaster
   float Bias;
   int LightIndex;
   int ShadowMapResolution;
+  int ShadowMapSlotIndex;
   vec2 NearFarPlane;
   mat4 LightSpaceMatrices[6];
 };
@@ -76,6 +78,7 @@ struct SpotLightShadowCaster
   float Bias;
   int LightIndex;
   int ShadowMapResolution;
+  int ShadowMapSlotIndex;
   vec2 NearFarPlane;
   mat4 LightSpaceMatrix;
 };
@@ -105,10 +108,6 @@ layout (std140, binding = 1) uniform Lights
   SpotLightShadowCaster u_SpotLightShadowCasters[MAX_SPOT_LIGHT_SHADOW_CASTERS];
   int u_SpotLightCount;
   int u_SpotLightShadowCasterCount;
-
-  int u_DirectionalShadowMapSlotIndex;
-  int u_SpotLightShadowMapSlotIndex;
-  int u_PointLightShadowMapSlotIndex;
 
   bool u_LightingEnabled;
   bool u_ShadowsEnabled;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <array>
-#include <unordered_map>
 
 #include "Core.h"
 #include "Graphics/Graphics.h"
@@ -20,9 +19,6 @@ namespace Krys
     typedef std::array<DirectionalLight, LIGHTING_MAX_DIRECTIONAL_LIGHTS> DirectionalLightArray;
     typedef std::array<DirectionalShadowCaster, LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS> DirectionalShadowCasterArray;
 
-    typedef std::unordered_map<int, Ref<Framebuffer>> ShadowMap2DFramebufferPool;
-    typedef std::unordered_map<int, Ref<Framebuffer>> ShadowMapCubemapFramebufferPool;
-
   private:
     Ref<GraphicsContext> Context;
     Ref<UniformBuffer> LightsBuffer;
@@ -39,10 +35,8 @@ namespace Krys
     DirectionalShadowCasterArray DirectionalShadowCasters;
     uint DirectionalLightIndex, DirectionalShadowCasterIndex;
 
-    ShadowMap2DFramebufferPool ShadowMaps;
-    ShadowMapCubemapFramebufferPool ShadowCubeMaps;
-
     LightingModel ActiveLightingModel;
+    Ref<ActiveTextureUnits> TextureUnits;
 
   public:
     LightManager() noexcept
@@ -50,22 +44,13 @@ namespace Krys
           SpotLights({}), SpotLightShadowCasters({}), SpotLightIndex(0), SpotLightShadowCasterIndex(0),
           PointLights({}), PointLightShadowCasters({}), PointLightIndex(0), PointLightShadowCasterIndex(0),
           DirectionalLights({}), DirectionalShadowCasters({}), DirectionalLightIndex(0), DirectionalShadowCasterIndex(0),
-          ShadowMaps({}), ShadowCubeMaps({}), ActiveLightingModel(LightingModel::Phong) {}
+          ActiveLightingModel(LightingModel::Phong), TextureUnits(nullptr) {}
 
-    void Init(Ref<GraphicsContext> context, const ActiveTextureUnits &textureUnits) noexcept
+    void Init(Ref<GraphicsContext> context, Ref<ActiveTextureUnits> textureUnits) noexcept
     {
       Context = context;
-
       LightsBuffer = Context->CreateUniformBuffer(UNIFORM_BUFFER_BINDING_LIGHTS, UNIFORM_BUFFER_LAYOUT_LIGHTS);
-
-      int reservedSlotIndex = textureUnits.Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__DIRECTIONAL_SHADOW_MAP);
-      LightsBuffer->SetData("u_DirectionalShadowMapSlotIndex", reservedSlotIndex);
-
-      reservedSlotIndex = textureUnits.Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__SPOT_LIGHT_SHADOW_MAP);
-      LightsBuffer->SetData("u_SpotLightShadowMapSlotIndex", reservedSlotIndex);
-
-      reservedSlotIndex = textureUnits.TextureCubemap.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__POINT_LIGHT_SHADOW_CUBEMAP);
-      LightsBuffer->SetData("u_PointLightShadowMapSlotIndex", reservedSlotIndex);
+      TextureUnits = textureUnits;
     }
 
     NO_DISCARD const DirectionalLightArray &GetDirectionalLights() const noexcept { return DirectionalLights; }
@@ -103,6 +88,7 @@ namespace Krys
         LightsBuffer->SetData(prefix + "Bias", caster.Bias);
         LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
         LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
+        LightsBuffer->SetData(prefix + "ShadowMapSlotIndex", TextureUnits->Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__DIRECTIONAL_SHADOW_MAP));
         LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
         LightsBuffer->SetData(prefix + "LightSpaceMatrix", caster.LightSpaceMatrix);
 
@@ -150,6 +136,7 @@ namespace Krys
         LightsBuffer->SetData(prefix + "Bias", caster.Bias);
         LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
         LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
+        LightsBuffer->SetData(prefix + "ShadowMapSlotIndex", TextureUnits->TextureCubemap.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__POINT_LIGHT_SHADOW_CUBEMAP));
         LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
         for (uint i = 0; i < 6; i++)
           LightsBuffer->SetData(prefix + "LightSpaceMatrices[" + std::to_string(i) + "]", caster.LightSpaceMatrices[i]);
@@ -195,6 +182,7 @@ namespace Krys
         LightsBuffer->SetData(prefix + "Bias", caster.Bias);
         LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
         LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
+        LightsBuffer->SetData(prefix + "ShadowMapSlotIndex", TextureUnits->Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__SPOT_LIGHT_SHADOW_MAP));
         LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
         LightsBuffer->SetData(prefix + "LightSpaceMatrix", caster.LightSpaceMatrix);
 

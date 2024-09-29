@@ -74,7 +74,7 @@ void main()
         diffuseSample,
         specularSample,
         v_Shininess,
-        Get2DSampler(u_DirectionalShadowMapSlotIndex),
+        Get2DSampler(caster.ShadowMapSlotIndex),
         u_UseBlinnLightingModel);
     }
 
@@ -91,7 +91,7 @@ void main()
         diffuseSample,
         specularSample,
         v_Shininess,
-        GetCubemapSampler(u_PointLightShadowMapSlotIndex),
+        GetCubemapSampler(caster.ShadowMapSlotIndex),
         caster.NearFarPlane.y,
         u_UseBlinnLightingModel);
     }
@@ -110,7 +110,7 @@ void main()
         diffuseSample,
         specularSample,
         v_Shininess,
-        Get2DSampler(u_SpotLightShadowMapSlotIndex),
+        Get2DSampler(caster.ShadowMapSlotIndex),
         u_UseBlinnLightingModel);
     }
   }

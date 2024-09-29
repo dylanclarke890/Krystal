@@ -70,7 +70,7 @@ namespace Krys
     static Unique<std::array<uint32, RENDERER_MAX_INDICES>> Indices;
     static uint VertexCount, IndexCount;
 
-    static ActiveTextureUnits TextureUnits;
+    static Ref<ActiveTextureUnits> TextureUnits;
 
     static Ref<Camera> ActiveCamera;
     static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled;

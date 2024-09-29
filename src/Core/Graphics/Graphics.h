@@ -91,6 +91,7 @@ namespace Krys
       {UniformDataType::Scalar, "Bias"},
       {UniformDataType::Scalar, "LightIndex"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
+      {UniformDataType::Scalar, "ShadowMapSlotIndex"},
       {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Mat4, "LightSpaceMatrix"},
   }};
@@ -134,6 +135,7 @@ namespace Krys
       {UniformDataType::Scalar, "Bias"},
       {UniformDataType::Scalar, "LightIndex"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
+      {UniformDataType::Scalar, "ShadowMapSlotIndex"},
       {UniformDataType::Vec2, "NearFarPlane"},
       // TODO: this should be an array instead.
       {UniformDataType::Mat4, "LightSpaceMatrices", 6},
@@ -182,6 +184,7 @@ namespace Krys
       {UniformDataType::Scalar, "Bias"},
       {UniformDataType::Scalar, "LightIndex"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
+      {UniformDataType::Scalar, "ShadowMapSlotIndex"},
       {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Mat4, "LightSpaceMatrix"},
   };
@@ -312,10 +315,6 @@ namespace Krys
       {UniformDataType::Struct, "u_SpotLightShadowCasters", SpotLightShadowCasterStructLayout, LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS},
       {UniformDataType::Scalar, "u_SpotLightCount"},
       {UniformDataType::Scalar, "u_SpotLightShadowCasterCount"},
-
-      {UniformDataType::Scalar, "u_DirectionalShadowMapSlotIndex"},
-      {UniformDataType::Scalar, "u_SpotLightShadowMapSlotIndex"},
-      {UniformDataType::Scalar, "u_PointLightShadowMapSlotIndex"},
 
       {UniformDataType::Scalar, "u_LightingEnabled"},
       {UniformDataType::Scalar, "u_ShadowsEnabled"},
