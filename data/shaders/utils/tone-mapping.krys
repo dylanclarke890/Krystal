@@ -10,9 +10,9 @@ vec3 ExposureToneMapping(vec3 color, float exposure)
   return vec3(1.0) - exp(-color * exposure);
 }
 
-vec4 ToneMapping(vec3 color, float exposure)
+vec4 ToneMapping(vec3 color, float exposure, bool gammaCorrect = false)
 {
   vec3 mapped = exposure == 1.0 ? ReinhardToneMapping(color) : ExposureToneMapping(color, exposure);
-  mapped = GammaCorrection(mapped);
+  mapped = gammaCorrect ? GammaCorrection(mapped) : mapped;
   return vec4(mapped.rgb, 1.0);
 }

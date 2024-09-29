@@ -7,27 +7,32 @@
 
 namespace Krys
 {
+  constexpr uint CUBEMAP_SLOTS = 2;
+
   // --------- TEXTURE SLOTS ---------
-  const int CUBEMAP_SLOTS = 2;
+  /// @brief Reserved texture slots always take up the first slots for each sampler type.
+  /// Get the actual texture unit index via `ActiveTextureUnit.GetReservedSlotIndex()`.
+  const uint RESERVED_TEXTURE_SLOT__DIRECTIONAL_SHADOW_MAP = 0;
 
   /// @brief Reserved texture slots always take up the first slots for each sampler type.
   /// Get the actual texture unit index via `ActiveTextureUnit.GetReservedSlotIndex()`.
-  const uint RESERVED_TEXTURE_SLOT_SHADOW_MAP_2D = 0;
+  const uint RESERVED_TEXTURE_SLOT__SPOT_LIGHT_SHADOW_MAP = 1;
 
   /// @brief Reserved texture slots always take up the first slots for each sampler type.
   /// Get the actual texture unit index via `ActiveTextureUnit.GetReservedSlotIndex()`.
-  const uint RESERVED_TEXTURE_SLOT_SHADOW_CUBEMAP = 0;
+  const uint RESERVED_TEXTURE_SLOT__POINT_LIGHT_SHADOW_CUBEMAP = 0;
+
   // --------- TEXTURE SLOTS ---------
 
   // ----------- LIGHTING ------------
-  constexpr uint32 LIGHTING_MAX_DIRECTIONAL_LIGHTS = 1;
-  constexpr uint32 LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS = 1;
+  constexpr uint LIGHTING_MAX_DIRECTIONAL_LIGHTS = 1;
+  constexpr uint LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS = 1;
 
-  constexpr uint32 LIGHTING_MAX_POINT_LIGHTS = 1;
-  constexpr uint32 LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS = 1;
+  constexpr uint LIGHTING_MAX_POINT_LIGHTS = 1;
+  constexpr uint LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS = 1;
 
-  constexpr uint32 LIGHTING_MAX_SPOT_LIGHTS = 1;
-  constexpr uint32 LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS = 1;
+  constexpr uint LIGHTING_MAX_SPOT_LIGHTS = 1;
+  constexpr uint LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS = 1;
 
   constexpr float LIGHTING_DEFAULT_SHADOW_BIAS = 0.005f;
   constexpr uint LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION = 1024;
@@ -308,8 +313,9 @@ namespace Krys
       {UniformDataType::Scalar, "u_SpotLightCount"},
       {UniformDataType::Scalar, "u_SpotLightShadowCasterCount"},
 
-      {UniformDataType::Scalar, "u_Texture2DShadowMapSlotIndex"},
-      {UniformDataType::Scalar, "u_CubemapShadowMapSlotIndex"},
+      {UniformDataType::Scalar, "u_DirectionalShadowMapSlotIndex"},
+      {UniformDataType::Scalar, "u_SpotLightShadowMapSlotIndex"},
+      {UniformDataType::Scalar, "u_PointLightShadowMapSlotIndex"},
 
       {UniformDataType::Scalar, "u_LightingEnabled"},
       {UniformDataType::Scalar, "u_ShadowsEnabled"},

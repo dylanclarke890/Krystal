@@ -106,8 +106,9 @@ layout (std140, binding = 1) uniform Lights
   int u_SpotLightCount;
   int u_SpotLightShadowCasterCount;
 
-  int u_Texture2DShadowMapSlotIndex;
-  int u_CubemapShadowMapSlotIndex;
+  int u_DirectionalShadowMapSlotIndex;
+  int u_SpotLightShadowMapSlotIndex;
+  int u_PointLightShadowMapSlotIndex;
 
   bool u_LightingEnabled;
   bool u_ShadowsEnabled;

@@ -10,16 +10,17 @@
 #import "utils/parallax-mapping.krys";
 
 in vec3 v_FragmentPosition;
-in vec4 v_DirectionalLightSpaceFragmentPosition;
 in vec4 v_Color;
 in vec3 v_Normal;
 in vec2 v_TextureCoord;
-in vec3 v_PointLightTangentLightPosition;
-in vec3 v_DirectionalTangentLightDirection;
-in vec3 v_TangentCameraPosition;
+in vec4 v_DirectionalLightSpaceFragmentPosition;
+in vec4 v_SpotLightLightSpaceFragmentPosition;
+flat in vec3 v_PointLightTangentLightPosition;
+flat in vec3 v_DirectionalTangentLightDirection;
+flat in vec3 v_TangentCameraPosition;
 in vec3 v_TangentFragmentPosition;
-in vec3 v_SpotLightTangentPosition;
-in vec3 v_SpotLightTangentDirection;
+flat in vec3 v_SpotLightTangentDirection;
+flat in vec3 v_SpotLightTangentPosition;
 flat in int v_TextureSlot;
 flat in int v_SpecularSlot;
 flat in int v_EmissionSlot;
@@ -97,6 +98,7 @@ void main()
     {
       lighting += Lighting(
         u_SpotLights[i],
+        v_SpotLightLightSpaceFragmentPosition,
         v_TangentFragmentPosition,
         v_TangentCameraPosition,
         v_SpotLightTangentPosition,

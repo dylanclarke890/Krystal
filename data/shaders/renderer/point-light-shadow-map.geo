@@ -4,7 +4,7 @@ layout (triangle_strip, max_vertices=18) out;
 
 #import "uniform-buffers.krys";
 
-out vec4 g_FragmentPosition; // g_FragmentPosition from GS (output per emitvertex)
+out vec4 g_FragmentPosition; // (output per emitvertex)
 
 void main()
 {

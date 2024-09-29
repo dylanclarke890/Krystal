@@ -58,11 +58,14 @@ namespace Krys
 
       LightsBuffer = Context->CreateUniformBuffer(UNIFORM_BUFFER_BINDING_LIGHTS, UNIFORM_BUFFER_LAYOUT_LIGHTS);
 
-      int reservedSlotIndex = textureUnits.Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT_SHADOW_MAP_2D);
-      LightsBuffer->SetData("u_Texture2DShadowMapSlotIndex", reservedSlotIndex);
+      int reservedSlotIndex = textureUnits.Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__DIRECTIONAL_SHADOW_MAP);
+      LightsBuffer->SetData("u_DirectionalShadowMapSlotIndex", reservedSlotIndex);
 
-      reservedSlotIndex = textureUnits.TextureCubemap.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT_SHADOW_CUBEMAP);
-      LightsBuffer->SetData("u_CubemapShadowMapSlotIndex", reservedSlotIndex);
+      reservedSlotIndex = textureUnits.Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__SPOT_LIGHT_SHADOW_MAP);
+      LightsBuffer->SetData("u_SpotLightShadowMapSlotIndex", reservedSlotIndex);
+
+      reservedSlotIndex = textureUnits.TextureCubemap.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__POINT_LIGHT_SHADOW_CUBEMAP);
+      LightsBuffer->SetData("u_PointLightShadowMapSlotIndex", reservedSlotIndex);
     }
 
     NO_DISCARD const DirectionalLightArray &GetDirectionalLights() const noexcept { return DirectionalLights; }
@@ -158,7 +161,7 @@ namespace Krys
 
     void AddLight(const SpotLight &light, const LightSettings &settings) noexcept
     {
-      auto index = SpotLightIndex;
+      auto index = SpotLightIndex++;
       SpotLights[index] = light;
 
       string prefix = "u_SpotLights[" + std::to_string(index) + "].";
@@ -170,6 +173,8 @@ namespace Krys
       LightsBuffer->SetData(prefix + "Constant", light.Constant);
       LightsBuffer->SetData(prefix + "Linear", light.Linear);
       LightsBuffer->SetData(prefix + "Quadratic", light.Quadratic);
+      LightsBuffer->SetData(prefix + "InnerCutoff", glm::cos(light.InnerCutoff));
+      LightsBuffer->SetData(prefix + "OuterCutoff", glm::cos(light.OuterCutoff));
       LightsBuffer->SetData(prefix + "Direction", light.Direction);
       LightsBuffer->SetData(prefix + "Position", light.Position);
 
@@ -182,12 +187,11 @@ namespace Krys
         SpotLightShadowCasters[index] = caster;
 
         float aspectRatio = static_cast<float>(caster.ShadowMapResolution) / static_cast<float>(caster.ShadowMapResolution);
-        Mat4 projection = glm::perspective(glm::radians(90.0f), aspectRatio, caster.NearFarPlane.x, caster.NearFarPlane.y);
-        // TODO: this is just copied from the point light code, needs to account for the light direction.
-        Mat4 view = glm::lookAt(light.Position, light.Position + Vec3(1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0));
+        Mat4 projection = glm::perspective(light.OuterCutoff * 2.0f, aspectRatio, caster.NearFarPlane.x, caster.NearFarPlane.y);
+        Mat4 view = glm::lookAt(light.Position, light.Position + light.Direction, Vec3(1.0, 0.0, 0.0));
         caster.LightSpaceMatrix = projection * view;
 
-        prefix = "u_DirectionalShadowCasters[" + std::to_string(index) + "].";
+        prefix = "u_SpotLightShadowCasters[" + std::to_string(index) + "].";
         LightsBuffer->SetData(prefix + "Bias", caster.Bias);
         LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
         LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);

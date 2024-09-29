@@ -6,7 +6,7 @@
 in vec2 v_TextureCoord;
 out vec4 o_Color;
 
-uniform float u_Exposure = 1.0;
+uniform float u_Exposure = 1.2;
 
 void main()
 { 
@@ -20,5 +20,5 @@ void main()
   vec3 bloomColor = GetTextureSample(1, vec4(0.0), v_TextureCoord).rgb;
   hdrColor += bloomColor; // additive blending
 
-  o_Color = vec4(hdrColor, 1.0); //ToneMapping(texture(u_Textures[0], v_TextureCoord).rgb, u_Exposure);
+  o_Color = ToneMapping(hdrColor, u_Exposure);
 }

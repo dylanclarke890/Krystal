@@ -97,26 +97,27 @@ namespace Krys
   void Renderer::InitTextureUnits()
   {
     const int TOTAL_MAX_SLOTS = Context->QueryCapabilities().MaxTextureImageUnits;
+    auto max2DSamplers = TOTAL_MAX_SLOTS - static_cast<int>(CUBEMAP_SLOTS);
 
-    std::vector<int> samplers2D(TOTAL_MAX_SLOTS - CUBEMAP_SLOTS);
-    for (int i = 0; i < TOTAL_MAX_SLOTS - CUBEMAP_SLOTS; i++)
+    std::vector<int> samplers2D(max2DSamplers);
+    for (int i = 0; i < max2DSamplers; i++)
       samplers2D[i] = i;
 
     std::vector<int> samplersCubemap(CUBEMAP_SLOTS);
-    for (int i = 0; i < CUBEMAP_SLOTS; i++)
-      samplersCubemap[i] = TOTAL_MAX_SLOTS - CUBEMAP_SLOTS + i;
+    for (int i = 0; i < static_cast<int>(CUBEMAP_SLOTS); i++)
+      samplersCubemap[i] = max2DSamplers + i;
 
     TextureUnits = ActiveTextureUnits{};
     TextureUnits.Texture2D.CurrentSlotIndex = 0;
-    TextureUnits.Texture2D.MaxSlots = TOTAL_MAX_SLOTS - CUBEMAP_SLOTS;
-    TextureUnits.Texture2D.ReservedSlots = 1;
+    TextureUnits.Texture2D.MaxSlots = max2DSamplers;
+    TextureUnits.Texture2D.ReservedSlots = 2;
     TextureUnits.Texture2D.BindingOffset = 0;
     TextureUnits.Texture2D.Samplers = samplers2D;
     TextureUnits.Texture2D.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.Texture2D.MaxSlots)};
 
     TextureUnits.TextureCubemap.CurrentSlotIndex = 0;
     TextureUnits.TextureCubemap.MaxSlots = CUBEMAP_SLOTS;
-    TextureUnits.TextureCubemap.ReservedSlots = 1;
+    TextureUnits.TextureCubemap.ReservedSlots = LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS;
     TextureUnits.TextureCubemap.BindingOffset = TextureUnits.Texture2D.MaxSlots;
     TextureUnits.TextureCubemap.Samplers = samplersCubemap;
     TextureUnits.TextureCubemap.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.TextureCubemap.MaxSlots)};
@@ -127,7 +128,8 @@ namespace Krys
     Shaders = {};
     Shaders.Default = Context->CreateShader("shaders/renderer/default.vert", "shaders/renderer/default.frag");
     Shaders.DirectionalShadowMap = Context->CreateShader("shaders/renderer/directional-shadow-map.vert", "shaders/renderer/directional-shadow-map.frag");
-    Shaders.OmniDirectionalShadowMap = Context->CreateShader("shaders/renderer/omnidirectional-shadow-map.vert", "shaders/renderer/omnidirectional-shadow-map.frag", "shaders/renderer/omnidirectional-shadow-map.geo");
+    Shaders.PointLightShadowMap = Context->CreateShader("shaders/renderer/point-light-shadow-map.vert", "shaders/renderer/point-light-shadow-map.frag", "shaders/renderer/point-light-shadow-map.geo");
+    Shaders.SpotLightShadowMap = Context->CreateShader("shaders/renderer/spot-light-shadow-map.vert", "shaders/renderer/spot-light-shadow-map.frag");
     Shaders.LightSource = Context->CreateShader("shaders/renderer/light-source.vert", "shaders/renderer/light-source.frag");
     Shaders.Skybox = Context->CreateShader("shaders/renderer/skybox.vert", "shaders/renderer/skybox.frag");
     Shaders.PostProcessing = Context->CreateShader("shaders/renderer/post.vert", "shaders/renderer/post.frag");
@@ -179,14 +181,22 @@ namespace Krys
     Framebuffers.DirectionalShadowMap->DisableWriteBuffers();
     KRYS_ASSERT(Framebuffers.DirectionalShadowMap->IsComplete(), "DirectionalShadowMapFramebuffer Incomplete", 0);
 
-    Framebuffers.OmniDirectionalShadowMap = Context->CreateFramebuffer(LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, 1);
-    Framebuffers.OmniDirectionalShadowMap->AddDepthCubemapAttachment();
-    Framebuffers.OmniDirectionalShadowMap->DisableReadBuffer();
-    Framebuffers.OmniDirectionalShadowMap->DisableWriteBuffers();
-    KRYS_ASSERT(Framebuffers.OmniDirectionalShadowMap->IsComplete(), "OmniDirectionalShadowMapFramebuffer Incomplete", 0);
+    Framebuffers.SpotLightShadowMap = Context->CreateFramebuffer(LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, 1);
+    Framebuffers.SpotLightShadowMap->AddDepthAttachment();
+    Framebuffers.SpotLightShadowMap->DisableReadBuffer();
+    Framebuffers.SpotLightShadowMap->DisableWriteBuffers();
+    KRYS_ASSERT(Framebuffers.SpotLightShadowMap->IsComplete(), "SpotLightShadowMapFramebuffer Incomplete", 0);
 
-    TextureUnits.Texture2D.Slots[0] = Framebuffers.DirectionalShadowMap->GetDepthAttachment();
-    TextureUnits.TextureCubemap.Slots[0] = Framebuffers.OmniDirectionalShadowMap->GetDepthAttachment();
+    Framebuffers.PointLightShadowMap = Context->CreateFramebuffer(LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION, 1);
+    Framebuffers.PointLightShadowMap->AddDepthCubemapAttachment();
+    Framebuffers.PointLightShadowMap->DisableReadBuffer();
+    Framebuffers.PointLightShadowMap->DisableWriteBuffers();
+    KRYS_ASSERT(Framebuffers.PointLightShadowMap->IsComplete(), "PointLightShadowMapFramebuffer Incomplete", 0);
+
+    TextureUnits.Texture2D.Slots[RESERVED_TEXTURE_SLOT__DIRECTIONAL_SHADOW_MAP] = Framebuffers.DirectionalShadowMap->GetDepthAttachment();
+    TextureUnits.Texture2D.Slots[RESERVED_TEXTURE_SLOT__SPOT_LIGHT_SHADOW_MAP] = Framebuffers.SpotLightShadowMap->GetDepthAttachment();
+
+    TextureUnits.TextureCubemap.Slots[RESERVED_TEXTURE_SLOT__POINT_LIGHT_SHADOW_CUBEMAP] = Framebuffers.PointLightShadowMap->GetDepthAttachment();
 
     {
       auto pingPongBufferA = Context->CreateFramebuffer(AppWindow->GetWidth(), AppWindow->GetHeight());
@@ -676,13 +686,23 @@ namespace Krys
         Context->SetFaceCulling(CullMode::Back);
       }
 
-      // Omnidirectional
+      // Point Light
       {
-        Framebuffers.OmniDirectionalShadowMap->Bind();
-        Context->SetViewport(Framebuffers.OmniDirectionalShadowMap->GetWidth(), Framebuffers.OmniDirectionalShadowMap->GetHeight());
+        Framebuffers.PointLightShadowMap->Bind();
+        Context->SetViewport(Framebuffers.PointLightShadowMap->GetWidth(), Framebuffers.PointLightShadowMap->GetHeight());
         Context->Clear(RenderBuffer::Depth);
 
-        Shaders.OmniDirectionalShadowMap->Bind();
+        Shaders.PointLightShadowMap->Bind();
+        Context->DrawIndices(IndexCount, DrawMode::Triangles);
+      }
+
+      // Spot Light
+      {
+        Framebuffers.SpotLightShadowMap->Bind();
+        Context->SetViewport(Framebuffers.SpotLightShadowMap->GetWidth(), Framebuffers.SpotLightShadowMap->GetHeight());
+        Context->Clear(RenderBuffer::Depth);
+
+        Shaders.SpotLightShadowMap->Bind();
         Context->DrawIndices(IndexCount, DrawMode::Triangles);
       }
     }

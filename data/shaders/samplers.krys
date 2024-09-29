@@ -41,6 +41,7 @@ vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec2 textureCoord
     case 27: return texture(u_Textures[27], textureCoord);
     case 28: return texture(u_Textures[28], textureCoord);
     case 29: return texture(u_Textures[29], textureCoord);
+    // case 30: return texture(u_Textures[30], textureCoord);
     default: return defaultColor;
   }
 }
