@@ -108,18 +108,16 @@ namespace Krys
       samplersCubemap[i] = max2DSamplers + i;
 
     TextureUnits = ActiveTextureUnits{};
-    TextureUnits.Texture2D.CurrentSlotIndex = 0;
+    TextureUnits.Texture2D.NextSlotIndex = 0;
     TextureUnits.Texture2D.MaxSlots = max2DSamplers;
     TextureUnits.Texture2D.ReservedSlots = LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS + LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS;
-    TextureUnits.Texture2D.BindingOffset = 0;
-    TextureUnits.Texture2D.Samplers = samplers2D;
+    TextureUnits.Texture2D.SlotIndices = samplers2D;
     TextureUnits.Texture2D.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.Texture2D.MaxSlots)};
 
-    TextureUnits.TextureCubemap.CurrentSlotIndex = 0;
+    TextureUnits.TextureCubemap.NextSlotIndex = 0;
     TextureUnits.TextureCubemap.MaxSlots = CUBEMAP_SLOTS;
     TextureUnits.TextureCubemap.ReservedSlots = LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS;
-    TextureUnits.TextureCubemap.BindingOffset = TextureUnits.Texture2D.MaxSlots;
-    TextureUnits.TextureCubemap.Samplers = samplersCubemap;
+    TextureUnits.TextureCubemap.SlotIndices = samplersCubemap;
     TextureUnits.TextureCubemap.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(TextureUnits.TextureCubemap.MaxSlots)};
   }
 
@@ -842,7 +840,7 @@ namespace Krys
     if (!texture)
       return index; // Texture can be null, no need to assert here.
 
-    for (int i = bindingInfo.ReservedSlots; i < bindingInfo.CurrentSlotIndex; i++)
+    for (int i = bindingInfo.ReservedSlots; i < bindingInfo.NextSlotIndex; i++)
     {
       if (texture->GetId() == bindingInfo.Slots[i]->GetId())
       {
@@ -858,7 +856,7 @@ namespace Krys
         NextBatch();
       }
 
-      index = bindingInfo.CurrentSlotIndex++;
+      index = bindingInfo.NextSlotIndex++;
       bindingInfo.Slots[index] = texture;
     }
 

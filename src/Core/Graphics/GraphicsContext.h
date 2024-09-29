@@ -81,28 +81,30 @@ namespace Krys
 
   struct TextureBindingInfo
   {
+    std::vector<int> SlotIndices;
     std::vector<Ref<Texture>> Slots;
-    int CurrentSlotIndex, MaxSlots, ReservedSlots, BindingOffset;
-    std::vector<int> Samplers;
+    int MaxSlots = 0;
+    int NextSlotIndex = 0;
+    int ReservedSlots = 0;
 
     // TODO: We can have empty reserved slots if we've not yet added the textures. Maybe rethink this approach.
     void Bind() const noexcept
     {
-      for (int i = ReservedSlots; i < CurrentSlotIndex; i++)
+      for (int i = ReservedSlots; i < NextSlotIndex; i++)
         if (Slots[i])
-          Slots[i]->Bind(i + BindingOffset);
+          Slots[i]->Bind(SlotIndices[i]);
     }
 
     void BindReserved() const noexcept
     {
       for (int i = 0; i < ReservedSlots; i++)
         if (Slots[i])
-          Slots[i]->Bind(i + BindingOffset);
+          Slots[i]->Bind(SlotIndices[i]);
     }
 
     void Unbind() const noexcept
     {
-      for (int i = ReservedSlots; i < CurrentSlotIndex; i++)
+      for (int i = ReservedSlots; i < NextSlotIndex; i++)
         if (Slots[i])
           Slots[i]->Unbind();
     }
@@ -116,13 +118,13 @@ namespace Krys
 
     NO_DISCARD bool HasSlotsRemaining() const noexcept
     {
-      return CurrentSlotIndex < MaxSlots;
+      return NextSlotIndex < MaxSlots;
     }
 
     NO_DISCARD int GetReservedSlotIndex(int i) const noexcept
     {
       KRYS_ASSERT(i < ReservedSlots, "Trying to access a reserved slot out of bounds", 0);
-      return BindingOffset + i;
+      return SlotIndices[i];
     }
   };
 
@@ -157,8 +159,8 @@ namespace Krys
 
     void Reset() noexcept
     {
-      Texture2D.CurrentSlotIndex = Texture2D.ReservedSlots;
-      TextureCubemap.CurrentSlotIndex = TextureCubemap.ReservedSlots;
+      Texture2D.NextSlotIndex = Texture2D.ReservedSlots;
+      TextureCubemap.NextSlotIndex = TextureCubemap.ReservedSlots;
     }
 
     void SetSamplerUniforms(std::vector<Ref<Shader>> shaders) noexcept
@@ -170,8 +172,8 @@ namespace Krys
 
     void SetSamplerUniforms(Ref<Shader> shader) noexcept
     {
-      shader->TrySetUniform("u_Textures", Texture2D.Samplers.data(), Texture2D.MaxSlots);
-      shader->TrySetUniform("u_Cubemaps", TextureCubemap.Samplers.data(), TextureCubemap.MaxSlots);
+      shader->TrySetUniform("u_Textures", Texture2D.SlotIndices.data(), Texture2D.MaxSlots);
+      shader->TrySetUniform("u_Cubemaps", TextureCubemap.SlotIndices.data(), TextureCubemap.MaxSlots);
     }
 
     NO_DISCARD int MaxUnits() const { return Texture2D.MaxSlots + TextureCubemap.MaxSlots; }
