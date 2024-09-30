@@ -8,7 +8,18 @@
 
 namespace Krys
 {
-  // ----------- LIGHTING ------------
+#pragma region Renderer
+
+  constexpr uint RENDERER_MAX_TRIANGLES = 10000;
+  constexpr uint RENDERER_MAX_QUADS = RENDERER_MAX_TRIANGLES / 2;
+  constexpr uint RENDERER_MAX_VERTICES = RENDERER_MAX_QUADS * 4;
+  constexpr uint RENDERER_MAX_INDICES = RENDERER_MAX_QUADS * 6;
+  static Vec4 RENDERER_DEFAULT_OBJECT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
+
+#pragma endregion Renderer
+
+#pragma region Lighting
+
   constexpr uint CUBEMAP_SLOTS = 2;
 
   constexpr uint LIGHTING_MAX_DIRECTIONAL_LIGHTS = 2;
@@ -52,9 +63,9 @@ namespace Krys
     Vec2 NearFarPlane = Vec2(1.0f, 25.0f);
   };
 
-  // ----------- LIGHTING ------------
+#pragma endregion Lighting
 
-  // ------- DIRECTIONAL LIGHT -------
+#pragma region Directional Light
 
   struct DirectionalLight : Light
   {
@@ -88,8 +99,9 @@ namespace Krys
       {UniformDataType::Mat4, "LightSpaceMatrix"},
   }};
 
-  // ------- DIRECTIONAL LIGHT -------
-  // --------- POINT LIGHT -----------
+#pragma endregion Directional Light
+
+#pragma region Point Light
 
   struct PointLight : Light
   {
@@ -134,9 +146,10 @@ namespace Krys
       {UniformDataType::Mat4, "LightSpaceMatrices", 6},
   };
 
-  // --------- POINT LIGHT -----------
+#pragma endregion Point Light
 
-  // ---------- SPOT LIGHT -----------
+#pragma region Spot Light
+
   struct SpotLight : Light
   {
     float Constant;
@@ -183,17 +196,10 @@ namespace Krys
       {UniformDataType::Mat4, "LightSpaceMatrix"},
   };
 
-  // ---------- SPOT LIGHT -----------
+#pragma endregion Spot Light
 
-  // ----------- RENDERER ------------
-  constexpr uint RENDERER_MAX_TRIANGLES = 10000;
-  constexpr uint RENDERER_MAX_QUADS = RENDERER_MAX_TRIANGLES / 2;
-  constexpr uint RENDERER_MAX_VERTICES = RENDERER_MAX_QUADS * 4;
-  constexpr uint RENDERER_MAX_INDICES = RENDERER_MAX_QUADS * 6;
-  static Vec4 RENDERER_DEFAULT_OBJECT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
-  // ----------- RENDERER ------------
+#pragma region Default Vertex Data
 
-  // ----------- DEFAULT VERTEX DATA ------------
   /// @brief 4 floats per vertex, first 2 = position, last 2 = texture coords.
   static float SCREEN_QUAD_VERTICES[] = {
       -1.0f, 1.0f, 0.0f, 1.0f,
@@ -249,6 +255,7 @@ namespace Krys
       {0.5f, -0.5f, -0.5f, 1.0f}, // 22
       {-0.5f, -0.5f, -0.5f, 1.0f} // 23
   };
+
   constexpr Vec3 CUBE_SURFACE_NORMALS[] = {
       {0.0f, 0.0f, 1.0f}, // Front face
       {0.0f, 0.0f, 1.0f},
@@ -279,16 +286,13 @@ namespace Krys
       {0.0f, -1.0f, 0.0f},
       {0.0f, -1.0f, 0.0f},
       {0.0f, -1.0f, 0.0f}};
-  // ----------- DEFAULT VERTEX DATA ------------
 
-  // -------- UNIFORM BUFFER BINDINGS --------
+#pragma endregion Default Vertex Data
+
+#pragma region Uniform Buffers
 
   constexpr uint32 UNIFORM_BUFFER_BINDING_SHARED = 0;
   constexpr uint32 UNIFORM_BUFFER_BINDING_LIGHTS = 1;
-
-  // -------- UNIFORM BUFFER BINDINGS --------
-
-  // -------- UNIFORM BUFFER LAYOUTS ---------
 
   static UniformBufferLayout UNIFORM_BUFFER_LAYOUT_SHARED = {
       {UniformDataType::Mat4, "u_ViewProjection"},
@@ -316,9 +320,9 @@ namespace Krys
       {UniformDataType::Scalar, "u_UseBlinnLightingModel"},
   };
 
-  // -------- UNIFORM BUFFER LAYOUTS ---------
+#pragma endregion Uniform Buffers
 
-  // -------- VERTEX BUFFER LAYOUTS ----------
+#pragma region Vertex Buffers
 
   static VertexBufferLayout VERTEX_BUFFER_LAYOUT_SCREEN = {
       {ShaderDataType::Float2, "i_Position"},
@@ -339,5 +343,5 @@ namespace Krys
       {ShaderDataType::Float3, "i_Tangent"},
   };
 
-  // -------- VERTEX BUFFER LAYOUTS ----------
+#pragma endregion Vertex Buffers
 }
