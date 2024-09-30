@@ -124,17 +124,17 @@ namespace Krys
   void Renderer::InitShaders()
   {
     Shaders = {};
-    Shaders.Default = Context->CreateShader("shaders/renderer/default.vert", "shaders/renderer/default.frag");
-    Shaders.DirectionalShadowMap = Context->CreateShader("shaders/renderer/directional-shadow-map.vert", "shaders/renderer/empty.frag");
-    Shaders.PointLightShadowMap = Context->CreateShader("shaders/renderer/point-light-shadow-map.vert", "shaders/renderer/point-light-shadow-map.frag", "shaders/renderer/point-light-shadow-map.geo");
-    Shaders.SpotLightShadowMap = Context->CreateShader("shaders/renderer/spot-light-shadow-map.vert", "shaders/renderer/empty.frag");
-    Shaders.LightSource = Context->CreateShader("shaders/renderer/light-source.vert", "shaders/renderer/light-source.frag");
-    Shaders.Skybox = Context->CreateShader("shaders/renderer/skybox.vert", "shaders/renderer/skybox.frag");
-    Shaders.PostProcessing = Context->CreateShader("shaders/renderer/post.vert", "shaders/renderer/post.frag");
-    Shaders.ExtractBrightness = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/renderer/extract-brightness.frag");
-    Shaders.GaussianBlur = Context->CreateShader("shaders/renderer/screen-quad.vert", "shaders/effects/gaussian-blur.frag");
+    Shaders.ForwardShading = Context->CreateShader("shaders/forward-shade.vert", "shaders/forward-shade.frag");
+    Shaders.DirectionalShadowMap = Context->CreateShader("shaders/depth/directional-light.vert", "shaders/empty.frag");
+    Shaders.PointLightShadowMap = Context->CreateShader("shaders/depth/point-light.vert", "shaders/depth/point-light.frag", "shaders/depth/point-light.geo");
+    Shaders.SpotLightShadowMap = Context->CreateShader("shaders/depth/spot-light.vert", "shaders/empty.frag");
+    Shaders.LightSource = Context->CreateShader("shaders/light-source.vert", "shaders/light-source.frag");
+    Shaders.Skybox = Context->CreateShader("shaders/skybox.vert", "shaders/skybox.frag");
+    Shaders.PostProcessing = Context->CreateShader("shaders/post.vert", "shaders/post.frag");
+    Shaders.ExtractBrightness = Context->CreateShader("shaders/screen-quad.vert", "shaders/extract-brightness.frag");
+    Shaders.GaussianBlur = Context->CreateShader("shaders/screen-quad.vert", "shaders/effects/gaussian-blur.frag");
 
-    TextureUnits->SetSamplerUniforms({Shaders.Default, Shaders.PostProcessing});
+    TextureUnits->SetSamplerUniforms({Shaders.ForwardShading, Shaders.PostProcessing});
   }
 
   void Renderer::InitDeferredRenderer()
@@ -582,7 +582,7 @@ namespace Krys
   {
     KRYS_ASSERT(camera, "Cannot begin scene with a null camera.", 0);
     ActiveCamera = camera;
-    ActiveShader = shaderToUse ? shaderToUse : Shaders.Default;
+    ActiveShader = shaderToUse ? shaderToUse : Shaders.ForwardShading;
 
     SharedUniformBuffer->SetData("u_ViewProjection", camera->GetViewProjection());
     SharedUniformBuffer->SetData("u_CameraPosition", camera->GetPosition());

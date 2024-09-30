@@ -45,7 +45,7 @@ namespace Krys
 
   struct RendererShaders
   {
-    Ref<Shader> Default, DirectionalShadowMap, PointLightShadowMap, SpotLightShadowMap,
+    Ref<Shader> ForwardShading, DirectionalShadowMap, PointLightShadowMap, SpotLightShadowMap,
         LightSource, Skybox, PostProcessing, ExtractBrightness, GaussianBlur;
   };
 

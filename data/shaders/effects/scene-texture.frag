@@ -63,17 +63,6 @@ vec4 GetTextureSample(int textureSlotIndex, vec4 defaultColor, vec2 textureCoord
   }
 }
 
-vec4 GreyScale(vec4 color)
-{
-  float average = (0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b) / 3.0;
-  return vec4(vec3(average), 1.0);
-}
-
-vec4 Invert(vec4 color)
-{
-  return vec4(vec3(1 - color), 1.0);
-}
-
 const float KERNEL_SAMPLING_OFFSET = 1.0 / 300.0;
 const vec2 KERNEL_3x3_TEXTURE_COORD_OFFSETS[9] = vec2[9](
     vec2(-KERNEL_SAMPLING_OFFSET,  KERNEL_SAMPLING_OFFSET), // top-left
