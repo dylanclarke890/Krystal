@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core.h"
+#include "Graphics.h"
 #include "Buffer.h"
 #include "Framebuffer.h"
 #include "Shader.h"
@@ -11,6 +12,7 @@
 #include "Graphics/Enums.h"
 
 #include <algorithm>
+#include <unordered_map>
 
 namespace Krys
 {
@@ -79,6 +81,13 @@ namespace Krys
     Deferred
   };
 
+  enum class ReservedSlotType
+  {
+    DirectionalShadowMap,
+    PointLightShadowMap,
+    SpotLightShadowMap,
+  };
+
   struct TextureBindingInfo
   {
     std::vector<int> SlotIndices;
@@ -87,33 +96,28 @@ namespace Krys
     int NextSlotIndex = 0;
     int ReservedSlots = 0;
 
-    // TODO: We can have empty reserved slots if we've not yet added the textures. Maybe rethink this approach.
     void Bind() const noexcept
     {
       for (int i = ReservedSlots; i < NextSlotIndex; i++)
-        if (Slots[i])
-          Slots[i]->Bind(SlotIndices[i]);
+        Slots[i]->Bind(SlotIndices[i]);
     }
 
     void BindReserved() const noexcept
     {
       for (int i = 0; i < ReservedSlots; i++)
-        if (Slots[i])
-          Slots[i]->Bind(SlotIndices[i]);
+        Slots[i]->Bind(SlotIndices[i]);
     }
 
     void Unbind() const noexcept
     {
       for (int i = ReservedSlots; i < NextSlotIndex; i++)
-        if (Slots[i])
-          Slots[i]->Unbind();
+        Slots[i]->Unbind();
     }
 
     void UnbindReserved() const noexcept
     {
       for (int i = 0; i < ReservedSlots; i++)
-        if (Slots[i])
-          Slots[i]->Unbind();
+        Slots[i]->Unbind();
     }
 
     NO_DISCARD bool HasSlotsRemaining() const noexcept
@@ -121,10 +125,13 @@ namespace Krys
       return NextSlotIndex < MaxSlots;
     }
 
-    NO_DISCARD int GetReservedSlotIndex(int i) const noexcept
+    // Returns a pair, the first element is the reserved index, the second is the sampler index of the slot.
+    NO_DISCARD std::pair<int, int> ReserveSlot() noexcept
     {
-      KRYS_ASSERT(i < ReservedSlots, "Trying to access a reserved slot out of bounds", 0);
-      return SlotIndices[i];
+      KRYS_ASSERT(NextSlotIndex == ReservedSlots, "Should not be reserving slots in the middle of binding textures", 0);
+      auto index = ReservedSlots++;
+      NextSlotIndex = ReservedSlots;
+      return {index, SlotIndices[index]};
     }
   };
 
@@ -132,6 +139,9 @@ namespace Krys
   {
     TextureBindingInfo Texture2D;
     TextureBindingInfo TextureCubemap;
+    std::unordered_map<ReservedSlotType, std::vector<int>> ReservedSlots;
+
+#pragma region Binding
 
     void Bind() const noexcept
     {
@@ -157,11 +167,9 @@ namespace Krys
       TextureCubemap.UnbindReserved();
     }
 
-    void Reset() noexcept
-    {
-      Texture2D.NextSlotIndex = Texture2D.ReservedSlots;
-      TextureCubemap.NextSlotIndex = TextureCubemap.ReservedSlots;
-    }
+#pragma endregion Binding
+
+#pragma region Setting Samplers
 
     void SetSamplerUniforms(std::vector<Ref<Shader>> shaders) noexcept
     {
@@ -176,7 +184,47 @@ namespace Krys
       shader->TrySetUniform("u_Cubemaps", TextureCubemap.SlotIndices.data(), TextureCubemap.MaxSlots);
     }
 
-    NO_DISCARD int MaxUnits() const { return Texture2D.MaxSlots + TextureCubemap.MaxSlots; }
+#pragma endregion Setting Samplers
+
+    NO_DISCARD std::pair<int, int> ReserveSlot(ReservedSlotType type)
+    {
+      auto slotsSearch = ReservedSlots.find(type);
+      std::vector<int> slots = slotsSearch == ReservedSlots.end() ? std::vector<int>{} : slotsSearch->second;
+
+      std::pair<int, int> slotIndex;
+      switch (type)
+      {
+      case ReservedSlotType::DirectionalShadowMap:
+      {
+        KRYS_ASSERT(slots.size() < LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS, "DirectionalShadowCaster limit exceeded", 0);
+        slotIndex = Texture2D.ReserveSlot();
+        break;
+      }
+      case ReservedSlotType::PointLightShadowMap:
+      {
+        KRYS_ASSERT(slots.size() < LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS, "PointLightShadowCaster limit exceeded", 0);
+        slotIndex = TextureCubemap.ReserveSlot();
+        break;
+      }
+      case ReservedSlotType::SpotLightShadowMap:
+      {
+        KRYS_ASSERT(slots.size() < LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS, "SpotLightShadowCaster limit exceeded", 0);
+        slotIndex = Texture2D.ReserveSlot();
+        break;
+      }
+      }
+
+      slots.push_back(slotIndex.first);
+      ReservedSlots[type] = slots;
+
+      return slotIndex;
+    }
+
+    void Reset() noexcept
+    {
+      Texture2D.NextSlotIndex = Texture2D.ReservedSlots;
+      TextureCubemap.NextSlotIndex = TextureCubemap.ReservedSlots;
+    }
   };
 
   class GraphicsContext

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <array>
+#include <unordered_map>
+#include <span>
 
 #include "Core.h"
 #include "Graphics/Graphics.h"
@@ -53,78 +55,73 @@ namespace Krys
       TextureUnits = textureUnits;
     }
 
-    NO_DISCARD const DirectionalLightArray &GetDirectionalLights() const noexcept { return DirectionalLights; }
-    NO_DISCARD const SpotLightArray &GetSpotLights() const noexcept { return SpotLights; }
-    NO_DISCARD const PointLightArray &GetPointLights() const noexcept { return PointLights; }
-    NO_DISCARD const Ref<UniformBuffer> GetLightUniformBuffer() const noexcept { return LightsBuffer; }
-
     void AddLight(const DirectionalLight &light, const LightSettings &settings) noexcept
     {
       auto index = DirectionalLightIndex++;
       DirectionalLights[index] = light;
+      LightsBuffer->SetData("u_DirectionalLightCount", static_cast<int>(DirectionalLightIndex));
 
       string prefix = "u_DirectionalLights[" + std::to_string(index) + "].";
-      LightsBuffer->SetData(prefix + "Ambient", light.Ambient);
-      LightsBuffer->SetData(prefix + "Diffuse", light.Diffuse);
-      LightsBuffer->SetData(prefix + "Specular", light.Specular);
-      LightsBuffer->SetData(prefix + "Enabled", light.Enabled);
-      LightsBuffer->SetData(prefix + "Intensity", light.Intensity);
+      SetSharedLightData(light, prefix);
       LightsBuffer->SetData(prefix + "Direction", light.Direction);
 
       if (settings.CastShadows)
       {
-        DirectionalShadowCaster caster;
+        DirectionalShadowCaster caster{};
+        caster.Enabled = true;
         caster.LightIndex = index;
-
+        caster.NearFarPlane = settings.NearFarPlane;
         index = DirectionalShadowCasterIndex++;
-        DirectionalShadowCasters[index] = caster;
+
+        Vec3 direction = -light.Direction;
+        Vec3 up = Vec3(0.0f, 1.0f, 0.0f);
+
+        // Check if the direction is parallel or anti-parallel to the up vector
+        if (glm::abs(glm::dot(glm::normalize(direction), glm::normalize(up))) > 0.999f)
+          up = Vec3(1.0f, 0.0f, 0.0f);
 
         Mat4 projection = glm::ortho(caster.Bounds.Left, caster.Bounds.Right, caster.Bounds.Bottom, caster.Bounds.Top, caster.NearFarPlane.x, caster.NearFarPlane.y);
-        Mat4 view = glm::lookAt(-light.Direction * 10.0f, Vec3(0.0f), Vec3(1.0f, 0.0f, 0.0f)); // TODO: configurable target/up vectors
-
+        Mat4 view = glm::lookAt(direction * 10.0f, Vec3(0.0f), up);
         caster.LightSpaceMatrix = projection * view;
 
         prefix = "u_DirectionalShadowCasters[" + std::to_string(index) + "].";
-        LightsBuffer->SetData(prefix + "Bias", caster.Bias);
-        LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
-        LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
-        LightsBuffer->SetData(prefix + "ShadowMapSlotIndex", TextureUnits->Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__DIRECTIONAL_SHADOW_MAP));
-        LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
+        auto reservedSlot = TextureUnits->ReserveSlot(ReservedSlotType::DirectionalShadowMap);
+        caster.ShadowMapSlotIndex = reservedSlot.second;
+
+        SetSharedShadowCasterData(caster, prefix);
         LightsBuffer->SetData(prefix + "LightSpaceMatrix", caster.LightSpaceMatrix);
 
+        caster.ShadowMapFramebuffer = CreateDepthFramebuffer(caster, reservedSlot.first);
+
+        DirectionalShadowCasters[index] = caster;
         LightsBuffer->SetData("u_DirectionalShadowCasterCount", static_cast<int>(DirectionalShadowCasterIndex));
       }
-      LightsBuffer->SetData("u_DirectionalLightCount", static_cast<int>(DirectionalLightIndex));
     }
 
     void AddLight(const PointLight &light, const LightSettings &settings) noexcept
     {
       auto index = PointLightIndex++;
       PointLights[index] = light;
+      LightsBuffer->SetData("u_PointLightCount", static_cast<int>(PointLightIndex));
 
       string prefix = "u_PointLights[" + std::to_string(index) + "].";
-      LightsBuffer->SetData(prefix + "Ambient", light.Ambient);
-      LightsBuffer->SetData(prefix + "Diffuse", light.Diffuse);
-      LightsBuffer->SetData(prefix + "Specular", light.Specular);
+      SetSharedLightData(light, prefix);
       LightsBuffer->SetData(prefix + "Constant", light.Constant);
       LightsBuffer->SetData(prefix + "Linear", light.Linear);
       LightsBuffer->SetData(prefix + "Quadratic", light.Quadratic);
-      LightsBuffer->SetData(prefix + "Enabled", light.Enabled);
-      LightsBuffer->SetData(prefix + "Intensity", light.Intensity);
       LightsBuffer->SetData(prefix + "FarPlane", light.FarPlane);
       LightsBuffer->SetData(prefix + "Position", light.Position);
 
       if (settings.CastShadows)
       {
-        PointLightShadowCaster caster;
+        PointLightShadowCaster caster{};
+        caster.Enabled = true;
         caster.LightIndex = index;
-
+        caster.NearFarPlane = settings.NearFarPlane;
         index = PointLightShadowCasterIndex++;
-        PointLightShadowCasters[index] = caster;
 
         float aspectRatio = static_cast<float>(caster.ShadowMapResolution) / static_cast<float>(caster.ShadowMapResolution);
         Mat4 projection = glm::perspective(glm::radians(90.0f), aspectRatio, caster.NearFarPlane.x, caster.NearFarPlane.y);
-
         caster.LightSpaceMatrices[0] = projection * glm::lookAt(light.Position, light.Position + Vec3(1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0));
         caster.LightSpaceMatrices[1] = projection * glm::lookAt(light.Position, light.Position + Vec3(-1.0, 0.0, 0.0), Vec3(0.0, -1.0, 0.0));
         caster.LightSpaceMatrices[2] = projection * glm::lookAt(light.Position, light.Position + Vec3(0.0, 1.0, 0.0), Vec3(0.0, 0.0, 1.0));
@@ -133,30 +130,28 @@ namespace Krys
         caster.LightSpaceMatrices[5] = projection * glm::lookAt(light.Position, light.Position + Vec3(0.0, 0.0, -1.0), Vec3(0.0, -1.0, 0.0));
 
         prefix = "u_PointLightShadowCasters[" + std::to_string(index) + "].";
-        LightsBuffer->SetData(prefix + "Bias", caster.Bias);
-        LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
-        LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
-        LightsBuffer->SetData(prefix + "ShadowMapSlotIndex", TextureUnits->TextureCubemap.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__POINT_LIGHT_SHADOW_CUBEMAP));
-        LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
+        auto reservedSlot = TextureUnits->ReserveSlot(ReservedSlotType::PointLightShadowMap);
+        caster.ShadowMapSlotIndex = reservedSlot.second;
+
+        SetSharedShadowCasterData(caster, prefix);
         for (uint i = 0; i < 6; i++)
           LightsBuffer->SetData(prefix + "LightSpaceMatrices[" + std::to_string(i) + "]", caster.LightSpaceMatrices[i]);
 
+        caster.ShadowMapFramebuffer = CreateDepthFramebuffer(caster, reservedSlot.first, true);
+
+        PointLightShadowCasters[index] = caster;
         LightsBuffer->SetData("u_PointLightShadowCasterCount", static_cast<int>(PointLightShadowCasterIndex));
       }
-      LightsBuffer->SetData("u_PointLightCount", static_cast<int>(PointLightIndex));
     }
 
     void AddLight(const SpotLight &light, const LightSettings &settings) noexcept
     {
       auto index = SpotLightIndex++;
       SpotLights[index] = light;
+      LightsBuffer->SetData("u_SpotLightCount", static_cast<int>(SpotLightIndex));
 
       string prefix = "u_SpotLights[" + std::to_string(index) + "].";
-      LightsBuffer->SetData(prefix + "Ambient", light.Ambient);
-      LightsBuffer->SetData(prefix + "Diffuse", light.Diffuse);
-      LightsBuffer->SetData(prefix + "Specular", light.Specular);
-      LightsBuffer->SetData(prefix + "Enabled", light.Enabled);
-      LightsBuffer->SetData(prefix + "Intensity", light.Intensity);
+      SetSharedLightData(light, prefix);
       LightsBuffer->SetData(prefix + "Constant", light.Constant);
       LightsBuffer->SetData(prefix + "Linear", light.Linear);
       LightsBuffer->SetData(prefix + "Quadratic", light.Quadratic);
@@ -167,11 +162,11 @@ namespace Krys
 
       if (settings.CastShadows)
       {
-        SpotLightShadowCaster caster;
+        SpotLightShadowCaster caster{};
         caster.LightIndex = index;
-
+        caster.Enabled = true;
+        caster.NearFarPlane = settings.NearFarPlane;
         index = SpotLightShadowCasterIndex++;
-        SpotLightShadowCasters[index] = caster;
 
         float aspectRatio = static_cast<float>(caster.ShadowMapResolution) / static_cast<float>(caster.ShadowMapResolution);
         Mat4 projection = glm::perspective(light.OuterCutoff * 2.0f, aspectRatio, caster.NearFarPlane.x, caster.NearFarPlane.y);
@@ -179,16 +174,17 @@ namespace Krys
         caster.LightSpaceMatrix = projection * view;
 
         prefix = "u_SpotLightShadowCasters[" + std::to_string(index) + "].";
-        LightsBuffer->SetData(prefix + "Bias", caster.Bias);
-        LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
-        LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
-        LightsBuffer->SetData(prefix + "ShadowMapSlotIndex", TextureUnits->Texture2D.GetReservedSlotIndex(RESERVED_TEXTURE_SLOT__SPOT_LIGHT_SHADOW_MAP));
-        LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
+        auto reservedSlot = TextureUnits->ReserveSlot(ReservedSlotType::SpotLightShadowMap);
+        caster.ShadowMapSlotIndex = reservedSlot.second;
+
+        SetSharedShadowCasterData(caster, prefix);
         LightsBuffer->SetData(prefix + "LightSpaceMatrix", caster.LightSpaceMatrix);
 
+        caster.ShadowMapFramebuffer = CreateDepthFramebuffer(caster, reservedSlot.first);
+
+        SpotLightShadowCasters[index] = caster;
         LightsBuffer->SetData("u_SpotLightShadowCasterCount", static_cast<int>(SpotLightShadowCasterIndex));
       }
-      LightsBuffer->SetData("u_SpotLightCount", static_cast<int>(SpotLightIndex));
     }
 
     void SetLightingModel(LightingModel model) noexcept
@@ -205,6 +201,82 @@ namespace Krys
     void EnableShadows(bool enabled = true) noexcept
     {
       LightsBuffer->SetData("u_ShadowsEnabled", enabled);
+    }
+
+    NO_DISCARD std::span<const DirectionalLight> GetDirectionalLights() const noexcept
+    {
+      return std::span<const DirectionalLight>(DirectionalLights.data(), DirectionalLightIndex);
+    }
+
+    NO_DISCARD std::span<const DirectionalShadowCaster> GetDirectionalShadowCasters() const noexcept
+    {
+      return std::span<const DirectionalShadowCaster>(DirectionalShadowCasters.data(), DirectionalShadowCasterIndex);
+    }
+
+    NO_DISCARD std::span<const SpotLight> GetSpotLights() const noexcept
+    {
+      return std::span<const SpotLight>(SpotLights.data(), SpotLightIndex);
+    }
+
+    NO_DISCARD std::span<const SpotLightShadowCaster> GetSpotLightShadowCasters() const noexcept
+    {
+      return std::span<const SpotLightShadowCaster>(SpotLightShadowCasters.data(), SpotLightShadowCasterIndex);
+    }
+
+    NO_DISCARD std::span<const PointLight> GetPointLights() const noexcept
+    {
+      return std::span<const PointLight>(PointLights.data(), PointLightIndex);
+    }
+
+    NO_DISCARD std::span<const PointLightShadowCaster> GetPointLightShadowCasters() const noexcept
+    {
+      return std::span<const PointLightShadowCaster>(PointLightShadowCasters.data(), PointLightShadowCasterIndex);
+    }
+
+    NO_DISCARD const Ref<UniformBuffer> GetLightUniformBuffer() const noexcept { return LightsBuffer; }
+
+  private:
+    void SetSharedLightData(const Light &light, const string &prefix) noexcept
+    {
+      LightsBuffer->SetData(prefix + "Ambient", light.Ambient);
+      LightsBuffer->SetData(prefix + "Diffuse", light.Diffuse);
+      LightsBuffer->SetData(prefix + "Specular", light.Specular);
+      LightsBuffer->SetData(prefix + "Enabled", light.Enabled);
+      LightsBuffer->SetData(prefix + "Intensity", light.Intensity);
+    }
+
+    void SetSharedShadowCasterData(const ShadowCaster &caster, const string &prefix) noexcept
+    {
+      LightsBuffer->SetData(prefix + "Bias", caster.Bias);
+      LightsBuffer->SetData(prefix + "LightIndex", caster.LightIndex);
+      LightsBuffer->SetData(prefix + "ShadowMapResolution", caster.ShadowMapResolution);
+      LightsBuffer->SetData(prefix + "ShadowMapSlotIndex", caster.ShadowMapSlotIndex);
+      LightsBuffer->SetData(prefix + "Enabled", caster.Enabled);
+      LightsBuffer->SetData(prefix + "NearFarPlane", caster.NearFarPlane);
+    }
+
+    NO_DISCARD Ref<Framebuffer> CreateDepthFramebuffer(ShadowCaster &caster, int slotIndex, bool isCubemap = false)
+    {
+      auto shadowMapFramebuffer = Context->CreateFramebuffer(caster.ShadowMapResolution, caster.ShadowMapResolution);
+
+      if (isCubemap)
+        shadowMapFramebuffer->AddDepthCubemapAttachment();
+      else
+        shadowMapFramebuffer->AddDepthAttachment();
+
+      shadowMapFramebuffer->DisableReadBuffer();
+      shadowMapFramebuffer->DisableWriteBuffers();
+      KRYS_ASSERT(shadowMapFramebuffer->IsComplete(), "Shadow map framebuffer incomplete", 0);
+
+      caster.ShadowMapFramebuffer = shadowMapFramebuffer;
+      caster.DepthTexture = shadowMapFramebuffer->GetDepthAttachment();
+
+      if (isCubemap)
+        TextureUnits->TextureCubemap.Slots[slotIndex] = caster.DepthTexture;
+      else
+        TextureUnits->Texture2D.Slots[slotIndex] = caster.DepthTexture;
+
+      return shadowMapFramebuffer;
     }
   };
 }

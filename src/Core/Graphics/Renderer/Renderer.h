@@ -39,10 +39,7 @@ namespace Krys
 
   struct RendererFramebuffers
   {
-    Ref<Framebuffer> MultiSample, SingleSample,
-        DirectionalShadowMap, PointLightShadowMap, SpotLightShadowMap,
-        ExtractBrightness, PostProcessing;
-
+    Ref<Framebuffer> MultiSample, SingleSample, ExtractBrightness, PostProcessing;
     Ref<PingPongFramebuffer> GaussianBlur;
   };
 

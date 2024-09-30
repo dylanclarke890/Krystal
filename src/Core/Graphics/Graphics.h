@@ -3,28 +3,14 @@
 #include "Core.h"
 
 #include "Maths/Maths.h"
-#include "Graphics/BufferLayout.h"
+#include "BufferLayout.h"
+#include "Framebuffer.h"
 
 namespace Krys
 {
+  // ----------- LIGHTING ------------
   constexpr uint CUBEMAP_SLOTS = 2;
 
-  // --------- TEXTURE SLOTS ---------
-  /// @brief Reserved texture slots always take up the first slots for each sampler type.
-  /// Get the actual texture unit index via `ActiveTextureUnit.GetReservedSlotIndex()`.
-  const uint RESERVED_TEXTURE_SLOT__DIRECTIONAL_SHADOW_MAP = 0;
-
-  /// @brief Reserved texture slots always take up the first slots for each sampler type.
-  /// Get the actual texture unit index via `ActiveTextureUnit.GetReservedSlotIndex()`.
-  const uint RESERVED_TEXTURE_SLOT__SPOT_LIGHT_SHADOW_MAP = 1;
-
-  /// @brief Reserved texture slots always take up the first slots for each sampler type.
-  /// Get the actual texture unit index via `ActiveTextureUnit.GetReservedSlotIndex()`.
-  const uint RESERVED_TEXTURE_SLOT__POINT_LIGHT_SHADOW_CUBEMAP = 0;
-
-  // --------- TEXTURE SLOTS ---------
-
-  // ----------- LIGHTING ------------
   constexpr uint LIGHTING_MAX_DIRECTIONAL_LIGHTS = 2;
   constexpr uint LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS = 2;
 
@@ -52,13 +38,18 @@ namespace Krys
   {
     float Bias = LIGHTING_DEFAULT_SHADOW_BIAS;
     int LightIndex;
-    Vec2 NearFarPlane = Vec2(1.0f, 25.0f);
     int ShadowMapResolution = LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION;
+    int ShadowMapSlotIndex;
+    bool Enabled;
+    Vec2 NearFarPlane;
+    Ref<Framebuffer> ShadowMapFramebuffer;
+    Ref<Texture> DepthTexture;
   };
 
   struct LightSettings
   {
     bool CastShadows;
+    Vec2 NearFarPlane = Vec2(1.0f, 25.0f);
   };
 
   // ----------- LIGHTING ------------
@@ -92,6 +83,7 @@ namespace Krys
       {UniformDataType::Scalar, "LightIndex"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
       {UniformDataType::Scalar, "ShadowMapSlotIndex"},
+      {UniformDataType::Scalar, "Enabled"},
       {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Mat4, "LightSpaceMatrix"},
   }};
@@ -136,6 +128,7 @@ namespace Krys
       {UniformDataType::Scalar, "LightIndex"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
       {UniformDataType::Scalar, "ShadowMapSlotIndex"},
+      {UniformDataType::Scalar, "Enabled"},
       {UniformDataType::Vec2, "NearFarPlane"},
       // TODO: this should be an array instead.
       {UniformDataType::Mat4, "LightSpaceMatrices", 6},
@@ -185,6 +178,7 @@ namespace Krys
       {UniformDataType::Scalar, "LightIndex"},
       {UniformDataType::Scalar, "ShadowMapResolution"},
       {UniformDataType::Scalar, "ShadowMapSlotIndex"},
+      {UniformDataType::Scalar, "Enabled"},
       {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Mat4, "LightSpaceMatrix"},
   };

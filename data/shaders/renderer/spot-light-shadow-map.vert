@@ -4,7 +4,10 @@
 
 layout (location = 0) in vec4 i_Position;
 
+uniform int u_CurrentShadowCaster;
+
 void main()
 {
-  gl_Position = u_SpotLightShadowCasters[0].LightSpaceMatrix * i_Position;
+  SpotLightShadowCaster caster = u_SpotLightShadowCasters[u_CurrentShadowCaster];
+  gl_Position = caster.LightSpaceMatrix * i_Position;
 }

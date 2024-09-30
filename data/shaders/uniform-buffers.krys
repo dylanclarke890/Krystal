@@ -59,6 +59,7 @@ struct DirectionalShadowCaster
   int LightIndex;
   int ShadowMapResolution;
   int ShadowMapSlotIndex;
+  bool Enabled;
   vec2 NearFarPlane;
   mat4 LightSpaceMatrix;
 };
@@ -69,6 +70,7 @@ struct PointLightShadowCaster
   int LightIndex;
   int ShadowMapResolution;
   int ShadowMapSlotIndex;
+  bool Enabled;
   vec2 NearFarPlane;
   mat4 LightSpaceMatrices[6];
 };
@@ -79,6 +81,7 @@ struct SpotLightShadowCaster
   int LightIndex;
   int ShadowMapResolution;
   int ShadowMapSlotIndex;
+  bool Enabled;
   vec2 NearFarPlane;
   mat4 LightSpaceMatrix;
 };

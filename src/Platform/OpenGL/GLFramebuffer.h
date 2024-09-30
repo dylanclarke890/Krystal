@@ -114,7 +114,7 @@ namespace Krys
 
       Ref<GLTextureCubemap> texture = CreateRef<GLTextureCubemap>(Width, Height, TextureInternalFormat::Depth);
       texture->SetTextureWrapModes(TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder);
-      texture->SetBorderColor({0.0f, 1.0f, 0.0f, 1.0f});
+      texture->SetBorderColor({1.0f, 1.0f, 0.0f, 1.0f});
 
       glNamedFramebufferTexture(Id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
 
