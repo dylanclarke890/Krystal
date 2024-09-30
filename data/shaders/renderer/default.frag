@@ -9,24 +9,29 @@
 #import "utils/spot-light.krys";
 #import "utils/parallax-mapping.krys";
 
-in vec3 v_FragmentPosition;
+flat in vec3 v_TangentCameraPosition;
+
 in vec4 v_Color;
 in vec3 v_Normal;
 in vec2 v_TextureCoord;
-in vec4 v_DirectionalLightSpaceFragmentPosition;
-in vec4 v_SpotLightLightSpaceFragmentPosition;
-flat in vec3 v_PointLightTangentLightPosition;
-flat in vec3 v_DirectionalTangentLightDirection;
-flat in vec3 v_TangentCameraPosition;
+in vec3 v_FragmentPosition;
 in vec3 v_TangentFragmentPosition;
-flat in vec3 v_SpotLightTangentDirection;
-flat in vec3 v_SpotLightTangentPosition;
+
+flat in float v_Shininess;
 flat in int v_TextureSlot;
 flat in int v_SpecularSlot;
 flat in int v_EmissionSlot;
 flat in int v_NormalSlot;
 flat in int v_DisplacementSlot;
-flat in float v_Shininess;
+
+flat in vec3 v_DirectionalLightTangentDirections[MAX_DIRECTIONAL_LIGHTS];
+in vec4 v_DirectionalLightFragmentPositions[MAX_DIRECTIONAL_SHADOW_CASTERS];
+
+flat in vec3 v_PointLightTangentLightPositions[MAX_POINT_LIGHTS];
+
+flat in vec3 v_SpotLightTangentDirections[MAX_SPOT_LIGHTS];
+flat in vec3 v_SpotLightTangentPositions[MAX_SPOT_LIGHTS];
+in vec4 v_SpotLightFragmentPositions[MAX_SPOT_LIGHT_SHADOW_CASTERS];
 
 out vec4 o_Color;
 
@@ -63,54 +68,54 @@ void main()
   { 
     for (int i = 0; i < u_DirectionalLightCount; i++)
     {
-      DirectionalShadowCaster caster = GetDirectionalShadowCaster(i);
+      DirectionalShadowCasterSearchResult casterResult = GetDirectionalShadowCaster(i);
       lighting += Lighting(
         u_DirectionalLights[i],
-        v_DirectionalLightSpaceFragmentPosition,
+        v_DirectionalLightFragmentPositions[casterResult.Index],
         v_TangentFragmentPosition,
         v_TangentCameraPosition,
-        v_DirectionalTangentLightDirection,
+        v_DirectionalLightTangentDirections[i],
         normal,
         diffuseSample,
         specularSample,
         v_Shininess,
-        Get2DSampler(caster.ShadowMapSlotIndex),
+        Get2DSampler(casterResult.Caster.ShadowMapSlotIndex),
         u_UseBlinnLightingModel);
     }
 
     for (int i = 0; i < u_PointLightCount; i++)
     {
-      PointLightShadowCaster caster = GetPointLightShadowCaster(i);
+      PointLightShadowCasterSearchResult casterResult = GetPointLightShadowCaster(i);
       lighting += Lighting(
         u_PointLights[i],
         v_FragmentPosition,
         v_TangentFragmentPosition,
         v_TangentCameraPosition,
-        v_PointLightTangentLightPosition,
+        v_PointLightTangentLightPositions[i],
         normal,
         diffuseSample,
         specularSample,
         v_Shininess,
-        GetCubemapSampler(caster.ShadowMapSlotIndex),
-        caster.NearFarPlane.y,
+        GetCubemapSampler(casterResult.Caster.ShadowMapSlotIndex),
+        casterResult.Caster.NearFarPlane.y,
         u_UseBlinnLightingModel);
     }
 
     for (int i = 0; i < u_SpotLightCount; i++)
     {
-      SpotLightShadowCaster caster = GetSpotLightShadowCaster(i);
+      SpotLightShadowCasterSearchResult casterResult = GetSpotLightShadowCaster(i);
       lighting += Lighting(
         u_SpotLights[i],
-        v_SpotLightLightSpaceFragmentPosition,
+        v_SpotLightFragmentPositions[casterResult.Index],
         v_TangentFragmentPosition,
         v_TangentCameraPosition,
-        v_SpotLightTangentPosition,
-        v_SpotLightTangentDirection,
+        v_SpotLightTangentPositions[i],
+        v_SpotLightTangentDirections[i],
         normal,
         diffuseSample,
         specularSample,
         v_Shininess,
-        Get2DSampler(caster.ShadowMapSlotIndex),
+        Get2DSampler(casterResult.Caster.ShadowMapSlotIndex),
         u_UseBlinnLightingModel);
     }
   }

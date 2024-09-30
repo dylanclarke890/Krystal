@@ -6,7 +6,7 @@
 in vec2 v_TextureCoord;
 out vec4 o_Color;
 
-uniform float u_Exposure = 1.2;
+uniform float u_Exposure = 1.0;
 
 void main()
 { 

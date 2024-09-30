@@ -118,30 +118,74 @@ layout (std140, binding = 1) uniform Lights
   bool u_UseBlinnLightingModel;
 };
 
-DirectionalShadowCaster GetDirectionalShadowCaster(int lightIndex)
+struct DirectionalShadowCasterSearchResult
 {
+  bool Found;
+  int Index;
+  DirectionalShadowCaster Caster;
+};
+
+DirectionalShadowCasterSearchResult GetDirectionalShadowCaster(int lightIndex)
+{
+  DirectionalShadowCasterSearchResult result;
   for (int i = 0; i < u_DirectionalShadowCasterCount; i++)
   {
     if (u_DirectionalShadowCasters[i].LightIndex == lightIndex)
-      return u_DirectionalShadowCasters[i];
+    {
+      result.Found = true;
+      result.Index = i;
+      result.Caster = u_DirectionalShadowCasters[i];
+      break;
+    }
   }
+
+  return result;
 }
 
-PointLightShadowCaster GetPointLightShadowCaster(int lightIndex)
+struct PointLightShadowCasterSearchResult
 {
+  bool Found;
+  int Index;
+  PointLightShadowCaster Caster;
+};
+
+PointLightShadowCasterSearchResult GetPointLightShadowCaster(int lightIndex)
+{
+  PointLightShadowCasterSearchResult result;
   for (int i = 0; i < u_PointLightShadowCasterCount; i++)
   {
     if (u_PointLightShadowCasters[i].LightIndex == lightIndex)
-      return u_PointLightShadowCasters[i];
+    {
+      result.Found = true;
+      result.Index = i;
+      result.Caster = u_PointLightShadowCasters[i];
+      break;
+    }
   }
+
+  return result;
 }
 
-
-SpotLightShadowCaster GetSpotLightShadowCaster(int lightIndex)
+struct SpotLightShadowCasterSearchResult
 {
+  bool Found;
+  int Index;
+  SpotLightShadowCaster Caster;
+};
+
+SpotLightShadowCasterSearchResult GetSpotLightShadowCaster(int lightIndex)
+{
+  SpotLightShadowCasterSearchResult result;
   for (int i = 0; i < u_SpotLightShadowCasterCount; i++)
   {
     if (u_SpotLightShadowCasters[i].LightIndex == lightIndex)
-      return u_SpotLightShadowCasters[i];
+    {
+      result.Found = true;
+      result.Index = i;
+      result.Caster = u_SpotLightShadowCasters[i];
+      break;
+    }
   }
+
+  return result;
 }
