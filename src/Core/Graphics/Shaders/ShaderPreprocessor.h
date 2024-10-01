@@ -22,6 +22,7 @@ namespace Krys
     {
       KRYS_ASSERT(MaxTextureSlots, "MaxTextureSlots is not set.", 0);
       KRYS_ASSERT(MaxCubemapSlots, "MaxCubemapSlots is not set.", 0);
+      KRYS_ASSERT(*MaxTextureSlots >= *MaxCubemapSlots, "MaxCubemapSlots cannot exceed MaxTextureSlots", 0);
 
       KRYS_ASSERT(LightUniformBufferBinding, "LightUniformBufferBinding is not set.", 0);
       KRYS_ASSERT(SharedUniformBufferBinding, "SharedUniformBufferBinding is not set.", 0);
