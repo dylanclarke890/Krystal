@@ -1,17 +1,18 @@
 #pragma once
 
+#include "Core.h"
+
 #include <functional>
-#include <optional>
 
 namespace Krys
 {
   /// @brief Thin wrapper class that allows for lazy initialization.
-  /// @tparam T
+  /// @tparam T Any type. Usually one that has an expensive constructor that doesn't need to be invoked immediately.
   template <typename T>
   class Lazy
   {
   private:
-    std::optional<T> _value;
+    Nullable<T> _value;
     std::function<T()> _func;
 
   public:

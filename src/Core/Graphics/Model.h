@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 #include "Krystal.h"
-#include "Graphics/Shader.h"
+#include "Graphics/Shaders/Shader.h"
 #include "Graphics/Mesh.h"
 
 namespace Krys

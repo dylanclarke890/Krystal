@@ -184,6 +184,8 @@ namespace Krys
 
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 #endif
+
+    GraphicsContext::Init();
   }
 
   const GraphicsCapabilities &GLGraphicsContext::QueryCapabilities() noexcept

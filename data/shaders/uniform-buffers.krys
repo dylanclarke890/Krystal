@@ -1,4 +1,4 @@
-layout (std140, binding = 0) uniform Shared
+layout (std140, binding = ${UNIFORM_BUFFER_BINDING_SHARED}) uniform Shared
 {
   mat4 u_ViewProjection;
   vec4 u_CameraPosition;
@@ -86,16 +86,16 @@ struct SpotLightShadowCaster
   mat4 LightSpaceMatrix;
 };
 
-#define MAX_DIRECTIONAL_LIGHTS 2
-#define MAX_DIRECTIONAL_SHADOW_CASTERS 2
+#define MAX_DIRECTIONAL_LIGHTS ${MAX_DIRECTIONAL_LIGHTS}
+#define MAX_DIRECTIONAL_SHADOW_CASTERS ${MAX_DIRECTIONAL_SHADOW_CASTERS}
 
-#define MAX_POINT_LIGHTS 2
-#define MAX_POINT_LIGHT_SHADOW_CASTERS 2
+#define MAX_POINT_LIGHTS ${MAX_POINT_LIGHTS}
+#define MAX_POINT_LIGHT_SHADOW_CASTERS ${MAX_POINT_LIGHT_SHADOW_CASTERS}
 
-#define MAX_SPOT_LIGHTS 2
-#define MAX_SPOT_LIGHT_SHADOW_CASTERS 2
+#define MAX_SPOT_LIGHTS ${MAX_SPOT_LIGHTS}
+#define MAX_SPOT_LIGHT_SHADOW_CASTERS ${MAX_SPOT_LIGHT_SHADOW_CASTERS}
 
-layout (std140, binding = 1) uniform Lights
+layout (std140, binding = ${UNIFORM_BUFFER_BINDING_LIGHT}) uniform Lights
 {
   DirectionalLight u_DirectionalLights[MAX_DIRECTIONAL_LIGHTS];
   DirectionalShadowCaster u_DirectionalShadowCasters[MAX_DIRECTIONAL_SHADOW_CASTERS];

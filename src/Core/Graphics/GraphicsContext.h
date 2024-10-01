@@ -1,15 +1,17 @@
 #pragma once
 
 #include "Core.h"
-#include "Graphics.h"
-#include "Buffer.h"
-#include "Framebuffer.h"
-#include "Shader.h"
-#include "VertexArray.h"
-#include "Textures/SubTexture2D.h"
-#include "Textures/Texture2D.h"
-#include "Textures/TextureCubemap.h"
+
+#include "Graphics/Graphics.h"
+#include "Graphics/Buffer.h"
+#include "Graphics/Framebuffer.h"
+#include "Graphics/VertexArray.h"
+#include "Graphics/Textures/SubTexture2D.h"
+#include "Graphics/Textures/Texture2D.h"
+#include "Graphics/Textures/TextureCubemap.h"
 #include "Graphics/Enums.h"
+#include "Graphics/Shaders/Shader.h"
+#include "Graphics/Shaders/ShaderPreprocessor.h"
 
 #include <algorithm>
 #include <unordered_map>
@@ -231,7 +233,27 @@ namespace Krys
   {
   public:
     virtual ~GraphicsContext() = default;
-    virtual void Init() noexcept = 0;
+    virtual void Init() noexcept
+    {
+      const auto &capabilities = QueryCapabilities();
+
+      ShaderPreprocessorTemplateKeys templateKeys;
+      templateKeys.MaxTextureSlots = capabilities.MaxTextureImageUnits;
+      templateKeys.MaxCubemapSlots = CUBEMAP_SLOTS;
+
+      templateKeys.SharedUniformBufferBinding = UNIFORM_BUFFER_BINDING_SHARED;
+      templateKeys.LightUniformBufferBinding = UNIFORM_BUFFER_BINDING_LIGHTS;
+
+      templateKeys.MaxDirectionalLights = LIGHTING_MAX_DIRECTIONAL_LIGHTS;
+      templateKeys.MaxPointLights = LIGHTING_MAX_POINT_LIGHTS;
+      templateKeys.MaxSpotLights = LIGHTING_MAX_SPOT_LIGHTS;
+
+      templateKeys.MaxDirectionalShadowCasters = LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS;
+      templateKeys.MaxPointLightShadowCasters = LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS;
+      templateKeys.MaxSpotLightShadowCasters = LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS;
+
+      ShaderPreprocessor::SetTemplateKeys(templateKeys);
+    }
 
     virtual const GraphicsCapabilities &QueryCapabilities() noexcept = 0;
 

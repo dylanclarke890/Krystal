@@ -1,7 +1,7 @@
-// TODO: parameters and compile time for loops for the switch/if else statements
+// TODO: compile time for loops for the switch/if else statements
 
-#define MAX_TEXTURE_SLOTS 32
-#define MAX_CUBEMAP_SLOTS 2
+#define MAX_TEXTURE_SLOTS ${MAX_TEXTURE_SLOTS}
+#define MAX_CUBEMAP_SLOTS ${MAX_CUBEMAP_SLOTS}
 #define MAX_TEXTURE2D_SLOTS MAX_TEXTURE_SLOTS - MAX_CUBEMAP_SLOTS
 
 uniform sampler2D u_Textures[MAX_TEXTURE2D_SLOTS];

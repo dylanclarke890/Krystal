@@ -1,7 +1,9 @@
-#include "GLShader.h"
 #include "Core.h"
+
+#include "GLShader.h"
+
 #include "IO/IO.h"
-#include "Graphics/ShaderPreprocessor.h"
+#include "Graphics/Shaders/ShaderPreprocessor.h"
 
 namespace Krys
 {
@@ -27,7 +29,9 @@ namespace Krys
   void GLShader::Load(ShaderType type, const stringview &filepath)
   {
     string src = IO::ReadFileText(filepath);
+
     src = ShaderPreprocessor::ResolveImports(filepath, src);
+    src = ShaderPreprocessor::ResolveKeys(src);
 
     Add(type, src);
   }

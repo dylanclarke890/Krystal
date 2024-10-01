@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Krystal.h"
-#include "Graphics/Shader.h"
+#include "Graphics/Shaders/Shader.h"
 #include "GL.h"
 
 namespace Krys

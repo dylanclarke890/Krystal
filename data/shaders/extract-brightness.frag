@@ -6,7 +6,8 @@ uniform sampler2D u_Image;
 
 out vec4 o_BrightColor;
 
-void main() {
+void main()
+{
   vec3 outputColor = texture(u_Image, v_TextureCoord).rgb;
 
   // check whether fragment output is higher than threshold, if so output as brightness color

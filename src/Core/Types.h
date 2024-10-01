@@ -4,6 +4,8 @@
 #include <string>
 #include <string_view>
 #include <memory>
+#include <optional>
+#include <unordered_map>
 
 namespace Krys
 {
@@ -25,6 +27,12 @@ namespace Krys
   typedef unsigned char uchar;
   typedef std::string string;
   typedef std::string_view stringview;
+
+  template <typename T>
+  using Nullable = std::optional<T>;
+
+  template <typename T1, typename T2>
+  using Map = std::unordered_map<T1, T2>;
 
   template <typename T>
   using Unique = std::unique_ptr<T>;

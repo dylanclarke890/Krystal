@@ -3,6 +3,7 @@
 #include "Core.h"
 #include "Events/Events.h"
 #include "Graphics/GraphicsContext.h"
+
 #include <functional>
 
 namespace Krys
