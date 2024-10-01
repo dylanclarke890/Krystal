@@ -16,6 +16,91 @@ namespace Krys
   constexpr uint RENDERER_MAX_INDICES = RENDERER_MAX_QUADS * 6;
   static Vec4 RENDERER_DEFAULT_OBJECT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
 
+  // TODO: this *could* be more fine-grained. Some of the limits vary based on shader stage.
+  struct GraphicsCapabilities
+  {
+    int MaxDrawBuffers;
+    int MaxInputComponents;
+    int MaxOutputComponents;
+    int MaxTextureImageUnits;
+    int MaxTextureSize;
+    int MaxUniformComponents;
+    int MaxUniformBlocks;
+    int MaxVertexAttributes;
+
+    void Log() const
+    {
+      KRYS_LOG("Graphics Capabilities:");
+      KRYS_LOG("MaxDrawBuffers: %d", MaxDrawBuffers);
+      KRYS_LOG("MaxInputComponents: %d", MaxInputComponents);
+      KRYS_LOG("MaxOutputComponents: %d", MaxOutputComponents);
+      KRYS_LOG("MaxTextureImageUnits: %d", MaxTextureImageUnits);
+      KRYS_LOG("MaxTextureSize: %d", MaxTextureSize);
+      KRYS_LOG("MaxUniformComponents: %d", MaxUniformComponents);
+      KRYS_LOG("MaxUniformBlocks: %d", MaxUniformBlocks);
+      KRYS_LOG("MaxVertexAttributes: %d", MaxVertexAttributes);
+    }
+  };
+
+  struct VertexData
+  {
+    Vec4 Position;
+    Vec3 Normal;
+    Vec4 Color;
+    Vec2 TextureCoords;
+    int TextureSlotIndex;
+    int SpecularTextureSlotIndex;
+    int EmissionTextureSlotIndex;
+    int NormalTextureSlotIndex;
+    int DisplacementTextureSlotIndex;
+    float Shininess;
+    Vec3 Tangent;
+  };
+
+  static VertexBufferLayout VERTEX_BUFFER_LAYOUT_DEFAULT = {
+      {ShaderDataType::Float4, "i_Position"},
+      {ShaderDataType::Float3, "i_Normal"},
+      {ShaderDataType::Float4, "i_Color"},
+      {ShaderDataType::Float2, "i_TextureCoord"},
+      {ShaderDataType::Int, "i_TextureSlot"},
+      {ShaderDataType::Int, "i_SpecularSlot"},
+      {ShaderDataType::Int, "i_EmissionSlot"},
+      {ShaderDataType::Int, "i_NormalSlot"},
+      {ShaderDataType::Int, "i_DisplacementSlot"},
+      {ShaderDataType::Float, "i_Shininess"},
+      {ShaderDataType::Float3, "i_Tangent"},
+  };
+
+  static VertexBufferLayout VERTEX_BUFFER_LAYOUT_SCREEN = {
+      {ShaderDataType::Float2, "i_Position"},
+      {ShaderDataType::Float2, "i_TextureCoord"},
+  };
+
+  struct TextureData
+  {
+    const Vec2 *TextureCoords;
+    Vec4 Tint;
+    int Texture = -1;
+    int Specular = -1;
+    int Emission = -1;
+    int Normal = -1;
+    int Displacement = -1;
+    float Shininess = 32.0f;
+  };
+
+  enum class RenderMode
+  {
+    Forward,
+    Deferred
+  };
+
+  enum class ReservedSlotType
+  {
+    DirectionalShadowMap,
+    PointLightShadowMap,
+    SpotLightShadowMap,
+  };
+
 #pragma endregion Renderer
 
 #pragma region Lighting
@@ -318,27 +403,4 @@ namespace Krys
   };
 
 #pragma endregion Uniform Buffers
-
-#pragma region Vertex Buffers
-
-  static VertexBufferLayout VERTEX_BUFFER_LAYOUT_SCREEN = {
-      {ShaderDataType::Float2, "i_Position"},
-      {ShaderDataType::Float2, "i_TextureCoord"},
-  };
-
-  static VertexBufferLayout VERTEX_BUFFER_LAYOUT_DEFAULT = {
-      {ShaderDataType::Float4, "i_Position"},
-      {ShaderDataType::Float3, "i_Normal"},
-      {ShaderDataType::Float4, "i_Color"},
-      {ShaderDataType::Float2, "i_TextureCoord"},
-      {ShaderDataType::Int, "i_TextureSlot"},
-      {ShaderDataType::Int, "i_SpecularSlot"},
-      {ShaderDataType::Int, "i_EmissionSlot"},
-      {ShaderDataType::Int, "i_NormalSlot"},
-      {ShaderDataType::Int, "i_DisplacementSlot"},
-      {ShaderDataType::Float, "i_Shininess"},
-      {ShaderDataType::Float3, "i_Tangent"},
-  };
-
-#pragma endregion Vertex Buffers
 }

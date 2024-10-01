@@ -18,76 +18,10 @@
 
 namespace Krys
 {
-  // TODO: this *could* be more fine-grained. Some of the limits vary based on shader stage.
-  struct GraphicsCapabilities
-  {
-    int MaxDrawBuffers;
-    int MaxInputComponents;
-    int MaxOutputComponents;
-    int MaxTextureImageUnits;
-    int MaxTextureSize;
-    int MaxUniformComponents;
-    int MaxUniformBlocks;
-    int MaxVertexAttributes;
-
-    void Log() const
-    {
-      KRYS_LOG("Graphics Capabilities:");
-      KRYS_LOG("MaxDrawBuffers: %d", MaxDrawBuffers);
-      KRYS_LOG("MaxInputComponents: %d", MaxInputComponents);
-      KRYS_LOG("MaxOutputComponents: %d", MaxOutputComponents);
-      KRYS_LOG("MaxTextureImageUnits: %d", MaxTextureImageUnits);
-      KRYS_LOG("MaxTextureSize: %d", MaxTextureSize);
-      KRYS_LOG("MaxUniformComponents: %d", MaxUniformComponents);
-      KRYS_LOG("MaxUniformBlocks: %d", MaxUniformBlocks);
-      KRYS_LOG("MaxVertexAttributes: %d", MaxVertexAttributes);
-    }
-  };
-
-  struct VertexData
-  {
-    Vec4 Position;
-    Vec3 Normal;
-    Vec4 Color;
-    Vec2 TextureCoords;
-    int TextureSlotIndex;
-    int SpecularTextureSlotIndex;
-    int EmissionTextureSlotIndex;
-    int NormalTextureSlotIndex;
-    int DisplacementTextureSlotIndex;
-    float Shininess;
-    Vec3 Tangent;
-  };
-
-  struct TextureData
-  {
-    const Vec2 *TextureCoords;
-    Vec4 Tint;
-    int Texture = -1;
-    int Specular = -1;
-    int Emission = -1;
-    int Normal = -1;
-    int Displacement = -1;
-    float Shininess = 32.0f;
-  };
-
   struct DeferredRendererData
   {
     Ref<Framebuffer> GBuffer;
     Ref<Texture2D> GPosition, GNormal, GAlbedoSpecular;
-  };
-
-  enum class RenderMode
-  {
-    Forward,
-    Deferred
-  };
-
-  enum class ReservedSlotType
-  {
-    DirectionalShadowMap,
-    PointLightShadowMap,
-    SpotLightShadowMap,
   };
 
   struct TextureBindingInfo
@@ -141,7 +75,7 @@ namespace Krys
   {
     TextureBindingInfo Texture2D;
     TextureBindingInfo TextureCubemap;
-    std::unordered_map<ReservedSlotType, std::vector<int>> ReservedSlots;
+    Map<ReservedSlotType, std::vector<int>> ReservedSlots;
 
 #pragma region Binding
 
