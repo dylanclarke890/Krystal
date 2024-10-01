@@ -109,7 +109,6 @@ namespace Krys
       LightsBuffer->SetData(prefix + "Constant", light.Constant);
       LightsBuffer->SetData(prefix + "Linear", light.Linear);
       LightsBuffer->SetData(prefix + "Quadratic", light.Quadratic);
-      LightsBuffer->SetData(prefix + "FarPlane", light.FarPlane);
       LightsBuffer->SetData(prefix + "Position", light.Position);
 
       if (settings.CastShadows)

@@ -109,8 +109,6 @@ namespace Krys
     float Linear;
     float Quadratic;
 
-    float FarPlane;
-
     Vec3 Position;
   };
 
@@ -130,7 +128,6 @@ namespace Krys
 
       {UniformDataType::Scalar, "Enabled"},
       {UniformDataType::Scalar, "Intensity"},
-      {UniformDataType::Scalar, "FarPlane"},
 
       {UniformDataType::Vec3, "Position"},
   };

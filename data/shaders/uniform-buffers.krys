@@ -28,7 +28,6 @@ struct PointLight
 
   bool Enabled;
   float Intensity;
-  float FarPlane;
 
   vec4 Position;
 };
