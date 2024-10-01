@@ -4,22 +4,18 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <vector>
-#include <string>
-#include <unordered_map>
-
 #include "Krystal.h"
 #include "Graphics/Shaders/Shader.h"
 #include "Graphics/Mesh.h"
 
 namespace Krys
 {
-  static std::unordered_map<string, Ref<Texture2D>> LoadedTextures;
+  static Map<string, Ref<Texture2D>> LoadedTextures;
 
   class Model
   {
   private:
-    std::vector<Ref<Mesh>> Meshes;
+    List<Ref<Mesh>> Meshes;
     string directory;
 
   public:
@@ -71,9 +67,9 @@ namespace Krys
 
     Ref<Mesh> ProcessMesh(aiMesh *mesh, const aiScene *scene)
     {
-      std::vector<Vertex> vertices;
-      std::vector<uint32> indices;
-      std::vector<Ref<Texture2D>> textures;
+      List<Vertex> vertices;
+      List<uint32> indices;
+      List<Ref<Texture2D>> textures;
 
       for (uint i = 0; i < mesh->mNumVertices; i++)
       {
@@ -113,9 +109,9 @@ namespace Krys
       return CreateMesh(vertices, indices, textures);
     }
 
-    std::vector<Ref<Texture2D>> LoadMaterialTextures(aiMaterial *material, aiTextureType assimpType, TextureType krysType)
+    List<Ref<Texture2D>> LoadMaterialTextures(aiMaterial *material, aiTextureType assimpType, TextureType krysType)
     {
-      std::vector<Ref<Texture2D>> textures;
+      List<Ref<Texture2D>> textures;
       for (uint i = 0; i < material->GetTextureCount(assimpType); i++)
       {
         // TODO: this is currently relative to the directory
@@ -139,7 +135,7 @@ namespace Krys
     // TODO: forward args
     // TODO: move to context somehow
     // TODO: handle normal maps
-    static Ref<Mesh> CreateMesh(std::vector<Vertex> &vertices, std::vector<uint32> &indices, std::vector<Ref<Texture2D>> &textures);
+    static Ref<Mesh> CreateMesh(List<Vertex> &vertices, List<uint32> &indices, List<Ref<Texture2D>> &textures);
     static Ref<Texture2D> CreateTexture(TextureType type, const string &path);
   };
 }

@@ -14,7 +14,6 @@
 #include "Graphics/Shaders/ShaderPreprocessor.h"
 
 #include <algorithm>
-#include <unordered_map>
 
 namespace Krys
 {
@@ -26,8 +25,8 @@ namespace Krys
 
   struct TextureBindingInfo
   {
-    std::vector<int> SlotIndices;
-    std::vector<Ref<Texture>> Slots;
+    List<int> SlotIndices;
+    List<Ref<Texture>> Slots;
     int MaxSlots = 0;
     int NextSlotIndex = 0;
     int ReservedSlots = 0;
@@ -75,7 +74,7 @@ namespace Krys
   {
     TextureBindingInfo Texture2D;
     TextureBindingInfo TextureCubemap;
-    Map<ReservedSlotType, std::vector<int>> ReservedSlots;
+    Map<ReservedSlotType, List<int>> ReservedSlots;
 
 #pragma region Binding
 
@@ -107,7 +106,7 @@ namespace Krys
 
 #pragma region Setting Samplers
 
-    void SetSamplerUniforms(std::vector<Ref<Shader>> shaders) noexcept
+    void SetSamplerUniforms(List<Ref<Shader>> shaders) noexcept
     {
       std::for_each(shaders.begin(), shaders.end(),
                     [&](auto s)
@@ -125,7 +124,7 @@ namespace Krys
     NO_DISCARD std::pair<int, int> ReserveSlot(ReservedSlotType type)
     {
       auto slotsSearch = ReservedSlots.find(type);
-      std::vector<int> slots = slotsSearch == ReservedSlots.end() ? std::vector<int>{} : slotsSearch->second;
+      List<int> slots = slotsSearch == ReservedSlots.end() ? List<int>{} : slotsSearch->second;
 
       std::pair<int, int> slotIndex;
       switch (type)

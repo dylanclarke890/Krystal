@@ -1,5 +1,7 @@
 #include "IO.h"
 
+#include "Core.h"
+
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
@@ -10,13 +12,13 @@ namespace Krys::IO
 {
   namespace fs = std::filesystem;
 
-  std::vector<FileInfo> ListFiles(const stringview &directory, std::vector<stringview> extensions, bool recursive) noexcept
+  List<FileInfo> ListFiles(const stringview &directory, List<stringview> extensions, bool recursive) noexcept
   {
     KRYS_PERFORMANCE_TIMER("ListFiles");
     KRYS_ASSERT(PathExists(directory), "Directory '%s' does not exist", directory.data());
 
     std::error_code error{};
-    std::vector<FileInfo> entries{};
+    List<FileInfo> entries{};
 
     const auto HasValidExtension = [&](stringview extension)
     {

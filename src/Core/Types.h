@@ -1,11 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <optional>
 #include <stdint.h>
 #include <string>
 #include <string_view>
-#include <memory>
-#include <optional>
 #include <unordered_map>
+#include <vector>
 
 namespace Krys
 {
@@ -33,6 +34,9 @@ namespace Krys
 
   template <typename T1, typename T2>
   using Map = std::unordered_map<T1, T2>;
+
+  template <typename T>
+  using List = std::vector<T>;
 
   template <typename T>
   using Unique = std::unique_ptr<T>;

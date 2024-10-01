@@ -72,7 +72,7 @@ namespace Krys
       KRYS_ASSERT(!src.empty(), "Source was empty", 0);
       KRYS_ASSERT(!path.empty(), "Path was empty", 0);
 
-      std::unordered_map<string, bool> imported;
+      Map<string, bool> imported;
       return ResolveImports(string(path), src, imported);
     }
 

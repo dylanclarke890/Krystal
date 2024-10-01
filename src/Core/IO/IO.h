@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core.h"
-#include <vector>
 
 namespace Krys::IO
 {
@@ -18,7 +17,7 @@ namespace Krys::IO
   /// @param recursive If true will also search subdirectories.
   /// @param extensions Optional list of extensions to filter by.
   /// @return The list of regular files that match the search criteria.
-  std::vector<FileInfo> ListFiles(const stringview &directory, std::vector<stringview> extensions = {}, bool recursive = false) noexcept;
+  List<FileInfo> ListFiles(const stringview &directory, List<stringview> extensions = {}, bool recursive = false) noexcept;
 
   /// @brief Get information about a path
   /// @param path The path to check.

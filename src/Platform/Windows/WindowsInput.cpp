@@ -1,7 +1,6 @@
 #include "Core.h"
 
 #include <windows.h>
-#include <vector>
 
 #include "Input/Input.h"
 #include "Input/KeyCodes.h"
@@ -10,8 +9,8 @@ namespace Krys
 {
   static PBYTE PrevKeyState, KeyState;
   static bool *PrevMouseButtonState, *MouseButtonState;
-  static std::vector<KeyCode> VirtualKeyMap;
-  static std::vector<BYTE> KeyCodeMap;
+  static List<KeyCode> VirtualKeyMap;
+  static List<BYTE> KeyCodeMap;
 
   static void InitKeyMaps()
   {
@@ -226,8 +225,8 @@ namespace Krys
     KeyState = new BYTE[256]{};
     PrevMouseButtonState = new bool[5];
     MouseButtonState = new bool[5];
-    VirtualKeyMap = std::vector<KeyCode>(256, KeyCode::None);
-    KeyCodeMap = std::vector<BYTE>(256, 0);
+    VirtualKeyMap = List<KeyCode>(256, KeyCode::None);
+    KeyCodeMap = List<BYTE>(256, 0);
 
     GetKeyboardState(KeyState);
     InitKeyMaps();

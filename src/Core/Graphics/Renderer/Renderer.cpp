@@ -104,21 +104,21 @@ namespace Krys
     auto maxCubemapSamplers = static_cast<int>(CUBEMAP_SLOTS);
     auto max2DSamplers = TOTAL_MAX_SLOTS - maxCubemapSamplers;
 
-    std::vector<int> samplers2D(max2DSamplers);
+    List<int> samplers2D(max2DSamplers);
     for (int i = 0; i < max2DSamplers; i++)
       samplers2D[i] = i;
 
     TextureUnits->Texture2D.MaxSlots = max2DSamplers;
     TextureUnits->Texture2D.SlotIndices = samplers2D;
-    TextureUnits->Texture2D.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(max2DSamplers)};
+    TextureUnits->Texture2D.Slots = List<Ref<Texture>>{static_cast<size_t>(max2DSamplers)};
 
-    std::vector<int> samplersCubemap(maxCubemapSamplers);
+    List<int> samplersCubemap(maxCubemapSamplers);
     for (int i = 0; i < maxCubemapSamplers; i++)
       samplersCubemap[i] = max2DSamplers + i;
 
     TextureUnits->TextureCubemap.MaxSlots = maxCubemapSamplers;
     TextureUnits->TextureCubemap.SlotIndices = samplersCubemap;
-    TextureUnits->TextureCubemap.Slots = std::vector<Ref<Texture>>{static_cast<size_t>(maxCubemapSamplers)};
+    TextureUnits->TextureCubemap.Slots = List<Ref<Texture>>{static_cast<size_t>(maxCubemapSamplers)};
   }
 
   void Renderer::InitShaders()

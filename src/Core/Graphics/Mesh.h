@@ -32,24 +32,24 @@ namespace Krys
   class Mesh
   {
   protected:
-    std::vector<Vertex> Vertices;
-    std::vector<uint32> Indices;
-    std::vector<Ref<Texture2D>> Textures;
+    List<Vertex> Vertices;
+    List<uint32> Indices;
+    List<Ref<Texture2D>> Textures;
 
   public:
     virtual ~Mesh() = default;
 
-    const std::vector<Ref<Texture2D>> GetTextures() const noexcept
+    const List<Ref<Texture2D>> GetTextures() const noexcept
     {
       return Textures;
     }
 
-    const std::vector<uint32> GetIndices() const noexcept
+    const List<uint32> GetIndices() const noexcept
     {
       return Indices;
     }
 
-    const std::vector<Vertex> GetVertices() const noexcept
+    const List<Vertex> GetVertices() const noexcept
     {
       return Vertices;
     }

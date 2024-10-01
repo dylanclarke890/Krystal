@@ -3,7 +3,6 @@
 #include "Core.h"
 
 #include <initializer_list>
-#include <vector>
 
 namespace Krys
 {
@@ -116,7 +115,7 @@ namespace Krys
   class VertexBufferLayout
   {
   private:
-    std::vector<VertexBufferElement> Elements;
+    List<VertexBufferElement> Elements;
 
   public:
     VertexBufferLayout() = default;
@@ -126,11 +125,11 @@ namespace Krys
       CalculateOffsetsAndStride();
     }
 
-    const std::vector<VertexBufferElement> &GetElements() const { return Elements; }
-    std::vector<VertexBufferElement>::iterator begin() { return Elements.begin(); }
-    std::vector<VertexBufferElement>::iterator end() { return Elements.end(); }
-    std::vector<VertexBufferElement>::const_iterator begin() const { return Elements.begin(); }
-    std::vector<VertexBufferElement>::const_iterator end() const { return Elements.end(); }
+    const List<VertexBufferElement> &GetElements() const { return Elements; }
+    List<VertexBufferElement>::iterator begin() { return Elements.begin(); }
+    List<VertexBufferElement>::iterator end() { return Elements.end(); }
+    List<VertexBufferElement>::const_iterator begin() const { return Elements.begin(); }
+    List<VertexBufferElement>::const_iterator end() const { return Elements.end(); }
 
   private:
     void CalculateOffsetsAndStride()
@@ -236,7 +235,7 @@ namespace Krys
   struct UniformStructLayout
   {
   private:
-    std::vector<UniformStructElement> Layout;
+    List<UniformStructElement> Layout;
 
   public:
     UniformStructLayout() = default;
@@ -248,11 +247,11 @@ namespace Krys
     }
 
     uint32 GetSize() const noexcept { return CalculateTotalSize(); }
-    const std::vector<UniformStructElement> &GetElements() const noexcept { return Layout; }
-    std::vector<UniformStructElement>::iterator begin() { return Layout.begin(); }
-    std::vector<UniformStructElement>::iterator end() { return Layout.end(); }
-    std::vector<UniformStructElement>::const_iterator begin() const { return Layout.begin(); }
-    std::vector<UniformStructElement>::const_iterator end() const { return Layout.end(); }
+    const List<UniformStructElement> &GetElements() const noexcept { return Layout; }
+    List<UniformStructElement>::iterator begin() { return Layout.begin(); }
+    List<UniformStructElement>::iterator end() { return Layout.end(); }
+    List<UniformStructElement>::const_iterator begin() const { return Layout.begin(); }
+    List<UniformStructElement>::const_iterator end() const { return Layout.end(); }
 
     uint32 CalculateBaseAlignment() const
     {
@@ -320,7 +319,7 @@ namespace Krys
   struct UniformBufferLayout
   {
   private:
-    std::vector<UniformBufferElement> Layout;
+    List<UniformBufferElement> Layout;
     uint32 Size;
 
   public:
@@ -333,11 +332,11 @@ namespace Krys
     }
 
     uint32 GetSize() const noexcept { return Size; }
-    const std::vector<UniformBufferElement> &GetElements() const noexcept { return Layout; }
-    std::vector<UniformBufferElement>::iterator begin() { return Layout.begin(); }
-    std::vector<UniformBufferElement>::iterator end() { return Layout.end(); }
-    std::vector<UniformBufferElement>::const_iterator begin() const { return Layout.begin(); }
-    std::vector<UniformBufferElement>::const_iterator end() const { return Layout.end(); }
+    const List<UniformBufferElement> &GetElements() const noexcept { return Layout; }
+    List<UniformBufferElement>::iterator begin() { return Layout.begin(); }
+    List<UniformBufferElement>::iterator end() { return Layout.end(); }
+    List<UniformBufferElement>::const_iterator begin() const { return Layout.begin(); }
+    List<UniformBufferElement>::const_iterator end() const { return Layout.end(); }
 
   private:
     void CalculateOffsetsAndSize()
@@ -389,7 +388,7 @@ namespace Krys
   struct InstanceArrayBufferLayout
   {
   private:
-    std::vector<InstanceArrayElement> Elements;
+    List<InstanceArrayElement> Elements;
 
   public:
     InstanceArrayBufferLayout() = default;
@@ -400,11 +399,11 @@ namespace Krys
       CalculateOffsetsAndSize();
     }
 
-    const std::vector<InstanceArrayElement> &GetElements() const { return Elements; }
-    std::vector<InstanceArrayElement>::iterator begin() { return Elements.begin(); }
-    std::vector<InstanceArrayElement>::iterator end() { return Elements.end(); }
-    std::vector<InstanceArrayElement>::const_iterator begin() const { return Elements.begin(); }
-    std::vector<InstanceArrayElement>::const_iterator end() const { return Elements.end(); }
+    const List<InstanceArrayElement> &GetElements() const { return Elements; }
+    List<InstanceArrayElement>::iterator begin() { return Elements.begin(); }
+    List<InstanceArrayElement>::iterator end() { return Elements.end(); }
+    List<InstanceArrayElement>::const_iterator begin() const { return Elements.begin(); }
+    List<InstanceArrayElement>::const_iterator end() const { return Elements.end(); }
 
   private:
     void CalculateOffsetsAndSize()

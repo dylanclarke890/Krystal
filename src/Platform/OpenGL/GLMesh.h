@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "Krystal.h"
 #include "Graphics/Mesh.h"
 
@@ -17,7 +15,7 @@ namespace Krys
     Ref<GLIndexBuffer> IndexBuffer;
 
   public:
-    GLMesh(std::vector<Vertex> &vertices, std::vector<uint32> &indices, std::vector<Ref<Texture2D>> &textures)
+    GLMesh(List<Vertex> &vertices, List<uint32> &indices, List<Ref<Texture2D>> &textures)
     {
       Vertices = vertices;
       Indices = indices;

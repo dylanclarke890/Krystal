@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "Core.h"
 #include "Buffer.h"
 
@@ -19,8 +17,8 @@ namespace Krys
     virtual void AddInstanceArrayBuffer(Ref<InstanceArrayBuffer> buffer) = 0;
     virtual void SetIndexBuffer(Ref<IndexBuffer> buffer) = 0;
 
-    virtual const std::vector<Ref<VertexBuffer>> &GetVertexBuffers() const = 0;
-    virtual const std::vector<Ref<InstanceArrayBuffer>> &GetInstanceArrayBuffers() const = 0;
+    virtual const List<Ref<VertexBuffer>> &GetVertexBuffers() const = 0;
+    virtual const List<Ref<InstanceArrayBuffer>> &GetInstanceArrayBuffers() const = 0;
     virtual const Ref<IndexBuffer> GetIndexBuffer() = 0;
   };
 }

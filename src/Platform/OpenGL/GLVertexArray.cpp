@@ -198,12 +198,12 @@ namespace Krys
     ZBuffer->Bind();
   }
 
-  const std::vector<Ref<VertexBuffer>> &GLVertexArray::GetVertexBuffers() const
+  const List<Ref<VertexBuffer>> &GLVertexArray::GetVertexBuffers() const
   {
     return VertexBuffers;
   }
 
-  const std::vector<Ref<InstanceArrayBuffer>> &GLVertexArray::GetInstanceArrayBuffers() const
+  const List<Ref<InstanceArrayBuffer>> &GLVertexArray::GetInstanceArrayBuffers() const
   {
     return InstanceArrayBuffers;
   }

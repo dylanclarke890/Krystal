@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "Krystal.h"
 #include "Graphics/Shaders/Shader.h"
 #include "GL.h"
@@ -12,7 +10,7 @@ namespace Krys
   {
   private:
     uint Id;
-    std::vector<uint> Shaders;
+    List<uint> Shaders;
 
   public:
     GLShader();

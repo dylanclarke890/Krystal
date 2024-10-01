@@ -5,7 +5,7 @@
 
 namespace Krys
 {
-  Ref<Mesh> Model::CreateMesh(std::vector<Vertex> &vertices, std::vector<uint32> &indices, std::vector<Ref<Texture2D>> &textures)
+  Ref<Mesh> Model::CreateMesh(List<Vertex> &vertices, List<uint32> &indices, List<Ref<Texture2D>> &textures)
   {
     return CreateRef<GLMesh>(vertices, indices, textures);
   }
