@@ -20,5 +20,5 @@ void main()
   vec3 bloomColor = GetTextureSample(1, vec4(0.0), v_TextureCoord).rgb;
   hdrColor += bloomColor; // additive blending
 
-  o_Color = ToneMapping(hdrColor, u_Exposure);
+  o_Color = vec4(hdrColor, 1.0);//ToneMapping(hdrColor, u_Exposure);
 }

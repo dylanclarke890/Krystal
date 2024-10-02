@@ -28,6 +28,8 @@ namespace Krys
     int MaxUniformComponents;
     int MaxUniformBlocks;
     int MaxVertexAttributes;
+    int MaxRecommendedVertices;
+    int MaxRecommendedIndices;
     int MaxFramebufferColorAttachments;
     int MaxFramebufferDrawBuffers;
 
@@ -43,6 +45,8 @@ namespace Krys
       KRYS_LOG("MaxUniformComponents: %d", MaxUniformComponents);
       KRYS_LOG("MaxUniformBlocks: %d", MaxUniformBlocks);
       KRYS_LOG("MaxVertexAttributes: %d", MaxVertexAttributes);
+      KRYS_LOG("MaxRecommendedVertices: %d", MaxRecommendedVertices);
+      KRYS_LOG("MaxRecommendedIndices: %d", MaxRecommendedIndices);
       KRYS_LOG("MaxFramebufferColorAttachments: %d", MaxFramebufferColorAttachments);
       KRYS_LOG("MaxFramebufferDrawBuffers: %d", MaxFramebufferDrawBuffers);
     }

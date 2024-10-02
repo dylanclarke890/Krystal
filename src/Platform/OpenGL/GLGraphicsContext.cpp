@@ -201,6 +201,8 @@ namespace Krys
     glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, &capabilities.MaxInputComponents);
     glGetIntegerv(GL_MAX_VERTEX_OUTPUT_COMPONENTS, &capabilities.MaxOutputComponents);
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &capabilities.MaxVertexAttributes);
+    glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &capabilities.MaxRecommendedVertices);
+    glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &capabilities.MaxRecommendedIndices);
 
     glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &capabilities.MaxUniformComponents);
     glGetIntegerv(GL_MAX_VERTEX_UNIFORM_BLOCKS, &capabilities.MaxUniformBlocks);
