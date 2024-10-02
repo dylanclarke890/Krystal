@@ -198,14 +198,21 @@ namespace Krys
   {
     GraphicsCapabilities capabilities{};
 
-    glGetIntegerv(GL_MAX_DRAW_BUFFERS, &capabilities.MaxDrawBuffers);
     glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, &capabilities.MaxInputComponents);
     glGetIntegerv(GL_MAX_VERTEX_OUTPUT_COMPONENTS, &capabilities.MaxOutputComponents);
-    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &capabilities.MaxTextureImageUnits);
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &capabilities.MaxTextureSize);
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &capabilities.MaxVertexAttributes);
+
     glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &capabilities.MaxUniformComponents);
     glGetIntegerv(GL_MAX_VERTEX_UNIFORM_BLOCKS, &capabilities.MaxUniformBlocks);
-    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &capabilities.MaxVertexAttributes);
+
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &capabilities.MaxTextureImageUnits);
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &capabilities.MaxTextureSize);
+    glGetIntegerv(GL_MAX_COLOR_TEXTURE_SAMPLES, &capabilities.MaxTextureColorSamples);
+    glGetIntegerv(GL_MAX_DEPTH_TEXTURE_SAMPLES, &capabilities.MaxTextureDepthSamples);
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &capabilities.MaxTextureSize);
+
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &capabilities.MaxFramebufferColorAttachments);
+    glGetIntegerv(GL_MAX_DRAW_BUFFERS, &capabilities.MaxFramebufferDrawBuffers);
 
     capabilities.Log();
     return capabilities;

@@ -17,6 +17,8 @@ namespace Krys
 
     KRYS_ASSERT(data[0], "Failed to load first face!", 0);
     KRYS_ASSERT(channels == 3 || channels == 4, "Unsupported number of color channels.", 0);
+    KRYS_ASSERT(width <= MaxTextureSize, "Texture width exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, width);
+    KRYS_ASSERT(height <= MaxTextureSize, "Texture height exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, height);
 
     if (InternalFormat == TextureInternalFormat::Auto)
     {
@@ -51,6 +53,9 @@ namespace Krys
 
   GLTextureCubemap::GLTextureCubemap(uint width, uint height, TextureInternalFormat internalFormat)
   {
+    KRYS_ASSERT(static_cast<int>(width) <= MaxTextureSize, "Texture width exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, width);
+    KRYS_ASSERT(static_cast<int>(height) <= MaxTextureSize, "Texture height exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, height);
+
     InternalFormat = internalFormat;
 
     glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &Id);

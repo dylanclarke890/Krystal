@@ -18,6 +18,8 @@ namespace Krys
     uint32 Width, Height, Samples;
     List<Ref<Texture2D>> ColorAttachments;
     Ref<Texture> DepthAttachment;
+    inline static int MaxColorAttachments = 0;
+    inline static int MaxDrawBuffers = 0;
 
   public:
     virtual ~Framebuffer() = default;
@@ -72,6 +74,12 @@ namespace Krys
     NO_DISCARD Ref<Texture> GetDepthAttachment()
     {
       return DepthAttachment;
+    }
+
+    static void SetDriverLimits(int maxColorAttachments, int maxDrawBuffers) noexcept
+    {
+      MaxColorAttachments = maxColorAttachments;
+      MaxDrawBuffers = maxDrawBuffers;
     }
   };
 

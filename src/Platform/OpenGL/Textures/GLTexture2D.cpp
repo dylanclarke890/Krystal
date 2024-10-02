@@ -31,6 +31,11 @@ namespace Krys
 
   GLTexture2D::GLTexture2D(int width, int height, int samples, TextureInternalFormat internalFormat)
   {
+    KRYS_ASSERT(width <= MaxTextureSize, "Texture width exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, width);
+    KRYS_ASSERT(height <= MaxTextureSize, "Texture height exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, height);
+    KRYS_ASSERT(internalFormat != TextureInternalFormat::Depth || samples <= MaxDepthSamples, "Unable to create a depth texture with %d samples (max is %d)", samples, MaxDepthSamples);
+    KRYS_ASSERT(internalFormat == TextureInternalFormat::Depth || samples <= MaxColorSamples, "Unable to create a color texture with %d samples (max is %d)", samples, MaxColorSamples);
+
     Path = "N/A";
     Width = width;
     Height = height;
@@ -122,7 +127,9 @@ namespace Krys
 
     KRYS_ASSERT(data, "Failed to load image!", 0);
     KRYS_ASSERT(channels == 3 || channels == 4, "Unsupported number of color channels.", 0);
-    
+    KRYS_ASSERT(width <= MaxTextureSize, "Texture width exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, width);
+    KRYS_ASSERT(height <= MaxTextureSize, "Texture height exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, height);
+
     Width = width;
     Height = height;
 
@@ -137,6 +144,8 @@ namespace Krys
 
     if (IsMultisampled())
     {
+      KRYS_ASSERT(InternalFormat != TextureInternalFormat::Depth || static_cast<int>(Samples) <= MaxDepthSamples, "Unable to create a depth texture with %d samples (max is %d)", Samples, MaxDepthSamples);
+      KRYS_ASSERT(InternalFormat == TextureInternalFormat::Depth || static_cast<int>(Samples) <= MaxColorSamples, "Unable to create a color texture with %d samples (max is %d)", Samples, MaxColorSamples);
       glCreateTextures(GL_TEXTURE_2D_MULTISAMPLE, 1, &Id);
       glTextureStorage2DMultisample(Id, Samples, ToGLInternalFormat(InternalFormat), width, height, GL_TRUE);
     }

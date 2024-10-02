@@ -81,6 +81,7 @@ namespace Krys
 
   void GLVertexBuffer::SetLayout(const VertexBufferLayout &layout)
   {
+    KRYS_ASSERT(layout.GetAttributeCount() <= MaxVertexAttributes, "Layout has too many vertex attributes. It has %d, but only %d are supported", layout.GetAttributeCount(), MaxVertexAttributes);
     Layout = layout;
   }
 

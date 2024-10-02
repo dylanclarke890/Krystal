@@ -8,6 +8,9 @@ namespace Krys
   {
   protected:
     uint Id;
+    inline static int MaxTextureSize = 0;
+    inline static int MaxColorSamples = 0;
+    inline static int MaxDepthSamples = 0;
 
   public:
     Texture() = default;
@@ -20,6 +23,13 @@ namespace Krys
 
     virtual void Bind(uint32 slot = 0) const noexcept = 0;
     virtual void Unbind() const noexcept = 0;
+
+    static void SetDriverLimits(int maxTextureSize, int maxColorSamples, int maxDepthSamples) noexcept
+    {
+      MaxTextureSize = maxTextureSize;
+      MaxColorSamples = maxColorSamples;
+      MaxDepthSamples = maxDepthSamples;
+    }
   };
 
   enum class TextureMagnifyMode : ushort

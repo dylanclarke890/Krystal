@@ -19,26 +19,32 @@ namespace Krys
   // TODO: this *could* be more fine-grained. Some of the limits vary based on shader stage.
   struct GraphicsCapabilities
   {
-    int MaxDrawBuffers;
     int MaxInputComponents;
     int MaxOutputComponents;
     int MaxTextureImageUnits;
     int MaxTextureSize;
+    int MaxTextureColorSamples;
+    int MaxTextureDepthSamples;
     int MaxUniformComponents;
     int MaxUniformBlocks;
     int MaxVertexAttributes;
+    int MaxFramebufferColorAttachments;
+    int MaxFramebufferDrawBuffers;
 
     void Log() const
     {
       KRYS_LOG("Graphics Capabilities:");
-      KRYS_LOG("MaxDrawBuffers: %d", MaxDrawBuffers);
       KRYS_LOG("MaxInputComponents: %d", MaxInputComponents);
       KRYS_LOG("MaxOutputComponents: %d", MaxOutputComponents);
       KRYS_LOG("MaxTextureImageUnits: %d", MaxTextureImageUnits);
       KRYS_LOG("MaxTextureSize: %d", MaxTextureSize);
+      KRYS_LOG("MaxTextureColorSamples: %d", MaxTextureColorSamples);
+      KRYS_LOG("MaxTextureDepthSamples: %d", MaxTextureDepthSamples);
       KRYS_LOG("MaxUniformComponents: %d", MaxUniformComponents);
       KRYS_LOG("MaxUniformBlocks: %d", MaxUniformBlocks);
       KRYS_LOG("MaxVertexAttributes: %d", MaxVertexAttributes);
+      KRYS_LOG("MaxFramebufferColorAttachments: %d", MaxFramebufferColorAttachments);
+      KRYS_LOG("MaxFramebufferDrawBuffers: %d", MaxFramebufferDrawBuffers);
     }
   };
 

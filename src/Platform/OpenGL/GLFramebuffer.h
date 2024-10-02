@@ -82,7 +82,8 @@ namespace Krys
 
     Ref<Texture2D> AddColorAttachment(TextureInternalFormat internalFormat) noexcept override
     {
-      // TODO: validate ColorAttachments.size() against GL_MAX_COLOR_ATTACHMENTS
+      KRYS_ASSERT(ColorAttachments.size() < MaxColorAttachments, "Maximum Color Attachments exceeded.", 0);
+
       Ref<Texture2D> texture = CreateRef<GLTexture2D>(Width, Height, Samples, internalFormat);
       if (Samples == 1)
         texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToEdge);
@@ -162,12 +163,13 @@ namespace Krys
     void SetWriteBuffers(const List<uint> &attachmentIndices) noexcept override
     {
       KRYS_ASSERT(attachmentIndices.size(), "No attachments specified.", 0);
+      KRYS_ASSERT(attachmentIndices.size() <= MaxDrawBuffers, "Unable to bind to more than %d draw buffers at one time.", MaxDrawBuffers);
 
       List<GLenum> attachments;
-      for (auto attachmentIndex : attachmentIndices)
+      for (auto i : attachmentIndices)
       {
-        KRYS_ASSERT(attachmentIndex >= 0 && attachmentIndex < ColorAttachments.size(), "Index out of range: Max is %d, %d received", ColorAttachments.size() - 1, attachmentIndex);
-        attachments.push_back(GL_COLOR_ATTACHMENT0 + attachmentIndex);
+        KRYS_ASSERT(i >= 0 && i < ColorAttachments.size(), "Index out of range: %d items, %d received", ColorAttachments.size() - 1, i);
+        attachments.push_back(GL_COLOR_ATTACHMENT0 + i);
       }
 
       glNamedFramebufferDrawBuffers(Id, static_cast<GLsizei>(attachments.size()), attachments.data());
@@ -178,6 +180,8 @@ namespace Krys
       GLenum status = glCheckNamedFramebufferStatus(Id, GL_FRAMEBUFFER);
       return status == GL_FRAMEBUFFER_COMPLETE;
     }
+
+#pragma region Blitting
 
     void BlitTo(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
     {
@@ -233,5 +237,7 @@ namespace Krys
                              IntCast(dst.Left), IntCast(dst.Bottom), IntCast(dst.Right), IntCast(dst.Top),
                              ToGLBufferFlags(mask), GL_NEAREST);
     }
+
+#pragma endregion Blitting
   };
 }

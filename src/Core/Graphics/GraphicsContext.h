@@ -169,6 +169,9 @@ namespace Krys
     virtual void Init() noexcept
     {
       const auto &capabilities = QueryCapabilities();
+      Framebuffer::SetDriverLimits(capabilities.MaxFramebufferColorAttachments, capabilities.MaxFramebufferDrawBuffers);
+      Texture::SetDriverLimits(capabilities.MaxTextureSize, capabilities.MaxTextureColorSamples, capabilities.MaxTextureDepthSamples);
+      VertexBuffer::SetDriverLimits(capabilities.MaxVertexAttributes);
 
       ShaderPreprocessorTemplateKeys templateKeys;
       templateKeys.MaxTextureSlots = capabilities.MaxTextureImageUnits;

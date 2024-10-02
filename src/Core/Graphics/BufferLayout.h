@@ -116,13 +116,16 @@ namespace Krys
   {
   private:
     List<VertexBufferElement> Elements;
+    int AttributeCount;
 
   public:
     VertexBufferLayout() = default;
 
-    VertexBufferLayout(std::initializer_list<VertexBufferElement> elements) : Elements(elements)
+    VertexBufferLayout(std::initializer_list<VertexBufferElement> elements)
+        : Elements(elements), AttributeCount(0)
     {
       CalculateOffsetsAndStride();
+      CalculateAttributeCount();
     }
 
     const List<VertexBufferElement> &GetElements() const { return Elements; }
@@ -130,6 +133,11 @@ namespace Krys
     List<VertexBufferElement>::iterator end() { return Elements.end(); }
     List<VertexBufferElement>::const_iterator begin() const { return Elements.begin(); }
     List<VertexBufferElement>::const_iterator end() const { return Elements.end(); }
+
+    NO_DISCARD int GetAttributeCount() const noexcept
+    {
+      return AttributeCount;
+    }
 
   private:
     void CalculateOffsetsAndStride()
@@ -148,6 +156,48 @@ namespace Krys
         offset += element.Size;
         element.Stride = vertexSize;
       }
+    }
+
+    void CalculateAttributeCount()
+    {
+      int count = 0;
+
+      for (auto element : Elements)
+      {
+        switch (element.Type)
+        {
+        case ShaderDataType::Float:
+        case ShaderDataType::Float2:
+        case ShaderDataType::Float3:
+        case ShaderDataType::Float4:
+        case ShaderDataType::Int:
+        case ShaderDataType::Int2:
+        case ShaderDataType::Int3:
+        case ShaderDataType::Int4:
+        case ShaderDataType::Bool:
+        {
+          count++;
+          break;
+        }
+        case ShaderDataType::Mat3:
+        {
+          count += 3;
+          break;
+        }
+        case ShaderDataType::Mat4:
+        {
+          count += 4;
+          break;
+        }
+        default:
+        {
+          KRYS_ASSERT(false, "Unknown ShaderDataType", 0);
+          break;
+        }
+        }
+      }
+
+      AttributeCount = count;
     }
   };
 

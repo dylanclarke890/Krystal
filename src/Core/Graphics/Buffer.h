@@ -20,6 +20,9 @@ namespace Krys
 
   class VertexBuffer
   {
+  protected:
+    inline static int MaxVertexAttributes = 0;
+
   public:
     virtual ~VertexBuffer() = default;
 
@@ -30,6 +33,11 @@ namespace Krys
 
     virtual const VertexBufferLayout &GetLayout() const = 0;
     virtual void SetLayout(const VertexBufferLayout &layout) = 0;
+
+    static void SetDriverLimits(int maxVertexAttributes)
+    {
+      MaxVertexAttributes = maxVertexAttributes;
+    }
   };
 
   class UniformBuffer
