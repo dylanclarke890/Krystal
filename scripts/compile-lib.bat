@@ -23,7 +23,8 @@ set krystal_include_directories=^
 /I "K:\src\ThirdParty\assimp\include" ^
 /I "K:\src\ThirdParty\Glad\include" ^
 /I "K:\src\ThirdParty\glm" ^
-/I "K:\src\ThirdParty\stb"
+/I "K:\src\ThirdParty\stb" ^
+/I "K:\src\ThirdParty\rapidjson\include"
 
 set krystal_source_files=^
 K:\src\ThirdParty\Glad\src\gl.c ^

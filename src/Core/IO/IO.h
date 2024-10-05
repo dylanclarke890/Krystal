@@ -17,32 +17,37 @@ namespace Krys::IO
   /// @param recursive If true will also search subdirectories.
   /// @param extensions Optional list of extensions to filter by.
   /// @return The list of regular files that match the search criteria.
-  List<FileInfo> ListFiles(const stringview &directory, List<stringview> extensions = {}, bool recursive = false) noexcept;
+  NO_DISCARD List<FileInfo> ListFiles(const stringview &directory, List<stringview> extensions = {}, bool recursive = false) noexcept;
 
   /// @brief Get information about a path
   /// @param path The path to check.
   /// @return Info about the path, such as name, extension and whether it is a directory.
-  FileInfo GetPathInfo(const stringview &path) noexcept;
+  NO_DISCARD FileInfo GetPathInfo(const stringview &path) noexcept;
+
+  /// @brief Get the extension of a path.
+  /// @param path The path to check.
+  /// @return Extension of the path.
+  NO_DISCARD const string GetExtension(const stringview &path) noexcept;
 
   /// @brief Check whether a path exists.
   /// @param path The path to check.
   /// @return True if the path exists.
-  bool PathExists(const stringview &path) noexcept;
+  NO_DISCARD bool PathExists(const stringview &path) noexcept;
 
   /// @brief Check whether a path is a directory.
   /// @param path The path to check.
   /// @return True if the path is a directory.
-  bool IsDirectory(const stringview &path) noexcept;
+  NO_DISCARD bool IsDirectory(const stringview &path) noexcept;
 
   /// @brief Check whether a path is a regular file.
   /// @param path The path to check.
   /// @return True if the path is a regular file.
-  bool IsFile(const stringview &path) noexcept;
+  NO_DISCARD bool IsFile(const stringview &path) noexcept;
 
   /// @brief Get the contents of a file as text.
   /// @param path The path to the file to read.
   /// @return The contents of the file.
-  string ReadFileText(const stringview &path) noexcept;
+  NO_DISCARD string ReadFileText(const stringview &path) noexcept;
 
   /// @brief Write text to a file.
   /// @param path The path to check.

@@ -7,6 +7,7 @@
 #include <string_view>
 #include <unordered_map>
 #include <vector>
+#include <cstddef>
 
 namespace Krys
 {
@@ -25,6 +26,7 @@ namespace Krys
   typedef uint32_t uint32;
   typedef uint64_t uint64;
 
+  typedef std::byte byte;
   typedef unsigned char uchar;
   typedef std::string string;
   typedef std::string_view stringview;

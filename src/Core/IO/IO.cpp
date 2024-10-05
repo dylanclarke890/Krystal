@@ -66,6 +66,12 @@ namespace Krys::IO
     return fileInfo;
   }
 
+  const string GetExtension(const stringview &filepath) noexcept
+  {
+    KRYS_ASSERT(PathExists(filepath), "Path '%s' does not exist", filepath.data());
+    return fs::path(filepath).extension().string();
+  }
+
   bool PathExists(const stringview &path) noexcept
   {
     KRYS_PERFORMANCE_TIMER("PathExists");

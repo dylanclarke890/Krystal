@@ -54,6 +54,9 @@ namespace Krys::IO
       return buffer;
     }
 
+    KRYS_DISABLE_WARNING_PUSH()
+    KRYS_DISABLE_WARNING(4702, "-Wunreachable-code")
+    
     /// @brief Reads a value of type T from the byte stream, optionally converting the endianness.
     /// @tparam T The type of value to read from the byte stream. Must be an integral or floating-point type.
     /// @tparam ConvertToSystemEndian If true, converts the value from the current byte stream's endianness
@@ -73,6 +76,8 @@ namespace Krys::IO
 
       return Endian::ToSystemEndian<T>(value, Endianness);
     }
+
+    KRYS_DISABLE_WARNING_POP()
 
     string ReadJson(size_t length)
     {

@@ -10,6 +10,7 @@ namespace Krys
 {
   using EventCallbackFn = std::function<void(Event &)>;
 
+  // TODO: This doesn't really need to be virtual, platform can only implement one version.
   class Window
   {
   private:
