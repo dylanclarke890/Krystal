@@ -133,6 +133,7 @@ namespace Krys
     Shaders.PostProcessing = Context->CreateShader("shaders/post.vert", "shaders/post.frag");
     Shaders.ExtractBrightness = Context->CreateShader("shaders/screen-quad.vert", "shaders/extract-brightness.frag");
     Shaders.GaussianBlur = Context->CreateShader("shaders/screen-quad.vert", "shaders/effects/gaussian-blur.frag");
+    Shaders.Model = Context->CreateShader("shaders/models/v.vert", "shaders/models/f.frag");
 
     TextureUnits->SetSamplerUniforms({Shaders.ForwardShading, Shaders.PostProcessing});
   }
@@ -507,15 +508,19 @@ namespace Krys
 
 #pragma endregion Drawing Cubes
 
-  void Renderer::DrawModel(Ref<Model> model)
+  void Renderer::DrawModel(Ref<Model> model, Ref<Transform> transform)
   {
+    Shaders.Model->Bind();
+    Shaders.Model->SetUniform("u_Model", transform->GetModel());
     for (int i = 0; i < model->Meshes.size(); i++)
     {
       auto mesh = model->Meshes[i];
       auto indexed = mesh->Indices.size() > 0;
-      auto count = static_cast<uint32>(indexed ? mesh->Vertices.size() : mesh->Indices.size());
-
-      ForwardRender(mesh->VertexArray, count, indexed, mesh->PrimitiveType);
+      if (indexed)
+        Context->DrawIndices(mesh->Indices.size(), mesh->PrimitiveType);
+      else
+        Context->DrawVertices(mesh->Vertices.size(), mesh->PrimitiveType);
+      // ForwardRender(mesh->VertexArray, 2000, indexed, mesh->PrimitiveType);
     }
   }
 
@@ -673,7 +678,10 @@ namespace Krys
           caster.ShadowMapFramebuffer->Bind();
           Context->SetViewport(caster.ShadowMapFramebuffer->GetWidth(), caster.ShadowMapFramebuffer->GetHeight());
           Context->Clear(RenderBuffer::Depth);
-          Context->DrawIndices(IndexCount, DrawMode::Triangles);
+          if (indexed)
+            Context->DrawIndices(count, drawMode);
+          else
+            Context->DrawVertices(count, drawMode);
         }
       }
       Context->SetFaceCulling(CullMode::Back);
@@ -690,7 +698,10 @@ namespace Krys
           caster.ShadowMapFramebuffer->Bind();
           Context->SetViewport(caster.ShadowMapFramebuffer->GetWidth(), caster.ShadowMapFramebuffer->GetHeight());
           Context->Clear(RenderBuffer::Depth);
-          Context->DrawIndices(IndexCount, DrawMode::Triangles);
+          if (indexed)
+            Context->DrawIndices(count, drawMode);
+          else
+            Context->DrawVertices(count, drawMode);
         }
       }
 
@@ -706,7 +717,10 @@ namespace Krys
           caster.ShadowMapFramebuffer->Bind();
           Context->SetViewport(caster.ShadowMapFramebuffer->GetWidth(), caster.ShadowMapFramebuffer->GetHeight());
           Context->Clear(RenderBuffer::Depth);
-          Context->DrawIndices(IndexCount, DrawMode::Triangles);
+          if (indexed)
+            Context->DrawIndices(count, drawMode);
+          else
+            Context->DrawVertices(count, drawMode);
         }
       }
     }

@@ -16,12 +16,12 @@ namespace Krys
     Vec3 Normal;
     Vec4 Color;
     Vec2 TextureCoords;
-    int TextureSlotIndex;
-    int SpecularTextureSlotIndex;
-    int EmissionTextureSlotIndex;
-    int NormalTextureSlotIndex;
-    int DisplacementTextureSlotIndex;
-    float Shininess;
+    int TextureSlotIndex = -1;
+    int SpecularTextureSlotIndex = -1;
+    int EmissionTextureSlotIndex = -1;
+    int NormalTextureSlotIndex = -1;
+    int DisplacementTextureSlotIndex = -1;
+    float Shininess = 32;
     Vec3 Tangent;
   };
 

@@ -45,7 +45,7 @@ namespace Krys
   struct RendererShaders
   {
     Ref<Shader> ForwardShading, DirectionalShadowMap, PointLightShadowMap, SpotLightShadowMap,
-        LightSource, Skybox, PostProcessing, ExtractBrightness, GaussianBlur;
+        LightSource, Skybox, PostProcessing, ExtractBrightness, GaussianBlur, Model;
   };
 
   class Renderer
@@ -93,7 +93,7 @@ namespace Krys
     static void DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap);
     static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = RENDERER_DEFAULT_OBJECT_COLOR);
 
-    static void DrawModel(Ref<Model> model);
+    static void DrawModel(Ref<Model> model, Ref<Transform> transform);
 
     static void SetSkybox(std::array<string, 6> pathsToFaces);
     static void SetPostProcessingEnabled(bool enabled);
