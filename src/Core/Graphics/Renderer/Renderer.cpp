@@ -507,6 +507,18 @@ namespace Krys
 
 #pragma endregion Drawing Cubes
 
+  void Renderer::DrawModel(Ref<Model> model)
+  {
+    for (int i = 0; i < model->Meshes.size(); i++)
+    {
+      auto mesh = model->Meshes[i];
+      auto indexed = mesh->Indices.size() > 0;
+      auto count = static_cast<uint32>(indexed ? mesh->Vertices.size() : mesh->Indices.size());
+
+      ForwardRender(mesh->VertexArray, count, indexed, mesh->PrimitiveType);
+    }
+  }
+
 #pragma region Skybox
 
   void Renderer::SetSkybox(std::array<string, 6> pathsToFaces)
@@ -613,11 +625,14 @@ namespace Krys
     if (VertexCount == 0)
       return;
 
+    DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
+    DefaultIndexBuffer->SetData(Indices->data(), IndexCount);
+
     switch (CurrentRenderMode)
     {
     case RenderMode::Forward:
     {
-      ForwardRender();
+      ForwardRender(DefaultVertexArray, VertexCount, true, DrawMode::Triangles);
       break;
     }
     case RenderMode::Deferred:
@@ -633,14 +648,12 @@ namespace Krys
     }
   }
 
-  void Renderer::ForwardRender()
+  void Renderer::ForwardRender(Ref<VertexArray> vertexArray, uint32 count, bool indexed, DrawMode drawMode)
   {
     TextureUnits->Bind();
     TextureUnits->UnbindReserved();
 
-    DefaultVertexArray->Bind();
-    DefaultVertexBuffer->SetData(Vertices->data(), VertexCount * sizeof(VertexData));
-    DefaultIndexBuffer->SetData(Indices->data(), IndexCount);
+    vertexArray->Bind();
 
     if (IsWireFrameDrawingEnabled)
       Context->SetWireframeModeEnabled(true);
@@ -707,7 +720,11 @@ namespace Krys
       Context->Clear(RenderBuffer::All);
 
       ActiveShader->Bind();
-      Context->DrawIndices(IndexCount, DrawMode::Triangles);
+
+      if (indexed)
+        Context->DrawIndices(count, drawMode);
+      else
+        Context->DrawVertices(count, drawMode);
     }
 
     // Draw Lights

@@ -61,4 +61,18 @@ namespace Krys
     constexpr float GetWidth() { return Right - Left; }
     constexpr float GetHeight() { return Top - Bottom; }
   };
+
+  template <typename T>
+  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  constexpr T Max(const T &a, const T &b)
+  {
+    return a > b ? a : b;
+  }
+
+  template <typename T>
+  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  constexpr T Min(const T &a, const T &b)
+  {
+    return a < b ? a : b;
+  }
 }

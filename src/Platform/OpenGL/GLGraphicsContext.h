@@ -1,11 +1,11 @@
 #pragma once
 
-#include <windows.h>
-
 #include "Core.h"
 #include "GL.h"
 #include "Graphics/GraphicsContext.h"
 #include "Misc/Lazy.h"
+
+#include <windows.h>
 
 namespace Krys
 {

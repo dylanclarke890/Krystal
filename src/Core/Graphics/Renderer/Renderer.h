@@ -10,7 +10,6 @@
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Camera/Orthographic.h"
 #include "Graphics/Transform.h"
-#include "Graphics/Mesh.h"
 #include "Graphics/Renderer/LightManager.h"
 
 namespace Krys
@@ -94,6 +93,8 @@ namespace Krys
     static void DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap);
     static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = RENDERER_DEFAULT_OBJECT_COLOR);
 
+    static void DrawModel(Ref<Model> model);
+
     static void SetSkybox(std::array<string, 6> pathsToFaces);
     static void SetPostProcessingEnabled(bool enabled);
     static void SetWireFrameModeEnabled(bool enabled);
@@ -112,7 +113,7 @@ namespace Krys
 
     static void Reset();
     static void Flush();
-    static void ForwardRender();
+    static void ForwardRender(Ref<VertexArray> vertexArray, uint32 count, bool indexed = true, DrawMode drawMode = DrawMode::Triangles);
     static void DeferredRender();
 
     static void DrawQuad(Ref<Transform> transform, TextureData &textureData);

@@ -97,8 +97,18 @@ namespace Krys
     {
     case DrawMode::Points:
       return GL_POINTS;
+    case DrawMode::Lines:
+      return GL_LINE;
+    case DrawMode::LineStrip:
+      return GL_LINE_STRIP;
+    case DrawMode::LineLoop:
+      return GL_LINE_LOOP;
     case DrawMode::Triangles:
       return GL_TRIANGLES;
+    case DrawMode::TriangleFan:
+      return GL_TRIANGLE_FAN;
+    case DrawMode::TriangleStrip:
+      return GL_TRIANGLE_STRIP;
     default:
     {
       KRYS_ASSERT(false, "Unknown draw mode!", 0);

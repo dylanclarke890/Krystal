@@ -30,7 +30,6 @@ set krystal_source_files=^
 K:\src\ThirdParty\Glad\src\gl.c ^
 K:\src\ThirdParty\Glad\src\wgl.c ^
 K:\src\Core\Graphics\Shaders\ShaderPreprocessor.cpp ^
-K:\src\Platform\OpenGL\GLModel.cpp ^
 K:\src\Platform\OpenGL\Textures\GLTexture2D.cpp ^
 K:\src\Platform\OpenGL\Textures\GLTextureCubemap.cpp ^
 K:\src\Platform\OpenGL\GLShader.cpp ^

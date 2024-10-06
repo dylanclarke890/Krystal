@@ -2,16 +2,17 @@
 
 #include "Core.h"
 
-#include "Graphics/Graphics.h"
+#include "Graphics/Assets/Factory.h"
 #include "Graphics/Buffer.h"
+#include "Graphics/Enums.h"
 #include "Graphics/Framebuffer.h"
-#include "Graphics/VertexArray.h"
+#include "Graphics/Graphics.h"
+#include "Graphics/Shaders/Shader.h"
+#include "Graphics/Shaders/ShaderPreprocessor.h"
 #include "Graphics/Textures/SubTexture2D.h"
 #include "Graphics/Textures/Texture2D.h"
 #include "Graphics/Textures/TextureCubemap.h"
-#include "Graphics/Enums.h"
-#include "Graphics/Shaders/Shader.h"
-#include "Graphics/Shaders/ShaderPreprocessor.h"
+#include "Graphics/VertexArray.h"
 
 #include <algorithm>
 
@@ -235,7 +236,12 @@ namespace Krys
 
     virtual Ref<IndexBuffer> CreateIndexBuffer(uint32 count) noexcept = 0;
     virtual Ref<IndexBuffer> CreateIndexBuffer(const uint32 *indices, uint32 count) noexcept = 0;
+    Ref<IndexBuffer> CreateIndexBuffer(const List<uint32> &indices) noexcept
+    {
+      return CreateIndexBuffer(&indices[0], static_cast<uint32>(indices.size()));
+    }
 
+    // TODO: a pointer to floats is a bit dodgy now, refactor to take a pointer to VertexData instead.
     virtual Ref<VertexBuffer> CreateVertexBuffer(uint32 size) noexcept = 0;
     virtual Ref<VertexBuffer> CreateVertexBuffer(float *vertices, uint32 size) noexcept = 0;
 
@@ -246,6 +252,14 @@ namespace Krys
     virtual Ref<UniformBuffer> CreateUniformBuffer(uint32 binding, UniformBufferLayout layout) noexcept = 0;
 
     virtual Ref<VertexArray> CreateVertexArray() noexcept = 0;
+    Ref<VertexArray> CreateVertexArray(Ref<VertexBuffer> vertexBuffer, Ref<IndexBuffer> indexBuffer = nullptr) noexcept
+    {
+      auto vertexArray = CreateVertexArray();
+      vertexArray->AddVertexBuffer(vertexBuffer);
+      if (indexBuffer)
+        vertexArray->SetIndexBuffer(indexBuffer);
+      return vertexArray;
+    }
 
     virtual Ref<Shader> CreateShader() = 0;
     virtual Ref<Shader> CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath) = 0;
@@ -258,6 +272,30 @@ namespace Krys
 
     virtual Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples = 1) noexcept = 0;
     Ref<PingPongFramebuffer> CreatePingPongFramebuffer(Ref<Framebuffer> a, Ref<Framebuffer> b) noexcept { return CreateRef<PingPongFramebuffer>(a, b); }
+
+    Ref<Model> CreateModel(const stringview &path) noexcept
+    {
+      auto importer = Assets::Factory::CreateImporter(path);
+      importer->Parse();
+
+      KRYS_ASSERT(importer->GetResult(), "Import failed: %s", importer->GetResult().ErrorMessage.c_str());
+
+      auto model = importer->GetResult().ImportedModel;
+
+      for (auto mesh : model->Meshes)
+      {
+        uint32 vertexBufferSize = static_cast<uint32>(mesh->Vertices.size() * sizeof(VertexData));
+        mesh->VertexBuffer = CreateVertexBuffer(vertexBufferSize);
+        mesh->VertexBuffer->SetData(mesh->Vertices.data(), vertexBufferSize);
+        mesh->VertexBuffer->SetLayout(VERTEX_BUFFER_LAYOUT_DEFAULT);
+
+        if (mesh->Indices.size() > 0)
+          mesh->IndexBuffer = CreateIndexBuffer(mesh->Indices);
+        mesh->VertexArray = CreateVertexArray(mesh->VertexBuffer, mesh->IndexBuffer);
+      }
+
+      return model;
+    }
 
 #pragma endregion Graphics Objects
 

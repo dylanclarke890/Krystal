@@ -75,20 +75,20 @@ namespace Krys::Endian
   /// @param value The value to convert.
   /// @param from The endian type the value is currently in (either Little or Big).
   /// @return The value converted to the system's native endianness.
-  template <typename T>
+  template <typename T, Endian::Type SourceEndianness>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD T ToSystemEndian(T value, Type from) noexcept
+  constexpr NO_DISCARD T ToSystemEndian(T value) noexcept
   {
-    if (from == Type::Little)
+    if constexpr (SourceEndianness == Type::Little)
     {
-      if (IsLittleEndian())
+      if constexpr (IsLittleEndian())
         return value;
       else
         return SwapEndian(value);
     }
-    else if (from == Type::Big)
+    else if constexpr (SourceEndianness == Type::Big)
     {
-      if (IsBigEndian())
+      if constexpr (IsBigEndian())
         return value;
       else
         return SwapEndian(value);
@@ -97,24 +97,22 @@ namespace Krys::Endian
     return value;
   }
 
-  KRYS_DISABLE_WARNING_POP()
-
   /// Convert a value from one endian representation to another.
-  template <typename T>
+  template <typename T, Endian::Type SourceEndianness, Endian::Type DestinationEndianness>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD T Convert(T value, Type from, Type to) noexcept
+  constexpr NO_DISCARD T Convert(T value) noexcept
   {
-    if (from == to)
+    if constexpr (SourceEndianness == DestinationEndianness)
       return value;
 
-    if (to == Type::System)
-      return ToSystemEndian(value, from);
+    if constexpr (DestinationEndianness == Type::System)
+      return ToSystemEndian<T, SourceEndianness>(value);
 
-    if (from == Type::System)
+    if constexpr (SourceEndianness == Type::System)
     {
-      if (to == Type::Little)
+      if constexpr (DestinationEndianness == Type::Little)
         return ToLittleEndian(value);
-      else if (to == Type::Big)
+      else if constexpr (DestinationEndianness == Type::Big)
         return ToBigEndian(value);
       else
         return value;
@@ -123,4 +121,6 @@ namespace Krys::Endian
     // from == Big && to == Little or vice versa.
     return SwapEndian(value);
   }
+
+  KRYS_DISABLE_WARNING_POP()
 }

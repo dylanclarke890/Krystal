@@ -106,9 +106,13 @@ namespace Krys
 
   enum class DrawMode : ushort
   {
-    None = 0,
     Points,
-    Triangles
+    Lines,
+    LineLoop,
+    LineStrip,
+    Triangles,
+    TriangleStrip,
+    TriangleFan
   };
 
   enum class FramebufferBindType

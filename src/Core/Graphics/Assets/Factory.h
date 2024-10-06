@@ -3,7 +3,7 @@
 #include "Core.h"
 
 #include "IO/IO.h"
-#include "Assets/Importers/BinaryGLTF.h"
+#include "Graphics/Assets/Importers/BinaryGLTF.h"
 
 namespace Krys::Assets
 {

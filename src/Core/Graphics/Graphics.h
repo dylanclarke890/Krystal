@@ -3,11 +3,71 @@
 #include "Core.h"
 
 #include "Maths/Maths.h"
+#include "Buffer.h"
 #include "BufferLayout.h"
 #include "Framebuffer.h"
+#include "VertexArray.h"
 
 namespace Krys
 {
+  struct VertexData
+  {
+    Vec4 Position;
+    Vec3 Normal;
+    Vec4 Color;
+    Vec2 TextureCoords;
+    int TextureSlotIndex;
+    int SpecularTextureSlotIndex;
+    int EmissionTextureSlotIndex;
+    int NormalTextureSlotIndex;
+    int DisplacementTextureSlotIndex;
+    float Shininess;
+    Vec3 Tangent;
+  };
+
+  class Material
+  {
+  public:
+    Ref<Texture2D> Diffuse;
+    Ref<Texture2D> Specular;
+    Ref<Texture2D> Emission;
+    Ref<Texture2D> Normal;
+    Ref<Texture2D> Displacement;
+    Vec4 Tint;
+    float Shininess;
+
+    Material(Ref<Texture2D> texture)
+        : Diffuse(texture), Specular(nullptr),
+          Emission(nullptr), Normal(nullptr),
+          Tint(1.0f), Shininess(32.0f) {}
+  };
+
+  struct Mesh
+  {
+    List<uint32> Indices;
+    List<VertexData> Vertices;
+    List<Ref<Texture2D>> Textures;
+    DrawMode PrimitiveType;
+
+    Ref<IndexBuffer> IndexBuffer;
+    Ref<VertexBuffer> VertexBuffer;
+    Ref<VertexArray> VertexArray;
+  };
+
+  struct Model
+  {
+    /// @brief The file this model was loaded from.
+    string Path;
+
+    /// @brief The scene index for this model.
+    uint32 Index;
+
+    /// @brief Whether matrices in the model are column-major.
+    bool ColumnMajor;
+
+    List<Ref<Mesh>> Meshes;
+  };
+
 #pragma region Renderer
 
   constexpr uint RENDERER_MAX_TRIANGLES = 10000;
@@ -50,21 +110,6 @@ namespace Krys
       KRYS_LOG("MaxFramebufferColorAttachments: %d", MaxFramebufferColorAttachments);
       KRYS_LOG("MaxFramebufferDrawBuffers: %d", MaxFramebufferDrawBuffers);
     }
-  };
-
-  struct VertexData
-  {
-    Vec4 Position;
-    Vec3 Normal;
-    Vec4 Color;
-    Vec2 TextureCoords;
-    int TextureSlotIndex;
-    int SpecularTextureSlotIndex;
-    int EmissionTextureSlotIndex;
-    int NormalTextureSlotIndex;
-    int DisplacementTextureSlotIndex;
-    float Shininess;
-    Vec3 Tangent;
   };
 
   static VertexBufferLayout VERTEX_BUFFER_LAYOUT_DEFAULT = {
