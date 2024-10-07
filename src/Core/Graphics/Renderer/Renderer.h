@@ -4,126 +4,97 @@
 
 #include "Core.h"
 #include "Window.h"
+#include "Maths/Maths.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/GraphicsContext.h"
 #include "Graphics/Colors.h"
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Camera/Orthographic.h"
-#include "Graphics/Transform.h"
-#include "Graphics/Renderer/LightManager.h"
+#include "Graphics/Shaders/Shader.h"
 
 namespace Krys
 {
-  inline static void CalcTangentSpace(VertexData &v1, VertexData &v2, VertexData &v3, Mat3 &normalMatrix) noexcept
-  {
-    Vec3 edge1 = v2.Position - v1.Position;
-    Vec3 edge2 = v3.Position - v1.Position;
+  constexpr uint32 MAX_VERTICES_PER_BATCH = 50000;
+  constexpr uint32 MAX_INDICES_PER_BATCH = 200000;
 
-    Vec2 deltaUV1 = v2.TextureCoords - v1.TextureCoords;
-    Vec2 deltaUV2 = v3.TextureCoords - v1.TextureCoords;
-
-    float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
-
-    Vec3 tangent;
-    tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
-    tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
-    tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
-
-    tangent = glm::normalize(normalMatrix * tangent);
-
-    v1.Tangent = tangent;
-    v2.Tangent = tangent;
-    v3.Tangent = tangent;
-  }
-
-  struct RendererFramebuffers
-  {
-    Ref<Framebuffer> MultiSample, SingleSample, ExtractBrightness, PostProcessing;
-    Ref<PingPongFramebuffer> GaussianBlur;
+  static VertexBufferLayout VERTEX_BUFFER_LAYOUT_BATCH = {
+      {ShaderDataType::Float4, "i_Position"},
+      {ShaderDataType::Float3, "i_Normal"},
+      {ShaderDataType::Float4, "i_Color"},
+      {ShaderDataType::Float2, "i_TextureCoords"},
+      {ShaderDataType::Float3, "i_Tangent"},
   };
 
-  struct RendererShaders
+  struct BatchKey
   {
-    Ref<Shader> ForwardShading, DirectionalShadowMap, PointLightShadowMap, SpotLightShadowMap,
-        LightSource, Skybox, PostProcessing, ExtractBrightness, GaussianBlur, Model;
+    PrimitiveType PrimitiveType;
+    uint32 ShaderId, MaterialId;
+    bool Indexed, CastsShadows;
+
+    bool operator==(const BatchKey &other) const noexcept
+    {
+      return PrimitiveType == other.PrimitiveType &&
+             ShaderId == other.ShaderId &&
+             MaterialId == other.MaterialId &&
+             Indexed == other.Indexed &&
+             CastsShadows == other.CastsShadows;
+    }
+  };
+
+  struct BatchKeyHasher
+  {
+    size_t operator()(const BatchKey &k) const
+    {
+      size_t hash = 0;
+      hash ^= std::hash<uint32>()(static_cast<uint32>(k.PrimitiveType)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+      hash ^= std::hash<uint32>()(k.ShaderId) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+      hash ^= std::hash<uint32>()(k.MaterialId) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+      hash ^= std::hash<bool>()(k.Indexed) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+      hash ^= std::hash<bool>()(k.CastsShadows) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+      return hash;
+    }
+  };
+
+  struct Batch
+  {
+    BatchKey Key;
+    List<Ref<SceneObject>> Objects;
+  };
+
+  struct RendererDefaults
+  {
+    Ref<Shader> Shader;
+    Ref<Material> Material;
+    Ref<Texture> DiffuseMap, SpecularMap, EmissionMap, NormalMap, DisplacementMap;
+    Vec3 LightingFactor;
   };
 
   class Renderer
   {
   private:
+    static Ref<Window> MainWindow;
     static Ref<GraphicsContext> Context;
-    static Ref<Window> AppWindow;
-    static RendererFramebuffers Framebuffers;
-    static RendererShaders Shaders;
-    static Ref<Shader> ActiveShader;
-    static Ref<VertexArray> DefaultVertexArray, ScreenQuadVertexArray, SkyboxVertexArray;
-    static Ref<VertexBuffer> DefaultVertexBuffer, ScreenQuadVertexBuffer, SkyboxVertexBuffer;
-    static Ref<IndexBuffer> DefaultIndexBuffer;
+    static Map<BatchKey, Batch, BatchKeyHasher> Batches;
+    static Ref<VertexArray> BatchVertexArray;
+    static Ref<VertexBuffer> BatchVertexBuffer;
+    static Ref<IndexBuffer> BatchIndexBuffer;
     static Ref<UniformBuffer> SharedUniformBuffer;
-    static Ref<TextureCubemap> SkyboxCubemap;
-
-    static Unique<std::array<VertexData, RENDERER_MAX_VERTICES>> Vertices;
-    static Unique<std::array<uint32, RENDERER_MAX_INDICES>> Indices;
-    static uint VertexCount, IndexCount;
-
-    static Ref<ActiveTextureUnits> TextureUnits;
-
-    static Ref<Camera> ActiveCamera;
-    static bool IsPostProcessingEnabled, IsWireFrameDrawingEnabled;
-
-    static DeferredRendererData DeferredRenderer;
-    static RenderMode CurrentRenderMode;
+    static RendererDefaults Defaults;
+    static LightingModelType LightingModel;
+    static bool IsWireFrameDrawingEnabled;
 
   public:
-    static LightManager Lights;
+    static void Init(Ref<Window> window, Ref<GraphicsContext> context) noexcept;
+    static void Draw(Ref<SceneObject> object) noexcept;
 
-    static void Init(Ref<Window> window, Ref<GraphicsContext> ctx);
-    static void Shutdown();
-
-    static void DrawTriangle(Ref<Transform> transform, Vec4 &color);
-    static void DrawTriangle(Ref<Transform> transform, Ref<Material> material);
-    static void DrawTriangle(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = RENDERER_DEFAULT_OBJECT_COLOR);
-
-    static void DrawQuad(Ref<Transform> transform, Vec4 &color);
-    static void DrawQuad(Ref<Transform> transform, Ref<Material> material);
-    static void DrawQuad(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = RENDERER_DEFAULT_OBJECT_COLOR);
-
-    static void DrawCube(Ref<Transform> transform, Vec4 &color);
-    static void DrawCube(Ref<Transform> transform, Ref<Material> material);
-    static void DrawCube(Ref<Transform> transform, Ref<TextureCubemap> cubemap);
-    static void DrawCube(Ref<Transform> transform, Ref<SubTexture2D> subTexture, Vec4 &tint = RENDERER_DEFAULT_OBJECT_COLOR);
-
-    static void DrawModel(Ref<Model> model, Ref<Transform> transform);
-
-    static void SetSkybox(std::array<string, 6> pathsToFaces);
-    static void SetPostProcessingEnabled(bool enabled);
-    static void SetWireFrameModeEnabled(bool enabled);
-
-    static void BeginScene(Ref<Camera> camera, Ref<Shader> shaderToUse = nullptr);
-    static void NextBatch();
-    static void EndScene();
+    static void SetLightingModel(LightingModelType model) noexcept { LightingModel = model; }
+    static void SetWireFrameModeEnabled(bool enabled) noexcept { IsWireFrameDrawingEnabled = enabled; }
 
   private:
-    static void InitTextureUnits();
-    static void InitShaders();
-    static void InitDeferredRenderer();
-    static void InitFramebuffers();
-    static void InitBuffers();
-    static void InitVertexArrays();
+    static BatchKey GenerateBatchKey(Ref<SceneObject> object) noexcept;
+    static Batch &GetOrAddBatch(const BatchKey &key) noexcept;
 
-    static void Reset();
-    static void Flush();
-    static void ForwardRender(Ref<VertexArray> vertexArray, uint32 count, bool indexed = true, DrawMode drawMode = DrawMode::Triangles);
-    static void DeferredRender();
-
-    static void DrawQuad(Ref<Transform> transform, TextureData &textureData);
-    static void DrawTriangle(Ref<Transform> transform, TextureData &textureData);
-    static void DrawCube(Ref<Transform> transform, TextureData &textureData);
-
-    static void AddVertices(VertexData *vertices, uint vertexCount, uint32 *indices, uint32 indexCount);
-
-    static int GetTextureSlotIndex(Ref<Texture2D> texture);
-    static int GetTextureSlotIndex(Ref<TextureCubemap> texture);
-    static int GetTextureSlotIndex(Ref<Texture> texture, TextureBindingInfo &bindingInfo);
+    static void FlushBatch(const Batch &batch) noexcept;
+    static void SetDrawState(const Batch &batch) noexcept;
   };
 }

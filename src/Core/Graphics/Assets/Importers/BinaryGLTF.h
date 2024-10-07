@@ -245,8 +245,8 @@ namespace Krys::Assets
         IntermediateMeshes.push_back({});
 
         if (primitive.HasMember("mode"))
-          // NOTE: we can only do this because the order of modes in DrawMode matches GLTF's spec.
-          IntermediateMeshes[i].PrimitiveType = static_cast<DrawMode>(primitive["mode"].GetInt());
+          // NOTE: we can only do this because the order of modes in PrimitiveType matches GLTF's spec.
+          IntermediateMeshes[i].PrimitiveType = static_cast<PrimitiveType>(primitive["mode"].GetInt());
 
         for (const auto &attribute : primitive["attributes"].GetObj())
         {

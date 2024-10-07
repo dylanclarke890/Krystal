@@ -26,6 +26,7 @@ namespace Krys
   {
     Context->Init();
     Context->SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
+    Renderer::Init(Window, Context);
 
     Input::Init();
     Window->Show();
@@ -99,6 +100,7 @@ namespace Krys
   bool Application::OnResizeEvent(ResizeEvent &event)
   {
     KRYS_INFO("Window Resized: Width: %d, Height: %d", event.Width, event.Height);
+    // TODO: we need to keep track of the width and height instead as we frequently change the viewport dimensions.
     Context->SetViewport(event.Width, event.Height);
     return false;
   }

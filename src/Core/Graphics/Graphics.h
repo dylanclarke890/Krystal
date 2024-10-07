@@ -6,10 +6,86 @@
 #include "Buffer.h"
 #include "BufferLayout.h"
 #include "Framebuffer.h"
+#include "Shaders/Shader.h"
 #include "VertexArray.h"
 
 namespace Krys
 {
+  enum class PrimitiveType : ushort
+  {
+    Points,
+    Lines,
+    LineLoop,
+    LineStrip,
+    Triangles,
+    TriangleStrip,
+    TriangleFan
+  };
+
+  enum class LightingModelType : ushort
+  {
+    Phong,
+    BlinnPhong
+  };
+
+  struct Vertex
+  {
+    Vec3 Position;
+    Vec3 Normal;
+    Vec4 Color;
+    Vec2 TextureCoords;
+    Vec3 Tangent;
+  };
+
+  struct Transform
+  {
+    Vec3 Position, Size, Rotation;
+
+    Transform(Vec3 position, Vec3 size, Vec3 rotation = {}) noexcept : Position(position), Size(size), Rotation(rotation) {}
+    Transform(Vec3 position, Vec3 size, float rotation) noexcept : Transform(position, size, {0.0f, 0.0f, rotation}) {}
+    Transform(Vec2 position, Vec2 size, float rotation = 0.0f) noexcept : Transform({position, 0.0f}, {size, 1.0f}, {0.0f, 0.0f, rotation}) {}
+
+    Mat4 GetModelMatrix() const noexcept
+    {
+      Mat4 model = glm::translate(MAT4_I, Position);
+      if (Rotation.x)
+        model *= glm::rotate(MAT4_I, glm::radians(Rotation.x), ROTATE_AXIS_X);
+
+      if (Rotation.y)
+        model *= glm::rotate(MAT4_I, glm::radians(Rotation.y), ROTATE_AXIS_Y);
+
+      if (Rotation.z)
+        model *= glm::rotate(MAT4_I, glm::radians(Rotation.z), ROTATE_AXIS_Z);
+
+      return model * glm::scale(MAT4_I, Size);
+    }
+  };
+
+  struct Material
+  {
+    uint32 Id;
+    Vec3 AmbientColor{1.0f}, DiffuseColor{1.0f}, SpecularColor{1.0f};
+    Ref<Texture> DiffuseMap, SpecularMap, EmissionMap, NormalMap, DisplacementMap;
+    Vec4 Tint = Vec4(1.0f);
+    float Shininess = 32.0f;
+    Ref<Shader> Shader;
+  };
+
+  struct Mesh
+  {
+    PrimitiveType PrimitiveType;
+    List<Vertex> Vertices;
+    List<uint32> Indices;
+  };
+
+  struct SceneObject
+  {
+    Ref<Material> Material;
+    Ref<Mesh> Mesh;
+    Ref<Transform> Transform;
+    bool CastsShadows;
+  };
+
   struct VertexData
   {
     Vec4 Position;
@@ -25,48 +101,19 @@ namespace Krys
     Vec3 Tangent;
   };
 
-  class Material
-  {
-  public:
-    Ref<Texture2D> Diffuse;
-    Ref<Texture2D> Specular;
-    Ref<Texture2D> Emission;
-    Ref<Texture2D> Normal;
-    Ref<Texture2D> Displacement;
-    Vec4 Tint;
-    float Shininess;
+  // struct Model
+  // {
+  //   /// @brief The file this model was loaded from.
+  //   string Path;
 
-    Material(Ref<Texture2D> texture)
-        : Diffuse(texture), Specular(nullptr),
-          Emission(nullptr), Normal(nullptr),
-          Tint(1.0f), Shininess(32.0f) {}
-  };
+  //   /// @brief The scene index for this model.
+  //   uint32 Index;
 
-  struct Mesh
-  {
-    List<uint32> Indices;
-    List<VertexData> Vertices;
-    List<Ref<Texture2D>> Textures;
-    DrawMode PrimitiveType;
+  //   /// @brief Whether matrices in the model are column-major.
+  //   bool ColumnMajor;
 
-    Ref<IndexBuffer> IndexBuffer;
-    Ref<VertexBuffer> VertexBuffer;
-    Ref<VertexArray> VertexArray;
-  };
-
-  struct Model
-  {
-    /// @brief The file this model was loaded from.
-    string Path;
-
-    /// @brief The scene index for this model.
-    uint32 Index;
-
-    /// @brief Whether matrices in the model are column-major.
-    bool ColumnMajor;
-
-    List<Ref<Mesh>> Meshes;
-  };
+  //   List<Ref<Mesh>> Meshes;
+  // };
 
 #pragma region Renderer
 

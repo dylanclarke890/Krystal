@@ -34,8 +34,8 @@ namespace Krys
   template <typename T>
   using Nullable = std::optional<T>;
 
-  template <typename T1, typename T2>
-  using Map = std::unordered_map<T1, T2>;
+  template <typename TKey, typename TValue, typename TKeyHasher = std::hash<TKey>>
+  using Map = std::unordered_map<TKey, TValue, TKeyHasher>;
 
   template <typename T>
   using List = std::vector<T>;

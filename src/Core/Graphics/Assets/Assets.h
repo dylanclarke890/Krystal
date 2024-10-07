@@ -15,7 +15,7 @@ namespace Krys::Assets
     List<Vec3> Normals;
     List<Vec2> TextureCoords;
     List<Vec4> Colors;
-    DrawMode PrimitiveType = DrawMode::Triangles;
+    PrimitiveType PrimitiveType = PrimitiveType::Triangles;
   };
 
   enum class AssetImportStatus

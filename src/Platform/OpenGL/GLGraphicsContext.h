@@ -94,11 +94,11 @@ namespace Krys
 #pragma endregion Graphics Objects
 
 #pragma region Primitive Drawing
-    void DrawVertices(size_t count, DrawMode mode = DrawMode::Triangles) noexcept override;
-    void DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, DrawMode mode = DrawMode::Triangles) noexcept override;
+    void DrawVertices(size_t count, PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
+    void DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
 
-    void DrawIndices(size_t count, DrawMode mode = DrawMode::Triangles) noexcept override;
-    void DrawIndicesInstanced(size_t instanceCount, size_t indexCount, DrawMode mode = DrawMode::Triangles) noexcept override;
+    void DrawIndices(size_t count, PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
+    void DrawIndicesInstanced(size_t instanceCount, size_t indexCount, PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
 #pragma endregion Primitive Drawing
 
   private:

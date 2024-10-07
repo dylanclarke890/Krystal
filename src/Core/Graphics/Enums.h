@@ -104,29 +104,11 @@ namespace Krys
     return (static_cast<ushort>(a) & static_cast<ushort>(b));
   }
 
-  enum class DrawMode : ushort
-  {
-    Points,
-    Lines,
-    LineLoop,
-    LineStrip,
-    Triangles,
-    TriangleStrip,
-    TriangleFan
-  };
-
   enum class FramebufferBindType
   {
     None = 0,
     Read,
     Draw,
     ReadAndDraw
-  };
-
-  enum class LightingModel
-  {
-    None = 0,
-    Phong,
-    BlinnPhong
   };
 }

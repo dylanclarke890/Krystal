@@ -7,7 +7,10 @@
 
 namespace Krys
 {
-  GLShader::GLShader() : Id(glCreateProgram()) {}
+  GLShader::GLShader()
+  {
+    Id = glCreateProgram();
+  }
 
   GLShader::~GLShader()
   {

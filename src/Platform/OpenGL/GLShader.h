@@ -9,7 +9,6 @@ namespace Krys
   class GLShader : public Shader
   {
   private:
-    uint Id;
     List<uint> Shaders;
 
   public:

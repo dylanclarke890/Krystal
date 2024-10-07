@@ -14,8 +14,13 @@ namespace Krys
 
   class Shader
   {
+  protected:
+    uint32 Id;
+
   public:
     virtual ~Shader() = default;
+
+    NO_DISCARD uint32 GetId() const noexcept { return Id; }
 
     virtual void Bind() = 0;
     virtual void Unbind() = 0;

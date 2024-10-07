@@ -91,23 +91,23 @@ namespace Krys
     }
   };
 
-  static auto ToGLDrawMode = [](DrawMode mode) -> int
+  static auto ToGLDrawMode = [](PrimitiveType mode) -> int
   {
     switch (mode)
     {
-    case DrawMode::Points:
+    case PrimitiveType::Points:
       return GL_POINTS;
-    case DrawMode::Lines:
+    case PrimitiveType::Lines:
       return GL_LINE;
-    case DrawMode::LineStrip:
+    case PrimitiveType::LineStrip:
       return GL_LINE_STRIP;
-    case DrawMode::LineLoop:
+    case PrimitiveType::LineLoop:
       return GL_LINE_LOOP;
-    case DrawMode::Triangles:
+    case PrimitiveType::Triangles:
       return GL_TRIANGLES;
-    case DrawMode::TriangleFan:
+    case PrimitiveType::TriangleFan:
       return GL_TRIANGLE_FAN;
-    case DrawMode::TriangleStrip:
+    case PrimitiveType::TriangleStrip:
       return GL_TRIANGLE_STRIP;
     default:
     {
@@ -592,22 +592,22 @@ namespace Krys
     return CreateRef<GLTextureCubemap>(width, height, format);
   }
 
-  void GLGraphicsContext::DrawVertices(size_t count, DrawMode mode) noexcept
+  void GLGraphicsContext::DrawVertices(size_t count, PrimitiveType mode) noexcept
   {
     glDrawArrays(ToGLDrawMode(mode), 0, static_cast<GLsizei>(count));
   }
 
-  void GLGraphicsContext::DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, DrawMode mode) noexcept
+  void GLGraphicsContext::DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, PrimitiveType mode) noexcept
   {
     glDrawArraysInstanced(ToGLDrawMode(mode), 0, static_cast<GLsizei>(vertexCount), static_cast<GLsizei>(instanceCount));
   }
 
-  void GLGraphicsContext::DrawIndices(size_t count, DrawMode mode) noexcept
+  void GLGraphicsContext::DrawIndices(size_t count, PrimitiveType mode) noexcept
   {
     glDrawElements(ToGLDrawMode(mode), static_cast<GLsizei>(count), GL_UNSIGNED_INT, nullptr);
   }
 
-  void GLGraphicsContext::DrawIndicesInstanced(size_t instanceCount, size_t indexCount, DrawMode mode) noexcept
+  void GLGraphicsContext::DrawIndicesInstanced(size_t instanceCount, size_t indexCount, PrimitiveType mode) noexcept
   {
     glDrawElementsInstanced(ToGLDrawMode(mode), static_cast<GLsizei>(indexCount), GL_UNSIGNED_INT, nullptr, static_cast<GLsizei>(instanceCount));
   }

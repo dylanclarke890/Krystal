@@ -2,7 +2,6 @@
 
 #include "Core.h"
 
-#include "Graphics/Assets/Factory.h"
 #include "Graphics/Buffer.h"
 #include "Graphics/Enums.h"
 #include "Graphics/Framebuffer.h"
@@ -273,38 +272,38 @@ namespace Krys
     virtual Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples = 1) noexcept = 0;
     Ref<PingPongFramebuffer> CreatePingPongFramebuffer(Ref<Framebuffer> a, Ref<Framebuffer> b) noexcept { return CreateRef<PingPongFramebuffer>(a, b); }
 
-    Ref<Model> CreateModel(const stringview &path) noexcept
-    {
-      auto importer = Assets::Factory::CreateImporter(path);
-      importer->Parse();
+    // Ref<Model> CreateModel(const stringview &path) noexcept
+    // {
+    //   auto importer = Assets::Factory::CreateImporter(path);
+    //   importer->Parse();
 
-      KRYS_ASSERT(importer->GetResult(), "Import failed: %s", importer->GetResult().ErrorMessage.c_str());
+    //   KRYS_ASSERT(importer->GetResult(), "Import failed: %s", importer->GetResult().ErrorMessage.c_str());
 
-      auto model = importer->GetResult().ImportedModel;
+    //   auto model = importer->GetResult().ImportedModel;
 
-      for (auto mesh : model->Meshes)
-      {
-        uint32 vertexBufferSize = static_cast<uint32>(mesh->Vertices.size() * sizeof(VertexData));
-        mesh->VertexBuffer = CreateVertexBuffer(vertexBufferSize);
-        mesh->VertexBuffer->SetData(mesh->Vertices.data(), vertexBufferSize);
-        mesh->VertexBuffer->SetLayout(VERTEX_BUFFER_LAYOUT_DEFAULT);
+    //   for (auto mesh : model->Meshes)
+    //   {
+    //     uint32 vertexBufferSize = static_cast<uint32>(mesh->Vertices.size() * sizeof(VertexData));
+    //     mesh->VertexBuffer = CreateVertexBuffer(vertexBufferSize);
+    //     mesh->VertexBuffer->SetData(mesh->Vertices.data(), vertexBufferSize);
+    //     mesh->VertexBuffer->SetLayout(VERTEX_BUFFER_LAYOUT_DEFAULT);
 
-        if (mesh->Indices.size() > 0)
-          mesh->IndexBuffer = CreateIndexBuffer(mesh->Indices);
-        mesh->VertexArray = CreateVertexArray(mesh->VertexBuffer, mesh->IndexBuffer);
-      }
+    //     if (mesh->Indices.size() > 0)
+    //       mesh->IndexBuffer = CreateIndexBuffer(mesh->Indices);
+    //     mesh->VertexArray = CreateVertexArray(mesh->VertexBuffer, mesh->IndexBuffer);
+    //   }
 
-      return model;
-    }
+    //   return model;
+    // }
 
 #pragma endregion Graphics Objects
 
 #pragma region Primitive Drawing
-    virtual void DrawVertices(size_t count, DrawMode mode = DrawMode::Triangles) noexcept = 0;
-    virtual void DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, DrawMode mode = DrawMode::Triangles) noexcept = 0;
+    virtual void DrawVertices(size_t count, PrimitiveType mode = PrimitiveType::Triangles) noexcept = 0;
+    virtual void DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, PrimitiveType mode = PrimitiveType::Triangles) noexcept = 0;
 
-    virtual void DrawIndices(size_t count, DrawMode mode = DrawMode::Triangles) noexcept = 0;
-    virtual void DrawIndicesInstanced(size_t instanceCount, size_t indexCount, DrawMode mode = DrawMode::Triangles) noexcept = 0;
+    virtual void DrawIndices(size_t count, PrimitiveType mode = PrimitiveType::Triangles) noexcept = 0;
+    virtual void DrawIndicesInstanced(size_t instanceCount, size_t indexCount, PrimitiveType mode = PrimitiveType::Triangles) noexcept = 0;
 #pragma endregion Primitive Drawing
   };
 }
