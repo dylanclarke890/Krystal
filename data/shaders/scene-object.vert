@@ -18,8 +18,10 @@ out vec2 v_TextureCoords;
 
 void main()
 {
+  mat3 normalMatrix = mat3(transpose(inverse(u_Model)));
+  
   v_FragmentPosition = vec3(u_Model * vec4(i_Position, 1.0));
-  v_Normal = i_Normal;
+  v_Normal = normalMatrix * i_Normal;
   v_Color = i_Color;
   v_TextureCoords = i_TextureCoords;
   gl_Position = u_ViewProjection * vec4(v_FragmentPosition, 1.0);

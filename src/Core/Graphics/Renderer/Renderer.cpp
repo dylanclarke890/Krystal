@@ -13,6 +13,7 @@ namespace Krys
   Ref<VertexBuffer> Renderer::BatchVertexBuffer;
   Ref<IndexBuffer> Renderer::BatchIndexBuffer;
   Ref<UniformBuffer> Renderer::SharedUniformBuffer;
+  Ref<Camera> Renderer::ActiveCamera;
   RendererDefaults Renderer::Defaults;
   LightingModelType Renderer::LightingModel;
   bool Renderer::IsWireFrameDrawingEnabled;
@@ -25,20 +26,32 @@ namespace Krys
     Context = context;
     Batches = {};
     BatchVertexBuffer = Context->CreateVertexBuffer(MAX_VERTICES_PER_BATCH * static_cast<uint32>(sizeof(Vertex)));
+    BatchVertexBuffer->SetLayout(VERTEX_BUFFER_LAYOUT_BATCH);
     BatchIndexBuffer = Context->CreateIndexBuffer(MAX_INDICES_PER_BATCH);
     BatchVertexArray = Context->CreateVertexArray(BatchVertexBuffer, BatchIndexBuffer);
     SharedUniformBuffer = Context->CreateUniformBuffer(UNIFORM_BUFFER_BINDING_SHARED, UNIFORM_BUFFER_LAYOUT_SHARED);
 
-    Defaults.Shader = Context->CreateShader("shaders/scene-object.vert", "shaders/scene-object.frag");
     Defaults.LightingFactor = Vec3(1.0f);
     LightingModel = LightingModelType::BlinnPhong;
+  }
+
+  void Renderer::Begin(Ref<Camera> camera) noexcept
+  {
+    ActiveCamera = camera;
+    SharedUniformBuffer->SetData("u_ViewProjection", camera->GetViewProjection());
+    SharedUniformBuffer->SetData("u_CameraPosition", camera->GetPosition());
   }
 
   void Renderer::Draw(Ref<SceneObject> object) noexcept
   {
     auto key = GenerateBatchKey(object);
-    auto batch = GetOrAddBatch(key);
+    auto &batch = GetOrAddBatch(key);
     batch.Objects.push_back(object);
+  }
+
+  void Renderer::End() noexcept
+  {
+    FlushBatches();
   }
 
   BatchKey Renderer::GenerateBatchKey(Ref<SceneObject> object) noexcept
@@ -65,30 +78,38 @@ namespace Krys
     return Batches[key];
   }
 
-  void Renderer::FlushBatch(const Batch &batch) noexcept
+  void Renderer::FlushBatches() noexcept
   {
-    KRYS_ASSERT(batch.Objects.size() > 0, "Batch did not have any objects.", 0);
-
-    SetDrawState(batch);
-
-    const auto shader = batch.Objects[0]->Material->Shader;
-    for (const auto object : batch.Objects)
+    for (const auto &[key, batch] : Batches)
     {
-      shader->SetUniform("u_Model", object->Transform->GetModelMatrix());
+      KRYS_ASSERT(batch.Objects.size() > 0, "Batch did not have any objects.", 0);
 
-      auto vertices = object->Mesh->Vertices;
-      BatchVertexBuffer->SetData(vertices.data(), static_cast<uint32>(vertices.size() * sizeof(Vertex)));
+      SetDrawState(batch);
 
-      if (batch.Key.Indexed)
+      const auto shader = batch.Objects[0]->Material->Shader;
+      for (const auto &object : batch.Objects)
       {
-        auto indices = object->Mesh->Indices;
-        BatchIndexBuffer->SetData(indices.data(), static_cast<uint32>(indices.size()));
-        Context->DrawIndices(indices.size(), batch.Key.PrimitiveType);
+        shader->SetUniform("u_Model", object->Transform->GetModelMatrix());
+
+        auto vertices = object->Mesh->Vertices;
+        BatchVertexBuffer->SetData(vertices.data(), static_cast<uint32>(vertices.size() * sizeof(Vertex)));
+
+        if (key.Indexed)
+        {
+          auto indices = object->Mesh->Indices;
+          BatchIndexBuffer->SetData(indices.data(), static_cast<uint32>(indices.size()));
+          Context->DrawIndices(indices.size(), key.PrimitiveType);
+        }
+        else
+        {
+          Context->DrawVertices(vertices.size(), key.PrimitiveType);
+        }
       }
-      else
-      {
-        Context->DrawVertices(vertices.size(), batch.Key.PrimitiveType);
-      }
+    }
+
+    for (auto &[key, batch] : Batches)
+    {
+      batch.Objects.clear();
     }
   }
 
@@ -99,40 +120,40 @@ namespace Krys
     shader->Bind();
 
     const string prefix = "u_Material.";
-    shader->SetUniform(prefix + "AmbientColor", material->AmbientColor);
-    shader->SetUniform(prefix + "DiffuseColor", material->DiffuseColor);
-    shader->SetUniform(prefix + "SpecularColor", material->SpecularColor);
-    shader->SetUniform(prefix + "Tint", material->Tint);
-    shader->SetUniform(prefix + "Shininess", material->Shininess);
+    shader->TrySetUniform(prefix + "AmbientColor", material->AmbientColor);
+    shader->TrySetUniform(prefix + "DiffuseColor", material->DiffuseColor);
+    shader->TrySetUniform(prefix + "SpecularColor", material->SpecularColor);
+    shader->TrySetUniform(prefix + "Tint", material->Tint);
+    shader->TrySetUniform(prefix + "Shininess", material->Shininess);
 
     if (material->DiffuseMap)
     {
       material->DiffuseMap->Bind(0);
-      shader->SetUniform(prefix + "DiffuseMap", 0);
+      shader->TrySetUniform(prefix + "DiffuseMap", 0);
     }
 
     if (material->SpecularMap)
     {
-      material->DiffuseMap->Bind(1);
-      shader->SetUniform(prefix + "SpecularMap", 1);
+      material->SpecularMap->Bind(1);
+      shader->TrySetUniform(prefix + "SpecularMap", 1);
     }
 
     if (material->EmissionMap)
     {
-      material->DiffuseMap->Bind(2);
-      shader->SetUniform(prefix + "EmissionMap", 2);
+      material->EmissionMap->Bind(2);
+      shader->TrySetUniform(prefix + "EmissionMap", 2);
     }
 
     if (material->NormalMap)
     {
-      material->DiffuseMap->Bind(3);
-      shader->SetUniform(prefix + "NormalMap", 3);
+      material->NormalMap->Bind(3);
+      shader->TrySetUniform(prefix + "NormalMap", 3);
     }
 
     if (material->DisplacementMap)
     {
-      material->DiffuseMap->Bind(4);
-      shader->SetUniform(prefix + "DisplacementMap", 4);
+      material->DisplacementMap->Bind(4);
+      shader->TrySetUniform(prefix + "DisplacementMap", 4);
     }
   }
 }

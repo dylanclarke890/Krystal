@@ -27,9 +27,9 @@ namespace Krys::Assets
 
   struct AssetImportResult
   {
-    AssetImportStatus Status;
+    AssetImportStatus Status = AssetImportStatus::Success;
     string ErrorMessage{};
-    Ref<Model> ImportedModel{};
+    List<Ref<SceneObject>> SceneObjects{};
 
     explicit operator bool() const noexcept
     {

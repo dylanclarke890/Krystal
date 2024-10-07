@@ -11,29 +11,28 @@ in vec2 v_TextureCoords;
 
 out vec4 o_FragmentColor;
 
-
 // Lights (assuming one directional light for simplicity)
 // uniform vec3 u_LightPosition;
 // uniform vec3 u_LightColor;
 // uniform vec3 u_LightDirection;  // For directional light
 // uniform float u_LightIntensity;
 
-vec3 CalculateLighting(vec3 normal, vec3 lightDir, vec3 viewDir, vec3 lightColor, float shininess, vec3 specularColor)
-{
-    // Ambient lighting
-  vec3 ambient = u_Material.AmbientColor * lightColor * u_LightIntensity;
+// vec3 CalculateLighting(vec3 normal, vec3 lightDir, vec3 viewDir, vec3 lightColor, float shininess, vec3 specularColor)
+// {
+//     // Ambient lighting
+//   vec3 ambient = u_Material.AmbientColor * lightColor * u_LightIntensity;
 
-  // Diffuse lighting (Lambertian reflection)
-  float diff = max(dot(normal, lightDir), 0.0);
-  vec3 diffuse = diff * u_Material.DiffuseColor * lightColor;
+//   // Diffuse lighting (Lambertian reflection)
+//   float diff = max(dot(normal, lightDir), 0.0);
+//   vec3 diffuse = diff * u_Material.DiffuseColor * lightColor;
 
-  // Specular lighting (Phong reflection model)
-  vec3 reflectDir = reflect(-lightDir, normal);
-  float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
-  vec3 specular = spec * specularColor * lightColor;
+//   // Specular lighting (Phong reflection model)
+//   vec3 reflectDir = reflect(-lightDir, normal);
+//   float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+//   vec3 specular = spec * specularColor * lightColor;
 
-  return ambient + diffuse + specular;
-}
+//   return ambient + diffuse + specular;
+// }
 
 void main()
 {
@@ -61,5 +60,5 @@ void main()
 
   // FragColor = vec4(finalColor, diffuseTextureColor.a);
 
-  o_FragmentColor = diffuseTextureColor;
+  o_FragmentColor = diffuseTextureColor + v_Color;
 }

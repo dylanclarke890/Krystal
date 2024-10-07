@@ -8,6 +8,7 @@
 
 #include "Graphics/Camera/Perspective.h"
 #include "Graphics/VertexArray.h"
+#include "Graphics/Renderer/Renderer.h"
 
 #include "Misc/Performance.h"
 #include "Maths/Maths.h"

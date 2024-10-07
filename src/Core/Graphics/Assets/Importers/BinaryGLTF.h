@@ -73,8 +73,6 @@ namespace Krys::Assets
     BinaryGLTF(const stringview &path) noexcept
         : Importer(path), FileReader(path), BinaryChunk({})
     {
-      Result.ImportedModel->ColumnMajor = true;
-      Result.ImportedModel->Index = 0;
     }
 
     void Parse() noexcept override
@@ -94,9 +92,10 @@ namespace Krys::Assets
         return;
       }
 
+      auto sceneIndex = 0;
       if (Document.HasMember("scene"))
-        Result.ImportedModel->Index = Document["scene"].GetUint();
-      const auto &scene = Document["scenes"][Result.ImportedModel->Index];
+        sceneIndex = Document["scene"].GetUint();
+      const auto &scene = Document["scenes"][sceneIndex];
 
       if (!scene.HasMember("nodes"))
         Result.SetError(AssetImportStatus::InvalidFileFormat, "No nodes to process for the scene.");

@@ -66,7 +66,7 @@ namespace Krys
     uint32 Id;
     Vec3 AmbientColor{1.0f}, DiffuseColor{1.0f}, SpecularColor{1.0f};
     Ref<Texture> DiffuseMap, SpecularMap, EmissionMap, NormalMap, DisplacementMap;
-    Vec4 Tint = Vec4(1.0f);
+    Vec3 Tint = Vec3(1.0f);
     float Shininess = 32.0f;
     Ref<Shader> Shader;
   };

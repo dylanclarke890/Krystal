@@ -9,7 +9,6 @@
 #include "Graphics/GraphicsContext.h"
 #include "Graphics/Colors.h"
 #include "Graphics/Camera/Camera.h"
-#include "Graphics/Camera/Orthographic.h"
 #include "Graphics/Shaders/Shader.h"
 
 namespace Krys
@@ -18,7 +17,7 @@ namespace Krys
   constexpr uint32 MAX_INDICES_PER_BATCH = 200000;
 
   static VertexBufferLayout VERTEX_BUFFER_LAYOUT_BATCH = {
-      {ShaderDataType::Float4, "i_Position"},
+      {ShaderDataType::Float3, "i_Position"},
       {ShaderDataType::Float3, "i_Normal"},
       {ShaderDataType::Float4, "i_Color"},
       {ShaderDataType::Float2, "i_TextureCoords"},
@@ -79,13 +78,17 @@ namespace Krys
     static Ref<VertexBuffer> BatchVertexBuffer;
     static Ref<IndexBuffer> BatchIndexBuffer;
     static Ref<UniformBuffer> SharedUniformBuffer;
+    static Ref<Camera> ActiveCamera;
     static RendererDefaults Defaults;
     static LightingModelType LightingModel;
     static bool IsWireFrameDrawingEnabled;
 
   public:
     static void Init(Ref<Window> window, Ref<GraphicsContext> context) noexcept;
+
+    static void Begin(Ref<Camera> camera) noexcept;
     static void Draw(Ref<SceneObject> object) noexcept;
+    static void End() noexcept;
 
     static void SetLightingModel(LightingModelType model) noexcept { LightingModel = model; }
     static void SetWireFrameModeEnabled(bool enabled) noexcept { IsWireFrameDrawingEnabled = enabled; }
@@ -94,7 +97,7 @@ namespace Krys
     static BatchKey GenerateBatchKey(Ref<SceneObject> object) noexcept;
     static Batch &GetOrAddBatch(const BatchKey &key) noexcept;
 
-    static void FlushBatch(const Batch &batch) noexcept;
+    static void FlushBatches() noexcept;
     static void SetDrawState(const Batch &batch) noexcept;
   };
 }

@@ -2,6 +2,7 @@
 
 #include "Core.h"
 
+#include "Graphics/Assets/Factory.h"
 #include "Graphics/Buffer.h"
 #include "Graphics/Enums.h"
 #include "Graphics/Framebuffer.h"
@@ -164,6 +165,9 @@ namespace Krys
 
   class GraphicsContext
   {
+  private:
+    Ref<Shader> DefaultMaterialShader;
+
   public:
     virtual ~GraphicsContext() = default;
     virtual void Init() noexcept
@@ -189,6 +193,8 @@ namespace Krys
       templateKeys.MaxSpotLightShadowCasters = LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS;
 
       ShaderPreprocessor::SetTemplateKeys(templateKeys);
+
+      DefaultMaterialShader = CreateShader("shaders/scene-object.vert", "shaders/scene-object.frag");
     }
 
     virtual const GraphicsCapabilities &QueryCapabilities() noexcept = 0;
@@ -272,29 +278,37 @@ namespace Krys
     virtual Ref<Framebuffer> CreateFramebuffer(uint32 width, uint32 height, uint32 samples = 1) noexcept = 0;
     Ref<PingPongFramebuffer> CreatePingPongFramebuffer(Ref<Framebuffer> a, Ref<Framebuffer> b) noexcept { return CreateRef<PingPongFramebuffer>(a, b); }
 
-    // Ref<Model> CreateModel(const stringview &path) noexcept
-    // {
-    //   auto importer = Assets::Factory::CreateImporter(path);
-    //   importer->Parse();
+    List<Ref<SceneObject>> CreateSceneObject(const stringview &path) noexcept
+    {
+      auto importer = Assets::Factory::CreateImporter(path);
+      importer->Parse();
 
-    //   KRYS_ASSERT(importer->GetResult(), "Import failed: %s", importer->GetResult().ErrorMessage.c_str());
+      KRYS_ASSERT(importer->GetResult(), "Import failed: %s", importer->GetResult().ErrorMessage.c_str());
 
-    //   auto model = importer->GetResult().ImportedModel;
+      for (auto obj : importer->GetResult().SceneObjects)
+      {
+        if (!obj->Material)
+          obj->Material = CreateMaterial();
 
-    //   for (auto mesh : model->Meshes)
-    //   {
-    //     uint32 vertexBufferSize = static_cast<uint32>(mesh->Vertices.size() * sizeof(VertexData));
-    //     mesh->VertexBuffer = CreateVertexBuffer(vertexBufferSize);
-    //     mesh->VertexBuffer->SetData(mesh->Vertices.data(), vertexBufferSize);
-    //     mesh->VertexBuffer->SetLayout(VERTEX_BUFFER_LAYOUT_DEFAULT);
+        if (!obj->Material->Shader)
+          obj->Material->Shader = DefaultMaterialShader;
 
-    //     if (mesh->Indices.size() > 0)
-    //       mesh->IndexBuffer = CreateIndexBuffer(mesh->Indices);
-    //     mesh->VertexArray = CreateVertexArray(mesh->VertexBuffer, mesh->IndexBuffer);
-    //   }
+        if (!obj->Transform)
+          obj->Transform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f), Vec3(0.0f));
+      }
 
-    //   return model;
-    // }
+      return importer->GetResult().SceneObjects;
+    }
+
+    Ref<Material> CreateMaterial() noexcept
+    {
+      static int id = 0;
+
+      Ref<Material> material = CreateRef<Material>();
+      material->Id = id++;
+
+      return material;
+    }
 
 #pragma endregion Graphics Objects
 

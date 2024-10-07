@@ -17,8 +17,6 @@ namespace Krys::Assets
     Importer(const stringview &path) noexcept
         : Path(path), Result({}), IntermediateMeshes({})
     {
-      Result.ImportedModel = CreateRef<Model>();
-      Result.ImportedModel->Path = string{path.data()};
     }
 
     virtual ~Importer() = default;
@@ -31,19 +29,20 @@ namespace Krys::Assets
   protected:
     void ProcessIntermediateMeshes() noexcept
     {
-      Result.ImportedModel->Meshes.reserve(IntermediateMeshes.size());
+      Result.SceneObjects.reserve(IntermediateMeshes.size());
       for (const auto &intMesh : IntermediateMeshes)
       {
+        Ref<SceneObject> sceneObject = CreateRef<SceneObject>();
+
         Ref<Mesh> mesh = CreateRef<Mesh>();
-        Result.ImportedModel->Meshes.push_back(mesh);
         mesh->PrimitiveType = intMesh.PrimitiveType;
         mesh->Indices = intMesh.Indices;
         mesh->Vertices.reserve(intMesh.Positions.size());
 
         for (int i = 0; i < intMesh.Positions.size(); i++)
         {
-          VertexData vertex{};
-          vertex.Position = Vec4(std::move(intMesh.Positions[i]), 1.0f);
+          Vertex vertex{};
+          vertex.Position = std::move(intMesh.Positions[i]);
           vertex.Normal = std::move(intMesh.Normals[i]);
 
           if (intMesh.TextureCoords.size() > 0)
@@ -53,6 +52,9 @@ namespace Krys::Assets
 
           mesh->Vertices.emplace_back(vertex);
         }
+
+        sceneObject->Mesh = mesh;
+        Result.SceneObjects.emplace_back(sceneObject);
       }
     }
   };
