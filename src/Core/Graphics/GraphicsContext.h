@@ -24,145 +24,6 @@ namespace Krys
     Ref<Texture2D> GPosition, GNormal, GAlbedoSpecular;
   };
 
-  struct TextureBindingInfo
-  {
-    List<int> SlotIndices;
-    List<Ref<Texture>> Slots;
-    int MaxSlots = 0;
-    int NextSlotIndex = 0;
-    int ReservedSlots = 0;
-
-    void Bind() const noexcept
-    {
-      for (int i = ReservedSlots; i < NextSlotIndex; i++)
-        Slots[i]->Bind(SlotIndices[i]);
-    }
-
-    void BindReserved() const noexcept
-    {
-      for (int i = 0; i < ReservedSlots; i++)
-        Slots[i]->Bind(SlotIndices[i]);
-    }
-
-    void Unbind() const noexcept
-    {
-      for (int i = ReservedSlots; i < NextSlotIndex; i++)
-        Slots[i]->Unbind();
-    }
-
-    void UnbindReserved() const noexcept
-    {
-      for (int i = 0; i < ReservedSlots; i++)
-        Slots[i]->Unbind();
-    }
-
-    NO_DISCARD bool HasSlotsRemaining() const noexcept
-    {
-      return NextSlotIndex < MaxSlots;
-    }
-
-    // Returns a pair, the first element is the reserved index, the second is the sampler index of the slot.
-    NO_DISCARD std::pair<int, int> ReserveSlot() noexcept
-    {
-      KRYS_ASSERT(NextSlotIndex == ReservedSlots, "Should not be reserving slots in the middle of binding textures", 0);
-      auto index = ReservedSlots++;
-      NextSlotIndex = ReservedSlots;
-      return {index, SlotIndices[index]};
-    }
-  };
-
-  struct ActiveTextureUnits
-  {
-    TextureBindingInfo Texture2D;
-    TextureBindingInfo TextureCubemap;
-    Map<ReservedSlotType, List<int>> ReservedSlots;
-
-#pragma region Binding
-
-    void Bind() const noexcept
-    {
-      Texture2D.Bind();
-      TextureCubemap.Bind();
-    }
-
-    void BindReserved() const noexcept
-    {
-      Texture2D.BindReserved();
-      TextureCubemap.BindReserved();
-    }
-
-    void Unbind() const noexcept
-    {
-      Texture2D.Unbind();
-      TextureCubemap.Unbind();
-    }
-
-    void UnbindReserved() const noexcept
-    {
-      Texture2D.UnbindReserved();
-      TextureCubemap.UnbindReserved();
-    }
-
-#pragma endregion Binding
-
-#pragma region Setting Samplers
-
-    void SetSamplerUniforms(List<Ref<Shader>> shaders) noexcept
-    {
-      std::for_each(shaders.begin(), shaders.end(),
-                    [&](auto s)
-                    { SetSamplerUniforms(s); });
-    }
-
-    void SetSamplerUniforms(Ref<Shader> shader) noexcept
-    {
-      shader->TrySetUniform("u_Textures", Texture2D.SlotIndices.data(), Texture2D.MaxSlots);
-      shader->TrySetUniform("u_Cubemaps", TextureCubemap.SlotIndices.data(), TextureCubemap.MaxSlots);
-    }
-
-#pragma endregion Setting Samplers
-
-    NO_DISCARD std::pair<int, int> ReserveSlot(ReservedSlotType type)
-    {
-      auto slotsSearch = ReservedSlots.find(type);
-      List<int> slots = slotsSearch == ReservedSlots.end() ? List<int>{} : slotsSearch->second;
-
-      std::pair<int, int> slotIndex;
-      switch (type)
-      {
-      case ReservedSlotType::DirectionalShadowMap:
-      {
-        KRYS_ASSERT(slots.size() < LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS, "DirectionalShadowCaster limit exceeded", 0);
-        slotIndex = Texture2D.ReserveSlot();
-        break;
-      }
-      case ReservedSlotType::PointLightShadowMap:
-      {
-        KRYS_ASSERT(slots.size() < LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS, "PointLightShadowCaster limit exceeded", 0);
-        slotIndex = TextureCubemap.ReserveSlot();
-        break;
-      }
-      case ReservedSlotType::SpotLightShadowMap:
-      {
-        KRYS_ASSERT(slots.size() < LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS, "SpotLightShadowCaster limit exceeded", 0);
-        slotIndex = Texture2D.ReserveSlot();
-        break;
-      }
-      }
-
-      slots.push_back(slotIndex.first);
-      ReservedSlots[type] = slots;
-
-      return slotIndex;
-    }
-
-    void Reset() noexcept
-    {
-      Texture2D.NextSlotIndex = Texture2D.ReservedSlots;
-      TextureCubemap.NextSlotIndex = TextureCubemap.ReservedSlots;
-    }
-  };
-
   class GraphicsContext
   {
   private:
@@ -170,6 +31,7 @@ namespace Krys
 
   public:
     virtual ~GraphicsContext() = default;
+    
     virtual void Init() noexcept
     {
       const auto &capabilities = QueryCapabilities();
@@ -178,21 +40,11 @@ namespace Krys
       VertexBuffer::SetDriverLimits(capabilities.MaxVertexAttributes);
 
       ShaderPreprocessorTemplateKeys templateKeys;
-      templateKeys.MaxTextureSlots = capabilities.MaxTextureImageUnits;
-      templateKeys.MaxCubemapSlots = CUBEMAP_SLOTS;
-
       templateKeys.SharedUniformBufferBinding = UNIFORM_BUFFER_BINDING_SHARED;
-      templateKeys.LightUniformBufferBinding = UNIFORM_BUFFER_BINDING_LIGHTS;
-
       templateKeys.MaxDirectionalLights = LIGHTING_MAX_DIRECTIONAL_LIGHTS;
       templateKeys.MaxPointLights = LIGHTING_MAX_POINT_LIGHTS;
       templateKeys.MaxSpotLights = LIGHTING_MAX_SPOT_LIGHTS;
-
-      templateKeys.MaxDirectionalShadowCasters = LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS;
-      templateKeys.MaxPointLightShadowCasters = LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS;
-      templateKeys.MaxSpotLightShadowCasters = LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS;
-
-      ShaderPreprocessor::SetTemplateKeys(templateKeys);
+      ShaderPreprocessor::SetTemplateKeys(std::move(templateKeys));
 
       DefaultMaterialShader = CreateShader("shaders/scene-object.vert", "shaders/scene-object.frag");
     }

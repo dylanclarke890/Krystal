@@ -27,14 +27,13 @@ namespace Krys
   struct BatchKey
   {
     PrimitiveType PrimitiveType;
-    uint32 ShaderId, MaterialId;
+    uint32 ShaderId;
     bool Indexed, CastsShadows;
 
     bool operator==(const BatchKey &other) const noexcept
     {
       return PrimitiveType == other.PrimitiveType &&
              ShaderId == other.ShaderId &&
-             MaterialId == other.MaterialId &&
              Indexed == other.Indexed &&
              CastsShadows == other.CastsShadows;
     }
@@ -47,7 +46,6 @@ namespace Krys
       size_t hash = 0;
       hash ^= std::hash<uint32>()(static_cast<uint32>(k.PrimitiveType)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
       hash ^= std::hash<uint32>()(k.ShaderId) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-      hash ^= std::hash<uint32>()(k.MaterialId) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
       hash ^= std::hash<bool>()(k.Indexed) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
       hash ^= std::hash<bool>()(k.CastsShadows) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
       return hash;
@@ -65,7 +63,6 @@ namespace Krys
     Ref<Shader> Shader;
     Ref<Material> Material;
     Ref<Texture> DiffuseMap, SpecularMap, EmissionMap, NormalMap, DisplacementMap;
-    Vec3 LightingFactor;
   };
 
   class Renderer
@@ -81,6 +78,9 @@ namespace Krys
     static Ref<Camera> ActiveCamera;
     static RendererDefaults Defaults;
     static LightingModelType LightingModel;
+    static List<DirectionalLight> DirectionalLights;
+    static List<Ref<Framebuffer>> DirectionalLightShadowFramebuffers;
+    static Ref<Shader> DirectionalDepthMapShader;
     static bool IsWireFrameDrawingEnabled;
 
   public:
@@ -91,6 +91,8 @@ namespace Krys
     static void End() noexcept;
 
     static void SetLightingModel(LightingModelType model) noexcept { LightingModel = model; }
+    static void AddDirectionalLight(DirectionalLight &light) noexcept;
+
     static void SetWireFrameModeEnabled(bool enabled) noexcept { IsWireFrameDrawingEnabled = enabled; }
 
   private:
@@ -99,5 +101,8 @@ namespace Krys
 
     static void FlushBatches() noexcept;
     static void SetDrawState(const Batch &batch) noexcept;
+
+    static void ShadowPass() noexcept;
+    static void GeometryPass() noexcept;
   };
 }

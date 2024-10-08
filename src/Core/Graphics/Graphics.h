@@ -11,6 +11,12 @@
 
 namespace Krys
 {
+  const uint32 MATERIAL_DIFFUSE_MAP_SET = 1;
+  const uint32 MATERIAL_SPECULAR_MAP_SET = 1 << 1;
+  const uint32 MATERIAL_EMISSION_MAP_SET = 1 << 2;
+  const uint32 MATERIAL_NORMAL_MAP_SET = 1 << 3;
+  const uint32 MATERIAL_DISPLACEMENT_MAP_SET = 1 << 4;
+
   enum class PrimitiveType : ushort
   {
     Points,
@@ -69,6 +75,30 @@ namespace Krys
     Vec3 Tint = Vec3(1.0f);
     float Shininess = 32.0f;
     Ref<Shader> Shader;
+    bool CastsShadows = true;
+    bool ReceivesShadows = true;
+
+    NO_DISCARD uint32 GetAvailableTextures() const noexcept
+    {
+      uint32 flags = 0;
+
+      if (DiffuseMap)
+        flags |= MATERIAL_DIFFUSE_MAP_SET;
+
+      if (SpecularMap)
+        flags |= MATERIAL_SPECULAR_MAP_SET;
+
+      if (EmissionMap)
+        flags |= MATERIAL_EMISSION_MAP_SET;
+
+      if (NormalMap)
+        flags |= MATERIAL_NORMAL_MAP_SET;
+
+      if (DisplacementMap)
+        flags |= MATERIAL_DISPLACEMENT_MAP_SET;
+
+      return flags;
+    }
   };
 
   struct Mesh
@@ -86,46 +116,9 @@ namespace Krys
     bool CastsShadows;
   };
 
-  struct VertexData
-  {
-    Vec4 Position;
-    Vec3 Normal;
-    Vec4 Color;
-    Vec2 TextureCoords;
-    int TextureSlotIndex = -1;
-    int SpecularTextureSlotIndex = -1;
-    int EmissionTextureSlotIndex = -1;
-    int NormalTextureSlotIndex = -1;
-    int DisplacementTextureSlotIndex = -1;
-    float Shininess = 32;
-    Vec3 Tangent;
-  };
-
-  // struct Model
-  // {
-  //   /// @brief The file this model was loaded from.
-  //   string Path;
-
-  //   /// @brief The scene index for this model.
-  //   uint32 Index;
-
-  //   /// @brief Whether matrices in the model are column-major.
-  //   bool ColumnMajor;
-
-  //   List<Ref<Mesh>> Meshes;
-  // };
-
-#pragma region Renderer
-
-  constexpr uint RENDERER_MAX_TRIANGLES = 10000;
-  constexpr uint RENDERER_MAX_QUADS = RENDERER_MAX_TRIANGLES / 2;
-  constexpr uint RENDERER_MAX_VERTICES = RENDERER_MAX_QUADS * 4;
-  constexpr uint RENDERER_MAX_INDICES = RENDERER_MAX_QUADS * 6;
-  static Vec4 RENDERER_DEFAULT_OBJECT_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
-
-  // TODO: this *could* be more fine-grained. Some of the limits vary based on shader stage.
   struct GraphicsCapabilities
   {
+    // this *could* be more fine-grained. Some of the limits vary based on shader stage.
     int MaxInputComponents;
     int MaxOutputComponents;
     int MaxTextureImageUnits;
@@ -159,228 +152,151 @@ namespace Krys
     }
   };
 
-  static VertexBufferLayout VERTEX_BUFFER_LAYOUT_DEFAULT = {
-      {ShaderDataType::Float4, "i_Position"},
-      {ShaderDataType::Float3, "i_Normal"},
-      {ShaderDataType::Float4, "i_Color"},
-      {ShaderDataType::Float2, "i_TextureCoord"},
-      {ShaderDataType::Int, "i_TextureSlot"},
-      {ShaderDataType::Int, "i_SpecularSlot"},
-      {ShaderDataType::Int, "i_EmissionSlot"},
-      {ShaderDataType::Int, "i_NormalSlot"},
-      {ShaderDataType::Int, "i_DisplacementSlot"},
-      {ShaderDataType::Float, "i_Shininess"},
-      {ShaderDataType::Float3, "i_Tangent"},
-  };
-
-  static VertexBufferLayout VERTEX_BUFFER_LAYOUT_SCREEN = {
-      {ShaderDataType::Float2, "i_Position"},
-      {ShaderDataType::Float2, "i_TextureCoord"},
-  };
-
-  struct TextureData
-  {
-    const Vec2 *TextureCoords;
-    Vec4 Tint;
-    int Texture = -1;
-    int Specular = -1;
-    int Emission = -1;
-    int Normal = -1;
-    int Displacement = -1;
-    float Shininess = 32.0f;
-  };
-
   enum class RenderMode
   {
     Forward,
     Deferred
   };
 
-  enum class ReservedSlotType
+#pragma region Lights
+
+  struct BaseShadowSettings
   {
-    DirectionalShadowMap,
-    PointLightShadowMap,
-    SpotLightShadowMap,
-  };
-
-#pragma endregion Renderer
-
-#pragma region Lighting
-
-  constexpr uint CUBEMAP_SLOTS = 2;
-
-  constexpr uint LIGHTING_MAX_DIRECTIONAL_LIGHTS = 2;
-  constexpr uint LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS = 2;
-
-  constexpr uint LIGHTING_MAX_POINT_LIGHTS = 2;
-  constexpr uint LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS = 2;
-
-  constexpr uint LIGHTING_MAX_SPOT_LIGHTS = 2;
-  constexpr uint LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS = 2;
-
-  constexpr float LIGHTING_DEFAULT_SHADOW_BIAS = 0.005f;
-  constexpr uint LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION = 1024;
-
-  struct Light
-  {
-    Vec3 Ambient;
-    Vec3 Diffuse;
-    Vec3 Specular;
-
-    float Intensity;
-
-    bool Enabled;
-  };
-
-  struct ShadowCaster
-  {
-    float Bias = LIGHTING_DEFAULT_SHADOW_BIAS;
-    int LightIndex;
-    int ShadowMapResolution = LIGHTING_DEFAULT_SHADOW_MAP_RESOLUTION;
-    int ShadowMapSlotIndex;
+    float Bias = 0.005f;
+    int ShadowMapResolution = 1024;
     bool Enabled;
     Vec2 NearFarPlane;
     Ref<Framebuffer> ShadowMapFramebuffer;
     Ref<Texture> DepthTexture;
   };
 
-  struct LightSettings
-  {
-    bool CastShadows;
-    Vec2 NearFarPlane = Vec2(1.0f, 25.0f);
-  };
-
-#pragma endregion Lighting
-
-#pragma region Directional Light
-
-  struct DirectionalLight : Light
-  {
-    Vec3 Direction;
-  };
-
-  struct DirectionalShadowCaster : ShadowCaster
+  struct DirectionalLightShadowSettings : BaseShadowSettings
   {
     RectBounds Bounds = {-10.0f, 10.0f, -10.0f, 10.0f};
     Mat4 LightSpaceMatrix;
   };
 
-  static UniformStructLayout DirectionalLightStructLayout = {{
-      {UniformDataType::Vec3, "Ambient"},
-      {UniformDataType::Vec3, "Diffuse"},
-      {UniformDataType::Vec3, "Specular"},
-
-      {UniformDataType::Scalar, "Enabled"},
-      {UniformDataType::Scalar, "Intensity"},
-
-      {UniformDataType::Vec3, "Direction"},
-  }};
-
-  static UniformStructLayout DirectionalShadowCasterStructLayout = {{
-      {UniformDataType::Scalar, "Bias"},
-      {UniformDataType::Scalar, "LightIndex"},
-      {UniformDataType::Scalar, "ShadowMapResolution"},
-      {UniformDataType::Scalar, "ShadowMapSlotIndex"},
-      {UniformDataType::Scalar, "Enabled"},
-      {UniformDataType::Vec2, "NearFarPlane"},
-      {UniformDataType::Mat4, "LightSpaceMatrix"},
-  }};
-
-#pragma endregion Directional Light
-
-#pragma region Point Light
-
-  struct PointLight : Light
-  {
-    float Constant;
-    float Linear;
-    float Quadratic;
-
-    Vec3 Position;
-  };
-
-  struct PointLightShadowCaster : ShadowCaster
+  struct PointLightShadowSettings : BaseShadowSettings
   {
     Mat4 LightSpaceMatrices[6];
   };
 
-  static UniformStructLayout PointLightStructLayout = {
+  struct SpotLightShadowSettings : BaseShadowSettings
+  {
+    Mat4 LightSpaceMatrix;
+  };
+
+  struct BaseLight
+  {
+    Vec3 Color = Vec3(1.0f);
+    Vec3 Ambient;
+    Vec3 Diffuse;
+    Vec3 Specular;
+    float Intensity = 1.0f;
+    bool Enabled = true;
+    bool CastsShadows = true;
+  };
+
+  struct DirectionalLight : BaseLight
+  {
+    Vec3 Direction;
+
+    DirectionalLightShadowSettings ShadowSettings;
+  };
+
+  struct PointLight : BaseLight
+  {
+    Vec3 Position;
+    float Constant;
+    float Linear;
+    float Quadratic;
+
+    PointLightShadowSettings ShadowSettings;
+  };
+
+  struct SpotLight : PointLight
+  {
+    Vec3 Direction;
+    float InnerCutoff;
+    float OuterCutoff;
+
+    SpotLightShadowSettings ShadowSettings;
+  };
+
+#pragma endregion Lights
+
+#pragma region Uniform Buffers
+
+  constexpr uint32 UNIFORM_BUFFER_BINDING_SHARED = 0;
+  constexpr uint32 LIGHTING_MAX_DIRECTIONAL_LIGHTS = 2;
+  constexpr uint32 LIGHTING_MAX_POINT_LIGHTS = 32;
+  constexpr uint32 LIGHTING_MAX_SPOT_LIGHTS = 32;
+
+  static UniformStructLayout UNIFORM_STRUCT_DIRECTIONAL_LIGHT = {
+      {UniformDataType::Vec3, "Color"},
       {UniformDataType::Vec3, "Ambient"},
       {UniformDataType::Vec3, "Diffuse"},
       {UniformDataType::Vec3, "Specular"},
+      {UniformDataType::Scalar, "Intensity"},
+      {UniformDataType::Scalar, "Enabled"},
+      {UniformDataType::Vec3, "Direction"},
+      {UniformDataType::Scalar, "CastsShadows"},
+      {UniformDataType::Scalar, "Bias"},
+      {UniformDataType::Vec2, "NearFarPlane"},
+      {UniformDataType::Mat4, "LightSpaceMatrix"},
+  };
 
+  static UniformStructLayout UNIFORM_STRUCT_POINT_LIGHT = {
+      {UniformDataType::Vec3, "Color"},
+      {UniformDataType::Vec3, "Ambient"},
+      {UniformDataType::Vec3, "Diffuse"},
+      {UniformDataType::Vec3, "Specular"},
+      {UniformDataType::Scalar, "Intensity"},
+      {UniformDataType::Scalar, "Enabled"},
+      {UniformDataType::Vec3, "Position"},
       {UniformDataType::Scalar, "Constant"},
       {UniformDataType::Scalar, "Linear"},
       {UniformDataType::Scalar, "Quadratic"},
-
-      {UniformDataType::Scalar, "Enabled"},
-      {UniformDataType::Scalar, "Intensity"},
-
-      {UniformDataType::Vec3, "Position"},
-  };
-
-  static UniformStructLayout PointLightShadowCasterStructLayout = {
+      {UniformDataType::Scalar, "CastsShadows"},
       {UniformDataType::Scalar, "Bias"},
-      {UniformDataType::Scalar, "LightIndex"},
-      {UniformDataType::Scalar, "ShadowMapResolution"},
-      {UniformDataType::Scalar, "ShadowMapSlotIndex"},
-      {UniformDataType::Scalar, "Enabled"},
       {UniformDataType::Vec2, "NearFarPlane"},
       // TODO: this should be an array instead.
       {UniformDataType::Mat4, "LightSpaceMatrices", 6},
   };
 
-#pragma endregion Point Light
-
-#pragma region Spot Light
-
-  struct SpotLight : Light
-  {
-    float Constant;
-    float Linear;
-    float Quadratic;
-
-    Vec3 Direction;
-    Vec3 Position;
-
-    float InnerCutoff;
-    float OuterCutoff;
-  };
-
-  struct SpotLightShadowCaster : ShadowCaster
-  {
-    Mat4 LightSpaceMatrix;
-  };
-
-  static UniformStructLayout SpotLightStructLayout = {
+  static UniformStructLayout UNIFORM_STRUCT_SPOT_LIGHT = {
+      {UniformDataType::Vec3, "Color"},
       {UniformDataType::Vec3, "Ambient"},
       {UniformDataType::Vec3, "Diffuse"},
       {UniformDataType::Vec3, "Specular"},
-
+      {UniformDataType::Scalar, "Intensity"},
+      {UniformDataType::Scalar, "Enabled"},
+      {UniformDataType::Vec3, "Position"},
+      {UniformDataType::Vec3, "Direction"},
       {UniformDataType::Scalar, "Constant"},
       {UniformDataType::Scalar, "Linear"},
       {UniformDataType::Scalar, "Quadratic"},
-
-      {UniformDataType::Scalar, "Enabled"},
-      {UniformDataType::Scalar, "Intensity"},
-
-      {UniformDataType::Vec3, "Direction"},
-      {UniformDataType::Vec3, "Position"},
-
       {UniformDataType::Scalar, "InnerCutoff"},
-      {UniformDataType::Scalar, "OuterCutoff"}};
-
-  static UniformStructLayout SpotLightShadowCasterStructLayout = {
+      {UniformDataType::Scalar, "OuterCutoff"},
+      {UniformDataType::Scalar, "CastsShadows"},
       {UniformDataType::Scalar, "Bias"},
-      {UniformDataType::Scalar, "LightIndex"},
-      {UniformDataType::Scalar, "ShadowMapResolution"},
-      {UniformDataType::Scalar, "ShadowMapSlotIndex"},
-      {UniformDataType::Scalar, "Enabled"},
       {UniformDataType::Vec2, "NearFarPlane"},
       {UniformDataType::Mat4, "LightSpaceMatrix"},
   };
 
-#pragma endregion Spot Light
+  static UniformBufferLayout UNIFORM_BUFFER_LAYOUT_SHARED = {
+      {UniformDataType::Mat4, "u_ViewProjection"},
+      {UniformDataType::Vec3, "u_CameraPosition"},
+      {UniformDataType::Struct, "u_DirectionalLights", UNIFORM_STRUCT_DIRECTIONAL_LIGHT, 2},
+      {UniformDataType::Struct, "u_PointLights", UNIFORM_STRUCT_POINT_LIGHT, 32},
+      {UniformDataType::Struct, "u_SpotLights", UNIFORM_STRUCT_SPOT_LIGHT, 32},
+      {UniformDataType::Scalar, "u_DirectionalLightCount"},
+      {UniformDataType::Scalar, "u_PointLightCount"},
+      {UniformDataType::Scalar, "u_SpotLightCount"},
+      {UniformDataType::Scalar, "u_UseBlinnLightingModel"},
+  };
+
+#pragma endregion Uniform Buffers
 
 #pragma region Default Vertex Data
 
@@ -472,37 +388,4 @@ namespace Krys
       {0.0f, -1.0f, 0.0f}};
 
 #pragma endregion Default Vertex Data
-
-#pragma region Uniform Buffers
-
-  constexpr uint32 UNIFORM_BUFFER_BINDING_SHARED = 0;
-  constexpr uint32 UNIFORM_BUFFER_BINDING_LIGHTS = 1;
-
-  static UniformBufferLayout UNIFORM_BUFFER_LAYOUT_SHARED = {
-      {UniformDataType::Mat4, "u_ViewProjection"},
-      {UniformDataType::Vec3, "u_CameraPosition"}};
-
-  static UniformBufferLayout UNIFORM_BUFFER_LAYOUT_LIGHTS = {
-      {UniformDataType::Struct, "u_DirectionalLights", DirectionalLightStructLayout, LIGHTING_MAX_DIRECTIONAL_LIGHTS},
-      {UniformDataType::Struct, "u_DirectionalShadowCasters", DirectionalShadowCasterStructLayout, LIGHTING_MAX_DIRECTIONAL_SHADOW_CASTERS},
-      {UniformDataType::Scalar, "u_DirectionalLightCount"},
-      {UniformDataType::Scalar, "u_DirectionalShadowCasterCount"},
-
-      {UniformDataType::Struct, "u_PointLights", PointLightStructLayout, LIGHTING_MAX_POINT_LIGHTS},
-      {UniformDataType::Struct, "u_PointLightShadowCasters", PointLightShadowCasterStructLayout, LIGHTING_MAX_POINT_LIGHT_SHADOW_CASTERS},
-      {UniformDataType::Scalar, "u_PointLightCount"},
-      {UniformDataType::Scalar, "u_PointLightShadowCasterCount"},
-
-      {UniformDataType::Struct, "u_SpotLights", SpotLightStructLayout, LIGHTING_MAX_SPOT_LIGHTS},
-      {UniformDataType::Struct, "u_SpotLightShadowCasters", SpotLightShadowCasterStructLayout, LIGHTING_MAX_SPOT_LIGHT_SHADOW_CASTERS},
-      {UniformDataType::Scalar, "u_SpotLightCount"},
-      {UniformDataType::Scalar, "u_SpotLightShadowCasterCount"},
-
-      {UniformDataType::Scalar, "u_LightingEnabled"},
-      {UniformDataType::Scalar, "u_ShadowsEnabled"},
-
-      {UniformDataType::Scalar, "u_UseBlinnLightingModel"},
-  };
-
-#pragma endregion Uniform Buffers
 }

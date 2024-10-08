@@ -8,50 +8,29 @@
 
 namespace Krys
 {
-  const string SHADER_ROOT_DIR{"shaders/"};
-  const string IMPORT_TOKEN{"#import"};
-
   struct ShaderPreprocessorTemplateKeys
   {
-    Nullable<int> MaxTextureSlots, MaxCubemapSlots;
-    Nullable<int> LightUniformBufferBinding, SharedUniformBufferBinding;
-    Nullable<int> MaxDirectionalLights, MaxPointLights, MaxSpotLights;
-    Nullable<int> MaxDirectionalShadowCasters, MaxPointLightShadowCasters, MaxSpotLightShadowCasters;
+    Nullable<int> SharedUniformBufferBinding,
+     MaxDirectionalLights, MaxPointLights, MaxSpotLights;
 
     Map<string, string> ToMap() const noexcept
     {
-      KRYS_ASSERT(MaxTextureSlots, "MaxTextureSlots is not set.", 0);
-      KRYS_ASSERT(MaxCubemapSlots, "MaxCubemapSlots is not set.", 0);
-      KRYS_ASSERT(*MaxTextureSlots >= *MaxCubemapSlots, "MaxCubemapSlots cannot exceed MaxTextureSlots", 0);
-
-      KRYS_ASSERT(LightUniformBufferBinding, "LightUniformBufferBinding is not set.", 0);
       KRYS_ASSERT(SharedUniformBufferBinding, "SharedUniformBufferBinding is not set.", 0);
-
       KRYS_ASSERT(MaxDirectionalLights, "MaxDirectionalLights is not set.", 0);
       KRYS_ASSERT(MaxPointLights, "MaxPointLights is not set.", 0);
       KRYS_ASSERT(MaxSpotLights, "MaxSpotLights is not set.", 0);
 
-      KRYS_ASSERT(MaxDirectionalShadowCasters, "MaxDirectionalShadowCasters is not set.", 0);
-      KRYS_ASSERT(MaxPointLightShadowCasters, "MaxPointLightShadowCasters is not set.", 0);
-      KRYS_ASSERT(MaxSpotLightShadowCasters, "MaxSpotLightShadowCasters is not set.", 0);
-
       return {
-          {"MAX_TEXTURE_SLOTS", std::to_string(*MaxTextureSlots)},
-          {"MAX_CUBEMAP_SLOTS", std::to_string(*MaxCubemapSlots)},
-
           {"UNIFORM_BUFFER_BINDING_SHARED", std::to_string(*SharedUniformBufferBinding)},
-          {"UNIFORM_BUFFER_BINDING_LIGHT", std::to_string(*LightUniformBufferBinding)},
-
           {"MAX_DIRECTIONAL_LIGHTS", std::to_string(*MaxDirectionalLights)},
           {"MAX_POINT_LIGHTS", std::to_string(*MaxPointLights)},
           {"MAX_SPOT_LIGHTS", std::to_string(*MaxSpotLights)},
-
-          {"MAX_DIRECTIONAL_SHADOW_CASTERS", std::to_string(*MaxDirectionalShadowCasters)},
-          {"MAX_POINT_LIGHT_SHADOW_CASTERS", std::to_string(*MaxPointLightShadowCasters)},
-          {"MAX_SPOT_LIGHT_SHADOW_CASTERS", std::to_string(*MaxSpotLightShadowCasters)},
       };
     }
   };
+
+  const string SHADER_ROOT_DIR{"shaders/"};
+  const string IMPORT_TOKEN{"#import"};
 
   ///@brief Resolves custom glsl tokens.
   class ShaderPreprocessor

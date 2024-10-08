@@ -1,13 +1,13 @@
 #version 450 core
 
-#import "uniform-buffers.krys";
+#import "shared.glsl";
 
-layout (location = 0) in vec4 i_Position;
+layout (location = 0) in vec3 i_Position;
 
-uniform int u_CurrentShadowCaster;
+uniform int u_CurrentLight;
+uniform mat4 u_Model;
 
 void main()
 {
-  DirectionalShadowCaster caster = u_DirectionalShadowCasters[u_CurrentShadowCaster];
-  gl_Position = caster.LightSpaceMatrix * i_Position;
+  gl_Position = u_DirectionalLights[u_CurrentLight].LightSpaceMatrix * u_Model * vec4(i_Position, 1.0);
 }
