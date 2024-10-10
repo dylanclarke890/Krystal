@@ -14,7 +14,7 @@ namespace Krys
 
   private:
     float Rotation;
-    RectBounds Bounds;
+    BoundingBox<float> Bounds;
 
   public:
     OrthographicCamera(int width, int height, float zNear = 0.0f, float zFar = 100.0f) noexcept
@@ -28,7 +28,7 @@ namespace Krys
       CalculateViewProjectionMatrix();
     }
 
-    OrthographicCamera(const RectBounds &bounds, float zNear, float zFar) noexcept
+    OrthographicCamera(const BoundingBox<float> &bounds, float zNear, float zFar) noexcept
         : Camera(Vec3(0.0f), zNear, zFar), Rotation(0.0f), Bounds(bounds)
     {
       CalculateViewMatrix();
@@ -36,7 +36,7 @@ namespace Krys
       CalculateViewProjectionMatrix();
     }
 
-    void SetProjection(const RectBounds &bounds, float zNear, float zFar) noexcept
+    void SetProjection(const BoundingBox<float> &bounds, float zNear, float zFar) noexcept
     {
       Bounds = bounds;
       CalculateProjectionMatrix();

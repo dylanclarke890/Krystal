@@ -183,58 +183,55 @@ namespace Krys
 
 #pragma region Blitting
 
-    void BlitTo(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
+    void BlitTo(Ref<Framebuffer> other, BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept override
     {
       Blit(Id, other->GetId(), src, dst, mask);
     }
 
     void BlitTo(Ref<Framebuffer> other, int width, int height, RenderBuffer mask) noexcept override
     {
-      RectBounds bounds = {0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)};
+      BoundingBox<int> bounds = {0, width, 0, height};
       Blit(Id, other->GetId(), bounds, bounds, mask);
     }
 
-    void BlitToScreen(RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
+    void BlitToScreen(BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept override
     {
       Blit(Id, 0, src, dst, mask);
     }
 
     void BlitToScreen(int width, int height, RenderBuffer mask) noexcept override
     {
-      RectBounds bounds = {0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)};
+      BoundingBox<int> bounds = {0, width, 0, height};
       Blit(Id, 0, bounds, bounds, mask);
     }
 
-    void BlitFrom(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
+    void BlitFrom(Ref<Framebuffer> other, BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept override
     {
       Blit(other->GetId(), Id, src, dst, mask);
     }
 
     void BlitFrom(Ref<Framebuffer> other, int width, int height, RenderBuffer mask) noexcept override
     {
-      RectBounds bounds = {0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)};
+      BoundingBox<int> bounds = {0, width, 0, height};
       Blit(other->GetId(), Id, bounds, bounds, mask);
     }
 
-    void BlitFromScreen(RectBounds src, RectBounds dst, RenderBuffer mask) noexcept override
+    void BlitFromScreen(BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept override
     {
       Blit(0, Id, src, dst, mask);
     }
 
     void BlitFromScreen(int width, int height, RenderBuffer mask) noexcept override
     {
-      RectBounds bounds = {0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)};
+      BoundingBox<int> bounds = {0, width, 0, height};
       Blit(0, Id, bounds, bounds, mask);
     }
 
-    static void Blit(uint32 a, uint32 b, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept
+    static void Blit(uint32 a, uint32 b, BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept
     {
-      auto IntCast = [](float val)
-      { return static_cast<int>(val); };
-
       glBlitNamedFramebuffer(a, b,
-                             IntCast(src.Left), IntCast(src.Bottom), IntCast(src.Right), IntCast(src.Top),
-                             IntCast(dst.Left), IntCast(dst.Bottom), IntCast(dst.Right), IntCast(dst.Top),
+                             src.Left, src.Bottom, src.Right, src.Top,
+                             dst.Left, dst.Bottom, dst.Right, dst.Top,
                              ToGLBufferFlags(mask), GL_NEAREST);
     }
 

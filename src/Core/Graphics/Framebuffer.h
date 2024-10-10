@@ -40,14 +40,14 @@ namespace Krys
 
     NO_DISCARD virtual bool IsComplete() noexcept = 0;
 
-    virtual void BlitTo(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept = 0;
+    virtual void BlitTo(Ref<Framebuffer> other, BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept = 0;
     virtual void BlitTo(Ref<Framebuffer> other, int width, int height, RenderBuffer mask) noexcept = 0;
-    virtual void BlitToScreen(RectBounds src, RectBounds dst, RenderBuffer mask) noexcept = 0;
+    virtual void BlitToScreen(BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept = 0;
     virtual void BlitToScreen(int width, int height, RenderBuffer mask) noexcept = 0;
 
-    virtual void BlitFrom(Ref<Framebuffer> other, RectBounds src, RectBounds dst, RenderBuffer mask) noexcept = 0;
+    virtual void BlitFrom(Ref<Framebuffer> other, BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept = 0;
     virtual void BlitFrom(Ref<Framebuffer> other, int width, int height, RenderBuffer mask) noexcept = 0;
-    virtual void BlitFromScreen(RectBounds src, RectBounds dst, RenderBuffer mask) noexcept = 0;
+    virtual void BlitFromScreen(BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept = 0;
     virtual void BlitFromScreen(int width, int height, RenderBuffer mask) noexcept = 0;
 
     NO_DISCARD uint32 GetId() const noexcept
