@@ -51,7 +51,7 @@ vec3 CalculateDirectionalLight(int lightIndex, vec3 normal, vec3 viewDir)
   vec3 specular = light.Specular.rgb * spec * light.Intensity;
 
   float shadow = 0.0;
-  if (u_Material.ReceivesShadows && light.CastsShadows)
+  if (light.CastsShadows)
     shadow = ShadowCalculation(lightIndex, light.Direction.xyz);
 
   vec3 ambient = light.Ambient.rgb * u_Material.AmbientColor;

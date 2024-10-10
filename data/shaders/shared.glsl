@@ -11,7 +11,6 @@ struct Material
   vec3 SpecularColor;
   vec3 Tint;
   float Shininess;
-  bool ReceivesShadows;
   int AvailableTextures;
   sampler2D DiffuseMap;
   sampler2D SpecularMap;

@@ -106,7 +106,6 @@ namespace Krys
     shader->TrySetUniform(prefix + "SpecularColor", material->SpecularColor);
     shader->TrySetUniform(prefix + "Tint", material->Tint);
     shader->TrySetUniform(prefix + "Shininess", material->Shininess);
-    shader->TrySetUniform(prefix + "ReceivesShadows", material->ReceivesShadows);
     shader->TrySetUniform(prefix + "AvailableTextures", static_cast<int>(availableTextures));
 
     if (availableTextures & MATERIAL_DIFFUSE_MAP_SET)
@@ -138,6 +137,9 @@ namespace Krys
       material->DisplacementMap->Bind(4);
       shader->TrySetUniform(prefix + "DisplacementMap", 4);
     }
+
+    DirectionalLightShadowFramebuffers[0]->GetDepthAttachment()->Bind(5);
+    shader->TrySetUniform("u_DirectionalLightShadowMap", 5);
   }
 
   void Renderer::ShadowPass() noexcept

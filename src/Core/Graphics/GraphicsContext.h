@@ -152,12 +152,21 @@ namespace Krys
       return importer->GetResult().SceneObjects;
     }
 
+    Ref<SceneObject> CreateSceneObject() noexcept
+    {
+      auto obj = CreateRef<SceneObject>();
+      obj->Material = CreateMaterial();
+      obj->Transform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f), Vec3(0.0f));
+      return obj;
+    }
+
     Ref<Material> CreateMaterial() noexcept
     {
       static int id = 0;
 
       Ref<Material> material = CreateRef<Material>();
       material->Id = id++;
+      material->Shader = DefaultMaterialShader;
 
       return material;
     }

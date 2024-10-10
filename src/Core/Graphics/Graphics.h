@@ -76,7 +76,6 @@ namespace Krys
     float Shininess = 32.0f;
     Ref<Shader> Shader;
     bool CastsShadows = true;
-    bool ReceivesShadows = true;
 
     NO_DISCARD uint32 GetAvailableTextures() const noexcept
     {
@@ -103,7 +102,7 @@ namespace Krys
 
   struct Mesh
   {
-    PrimitiveType PrimitiveType;
+    PrimitiveType PrimitiveType = PrimitiveType::Triangles;
     List<Vertex> Vertices;
     List<uint32> Indices;
   };
@@ -172,7 +171,7 @@ namespace Krys
 
   struct DirectionalLightShadowSettings : BaseShadowSettings
   {
-    RectBounds Bounds = {-10.0f, 10.0f, -10.0f, 10.0f};
+    BoundingBox<float> Bounds = {-10.0f, 10.0f, -10.0f, 10.0f};
     Mat4 LightSpaceMatrix;
   };
 
@@ -308,84 +307,6 @@ namespace Krys
       -1.0f, 1.0f, 0.0f, 1.0f,
       1.0f, -1.0f, 1.0f, 0.0f,
       1.0f, 1.0f, 1.0f, 1.0f};
-
-  constexpr Vec2 QUAD_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
-  constexpr Vec3 QUAD_SURFACE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
-  constexpr Vec4 QUAD_LOCAL_SPACE_VERTICES[] = {{-0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, -0.5f, 0.0f, 1.0f}, {0.5f, 0.5f, 0.0f, 1.0f}, {-0.5f, 0.5f, 0.0f, 1.0f}};
-
-  constexpr Vec2 TRIANGLE_DEFAULT_TEXTURE_COORDS[] = {{0.0f, 0.0f}, {0.5f, 1.0f}, {1.0f, 0.0f}};
-  constexpr Vec3 TRIANGLE_SURFACE_NORMALS[] = {{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}};
-  constexpr Vec4 TRIANGLE_LOCAL_SPACE_VERTICES[] = {{0.5f, -0.5f, 0.0f, 1.0f}, {-0.5f, -0.5f, 0.0f, 1.0f}, {0.0f, 0.5f, 0.0f, 1.0f}};
-
-  // TODO: We don't have texture coords for cubes yet, we currently texture each face as if it were a 2d quad.
-  constexpr Vec4 CUBE_LOCAL_SPACE_VERTICES[] = {
-      // Front face
-      {-0.5f, -0.5f, 0.5f, 1.0f}, // 0
-      {0.5f, -0.5f, 0.5f, 1.0f},  // 1
-      {0.5f, 0.5f, 0.5f, 1.0f},   // 2
-      {-0.5f, 0.5f, 0.5f, 1.0f},  // 3
-
-      // Back face
-      {-0.5f, -0.5f, -0.5f, 1.0f}, // 4
-      {0.5f, -0.5f, -0.5f, 1.0f},  // 5
-      {0.5f, 0.5f, -0.5f, 1.0f},   // 6
-      {-0.5f, 0.5f, -0.5f, 1.0f},  // 7
-
-      // Left face
-      {-0.5f, -0.5f, -0.5f, 1.0f}, // 8
-      {-0.5f, -0.5f, 0.5f, 1.0f},  // 9
-      {-0.5f, 0.5f, 0.5f, 1.0f},   // 10
-      {-0.5f, 0.5f, -0.5f, 1.0f},  // 11
-
-      // Right face
-      {0.5f, -0.5f, -0.5f, 1.0f}, // 12
-      {0.5f, -0.5f, 0.5f, 1.0f},  // 13
-      {0.5f, 0.5f, 0.5f, 1.0f},   // 14
-      {0.5f, 0.5f, -0.5f, 1.0f},  // 15
-
-      // Top face
-      {-0.5f, 0.5f, 0.5f, 1.0f},  // 16
-      {0.5f, 0.5f, 0.5f, 1.0f},   // 17
-      {0.5f, 0.5f, -0.5f, 1.0f},  // 18
-      {-0.5f, 0.5f, -0.5f, 1.0f}, // 19
-
-      // Bottom face
-      {-0.5f, -0.5f, 0.5f, 1.0f}, // 20
-      {0.5f, -0.5f, 0.5f, 1.0f},  // 21
-      {0.5f, -0.5f, -0.5f, 1.0f}, // 22
-      {-0.5f, -0.5f, -0.5f, 1.0f} // 23
-  };
-
-  constexpr Vec3 CUBE_SURFACE_NORMALS[] = {
-      {0.0f, 0.0f, 1.0f}, // Front face
-      {0.0f, 0.0f, 1.0f},
-      {0.0f, 0.0f, 1.0f},
-      {0.0f, 0.0f, 1.0f},
-
-      {0.0f, 0.0f, -1.0f}, // Back face
-      {0.0f, 0.0f, -1.0f},
-      {0.0f, 0.0f, -1.0f},
-      {0.0f, 0.0f, -1.0f},
-
-      {-1.0f, 0.0f, 0.0f}, // Left face
-      {-1.0f, 0.0f, 0.0f},
-      {-1.0f, 0.0f, 0.0f},
-      {-1.0f, 0.0f, 0.0f},
-
-      {1.0f, 0.0f, 0.0f}, // Right face
-      {1.0f, 0.0f, 0.0f},
-      {1.0f, 0.0f, 0.0f},
-      {1.0f, 0.0f, 0.0f},
-
-      {0.0f, 1.0f, 0.0f}, // Top face
-      {0.0f, 1.0f, 0.0f},
-      {0.0f, 1.0f, 0.0f},
-      {0.0f, 1.0f, 0.0f},
-
-      {0.0f, -1.0f, 0.0f}, // Bottom face
-      {0.0f, -1.0f, 0.0f},
-      {0.0f, -1.0f, 0.0f},
-      {0.0f, -1.0f, 0.0f}};
 
 #pragma endregion Default Vertex Data
 }
