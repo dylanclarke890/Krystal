@@ -165,7 +165,7 @@ namespace Krys
           if (!object->Material->CastsShadows)
             continue;
 
-          DirectionalDepthMapShader->SetUniform("u_Model", object->Transform->GetModelMatrix());
+          DirectionalDepthMapShader->SetUniform("u_Model", object->Transform->GetMatrix());
 
           auto vertices = object->Mesh->Vertices;
           BatchVertexBuffer->SetData(vertices.data(), static_cast<uint32>(vertices.size() * sizeof(Vertex)));
@@ -198,7 +198,7 @@ namespace Krys
       const auto shader = batch.Objects[0]->Material->Shader;
       for (const auto &object : batch.Objects)
       {
-        shader->SetUniform("u_Model", object->Transform->GetModelMatrix());
+        shader->SetUniform("u_Model", object->Transform->GetMatrix());
 
         auto vertices = object->Mesh->Vertices;
         BatchVertexBuffer->SetData(vertices.data(), static_cast<uint32>(vertices.size() * sizeof(Vertex)));

@@ -146,7 +146,7 @@ namespace Krys
           obj->Material->Shader = DefaultMaterialShader;
 
         if (!obj->Transform)
-          obj->Transform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f), Vec3(0.0f));
+          obj->Transform = CreateRef<Transform>();
       }
 
       return importer->GetResult().SceneObjects;
@@ -156,7 +156,7 @@ namespace Krys
     {
       auto obj = CreateRef<SceneObject>();
       obj->Material = CreateMaterial();
-      obj->Transform = CreateRef<Transform>(Vec3(0.0f), Vec3(1.0f), Vec3(0.0f));
+      obj->Transform = CreateRef<Transform>();
       return obj;
     }
 
