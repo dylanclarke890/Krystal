@@ -28,7 +28,6 @@ namespace Krys::Endian
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
   constexpr NO_DISCARD T SwapEndian(T value)
   {
-    // Specialize for integral types using std::byteswap
     if constexpr (std::is_integral_v<T>)
     {
       return std::byteswap(value);
