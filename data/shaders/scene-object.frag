@@ -52,7 +52,7 @@ vec3 CalculateDirectionalLight(int lightIndex, vec3 normal, vec3 viewDir)
 
   float shadow = 0.0;
   if (light.CastsShadows)
-    shadow = ShadowCalculation(lightIndex, light.Direction.xyz);
+    shadow = ShadowCalculation(lightIndex, lightDir);
 
   vec3 ambient = light.Ambient.rgb * u_Material.AmbientColor;
   vec3 finalColor = ambient + (1.0 - shadow) * (diffuse + specular);
@@ -63,17 +63,25 @@ vec3 CalculateDirectionalLight(int lightIndex, vec3 normal, vec3 viewDir)
 float ShadowCalculation(int lightIndex, vec3 lightDirection)
 {
   vec4 fragPosLight = v_DirectionalLightFragmentPositions[lightIndex];
-  vec3 projCoords = fragPosLight.xyz / fragPosLight.w; // Perspective division
+  vec3 projCoords = fragPosLight.xyz / fragPosLight.w;
   projCoords = projCoords * 0.5 + 0.5; // Transform to [0,1] range
 
-  // Sample the shadow map
   float closestDepth = texture(u_DirectionalLightShadowMap, projCoords.xy).r;
   float currentDepth = projCoords.z;
-  
-  // Shadow bias to prevent shadow acne
-  float bias = max(0.05 * (1.0 - dot(normalize(v_Normal), normalize(lightDirection))), 0.005);
-  float shadow = (currentDepth - bias > closestDepth) ? 1.0 : 0.0;
 
-  // Return shadow factor (1 = in shadow, 0 = not in shadow)
+  float bias = max(0.05 * (1.0 - dot(v_Normal, lightDirection)), 0.005);
+  vec2 texelSize = 1.0 / textureSize(u_DirectionalLightShadowMap, 0);
+
+  float shadow = 0.0;
+  for (int x = -1; x <= 1; x++)
+  {
+    for (int y = -1; y <= 1; y++)
+    {
+      float pcfDepth = texture(u_DirectionalLightShadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+      shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
+    }    
+  }
+  shadow /= 9.0;
+
   return shadow;
 }

@@ -231,7 +231,7 @@ namespace Krys
 
     auto &shadowSettings = light.ShadowSettings;
     Mat4 projection = glm::ortho(shadowSettings.Bounds.Left, shadowSettings.Bounds.Right, shadowSettings.Bounds.Bottom, shadowSettings.Bounds.Top, shadowSettings.NearFarPlane.x, shadowSettings.NearFarPlane.y);
-    Mat4 view = glm::lookAt(direction * 10.0f, Vec3(0.0f), up);
+    Mat4 view = glm::lookAt(direction * 10.0f, light.Direction + (direction * 10.0f), up);
     light.ShadowSettings.LightSpaceMatrix = projection * view;
 
     string prefix = "u_DirectionalLights[" + std::to_string(index) + "].";

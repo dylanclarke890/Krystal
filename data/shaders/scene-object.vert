@@ -19,10 +19,8 @@ out vec4 v_DirectionalLightFragmentPositions[MAX_DIRECTIONAL_LIGHTS];
 
 void main()
 {
-  mat3 normalMatrix = mat3(transpose(inverse(u_Model)));
-  vec4 fragPos = u_Model * vec4(i_Position, 1.0);
-  v_FragmentPosition = vec3(fragPos);
-  v_Normal = normalMatrix * i_Normal;
+  v_FragmentPosition = vec3(u_Model * vec4(i_Position, 1.0));
+  v_Normal = mat3(transpose(inverse(u_Model))) * i_Normal;
   v_Color = i_Color;
   v_TextureCoords = i_TextureCoords;
   gl_Position = u_ViewProjection * vec4(v_FragmentPosition, 1.0);
@@ -31,6 +29,6 @@ void main()
   {
     if (!u_DirectionalLights[i].Enabled)
       continue;
-    v_DirectionalLightFragmentPositions[i] = u_DirectionalLights[i].LightSpaceMatrix * fragPos;
+    v_DirectionalLightFragmentPositions[i] = u_DirectionalLights[i].LightSpaceMatrix * vec4(v_FragmentPosition, 1.0);
   }
 }
