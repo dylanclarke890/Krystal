@@ -130,7 +130,7 @@ namespace Krys
       KRYS_CRITICAL("timeBeginPeriod failed");
 
     dc = GetDC(hWnd);
-    ctx = CreateRef<GLGraphicsContext>(dc, hWnd, instance);
+    Context = CreateRef<GLGraphicsContext>(dc, hWnd, instance);
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -154,8 +154,8 @@ namespace Krys
   LRESULT CALLBACK WindowsWindow::WindowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
   {
 #define KRYS_EVENT_CALLBACK() \
-  if (eventCallback)          \
-  eventCallback(event)
+  if (EventCallback)          \
+  EventCallback(event)
 
     LRESULT result = 0;
     switch (message)
@@ -388,10 +388,10 @@ namespace Krys
       TranslateMessage(&msg);
       DispatchMessageA(&msg);
 
-      if (msg.message == WM_QUIT && eventCallback)
+      if (msg.message == WM_QUIT && EventCallback)
       {
         ShutdownEvent event;
-        eventCallback(event);
+        EventCallback(event);
       }
     }
   }

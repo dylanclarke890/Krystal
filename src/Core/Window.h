@@ -10,27 +10,25 @@ namespace Krys
 {
   using EventCallbackFn = std::function<void(Event &)>;
 
-  // TODO: This doesn't really need to be virtual, platform can only implement one version.
   class Window
   {
-  private:
-    string Name;
-
   protected:
-    EventCallbackFn eventCallback;
+    string Name;
+    EventCallbackFn EventCallback;
     int Width, Height;
-    Ref<GraphicsContext> ctx;
+    Ref<GraphicsContext> Context;
 
   public:
     Window() = delete;
     Window(const string &name, int width, int height)
-        : Name(name), Width(width), Height(height), ctx(nullptr) {}
+        : Name(name), Width(width), Height(height), Context(nullptr) {}
+
     virtual ~Window() = default;
 
     const string &GetName() const { return Name; }
     int GetWidth() const { return Width; }
     int GetHeight() const { return Height; }
-    Ref<GraphicsContext> GetGraphicsContext() const { return ctx; }
+    Ref<GraphicsContext> GetGraphicsContext() const { return Context; }
 
     virtual void Show(bool visible = true) = 0;
 
@@ -39,7 +37,7 @@ namespace Krys
 
     void SetEventCallback(EventCallbackFn callback)
     {
-      eventCallback = callback;
+      EventCallback = callback;
     }
 
     static Ref<Window> Create(const string &name, int width, int height);
