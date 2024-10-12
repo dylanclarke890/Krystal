@@ -90,7 +90,6 @@
 #define Megabytes(value) (Kilobytes(value) * 1024)
 #define Gigabytes(value) (Megabytes(value) * 1024)
 #define KRYS_BIND_EVENT_FN(fn) [this](auto &&...args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
-#define NO_DISCARD [[nodiscard]]
 
 #ifdef __INTELLISENSE__
 // Intellisense loses it's mind if we use the latest c++ features so hide them from it for now.

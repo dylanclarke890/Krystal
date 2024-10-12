@@ -57,4 +57,6 @@ namespace Krys
   {
     return std::make_shared<T>(std::forward<Args>(args)...);
   }
+
+#define NO_DISCARD [[nodiscard]]
 }
