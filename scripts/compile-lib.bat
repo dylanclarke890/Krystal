@@ -29,8 +29,6 @@ set krystal_include_directories=^
 set krystal_source_files=^
 K:\src\ThirdParty\Glad\src\gl.c ^
 K:\src\ThirdParty\Glad\src\wgl.c ^
-K:\src\Core\Graphics\Shaders\ShaderPreprocessor.cpp ^
-K:\src\Core\Graphics\Transform.cpp ^
 K:\src\Platform\OpenGL\Textures\GLTexture2D.cpp ^
 K:\src\Platform\OpenGL\Textures\GLTextureCubemap.cpp ^
 K:\src\Platform\OpenGL\GLShader.cpp ^
@@ -43,7 +41,9 @@ K:\src\Platform\Windows\WindowsLogger.cpp ^
 K:\src\Platform\Windows\WindowsInput.cpp ^
 K:\src\Platform\Windows\WindowsWindow.cpp ^
 K:\src\Core\IO\IO.cpp ^
-K:\src\Core\Graphics\Renderer\Renderer.cpp ^
+K:\src\Graphics\Renderer\Renderer.cpp ^
+K:\src\Graphics\Shaders\ShaderPreprocessor.cpp ^
+K:\src\Graphics\Transform.cpp ^
 K:\src\Core\Misc\Time.cpp ^
 K:\src\Core\Application.cpp
 

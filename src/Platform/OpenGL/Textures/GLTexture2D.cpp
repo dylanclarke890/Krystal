@@ -1,9 +1,9 @@
-#include "GLTexture2D.h"
+#include "OpenGL/Textures/GLTexture2D.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-namespace Krys
+namespace Krys::OpenGL
 {
   GLTexture2D::GLTexture2D(const string &path)
   {

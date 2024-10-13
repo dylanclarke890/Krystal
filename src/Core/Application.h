@@ -11,6 +11,7 @@
 
 namespace Krys
 {
+  using namespace Krys::Graphics;
 
   class Application
   {

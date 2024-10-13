@@ -1,10 +1,12 @@
 #pragma once
 
 #include "Graphics/Textures/Texture.h"
-#include "../GL.h"
+#include "OpenGL/GL.h"
 
-namespace Krys
+namespace Krys::OpenGL
 {
+  using namespace Krys::Graphics;
+  
   static auto ToGLTextureMagnifyMode = [](TextureMagnifyMode mode)
   {
     switch (mode)

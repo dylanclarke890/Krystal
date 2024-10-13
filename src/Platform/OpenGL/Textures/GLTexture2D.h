@@ -1,10 +1,14 @@
 #pragma once
 
 #include "Graphics/Textures/Texture2D.h"
-#include "Texture.h"
+#include "OpenGL/Textures/Texture.h"
+#include "Maths/Vector.h"
 
-namespace Krys
+namespace Krys::OpenGL
 {
+  using namespace Krys::Graphics;
+  using namespace Krys::Maths;
+
   class GLTexture2D : public Texture2D
   {
   public:

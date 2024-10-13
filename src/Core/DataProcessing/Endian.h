@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core.h"
-
 #include <bit>
 #include <type_traits>
+
+#include "Core.h"
 
 namespace Krys::Endian
 {

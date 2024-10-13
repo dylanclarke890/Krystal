@@ -12,19 +12,19 @@ namespace Krys
   class Lazy
   {
   private:
-    Nullable<T> _value;
-    std::function<T()> _func;
+    Nullable<T> Value;
+    std::function<T()> Func;
 
   public:
-    Lazy(std::function<T()> func) : _func(func) {}
+    Lazy(std::function<T()> func) : Func(func) {}
 
     /// @brief Returns a const reference to the lazily initialized value.
     const T &val()
     {
-      if (!_value) // Initialize if not already done
-        _value = _func();
+      if (!Value) // Initialize if not already done
+        Value = Func();
 
-      return *_value;
+      return *Value;
     }
   };
 }

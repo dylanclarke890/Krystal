@@ -1,11 +1,9 @@
 #include "Core.h"
-
-#include "GLShader.h"
-
 #include "IO/IO.h"
 #include "Graphics/Shaders/ShaderPreprocessor.h"
+#include "OpenGL/GLShader.h"
 
-namespace Krys
+namespace Krys::OpenGL
 {
   GLShader::GLShader()
   {

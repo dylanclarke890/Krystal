@@ -3,13 +3,14 @@
 #include <glad/wgl.h>
 
 #include "Core.h"
-#include "WindowsWindow.h"
-#include "Events/ApplicationEvents.h"
-#include "OpenGL/GLGraphicsContext.h"
 
-#include "Input/Input.h"
-#include "Input/MouseButtons.h"
-#include "Input/KeyCodes.h"
+#include "Core/Events/ApplicationEvents.h"
+#include "Core/Input/Input.h"
+#include "Core/Input/MouseButtons.h"
+#include "Core/Input/KeyCodes.h"
+
+#include "Windows/WindowsWindow.h"
+#include "OpenGL/GLGraphicsContext.h"
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define HINST_THISCOMPONENT (reinterpret_cast<HINSTANCE>(&__ImageBase))
@@ -130,7 +131,7 @@ namespace Krys
       KRYS_CRITICAL("timeBeginPeriod failed");
 
     dc = GetDC(hWnd);
-    Context = CreateRef<GLGraphicsContext>(dc, hWnd, instance);
+    Context = CreateRef<OpenGL::GLGraphicsContext>(dc, hWnd, instance);
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

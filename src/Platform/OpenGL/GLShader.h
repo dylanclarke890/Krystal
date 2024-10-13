@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Krystal.h"
 #include "Graphics/Shaders/Shader.h"
-#include "GL.h"
+#include "OpenGL/GL.h"
 
-namespace Krys
+namespace Krys::OpenGL
 {
+  using namespace Krys::Graphics;
+
   class GLShader : public Shader
   {
   private:

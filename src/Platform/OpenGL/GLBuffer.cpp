@@ -1,6 +1,6 @@
-#include "GLBuffer.h"
+#include "OpenGL/GLBuffer.h"
 
-namespace Krys
+namespace Krys::OpenGL
 {
   GLIndexBuffer::GLIndexBuffer(uint32 count)
   {
@@ -92,7 +92,7 @@ namespace Krys
     glBindBufferBase(GL_UNIFORM_BUFFER, binding, Id);
   }
 
-  Krys::GLUniformBuffer::GLUniformBuffer(uint32 binding, UniformBufferLayout layout)
+  GLUniformBuffer::GLUniformBuffer(uint32 binding, UniformBufferLayout layout)
   {
     glCreateBuffers(1, &Id);
 

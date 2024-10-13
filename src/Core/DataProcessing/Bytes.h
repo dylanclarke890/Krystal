@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Core.h"
+#include "Types.h"
 #include "DataProcessing/Endian.h"
-#include "Maths/Maths.h"
 
 namespace Krys::Bytes
 {

@@ -2,8 +2,9 @@
 
 #include <windows.h>
 
-#include "Input/Input.h"
-#include "Input/KeyCodes.h"
+#include "Core/Input/Input.h"
+#include "Core/Input/KeyCodes.h"
+#include "Maths/Vector.h"
 
 namespace Krys
 {
@@ -285,14 +286,12 @@ namespace Krys
     return (PrevKeyState[vkCode] & 0x80) && !(KeyState[vkCode] & 0x80);
   }
 
-  Vec2i Input::GetMousePosition()
+  Maths::Vec2i Input::GetMousePosition()
   {
     POINT point;
     if (GetCursorPos(&point))
-    {
-      return Vec2i(point.x, point.y);
-    }
-    return Vec2i(0, 0);
+      return {point.x, point.y};
+    return {0, 0};
   }
 
   int Input::GetMouseX()

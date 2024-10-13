@@ -1,17 +1,14 @@
 #include "Graphics/Textures/SubTexture2D.h"
 
-#include "GLGraphicsContext.h"
-#include "GLBuffer.h"
-#include "GLVertexArray.h"
-#include "GLShader.h"
-#include "Textures/GLTexture2D.h"
-#include "Textures/GLTextureCubemap.h"
-#include "GLFramebuffer.h"
+#include "OpenGL/GLGraphicsContext.h"
+#include "OpenGL/GLBuffer.h"
+#include "OpenGL/GLVertexArray.h"
+#include "OpenGL/GLShader.h"
+#include "OpenGL/Textures/GLTexture2D.h"
+#include "OpenGL/Textures/GLTextureCubemap.h"
+#include "OpenGL/GLFramebuffer.h"
 
-#include <glad/gl.h>
-#include <glad/wgl.h>
-
-namespace Krys
+namespace Krys::OpenGL
 {
 #ifdef KRYS_ENABLE_LOGGING
   constexpr uint GL_ERROR_CODE_SHADER_RECOMPILED = 131218;

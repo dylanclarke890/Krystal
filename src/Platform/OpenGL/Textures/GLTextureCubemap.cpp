@@ -1,8 +1,8 @@
 #include <stb_image.h>
 
-#include "GLTextureCubemap.h"
+#include "OpenGL/Textures/GLTextureCubemap.h"
 
-namespace Krys
+namespace Krys::OpenGL
 {
   GLTextureCubemap::GLTextureCubemap(std::array<string, 6> faces, TextureInternalFormat internalFormat)
   {
@@ -123,7 +123,7 @@ namespace Krys
     glTextureParameteri(Id, GL_TEXTURE_WRAP_R, ToGLTextureWrapMode(r));
   }
 
-  void GLTextureCubemap::SetBorderColor(const Vec4 &color) noexcept
+  void GLTextureCubemap::SetBorderColor(const Maths::Vec4 &color) noexcept
   {
     float borderColor[4] = {color.r, color.g, color.b, color.a};
     glTextureParameterfv(Id, GL_TEXTURE_BORDER_COLOR, borderColor);

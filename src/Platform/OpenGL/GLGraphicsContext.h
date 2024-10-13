@@ -1,14 +1,17 @@
 #pragma once
 
 #include "Core.h"
-#include "GL.h"
+
+#include "OpenGL/GL.h"
 #include "Graphics/GraphicsContext.h"
 #include "Misc/Lazy.h"
 
 #include <windows.h>
 
-namespace Krys
+namespace Krys::OpenGL
 {
+  using namespace Krys::Graphics;
+
   class GLGraphicsContext : public GraphicsContext
   {
   private:

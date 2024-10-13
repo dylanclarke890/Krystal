@@ -1,13 +1,16 @@
 #pragma once
 
+#include "Graphics/Textures/TextureCubemap.h"
+#include "OpenGL/Textures/Texture.h"
+#include "Maths/Vector.h"
+
 #include <array>
 #include <string>
 
-#include "Graphics/Textures/TextureCubemap.h"
-#include "Texture.h"
-
-namespace Krys
+namespace Krys::OpenGL
 {
+  using namespace Krys::Graphics;
+
   class GLTextureCubemap : public TextureCubemap
   {
   public:
@@ -27,7 +30,7 @@ namespace Krys
     void SetTextureWrapR(TextureWrapMode mode) noexcept override;
     void SetTextureWrapModes(TextureWrapMode s, TextureWrapMode t, TextureWrapMode r) noexcept override;
 
-    void SetBorderColor(const Vec4 &color) noexcept override;
+    void SetBorderColor(const Maths::Vec4 &color) noexcept override;
 
   private:
     void Load();

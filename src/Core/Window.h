@@ -8,6 +8,7 @@
 
 namespace Krys
 {
+  using namespace Krys::Graphics;
   using EventCallbackFn = std::function<void(Event &)>;
 
   class Window

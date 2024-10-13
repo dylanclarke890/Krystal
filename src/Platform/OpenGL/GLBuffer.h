@@ -1,12 +1,15 @@
 #pragma once
 
 #include "Core.h"
-#include "GL.h"
-#include "Graphics/Buffer.h"
-#include "Graphics/GraphicsContext.h"
 
-namespace Krys
+#include "Graphics/Buffer.h"
+#include "Maths/Vector.h"
+#include "OpenGL/GL.h"
+
+namespace Krys::OpenGL
 {
+  using namespace Krys::Graphics;
+  using namespace Krys::Maths;
 
   class GLIndexBuffer : public IndexBuffer
   {

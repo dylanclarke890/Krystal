@@ -1,12 +1,8 @@
-#include "GLVertexArray.h"
 #include "Graphics/Buffer.h"
+#include "OpenGL/GLVertexArray.h"
 
-namespace Krys
+namespace Krys::OpenGL
 {
-  // TODO: we should make sure we don't add too many attributes to vertex/instance array buffers
-  // int nrAttributes;
-  // glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-
   static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
   {
     switch (type)

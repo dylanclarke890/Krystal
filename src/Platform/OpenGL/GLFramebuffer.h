@@ -1,10 +1,14 @@
 #pragma once
 
+#include "Core.h"
+#include "Graphics/Enums.h"
 #include "Graphics/Framebuffer.h"
-#include "Textures/GLTexture2D.h"
+#include "OpenGL/Textures/GLTexture2D.h"
 
-namespace Krys
+namespace Krys::OpenGL
 {
+  using namespace Krys::Graphics;
+
   static auto ToGLFramebufferBindType = [](FramebufferBindType bindType) -> int
   {
     switch (bindType)

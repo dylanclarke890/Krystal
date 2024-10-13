@@ -2,7 +2,7 @@
 
 #include "KeyCodes.h"
 #include "MouseButtons.h"
-#include "Maths/Maths.h"
+#include "Maths/Vector.h"
 
 namespace Krys
 {
@@ -28,7 +28,7 @@ namespace Krys
     static MouseButton NativeKeyToMouseButton(uint button);
     static bool IsMouseButtonPressed(MouseButton button);
     static bool WasMouseButtonReleased(MouseButton button);
-    static Vec2i GetMousePosition();
+    static Maths::Vec2i GetMousePosition();
     static int GetMouseX();
     static int GetMouseY();
   };

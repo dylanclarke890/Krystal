@@ -1,10 +1,14 @@
 #pragma once
 
-#include "GL.h"
+#include "Types.h"
+#include "Graphics/Buffer.h"
 #include "Graphics/VertexArray.h"
+#include "OpenGL/GL.h"
 
-namespace Krys
+namespace Krys::OpenGL
 {
+  using namespace Krys::Graphics;
+
   class GLVertexArray : public VertexArray
   {
   private:

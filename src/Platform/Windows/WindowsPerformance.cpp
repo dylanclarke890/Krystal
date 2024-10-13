@@ -1,7 +1,7 @@
 #include <windows.h>
 
 #include "Core.h"
-#include "Misc/Performance.h"
+#include "Core/Misc/Performance.h"
 
 namespace Krys
 {
