@@ -11,7 +11,7 @@ namespace Krys::Graphics
     void Visit(const Node &node) override {}
     void Visit(const GeometryNode &node) override
     {
-      Renderer->Submit(node);
+      _renderer->Submit(node);
     }
   };
 }
