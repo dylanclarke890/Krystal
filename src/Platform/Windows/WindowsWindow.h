@@ -10,10 +10,10 @@ namespace Krys
   class WindowsWindow : public Window
   {
   private:
-    HWND hWnd;
-    HDC dc;
-    LPSTR cmdLine;
-    int nShowCmd;
+    HWND _window;
+    HDC _deviceContext;
+    LPSTR _cmdLine;
+    int _nShowCmd;
 
   public:
     WindowsWindow(const string &name, int width, int height, HINSTANCE instance);

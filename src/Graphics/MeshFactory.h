@@ -14,6 +14,11 @@ namespace Krys::Graphics
   class MeshFactory
   {
   public:
+    static Ref<Mesh> Create()
+    {
+      return CreateRef<Mesh>();
+    }
+
     static Ref<Mesh> CreateTriangle(const Vec4 &color = Colors::White)
     {
       constexpr Vec3 TRIANGLE_POSITIONS[] = {{0.5f, -0.5f, 0.0f}, {-0.5f, -0.5f, 0.0f}, {0.0f, 0.5f, 0.0f}};

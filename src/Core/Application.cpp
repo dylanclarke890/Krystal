@@ -8,49 +8,35 @@
 
 #include "Graphics/Camera/Perspective.h"
 #include "Graphics/VertexArray.h"
-#include "Graphics/Renderer/Renderer.h"
+#include "Graphics/Renderer.h"
 
 #include "Misc/Performance.h"
-#include "Maths/Maths.h"
 #include "Misc/Time.h"
 #include "Misc/Chrono.h"
 
 namespace Krys
 {
-  Application::Application(const string &name, int width, int height, float targetFps)
-      : Window(Window::Create(name, width, height)), Context(Window->GetGraphicsContext()),
-        IsRunning(false), TargetFrameTimeMs(1000.0f / targetFps)
-  {
-  }
+  Application::Application(const string &name, int width, int height, float targetFps) noexcept
+      : _window(Window::Create(name, width, height)), _context(_window->GetGraphicsContext()),
+        _renderer(CreateRef<Renderer>()), _sceneManager(),
+        _isRunning(false), _targetFrameTimeMs(1000.0f / targetFps) {}
 
-  void Application::Startup()
+  void Application::Startup() noexcept
   {
-    Context->Init();
-    Context->SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
-    Renderer::Init(Window, Context);
+    _context->Init();
+    _context->SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
+    _renderer->Init(_context);
 
     Input::Init();
-    Window->Show();
+    _window->Show();
   }
 
-  void Application::BeginFrame()
+  void Application::Run() noexcept
   {
-    Window->BeginFrame();
-    Input::BeginFrame();
-  }
-
-  void Application::EndFrame()
-  {
-    Window->EndFrame();
-    Input::EndFrame();
-  }
-
-  void Application::Run()
-  {
-    IsRunning = true;
+    _isRunning = true;
     float elapsedMs = 0;
 
-    while (IsRunning)
+    while (_isRunning)
     {
       int64 startCounter = Performance::GetTicks();
       BeginFrame();
@@ -61,14 +47,14 @@ namespace Krys
       int64 endCounter = Performance::GetTicks();
       elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
 
-      while (elapsedMs < TargetFrameTimeMs - 2)
+      while (elapsedMs < _targetFrameTimeMs - 2)
       {
         Chrono::Sleep(1);
         endCounter = Performance::GetTicks();
         elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
       }
 
-      while (elapsedMs < TargetFrameTimeMs)
+      while (elapsedMs < _targetFrameTimeMs)
       {
         endCounter = Performance::GetTicks();
         elapsedMs = Performance::TicksToMilliseconds(endCounter - startCounter);
@@ -78,31 +64,56 @@ namespace Krys
     }
   }
 
-  void Application::Shutdown()
+  void Application::Stop() noexcept
+  {
+    _isRunning = false;
+  }
+
+  void Application::Shutdown() noexcept
   {
     Input::Shutdown();
   }
 
+  void Application::BeginFrame() noexcept
+  {
+    _window->BeginFrame();
+    Input::BeginFrame();
+    _renderer->BeginFrame();
+  }
+
+  void Application::Update(float dt) noexcept
+  {
+    KRYS_PERFORMANCE_TIMER("Frame");
+    _sceneManager.UpdateScene();
+  }
+
+  void Application::EndFrame() noexcept
+  {
+    _window->EndFrame();
+    Input::EndFrame();
+    _renderer->EndFrame();
+  }
+
 #pragma region Events
 
-  void Application::OnEvent(Event &event)
+  void Application::OnEvent(Event &event) noexcept
   {
     EventDispatcher dispatcher(event);
     dispatcher.Dispatch<ShutdownEvent>(KRYS_BIND_EVENT_FN(Application::OnShutdownEvent));
     dispatcher.Dispatch<ResizeEvent>(KRYS_BIND_EVENT_FN(Application::OnResizeEvent));
   }
 
-  bool Application::OnShutdownEvent(ShutdownEvent &event)
+  bool Application::OnShutdownEvent(ShutdownEvent &event) noexcept
   {
-    IsRunning = false;
+    _isRunning = false;
     return true;
   }
 
-  bool Application::OnResizeEvent(ResizeEvent &event)
+  bool Application::OnResizeEvent(ResizeEvent &event) noexcept
   {
     KRYS_INFO("Window Resized: Width: %d, Height: %d", event.Width, event.Height);
     // TODO: we need to keep track of the width and height instead as we frequently change the viewport dimensions.
-    Context->SetViewport(event.Width, event.Height);
+    _context->SetViewport(event.Width, event.Height);
     return false;
   }
 

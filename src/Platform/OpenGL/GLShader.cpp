@@ -7,19 +7,19 @@ namespace Krys::OpenGL
 {
   GLShader::GLShader()
   {
-    Id = glCreateProgram();
+    _id = glCreateProgram();
   }
 
   GLShader::~GLShader()
   {
-    glDeleteProgram(Id);
-    for (size_t i = 0; i < Shaders.size(); i++)
-      glDeleteShader(Shaders[i]);
+    glDeleteProgram(_id);
+    for (size_t i = 0; i < _shaders.size(); i++)
+      glDeleteShader(_shaders[i]);
   }
 
   void GLShader::Bind()
   {
-    glUseProgram(Id);
+    glUseProgram(_id);
   }
 
   void GLShader::Unbind()
@@ -83,175 +83,175 @@ namespace Krys::OpenGL
       delete[] infoLog;
     }
 
-    Shaders.push_back(id);
+    _shaders.push_back(id);
   }
 
   void GLShader::Link()
   {
-    for (size_t i = 0; i < Shaders.size(); i++)
-      glAttachShader(Id, Shaders[i]);
+    for (size_t i = 0; i < _shaders.size(); i++)
+      glAttachShader(_id, _shaders[i]);
 
-    glLinkProgram(Id);
+    glLinkProgram(_id);
 
     GLint status;
-    glGetProgramiv(Id, GL_LINK_STATUS, &status);
+    glGetProgramiv(_id, GL_LINK_STATUS, &status);
     if (status == GL_FALSE)
     {
       GLint infoLogLength;
-      glGetProgramiv(Id, GL_INFO_LOG_LENGTH, &infoLogLength);
+      glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &infoLogLength);
 
       GLchar *infoLog = new GLchar[infoLogLength + 1];
-      glGetProgramInfoLog(Id, infoLogLength, NULL, infoLog);
+      glGetProgramInfoLog(_id, infoLogLength, NULL, infoLog);
 
       KRYS_ASSERT(false, "Linker failure: %s", infoLog);
       delete[] infoLog;
     }
 
-    for (size_t i = 0; i < Shaders.size(); i++)
-      glDetachShader(Id, Shaders[i]);
+    for (size_t i = 0; i < _shaders.size(); i++)
+      glDetachShader(_id, _shaders[i]);
   }
 
   void GLShader::SetUniform(const string &name, int value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name.c_str());
-    glProgramUniform1i(Id, location, value);
+    glProgramUniform1i(_id, location, value);
   }
 
   void GLShader::TrySetUniform(const string &name, int value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     if (location != -1)
     {
-      glProgramUniform1i(Id, location, value);
+      glProgramUniform1i(_id, location, value);
     }
   }
 
   void GLShader::SetUniform(const string &name, float value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name.c_str());
-    glProgramUniform1f(Id, location, value);
+    glProgramUniform1f(_id, location, value);
   }
 
   void GLShader::TrySetUniform(const string &name, float value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     if (location != -1)
     {
-      glProgramUniform1f(Id, location, value);
+      glProgramUniform1f(_id, location, value);
     }
   }
 
   void GLShader::SetUniform(const string &name, int *values, uint32_t count)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name.c_str());
-    glProgramUniform1iv(Id, location, count, values);
+    glProgramUniform1iv(_id, location, count, values);
   }
 
   void GLShader::TrySetUniform(const string &name, int *values, uint32_t count)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     if (location != -1)
     {
-      glProgramUniform1iv(Id, location, count, values);
+      glProgramUniform1iv(_id, location, count, values);
     }
   }
 
   void GLShader::SetUniform(const string &name, float *values, uint32_t count)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name.c_str());
-    glProgramUniform1fv(Id, location, count, values);
+    glProgramUniform1fv(_id, location, count, values);
   }
 
   void GLShader::TrySetUniform(const string &name, float *values, uint32_t count)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     if (location != -1)
     {
-      glProgramUniform1fv(Id, location, count, values);
+      glProgramUniform1fv(_id, location, count, values);
     }
   }
 
   void GLShader::SetUniform(const string &name, const Vec2 &value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name.c_str());
-    glProgramUniform2f(Id, location, value.x, value.y);
+    glProgramUniform2f(_id, location, value.x, value.y);
   }
 
   void GLShader::TrySetUniform(const string &name, const Vec2 &value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     if (location != -1)
     {
-      glProgramUniform2f(Id, location, value.x, value.y);
+      glProgramUniform2f(_id, location, value.x, value.y);
     }
   }
 
   void GLShader::SetUniform(const string &name, const Vec3 &value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name.c_str());
-    glProgramUniform3f(Id, location, value.x, value.y, value.z);
+    glProgramUniform3f(_id, location, value.x, value.y, value.z);
   }
 
   void GLShader::TrySetUniform(const string &name, const Vec3 &value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     if (location != -1)
     {
-      glProgramUniform3f(Id, location, value.x, value.y, value.z);
+      glProgramUniform3f(_id, location, value.x, value.y, value.z);
     }
   }
 
   void GLShader::SetUniform(const string &name, const Vec4 &value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name.c_str());
-    glProgramUniform4f(Id, location, value.x, value.y, value.z, value.w);
+    glProgramUniform4f(_id, location, value.x, value.y, value.z, value.w);
   }
 
   void GLShader::TrySetUniform(const string &name, const Vec4 &value)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     if (location != -1)
     {
-      glProgramUniform4f(Id, location, value.x, value.y, value.z, value.w);
+      glProgramUniform4f(_id, location, value.x, value.y, value.z, value.w);
     }
   }
 
   void GLShader::SetUniform(const string &name, const Mat3 &matrix)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name.c_str());
-    glProgramUniformMatrix3fv(Id, location, 1, GL_FALSE, glm::value_ptr(matrix));
+    glProgramUniformMatrix3fv(_id, location, 1, GL_FALSE, glm::value_ptr(matrix));
   }
 
   void GLShader::TrySetUniform(const string &name, const Mat3 &matrix)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     if (location != -1)
     {
-      glProgramUniformMatrix3fv(Id, location, 1, GL_FALSE, glm::value_ptr(matrix));
+      glProgramUniformMatrix3fv(_id, location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
   }
 
   void GLShader::SetUniform(const string &name, const Mat4 &matrix)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     KRYS_ASSERT(location != -1, "%s wasn't a valid uniform", name.c_str());
-    glProgramUniformMatrix4fv(Id, location, 1, GL_FALSE, glm::value_ptr(matrix));
+    glProgramUniformMatrix4fv(_id, location, 1, GL_FALSE, glm::value_ptr(matrix));
   }
 
   void GLShader::TrySetUniform(const string &name, const Mat4 &matrix)
   {
-    GLint location = glGetProgramResourceLocation(Id, GL_UNIFORM, name.c_str());
+    GLint location = glGetProgramResourceLocation(_id, GL_UNIFORM, name.c_str());
     if (location != -1)
     {
-      glProgramUniformMatrix4fv(Id, location, 1, GL_FALSE, glm::value_ptr(matrix));
+      glProgramUniformMatrix4fv(_id, location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
   }
 

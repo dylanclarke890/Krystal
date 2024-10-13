@@ -5,9 +5,9 @@
 
 namespace Krys
 {
-  std::mutex Logger::mu;
-  std::ofstream Logger::logFile("log.txt");
-  LogLevel Logger::logLevel = LogLevel::Info;
+  std::mutex Logger::_mu;
+  std::ofstream Logger::_logFile("log.txt");
+  LogLevel Logger::_logLevel = LogLevel::Info;
 
   void Logger::Log(const char* format, ...)
   {
@@ -17,7 +17,7 @@ namespace Krys
     vsnprintf(buffer, sizeof(buffer), format, args);
     va_end(args);
 
-    std::lock_guard<std::mutex> lock(mu);
+    std::lock_guard<std::mutex> lock(_mu);
     auto logMessage = FormatLogMessage(buffer);
     Output(logMessage);
   }
@@ -34,7 +34,7 @@ namespace Krys
       vsnprintf(buffer, sizeof(buffer), format, args);
       va_end(args);
 
-      std::lock_guard<std::mutex> lock(mu);
+      std::lock_guard<std::mutex> lock(_mu);
       auto logMessage = FormatLogMessage(buffer);
       Output(logMessage);
     }
@@ -43,26 +43,26 @@ namespace Krys
 
   void Logger::SetLogLevel(LogLevel level)
   {
-    logLevel = level;
+    _logLevel = level;
   }
 
   LogLevel Logger::GetLogLevel()
   {
-    return logLevel;
+    return _logLevel;
   }
 
   string Logger::FormatLogMessage(const string &message)
   {
     std::ostringstream ss;
-    ss << ToString(logLevel) << ": " << message << "\n";
+    ss << ToString(_logLevel) << ": " << message << "\n";
     return ss.str();
   }
 
   void Logger::Output(const string &message)
   {
     OutputDebugStringA(message.c_str());
-    if (logFile.is_open())
-      logFile << message;
+    if (_logFile.is_open())
+      _logFile << message;
   }
 
   string Logger::ToString(LogLevel level)

@@ -31,13 +31,12 @@ namespace Krys
     static LogLevel GetLogLevel();
 
   private:
-    static std::mutex mu;
-    static std::ofstream logFile;
-    static LogLevel logLevel;
+    static std::mutex _mu;
+    static std::ofstream _logFile;
+    static LogLevel _logLevel;
 
     static string FormatLogMessage(const string &message);
     static void Output(const string &message);
-
     static string ToString(LogLevel level);
   };
 }

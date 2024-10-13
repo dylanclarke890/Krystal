@@ -14,8 +14,8 @@ namespace Krys::OpenGL
   class GLIndexBuffer : public IndexBuffer
   {
   private:
-    uint Id;
-    uint Count;
+    uint _id;
+    uint _count;
 
   public:
     GLIndexBuffer(uint32 count);
@@ -33,8 +33,8 @@ namespace Krys::OpenGL
   class GLVertexBuffer : public VertexBuffer
   {
   private:
-    uint Id;
-    VertexBufferLayout Layout;
+    uint _id;
+    VertexBufferLayout _layout;
 
   public:
     GLVertexBuffer(uint32 size);
@@ -53,8 +53,8 @@ namespace Krys::OpenGL
   class GLUniformBuffer : public UniformBuffer
   {
   private:
-    uint Id;
-    UniformBufferLayout Layout;
+    uint _id;
+    UniformBufferLayout _layout;
 
     struct AttributeInfo
     {
@@ -91,8 +91,8 @@ namespace Krys::OpenGL
   class GLInstanceArrayBuffer : public InstanceArrayBuffer
   {
   private:
-    uint Id;
-    InstanceArrayBufferLayout Layout;
+    uint _id;
+    InstanceArrayBufferLayout _layout;
 
   public:
     GLInstanceArrayBuffer(uint32 size);

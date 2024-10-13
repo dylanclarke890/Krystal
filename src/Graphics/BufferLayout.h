@@ -114,42 +114,42 @@ namespace Krys::Graphics
   class VertexBufferLayout
   {
   private:
-    List<VertexBufferElement> Elements;
-    int AttributeCount;
+    List<VertexBufferElement> _elements;
+    int _attributeCount;
 
   public:
     VertexBufferLayout() = default;
 
     VertexBufferLayout(std::initializer_list<VertexBufferElement> elements)
-        : Elements(elements), AttributeCount(0)
+        : _elements(elements), _attributeCount(0)
     {
       CalculateOffsetsAndStride();
       CalculateAttributeCount();
     }
 
-    const List<VertexBufferElement> &GetElements() const { return Elements; }
-    List<VertexBufferElement>::iterator begin() { return Elements.begin(); }
-    List<VertexBufferElement>::iterator end() { return Elements.end(); }
-    List<VertexBufferElement>::const_iterator begin() const { return Elements.begin(); }
-    List<VertexBufferElement>::const_iterator end() const { return Elements.end(); }
+    const List<VertexBufferElement> &GetElements() const { return _elements; }
+    List<VertexBufferElement>::iterator begin() { return _elements.begin(); }
+    List<VertexBufferElement>::iterator end() { return _elements.end(); }
+    List<VertexBufferElement>::const_iterator begin() const { return _elements.begin(); }
+    List<VertexBufferElement>::const_iterator end() const { return _elements.end(); }
 
     NO_DISCARD int GetAttributeCount() const noexcept
     {
-      return AttributeCount;
+      return _attributeCount;
     }
 
   private:
     void CalculateOffsetsAndStride()
     {
-      KRYS_ASSERT(Elements.size(), "VertexBufferLayout has no elements", 0);
+      KRYS_ASSERT(_elements.size(), "VertexBufferLayout has no elements", 0);
 
       uint32 vertexSize = 0;
-      for (auto &element : Elements)
+      for (auto &element : _elements)
         vertexSize += element.Size;
       KRYS_ASSERT(vertexSize, "vertexSize was 0", 0);
 
       uint32 offset = 0;
-      for (auto &element : Elements)
+      for (auto &element : _elements)
       {
         element.Offset = offset;
         offset += element.Size;
@@ -161,7 +161,7 @@ namespace Krys::Graphics
     {
       int count = 0;
 
-      for (auto element : Elements)
+      for (auto element : _elements)
       {
         switch (element.Type)
         {
@@ -196,7 +196,7 @@ namespace Krys::Graphics
         }
       }
 
-      AttributeCount = count;
+      _attributeCount = count;
     }
   };
 
@@ -269,9 +269,7 @@ namespace Krys::Graphics
   {
     UniformDataType Type;
     string Name;
-    uint32 Count;
-
-    uint32 BaseAlignment, LayoutSize, AlignedOffset;
+    uint32 Count, BaseAlignment, LayoutSize, AlignedOffset;
 
     UniformStructElement(UniformDataType type, const string &name, uint32 count = 1)
         : Type(type), Name(name), Count(count)
@@ -284,28 +282,28 @@ namespace Krys::Graphics
   struct UniformStructLayout
   {
   private:
-    List<UniformStructElement> Layout;
+    List<UniformStructElement> _layout;
 
   public:
     UniformStructLayout() = default;
 
     UniformStructLayout(std::initializer_list<UniformStructElement> layout)
-        : Layout(layout)
+        : _layout(layout)
     {
       CalculateOffsetsAndSize();
     }
 
     uint32 GetSize() const noexcept { return CalculateTotalSize(); }
-    const List<UniformStructElement> &GetElements() const noexcept { return Layout; }
-    List<UniformStructElement>::iterator begin() { return Layout.begin(); }
-    List<UniformStructElement>::iterator end() { return Layout.end(); }
-    List<UniformStructElement>::const_iterator begin() const { return Layout.begin(); }
-    List<UniformStructElement>::const_iterator end() const { return Layout.end(); }
+    const List<UniformStructElement> &GetElements() const noexcept { return _layout; }
+    List<UniformStructElement>::iterator begin() { return _layout.begin(); }
+    List<UniformStructElement>::iterator end() { return _layout.end(); }
+    List<UniformStructElement>::const_iterator begin() const { return _layout.begin(); }
+    List<UniformStructElement>::const_iterator end() const { return _layout.end(); }
 
     uint32 CalculateBaseAlignment() const
     {
       uint32 maxAlignment = 0;
-      for (const auto &element : Layout)
+      for (const auto &element : _layout)
       {
         if (element.BaseAlignment > maxAlignment)
           maxAlignment = element.BaseAlignment;
@@ -316,7 +314,7 @@ namespace Krys::Graphics
     uint32 CalculateTotalSize() const
     {
       uint32 totalSize = 0;
-      for (const auto &element : Layout)
+      for (const auto &element : _layout)
       {
         totalSize = AlignOffset(totalSize, element.BaseAlignment);
         totalSize += element.LayoutSize;
@@ -328,7 +326,7 @@ namespace Krys::Graphics
     void CalculateOffsetsAndSize()
     {
       uint32 alignedOffset = 0;
-      for (auto &element : Layout)
+      for (auto &element : _layout)
       {
         element.AlignedOffset = alignedOffset = AlignOffset(alignedOffset, element.BaseAlignment);
         alignedOffset += element.LayoutSize;
@@ -368,38 +366,38 @@ namespace Krys::Graphics
   struct UniformBufferLayout
   {
   private:
-    List<UniformBufferElement> Layout;
-    uint32 Size;
+    List<UniformBufferElement> _layout;
+    uint32 _size;
 
   public:
     UniformBufferLayout() = default;
 
     UniformBufferLayout(std::initializer_list<UniformBufferElement> layout)
-        : Layout(layout), Size(0)
+        : _layout(layout), _size(0)
     {
       CalculateOffsetsAndSize();
     }
 
-    uint32 GetSize() const noexcept { return Size; }
-    const List<UniformBufferElement> &GetElements() const noexcept { return Layout; }
-    List<UniformBufferElement>::iterator begin() { return Layout.begin(); }
-    List<UniformBufferElement>::iterator end() { return Layout.end(); }
-    List<UniformBufferElement>::const_iterator begin() const { return Layout.begin(); }
-    List<UniformBufferElement>::const_iterator end() const { return Layout.end(); }
+    uint32 GetSize() const noexcept { return _size; }
+    const List<UniformBufferElement> &GetElements() const noexcept { return _layout; }
+    List<UniformBufferElement>::iterator begin() { return _layout.begin(); }
+    List<UniformBufferElement>::iterator end() { return _layout.end(); }
+    List<UniformBufferElement>::const_iterator begin() const { return _layout.begin(); }
+    List<UniformBufferElement>::const_iterator end() const { return _layout.end(); }
 
   private:
     void CalculateOffsetsAndSize()
     {
-      KRYS_ASSERT(Layout.size(), "UniformBufferLayout has no elements", 0);
+      KRYS_ASSERT(_layout.size(), "UniformBufferLayout has no elements", 0);
 
       uint32 alignedOffset = 0;
-      for (auto &element : Layout)
+      for (auto &element : _layout)
       {
         element.AlignedOffset = alignedOffset = AlignOffset(alignedOffset, element.BaseAlignment);
         alignedOffset += element.LayoutSize * element.Count;
       }
 
-      Size = alignedOffset;
+      _size = alignedOffset;
     }
 
     static uint32 AlignOffset(uint32 offset, uint32 alignment)
@@ -437,35 +435,35 @@ namespace Krys::Graphics
   struct InstanceArrayBufferLayout
   {
   private:
-    List<InstanceArrayElement> Elements;
+    List<InstanceArrayElement> _elements;
 
   public:
     InstanceArrayBufferLayout() = default;
 
     InstanceArrayBufferLayout(std::initializer_list<InstanceArrayElement> elements)
-        : Elements(elements)
+        : _elements(elements)
     {
       CalculateOffsetsAndSize();
     }
 
-    const List<InstanceArrayElement> &GetElements() const { return Elements; }
-    List<InstanceArrayElement>::iterator begin() { return Elements.begin(); }
-    List<InstanceArrayElement>::iterator end() { return Elements.end(); }
-    List<InstanceArrayElement>::const_iterator begin() const { return Elements.begin(); }
-    List<InstanceArrayElement>::const_iterator end() const { return Elements.end(); }
+    const List<InstanceArrayElement> &GetElements() const { return _elements; }
+    List<InstanceArrayElement>::iterator begin() { return _elements.begin(); }
+    List<InstanceArrayElement>::iterator end() { return _elements.end(); }
+    List<InstanceArrayElement>::const_iterator begin() const { return _elements.begin(); }
+    List<InstanceArrayElement>::const_iterator end() const { return _elements.end(); }
 
   private:
     void CalculateOffsetsAndSize()
     {
-      KRYS_ASSERT(Elements.size(), "InstanceArrayBufferLayout has no elements", 0);
+      KRYS_ASSERT(_elements.size(), "InstanceArrayBufferLayout has no elements", 0);
 
       uint32 vertexSize = 0;
-      for (auto &element : Elements)
+      for (auto &element : _elements)
         vertexSize += element.Size;
       KRYS_ASSERT(vertexSize, "vertexSize was 0", 0);
 
       uint32 offset = 0;
-      for (auto &element : Elements)
+      for (auto &element : _elements)
       {
         element.Offset = offset;
         offset += element.Size;

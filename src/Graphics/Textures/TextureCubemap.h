@@ -9,14 +9,14 @@ namespace Krys::Graphics
   class TextureCubemap : public Texture
   {
   protected:
-    TextureInternalFormat InternalFormat;
+    TextureInternalFormat _internalFormat;
 
   public:
     virtual ~TextureCubemap() = default;
 
     TextureInternalFormat GetInternalFormat() const noexcept
     {
-      return InternalFormat;
+      return _internalFormat;
     }
 
     virtual void SetFilterModes(TextureMinifyMode min, TextureMagnifyMode mag) noexcept = 0;

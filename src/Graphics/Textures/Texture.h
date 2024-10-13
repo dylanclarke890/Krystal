@@ -7,7 +7,7 @@ namespace Krys::Graphics
   class Texture
   {
   protected:
-    uint Id;
+    uint _id;
     inline static int MaxTextureSize = 0;
     inline static int MaxColorSamples = 0;
     inline static int MaxDepthSamples = 0;
@@ -18,7 +18,7 @@ namespace Krys::Graphics
 
     NO_DISCARD uint GetId() const noexcept
     {
-      return Id;
+      return _id;
     }
 
     virtual void Bind(uint32 slot = 0) const noexcept = 0;

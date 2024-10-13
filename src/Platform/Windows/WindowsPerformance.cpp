@@ -5,8 +5,8 @@
 
 namespace Krys
 {
-  bool Performance::PerformanceCounterFrequencyQueried = false;
-  int64 Performance::PerformanceCounterFrequency = 0;
+  bool Performance::_performanceCounterFrequencyQueried = false;
+  int64 Performance::_performanceCounterFrequency = 0;
 
   int64 Performance::GetTicks()
   {
@@ -20,18 +20,18 @@ namespace Krys
 
   int64 Performance::GetTickFrequency()
   {
-    if (PerformanceCounterFrequencyQueried)
-      return PerformanceCounterFrequency;
+    if (_performanceCounterFrequencyQueried)
+      return _performanceCounterFrequency;
 
     LARGE_INTEGER frequency;
     if (!QueryPerformanceFrequency(&frequency))
       // This will never happen on Windows XP and later
       KRYS_CRITICAL("QueryPerformanceFrequency failed: %s", GetLastError());
 
-    PerformanceCounterFrequencyQueried = true;
-    PerformanceCounterFrequency = frequency.QuadPart;
+    _performanceCounterFrequencyQueried = true;
+    _performanceCounterFrequency = frequency.QuadPart;
 
-    return PerformanceCounterFrequency;
+    return _performanceCounterFrequency;
   }
 
   uint64 Performance::GetCpuCycles()

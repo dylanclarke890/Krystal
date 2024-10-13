@@ -1,38 +1,37 @@
 #include <stack>
 
-#include "Maths/Maths.h"
+#include "Maths/Vector.h"
 #include "Maths/Rotate.h"
 
-namespace Krys
+namespace Krys::Maths
 {
-
   class MatrixStack
   {
   private:
-    Mat4 m_CurrentMatrix;
-    std::stack<Mat4> m_Matrices;
+    Mat4 _currentMatrix;
+    std::stack<Mat4> _matrices;
 
   public:
-    MatrixStack() : m_CurrentMatrix(1.0f) {}
+    MatrixStack() : _currentMatrix(1.0f) {}
 
     const Mat4 &Top() const noexcept
     {
-      return m_CurrentMatrix;
+      return _currentMatrix;
     }
 
     void RotateX(float degrees)
     {
-      m_CurrentMatrix = m_CurrentMatrix * Mat4(Krys::RotateX(degrees));
+      _currentMatrix = _currentMatrix * Mat4(Krys::Maths::RotateX(degrees));
     }
 
     void RotateY(float degrees)
     {
-      m_CurrentMatrix = m_CurrentMatrix * Mat4(Krys::RotateY(degrees));
+      _currentMatrix = _currentMatrix * Mat4(Krys::Maths::RotateY(degrees));
     }
 
     void RotateZ(float degrees)
     {
-      m_CurrentMatrix = m_CurrentMatrix * Mat4(Krys::RotateZ(degrees));
+      _currentMatrix = _currentMatrix * Mat4(Krys::Maths::RotateZ(degrees));
     }
 
     void Scale(const Vec3 &scaleVec)
@@ -42,7 +41,7 @@ namespace Krys
       scaleMat[1].y = scaleVec.y;
       scaleMat[2].z = scaleVec.z;
 
-      m_CurrentMatrix = m_CurrentMatrix * scaleMat;
+      _currentMatrix = _currentMatrix * scaleMat;
     }
 
     void Translate(const Vec3 &offsetVec)
@@ -50,18 +49,18 @@ namespace Krys
       Mat4 translateMat(1.0f);
       translateMat[3] = Vec4(offsetVec, 1.0f);
 
-      m_CurrentMatrix = m_CurrentMatrix * translateMat;
+      _currentMatrix = _currentMatrix * translateMat;
     }
 
     void Push()
     {
-      m_Matrices.push(m_CurrentMatrix);
+      _matrices.push(_currentMatrix);
     }
 
     void Pop() noexcept
     {
-      m_CurrentMatrix = m_Matrices.top();
-      m_Matrices.pop();
+      _currentMatrix = _matrices.top();
+      _matrices.pop();
     }
   };
 }

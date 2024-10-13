@@ -3,15 +3,20 @@
 namespace Krys::Graphics
 {
   SceneGraph::SceneGraph() noexcept
-      : Root(CreateRef<Node>()) {}
+      : _root(CreateRef<Node>()) {}
 
   SceneGraph::SceneGraph(Ref<Node> root) noexcept
-      : Root(root) {}
+      : _root(root) {}
+
+  Ref<Node> SceneGraph::GetRoot() const noexcept
+  {
+    return _root;
+  }
 
   void SceneGraph::Add(Ref<Node> node) noexcept
   {
-    node->Parent = Root;
-    Root->Children.push_back(node);
+    node->Parent = _root;
+    _root->Children.push_back(node);
   }
 
   void SceneGraph::Attach(Ref<Node> node, Ref<Node> parent) noexcept

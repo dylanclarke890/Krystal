@@ -74,7 +74,7 @@ namespace Krys
   }
 
   WindowsWindow::WindowsWindow(const string &name, int width, int height, HINSTANCE instance)
-      : Window(name, width, height), dc(0)
+      : Window(name, width, height), _deviceContext(NULL)
   {
     WNDCLASSA windowClass = {};
     windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -102,7 +102,7 @@ namespace Krys
 
     InitARBExtensions(instance);
 
-    hWnd = CreateWindowExA(
+    _window = CreateWindowExA(
         0,                         // optional window styles
         windowClass.lpszClassName, // window class
         "Krystal",                 // window name
@@ -116,10 +116,10 @@ namespace Krys
         instance,                  // instance handle
         0);                        // additional application data;
 
-    if (!hWnd)
+    if (!_window)
       KRYS_CRITICAL("Unable to create window: %s", GetLastError());
 
-    SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+    SetWindowLongPtr(_window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
     TIMECAPS timeCaps;
     if (timeGetDevCaps(&timeCaps, sizeof(timeCaps)) == TIMERR_NOCANDO)
@@ -130,8 +130,8 @@ namespace Krys
     if (timeBeginPeriod(timeCaps.wPeriodMin) == TIMERR_NOCANDO)
       KRYS_CRITICAL("timeBeginPeriod failed");
 
-    dc = GetDC(hWnd);
-    Context = CreateRef<OpenGL::GLGraphicsContext>(dc, hWnd, instance);
+    _deviceContext = GetDC(_window);
+    _context = CreateRef<OpenGL::GLGraphicsContext>(_deviceContext, _window, instance);
   }
 
   LRESULT CALLBACK WindowsWindow::StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -155,8 +155,8 @@ namespace Krys
   LRESULT CALLBACK WindowsWindow::WindowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
   {
 #define KRYS_EVENT_CALLBACK() \
-  if (EventCallback)          \
-  EventCallback(event)
+  if (_eventCallback)         \
+  _eventCallback(event)
 
     LRESULT result = 0;
     switch (message)
@@ -247,7 +247,7 @@ namespace Krys
       POINT pt{};
       pt.x = event.X;
       pt.y = event.Y;
-      ScreenToClient(hWnd, &pt);
+      ScreenToClient(window, &pt);
       event.X = pt.x;
       event.Y = pt.y;
 
@@ -312,7 +312,7 @@ namespace Krys
     case WM_CLOSE:
     {
       if (MessageBoxA(window, "Are you sure you want to exit?", "Quit?", MB_OKCANCEL) == IDOK)
-        DestroyWindow(hWnd);
+        DestroyWindow(window);
       break;
     }
     case WM_DESTROY:
@@ -330,8 +330,8 @@ namespace Krys
       ResizeEvent event;
       event.Width = width;
       event.Height = height;
-      Width = width;
-      Height = height;
+      _width = width;
+      _height = height;
 
       KRYS_EVENT_CALLBACK();
 
@@ -378,7 +378,7 @@ namespace Krys
 
   void WindowsWindow::Show(bool visible)
   {
-    ShowWindow(hWnd, visible ? SW_SHOW : SW_HIDE);
+    ShowWindow(_window, visible ? SW_SHOW : SW_HIDE);
   }
 
   void WindowsWindow::BeginFrame()
@@ -389,16 +389,16 @@ namespace Krys
       TranslateMessage(&msg);
       DispatchMessageA(&msg);
 
-      if (msg.message == WM_QUIT && EventCallback)
+      if (msg.message == WM_QUIT && _eventCallback)
       {
         ShutdownEvent event;
-        EventCallback(event);
+        _eventCallback(event);
       }
     }
   }
 
   void WindowsWindow::EndFrame()
   {
-    SwapBuffers(dc);
+    SwapBuffers(_deviceContext);
   }
 }

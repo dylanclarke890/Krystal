@@ -9,38 +9,38 @@ namespace Krys::Graphics
   class Texture2D : public Texture
   {
   protected:
-    uint32 Samples;
-    TextureType Type;
-    TextureInternalFormat InternalFormat;
-    uint Width, Height;
-    string Path;
+    uint32 _samples;
+    TextureType _type;
+    TextureInternalFormat _internalFormat;
+    uint _width, _height;
+    string _path;
 
   public:
     virtual ~Texture2D() = default;
 
     NO_DISCARD TextureType GetType() const noexcept
     {
-      return Type;
+      return _type;
     }
 
     NO_DISCARD TextureInternalFormat GetInternalFormat() const noexcept
     {
-      return InternalFormat;
+      return _internalFormat;
     }
 
     NO_DISCARD uint32 GetWidth() const noexcept
     {
-      return Width;
+      return _width;
     }
 
     NO_DISCARD uint32 GetHeight() const noexcept
     {
-      return Height;
+      return _height;
     }
 
     NO_DISCARD bool IsMultisampled() const noexcept
     {
-      return Samples > 1;
+      return _samples > 1;
     }
 
     virtual void SetFilterModes(TextureMinifyMode min, TextureMagnifyMode mag) noexcept = 0;

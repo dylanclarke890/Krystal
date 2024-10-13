@@ -10,12 +10,10 @@ namespace Krys::Graphics
   class GeometryNode : public Node
   {
   public:
-    virtual void Accept(NodeVisitor &visitor) override
-    {
-      visitor.Visit(*this);
-    }
+    virtual void Accept(NodeVisitor &visitor) noexcept override;
 
-    typedef Ref<Mesh> MeshRef;
+    typedef Ref<Mesh>
+        MeshRef;
     typedef Ref<Material> MatRef;
     MeshRef Mesh;
     MatRef Material;

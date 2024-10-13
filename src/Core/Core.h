@@ -95,7 +95,7 @@
 // Intellisense loses it's mind if we use the latest c++ features so hide them from it for now.
 #define REQUIRES(requirements)
 #else
-#define REQUIRES(requirements) requires(requirements)
+#define REQUIRES(requirements) requires (requirements)
 #endif
 
 // Compiler-specific macros for disabling and restoring warnings

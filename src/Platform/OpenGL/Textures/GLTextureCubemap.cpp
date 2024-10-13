@@ -6,9 +6,9 @@ namespace Krys::OpenGL
 {
   GLTextureCubemap::GLTextureCubemap(std::array<string, 6> faces, TextureInternalFormat internalFormat)
   {
-    InternalFormat = internalFormat;
+    _internalFormat = internalFormat;
 
-    glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &Id);
+    glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &_id);
 
     stbi_set_flip_vertically_on_load(false);
 
@@ -20,17 +20,17 @@ namespace Krys::OpenGL
     KRYS_ASSERT(width <= MaxTextureSize, "Texture width exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, width);
     KRYS_ASSERT(height <= MaxTextureSize, "Texture height exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, height);
 
-    if (InternalFormat == TextureInternalFormat::Auto)
+    if (_internalFormat == TextureInternalFormat::Auto)
     {
-      InternalFormat = TextureInternalFormat::RGBA;
+      _internalFormat = TextureInternalFormat::RGBA;
       if (channels == 3)
       {
-        InternalFormat = TextureInternalFormat::RGB;
+        _internalFormat = TextureInternalFormat::RGB;
       }
     }
 
-    glTextureStorage2D(Id, 1, ToGLInternalFormat(InternalFormat), width, height);
-    glTextureSubImage3D(Id, 0, 0, 0, 0, width, height, 1, ToGLDataFormat(InternalFormat), GL_UNSIGNED_BYTE, data);
+    glTextureStorage2D(_id, 1, ToGLInternalFormat(_internalFormat), width, height);
+    glTextureSubImage3D(_id, 0, 0, 0, 0, width, height, 1, ToGLDataFormat(_internalFormat), GL_UNSIGNED_BYTE, data);
     stbi_image_free(data);
 
     for (uint i = 1; i < faces.size(); i++)
@@ -39,16 +39,16 @@ namespace Krys::OpenGL
       data = stbi_load(faces[i].c_str(), &fWidth, &fHeight, &fChannels, 0);
       KRYS_ASSERT(fWidth == width && fHeight == height && fChannels == channels, "Face %d does not have matching dimensions or channels", i);
 
-      glTextureSubImage3D(Id, 0, 0, 0, i, width, height, 1, ToGLDataFormat(InternalFormat), GL_UNSIGNED_BYTE, data);
+      glTextureSubImage3D(_id, 0, 0, 0, i, width, height, 1, ToGLDataFormat(_internalFormat), GL_UNSIGNED_BYTE, data);
       stbi_image_free(data);
     }
 
-    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTextureParameteri(_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(_id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
   }
 
   GLTextureCubemap::GLTextureCubemap(uint width, uint height, TextureInternalFormat internalFormat)
@@ -56,77 +56,77 @@ namespace Krys::OpenGL
     KRYS_ASSERT(static_cast<int>(width) <= MaxTextureSize, "Texture width exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, width);
     KRYS_ASSERT(static_cast<int>(height) <= MaxTextureSize, "Texture height exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, height);
 
-    InternalFormat = internalFormat;
+    _internalFormat = internalFormat;
 
-    glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &Id);
+    glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &_id);
 
-    glTextureStorage2D(Id, 1, ToGLInternalFormat(internalFormat), width, height);
+    glTextureStorage2D(_id, 1, ToGLInternalFormat(_internalFormat), width, height);
 
-    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTextureParameteri(_id, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTextureParameteri(_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
   }
 
   GLTextureCubemap::~GLTextureCubemap()
   {
-    glDeleteTextures(1, &Id);
+    glDeleteTextures(1, &_id);
   }
 
   void GLTextureCubemap::Bind(uint32 slot) const noexcept
   {
-    glBindTextureUnit(slot, Id);
+    glBindTextureUnit(slot, _id);
   }
 
   void GLTextureCubemap::Unbind() const noexcept
   {
-    glBindTextureUnit(0, Id);
+    glBindTextureUnit(0, _id);
   }
 
   void GLTextureCubemap::SetFilterModes(TextureMinifyMode min, TextureMagnifyMode mag) noexcept
   {
-    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, ToGLTextureMinifyMode(min));
-    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, ToGLTextureMagnifyMode(mag));
+    glTextureParameteri(_id, GL_TEXTURE_MIN_FILTER, ToGLTextureMinifyMode(min));
+    glTextureParameteri(_id, GL_TEXTURE_MAG_FILTER, ToGLTextureMagnifyMode(mag));
   }
 
   void GLTextureCubemap::SetMagnifyMode(TextureMagnifyMode mode) noexcept
   {
-    glTextureParameteri(Id, GL_TEXTURE_MAG_FILTER, ToGLTextureMagnifyMode(mode));
+    glTextureParameteri(_id, GL_TEXTURE_MAG_FILTER, ToGLTextureMagnifyMode(mode));
   }
 
   void GLTextureCubemap::SetMinifyMode(TextureMinifyMode mode) noexcept
   {
-    glTextureParameteri(Id, GL_TEXTURE_MIN_FILTER, ToGLTextureMinifyMode(mode));
+    glTextureParameteri(_id, GL_TEXTURE_MIN_FILTER, ToGLTextureMinifyMode(mode));
   }
 
   void GLTextureCubemap::SetTextureWrapS(TextureWrapMode mode) noexcept
   {
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_S, ToGLTextureWrapMode(mode));
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_S, ToGLTextureWrapMode(mode));
   }
 
   void GLTextureCubemap::SetTextureWrapT(TextureWrapMode mode) noexcept
   {
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_T, ToGLTextureWrapMode(mode));
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_T, ToGLTextureWrapMode(mode));
   }
 
   void GLTextureCubemap::SetTextureWrapR(TextureWrapMode mode) noexcept
   {
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_R, ToGLTextureWrapMode(mode));
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_R, ToGLTextureWrapMode(mode));
   }
 
   void GLTextureCubemap::SetTextureWrapModes(TextureWrapMode s, TextureWrapMode t, TextureWrapMode r) noexcept
   {
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_S, ToGLTextureWrapMode(s));
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_T, ToGLTextureWrapMode(t));
-    glTextureParameteri(Id, GL_TEXTURE_WRAP_R, ToGLTextureWrapMode(r));
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_S, ToGLTextureWrapMode(s));
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_T, ToGLTextureWrapMode(t));
+    glTextureParameteri(_id, GL_TEXTURE_WRAP_R, ToGLTextureWrapMode(r));
   }
 
   void GLTextureCubemap::SetBorderColor(const Maths::Vec4 &color) noexcept
   {
     float borderColor[4] = {color.r, color.g, color.b, color.a};
-    glTextureParameterfv(Id, GL_TEXTURE_BORDER_COLOR, borderColor);
+    glTextureParameterfv(_id, GL_TEXTURE_BORDER_COLOR, borderColor);
   }
 
   void GLTextureCubemap::Load()

@@ -17,15 +17,15 @@ namespace Krys::Graphics
     friend class OrthographicCameraController;
 
   private:
-    float Rotation;
-    BoundingBox<float> Bounds;
+    float _rotation;
+    BoundingBox<float> _bounds;
 
   public:
     OrthographicCamera(int width, int height, float zNear = 0.0f, float zFar = 100.0f) noexcept
-        : Camera(Vec3(0.0f), zNear, zFar), Rotation(0.0f), Bounds({})
+        : Camera(Vec3(0.0f), zNear, zFar), _rotation(0.0f), _bounds({})
     {
-      Bounds.Right = static_cast<float>(width);
-      Bounds.Bottom = static_cast<float>(height);
+      _bounds.Right = static_cast<float>(width);
+      _bounds.Bottom = static_cast<float>(height);
 
       CalculateViewMatrix();
       CalculateProjectionMatrix();
@@ -33,7 +33,7 @@ namespace Krys::Graphics
     }
 
     OrthographicCamera(const BoundingBox<float> &bounds, float zNear, float zFar) noexcept
-        : Camera(Vec3(0.0f), zNear, zFar), Rotation(0.0f), Bounds(bounds)
+        : Camera(Vec3(0.0f), zNear, zFar), _rotation(0.0f), _bounds(bounds)
     {
       CalculateViewMatrix();
       CalculateProjectionMatrix();
@@ -42,33 +42,33 @@ namespace Krys::Graphics
 
     void SetProjection(const BoundingBox<float> &bounds, float zNear, float zFar) noexcept
     {
-      Bounds = bounds;
+      _bounds = bounds;
       CalculateProjectionMatrix();
       CalculateViewProjectionMatrix();
     }
 
     void SetRotation(float rotation) noexcept
     {
-      Rotation = rotation;
+      _rotation = rotation;
       CalculateViewMatrix();
       CalculateViewProjectionMatrix();
     }
 
     float GetRotation() const noexcept
     {
-      return Rotation;
+      return _rotation;
     }
 
   protected:
     void CalculateProjectionMatrix() noexcept override
     {
-      Projection = glm::ortho(Bounds.Left, Bounds.Right, Bounds.Bottom, Bounds.Top, ZNear, ZFar);
+      _projection = glm::ortho(_bounds.Left, _bounds.Right, _bounds.Bottom, _bounds.Top, _near, _far);
     }
 
     void CalculateViewMatrix() noexcept override
     {
-      Mat4 view = glm::translate(MAT4_I, Position) * glm::rotate(MAT4_I, glm::radians(Rotation), ROTATE_AXIS_Z);
-      View = glm::inverse(view);
+      Mat4 view = glm::translate(MAT4_I, _position) * glm::rotate(MAT4_I, glm::radians(_rotation), ROTATE_AXIS_Z);
+      _view = glm::inverse(view);
     }
   };
 
@@ -76,60 +76,60 @@ namespace Krys::Graphics
   {
 
   private:
-    Ref<OrthographicCamera> Camera;
-    Vec2 LastMousePosition;
-    bool IsLeftMouseButtonPressed;
-    float MovementSensitivity;
-    float MovementSpeed, RotationSpeed;
+    Ref<OrthographicCamera> _camera;
+    Vec2 _lastMousePosition;
+    bool _isLeftMouseButtonPressed;
+    float _movementSensitivity;
+    float _movementSpeed, _rotationSpeed;
 
   public:
     OrthographicCameraController(Ref<OrthographicCamera> camera) noexcept
-        : Camera(camera), LastMousePosition(0.0f),
-          IsLeftMouseButtonPressed(false), MovementSensitivity(1.0f),
-          MovementSpeed(100.0f), RotationSpeed(30.0f) {}
+        : _camera(camera), _lastMousePosition(0.0f),
+          _isLeftMouseButtonPressed(false), _movementSensitivity(1.0f),
+          _movementSpeed(100.0f), _rotationSpeed(30.0f) {}
 
     void OnUpdate(float dt) noexcept override
     {
-      auto &cam = *Camera;
+      auto &cam = *_camera;
 
-      float rotationSpeed = RotationSpeed * dt;
+      float rotationSpeed = _rotationSpeed * dt;
       bool recalcView = false;
       if (Input::IsKeyPressed(KeyCode::Q))
       {
-        cam.Rotation -= rotationSpeed;
+        cam._rotation -= rotationSpeed;
         recalcView = true;
       }
 
       if (Input::IsKeyPressed(KeyCode::E))
       {
-        cam.Rotation += rotationSpeed;
+        cam._rotation += rotationSpeed;
         recalcView = true;
       }
 
-      float movementSpeed = MovementSpeed * dt;
+      float movementSpeed = _movementSpeed * dt;
       bool recalcProjection = false;
       if (Input::IsKeyPressed(KeyCode::W))
       {
-        cam.Bounds.Top -= movementSpeed;
-        cam.Bounds.Bottom -= movementSpeed;
+        cam._bounds.Top -= movementSpeed;
+        cam._bounds.Bottom -= movementSpeed;
         recalcProjection = true;
       }
       if (Input::IsKeyPressed(KeyCode::S))
       {
-        cam.Bounds.Top += movementSpeed;
-        cam.Bounds.Bottom += movementSpeed;
+        cam._bounds.Top += movementSpeed;
+        cam._bounds.Bottom += movementSpeed;
         recalcProjection = true;
       }
       if (Input::IsKeyPressed(KeyCode::D))
       {
-        cam.Bounds.Right += movementSpeed;
-        cam.Bounds.Left += movementSpeed;
+        cam._bounds.Right += movementSpeed;
+        cam._bounds.Left += movementSpeed;
         recalcProjection = true;
       }
       if (Input::IsKeyPressed(KeyCode::A))
       {
-        cam.Bounds.Right -= movementSpeed;
-        cam.Bounds.Left -= movementSpeed;
+        cam._bounds.Right -= movementSpeed;
+        cam._bounds.Left -= movementSpeed;
         recalcProjection = true;
       }
 
@@ -156,8 +156,8 @@ namespace Krys::Graphics
     {
       if (event.Button == MouseButton::Left)
       {
-        IsLeftMouseButtonPressed = true;
-        LastMousePosition = {event.X, event.Y};
+        _isLeftMouseButtonPressed = true;
+        _lastMousePosition = {event.X, event.Y};
         return true;
       }
       return false;
@@ -167,7 +167,7 @@ namespace Krys::Graphics
     {
       if (event.Button == MouseButton::Left)
       {
-        IsLeftMouseButtonPressed = false;
+        _isLeftMouseButtonPressed = false;
       }
 
       return false;
@@ -175,23 +175,23 @@ namespace Krys::Graphics
 
     bool OnMouseMoveEvent(MouseMoveEvent &event) noexcept
     {
-      if (!IsLeftMouseButtonPressed)
+      if (!_isLeftMouseButtonPressed)
         return false;
 
       Vec2 position = Vec2(static_cast<float>(event.X), static_cast<float>(event.Y));
 
-      float deltaX = position.x - LastMousePosition.x;
-      float deltaY = LastMousePosition.y - position.y;
-      deltaX *= MovementSensitivity;
-      deltaY *= MovementSensitivity;
+      float deltaX = position.x - _lastMousePosition.x;
+      float deltaY = _lastMousePosition.y - position.y;
+      deltaX *= _movementSensitivity;
+      deltaY *= _movementSensitivity;
 
-      auto &cam = *Camera;
-      cam.Bounds.Left -= deltaX;
-      cam.Bounds.Right -= deltaX;
-      cam.Bounds.Top += deltaY;
-      cam.Bounds.Bottom += deltaY;
+      auto &cam = *_camera;
+      cam._bounds.Left -= deltaX;
+      cam._bounds.Right -= deltaX;
+      cam._bounds.Top += deltaY;
+      cam._bounds.Bottom += deltaY;
 
-      LastMousePosition = position;
+      _lastMousePosition = position;
 
       cam.CalculateViewMatrix();
       cam.CalculateProjectionMatrix();

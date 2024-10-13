@@ -2,17 +2,16 @@
 
 #include "Types.h"
 #include "Maths/Transform.h"
-#include "Graphics/NodeVisitors/NodeVisitor.h"
 
 namespace Krys::Graphics
 {
+  class NodeVisitor;
+
   class Node
   {
   public:
-    virtual void Accept(NodeVisitor &visitor)
-    {
-      visitor.Visit(*this);
-    }
+    virtual ~Node() = default;
+    virtual void Accept(NodeVisitor &visitor) noexcept;
 
     Maths::Transform Transform;
     WeakRef<Node> Parent;

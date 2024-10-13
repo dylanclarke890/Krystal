@@ -16,17 +16,17 @@ namespace Krys::Graphics
     friend class PerspectiveCameraController;
 
   private:
-    Vec3 Front, Up;
-    float Yaw, Pitch;
-    float FovAngle, AspectRatio;
+    Vec3 _front, _up;
+    float _yaw, _pitch;
+    float _fovAngle, _aspectRatio;
 
   public:
     PerspectiveCamera(int width, int height, float fovAngle,
                       float zNear = 0.1f, float zFar = 100.0f) noexcept
         : Camera(Vec3(0.0f, 0.0f, 1.0f), zNear, zFar),
-          Front(Vec3(0.0f)), Up(Vec3(0.0f, 1.0f, 0.0f)),
-          Yaw(0), Pitch(0),
-          FovAngle(fovAngle), AspectRatio(static_cast<float>(width) / static_cast<float>(height))
+          _front(Vec3(0.0f)), _up(Vec3(0.0f, 1.0f, 0.0f)),
+          _yaw(0), _pitch(0),
+          _fovAngle(fovAngle), _aspectRatio(static_cast<float>(width) / static_cast<float>(height))
     {
       CalculateCameraVectors();
       CalculateViewMatrix();
@@ -37,9 +37,9 @@ namespace Krys::Graphics
     PerspectiveCamera(float aspectRatio, float fovAngle,
                       float zNear = 0.1f, float zFar = 100.0f) noexcept
         : Camera(Vec3(0.0f, 0.0f, 1.0f), zNear, zFar),
-          Front(Vec3(0.0f)), Up(Vec3(0.0f, 1.0f, 0.0f)),
-          Yaw(0), Pitch(0),
-          FovAngle(fovAngle), AspectRatio(aspectRatio)
+          _front(Vec3(0.0f)), _up(Vec3(0.0f, 1.0f, 0.0f)),
+          _yaw(0), _pitch(0),
+          _fovAngle(fovAngle), _aspectRatio(aspectRatio)
     {
       CalculateCameraVectors();
       CalculateViewMatrix();
@@ -49,12 +49,12 @@ namespace Krys::Graphics
 
     Vec3 GetFront() const noexcept
     {
-      return Front;
+      return _front;
     }
 
     void SetPitch(float pitchAngle) noexcept
     {
-      Pitch = pitchAngle;
+      _pitch = pitchAngle;
       CalculateCameraVectors();
       CalculateViewMatrix();
       CalculateViewProjectionMatrix();
@@ -62,7 +62,7 @@ namespace Krys::Graphics
 
     void SetYaw(float yawAngle) noexcept
     {
-      Yaw = yawAngle;
+      _yaw = yawAngle;
       CalculateCameraVectors();
       CalculateViewMatrix();
       CalculateViewProjectionMatrix();
@@ -74,21 +74,21 @@ namespace Krys::Graphics
     void CalculateCameraVectors() noexcept
     {
       Vec3 front;
-      front.x = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-      front.y = sin(glm::radians(Pitch));
-      front.z = -cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+      front.x = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+      front.y = sin(glm::radians(_pitch));
+      front.z = -cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));
 
-      Front = glm::normalize(front);
+      _front = glm::normalize(front);
     }
 
     void CalculateViewMatrix() noexcept
     {
-      View = glm::lookAt(Position, Position + Front, Up);
+      _view = glm::lookAt(_position, _position + _front, _up);
     }
 
     void CalculateProjectionMatrix() noexcept
     {
-      Projection = glm::perspective(glm::radians(FovAngle), AspectRatio, ZNear, ZFar);
+      _projection = glm::perspective(glm::radians(_fovAngle), _aspectRatio, _near, _far);
     }
 
 #pragma endregion Calcs
@@ -97,45 +97,45 @@ namespace Krys::Graphics
   class PerspectiveCameraController : public Controller
   {
   private:
-    Ref<PerspectiveCamera> Camera;
-    Vec2 LastMousePosition;
-    bool IsLeftMouseButtonPressed;
-    float MovementSensitivity;
-    float Speed;
+    Ref<PerspectiveCamera> _camera;
+    Vec2 _lastMousePosition;
+    bool _isLeftMouseButtonPressed;
+    float _movementSensitivity;
+    float _speed;
 
   public:
     PerspectiveCameraController(Ref<PerspectiveCamera> camera) noexcept
-        : Camera(camera), LastMousePosition(0.0f), IsLeftMouseButtonPressed(false),
-          MovementSensitivity(0.1f), Speed(5.0f) {}
+        : _camera(camera), _lastMousePosition(0.0f), _isLeftMouseButtonPressed(false),
+          _movementSensitivity(0.1f), _speed(5.0f) {}
 
     void OnUpdate(float dt) noexcept
     {
       bool recalc = false;
-      float speed = Speed * dt;
-      auto &cam = *Camera;
+      float speed = _speed * dt;
+      auto &cam = *_camera;
 
       if (Input::IsKeyPressed(KeyCode::W))
       {
-        cam.Position += speed * cam.Front;
+        cam._position += speed * cam._front;
         recalc = true;
       }
 
       if (Input::IsKeyPressed(KeyCode::S))
       {
         recalc = true;
-        cam.Position -= speed * cam.Front;
+        cam._position -= speed * cam._front;
       }
 
       if (Input::IsKeyPressed(KeyCode::D))
       {
         recalc = true;
-        cam.Position += glm::normalize(glm::cross(cam.Front, cam.Up)) * speed;
+        cam._position += glm::normalize(glm::cross(cam._front, cam._up)) * speed;
       }
 
       if (Input::IsKeyPressed(KeyCode::A))
       {
         recalc = true;
-        cam.Position -= glm::normalize(glm::cross(cam.Front, cam.Up)) * speed;
+        cam._position -= glm::normalize(glm::cross(cam._front, cam._up)) * speed;
       }
 
       if (recalc)
@@ -156,7 +156,7 @@ namespace Krys::Graphics
 
     void SetSpeed(float speed) noexcept
     {
-      Speed = speed;
+      _speed = speed;
     }
 
   private:
@@ -166,8 +166,8 @@ namespace Krys::Graphics
     {
       if (event.Button == MouseButton::Left)
       {
-        IsLeftMouseButtonPressed = true;
-        LastMousePosition = {event.X, event.Y};
+        _isLeftMouseButtonPressed = true;
+        _lastMousePosition = {event.X, event.Y};
         return true;
       }
       return false;
@@ -177,7 +177,7 @@ namespace Krys::Graphics
     {
       if (event.Button == MouseButton::Left)
       {
-        IsLeftMouseButtonPressed = false;
+        _isLeftMouseButtonPressed = false;
       }
 
       return false;
@@ -185,9 +185,9 @@ namespace Krys::Graphics
 
     bool OnMouseScrollEvent(MouseScrollEvent &event) noexcept
     {
-      auto &cam = *Camera;
-      cam.FovAngle -= static_cast<float>(event.DeltaZ);
-      cam.FovAngle = Clamp(cam.FovAngle, 1.0f, 45.0f);
+      auto &cam = *_camera;
+      cam._fovAngle -= static_cast<float>(event.DeltaZ);
+      cam._fovAngle = Clamp(cam._fovAngle, 1.0f, 45.0f);
 
       cam.CalculateProjectionMatrix();
       cam.CalculateViewProjectionMatrix();
@@ -197,22 +197,22 @@ namespace Krys::Graphics
 
     bool OnMouseMoveEvent(MouseMoveEvent &event) noexcept
     {
-      if (!IsLeftMouseButtonPressed)
+      if (!_isLeftMouseButtonPressed)
         return false;
 
       Vec2 position = Vec2(static_cast<float>(event.X), static_cast<float>(event.Y));
 
-      float deltaX = position.x - LastMousePosition.x;
-      float deltaY = LastMousePosition.y - position.y;
-      deltaX *= MovementSensitivity;
-      deltaY *= MovementSensitivity;
+      float deltaX = position.x - _lastMousePosition.x;
+      float deltaY = _lastMousePosition.y - position.y;
+      deltaX *= _movementSensitivity;
+      deltaY *= _movementSensitivity;
 
-      auto &cam = *Camera;
-      cam.Yaw += deltaX;
-      cam.Pitch += deltaY;
+      auto &cam = *_camera;
+      cam._yaw += deltaX;
+      cam._pitch += deltaY;
 
-      cam.Pitch = Clamp(cam.Pitch, -89.0f, 89.0f);
-      LastMousePosition = position;
+      cam._pitch = Clamp(cam._pitch, -89.0f, 89.0f);
+      _lastMousePosition = position;
 
       cam.CalculateCameraVectors();
       cam.CalculateViewMatrix();

@@ -23,8 +23,10 @@ namespace Krys::Graphics
   {
   public:
     void Init(Ref<GraphicsContext> context) noexcept {}
+
     void BeginFrame() noexcept {}
     void Submit(const GeometryNode &node) noexcept {}
+    void Render() noexcept {}
     void EndFrame() noexcept {}
   };
 }

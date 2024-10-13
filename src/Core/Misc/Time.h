@@ -10,34 +10,34 @@ namespace Krys
     friend class Application;
 
   private:
-    static float m_TimeElapsedMs;
-    static float m_LastFrameMs;
+    inline static float _timeElapsedMs;
+    inline static float _lastFrameMs;
 
   public:
     static const float GetElapsedMs() noexcept
     {
-      return m_TimeElapsedMs;
+      return _timeElapsedMs;
     }
 
     static const float GetElapsedSecs() noexcept
     {
-      return m_TimeElapsedMs / 1000.0f;
+      return _timeElapsedMs / 1000.0f;
     }
 
     static const float GetDeltaMs() noexcept
     {
-      return m_LastFrameMs;
+      return _lastFrameMs;
     }
 
     static const float GetDeltaSecs() noexcept
     {
-      return m_LastFrameMs / 1000.0f;
+      return _lastFrameMs / 1000.0f;
     }
 
     static void Increment(float ms) noexcept
     {
-      m_LastFrameMs = ms;
-      m_TimeElapsedMs += ms;
+      _lastFrameMs = ms;
+      _timeElapsedMs += ms;
     }
   };
 }

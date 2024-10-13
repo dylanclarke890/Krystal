@@ -8,11 +8,14 @@ namespace Krys::Graphics
   class SceneGraph
   {
   private:
-    Ref<Node> Root;
+    Ref<Node> _root;
 
   public:
     SceneGraph() noexcept;
     SceneGraph(Ref<Node> root) noexcept;
+
+    Ref<Node> GetRoot() const noexcept;
+
     void Add(Ref<Node> node) noexcept;
     void Attach(Ref<Node> node, Ref<Node> parent) noexcept;
     void Remove(Ref<Node> node) noexcept;

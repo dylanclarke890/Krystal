@@ -40,11 +40,14 @@ K:\src\Platform\Windows\WindowsPerformance.cpp ^
 K:\src\Platform\Windows\WindowsLogger.cpp ^
 K:\src\Platform\Windows\WindowsInput.cpp ^
 K:\src\Platform\Windows\WindowsWindow.cpp ^
-K:\src\Core\IO\IO.cpp ^
-K:\src\Graphics\Renderer\Renderer.cpp ^
+K:\src\Maths\Transform.cpp ^
 K:\src\Graphics\Shaders\ShaderPreprocessor.cpp ^
-K:\src\Graphics\Transform.cpp ^
-K:\src\Core\Misc\Time.cpp ^
+K:\src\Graphics\Nodes\Node.cpp ^
+K:\src\Graphics\Nodes\GeometryNode.cpp ^
+K:\src\Graphics\Scene\Scene.cpp ^
+K:\src\Graphics\Scene\SceneGraph.cpp ^
+K:\src\Graphics\Scene\SceneManager.cpp ^
+K:\src\Core\IO\IO.cpp ^
 K:\src\Core\Application.cpp
 
 set krystal_disabled_warnings=-wd4100 -wd4201

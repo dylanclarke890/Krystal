@@ -11,14 +11,14 @@ namespace Krys::IO
   class BinaryFileReader
   {
   private:
-    stringview Path;
-    std::ifstream Stream;
+    stringview _path;
+    std::ifstream _stream;
 
   public:
     BinaryFileReader(const stringview &path) noexcept
-        : Path(path)
+        : _path(path)
     {
-      KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.data());
+      KRYS_ASSERT(PathExists(_path), "File '%s' does not exist", _path.data());
     }
 
     ~BinaryFileReader() noexcept
@@ -26,31 +26,31 @@ namespace Krys::IO
       CloseStream();
     }
 
-    bool IsEOF() const noexcept { return Stream.eof(); }
+    bool IsEOF() const noexcept { return _stream.eof(); }
 
     void OpenStream() noexcept
     {
-      if (!Stream.is_open())
-        Stream.open(Path.data(), std::ios::binary);
+      if (!_stream.is_open())
+        _stream.open(_path.data(), std::ios::binary);
 
-      KRYS_ASSERT(Stream.is_open(), "Unable to open %s.", Path.data());
+      KRYS_ASSERT(_stream.is_open(), "Unable to open %s.", _path.data());
     }
 
     void CloseStream() noexcept
     {
-      if (Stream.is_open())
-        Stream.close();
+      if (_stream.is_open())
+        _stream.close();
     }
 
     List<byte> ReadBytes(size_t numBytes) noexcept
     {
-      if (!Stream.is_open() || Stream.eof())
+      if (!_stream.is_open() || _stream.eof())
         return {};
 
       List<byte> buffer(numBytes);
-      Stream.read(reinterpret_cast<char *>(buffer.data()), numBytes);
+      _stream.read(reinterpret_cast<char *>(buffer.data()), numBytes);
 
-      buffer.resize(Stream.gcount()); // Adjust the buffer size if we read fewer than numBytes
+      buffer.resize(_stream.gcount()); // Adjust the buffer size if we read fewer than numBytes
       return buffer;
     }
 

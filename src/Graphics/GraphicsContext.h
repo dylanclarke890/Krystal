@@ -2,7 +2,6 @@
 
 #include "Core.h"
 
-#include "Graphics/Assets/Factory.h"
 #include "Graphics/Buffer.h"
 #include "Graphics/Enums.h"
 #include "Graphics/Framebuffer.h"
@@ -21,17 +20,8 @@ namespace Krys::Graphics
 {
   using namespace Krys::Maths;
 
-  struct DeferredRendererData
-  {
-    Ref<Framebuffer> GBuffer;
-    Ref<Texture2D> GPosition, GNormal, GAlbedoSpecular;
-  };
-
   class GraphicsContext
   {
-  private:
-    Ref<Shader> DefaultMaterialShader;
-
   public:
     virtual ~GraphicsContext() = default;
 
@@ -48,8 +38,6 @@ namespace Krys::Graphics
       templateKeys.MaxPointLights = LIGHTING_MAX_POINT_LIGHTS;
       templateKeys.MaxSpotLights = LIGHTING_MAX_SPOT_LIGHTS;
       ShaderPreprocessor::SetTemplateKeys(std::move(templateKeys));
-
-      DefaultMaterialShader = CreateShader("shaders/scene-object.vert", "shaders/scene-object.frag");
     }
 
     virtual const GraphicsCapabilities &QueryCapabilities() noexcept = 0;

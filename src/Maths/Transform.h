@@ -8,9 +8,9 @@ namespace Krys::Maths
   class Transform
   {
   private:
-    bool Dirty = true;
-    Vec3 Translation, Scale, EulerRotation;
-    Mat4 Matrix;
+    bool _dirty = true;
+    Vec3 _translation, _scale, _eulerRotation;
+    Mat4 _matrix;
 
   public:
     Transform() noexcept;

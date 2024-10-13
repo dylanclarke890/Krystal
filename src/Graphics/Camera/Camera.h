@@ -10,40 +10,40 @@ namespace Krys::Graphics
   class Camera
   {
   protected:
-    Vec3 Position;
-    float ZNear, ZFar;
-    Mat4 View, Projection, ViewProjection;
+    Vec3 _position;
+    float _near, _far;
+    Mat4 _view, _projection, _viewProjection;
 
     Camera(Vec3 position, float zNear, float zFar) noexcept
-        : Position(position), ZNear(zNear), ZFar(zFar),
-          View(MAT4_I), Projection(MAT4_I), ViewProjection(MAT4_I) {}
+        : _position(position), _near(zNear), _far(zFar),
+          _view(MAT4_I), _projection(MAT4_I), _viewProjection(MAT4_I) {}
 
   public:
     const Vec3 &GetPosition() const noexcept
     {
-      return Position;
+      return _position;
     }
 
     void SetPosition(const Vec3 &position) noexcept
     {
-      Position = position;
+      _position = position;
       CalculateViewMatrix();
       CalculateViewProjectionMatrix();
     }
 
     const Mat4 &GetView() const noexcept
     {
-      return View;
+      return _view;
     }
 
     const Mat4 &GetProjection() const noexcept
     {
-      return Projection;
+      return _projection;
     }
 
     const Mat4 &GetViewProjection() const noexcept
     {
-      return ViewProjection;
+      return _viewProjection;
     }
 
   protected:
@@ -52,7 +52,7 @@ namespace Krys::Graphics
 
     void CalculateViewProjectionMatrix() noexcept
     {
-      ViewProjection = Projection * View;
+      _viewProjection = _projection * _view;
     }
   };
 }

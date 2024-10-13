@@ -31,17 +31,17 @@ namespace Krys::OpenGL
 
   GLVertexArray::GLVertexArray()
   {
-    glCreateVertexArrays(1, &Id);
+    glCreateVertexArrays(1, &_id);
   }
 
   GLVertexArray::~GLVertexArray()
   {
-    glDeleteVertexArrays(1, &Id);
+    glDeleteVertexArrays(1, &_id);
   }
 
   void GLVertexArray::Bind() const
   {
-    glBindVertexArray(Id);
+    glBindVertexArray(_id);
   }
 
   void GLVertexArray::Unbind() const
@@ -53,7 +53,7 @@ namespace Krys::OpenGL
   {
     KRYS_ASSERT(buffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!", 0);
 
-    glBindVertexArray(Id);
+    glBindVertexArray(_id);
     buffer->Bind();
 
     const auto &layout = buffer->GetLayout();
@@ -66,14 +66,14 @@ namespace Krys::OpenGL
       case ShaderDataType::Float3:
       case ShaderDataType::Float4:
       {
-        glEnableVertexAttribArray(AttributeIndex);
-        glVertexAttribPointer(AttributeIndex,
+        glEnableVertexAttribArray(_attributeIndex);
+        glVertexAttribPointer(_attributeIndex,
                               element.GetComponentCount(),
                               ShaderDataTypeToOpenGLBaseType(element.Type),
                               element.Normalized ? GL_TRUE : GL_FALSE,
                               element.Stride,
                               (const void *)element.Offset);
-        AttributeIndex++;
+        _attributeIndex++;
         break;
       }
       case ShaderDataType::Int:
@@ -82,13 +82,13 @@ namespace Krys::OpenGL
       case ShaderDataType::Int4:
       case ShaderDataType::Bool:
       {
-        glEnableVertexAttribArray(AttributeIndex);
-        glVertexAttribIPointer(AttributeIndex,
+        glEnableVertexAttribArray(_attributeIndex);
+        glVertexAttribIPointer(_attributeIndex,
                                element.GetComponentCount(),
                                ShaderDataTypeToOpenGLBaseType(element.Type),
                                element.Stride,
                                (const void *)element.Offset);
-        AttributeIndex++;
+        _attributeIndex++;
         break;
       }
       case ShaderDataType::Mat3:
@@ -97,15 +97,15 @@ namespace Krys::OpenGL
         uint8 count = element.GetComponentCount();
         for (uint8 i = 0; i < count; i++)
         {
-          glEnableVertexAttribArray(AttributeIndex);
-          glVertexAttribPointer(AttributeIndex,
+          glEnableVertexAttribArray(_attributeIndex);
+          glVertexAttribPointer(_attributeIndex,
                                 count,
                                 ShaderDataTypeToOpenGLBaseType(element.Type),
                                 element.Normalized ? GL_TRUE : GL_FALSE,
                                 element.Stride,
                                 (const void *)(element.Offset + sizeof(float) * count * i));
-          glVertexAttribDivisor(AttributeIndex, 1);
-          AttributeIndex++;
+          glVertexAttribDivisor(_attributeIndex, 1);
+          _attributeIndex++;
         }
         break;
       }
@@ -114,14 +114,14 @@ namespace Krys::OpenGL
       }
     }
 
-    VertexBuffers.push_back(buffer);
+    _vertexBuffers.push_back(buffer);
   }
 
   void GLVertexArray::AddInstanceArrayBuffer(Ref<InstanceArrayBuffer> buffer)
   {
     KRYS_ASSERT(buffer->GetLayout().GetElements().size(), "Instance Array Buffer has no layout!", 0);
 
-    glBindVertexArray(Id);
+    glBindVertexArray(_id);
     buffer->Bind();
 
     const auto &layout = buffer->GetLayout();
@@ -134,15 +134,15 @@ namespace Krys::OpenGL
       case ShaderDataType::Float3:
       case ShaderDataType::Float4:
       {
-        glEnableVertexAttribArray(AttributeIndex);
-        glVertexAttribPointer(AttributeIndex,
+        glEnableVertexAttribArray(_attributeIndex);
+        glVertexAttribPointer(_attributeIndex,
                               element.GetComponentCount(),
                               ShaderDataTypeToOpenGLBaseType(element.Type),
                               element.Normalized ? GL_TRUE : GL_FALSE,
                               element.Stride,
                               (const void *)element.Offset);
-        glVertexAttribDivisor(AttributeIndex, element.AttributeUsageFrequency);
-        AttributeIndex++;
+        glVertexAttribDivisor(_attributeIndex, element.AttributeUsageFrequency);
+        _attributeIndex++;
         break;
       }
       case ShaderDataType::Int:
@@ -151,14 +151,14 @@ namespace Krys::OpenGL
       case ShaderDataType::Int4:
       case ShaderDataType::Bool:
       {
-        glEnableVertexAttribArray(AttributeIndex);
-        glVertexAttribIPointer(AttributeIndex,
+        glEnableVertexAttribArray(_attributeIndex);
+        glVertexAttribIPointer(_attributeIndex,
                                element.GetComponentCount(),
                                ShaderDataTypeToOpenGLBaseType(element.Type),
                                element.Stride,
                                (const void *)element.Offset);
-        glVertexAttribDivisor(AttributeIndex, element.AttributeUsageFrequency);
-        AttributeIndex++;
+        glVertexAttribDivisor(_attributeIndex, element.AttributeUsageFrequency);
+        _attributeIndex++;
         break;
       }
       case ShaderDataType::Mat3:
@@ -167,15 +167,15 @@ namespace Krys::OpenGL
         uint8 count = element.GetComponentCount();
         for (uint8 i = 0; i < count; i++)
         {
-          glEnableVertexAttribArray(AttributeIndex);
-          glVertexAttribPointer(AttributeIndex,
+          glEnableVertexAttribArray(_attributeIndex);
+          glVertexAttribPointer(_attributeIndex,
                                 count,
                                 ShaderDataTypeToOpenGLBaseType(element.Type),
                                 element.Normalized ? GL_TRUE : GL_FALSE,
                                 element.Stride,
                                 (const void *)(element.Offset + sizeof(float) * count * i));
-          glVertexAttribDivisor(AttributeIndex, 1);
-          AttributeIndex++;
+          glVertexAttribDivisor(_attributeIndex, 1);
+          _attributeIndex++;
         }
         break;
       }
@@ -184,28 +184,28 @@ namespace Krys::OpenGL
       }
     }
 
-    InstanceArrayBuffers.push_back(buffer);
+    _instanceArrayBuffers.push_back(buffer);
   }
 
   void GLVertexArray::SetIndexBuffer(Ref<IndexBuffer> buffer)
   {
-    glBindVertexArray(Id);
-    ZBuffer = buffer;
-    ZBuffer->Bind();
+    glBindVertexArray(_id);
+    _indexBuffer = buffer;
+    _indexBuffer->Bind();
   }
 
   const List<Ref<VertexBuffer>> &GLVertexArray::GetVertexBuffers() const
   {
-    return VertexBuffers;
+    return _vertexBuffers;
   }
 
   const List<Ref<InstanceArrayBuffer>> &GLVertexArray::GetInstanceArrayBuffers() const
   {
-    return InstanceArrayBuffers;
+    return _instanceArrayBuffers;
   }
 
   const Ref<IndexBuffer> GLVertexArray::GetIndexBuffer()
   {
-    return ZBuffer;
+    return _indexBuffer;
   }
 }

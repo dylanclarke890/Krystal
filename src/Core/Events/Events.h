@@ -53,18 +53,18 @@ namespace Krys
   class EventDispatcher
   {
   private:
-    Event &event;
+    Event &_event;
 
   public:
-    EventDispatcher(Event &event) : event(event) {}
+    EventDispatcher(Event &event) : _event(event) {}
 
     template <typename T, typename F> // F will be deduced by the compiler
     // TODO: events currently get handled as they come in, move to a queue system.
     bool Dispatch(const F &func)
     {
-      if (!event.Handled && event.GetEventType() == T::GetStaticType())
+      if (!_event.Handled && _event.GetEventType() == T::GetStaticType())
       {
-        event.Handled = func(static_cast<T &>(event));
+        _event.Handled = func(static_cast<T &>(_event));
         return true;
       }
       

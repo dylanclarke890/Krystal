@@ -4,25 +4,25 @@ namespace Krys::OpenGL
 {
   GLIndexBuffer::GLIndexBuffer(uint32 count)
   {
-    glCreateBuffers(1, &Id);
-    glNamedBufferData(Id, count * sizeof(uint32), 0, GL_STATIC_DRAW);
+    glCreateBuffers(1, &_id);
+    glNamedBufferData(_id, count * sizeof(uint32), 0, GL_STATIC_DRAW);
   }
 
   GLIndexBuffer::GLIndexBuffer(const uint32 *indices, uint32 count)
-      : Id(0), Count(count)
+      : _id(0), _count(count)
   {
-    glCreateBuffers(1, &Id);
-    glNamedBufferData(Id, count * sizeof(uint32), indices, GL_STATIC_DRAW);
+    glCreateBuffers(1, &_id);
+    glNamedBufferData(_id, count * sizeof(uint32), indices, GL_STATIC_DRAW);
   }
 
   GLIndexBuffer::~GLIndexBuffer()
   {
-    glDeleteBuffers(1, &Id);
+    glDeleteBuffers(1, &_id);
   }
 
   void GLIndexBuffer::Bind()
   {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Id);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _id);
   }
 
   void GLIndexBuffer::Unbind()
@@ -32,36 +32,36 @@ namespace Krys::OpenGL
 
   void GLIndexBuffer::SetData(const uint32 *indices, uint32 count)
   {
-    glNamedBufferSubData(Id, 0, count * sizeof(GLuint), indices);
+    glNamedBufferSubData(_id, 0, count * sizeof(GLuint), indices);
   }
 
   uint GLIndexBuffer::Size()
   {
-    return Count;
+    return _count;
   }
 
   GLVertexBuffer::GLVertexBuffer(uint32 size)
-      : Id(0)
+      : _id(0)
   {
-    glCreateBuffers(1, &Id);
-    glNamedBufferData(Id, size, nullptr, GL_DYNAMIC_DRAW);
+    glCreateBuffers(1, &_id);
+    glNamedBufferData(_id, size, nullptr, GL_DYNAMIC_DRAW);
   }
 
   GLVertexBuffer::GLVertexBuffer(float *vertices, uint32 size)
-      : Id(0)
+      : _id(0)
   {
-    glCreateBuffers(1, &Id);
-    glNamedBufferData(Id, size, vertices, GL_STATIC_DRAW);
+    glCreateBuffers(1, &_id);
+    glNamedBufferData(_id, size, vertices, GL_STATIC_DRAW);
   }
 
   GLVertexBuffer::~GLVertexBuffer()
   {
-    glDeleteBuffers(1, &Id);
+    glDeleteBuffers(1, &_id);
   }
 
   void GLVertexBuffer::Bind()
   {
-    glBindBuffer(GL_ARRAY_BUFFER, Id);
+    glBindBuffer(GL_ARRAY_BUFFER, _id);
   }
 
   void GLVertexBuffer::Unbind()
@@ -71,39 +71,39 @@ namespace Krys::OpenGL
 
   void GLVertexBuffer::SetData(const void *data, uint32 size)
   {
-    glNamedBufferSubData(Id, 0, size, data);
+    glNamedBufferSubData(_id, 0, size, data);
   }
 
   const VertexBufferLayout &GLVertexBuffer::GetLayout() const
   {
-    return Layout;
+    return _layout;
   }
 
   void GLVertexBuffer::SetLayout(const VertexBufferLayout &layout)
   {
     KRYS_ASSERT(layout.GetAttributeCount() <= MaxVertexAttributes, "Layout has too many vertex attributes. It has %d, but only %d are supported", layout.GetAttributeCount(), MaxVertexAttributes);
-    Layout = layout;
+    _layout = layout;
   }
 
   GLUniformBuffer::GLUniformBuffer(uint32 size, uint32 binding)
   {
-    glCreateBuffers(1, &Id);
-    glNamedBufferData(Id, size, nullptr, GL_DYNAMIC_DRAW);
-    glBindBufferBase(GL_UNIFORM_BUFFER, binding, Id);
+    glCreateBuffers(1, &_id);
+    glNamedBufferData(_id, size, nullptr, GL_DYNAMIC_DRAW);
+    glBindBufferBase(GL_UNIFORM_BUFFER, binding, _id);
   }
 
   GLUniformBuffer::GLUniformBuffer(uint32 binding, UniformBufferLayout layout)
   {
-    glCreateBuffers(1, &Id);
+    glCreateBuffers(1, &_id);
 
     SetLayout(layout);
-    glNamedBufferData(Id, layout.GetSize(), nullptr, GL_DYNAMIC_DRAW);
-    glBindBufferBase(GL_UNIFORM_BUFFER, binding, Id);
+    glNamedBufferData(_id, layout.GetSize(), nullptr, GL_DYNAMIC_DRAW);
+    glBindBufferBase(GL_UNIFORM_BUFFER, binding, _id);
   }
 
   GLUniformBuffer::~GLUniformBuffer()
   {
-    glDeleteBuffers(1, &Id);
+    glDeleteBuffers(1, &_id);
   }
 
   void GLUniformBuffer::Bind()
@@ -116,35 +116,35 @@ namespace Krys::OpenGL
     auto info = GetAttributeInfo(name);
     KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
     int paddedValue = value;
-    glNamedBufferSubData(Id, info.Offset, info.Size, &paddedValue);
+    glNamedBufferSubData(_id, info.Offset, info.Size, &paddedValue);
   }
 
   void GLUniformBuffer::SetData(const string &name, int value)
   {
     auto info = GetAttributeInfo(name);
     KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
-    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+    glNamedBufferSubData(_id, info.Offset, info.Size, &value);
   }
 
   void GLUniformBuffer::SetData(const string &name, size_t value)
   {
     auto info = GetAttributeInfo(name);
     KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
-    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+    glNamedBufferSubData(_id, info.Offset, info.Size, &value);
   }
 
   void GLUniformBuffer::SetData(const string &name, float value)
   {
     auto info = GetAttributeInfo(name);
     KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
-    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+    glNamedBufferSubData(_id, info.Offset, info.Size, &value);
   }
 
   void GLUniformBuffer::SetData(const string &name, const Vec2 &value)
   {
     auto info = GetAttributeInfo(name);
     KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
-    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+    glNamedBufferSubData(_id, info.Offset, info.Size, &value);
   }
 
   void GLUniformBuffer::SetData(const string &name, const Vec3 &value)
@@ -152,14 +152,14 @@ namespace Krys::OpenGL
     auto info = GetAttributeInfo(name);
     KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
     Vec4 paddedValue = {value, 0.0f};
-    glNamedBufferSubData(Id, info.Offset, info.Size, &paddedValue);
+    glNamedBufferSubData(_id, info.Offset, info.Size, &paddedValue);
   }
 
   void GLUniformBuffer::SetData(const string &name, const Vec4 &value)
   {
     auto info = GetAttributeInfo(name);
     KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
-    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+    glNamedBufferSubData(_id, info.Offset, info.Size, &value);
   }
 
   void GLUniformBuffer::SetData(const string &name, const Mat3 &value)
@@ -171,7 +171,7 @@ namespace Krys::OpenGL
   {
     auto info = GetAttributeInfo(name);
     KRYS_ASSERT(info.Found, "Unable to find element in layout with name %s", name.c_str());
-    glNamedBufferSubData(Id, info.Offset, info.Size, &value);
+    glNamedBufferSubData(_id, info.Offset, info.Size, &value);
   }
 
   GLUniformBuffer::AttributeInfo GLUniformBuffer::GetAttributeInfo(const string &name) const noexcept
@@ -186,7 +186,7 @@ namespace Krys::OpenGL
       uint32 arrayIndex = std::stoi(name.substr(bracketOpenPos + 1, bracketClosePos - bracketOpenPos - 1));
       string remaining = name.substr(bracketClosePos + 1);
 
-      for (const auto &element : Layout)
+      for (const auto &element : _layout)
         if (element.Name == arrayName)
         {
           auto elementSize = element.LayoutSize;
@@ -204,7 +204,7 @@ namespace Krys::OpenGL
       string structName = name.substr(0, dotPos);
       string remaining = name.substr(dotPos + 1);
 
-      for (const auto &element : Layout)
+      for (const auto &element : _layout)
         if (element.Name == structName)
         {
           GLUniformBuffer::AttributeInfo attributeInfo = {element.AlignedOffset, 0};
@@ -213,7 +213,7 @@ namespace Krys::OpenGL
     }
     else
     {
-      for (const auto &element : Layout)
+      for (const auto &element : _layout)
         if (element.Name == name)
           return {element.AlignedOffset, element.LayoutSize, true};
     }
@@ -272,35 +272,35 @@ namespace Krys::OpenGL
 
   const UniformBufferLayout &GLUniformBuffer::GetLayout() const
   {
-    return Layout;
+    return _layout;
   }
 
   void GLUniformBuffer::SetLayout(const UniformBufferLayout &layout)
   {
     KRYS_ASSERT(layout.GetElements().size(), "Uniform buffer has no layout!", 0);
-    Layout = layout;
+    _layout = layout;
   }
 
   GLInstanceArrayBuffer::GLInstanceArrayBuffer(uint32 size)
   {
-    glCreateBuffers(1, &Id);
-    glNamedBufferData(Id, size, nullptr, GL_DYNAMIC_DRAW);
+    glCreateBuffers(1, &_id);
+    glNamedBufferData(_id, size, nullptr, GL_DYNAMIC_DRAW);
   }
 
   GLInstanceArrayBuffer::GLInstanceArrayBuffer(void *data, uint32 size)
   {
-    glCreateBuffers(1, &Id);
-    glNamedBufferData(Id, size, data, GL_DYNAMIC_DRAW);
+    glCreateBuffers(1, &_id);
+    glNamedBufferData(_id, size, data, GL_DYNAMIC_DRAW);
   }
 
   GLInstanceArrayBuffer::~GLInstanceArrayBuffer()
   {
-    glDeleteBuffers(1, &Id);
+    glDeleteBuffers(1, &_id);
   }
 
   void GLInstanceArrayBuffer::Bind()
   {
-    glBindBuffer(GL_ARRAY_BUFFER, Id);
+    glBindBuffer(GL_ARRAY_BUFFER, _id);
   }
 
   void GLInstanceArrayBuffer::Unbind()
@@ -310,16 +310,16 @@ namespace Krys::OpenGL
 
   void GLInstanceArrayBuffer::SetData(const void *data, uint32 size)
   {
-    glNamedBufferSubData(Id, 0, size, data);
+    glNamedBufferSubData(_id, 0, size, data);
   }
 
   const InstanceArrayBufferLayout &GLInstanceArrayBuffer::GetLayout() const
   {
-    return Layout;
+    return _layout;
   }
 
   void GLInstanceArrayBuffer::SetLayout(const InstanceArrayBufferLayout &layout)
   {
-    Layout = layout;
+    _layout = layout;
   }
 }

@@ -10,7 +10,7 @@ namespace Krys::OpenGL
   class GLShader : public Shader
   {
   private:
-    List<uint> Shaders;
+    List<uint> _shaders;
 
   public:
     GLShader();

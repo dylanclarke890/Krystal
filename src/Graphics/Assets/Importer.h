@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core.h"
-#include "Graphics/Assets/Assets.h"
 
 namespace Krys::Assets
 {
@@ -32,16 +31,16 @@ namespace Krys::Assets
   class Importer
   {
   protected:
-    stringview Path;
-    AssetImportResult Result;
+    stringview _path;
+    AssetImportResult _result;
 
   public:
     Importer(const stringview &path) noexcept
-        : Path(path), Result({}) {}
+        : _path(path), _result({}) {}
 
     virtual ~Importer() = default;
     virtual AssetImportResult &Parse() noexcept = 0;
-    const AssetImportResult &GetResult() const noexcept { return Result; }
-    const stringview &GetPath() const noexcept { return Path; }
+    const AssetImportResult &GetResult() const noexcept { return _result; }
+    const stringview &GetPath() const noexcept { return _path; }
   };
 }

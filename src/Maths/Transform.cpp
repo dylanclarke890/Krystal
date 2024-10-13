@@ -7,77 +7,77 @@ namespace Krys::Maths
   constexpr Vec3 DEFAULT_ROTATION = Vec3(0.0f);
 
   Transform::Transform() noexcept
-      : Translation(DEFAULT_TRANSLATION), Scale(DEFAULT_SCALE), EulerRotation(DEFAULT_ROTATION)
+      : _translation(DEFAULT_TRANSLATION), _scale(DEFAULT_SCALE), _eulerRotation(DEFAULT_ROTATION), _matrix(MAT4_I)
   {
   }
 
   Transform::Transform(const Vec3 &translation) noexcept
-      : Translation(translation), Scale(DEFAULT_SCALE), EulerRotation(DEFAULT_ROTATION)
+      : _translation(translation), _scale(DEFAULT_SCALE), _eulerRotation(DEFAULT_ROTATION), _matrix(MAT4_I)
   {
   }
 
   Transform::Transform(const Vec3 &translation, const Vec3 &scale) noexcept
-      : Translation(translation), Scale(scale), EulerRotation(DEFAULT_ROTATION)
+      : _translation(translation), _scale(scale), _eulerRotation(DEFAULT_ROTATION), _matrix(MAT4_I)
   {
   }
 
   Transform::Transform(const Vec3 &translation, const Vec3 &scale, const Vec3 &rotation) noexcept
-      : Translation(translation), Scale(scale), EulerRotation(rotation)
+      : _translation(translation), _scale(scale), _eulerRotation(rotation), _matrix(MAT4_I)
   {
   }
 
   NO_DISCARD const Mat4 &Transform::GetMatrix() noexcept
   {
-    if (Dirty)
+    if (_dirty)
       ComputeMatrix();
 
-    return Matrix;
+    return _matrix;
   }
 
   NO_DISCARD const Vec3 &Transform::GetTranslation() const noexcept
   {
-    return Translation;
+    return _translation;
   }
 
   NO_DISCARD const Vec3 &Transform::GetScale() const noexcept
   {
-    return Scale;
+    return _scale;
   }
   NO_DISCARD const Vec3 &Transform::GetEulerRotation() const noexcept
   {
-    return EulerRotation;
+    return _eulerRotation;
   }
 
   void Transform::SetTranslation(const Vec3 &translation) noexcept
   {
-    Translation = translation;
-    Dirty = true;
+    _translation = translation;
+    _dirty = true;
   }
 
   void Transform::SetScale(const Vec3 &scale) noexcept
   {
-    Scale = scale;
-    Dirty = true;
+    _scale = scale;
+    _dirty = true;
   }
 
   void Transform::SetEulerRotation(const Vec3 &rotation) noexcept
   {
-    EulerRotation = rotation;
-    Dirty = true;
+    _eulerRotation = rotation;
+    _dirty = true;
   }
 
   void Transform::ComputeMatrix() noexcept
   {
-    Mat4 matrix = glm::translate(MAT4_I, Translation);
+    Mat4 matrix = glm::translate(MAT4_I, _translation);
 
-    if (EulerRotation.x)
-      matrix *= glm::rotate(MAT4_I, glm::radians(EulerRotation.x), ROTATE_AXIS_X);
-    if (EulerRotation.y)
-      matrix *= glm::rotate(MAT4_I, glm::radians(EulerRotation.y), ROTATE_AXIS_Y);
-    if (EulerRotation.z)
-      matrix *= glm::rotate(MAT4_I, glm::radians(EulerRotation.z), ROTATE_AXIS_Z);
+    if (_eulerRotation.x)
+      matrix *= glm::rotate(MAT4_I, glm::radians(_eulerRotation.x), ROTATE_AXIS_X);
+    if (_eulerRotation.y)
+      matrix *= glm::rotate(MAT4_I, glm::radians(_eulerRotation.y), ROTATE_AXIS_Y);
+    if (_eulerRotation.z)
+      matrix *= glm::rotate(MAT4_I, glm::radians(_eulerRotation.z), ROTATE_AXIS_Z);
 
-    Matrix = matrix * glm::scale(MAT4_I, Scale);
-    Dirty = false;
+    _matrix = matrix * glm::scale(MAT4_I, _scale);
+    _dirty = false;
   }
 }

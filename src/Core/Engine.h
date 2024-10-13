@@ -12,7 +12,9 @@ namespace Krys
   public:
     Unique<Application> App;
 
-    Engine(Unique<Application> app) : App(std::move(app)) {}
+  public:
+    Engine(Unique<Application> app)
+        : App(std::move(app)) {}
 
     void Run()
     {
@@ -31,8 +33,7 @@ namespace Krys
   template <typename TApplication, typename... Args>
   static Unique<Engine> CreateEngine(Args &&...args)
   {
-    static_assert(std::is_base_of<Application, TApplication>::value,
-                  "TApplication must be derived from Application");
+    static_assert(std::is_base_of_v<Application, TApplication>, "Application must derive from Krys::Application.");
     auto app = CreateUnique<TApplication>(std::forward<Args>(args)...);
     return CreateUnique<Engine>(std::move(app));
   }

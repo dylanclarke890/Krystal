@@ -6,7 +6,7 @@ namespace Krys
   class IndexedRange
   {
   private:
-    const T &Container;
+    const T &_container;
 
   public:
     struct Iterator
@@ -23,9 +23,9 @@ namespace Krys
       auto operator*() const { return std::make_pair(index, *iter); }
     };
 
-    IndexedRange(const T &container) : Container(container) {}
+    IndexedRange(const T &container) : _container(container) {}
 
-    Iterator begin() const { return {0, Container.begin()}; }
-    Iterator end() const { return {Container.size(), Container.end()}; }
+    Iterator begin() const { return {0, _container.begin()}; }
+    Iterator end() const { return {_container.size(), _container.end()}; }
   };
 }

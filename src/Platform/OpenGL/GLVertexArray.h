@@ -12,11 +12,11 @@ namespace Krys::OpenGL
   class GLVertexArray : public VertexArray
   {
   private:
-    uint Id;
-    uint32 AttributeIndex = 0;
-    List<Ref<VertexBuffer>> VertexBuffers;
-    List<Ref<InstanceArrayBuffer>> InstanceArrayBuffers;
-    Ref<IndexBuffer> ZBuffer;
+    uint _id;
+    uint32 _attributeIndex = 0;
+    List<Ref<VertexBuffer>> _vertexBuffers;
+    List<Ref<InstanceArrayBuffer>> _instanceArrayBuffers;
+    Ref<IndexBuffer> _indexBuffer;
 
   public:
     GLVertexArray();

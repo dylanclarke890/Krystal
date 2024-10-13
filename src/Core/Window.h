@@ -14,22 +14,22 @@ namespace Krys
   class Window
   {
   protected:
-    string Name;
-    EventCallbackFn EventCallback;
-    int Width, Height;
-    Ref<GraphicsContext> Context;
+    string _name;
+    EventCallbackFn _eventCallback;
+    int _width, _height;
+    Ref<GraphicsContext> _context;
 
   public:
     Window() = delete;
     Window(const string &name, int width, int height)
-        : Name(name), Width(width), Height(height), Context(nullptr) {}
+        : _name(name), _width(width), _height(height), _context(nullptr) {}
 
     virtual ~Window() = default;
 
-    const string &GetName() const { return Name; }
-    int GetWidth() const { return Width; }
-    int GetHeight() const { return Height; }
-    Ref<GraphicsContext> GetGraphicsContext() const { return Context; }
+    const string &GetName() const { return _name; }
+    int GetWidth() const { return _width; }
+    int GetHeight() const { return _height; }
+    Ref<GraphicsContext> GetGraphicsContext() const { return _context; }
 
     virtual void Show(bool visible = true) = 0;
 
@@ -38,7 +38,7 @@ namespace Krys
 
     void SetEventCallback(EventCallbackFn callback)
     {
-      EventCallback = callback;
+      _eventCallback = callback;
     }
 
     static Ref<Window> Create(const string &name, int width, int height);

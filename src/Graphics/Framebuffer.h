@@ -14,12 +14,13 @@ namespace Krys::Graphics
   class Framebuffer
   {
   protected:
-    uint32 Id;
-    uint32 Width, Height, Samples;
-    List<Ref<Texture2D>> ColorAttachments;
-    Ref<Texture> DepthAttachment;
     inline static int MaxColorAttachments = 0;
     inline static int MaxDrawBuffers = 0;
+
+    uint32 _id;
+    uint32 _width, _height, _samples;
+    List<Ref<Texture2D>> _colorAttachments;
+    Ref<Texture> _depthAttachment;
 
   public:
     virtual ~Framebuffer() = default;
@@ -52,28 +53,28 @@ namespace Krys::Graphics
 
     NO_DISCARD uint32 GetId() const noexcept
     {
-      return Id;
+      return _id;
     }
 
     NO_DISCARD uint32 GetWidth() const noexcept
     {
-      return Width;
+      return _width;
     }
 
     NO_DISCARD uint32 GetHeight() const noexcept
     {
-      return Height;
+      return _height;
     }
 
     NO_DISCARD Ref<Texture2D> GetColorAttachment(uint index = 0)
     {
-      KRYS_ASSERT(index < ColorAttachments.size(), "Index out of bounds", 0);
-      return ColorAttachments[index];
+      KRYS_ASSERT(index < _colorAttachments.size(), "Index out of bounds", 0);
+      return _colorAttachments[index];
     }
 
     NO_DISCARD Ref<Texture> GetDepthAttachment()
     {
-      return DepthAttachment;
+      return _depthAttachment;
     }
 
     static void SetDriverLimits(int maxColorAttachments, int maxDrawBuffers) noexcept
@@ -86,14 +87,14 @@ namespace Krys::Graphics
   class PingPongFramebuffer
   {
   private:
-    Ref<Framebuffer> A, B;
-    std::function<void()> OnBeforeRenderPasses;
-    std::function<void()> OnRenderStep;
-    std::function<void()> OnAfterRenderPasses;
+    Ref<Framebuffer> _a, _b;
+    std::function<void()> _onBeforeRenderPasses;
+    std::function<void()> _onRenderStep;
+    std::function<void()> _onAfterRenderPasses;
 
   public:
     PingPongFramebuffer(Ref<Framebuffer> a, Ref<Framebuffer> b)
-        : A(a), B(b), OnBeforeRenderPasses(nullptr), OnRenderStep(nullptr), OnAfterRenderPasses(nullptr)
+        : _a(a), _b(b), _onBeforeRenderPasses(nullptr), _onRenderStep(nullptr), _onAfterRenderPasses(nullptr)
     {
       KRYS_ASSERT(a->GetWidth() == b->GetWidth() && a->GetHeight() == b->GetHeight(), "Framebuffers must be the same size", 0);
     }
@@ -101,13 +102,13 @@ namespace Krys::Graphics
     Ref<Texture> ExecutePasses(Ref<Texture> initialTexture, uint amount)
     {
       KRYS_ASSERT(initialTexture && amount > 0, "invalid arguments", 0);
-      KRYS_ASSERT(OnRenderStep, "OnRenderStep must be set", 0);
+      KRYS_ASSERT(_onRenderStep, "OnRenderStep must be set", 0);
 
-      if (OnBeforeRenderPasses)
-        OnBeforeRenderPasses();
+      if (_onBeforeRenderPasses)
+        _onBeforeRenderPasses();
 
-      auto current = A;
-      auto other = B;
+      auto current = _a;
+      auto other = _b;
       bool first = true;
       for (uint i = 0; i < amount; i++)
       {
@@ -117,27 +118,27 @@ namespace Krys::Graphics
         else
           other->GetColorAttachment()->Bind();
 
-        OnRenderStep();
+        _onRenderStep();
 
         if (i != amount)
         {
-          if (current == A)
+          if (current == _a)
           {
-            current = B;
-            other = A;
+            current = _b;
+            other = _a;
           }
           else
           {
-            current = A;
-            other = B;
+            current = _a;
+            other = _b;
           }
         }
 
         first = false;
       }
 
-      if (OnAfterRenderPasses)
-        OnAfterRenderPasses();
+      if (_onAfterRenderPasses)
+        _onAfterRenderPasses();
 
       current->Unbind();
       return current->GetColorAttachment();
@@ -146,35 +147,35 @@ namespace Krys::Graphics
     void SetBeforeRenderPassesCallback(std::function<void()> func)
     {
       KRYS_ASSERT(func, "func must not be null", 0);
-      OnBeforeRenderPasses = func;
+      _onBeforeRenderPasses = func;
     }
 
     void SetRenderStepCallback(std::function<void()> func)
     {
       KRYS_ASSERT(func, "func must not be null", 0);
-      OnRenderStep = func;
+      _onRenderStep = func;
     }
 
     void SetAfterRenderPassesCallback(std::function<void()> func)
     {
       KRYS_ASSERT(func, "func must not be null", 0);
-      OnAfterRenderPasses = func;
+      _onAfterRenderPasses = func;
     }
 
     NO_DISCARD bool IsComplete() noexcept
     {
-      KRYS_ASSERT(A && B, "A or B framebuffer is null", 0);
-      return A->IsComplete() && B->IsComplete();
+      KRYS_ASSERT(_a && _b, "A or B framebuffer is null", 0);
+      return _a->IsComplete() && _b->IsComplete();
     }
 
     NO_DISCARD uint32 GetWidth() const noexcept
     {
-      return A->GetWidth();
+      return _a->GetWidth();
     }
 
     NO_DISCARD uint32 GetHeight() const noexcept
     {
-      return A->GetHeight();
+      return _a->GetHeight();
     }
   };
 }
