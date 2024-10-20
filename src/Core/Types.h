@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Misc/CompilerDetection.h"
+
+#include <cstddef>
 #include <memory>
 #include <optional>
 #include <stdint.h>
@@ -7,26 +10,45 @@
 #include <string_view>
 #include <unordered_map>
 #include <vector>
-#include <cstddef>
+
+#if defined(KRYS_COMPILER_VISUAL_STUDIO)
+  #include <emmintrin.h>
+  #include <xmmintrin.h>
+#elif defined(KRYS_COMPILER_CLANG) || defined(KRYS_COMPILER_GCC)
+  #include <x86intrin.h>
+#endif
 
 namespace Krys
 {
-  typedef std::byte byte;
   typedef int8_t int8;
+  typedef int_fast8_t fast_int8;
   typedef int16_t int16;
+  typedef int_fast16_t fast_int16;
   typedef int32_t int32;
+  typedef int_fast32_t fast_int32;
   typedef int64_t int64;
-
-  typedef float float32;
-  typedef double float64;
-
-  typedef unsigned char uchar;
-  typedef unsigned short ushort;
-  typedef unsigned int uint;
+  typedef int_fast64_t fast_int64;
   typedef uint8_t uint8;
   typedef uint16_t uint16;
   typedef uint32_t uint32;
   typedef uint64_t uint64;
+  typedef uint_fast8_t fast_uint8;
+  typedef uint_fast16_t fast_uint16;
+  typedef uint_fast32_t fast_uint32;
+  typedef uint_fast64_t fast_uint64;
+
+  typedef unsigned char uchar;
+  typedef unsigned short ushort;
+  typedef unsigned int uint;
+  typedef unsigned long ulong;
+
+  typedef std::byte byte;
+  typedef float float32;
+  typedef double float64;
+
+  typedef __m128 simd_float;
+  typedef __m128i simd_int;
+  typedef __m128d simd_double;
 
   typedef std::string string;
   typedef std::string_view stringview;
