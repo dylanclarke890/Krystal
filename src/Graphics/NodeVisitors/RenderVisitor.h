@@ -8,10 +8,10 @@ namespace Krys::Graphics
   class RenderVisitor : public NodeVisitor
   {
   public:
-    void Visit(const Node &node) override {}
-    void Visit(const GeometryNode &node) override
+    void Visit(const Node &node) noexcept override {}
+    void Visit(const GeometryNode &node) noexcept override
     {
-      _renderer->Submit(node);
+      _context.Renderer->Submit(node);
     }
   };
 }

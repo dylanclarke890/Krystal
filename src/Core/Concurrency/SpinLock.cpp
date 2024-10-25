@@ -1,12 +1,11 @@
 #include "Core/Concurrency/SpinLock.h"
 
-#include <thread>
 #include "Types.h"
+#include <thread>
 
 namespace Krys::Concurrency
 {
-  SpinLock::SpinLock() noexcept
-      : _stateFlag()
+  SpinLock::SpinLock() noexcept : _stateFlag()
   {
   }
 

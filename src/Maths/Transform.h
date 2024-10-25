@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Types.h"
 #include "Maths/Vector.h"
+#include "Types.h"
 
 namespace Krys::Maths
 {

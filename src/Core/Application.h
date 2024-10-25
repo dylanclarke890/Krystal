@@ -1,14 +1,15 @@
 #pragma once
 
-#include "Window.h"
-#include "Input/Input.h"
-#include "Events/Events.h"
 #include "Events/ApplicationEvents.h"
-#include "Events/MouseEvents.h"
+#include "Events/Events.h"
 #include "Events/KeyEvents.h"
+#include "Events/MouseEvents.h"
 #include "Graphics/GraphicsContext.h"
+#include "Graphics/NodeVisitors/NodeVisitorFactory.h"
 #include "Graphics/Renderer.h"
 #include "Graphics/Scene/SceneManager.h"
+#include "Input/Input.h"
+#include "Window.h"
 
 namespace Krys
 {
@@ -21,6 +22,7 @@ namespace Krys
     Ref<GraphicsContext> _context;
     Ref<Renderer> _renderer;
     SceneManager _sceneManager;
+    NodeVisitorFactory _nodeVisitorFactory;
 
   private:
     float _targetFrameTimeMs;

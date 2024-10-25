@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Graphics/Textures/TextureCubemap.h"
-#include "OpenGL/Textures/Texture.h"
 #include "Maths/Vector.h"
+#include "OpenGL/Textures/Texture.h"
 
 #include <array>
 #include <string>

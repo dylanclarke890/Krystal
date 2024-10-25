@@ -1,7 +1,7 @@
 #include <stack>
 
-#include "Maths/Vector.h"
 #include "Maths/Rotate.h"
+#include "Maths/Vector.h"
 
 namespace Krys::Maths
 {
@@ -12,7 +12,9 @@ namespace Krys::Maths
     std::stack<Mat4> _matrices;
 
   public:
-    MatrixStack() : _currentMatrix(1.0f) {}
+    MatrixStack() : _currentMatrix(1.0f)
+    {
+    }
 
     const Mat4 &Top() const noexcept
     {

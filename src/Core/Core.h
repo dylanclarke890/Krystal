@@ -30,7 +30,8 @@
 // Resolve the best macro for a function signature, based on the compiler being used.
 // Note: only gets resolved during preprocessing so your code editor may highlight the wrong one (i.e the 'else' branch)
 // but should still work.
-#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
+#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600))         \
+  || defined(__ghs__)
   #define KRYS_FUNC_SIG __PRETTY_FUNCTION__
 #elif defined(__DMC__) && (__DMC__ >= 0x810)
   #define KRYS_FUNC_SIG __PRETTY_FUNCTION__
@@ -40,9 +41,9 @@
   #define KRYS_FUNC_SIG __FUNCTION__
 #elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
   #define KRYS_FUNC_SIG __FUNC__
-#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199'901)
   #define KRYS_FUNC_SIG __func__
-#elif defined(__cplusplus) && (__cplusplus >= 201103)
+#elif defined(__cplusplus) && (__cplusplus >= 201'103)
   #define KRYS_FUNC_SIG __func__
 #else
   #error "KRYS_FUNC_SIG unknown!"
@@ -70,14 +71,14 @@
 
 // -------- ASSERTS ---------
 #ifdef KRYS_ENABLE_ASSERTS
-  #define KRYS_ASSERT(condition, format, ...)                                                                                                        \
-    do                                                                                                                                               \
-    {                                                                                                                                                \
-      if (!(condition))                                                                                                                              \
-      {                                                                                                                                              \
-        KRYS_ERROR(format VA_ARGS(__VA_ARGS__));                                                                                                     \
-        KRYS_DEBUG_BREAK();                                                                                                                          \
-      }                                                                                                                                              \
+  #define KRYS_ASSERT(condition, format, ...)                                                                          \
+    do                                                                                                                 \
+    {                                                                                                                  \
+      if (!(condition))                                                                                                \
+      {                                                                                                                \
+        KRYS_ERROR(format VA_ARGS(__VA_ARGS__));                                                                       \
+        KRYS_DEBUG_BREAK();                                                                                            \
+      }                                                                                                                \
     } while (false)
 #else
   #define KRYS_ASSERT(condition, format, ...)
@@ -87,10 +88,14 @@
 // ------- MISC/UTILS -------
 #define VA_ARGS(...) , ##__VA_ARGS__
 #define BIT(x) (1 << x)
-#define Kilobytes(value) ((value) * 1024)
-#define Megabytes(value) (Kilobytes(value) * 1024)
-#define Gigabytes(value) (Megabytes(value) * 1024)
-#define KRYS_BIND_EVENT_FN(fn) [this](auto &&...args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+#define Kilobytes(value) ((value) * 1'024)
+#define Megabytes(value) (Kilobytes(value) * 1'024)
+#define Gigabytes(value) (Megabytes(value) * 1'024)
+#define KRYS_BIND_EVENT_FN(fn)                                                                                         \
+  [this](auto &&...args) -> decltype(auto)                                                                             \
+  {                                                                                                                    \
+    return this->fn(std::forward<decltype(args)>(args)...);                                                            \
+  }
 
 #ifdef __INTELLISENSE__
   // Intellisense loses it's mind if we use the latest c++ features so hide them from it for now.
@@ -108,9 +113,11 @@
   #define KRYS_DISABLE_WARNING_PUSH() _Pragma("GCC diagnostic push")
   #define KRYS_DISABLE_WARNING_POP() _Pragma("GCC diagnostic pop")
   #if defined(__clang__)
-    #define KRYS_DISABLE_WARNING(msvcWarningCode, gccWarningName) _Pragma("clang diagnostic ignored \"" gccWarningName "\"")
+    #define KRYS_DISABLE_WARNING(msvcWarningCode, gccWarningName)                                                      \
+      _Pragma("clang diagnostic ignored \"" gccWarningName "\"")
   #else
-    #define KRYS_DISABLE_WARNING(msvcWarningCode, gccWarningName) _Pragma("GCC diagnostic ignored \"" gccWarningName "\"")
+    #define KRYS_DISABLE_WARNING(msvcWarningCode, gccWarningName)                                                      \
+      _Pragma("GCC diagnostic ignored \"" gccWarningName "\"")
   #endif
 #else
   #define KRYS_DISABLE_WARNING_PUSH()

@@ -8,8 +8,7 @@ namespace Krys::OpenGL
     glNamedBufferData(_id, count * sizeof(uint32), 0, GL_STATIC_DRAW);
   }
 
-  GLIndexBuffer::GLIndexBuffer(const uint32 *indices, uint32 count)
-      : _id(0), _count(count)
+  GLIndexBuffer::GLIndexBuffer(const uint32 *indices, uint32 count) : _id(0), _count(count)
   {
     glCreateBuffers(1, &_id);
     glNamedBufferData(_id, count * sizeof(uint32), indices, GL_STATIC_DRAW);
@@ -40,15 +39,13 @@ namespace Krys::OpenGL
     return _count;
   }
 
-  GLVertexBuffer::GLVertexBuffer(uint32 size)
-      : _id(0)
+  GLVertexBuffer::GLVertexBuffer(uint32 size) : _id(0)
   {
     glCreateBuffers(1, &_id);
     glNamedBufferData(_id, size, nullptr, GL_DYNAMIC_DRAW);
   }
 
-  GLVertexBuffer::GLVertexBuffer(float *vertices, uint32 size)
-      : _id(0)
+  GLVertexBuffer::GLVertexBuffer(float *vertices, uint32 size) : _id(0)
   {
     glCreateBuffers(1, &_id);
     glNamedBufferData(_id, size, vertices, GL_STATIC_DRAW);
@@ -81,7 +78,9 @@ namespace Krys::OpenGL
 
   void GLVertexBuffer::SetLayout(const VertexBufferLayout &layout)
   {
-    KRYS_ASSERT(layout.GetAttributeCount() <= MaxVertexAttributes, "Layout has too many vertex attributes. It has %d, but only %d are supported", layout.GetAttributeCount(), MaxVertexAttributes);
+    KRYS_ASSERT(layout.GetAttributeCount() <= MaxVertexAttributes,
+                "Layout has too many vertex attributes. It has %d, but only %d are supported",
+                layout.GetAttributeCount(), MaxVertexAttributes);
     _layout = layout;
   }
 
@@ -221,7 +220,8 @@ namespace Krys::OpenGL
     return {};
   }
 
-  GLUniformBuffer::AttributeInfo GLUniformBuffer::GetAttributeInfo(const string &name, UniformStructLayout layout, AttributeInfo info) const noexcept
+  GLUniformBuffer::AttributeInfo GLUniformBuffer::GetAttributeInfo(const string &name, UniformStructLayout layout,
+                                                                   AttributeInfo info) const noexcept
   {
     size_t bracketOpenPos = name.find("[");
     size_t dotPos = name.find(".");

@@ -17,8 +17,10 @@ namespace Krys::OpenGL
 
     KRYS_ASSERT(data[0], "Failed to load first face!", 0);
     KRYS_ASSERT(channels == 3 || channels == 4, "Unsupported number of color channels.", 0);
-    KRYS_ASSERT(width <= MaxTextureSize, "Texture width exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, width);
-    KRYS_ASSERT(height <= MaxTextureSize, "Texture height exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, height);
+    KRYS_ASSERT(width <= MaxTextureSize, "Texture width exceeds Max Texture Size (Max %d, %d received).",
+                MaxTextureSize, width);
+    KRYS_ASSERT(height <= MaxTextureSize, "Texture height exceeds Max Texture Size (Max %d, %d received).",
+                MaxTextureSize, height);
 
     if (_internalFormat == TextureInternalFormat::Auto)
     {
@@ -37,7 +39,8 @@ namespace Krys::OpenGL
     {
       int fWidth, fHeight, fChannels;
       data = stbi_load(faces[i].c_str(), &fWidth, &fHeight, &fChannels, 0);
-      KRYS_ASSERT(fWidth == width && fHeight == height && fChannels == channels, "Face %d does not have matching dimensions or channels", i);
+      KRYS_ASSERT(fWidth == width && fHeight == height && fChannels == channels,
+                  "Face %d does not have matching dimensions or channels", i);
 
       glTextureSubImage3D(_id, 0, 0, 0, i, width, height, 1, ToGLDataFormat(_internalFormat), GL_UNSIGNED_BYTE, data);
       stbi_image_free(data);
@@ -53,8 +56,10 @@ namespace Krys::OpenGL
 
   GLTextureCubemap::GLTextureCubemap(uint width, uint height, TextureInternalFormat internalFormat)
   {
-    KRYS_ASSERT(static_cast<int>(width) <= MaxTextureSize, "Texture width exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, width);
-    KRYS_ASSERT(static_cast<int>(height) <= MaxTextureSize, "Texture height exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, height);
+    KRYS_ASSERT(static_cast<int>(width) <= MaxTextureSize,
+                "Texture width exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, width);
+    KRYS_ASSERT(static_cast<int>(height) <= MaxTextureSize,
+                "Texture height exceeds Max Texture Size (Max %d, %d received).", MaxTextureSize, height);
 
     _internalFormat = internalFormat;
 

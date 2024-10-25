@@ -1,41 +1,37 @@
 #include "Graphics/Textures/SubTexture2D.h"
 
-#include "OpenGL/GLGraphicsContext.h"
 #include "OpenGL/GLBuffer.h"
-#include "OpenGL/GLVertexArray.h"
+#include "OpenGL/GLFramebuffer.h"
+#include "OpenGL/GLGraphicsContext.h"
 #include "OpenGL/GLShader.h"
+#include "OpenGL/GLVertexArray.h"
 #include "OpenGL/Textures/GLTexture2D.h"
 #include "OpenGL/Textures/GLTextureCubemap.h"
-#include "OpenGL/GLFramebuffer.h"
 
 namespace Krys::OpenGL
 {
 #ifdef KRYS_ENABLE_LOGGING
-  constexpr uint GL_ERROR_CODE_SHADER_RECOMPILED = 131218;
+  constexpr uint GL_ERROR_CODE_SHADER_RECOMPILED = 131'218;
 
-  void OpenGLMessageCallback(uint source, uint type, uint id, uint severity, int length,
-                             const char *message, const void *userParam)
+  void OpenGLMessageCallback(uint source, uint type, uint id, uint severity, int length, const char *message,
+                             const void *userParam)
   {
     switch (severity)
     {
-    case GL_DEBUG_SEVERITY_HIGH:
-      KRYS_CRITICAL(message);
-      KRYS_ASSERT(false, "OpenGL Error (HIGH).", 0);
-      break;
-    case GL_DEBUG_SEVERITY_MEDIUM:
-      KRYS_ERROR(message);
-      KRYS_ASSERT(id == GL_ERROR_CODE_SHADER_RECOMPILED, "OpenGL Error (MED).", 0);
-      break;
-    case GL_DEBUG_SEVERITY_LOW:
-      KRYS_WARN(message);
-      KRYS_ASSERT(false, "OpenGL Error (LOW).", 0);
-      break;
-    case GL_DEBUG_SEVERITY_NOTIFICATION:
-      KRYS_INFO(message);
-      break;
-    default:
-      KRYS_ASSERT(false, "Unknown severity level!", 0);
-      break;
+      case GL_DEBUG_SEVERITY_HIGH:
+        KRYS_CRITICAL(message);
+        KRYS_ASSERT(false, "OpenGL Error (HIGH).", 0);
+        break;
+      case GL_DEBUG_SEVERITY_MEDIUM:
+        KRYS_ERROR(message);
+        KRYS_ASSERT(id == GL_ERROR_CODE_SHADER_RECOMPILED, "OpenGL Error (MED).", 0);
+        break;
+      case GL_DEBUG_SEVERITY_LOW:
+        KRYS_WARN(message);
+        KRYS_ASSERT(false, "OpenGL Error (LOW).", 0);
+        break;
+      case GL_DEBUG_SEVERITY_NOTIFICATION: KRYS_INFO(message); break;
+      default:                             KRYS_ASSERT(false, "Unknown severity level!", 0); break;
     }
   }
 #endif
@@ -52,39 +48,25 @@ namespace Krys::OpenGL
   {
     switch (factor)
     {
-    case BlendFactor::One:
-      return GL_ONE;
-    case BlendFactor::Zero:
-      return GL_ZERO;
-    case BlendFactor::SourceColor:
-      return GL_SRC_COLOR;
-    case BlendFactor::OneMinusSourceColor:
-      return GL_ONE_MINUS_SRC_COLOR;
-    case BlendFactor::DestinationColor:
-      return GL_DST_COLOR;
-    case BlendFactor::OneMinusDestinationColor:
-      return GL_ONE_MINUS_DST_COLOR;
-    case BlendFactor::SourceAlpha:
-      return GL_SRC_ALPHA;
-    case BlendFactor::OneMinusSourceAlpha:
-      return GL_ONE_MINUS_SRC_ALPHA;
-    case BlendFactor::DestinationAlpha:
-      return GL_DST_ALPHA;
-    case BlendFactor::OneMinusDestinationAlpha:
-      return GL_ONE_MINUS_DST_ALPHA;
-    case BlendFactor::ConstantColor:
-      return GL_CONSTANT_COLOR;
-    case BlendFactor::OneMinusConstantColor:
-      return GL_ONE_MINUS_CONSTANT_COLOR;
-    case BlendFactor::ConstantAlpha:
-      return GL_CONSTANT_ALPHA;
-    case BlendFactor::OneMinusConstantAlpha:
-      return GL_ONE_MINUS_CONSTANT_ALPHA;
-    default:
-    {
-      KRYS_ASSERT(false, "Unknown blend factor!", 0);
-      return 0;
-    }
+      case BlendFactor::One:                      return GL_ONE;
+      case BlendFactor::Zero:                     return GL_ZERO;
+      case BlendFactor::SourceColor:              return GL_SRC_COLOR;
+      case BlendFactor::OneMinusSourceColor:      return GL_ONE_MINUS_SRC_COLOR;
+      case BlendFactor::DestinationColor:         return GL_DST_COLOR;
+      case BlendFactor::OneMinusDestinationColor: return GL_ONE_MINUS_DST_COLOR;
+      case BlendFactor::SourceAlpha:              return GL_SRC_ALPHA;
+      case BlendFactor::OneMinusSourceAlpha:      return GL_ONE_MINUS_SRC_ALPHA;
+      case BlendFactor::DestinationAlpha:         return GL_DST_ALPHA;
+      case BlendFactor::OneMinusDestinationAlpha: return GL_ONE_MINUS_DST_ALPHA;
+      case BlendFactor::ConstantColor:            return GL_CONSTANT_COLOR;
+      case BlendFactor::OneMinusConstantColor:    return GL_ONE_MINUS_CONSTANT_COLOR;
+      case BlendFactor::ConstantAlpha:            return GL_CONSTANT_ALPHA;
+      case BlendFactor::OneMinusConstantAlpha:    return GL_ONE_MINUS_CONSTANT_ALPHA;
+      default:
+      {
+        KRYS_ASSERT(false, "Unknown blend factor!", 0);
+        return 0;
+      }
     }
   };
 
@@ -92,31 +74,24 @@ namespace Krys::OpenGL
   {
     switch (mode)
     {
-    case PrimitiveType::Points:
-      return GL_POINTS;
-    case PrimitiveType::Lines:
-      return GL_LINE;
-    case PrimitiveType::LineStrip:
-      return GL_LINE_STRIP;
-    case PrimitiveType::LineLoop:
-      return GL_LINE_LOOP;
-    case PrimitiveType::Triangles:
-      return GL_TRIANGLES;
-    case PrimitiveType::TriangleFan:
-      return GL_TRIANGLE_FAN;
-    case PrimitiveType::TriangleStrip:
-      return GL_TRIANGLE_STRIP;
-    default:
-    {
-      KRYS_ASSERT(false, "Unknown draw mode!", 0);
-      return 0;
-    }
+      case PrimitiveType::Points:        return GL_POINTS;
+      case PrimitiveType::Lines:         return GL_LINE;
+      case PrimitiveType::LineStrip:     return GL_LINE_STRIP;
+      case PrimitiveType::LineLoop:      return GL_LINE_LOOP;
+      case PrimitiveType::Triangles:     return GL_TRIANGLES;
+      case PrimitiveType::TriangleFan:   return GL_TRIANGLE_FAN;
+      case PrimitiveType::TriangleStrip: return GL_TRIANGLE_STRIP;
+      default:
+      {
+        KRYS_ASSERT(false, "Unknown draw mode!", 0);
+        return 0;
+      }
     }
   };
 
   GLGraphicsContext::GLGraphicsContext(HDC deviceContext, HWND window, HINSTANCE instance)
-      : _window(window), _instance(instance), _deviceContext(deviceContext), _context(0), _capabilities([this]()
-                                                                                                        { return this->LoadGraphicsCapabilities(); })
+      : _window(window), _instance(instance), _deviceContext(deviceContext), _context(0),
+        _capabilities([this]() { return this->LoadGraphicsCapabilities(); })
   {
   }
 
@@ -129,29 +104,31 @@ namespace Krys::OpenGL
   {
     // desired pixel format attributes
     const int32 pixelFormatAttribList[] = {
-        WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,       // PFD_DRAW_TO_WINDOW
-        WGL_SUPPORT_OPENGL_ARB, GL_TRUE,       // PFD_SUPPORT_OPENGL
-        WGL_DOUBLE_BUFFER_ARB, GL_TRUE,        // PFD_DOUBLEBUFFER
-        WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB, // PFD_TYPE_RGBA
-        WGL_COLOR_BITS_ARB, 32,                // 32 color bits
-        WGL_ALPHA_BITS_ARB, 8,                 // 8 alpha bits
-        WGL_DEPTH_BITS_ARB, 24,                // 24 depth bits
-        // require that the driver supports the pixel format
-        WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
-        // MSAA16
-        WGL_SAMPLE_BUFFERS_ARB, GL_TRUE,
-        WGL_SAMPLES_ARB, 4,
-        0 // end
+      WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,       // PFD_DRAW_TO_WINDOW
+      WGL_SUPPORT_OPENGL_ARB, GL_TRUE,       // PFD_SUPPORT_OPENGL
+      WGL_DOUBLE_BUFFER_ARB, GL_TRUE,        // PFD_DOUBLEBUFFER
+      WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB, // PFD_TYPE_RGBA
+      WGL_COLOR_BITS_ARB, 32,                // 32 color bits
+      WGL_ALPHA_BITS_ARB, 8,                 // 8 alpha bits
+      WGL_DEPTH_BITS_ARB, 24,                // 24 depth bits
+      // require that the driver supports the pixel format
+      WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
+      // MSAA16
+      WGL_SAMPLE_BUFFERS_ARB, GL_TRUE, WGL_SAMPLES_ARB, 4,
+      0 // end
     };
     int32 pixelFormatId;
     uint pixelFormatCount;
 
-    BOOL chooseFormatSuccess = wglChoosePixelFormatARB(_deviceContext, pixelFormatAttribList, 0, 1, &pixelFormatId, &pixelFormatCount);
-    KRYS_ASSERT(chooseFormatSuccess && pixelFormatId && pixelFormatCount, "Cannot find an appropriate pixel format.", 0);
+    BOOL chooseFormatSuccess =
+      wglChoosePixelFormatARB(_deviceContext, pixelFormatAttribList, 0, 1, &pixelFormatId, &pixelFormatCount);
+    KRYS_ASSERT(chooseFormatSuccess && pixelFormatId && pixelFormatCount, "Cannot find an appropriate pixel format.",
+                0);
 
     // set actual pixel format to device context
-    PIXELFORMATDESCRIPTOR pfd{};
-    BOOL describeFormatSuccess = DescribePixelFormat(_deviceContext, pixelFormatId, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+    PIXELFORMATDESCRIPTOR pfd {};
+    BOOL describeFormatSuccess =
+      DescribePixelFormat(_deviceContext, pixelFormatId, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
     KRYS_ASSERT(describeFormatSuccess, "Unable to describe pixel format.", 0);
 
     BOOL setPixelFormatSuccess = SetPixelFormat(_deviceContext, pixelFormatId, &pfd);
@@ -161,9 +138,8 @@ namespace Krys::OpenGL
     const uint32 OPENGL_MINOR = 3;
 
     int32 contextAttributes[] = {
-        WGL_CONTEXT_MAJOR_VERSION_ARB, OPENGL_MAJOR,
-        WGL_CONTEXT_MINOR_VERSION_ARB, OPENGL_MINOR,
-        0 // end
+      WGL_CONTEXT_MAJOR_VERSION_ARB, OPENGL_MAJOR, WGL_CONTEXT_MINOR_VERSION_ARB, OPENGL_MINOR,
+      0 // end
     };
     _context = wglCreateContextAttribsARB(_deviceContext, 0, contextAttributes);
 
@@ -203,7 +179,7 @@ namespace Krys::OpenGL
 
   GraphicsCapabilities GLGraphicsContext::LoadGraphicsCapabilities() noexcept
   {
-    GraphicsCapabilities capabilities{};
+    GraphicsCapabilities capabilities {};
 
     glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, &capabilities.MaxInputComponents);
     glGetIntegerv(GL_MAX_VERTEX_OUTPUT_COMPONENTS, &capabilities.MaxOutputComponents);
@@ -303,15 +279,9 @@ namespace Krys::OpenGL
   {
     switch (mode)
     {
-    case WindingOrder::Clockwise:
-      glFrontFace(GL_CW);
-      break;
-    case WindingOrder::CounterClockwise:
-      glFrontFace(GL_CCW);
-      break;
-    default:
-      KRYS_ASSERT(false, "Invalid CullMode!", 0);
-      break;
+      case WindingOrder::Clockwise:        glFrontFace(GL_CW); break;
+      case WindingOrder::CounterClockwise: glFrontFace(GL_CCW); break;
+      default:                             KRYS_ASSERT(false, "Invalid CullMode!", 0); break;
     }
   }
 
@@ -346,21 +316,13 @@ namespace Krys::OpenGL
     {
       switch (func)
       {
-      case DepthTestFunc::Never:
-        return GL_NEVER;
-      case DepthTestFunc::Always:
-        return GL_ALWAYS;
-      case DepthTestFunc::Less:
-        return GL_LESS;
-      case DepthTestFunc::EqualOrLess:
-        return GL_LEQUAL;
-      case DepthTestFunc::EqualOrGreater:
-        return GL_GEQUAL;
-      case DepthTestFunc::Greater:
-        return GL_GREATER;
-      default:
-        KRYS_ASSERT(false, "Invalid depth func!", 0);
-        return 0;
+        case DepthTestFunc::Never:          return GL_NEVER;
+        case DepthTestFunc::Always:         return GL_ALWAYS;
+        case DepthTestFunc::Less:           return GL_LESS;
+        case DepthTestFunc::EqualOrLess:    return GL_LEQUAL;
+        case DepthTestFunc::EqualOrGreater: return GL_GEQUAL;
+        case DepthTestFunc::Greater:        return GL_GREATER;
+        default:                            KRYS_ASSERT(false, "Invalid depth func!", 0); return 0;
       }
     }();
 
@@ -373,56 +335,37 @@ namespace Krys::OpenGL
     {
       switch (func)
       {
-      case StencilTestFunc::Always:
-        return GL_ALWAYS;
-      case StencilTestFunc::Never:
-        return GL_NEVER;
-      case StencilTestFunc::Less:
-        return GL_LESS;
-      case StencilTestFunc::EqualOrLess:
-        return GL_LEQUAL;
-      case StencilTestFunc::Equal:
-        return GL_EQUAL;
-      case StencilTestFunc::NotEqual:
-        return GL_NOTEQUAL;
-      case StencilTestFunc::EqualOrGreater:
-        return GL_GEQUAL;
-      case StencilTestFunc::Greater:
-        return GL_GREATER;
-      default:
-        KRYS_ASSERT(false, "Invalid stencil func!", 0);
-        return 0;
+        case StencilTestFunc::Always:         return GL_ALWAYS;
+        case StencilTestFunc::Never:          return GL_NEVER;
+        case StencilTestFunc::Less:           return GL_LESS;
+        case StencilTestFunc::EqualOrLess:    return GL_LEQUAL;
+        case StencilTestFunc::Equal:          return GL_EQUAL;
+        case StencilTestFunc::NotEqual:       return GL_NOTEQUAL;
+        case StencilTestFunc::EqualOrGreater: return GL_GEQUAL;
+        case StencilTestFunc::Greater:        return GL_GREATER;
+        default:                              KRYS_ASSERT(false, "Invalid stencil func!", 0); return 0;
       }
     }();
 
     glStencilFunc(glFunc, ref, mask);
   }
 
-  void GLGraphicsContext::SetStencilOperation(StencilOperation fail, StencilOperation zFail, StencilOperation zPass) noexcept
+  void GLGraphicsContext::SetStencilOperation(StencilOperation fail, StencilOperation zFail,
+                                              StencilOperation zPass) noexcept
   {
     auto ToOpenGLStencilOp = [](StencilOperation op) -> int
     {
       switch (op)
       {
-      case StencilOperation::Keep:
-        return GL_KEEP;
-      case StencilOperation::Zero:
-        return GL_ZERO;
-      case StencilOperation::Replace:
-        return GL_REPLACE;
-      case StencilOperation::Decrement:
-        return GL_DECR;
-      case StencilOperation::Increment:
-        return GL_INCR;
-      case StencilOperation::DecrementWithWrap:
-        return GL_DECR_WRAP;
-      case StencilOperation::IncrementWithWrap:
-        return GL_INCR_WRAP;
-      case StencilOperation::Invert:
-        return GL_INVERT;
-      default:
-        KRYS_ASSERT(false, "Invalid stencil op!", 0);
-        return 0;
+        case StencilOperation::Keep:              return GL_KEEP;
+        case StencilOperation::Zero:              return GL_ZERO;
+        case StencilOperation::Replace:           return GL_REPLACE;
+        case StencilOperation::Decrement:         return GL_DECR;
+        case StencilOperation::Increment:         return GL_INCR;
+        case StencilOperation::DecrementWithWrap: return GL_DECR_WRAP;
+        case StencilOperation::IncrementWithWrap: return GL_INCR_WRAP;
+        case StencilOperation::Invert:            return GL_INVERT;
+        default:                                  KRYS_ASSERT(false, "Invalid stencil op!", 0); return 0;
       }
     };
 
@@ -454,9 +397,11 @@ namespace Krys::OpenGL
     glBlendFunc(ToGLBlendFactor(srcFactor), ToGLBlendFactor(dstFactor));
   }
 
-  void GLGraphicsContext::SetBlendFunc(BlendFactor rgbSrcFactor, BlendFactor rgbDstFactor, BlendFactor alphaSrcFactor, BlendFactor alphaDstFactor) noexcept
+  void GLGraphicsContext::SetBlendFunc(BlendFactor rgbSrcFactor, BlendFactor rgbDstFactor, BlendFactor alphaSrcFactor,
+                                       BlendFactor alphaDstFactor) noexcept
   {
-    glBlendFuncSeparate(ToGLBlendFactor(rgbSrcFactor), ToGLBlendFactor(rgbDstFactor), ToGLBlendFactor(alphaSrcFactor), ToGLBlendFactor(alphaDstFactor));
+    glBlendFuncSeparate(ToGLBlendFactor(rgbSrcFactor), ToGLBlendFactor(rgbDstFactor), ToGLBlendFactor(alphaSrcFactor),
+                        ToGLBlendFactor(alphaDstFactor));
   }
 
   void GLGraphicsContext::SetBlendEquation(BlendEquation equation) noexcept
@@ -554,7 +499,8 @@ namespace Krys::OpenGL
     return shader;
   }
 
-  Ref<Shader> GLGraphicsContext::CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath, const stringview &geoFilepath)
+  Ref<Shader> GLGraphicsContext::CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath,
+                                              const stringview &geoFilepath)
   {
     auto shader = CreateRef<GLShader>();
     shader->Load(vertexFilepath, fragmentFilepath);
@@ -569,7 +515,8 @@ namespace Krys::OpenGL
     return CreateRef<GLTexture2D>(filepath);
   }
 
-  Ref<SubTexture2D> GLGraphicsContext::CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept
+  Ref<SubTexture2D> GLGraphicsContext::CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize,
+                                                          Vec2 &spriteSize) noexcept
   {
     return CreateRef<SubTexture2D>(texture, coords, cellSize, spriteSize);
   }
@@ -584,7 +531,8 @@ namespace Krys::OpenGL
     return CreateRef<GLTextureCubemap>(paths);
   }
 
-  Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(uint width, uint height, TextureInternalFormat format) noexcept
+  Ref<TextureCubemap> GLGraphicsContext::CreateTextureCubemap(uint width, uint height,
+                                                              TextureInternalFormat format) noexcept
   {
     return CreateRef<GLTextureCubemap>(width, height, format);
   }
@@ -596,7 +544,8 @@ namespace Krys::OpenGL
 
   void GLGraphicsContext::DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, PrimitiveType mode) noexcept
   {
-    glDrawArraysInstanced(ToGLDrawMode(mode), 0, static_cast<GLsizei>(vertexCount), static_cast<GLsizei>(instanceCount));
+    glDrawArraysInstanced(ToGLDrawMode(mode), 0, static_cast<GLsizei>(vertexCount),
+                          static_cast<GLsizei>(instanceCount));
   }
 
   void GLGraphicsContext::DrawIndices(size_t count, PrimitiveType mode) noexcept
@@ -606,6 +555,7 @@ namespace Krys::OpenGL
 
   void GLGraphicsContext::DrawIndicesInstanced(size_t instanceCount, size_t indexCount, PrimitiveType mode) noexcept
   {
-    glDrawElementsInstanced(ToGLDrawMode(mode), static_cast<GLsizei>(indexCount), GL_UNSIGNED_INT, nullptr, static_cast<GLsizei>(instanceCount));
+    glDrawElementsInstanced(ToGLDrawMode(mode), static_cast<GLsizei>(indexCount), GL_UNSIGNED_INT, nullptr,
+                            static_cast<GLsizei>(instanceCount));
   }
 }

@@ -16,7 +16,9 @@ namespace Krys
     std::function<T()> _func;
 
   public:
-    Lazy(std::function<T()> func) : _func(func) {}
+    Lazy(std::function<T()> func) : _func(func)
+    {
+    }
 
     /// @brief Returns a const reference to the lazily initialized value.
     const T &val()

@@ -17,8 +17,8 @@ namespace Krys::Concurrency
   };
 
 #ifdef KRYS_ENABLE_ASSERTS
-#define KRYS_SCOPED_LOCK_VERIFIER(lock) ScopedLock<LockVerifier> scopedLockVerifier##__LINE__(lock)
+  #define KRYS_SCOPED_LOCK_VERIFIER(lock) ScopedLock<LockVerifier> scopedLockVerifier##__LINE__(lock)
 #else
-#define KRYS_SCOPED_LOCK_VERIFIER(lockVerifier)
+  #define KRYS_SCOPED_LOCK_VERIFIER(lockVerifier)
 #endif
 }

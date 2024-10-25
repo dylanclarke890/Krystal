@@ -13,7 +13,10 @@ namespace Krys::Maths
     inline static std::mt19937 RandomEngine;
     inline static std::uniform_int_distribution<std::mt19937::result_type> Distribution;
 
-    inline static uint32 Rand() { return Distribution(RandomEngine); }
+    inline static uint32 Rand()
+    {
+      return Distribution(RandomEngine);
+    }
 
   public:
     static void Init()

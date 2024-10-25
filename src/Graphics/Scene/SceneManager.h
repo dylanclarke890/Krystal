@@ -15,6 +15,7 @@ namespace Krys::Graphics
     Ref<Renderer> _renderer;
 
   public:
+    SceneManager(Ref<Renderer> renderer) noexcept;
     void ChangeTo(Unique<Scene> scene) noexcept;
     void AddVisitor(Unique<NodeVisitor> visitor) noexcept;
     void UpdateScene() noexcept;

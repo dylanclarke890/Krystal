@@ -7,8 +7,10 @@
 #include "Input/KeyCodes.h"
 
 #include "Graphics/Camera/Perspective.h"
-#include "Graphics/VertexArray.h"
+#include "Graphics/NodeVisitors/NodeVisitorContext.h"
+#include "Graphics/NodeVisitors/RenderVisitor.h"
 #include "Graphics/Renderer.h"
+#include "Graphics/VertexArray.h"
 
 #include "Misc/Performance.h"
 #include "Misc/Time.h"
@@ -18,16 +20,24 @@ namespace Krys
 {
   Application::Application(const string &name, int width, int height, float targetFps) noexcept
       : _window(Window::Create(name, width, height)), _context(_window->GetGraphicsContext()),
-        _renderer(CreateRef<Renderer>()), _sceneManager(),
-        _isRunning(false), _targetFrameTimeMs(1000.0f / targetFps) {}
+        _renderer(CreateRef<Renderer>()), _sceneManager(_renderer), _isRunning(false),
+        _targetFrameTimeMs(1000.0f / targetFps)
+  {
+  }
 
   void Application::Startup() noexcept
   {
+    Input::Init();
+
     _context->Init();
     _context->SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
     _renderer->Init(_context);
 
-    Input::Init();
+    NodeVisitorContext visitorContext;
+    visitorContext.Renderer = _renderer;
+
+    _sceneManager.AddVisitor(CreateUnique<RenderVisitor>(visitorContext));
+
     _window->Show();
   }
 

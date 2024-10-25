@@ -1,9 +1,9 @@
 #pragma once
 #include <windows.h>
 
-#include "Core/Window.h"
-#include "Core/Events/MouseEvents.h"
 #include "Core/Events/KeyEvents.h"
+#include "Core/Events/MouseEvents.h"
+#include "Core/Window.h"
 
 namespace Krys
 {

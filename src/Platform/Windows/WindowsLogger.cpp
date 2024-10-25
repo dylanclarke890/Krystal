@@ -1,7 +1,7 @@
-#include <windows.h> // For OutputDebugStringA
+#include "Core/Misc/Logger.h"
 #include <cstdarg>   // For va_list and related operations
 #include <cstdio>    // For vsnprintf
-#include "Core/Misc/Logger.h"
+#include <windows.h> // For OutputDebugStringA
 
 namespace Krys
 {
@@ -9,9 +9,9 @@ namespace Krys
   std::ofstream Logger::_logFile("log.txt");
   LogLevel Logger::_logLevel = LogLevel::Info;
 
-  void Logger::Log(const char* format, ...)
+  void Logger::Log(const char *format, ...)
   {
-    char buffer[1024];
+    char buffer[1'024];
     va_list args;
     va_start(args, format);
     vsnprintf(buffer, sizeof(buffer), format, args);
@@ -28,7 +28,7 @@ namespace Krys
     auto currentLevel = Logger::GetLogLevel();
     Logger::SetLogLevel(level);
     {
-      char buffer[1024];
+      char buffer[1'024];
       va_list args;
       va_start(args, format);
       vsnprintf(buffer, sizeof(buffer), format, args);
@@ -69,18 +69,12 @@ namespace Krys
   {
     switch (level)
     {
-    case LogLevel::Debug:
-      return "[DEBUG]";
-    case LogLevel::Info:
-      return "[INFO]";
-    case LogLevel::Warning:
-      return "[WARNING]";
-    case LogLevel::Error:
-      return "[ERROR]";
-    case LogLevel::Fatal:
-      return "[FATAL]";
-    default:
-      return "[UNKNOWN]";
+      case LogLevel::Debug:   return "[DEBUG]";
+      case LogLevel::Info:    return "[INFO]";
+      case LogLevel::Warning: return "[WARNING]";
+      case LogLevel::Error:   return "[ERROR]";
+      case LogLevel::Fatal:   return "[FATAL]";
+      default:                return "[UNKNOWN]";
     }
   }
 }

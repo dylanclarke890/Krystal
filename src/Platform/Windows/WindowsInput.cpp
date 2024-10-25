@@ -222,8 +222,8 @@ namespace Krys
 
   void Input::Init()
   {
-    PrevKeyState = new BYTE[256]{};
-    KeyState = new BYTE[256]{};
+    PrevKeyState = new BYTE[256] {};
+    KeyState = new BYTE[256] {};
     PrevMouseButtonState = new bool[5];
     MouseButtonState = new bool[5];
     VirtualKeyMap = List<KeyCode>(256, KeyCode::None);
@@ -317,22 +317,17 @@ namespace Krys
   uint Input::MouseButtonToNativeKey(MouseButton button)
   {
     auto keyCode = [&]()
-    { switch (button)
     {
-    case MouseButton::Left:
-      return VK_LBUTTON;
-    case MouseButton::Right:
-      return VK_RBUTTON;
-    case MouseButton::Middle:
-      return VK_MBUTTON;
-    case MouseButton::Thumb1:
-      return VK_XBUTTON1;
-    case MouseButton::Thumb2:
-      return VK_XBUTTON2;
-    default:
-      KRYS_ASSERT(false, "Unknown mouse button: %d", static_cast<int>(button));
-      return 0;
-    } }();
+      switch (button)
+      {
+        case MouseButton::Left:   return VK_LBUTTON;
+        case MouseButton::Right:  return VK_RBUTTON;
+        case MouseButton::Middle: return VK_MBUTTON;
+        case MouseButton::Thumb1: return VK_XBUTTON1;
+        case MouseButton::Thumb2: return VK_XBUTTON2;
+        default:                  KRYS_ASSERT(false, "Unknown mouse button: %d", static_cast<int>(button)); return 0;
+      }
+    }();
 
     return static_cast<uint>(keyCode);
   }
@@ -341,18 +336,12 @@ namespace Krys
   {
     switch (keyCode)
     {
-    case VK_LBUTTON:
-      return MouseButton::Left;
-    case VK_RBUTTON:
-      return MouseButton::Right;
-    case VK_MBUTTON:
-      return MouseButton::Middle;
-    case VK_XBUTTON1:
-      return MouseButton::Thumb1;
-    case VK_XBUTTON2:
-      return MouseButton::Thumb2;
-    default:
-      return MouseButton::MouseButtonNone;
+      case VK_LBUTTON:  return MouseButton::Left;
+      case VK_RBUTTON:  return MouseButton::Right;
+      case VK_MBUTTON:  return MouseButton::Middle;
+      case VK_XBUTTON1: return MouseButton::Thumb1;
+      case VK_XBUTTON2: return MouseButton::Thumb2;
+      default:          return MouseButton::MouseButtonNone;
     }
   }
 }

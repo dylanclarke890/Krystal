@@ -2,9 +2,9 @@
 
 #include "Core.h"
 
-#include "OpenGL/GL.h"
 #include "Graphics/GraphicsContext.h"
 #include "Misc/Lazy.h"
+#include "OpenGL/GL.h"
 
 #include <windows.h>
 
@@ -62,7 +62,8 @@ namespace Krys::OpenGL
 
     void SetBlendingEnabled(bool enable) noexcept override;
     void SetBlendFunc(BlendFactor srcFactor, BlendFactor dstFactor) noexcept override;
-    void SetBlendFunc(BlendFactor rgbSrcFactor, BlendFactor rgbDstFactor, BlendFactor alphaSrcFactor, BlendFactor alphaDstFactor) noexcept override;
+    void SetBlendFunc(BlendFactor rgbSrcFactor, BlendFactor rgbDstFactor, BlendFactor alphaSrcFactor,
+                      BlendFactor alphaDstFactor) noexcept override;
     void SetBlendEquation(BlendEquation equation) noexcept override;
     void SetBlendColor(Vec4 color) noexcept override;
 
@@ -86,10 +87,12 @@ namespace Krys::OpenGL
 
     Ref<Shader> CreateShader() noexcept override;
     Ref<Shader> CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath) override;
-    Ref<Shader> CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath, const stringview &geoFilepath) override;
+    Ref<Shader> CreateShader(const stringview &vertexFilepath, const stringview &fragmentFilepath,
+                             const stringview &geoFilepath) override;
 
     Ref<Texture2D> CreateTexture2D(const string &filepath) noexcept override;
-    Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize, Vec2 &spriteSize) noexcept override;
+    Ref<SubTexture2D> CreateSubTexture2D(Ref<Texture2D> texture, Vec2 &coords, Vec2 &cellSize,
+                                         Vec2 &spriteSize) noexcept override;
     Ref<TextureCubemap> CreateTextureCubemap(std::array<string, 6> paths) noexcept override;
     Ref<TextureCubemap> CreateTextureCubemap(uint width, uint height, TextureInternalFormat format) noexcept override;
 
@@ -98,10 +101,12 @@ namespace Krys::OpenGL
 
 #pragma region Primitive Drawing
     void DrawVertices(size_t count, PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
-    void DrawVerticesInstanced(size_t instanceCount, size_t vertexCount, PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
+    void DrawVerticesInstanced(size_t instanceCount, size_t vertexCount,
+                               PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
 
     void DrawIndices(size_t count, PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
-    void DrawIndicesInstanced(size_t instanceCount, size_t indexCount, PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
+    void DrawIndicesInstanced(size_t instanceCount, size_t indexCount,
+                              PrimitiveType mode = PrimitiveType::Triangles) noexcept override;
 #pragma endregion Primitive Drawing
 
   private:

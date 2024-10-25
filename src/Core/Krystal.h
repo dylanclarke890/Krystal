@@ -1,13 +1,13 @@
 #pragma once
 
 // ---------- CORE ----------
-#include "Core.h"
 #include "Application.h"
+#include "Core.h"
 #include "Window.h"
 
 // --------- EVENTS ---------
-#include "Events/Events.h"
 #include "Events/ApplicationEvents.h"
+#include "Events/Events.h"
 #include "Events/KeyEvents.h"
 #include "Events/MouseEvents.h"
 // --------- EVENTS ---------

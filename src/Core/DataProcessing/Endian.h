@@ -43,7 +43,7 @@ namespace Krys::Endian
   }
 
   KRYS_DISABLE_WARNING_PUSH()
-  KRYS_DISABLE_WARNING(4702, "-Wunreachable-code")
+  KRYS_DISABLE_WARNING(4'702, "-Wunreachable-code")
 
   /// @brief Converts a value to big endian. If the underlying system is big endian,
   /// the value is assumed to already be represented as big endian and is returned unchanged.

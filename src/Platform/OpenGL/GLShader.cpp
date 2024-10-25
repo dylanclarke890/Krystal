@@ -1,7 +1,7 @@
-#include "Core.h"
-#include "IO/IO.h"
-#include "Graphics/Shaders/ShaderPreprocessor.h"
 #include "OpenGL/GLShader.h"
+#include "Core.h"
+#include "Graphics/Shaders/ShaderPreprocessor.h"
+#include "IO/IO.h"
 
 namespace Krys::OpenGL
 {
@@ -63,20 +63,14 @@ namespace Krys::OpenGL
       const char *shaderType = NULL;
       switch (type)
       {
-      case ShaderType::Vertex:
-        shaderType = "vertex";
-        break;
-      case ShaderType::Geometry:
-        shaderType = "geometry";
-        break;
-      case ShaderType::Fragment:
-        shaderType = "fragment";
-        break;
-      default:
-      {
-        KRYS_ASSERT(false, "Unknown ShaderType!", 0);
-        break;
-      }
+        case ShaderType::Vertex:   shaderType = "vertex"; break;
+        case ShaderType::Geometry: shaderType = "geometry"; break;
+        case ShaderType::Fragment: shaderType = "fragment"; break;
+        default:
+        {
+          KRYS_ASSERT(false, "Unknown ShaderType!", 0);
+          break;
+        }
       }
 
       KRYS_ASSERT(false, "Compile failure in %s shader:\n%s", shaderType, infoLog);
@@ -259,17 +253,10 @@ namespace Krys::OpenGL
   {
     switch (type)
     {
-    case ShaderType::Vertex:
-      return GL_VERTEX_SHADER;
-      break;
-    case ShaderType::Fragment:
-      return GL_FRAGMENT_SHADER;
-      break;
-    case ShaderType::Geometry:
-      return GL_GEOMETRY_SHADER;
-    default:
-      KRYS_ASSERT(false, "Invalid ShaderType!", 0);
-      return 0;
+      case ShaderType::Vertex:   return GL_VERTEX_SHADER; break;
+      case ShaderType::Fragment: return GL_FRAGMENT_SHADER; break;
+      case ShaderType::Geometry: return GL_GEOMETRY_SHADER;
+      default:                   KRYS_ASSERT(false, "Invalid ShaderType!", 0); return 0;
     }
   }
 }

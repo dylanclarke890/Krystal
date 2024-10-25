@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Core.h"
-#include "IO/IO.h"
-#include "DataProcessing/Endian.h"
 #include "DataProcessing/Bytes.h"
+#include "DataProcessing/Endian.h"
+#include "IO/IO.h"
 
 namespace Krys::IO
 {
-  template <Endian::Type SourceEndianness = Endian::Type::System, Endian::Type DestinationEndianness = Endian::Type::System>
+  template <Endian::Type SourceEndianness = Endian::Type::System,
+            Endian::Type DestinationEndianness = Endian::Type::System>
   class BinaryFileReader
   {
   private:
@@ -15,8 +16,7 @@ namespace Krys::IO
     std::ifstream _stream;
 
   public:
-    BinaryFileReader(const stringview &path) noexcept
-        : _path(path)
+    BinaryFileReader(const stringview &path) noexcept : _path(path)
     {
       KRYS_ASSERT(PathExists(_path), "File '%s' does not exist", _path.data());
     }
@@ -26,7 +26,10 @@ namespace Krys::IO
       CloseStream();
     }
 
-    bool IsEOF() const noexcept { return _stream.eof(); }
+    bool IsEOF() const noexcept
+    {
+      return _stream.eof();
+    }
 
     void OpenStream() noexcept
     {

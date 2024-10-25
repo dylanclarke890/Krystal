@@ -16,8 +16,7 @@ namespace Krys::Concurrency
     Lockable *_lock;
 
   public:
-    explicit ScopedLock(Lockable &lock) noexcept
-        : _lock(lock)
+    explicit ScopedLock(Lockable &lock) noexcept : _lock(lock)
     {
       _lock->Acquire();
     }

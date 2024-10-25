@@ -1,7 +1,11 @@
 #include "Graphics/Scene/SceneManager.h"
+#include "SceneManager.h"
 
 namespace Krys::Graphics
 {
+  SceneManager::SceneManager(Ref<Renderer> renderer) noexcept
+      : _renderer(renderer), _currentScene(CreateUnique<Scene>()) {}
+
   void SceneManager::ChangeTo(Unique<Scene> scene) noexcept
   {
     _currentScene = std::move(scene);
@@ -9,7 +13,6 @@ namespace Krys::Graphics
 
   void SceneManager::AddVisitor(Unique<NodeVisitor> visitor) noexcept
   {
-    visitor->_renderer = _renderer;
     _visitors.push_back(std::move(visitor));
   }
 

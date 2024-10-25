@@ -2,7 +2,7 @@
 
 #include "Graphics/Nodes/Node.h"
 #include "Graphics/Nodes/GeometryNode.h"
-#include "Graphics/Renderer.h"
+#include "Graphics/NodeVisitors/NodeVisitorContext.h"
 
 namespace Krys::Graphics
 {
@@ -13,11 +13,13 @@ namespace Krys::Graphics
     friend class SceneManager;
 
   protected:
-    Ref<Renderer> _renderer;
+    NodeVisitorContext _context;
 
   public:
-    virtual ~NodeVisitor() = default;
-    virtual void Visit(const Node &node) = 0;
-    virtual void Visit(const GeometryNode &node) = 0;
+    NodeVisitor(NodeVisitorContext context) noexcept
+     : _context(context) {}
+    virtual ~NodeVisitor() noexcept = default;
+    virtual void Visit(const Node &node) noexcept = 0;
+    virtual void Visit(const GeometryNode &node) noexcept = 0;
   };
 }

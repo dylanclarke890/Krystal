@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Graphics/Textures/Texture2D.h"
-#include "OpenGL/Textures/Texture.h"
 #include "Maths/Vector.h"
+#include "OpenGL/Textures/Texture.h"
 
 namespace Krys::OpenGL
 {
@@ -13,7 +13,8 @@ namespace Krys::OpenGL
   {
   public:
     GLTexture2D(const string &filepath);
-    GLTexture2D(const string &filepath, TextureType type, TextureInternalFormat internalFormat = TextureInternalFormat::Auto);
+    GLTexture2D(const string &filepath, TextureType type,
+                TextureInternalFormat internalFormat = TextureInternalFormat::Auto);
     GLTexture2D(int width, int height, int samples, TextureInternalFormat internalFormat = TextureInternalFormat::RGBA);
     ~GLTexture2D();
 

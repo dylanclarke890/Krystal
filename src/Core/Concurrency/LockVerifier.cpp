@@ -2,8 +2,7 @@
 
 namespace Krys::Concurrency
 {
-  LockVerifier::LockVerifier() noexcept
-      : _locked(false)
+  LockVerifier::LockVerifier() noexcept : _locked(false)
   {
   }
 

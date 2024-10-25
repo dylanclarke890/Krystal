@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Core.h"
-#include "Types.h"
 #include "DataProcessing/Endian.h"
+#include "Types.h"
 
 namespace Krys::Bytes
 {
-  template <typename T, Endian::Type SourceEndianness = Endian::Type::System, Endian::Type DestinationEndianness = Endian::Type::System>
+  template <typename T, Endian::Type SourceEndianness = Endian::Type::System,
+            Endian::Type DestinationEndianness = Endian::Type::System>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
   constexpr T AsNumeric(const byte *bytes) noexcept
   {
@@ -15,18 +16,21 @@ namespace Krys::Bytes
     return Endian::Convert<T, SourceEndianness, DestinationEndianness>(value);
   }
 
-  template <typename T, Endian::Type SourceEndianness = Endian::Type::System, Endian::Type DestinationEndianness = Endian::Type::System>
+  template <typename T, Endian::Type SourceEndianness = Endian::Type::System,
+            Endian::Type DestinationEndianness = Endian::Type::System>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
   constexpr T AsNumeric(const List<byte> &bytes) noexcept
   {
     return AsNumeric<T, SourceEndianness, DestinationEndianness>(bytes.data());
   }
 
-  template <typename T, Endian::Type SourceEndianness = Endian::Type::System, Endian::Type DestinationEndianness = Endian::Type::System>
+  template <typename T, Endian::Type SourceEndianness = Endian::Type::System,
+            Endian::Type DestinationEndianness = Endian::Type::System>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
   constexpr List<T> AsNumericArray(const List<byte> &bytes) noexcept
   {
-    KRYS_ASSERT(bytes.size() % sizeof(T) == 0, "Unable to convert all bytes to the specified type. Unexpected number of bytes. ", 0);
+    KRYS_ASSERT(bytes.size() % sizeof(T) == 0,
+                "Unable to convert all bytes to the specified type. Unexpected number of bytes. ", 0);
     size_t elementCount = bytes.size() / sizeof(T);
 
     List<T> elements;

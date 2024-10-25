@@ -6,8 +6,7 @@
 
 namespace Krys::Concurrency
 {
-  ReentrantLock::ReentrantLock() noexcept
-      : _state(0), _refCount(0)
+  ReentrantLock::ReentrantLock() noexcept : _state(0), _refCount(0)
   {
   }
 

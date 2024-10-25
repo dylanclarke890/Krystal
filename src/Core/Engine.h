@@ -2,8 +2,8 @@
 
 #include <type_traits>
 
-#include "Core.h"
 #include "Application.h"
+#include "Core.h"
 
 namespace Krys
 {
@@ -13,8 +13,9 @@ namespace Krys
     Unique<Application> App;
 
   public:
-    Engine(Unique<Application> app)
-        : App(std::move(app)) {}
+    Engine(Unique<Application> app) : App(std::move(app))
+    {
+    }
 
     void Run()
     {

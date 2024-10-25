@@ -13,20 +13,17 @@ namespace Krys::OpenGL
   {
     switch (bindType)
     {
-    case FramebufferBindType::Draw:
-      return GL_DRAW_FRAMEBUFFER;
+      case FramebufferBindType::Draw:        return GL_DRAW_FRAMEBUFFER;
 
-    case FramebufferBindType::Read:
-      return GL_READ_FRAMEBUFFER;
+      case FramebufferBindType::Read:        return GL_READ_FRAMEBUFFER;
 
-    case FramebufferBindType::ReadAndDraw:
-      return GL_FRAMEBUFFER;
+      case FramebufferBindType::ReadAndDraw: return GL_FRAMEBUFFER;
 
-    default:
-    {
-      KRYS_ASSERT(false, "Unknown FramebufferBindType!", 0);
-      return 0;
-    }
+      default:
+      {
+        KRYS_ASSERT(false, "Unknown FramebufferBindType!", 0);
+        return 0;
+      }
     }
   };
 
@@ -92,7 +89,8 @@ namespace Krys::OpenGL
       if (_samples == 1)
         texture->SetTextureWrapModes(TextureWrapMode::ClampToEdge, TextureWrapMode::ClampToEdge);
 
-      glNamedFramebufferTexture(_id, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + _colorAttachments.size()), texture->GetId(), 0);
+      glNamedFramebufferTexture(_id, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + _colorAttachments.size()),
+                                texture->GetId(), 0);
       _colorAttachments.push_back(texture);
 
       return texture;
@@ -118,7 +116,8 @@ namespace Krys::OpenGL
       KRYS_ASSERT(!_depthAttachment, "Already has a depth attachment", 0);
 
       Ref<GLTextureCubemap> texture = CreateRef<GLTextureCubemap>(_width, _height, TextureInternalFormat::Depth);
-      texture->SetTextureWrapModes(TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder);
+      texture->SetTextureWrapModes(TextureWrapMode::ClampToBorder, TextureWrapMode::ClampToBorder,
+                                   TextureWrapMode::ClampToBorder);
       texture->SetBorderColor({1.0f, 1.0f, 0.0f, 1.0f});
 
       glNamedFramebufferTexture(_id, GL_DEPTH_ATTACHMENT, texture->GetId(), 0);
@@ -154,25 +153,29 @@ namespace Krys::OpenGL
 
     void SetReadBuffer(uint attachmentIndex) noexcept override
     {
-      KRYS_ASSERT(attachmentIndex >= 0 && attachmentIndex < _colorAttachments.size(), "Index out of range: Max is %d, %d received", _colorAttachments.size() - 1, attachmentIndex);
+      KRYS_ASSERT(attachmentIndex >= 0 && attachmentIndex < _colorAttachments.size(),
+                  "Index out of range: Max is %d, %d received", _colorAttachments.size() - 1, attachmentIndex);
       glNamedFramebufferReadBuffer(_id, GL_COLOR_ATTACHMENT0 + attachmentIndex);
     }
 
     void SetWriteBuffer(uint attachmentIndex) noexcept override
     {
-      KRYS_ASSERT(attachmentIndex >= 0 && attachmentIndex < _colorAttachments.size(), "Index out of range: Max is %d, %d received", _colorAttachments.size() - 1, attachmentIndex);
+      KRYS_ASSERT(attachmentIndex >= 0 && attachmentIndex < _colorAttachments.size(),
+                  "Index out of range: Max is %d, %d received", _colorAttachments.size() - 1, attachmentIndex);
       glNamedFramebufferDrawBuffer(_id, GL_COLOR_ATTACHMENT0 + attachmentIndex);
     }
 
     void SetWriteBuffers(const List<uint> &attachmentIndices) noexcept override
     {
       KRYS_ASSERT(attachmentIndices.size(), "No attachments specified.", 0);
-      KRYS_ASSERT(attachmentIndices.size() <= MaxDrawBuffers, "Unable to bind to more than %d draw buffers at one time.", MaxDrawBuffers);
+      KRYS_ASSERT(attachmentIndices.size() <= MaxDrawBuffers,
+                  "Unable to bind to more than %d draw buffers at one time.", MaxDrawBuffers);
 
       List<GLenum> attachments;
       for (auto i : attachmentIndices)
       {
-        KRYS_ASSERT(i >= 0 && i < _colorAttachments.size(), "Index out of range: %d items, %d received", _colorAttachments.size() - 1, i);
+        KRYS_ASSERT(i >= 0 && i < _colorAttachments.size(), "Index out of range: %d items, %d received",
+                    _colorAttachments.size() - 1, i);
         attachments.push_back(GL_COLOR_ATTACHMENT0 + i);
       }
 
@@ -209,7 +212,8 @@ namespace Krys::OpenGL
       Blit(_id, 0, bounds, bounds, mask);
     }
 
-    void BlitFrom(Ref<Framebuffer> other, BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept override
+    void BlitFrom(Ref<Framebuffer> other, BoundingBox<int> src, BoundingBox<int> dst,
+                  RenderBuffer mask) noexcept override
     {
       Blit(other->GetId(), _id, src, dst, mask);
     }
@@ -233,9 +237,7 @@ namespace Krys::OpenGL
 
     static void Blit(uint32 a, uint32 b, BoundingBox<int> src, BoundingBox<int> dst, RenderBuffer mask) noexcept
     {
-      glBlitNamedFramebuffer(a, b,
-                             src.Left, src.Bottom, src.Right, src.Top,
-                             dst.Left, dst.Bottom, dst.Right, dst.Top,
+      glBlitNamedFramebuffer(a, b, src.Left, src.Bottom, src.Right, src.Top, dst.Left, dst.Bottom, dst.Right, dst.Top,
                              ToGLBufferFlags(mask), GL_NEAREST);
     }
 

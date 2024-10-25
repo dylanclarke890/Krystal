@@ -12,9 +12,18 @@ namespace Krys
 
     BoundingBox() noexcept = default;
     constexpr BoundingBox(T left, T right, T bottom, T top) noexcept
-        : Left(left), Right(right), Bottom(bottom), Top(top) {}
+        : Left(left), Right(right), Bottom(bottom), Top(top)
+    {
+    }
 
-    constexpr T GetWidth() const noexcept { return Right - Left; }
-    constexpr T GetHeight() const noexcept { return Top - Bottom; }
+    constexpr T GetWidth() const noexcept
+    {
+      return Right - Left;
+    }
+
+    constexpr T GetHeight() const noexcept
+    {
+      return Top - Bottom;
+    }
   };
 }

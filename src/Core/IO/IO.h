@@ -17,7 +17,8 @@ namespace Krys::IO
   /// @param recursive If true will also search subdirectories.
   /// @param extensions Optional list of extensions to filter by.
   /// @return The list of regular files that match the search criteria.
-  NO_DISCARD List<FileInfo> ListFiles(const stringview &directory, List<stringview> extensions = {}, bool recursive = false) noexcept;
+  NO_DISCARD List<FileInfo> ListFiles(const stringview &directory, List<stringview> extensions = {},
+                                      bool recursive = false) noexcept;
 
   /// @brief Get information about a path
   /// @param path The path to check.

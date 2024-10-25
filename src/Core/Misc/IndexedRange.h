@@ -14,18 +14,35 @@ namespace Krys
       size_t index;
       typename T::const_iterator iter;
 
-      bool operator!=(const Iterator &other) const { return iter != other.iter; }
+      bool operator!=(const Iterator &other) const
+      {
+        return iter != other.iter;
+      }
+
       void operator++()
       {
         ++index;
         ++iter;
       }
-      auto operator*() const { return std::make_pair(index, *iter); }
+
+      auto operator*() const
+      {
+        return std::make_pair(index, *iter);
+      }
     };
 
-    IndexedRange(const T &container) : _container(container) {}
+    IndexedRange(const T &container) : _container(container)
+    {
+    }
 
-    Iterator begin() const { return {0, _container.begin()}; }
-    Iterator end() const { return {_container.size(), _container.end()}; }
+    Iterator begin() const
+    {
+      return {0, _container.begin()};
+    }
+
+    Iterator end() const
+    {
+      return {_container.size(), _container.end()};
+    }
   };
 }

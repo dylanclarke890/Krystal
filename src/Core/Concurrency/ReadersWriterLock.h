@@ -1,14 +1,14 @@
 #pragma once
 
-#include <atomic>
 #include "Types.h"
+#include <atomic>
 
 namespace Krys::Concurrency
 {
   class ReadersWriterLock
   {
   private:
-    static constexpr uint32 WRITER_LOCK = 0x80000000U;
+    static constexpr uint32 WRITER_LOCK = 0x80'00'00'00U;
     std::atomic<uint32> _state;
 
   public:

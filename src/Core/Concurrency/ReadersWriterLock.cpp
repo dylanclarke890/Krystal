@@ -4,8 +4,7 @@
 
 namespace Krys::Concurrency
 {
-  ReadersWriterLock::ReadersWriterLock() noexcept
-      : _state(0)
+  ReadersWriterLock::ReadersWriterLock() noexcept : _state(0)
   {
   }
 

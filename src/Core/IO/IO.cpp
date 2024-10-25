@@ -17,39 +17,38 @@ namespace Krys::IO
     KRYS_PERFORMANCE_TIMER("ListFiles");
     KRYS_ASSERT(PathExists(directory), "Directory '%s' does not exist", directory.data());
 
-    std::error_code error{};
-    List<FileInfo> entries{};
+    std::error_code error {};
+    List<FileInfo> entries {};
 
     const auto HasValidExtension = [&](stringview extension)
     {
       if (extensions.empty())
         return true;
 
-      return std::any_of(extensions.begin(), extensions.end(), [&extension](stringview v)
-                         { return v == extension; });
+      return std::any_of(extensions.begin(), extensions.end(), [&extension](stringview v) { return v == extension; });
     };
 
     const auto ProcessEntry = [&](const fs::directory_entry &entry) -> void
     {
-      string path{entry.path().string()};
+      string path {entry.path().string()};
       if (error)
       {
         KRYS_ASSERT(false, "Error iterating through directory '%s': %s", path.data(), error.message().c_str());
       }
 
-      string extension{entry.path().extension().string()};
+      string extension {entry.path().extension().string()};
       if (entry.is_regular_file(error) && HasValidExtension(extension))
       {
-        string name{entry.path().stem().string()};
+        string name {entry.path().stem().string()};
         entries.push_back({name, extension, path});
         KRYS_LOG("N: %s, E: %s, P: %s", name.data(), extension.data(), path.data());
       }
     };
 
     if (recursive)
-      std::ranges::for_each(fs::recursive_directory_iterator{directory, error}, ProcessEntry);
+      std::ranges::for_each(fs::recursive_directory_iterator {directory, error}, ProcessEntry);
     else
-      std::ranges::for_each(fs::directory_iterator{directory, error}, ProcessEntry);
+      std::ranges::for_each(fs::directory_iterator {directory, error}, ProcessEntry);
 
     return entries;
   }
@@ -60,7 +59,7 @@ namespace Krys::IO
     KRYS_PERFORMANCE_TIMER("GetPathInfo");
 
     auto fsPath = fs::path(filepath);
-    FileInfo fileInfo{fsPath.stem().string(), fsPath.extension().string(), fsPath.string()};
+    FileInfo fileInfo {fsPath.stem().string(), fsPath.extension().string(), fsPath.string()};
     fileInfo.IsDirectory = fs::directory_entry(fsPath).is_directory();
 
     return fileInfo;
@@ -76,7 +75,7 @@ namespace Krys::IO
   {
     KRYS_PERFORMANCE_TIMER("PathExists");
 
-    std::error_code error{};
+    std::error_code error {};
     return fs::exists(path, error);
   }
 
@@ -85,7 +84,7 @@ namespace Krys::IO
     KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
     KRYS_PERFORMANCE_TIMER("IsDirectory");
 
-    std::error_code error{};
+    std::error_code error {};
     return fs::directory_entry(path, error).is_directory(error);
   }
 
@@ -94,7 +93,7 @@ namespace Krys::IO
     KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
     KRYS_PERFORMANCE_TIMER("IsFile");
 
-    std::error_code error{};
+    std::error_code error {};
     return fs::directory_entry(path, error).is_regular_file(error);
   }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #pragma warning(push)
-#pragma warning(disable : 4005)
+#pragma warning(disable : 4'005)
 #include <glad/gl.h>
 #include <glad/wgl.h>
 #pragma warning(pop)

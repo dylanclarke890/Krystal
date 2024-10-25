@@ -1,8 +1,8 @@
 #pragma once
 
 #include "KeyCodes.h"
-#include "MouseButtons.h"
 #include "Maths/Vector.h"
+#include "MouseButtons.h"
 
 namespace Krys
 {

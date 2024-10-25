@@ -6,11 +6,11 @@
 
 #include "Core/Events/ApplicationEvents.h"
 #include "Core/Input/Input.h"
-#include "Core/Input/MouseButtons.h"
 #include "Core/Input/KeyCodes.h"
+#include "Core/Input/MouseButtons.h"
 
-#include "Windows/WindowsWindow.h"
 #include "OpenGL/GLGraphicsContext.h"
+#include "Windows/WindowsWindow.h"
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define HINST_THISCOMPONENT (reinterpret_cast<HINSTANCE>(&__ImageBase))
@@ -28,13 +28,12 @@ namespace Krys
     auto registerSuccess = RegisterClassA(&wc);
     KRYS_ASSERT(registerSuccess, "unable to register temporary window class", 0);
 
-    HWND fakeWND = CreateWindowA(
-        wc.lpszClassName, "Fake Window",   // window class, title
-        WS_CLIPSIBLINGS | WS_CLIPCHILDREN, // style
-        0, 0,                              // position x, y
-        1, 1,                              // width, height
-        NULL, NULL,                        // parent window, menu
-        instance, NULL);                   // instance, param
+    HWND fakeWND = CreateWindowA(wc.lpszClassName, "Fake Window",   // window class, title
+                                 WS_CLIPSIBLINGS | WS_CLIPCHILDREN, // style
+                                 0, 0,                              // position x, y
+                                 1, 1,                              // width, height
+                                 NULL, NULL,                        // parent window, menu
+                                 instance, NULL);                   // instance, param
 
     HDC fakeDC = GetDC(fakeWND); // Device Context
     KRYS_ASSERT(fakeDC, "Device context was not valid", 0);
@@ -102,19 +101,18 @@ namespace Krys
 
     InitARBExtensions(instance);
 
-    _window = CreateWindowExA(
-        0,                         // optional window styles
-        windowClass.lpszClassName, // window class
-        "Krystal",                 // window name
-        windowStyles,              // window style
-        CW_USEDEFAULT,             // initial x position
-        CW_USEDEFAULT,             // initial y position
-        totalWidth,                // width
-        totalHeight,               // height
-        0,                         // parent window
-        0,                         // menu
-        instance,                  // instance handle
-        0);                        // additional application data;
+    _window = CreateWindowExA(0,                         // optional window styles
+                              windowClass.lpszClassName, // window class
+                              "Krystal",                 // window name
+                              windowStyles,              // window style
+                              CW_USEDEFAULT,             // initial x position
+                              CW_USEDEFAULT,             // initial y position
+                              totalWidth,                // width
+                              totalHeight,               // height
+                              0,                         // parent window
+                              0,                         // menu
+                              instance,                  // instance handle
+                              0);                        // additional application data;
 
     if (!_window)
       KRYS_CRITICAL("Unable to create window: %s", GetLastError());
@@ -154,192 +152,186 @@ namespace Krys
 
   LRESULT CALLBACK WindowsWindow::WindowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
   {
-#define KRYS_EVENT_CALLBACK() \
-  if (_eventCallback)         \
+#define KRYS_EVENT_CALLBACK()                                                                                          \
+  if (_eventCallback)                                                                                                  \
   _eventCallback(event)
 
     LRESULT result = 0;
     switch (message)
     {
 #pragma region Mouse input
-    case WM_MOUSEMOVE:
-    {
-      MouseMoveEvent event;
-      GetMouseEventData(&event, wParam, lParam);
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
-    // TODO: should we always capture mouse on mouse down until mouse up? we currently don't.
-    case WM_LBUTTONDOWN:
-    {
-      MouseButtonPressedEvent event(MouseButton::Left);
-      GetMouseEventData(&event, wParam, lParam);
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
-    case WM_LBUTTONUP:
-    {
-      MouseButtonReleasedEvent event(MouseButton::Left);
-      GetMouseEventData(&event, wParam, lParam);
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
-    case WM_RBUTTONDOWN:
-    {
-      MouseButtonPressedEvent event(MouseButton::Right);
-      GetMouseEventData(&event, wParam, lParam);
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
-    case WM_RBUTTONUP:
-    {
-      MouseButtonReleasedEvent event(MouseButton::Right);
-      GetMouseEventData(&event, wParam, lParam);
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
-    case WM_MBUTTONDOWN:
-    {
-      MouseButtonPressedEvent event(MouseButton::Middle);
-      GetMouseEventData(&event, wParam, lParam);
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
-    case WM_MBUTTONUP:
-    {
-      MouseButtonReleasedEvent event(MouseButton::Middle);
-      GetMouseEventData(&event, wParam, lParam);
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
-    case WM_XBUTTONDOWN:
-    {
-      MouseButton button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1
-                               ? MouseButton::Thumb1
-                               : MouseButton::Thumb2;
-      MouseButtonPressedEvent event(button);
-      GetMouseEventData(&event, wParam, lParam);
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
-    case WM_XBUTTONUP:
-    {
-      MouseButton button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1
-                               ? MouseButton::Thumb1
-                               : MouseButton::Thumb2;
-      MouseButtonReleasedEvent event(button);
-      GetMouseEventData(&event, wParam, lParam);
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
-    case WM_LBUTTONDBLCLK:
-    case WM_RBUTTONDBLCLK:
-    case WM_MBUTTONDBLCLK:
-    case WM_XBUTTONDBLCLK:
-      return DefWindowProc(window, message, wParam, lParam);
-    case WM_MOUSEWHEEL:
-    {
-      MouseScrollEvent event;
-      event.DeltaZ = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
-      GetMouseEventData(&event, wParam, lParam);
+      case WM_MOUSEMOVE:
+      {
+        MouseMoveEvent event;
+        GetMouseEventData(&event, wParam, lParam);
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
+      // TODO: should we always capture mouse on mouse down until mouse up? we currently don't.
+      case WM_LBUTTONDOWN:
+      {
+        MouseButtonPressedEvent event(MouseButton::Left);
+        GetMouseEventData(&event, wParam, lParam);
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
+      case WM_LBUTTONUP:
+      {
+        MouseButtonReleasedEvent event(MouseButton::Left);
+        GetMouseEventData(&event, wParam, lParam);
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
+      case WM_RBUTTONDOWN:
+      {
+        MouseButtonPressedEvent event(MouseButton::Right);
+        GetMouseEventData(&event, wParam, lParam);
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
+      case WM_RBUTTONUP:
+      {
+        MouseButtonReleasedEvent event(MouseButton::Right);
+        GetMouseEventData(&event, wParam, lParam);
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
+      case WM_MBUTTONDOWN:
+      {
+        MouseButtonPressedEvent event(MouseButton::Middle);
+        GetMouseEventData(&event, wParam, lParam);
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
+      case WM_MBUTTONUP:
+      {
+        MouseButtonReleasedEvent event(MouseButton::Middle);
+        GetMouseEventData(&event, wParam, lParam);
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
+      case WM_XBUTTONDOWN:
+      {
+        MouseButton button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1 ? MouseButton::Thumb1 : MouseButton::Thumb2;
+        MouseButtonPressedEvent event(button);
+        GetMouseEventData(&event, wParam, lParam);
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
+      case WM_XBUTTONUP:
+      {
+        MouseButton button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1 ? MouseButton::Thumb1 : MouseButton::Thumb2;
+        MouseButtonReleasedEvent event(button);
+        GetMouseEventData(&event, wParam, lParam);
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
+      case WM_LBUTTONDBLCLK:
+      case WM_RBUTTONDBLCLK:
+      case WM_MBUTTONDBLCLK:
+      case WM_XBUTTONDBLCLK: return DefWindowProc(window, message, wParam, lParam);
+      case WM_MOUSEWHEEL:
+      {
+        MouseScrollEvent event;
+        event.DeltaZ = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
+        GetMouseEventData(&event, wParam, lParam);
 
-      // Mouse position is in screen coordinates for this message, convert.
-      POINT pt{};
-      pt.x = event.X;
-      pt.y = event.Y;
-      ScreenToClient(window, &pt);
-      event.X = pt.x;
-      event.Y = pt.y;
+        // Mouse position is in screen coordinates for this message, convert.
+        POINT pt {};
+        pt.x = event.X;
+        pt.y = event.Y;
+        ScreenToClient(window, &pt);
+        event.X = pt.x;
+        event.Y = pt.y;
 
-      KRYS_EVENT_CALLBACK();
-      break;
-    }
+        KRYS_EVENT_CALLBACK();
+        break;
+      }
 #pragma endregion Mouse input
 
 #pragma region Keyboard input
-    case WM_KEYUP:
-    case WM_KEYDOWN:
-    case WM_SYSKEYUP:
-    case WM_SYSKEYDOWN:
-    {
-      // Unused data:
-      // KF_DLGMODE -  Dialog mode flag, indicates whether a dialog box is active.
-      // KF_MENUMODE - Menu mode flag, indicates whether a menu is active.
-      // WORD repeatCount = LOWORD(lParam); // repeat count, > 0 if several keydown messages were combined into one message
-      WORD keyFlags = HIWORD(lParam);
-      bool isSysKeyMessage = (keyFlags & KF_ALTDOWN);
-
-      bool isExtendedKey = (keyFlags & KF_EXTENDED); // extended-key flag, 1 if scancode has 0xE0 prefix
-      WORD scanCode = LOBYTE(keyFlags);
-      if (isExtendedKey)
-        scanCode = MAKEWORD(scanCode, 0xE0);
-      WORD vkCode = LOWORD(wParam);
-      switch (vkCode)
+      case WM_KEYUP:
+      case WM_KEYDOWN:
+      case WM_SYSKEYUP:
+      case WM_SYSKEYDOWN:
       {
-      case VK_SHIFT:   // converts to VK_LSHIFT or VK_RSHIFT
-      case VK_CONTROL: // converts to VK_LCONTROL or VK_RCONTROL
-      case VK_MENU:    // converts to VK_LMENU or VK_RMENU
-        vkCode = LOWORD(MapVirtualKeyA(scanCode, MAPVK_VSC_TO_VK_EX));
+        // Unused data:
+        // KF_DLGMODE -  Dialog mode flag, indicates whether a dialog box is active.
+        // KF_MENUMODE - Menu mode flag, indicates whether a menu is active.
+        // WORD repeatCount = LOWORD(lParam); // repeat count, > 0 if several keydown messages were combined into one
+        // message
+        WORD keyFlags = HIWORD(lParam);
+        bool isSysKeyMessage = (keyFlags & KF_ALTDOWN);
+
+        bool isExtendedKey = (keyFlags & KF_EXTENDED); // extended-key flag, 1 if scancode has 0xE0 prefix
+        WORD scanCode = LOBYTE(keyFlags);
+        if (isExtendedKey)
+          scanCode = MAKEWORD(scanCode, 0xE0);
+        WORD vkCode = LOWORD(wParam);
+        switch (vkCode)
+        {
+          case VK_SHIFT:   // converts to VK_LSHIFT or VK_RSHIFT
+          case VK_CONTROL: // converts to VK_LCONTROL or VK_RCONTROL
+          case VK_MENU:    // converts to VK_LMENU or VK_RMENU
+            vkCode = LOWORD(MapVirtualKeyA(scanCode, MAPVK_VSC_TO_VK_EX));
+            break;
+          default: break;
+        }
+
+        bool isKeyUpMessage = (keyFlags & KF_UP);
+        if (isKeyUpMessage)
+        {
+          KeyReleasedEvent event;
+          event.Alt = isSysKeyMessage;
+          GetKeyEventData(&event, vkCode);
+          KRYS_EVENT_CALLBACK();
+        }
+        else
+        {
+          KeyPressedEvent event;
+          event.Alt = isSysKeyMessage;
+          event.Repeat = (keyFlags & KF_REPEAT); // previous key-state flag, 1 on autorepeat
+          GetKeyEventData(&event, vkCode);
+          KRYS_EVENT_CALLBACK();
+        }
+
+        if (isSysKeyMessage) // OS also needs to process, otherwise cmds like ALT+TAB won't work
+          return DefWindowProcA(window, message, wParam, lParam);
         break;
-      default:
-        break;
       }
-
-      bool isKeyUpMessage = (keyFlags & KF_UP);
-      if (isKeyUpMessage)
-      {
-        KeyReleasedEvent event;
-        event.Alt = isSysKeyMessage;
-        GetKeyEventData(&event, vkCode);
-        KRYS_EVENT_CALLBACK();
-      }
-      else
-      {
-        KeyPressedEvent event;
-        event.Alt = isSysKeyMessage;
-        event.Repeat = (keyFlags & KF_REPEAT); // previous key-state flag, 1 on autorepeat
-        GetKeyEventData(&event, vkCode);
-        KRYS_EVENT_CALLBACK();
-      }
-
-      if (isSysKeyMessage) // OS also needs to process, otherwise cmds like ALT+TAB won't work
-        return DefWindowProcA(window, message, wParam, lParam);
-      break;
-    }
 #pragma endregion Keyboard input
 
 #pragma region Quitting
-    case WM_CLOSE:
-    {
-      if (MessageBoxA(window, "Are you sure you want to exit?", "Quit?", MB_OKCANCEL) == IDOK)
-        DestroyWindow(window);
-      break;
-    }
-    case WM_DESTROY:
-    {
-      PostQuitMessage(0);
-      break;
-    }
+      case WM_CLOSE:
+      {
+        if (MessageBoxA(window, "Are you sure you want to exit?", "Quit?", MB_OKCANCEL) == IDOK)
+          DestroyWindow(window);
+        break;
+      }
+      case WM_DESTROY:
+      {
+        PostQuitMessage(0);
+        break;
+      }
 #pragma endregion Quitting
 
-    case WM_SIZE:
-    {
-      int width = static_cast<int>(LOWORD(lParam));
-      int height = static_cast<int>(HIWORD(lParam));
+      case WM_SIZE:
+      {
+        int width = static_cast<int>(LOWORD(lParam));
+        int height = static_cast<int>(HIWORD(lParam));
 
-      ResizeEvent event;
-      event.Width = width;
-      event.Height = height;
-      _width = width;
-      _height = height;
+        ResizeEvent event;
+        event.Width = width;
+        event.Height = height;
+        _width = width;
+        _height = height;
 
-      KRYS_EVENT_CALLBACK();
+        KRYS_EVENT_CALLBACK();
 
-      return DefWindowProcA(window, message, wParam, lParam);
-    }
-    case WM_PAINT:
-    default:
-      return DefWindowProcA(window, message, wParam, lParam);
+        return DefWindowProcA(window, message, wParam, lParam);
+      }
+      case WM_PAINT:
+      default:       return DefWindowProcA(window, message, wParam, lParam);
     }
 
     return result;

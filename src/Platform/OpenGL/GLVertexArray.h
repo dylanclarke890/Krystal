@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Types.h"
 #include "Graphics/Buffer.h"
 #include "Graphics/VertexArray.h"
 #include "OpenGL/GL.h"
+#include "Types.h"
 
 namespace Krys::OpenGL
 {

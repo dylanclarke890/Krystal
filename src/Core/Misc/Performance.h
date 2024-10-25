@@ -24,8 +24,10 @@ namespace Krys
     int64 _startCounter;
 
   public:
-    PerformanceTimer(const string &name)
-        : _name(name), _startCounter(Performance::GetTicks()) {}
+    PerformanceTimer(const string &name) : _name(name), _startCounter(Performance::GetTicks())
+    {
+    }
+
     ~PerformanceTimer()
     {
       int64 endCounter = Performance::GetTicks();
