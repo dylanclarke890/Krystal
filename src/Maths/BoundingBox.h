@@ -4,8 +4,7 @@
 
 namespace Krys
 {
-  template <typename T>
-  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  template <ArithmeticType T>
   struct BoundingBox
   {
     T Left, Right, Bottom, Top;
