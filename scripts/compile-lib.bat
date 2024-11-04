@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 
 set krystal_start_time=%time%
 echo Compiling 'Krystal'.
@@ -31,23 +32,18 @@ K:\source\Platform\Win32\Win32OpenGLWindow.cpp ^
 K:\source\Platform\Win32\Win32Window.cpp ^
 K:\source\Platform\Win32\Win32WindowManager.cpp
 
-set krystal_core_event_source_files = 
-K:\source\Core\Events\EventDispatcher.cpp ^
-K:\source\Core\Events\EventManager.cpp ^
-K:\source\Core\Events\KeyboardEvent.cpp ^
-K:\source\Core\Events\MouseButtonEvent.cpp ^
-K:\source\Core\Events\MouseEvent.cpp ^
-K:\source\Core\Events\QuitEvent.cpp ^
-K:\source\Core\Events\ScrollWheelEvent.cpp
-
 set krystal_core_source_files=^
 K:\source\Core\Application.cpp ^
 K:\source\Core\ApplicationContext.cpp ^
 K:\source\Core\StringId.cpp ^
 K:\source\Core\Window.cpp ^
 K:\source\Core\WindowManager.cpp ^
-%krystal_core_event_source_files%
-
+K:\source\Core\Events\EventDispatcher.cpp ^
+K:\source\Core\Events\EventManager.cpp ^
+K:\source\Core\Events\KeyboardEvent.cpp ^
+K:\source\Core\Events\MouseButtonEvent.cpp ^
+K:\source\Core\Events\MouseEvent.cpp ^
+K:\source\Core\Events\ScrollWheelEvent.cpp
 
 set krystal_source_files=^
 %krystal_third_party_source_files% ^
@@ -55,29 +51,44 @@ set krystal_source_files=^
 %krystal_core_source_files%
 
 set krystal_disabled_warnings=-wd4100 -wd4201
-
 set krystal_compiler_flags=-c -Foobj\ -nologo -Zi -Oi -FC -W4 -WX -MP -EHsc -std:c++latest -MTd
-
 set krystal_linker_flags=-nologo -OUT:Krystal.lib
 
-:: Compile files to object files
-cl ^
-%krystal_compiler_flags% ^
-%krystal_disabled_warnings% ^
-%krystal_source_files% ^
-%krystal_defines% ^
-%krystal_include_directories%
+:: Collect files that need recompilation
+set files_to_compile=
+
+for %%f in (%krystal_source_files%) do (
+    set "src_file=%%f"
+    set "obj_file=obj\%%~nf.obj"
+    if not exist !obj_file! (
+        set files_to_compile=!files_to_compile! "%%f"
+    ) else (
+        for %%s in (%%f) do set "src_mod=%%~ts"
+        for %%o in (!obj_file!) do set "obj_mod=%%~to"
+        if "!src_mod!" gtr "!obj_mod!" (
+            set files_to_compile=!files_to_compile! "%%f"
+        )
+    )
+)
+
+:: Compile all files that need recompilation in one batch
+if defined files_to_compile (
+    :: echo Compiling files: !files_to_compile!
+    cl !krystal_compiler_flags! !krystal_disabled_warnings! !files_to_compile! !krystal_defines! !krystal_include_directories!
+) else (
+    echo No files need recompilation.
+)
 
 :: Link object files into a static library
-lib %krystal_linker_flags% ./obj/*.obj
+lib !krystal_linker_flags! ./obj/*.obj
 
 popd
 
 set krystal_compilation_error=%ERRORLEVEL%
 if %krystal_compilation_error% equ 0 (
-  echo Compilation of 'Krystal' succeeded.
+    echo Compilation of 'Krystal' succeeded.
 ) else (
-  echo Compilation of 'Krystal' failed.
+    echo Compilation of 'Krystal' failed.
 )
 
 set krystal_end_time=%time%
