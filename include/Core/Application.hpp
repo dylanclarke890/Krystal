@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Defines.hpp"
 #include "Core/Pointers.hpp"
 #include "Core/Types.hpp"
 
@@ -17,11 +18,9 @@ namespace Krys
     virtual void Update(float dt) noexcept = 0;
 
     template <typename TApplication>
+    REQUIRES((std::is_base_of_v<Application, TApplication>))
     static Unique<Application> Create(int argc, char **argv) noexcept
     {
-      static_assert(std::is_base_of_v<Application, TApplication>,
-                    "'TApplication' must derive from 'Krys::Application'.");
-
       auto appContext = CreateApplicationContext(argc, argv);
       return CreateUnique<TApplication>(std::move(appContext));
     }

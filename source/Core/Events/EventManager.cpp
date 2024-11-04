@@ -2,7 +2,7 @@
 
 namespace Krys
 {
-  void EventManager::Enqueue(const Unique<Event> &event) noexcept
+  void EventManager::Enqueue(Unique<Event> event) noexcept
   {
     _events.emplace(std::move(event));
   }

@@ -24,7 +24,4 @@ namespace Krys
     virtual ~Event() = default;
     virtual NO_DISCARD EventType GetEventType() const noexcept = 0;
   };
-
-  template <typename T>
-  concept IEvent = std::is_base_of_v<T, Event>;
 }

@@ -8,7 +8,6 @@ namespace Krys
   {
   public:
     QuitEvent() noexcept = default;
-
     KRYS_EVENT_CLASS_TYPE("quit-event")
   };
 }

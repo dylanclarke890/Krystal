@@ -74,3 +74,11 @@
 #else
   #define KRYS_ASSERT(condition, format, ...)
 #endif
+
+#ifdef __INTELLISENSE__
+  /// @brief Intellisense sometimes loses when parsing code with require statements.
+  /// This macro hides them from intellisense while ensuring they are included when actually compiling.
+  #define REQUIRES(x)
+#else
+  #define REQUIRES(x) requires(x)
+#endif
