@@ -19,31 +19,31 @@ set krystal_defines=^
 
 set krystal_include_directories=^
 /I "K:\include" ^
-/I "K:\source\ThirdParty\Glad\include"
+/I "K:\src\ThirdParty\Glad\include"
 
 set krystal_third_party_source_files=^
-K:\source\ThirdParty\Glad\src\gl.c ^
-K:\source\ThirdParty\Glad\src\wgl.c
+K:\src\ThirdParty\Glad\src\gl.c ^
+K:\src\ThirdParty\Glad\src\wgl.c
 
 set krystal_platform_source_files=^
-K:\source\Platform\Win32\Win32Application.cpp ^
-K:\source\Platform\Win32\Win32Logger.cpp ^
-K:\source\Platform\Win32\Win32OpenGLWindow.cpp ^
-K:\source\Platform\Win32\Win32Window.cpp ^
-K:\source\Platform\Win32\Win32WindowManager.cpp
+K:\src\Platform\Win32\Win32Application.cpp ^
+K:\src\Platform\Win32\Win32Logger.cpp ^
+K:\src\Platform\Win32\Win32OpenGLWindow.cpp ^
+K:\src\Platform\Win32\Win32Window.cpp ^
+K:\src\Platform\Win32\Win32WindowManager.cpp
 
 set krystal_core_source_files=^
-K:\source\Core\Application.cpp ^
-K:\source\Core\ApplicationContext.cpp ^
-K:\source\Core\StringId.cpp ^
-K:\source\Core\Window.cpp ^
-K:\source\Core\WindowManager.cpp ^
-K:\source\Core\Events\EventDispatcher.cpp ^
-K:\source\Core\Events\EventManager.cpp ^
-K:\source\Core\Events\KeyboardEvent.cpp ^
-K:\source\Core\Events\MouseButtonEvent.cpp ^
-K:\source\Core\Events\MouseEvent.cpp ^
-K:\source\Core\Events\ScrollWheelEvent.cpp
+K:\src\Core\Application.cpp ^
+K:\src\Core\ApplicationContext.cpp ^
+K:\src\Core\StringId.cpp ^
+K:\src\Core\Window.cpp ^
+K:\src\Core\WindowManager.cpp ^
+K:\src\Core\Events\EventDispatcher.cpp ^
+K:\src\Core\Events\EventManager.cpp ^
+K:\src\Core\Events\KeyboardEvent.cpp ^
+K:\src\Core\Events\MouseButtonEvent.cpp ^
+K:\src\Core\Events\MouseEvent.cpp ^
+K:\src\Core\Events\ScrollWheelEvent.cpp
 
 set krystal_source_files=^
 %krystal_third_party_source_files% ^
