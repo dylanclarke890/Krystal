@@ -17,38 +17,42 @@ set krystal_defines=^
 -D_ITERATOR_DEBUG_LEVEL=2
 
 set krystal_include_directories=^
-/I "K:\src" ^
-/I "K:\src\Core" ^
-/I "K:\src\Platform" ^
-/I "K:\src\ThirdParty\assimp\include" ^
-/I "K:\src\ThirdParty\Glad\include" ^
-/I "K:\src\ThirdParty\glm" ^
-/I "K:\src\ThirdParty\stb" ^
-/I "K:\src\ThirdParty\rapidjson\include"
+/I "K:\include" ^
+/I "K:\source\ThirdParty\Glad\include"
+
+set krystal_third_party_source_files=^
+K:\source\ThirdParty\Glad\src\gl.c ^
+K:\source\ThirdParty\Glad\src\wgl.c
+
+set krystal_platform_source_files=^
+K:\source\Platform\Win32\Win32Application.cpp ^
+K:\source\Platform\Win32\Win32Logger.cpp ^
+K:\source\Platform\Win32\Win32OpenGLWindow.cpp ^
+K:\source\Platform\Win32\Win32Window.cpp ^
+K:\source\Platform\Win32\Win32WindowManager.cpp
+
+set krystal_core_event_source_files = 
+K:\source\Core\Events\EventDispatcher.cpp ^
+K:\source\Core\Events\EventManager.cpp ^
+K:\source\Core\Events\KeyboardEvent.cpp ^
+K:\source\Core\Events\MouseButtonEvent.cpp ^
+K:\source\Core\Events\MouseEvent.cpp ^
+K:\source\Core\Events\QuitEvent.cpp ^
+K:\source\Core\Events\ScrollWheelEvent.cpp
+
+set krystal_core_source_files=^
+K:\source\Core\Application.cpp ^
+K:\source\Core\ApplicationContext.cpp ^
+K:\source\Core\StringId.cpp ^
+K:\source\Core\Window.cpp ^
+K:\source\Core\WindowManager.cpp ^
+%krystal_core_event_source_files%
+
 
 set krystal_source_files=^
-K:\src\ThirdParty\Glad\src\gl.c ^
-K:\src\ThirdParty\Glad\src\wgl.c ^
-K:\src\Platform\OpenGL\Textures\GLTexture2D.cpp ^
-K:\src\Platform\OpenGL\Textures\GLTextureCubemap.cpp ^
-K:\src\Platform\OpenGL\GLShader.cpp ^
-K:\src\Platform\OpenGL\GLVertexArray.cpp ^
-K:\src\Platform\OpenGL\GLBuffer.cpp ^
-K:\src\Platform\OpenGL\GLGraphicsContext.cpp ^
-K:\src\Platform\Windows\WindowsChrono.cpp ^
-K:\src\Platform\Windows\WindowsPerformance.cpp ^
-K:\src\Platform\Windows\WindowsLogger.cpp ^
-K:\src\Platform\Windows\WindowsInput.cpp ^
-K:\src\Platform\Windows\WindowsWindow.cpp ^
-K:\src\Maths\Transform.cpp ^
-K:\src\Graphics\Shaders\ShaderPreprocessor.cpp ^
-K:\src\Graphics\Nodes\Node.cpp ^
-K:\src\Graphics\Nodes\GeometryNode.cpp ^
-K:\src\Graphics\Scene\Scene.cpp ^
-K:\src\Graphics\Scene\SceneGraph.cpp ^
-K:\src\Graphics\Scene\SceneManager.cpp ^
-K:\src\Core\IO\IO.cpp ^
-K:\src\Core\Application.cpp
+%krystal_third_party_source_files% ^
+%krystal_platform_source_files% ^
+%krystal_core_source_files%
 
 set krystal_disabled_warnings=-wd4100 -wd4201
 

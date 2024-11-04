@@ -1,21 +1,16 @@
 #pragma once
 
 #include "Core.h"
-#include "Events/Events.h"
 #include "Graphics/GraphicsContext.h"
-
-#include <functional>
 
 namespace Krys
 {
   using namespace Krys::Graphics;
-  using EventCallbackFn = std::function<void(Event &)>;
 
   class Window
   {
   protected:
     string _name;
-    EventCallbackFn _eventCallback;
     int _width, _height;
     Ref<GraphicsContext> _context;
 
@@ -50,11 +45,6 @@ namespace Krys
     virtual void Show(bool visible = true) = 0;
     virtual void BeginFrame() = 0;
     virtual void EndFrame() = 0;
-
-    void SetEventCallback(EventCallbackFn callback)
-    {
-      _eventCallback = callback;
-    }
 
     static Ref<Window> Create(const string &name, int width, int height);
   };

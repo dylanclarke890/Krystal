@@ -1,25 +1,16 @@
 #pragma once
 
 #include <array>
-#include <cstddef>
-#include <memory>
+#include <functional>
 #include <optional>
+#include <queue>
+#include <set>
 #include <stdint.h>
 #include <string>
 #include <string_view>
 #include <type_traits>
 #include <unordered_map>
 #include <vector>
-
-#if defined(KRYS_COMPILER_VISUAL_STUDIO)
-  #include <emmintrin.h>
-  #include <xmmintrin.h>
-#elif defined(KRYS_COMPILER_CLANG) || defined(KRYS_COMPILER_GCC)
-  #include <x86intrin.h>
-#endif
-
-#include "Misc/CompilerDetection.h"
-
 
 namespace Krys
 {
@@ -40,7 +31,6 @@ namespace Krys
   typedef uint8_t uint8;
   typedef uint16_t uint16;
   typedef uint32_t uint32;
-}
   typedef uint64_t uint64;
   typedef uint_fast8_t fast_uint8;
   typedef uint_fast16_t fast_uint16;
@@ -50,10 +40,6 @@ namespace Krys
   typedef std::byte byte;
   typedef float float32;
   typedef double float64;
-
-  typedef __m128 simd_float;
-  typedef __m128i simd_int;
-  typedef __m128d simd_double;
 
   typedef std::string string;
   typedef std::string_view stringview;
@@ -71,25 +57,14 @@ namespace Krys
   using List = std::vector<T>;
 
   template <typename T>
-  using Unique = std::unique_ptr<T>;
+  using Queue = std::queue<T>;
 
   template <typename T>
-  using Ref = std::shared_ptr<T>;
+  using Set = std::set<T>;
 
   template <typename T>
-  using WeakRef = std::weak_ptr<T>;
-
-  template <typename T, typename... Args>
-  constexpr Unique<T> CreateUnique(Args &&...args)
-  {
-    return std::make_unique<T>(std::forward<Args>(args)...);
-  }
-
-  template <typename T, typename... Args>
-  constexpr Ref<T> CreateRef(Args &&...args)
-  {
-    return std::make_shared<T>(std::forward<Args>(args)...);
-  }
+  using Func = std::function<T>;
 
   template <typename T>
   concept ArithmeticType = std::is_integral_v<T> || std::is_floating_point_v<T>;
+}

@@ -152,10 +152,6 @@ namespace Krys
 
   LRESULT CALLBACK WindowsWindow::WindowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
   {
-#define KRYS_EVENT_CALLBACK()                                                                                          \
-  if (_eventCallback)                                                                                                  \
-  _eventCallback(event)
-
     LRESULT result = 0;
     switch (message)
     {
@@ -164,7 +160,6 @@ namespace Krys
       {
         MouseMoveEvent event;
         GetMouseEventData(&event, wParam, lParam);
-        KRYS_EVENT_CALLBACK();
         break;
       }
       // TODO: should we always capture mouse on mouse down until mouse up? we currently don't.
@@ -172,42 +167,36 @@ namespace Krys
       {
         MouseButtonPressedEvent event(MouseButton::Left);
         GetMouseEventData(&event, wParam, lParam);
-        KRYS_EVENT_CALLBACK();
         break;
       }
       case WM_LBUTTONUP:
       {
         MouseButtonReleasedEvent event(MouseButton::Left);
         GetMouseEventData(&event, wParam, lParam);
-        KRYS_EVENT_CALLBACK();
         break;
       }
       case WM_RBUTTONDOWN:
       {
         MouseButtonPressedEvent event(MouseButton::Right);
         GetMouseEventData(&event, wParam, lParam);
-        KRYS_EVENT_CALLBACK();
         break;
       }
       case WM_RBUTTONUP:
       {
         MouseButtonReleasedEvent event(MouseButton::Right);
         GetMouseEventData(&event, wParam, lParam);
-        KRYS_EVENT_CALLBACK();
         break;
       }
       case WM_MBUTTONDOWN:
       {
         MouseButtonPressedEvent event(MouseButton::Middle);
         GetMouseEventData(&event, wParam, lParam);
-        KRYS_EVENT_CALLBACK();
         break;
       }
       case WM_MBUTTONUP:
       {
         MouseButtonReleasedEvent event(MouseButton::Middle);
         GetMouseEventData(&event, wParam, lParam);
-        KRYS_EVENT_CALLBACK();
         break;
       }
       case WM_XBUTTONDOWN:
@@ -215,7 +204,6 @@ namespace Krys
         MouseButton button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1 ? MouseButton::Thumb1 : MouseButton::Thumb2;
         MouseButtonPressedEvent event(button);
         GetMouseEventData(&event, wParam, lParam);
-        KRYS_EVENT_CALLBACK();
         break;
       }
       case WM_XBUTTONUP:
@@ -223,7 +211,6 @@ namespace Krys
         MouseButton button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1 ? MouseButton::Thumb1 : MouseButton::Thumb2;
         MouseButtonReleasedEvent event(button);
         GetMouseEventData(&event, wParam, lParam);
-        KRYS_EVENT_CALLBACK();
         break;
       }
       case WM_LBUTTONDBLCLK:
@@ -243,8 +230,6 @@ namespace Krys
         ScreenToClient(window, &pt);
         event.X = pt.x;
         event.Y = pt.y;
-
-        KRYS_EVENT_CALLBACK();
         break;
       }
 #pragma endregion Mouse input
@@ -284,7 +269,6 @@ namespace Krys
           KeyReleasedEvent event;
           event.Alt = isSysKeyMessage;
           GetKeyEventData(&event, vkCode);
-          KRYS_EVENT_CALLBACK();
         }
         else
         {
@@ -292,7 +276,6 @@ namespace Krys
           event.Alt = isSysKeyMessage;
           event.Repeat = (keyFlags & KF_REPEAT); // previous key-state flag, 1 on autorepeat
           GetKeyEventData(&event, vkCode);
-          KRYS_EVENT_CALLBACK();
         }
 
         if (isSysKeyMessage) // OS also needs to process, otherwise cmds like ALT+TAB won't work
@@ -325,8 +308,6 @@ namespace Krys
         event.Height = height;
         _width = width;
         _height = height;
-
-        KRYS_EVENT_CALLBACK();
 
         return DefWindowProcA(window, message, wParam, lParam);
       }
@@ -381,10 +362,9 @@ namespace Krys
       TranslateMessage(&msg);
       DispatchMessageA(&msg);
 
-      if (msg.message == WM_QUIT && _eventCallback)
+      if (msg.message == WM_QUIT)
       {
         ShutdownEvent event;
-        _eventCallback(event);
       }
     }
   }

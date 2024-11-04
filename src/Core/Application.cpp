@@ -19,25 +19,13 @@
 namespace Krys
 {
   Application::Application(const string &name, int width, int height, float targetFps) noexcept
-      : _window(Window::Create(name, width, height)), _context(_window->GetGraphicsContext()),
-        _renderer(CreateRef<Renderer>()), _sceneManager(_renderer), _isRunning(false),
-        _targetFrameTimeMs(1000.0f / targetFps)
+      : _window(Window::Create(name, width, height)), _isRunning(false), _targetFrameTimeMs(1000.0f / targetFps)
   {
   }
 
   void Application::Startup() noexcept
   {
     Input::Init();
-
-    _context->Init();
-    _context->SetClearColor({0.0f, 0.0f, 0.0f, 1.0f});
-    _renderer->Init(_context);
-
-    NodeVisitorContext visitorContext;
-    visitorContext.Renderer = _renderer;
-
-    _sceneManager.AddVisitor(CreateUnique<RenderVisitor>(visitorContext));
-
     _window->Show();
   }
 
@@ -88,20 +76,17 @@ namespace Krys
   {
     _window->BeginFrame();
     Input::BeginFrame();
-    _renderer->BeginFrame();
   }
 
   void Application::Update(float dt) noexcept
   {
     KRYS_PERFORMANCE_TIMER("Frame");
-    _sceneManager.UpdateScene();
   }
 
   void Application::EndFrame() noexcept
   {
     _window->EndFrame();
     Input::EndFrame();
-    _renderer->EndFrame();
   }
 
 #pragma region Events
@@ -123,7 +108,6 @@ namespace Krys
   {
     KRYS_INFO("Window Resized: Width: %d, Height: %d", event.Width, event.Height);
     // TODO: we need to keep track of the width and height instead as we frequently change the viewport dimensions.
-    _context->SetViewport(event.Width, event.Height);
     return false;
   }
 
