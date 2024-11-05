@@ -21,10 +21,22 @@ namespace Krys
     uint32 _hash;
 
   public:
-    constexpr StringId(uint32 hash) noexcept;
-    constexpr bool operator==(const StringId &other) const noexcept;
-    constexpr bool operator!=(const StringId &other) const noexcept;
-    constexpr operator uint32() const noexcept;
+    constexpr StringId(uint32 hash) noexcept : _hash(hash)
+    {
+    }
+
+    constexpr bool operator==(const StringId &other) const noexcept
+    {
+      return _hash == other._hash;
+    }
+    constexpr bool operator!=(const StringId &other) const noexcept
+    {
+      return !(*this == other);
+    }
+    constexpr operator uint32() const noexcept
+    {
+      return _hash;
+    }
   };
 
   struct StringIdHasher
