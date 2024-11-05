@@ -1,9 +1,12 @@
-﻿/.vs
-.vscode
+﻿# vscode
+/.vs
+/.vscode
+
+# temp data
 /build
-src/ThirdParty/glm/doc/*
-data/log.txt
-.vscode/Krystal.code-workspace
+/data/log.txt
+
+# libraries
 assimpd.lib
 assimpd.pdb
 zlibstaticd.lib
