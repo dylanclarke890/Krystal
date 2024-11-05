@@ -41,7 +41,7 @@ K:\src\Core\Events\EventDispatcher.cpp ^
 K:\src\Core\Events\EventManager.cpp ^
 K:\src\Core\Events\KeyboardEvent.cpp ^
 K:\src\Core\Events\MouseButtonEvent.cpp ^
-K:\src\Core\Events\MouseEvent.cpp ^
+K:\src\Core\Events\MouseMoveEvent.cpp ^
 K:\src\Core\Events\ScrollWheelEvent.cpp
 
 set krystal_source_files=^

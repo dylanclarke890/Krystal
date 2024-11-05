@@ -7,6 +7,7 @@ namespace Krys
 {
   class EventManager;
 
+  /// @brief Dispatches events to registered handlers.
   class EventDispatcher
   {
     friend class EventManager;
@@ -15,6 +16,8 @@ namespace Krys
     EventDispatcher() noexcept = default;
     NO_COPY_AND_ASSIGN(EventDispatcher)
 
+    /// @brief Dispatches an event to all registered handlers for the event's type.
+    /// @param event The event to dispatch.
     void Dispatch(const Event &event) const noexcept;
 
   private:

@@ -3,7 +3,7 @@
 namespace Krys
 {
   MouseButtonEvent::MouseButtonEvent(const MouseButton button, const MouseButtonState state) noexcept
-      : _button(button), _state(state)
+      : Event(), _button(button), _state(state)
   {
   }
 

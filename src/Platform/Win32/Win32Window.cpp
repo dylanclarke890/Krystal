@@ -2,7 +2,7 @@
 #include "Core/Events/EventManager.hpp"
 #include "Core/Events/KeyboardEvent.hpp"
 #include "Core/Events/MouseButtonEvent.hpp"
-#include "Core/Events/MouseEvent.hpp"
+#include "Core/Events/MouseMoveEvent.hpp"
 #include "Core/Events/QuitEvent.hpp"
 #include "Core/Events/ScrollWheelEvent.hpp"
 
@@ -73,25 +73,30 @@ namespace Krys::Platform
         _eventManager->Enqueue(CreateUnique<MouseButtonEvent>(MouseButton::RIGHT, MouseButtonState::Pressed));
         break;
       case WM_RBUTTONUP:
-        _eventManager->Enqueue(CreateUnique<MouseButtonEvent>(MouseButton::RIGHT, MouseButtonState::Released));
+        _eventManager->Enqueue(
+          CreateUnique<MouseButtonEvent>(MouseButton::RIGHT, MouseButtonState::Released));
         break;
 
       case WM_MBUTTONDOWN:
-        _eventManager->Enqueue(CreateUnique<MouseButtonEvent>(MouseButton::MIDDLE, MouseButtonState::Pressed));
+        _eventManager->Enqueue(
+          CreateUnique<MouseButtonEvent>(MouseButton::MIDDLE, MouseButtonState::Pressed));
         break;
       case WM_MBUTTONUP:
-        _eventManager->Enqueue(CreateUnique<MouseButtonEvent>(MouseButton::MIDDLE, MouseButtonState::Released));
+        _eventManager->Enqueue(
+          CreateUnique<MouseButtonEvent>(MouseButton::MIDDLE, MouseButtonState::Released));
         break;
 
       case WM_XBUTTONDOWN:
       {
-        const auto button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1 ? MouseButton::THUMB_1 : MouseButton::THUMB_2;
+        const auto button =
+          GET_XBUTTON_WPARAM(wParam) & XBUTTON1 ? MouseButton::THUMB_1 : MouseButton::THUMB_2;
         _eventManager->Enqueue(CreateUnique<MouseButtonEvent>(button, MouseButtonState::Pressed));
         break;
       }
       case WM_XBUTTONUP:
       {
-        const auto button = GET_XBUTTON_WPARAM(wParam) & XBUTTON1 ? MouseButton::THUMB_1 : MouseButton::THUMB_2;
+        const auto button =
+          GET_XBUTTON_WPARAM(wParam) & XBUTTON1 ? MouseButton::THUMB_1 : MouseButton::THUMB_2;
         _eventManager->Enqueue(CreateUnique<MouseButtonEvent>(button, MouseButtonState::Released));
         break;
       }
@@ -105,7 +110,8 @@ namespace Krys::Platform
         UINT dwSize = sizeof(RAWINPUT);
         BYTE lpb[sizeof(RAWINPUT)];
 
-        ::GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, lpb, &dwSize, sizeof(RAWINPUTHEADER));
+        ::GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, lpb, &dwSize,
+                          sizeof(RAWINPUTHEADER));
 
         RAWINPUT raw = {0};
         std::memcpy(&raw, lpb, sizeof(raw));
@@ -115,7 +121,7 @@ namespace Krys::Platform
           // get mouse delta from raw input data
           int x = raw.data.mouse.lLastX;
           int y = raw.data.mouse.lLastY;
-          _eventManager->Enqueue(CreateUnique<MouseEvent>(static_cast<float>(x), static_cast<float>(y)));
+          _eventManager->Enqueue(CreateUnique<MouseMoveEvent>(static_cast<float>(x), static_cast<float>(y)));
         }
         else if ((raw.data.mouse.usButtonFlags & RI_MOUSE_WHEEL) == RI_MOUSE_WHEEL)
         {

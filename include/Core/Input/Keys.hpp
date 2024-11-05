@@ -4,14 +4,14 @@
 
 namespace Krys
 {
-  /// @brief Pressed or released.
+  /// @brief The state of a key during an interaction.
   enum class KeyState : uint8
   {
     Pressed,
     Released
   };
 
-  /// @brief All possible keyboard keys.
+  /// @brief Supported keyboard keys.
   enum class Key : uint32
   {
     UNKNOWN,

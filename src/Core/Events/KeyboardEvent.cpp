@@ -2,7 +2,8 @@
 
 namespace Krys
 {
-  KeyboardEvent::KeyboardEvent(const Key key, const KeyState state) noexcept : Event(), _key(key), _state(state)
+  KeyboardEvent::KeyboardEvent(const Key key, const KeyState state) noexcept
+      : Event(), _key(key), _state(state)
   {
   }
 

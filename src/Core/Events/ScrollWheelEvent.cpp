@@ -2,7 +2,7 @@
 
 namespace Krys
 {
-  ScrollWheelEvent::ScrollWheelEvent(const float delta) noexcept : _delta(delta)
+  ScrollWheelEvent::ScrollWheelEvent(const float delta) noexcept : Event(), _delta(delta)
   {
   }
 

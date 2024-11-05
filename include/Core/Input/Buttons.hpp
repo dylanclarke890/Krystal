@@ -4,14 +4,14 @@
 
 namespace Krys
 {
-  /// @brief Pressed or released.
+  /// @brief The state of a button during an interaction.
   enum class MouseButtonState : uint8
   {
     Pressed,
     Released
   };
 
-  /// @brief All possible mouse buttons.
+  /// @brief Supported mouse buttons.
   enum class MouseButton : uint16
   {
     UNKNOWN,
