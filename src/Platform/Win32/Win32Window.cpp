@@ -236,7 +236,7 @@ namespace Krys::Platform
     return key;
   }
 
-  void Win32Window::ProcessWindowsMessages() const noexcept
+  void Win32Window::Poll() noexcept
   {
     MSG message = {0};
     while (::PeekMessageA(&message, NULL, 0, 0, PM_REMOVE) != 0)

@@ -1,5 +1,6 @@
 #include "Core/Application.hpp"
 #include "Core/Events/EventManager.hpp"
+#include "Core/Window.hpp"
 #include "Core/WindowManager.hpp"
 
 namespace Krys
@@ -12,6 +13,10 @@ namespace Krys
 
   void Application::Run() noexcept
   {
-    Update(0);
+    while (true)
+    {
+      _context->GetWindowManager()->GetCurrentWindow()->Poll();
+      Update(0.0f);
+    }
   }
 }

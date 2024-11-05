@@ -16,6 +16,8 @@ namespace Krys::Platform
     Win32Window(uint32 width, uint32 height, EventManager *eventManager) noexcept;
     virtual ~Win32Window() noexcept override = default;
 
+    void Poll() noexcept override;
+
     HDC GetDeviceContext() const noexcept;
     HWND GetWindowHandle() const noexcept;
 
@@ -24,7 +26,6 @@ namespace Krys::Platform
 
     LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept;
     Key KeyCodeToEngineKey(WPARAM keyCode) const noexcept;
-    void ProcessWindowsMessages() const noexcept;
 
   protected:
     HDC _deviceContext;

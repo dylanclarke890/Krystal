@@ -19,6 +19,8 @@ namespace Krys
     NO_DISCARD uint32 Width() const noexcept;
     NO_DISCARD uint32 Height() const noexcept;
 
+    virtual void Poll() noexcept = 0;
+
   protected:
     uint32 _width, _height;
     EventManager *_eventManager;
