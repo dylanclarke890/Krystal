@@ -64,6 +64,8 @@ namespace Krys::Platform
       KRYS_CRITICAL("timeBeginPeriod failed");
 
     _deviceContext = ::GetDC(_windowHandle);
+
+    ::ShowWindow(_windowHandle, SW_SHOW);
   }
 
   void Win32OpenGLWindow::InitOpenGLExtensions(HINSTANCE instance) const noexcept
