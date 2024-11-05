@@ -1,6 +1,4 @@
 #include "Core/ApplicationContext.hpp"
-#include "Core/Events/EventManager.hpp"
-#include "Core/WindowManager.hpp"
 
 namespace Krys
 {

@@ -15,6 +15,7 @@ namespace Krys::Platform
     windowClass.hInstance = instance;
     windowClass.lpfnWndProc = &Win32Window::StaticWindowProc;
     windowClass.cbWndExtra = sizeof(Win32Window *);
+    windowClass.lpszClassName = "KrystalOpenGLWindowClass";
 
     if (!::RegisterClassA(&windowClass))
       KRYS_CRITICAL("Unable to register class: %s", ::GetLastError());

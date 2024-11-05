@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Core/Attributes.hpp"
+#include "Core/Events/EventManager.hpp"
 #include "Core/Pointers.hpp"
 #include "Core/Types.hpp"
+#include "Core/WindowManager.hpp"
 
 namespace Krys
 {
   class Application;
-  class EventManager;
-  class WindowManager;
 
   class ApplicationContext
   {

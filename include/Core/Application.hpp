@@ -3,11 +3,10 @@
 #include "Core/Defines.hpp"
 #include "Core/Pointers.hpp"
 #include "Core/Types.hpp"
+#include "Core/ApplicationContext.hpp"
 
 namespace Krys
 {
-  class ApplicationContext;
-
   class Application
   {
   public:
@@ -19,10 +18,10 @@ namespace Krys
 
     template <typename TApplication>
     REQUIRES((std::is_base_of_v<Application, TApplication>))
-    static Unique<Application> Create(int argc, char **argv) noexcept
+    static Unique<Application> Create(int argc, char **argv, uint32 width, uint32 height) noexcept
     {
       auto appContext = CreateApplicationContext(argc, argv);
-      return CreateUnique<TApplication>(std::move(appContext));
+      return CreateUnique<TApplication>(std::move(appContext), width, height);
     }
 
   protected:

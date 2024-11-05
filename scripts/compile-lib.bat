@@ -35,7 +35,6 @@ K:\src\Platform\Win32\Win32WindowManager.cpp
 set krystal_core_source_files=^
 K:\src\Core\Application.cpp ^
 K:\src\Core\ApplicationContext.cpp ^
-K:\src\Core\StringId.cpp ^
 K:\src\Core\Window.cpp ^
 K:\src\Core\WindowManager.cpp ^
 K:\src\Core\Events\EventDispatcher.cpp ^
