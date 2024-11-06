@@ -15,16 +15,22 @@ namespace Krys
     return fnv1a_32(s, count);
   }
 
+  /// @brief Represent a hashed string. Strings are slow to compare, comparing hashed strings is much more
+  /// efficient.
   class StringId
   {
   private:
     uint32 _hash;
 
   public:
+    /// @brief Constructs a `StringId` with the given hash.
+    /// @param hash The hashed string.
     explicit constexpr StringId(uint32 hash) noexcept : _hash(hash)
     {
     }
 
+    /// @brief Constructs a `StringId` with the given string to hash.
+    /// @param hash The string to hash.
     explicit constexpr StringId(string text) noexcept : _hash(fnv1a_32(text.c_str(), text.size()))
     {
     }
@@ -45,6 +51,7 @@ namespace Krys
     }
   };
 
+  /// @brief For use in Map<StringId, T, StringIdHasher>.
   struct StringIdHasher
   {
     size_t operator()(const StringId &sid) const noexcept

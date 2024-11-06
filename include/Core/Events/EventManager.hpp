@@ -41,7 +41,10 @@ namespace Krys
     }
 
   private:
+    /// @brief Pending event queue.
     Queue<Unique<Event>> _events;
+
+    /// @brief Dispatches events.
     EventDispatcher _dispatcher;
   };
 }

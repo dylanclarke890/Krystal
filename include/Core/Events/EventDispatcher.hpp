@@ -23,6 +23,6 @@ namespace Krys
     void Dispatch(const Event &event) const noexcept;
 
   private:
-    Map<EventType, List<Func<bool(const Event &)>>, StringIdHasher> _handlers;
+    Map<EventType, List<Func<bool(const Event &)>>, EventTypeHasher> _handlers;
   };
 }

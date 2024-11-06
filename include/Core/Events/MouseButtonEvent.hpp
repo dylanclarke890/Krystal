@@ -23,11 +23,11 @@ namespace Krys
     NO_DISCARD MouseButtonState GetState() const noexcept;
 
     /// @brief Checks if the button is pressed.
-    /// @returns `true` if the button is `MouseButtonState::Pressed`.
+    /// @returns `true` if the button is in the state `MouseButtonState::Pressed`.
     NO_DISCARD bool IsPressed() const noexcept;
 
     /// @brief Checks if the button was released.
-    /// @returns `true` if the button is `MouseButtonState::Released`.
+    /// @returns `true` if the button is in the state `MouseButtonState::Released`.
     NO_DISCARD bool WasReleased() const noexcept;
 
   private:

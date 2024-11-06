@@ -22,7 +22,7 @@ namespace Krys
     return _inputManager.get();
   }
 
-  const List<string> &ApplicationContext::GetArgs() const noexcept
+  const List<string> &ApplicationContext::GetCLIArgs() const noexcept
   {
     return _args;
   }

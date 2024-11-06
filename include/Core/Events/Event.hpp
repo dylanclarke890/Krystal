@@ -6,6 +6,7 @@
 namespace Krys
 {
   typedef StringId EventType;
+  typedef StringIdHasher EventTypeHasher;
 
 /// @brief Convenience macro for setting up the event type for a derived `Event`.
 /// @param eventTypeName Must be a string literal. Must be unique across events.
