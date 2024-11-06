@@ -12,8 +12,10 @@ namespace Krys
   class EventManager
   {
   public:
-    EventManager() noexcept = default;
     NO_COPY_AND_ASSIGN(EventManager)
+
+    /// @brief Constructs an `EventManager`.
+    EventManager() noexcept = default;
 
     /// @brief Add an event to the queue.
     /// @param event The event to add.

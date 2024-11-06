@@ -16,6 +16,9 @@ namespace Krys
     while (true)
     {
       _context->GetWindowManager()->GetCurrentWindow()->Poll();
+      _context->GetInputManager()->PollDevices();
+      _context->GetEventManager()->ProcessEvents();
+
       Update(0.0f);
     }
   }

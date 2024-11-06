@@ -6,19 +6,21 @@
 namespace Krys
 {
   class EventManager;
+  class InputManager;
   class Window;
 
   class WindowManager
   {
   public:
-    WindowManager(EventManager *eventManager) noexcept;
+    WindowManager(Ptr<EventManager> eventManager, Ptr<InputManager> inputManager) noexcept;
     virtual ~WindowManager() = default;
 
-    Window *GetCurrentWindow() const noexcept;
-    virtual Window const *Create(uint32 width, uint32 height) noexcept = 0;
+    Ptr<Window> GetCurrentWindow() const noexcept;
+    virtual Ptr<Window> Create(uint32 width, uint32 height) noexcept = 0;
 
   protected:
-    EventManager *_eventManager;
+    Ptr<EventManager> _eventManager;
+    Ptr<InputManager> _inputManager;
     Unique<Window> _currentWindow;
   };
 }

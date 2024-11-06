@@ -7,14 +7,14 @@
 namespace Krys
 {
   class EventManager;
+  class InputManager;
 
   class Window
   {
   public:
-    Window(uint32 width, uint32 height, EventManager *eventManager) noexcept;
-    virtual ~Window() noexcept = default;
-
     NO_COPY_AND_ASSIGN(Window)
+
+    virtual ~Window() noexcept = default;
 
     NO_DISCARD uint32 Width() const noexcept;
     NO_DISCARD uint32 Height() const noexcept;
@@ -22,7 +22,11 @@ namespace Krys
     virtual void Poll() noexcept = 0;
 
   protected:
+    Window(uint32 width, uint32 height, Ptr<EventManager> eventManager, Ptr<InputManager> inputManager) noexcept;
+
+  protected:
     uint32 _width, _height;
-    EventManager *_eventManager;
+    Ptr<EventManager> _eventManager;
+    Ptr<InputManager> _inputManager;
   };
 }

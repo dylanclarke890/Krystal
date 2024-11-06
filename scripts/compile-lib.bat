@@ -26,6 +26,7 @@ K:\src\ThirdParty\Glad\src\gl.c ^
 K:\src\ThirdParty\Glad\src\wgl.c
 
 set krystal_platform_source_files=^
+K:\src\Platform\Win32\Input\Win32InputManager.cpp ^
 K:\src\Platform\Win32\Win32Application.cpp ^
 K:\src\Platform\Win32\Win32Logger.cpp ^
 K:\src\Platform\Win32\Win32OpenGLWindow.cpp ^
@@ -33,16 +34,19 @@ K:\src\Platform\Win32\Win32Window.cpp ^
 K:\src\Platform\Win32\Win32WindowManager.cpp
 
 set krystal_core_source_files=^
-K:\src\Core\Application.cpp ^
-K:\src\Core\ApplicationContext.cpp ^
-K:\src\Core\Window.cpp ^
-K:\src\Core\WindowManager.cpp ^
 K:\src\Core\Events\EventDispatcher.cpp ^
 K:\src\Core\Events\EventManager.cpp ^
 K:\src\Core\Events\KeyboardEvent.cpp ^
 K:\src\Core\Events\MouseButtonEvent.cpp ^
 K:\src\Core\Events\MouseMoveEvent.cpp ^
-K:\src\Core\Events\ScrollWheelEvent.cpp
+K:\src\Core\Events\ScrollWheelEvent.cpp ^
+K:\src\Core\Input\InputManager.cpp ^
+K:\src\Core\Input\Keyboard.cpp ^
+K:\src\Core\Input\Mouse.cpp ^
+K:\src\Core\Application.cpp ^
+K:\src\Core\ApplicationContext.cpp ^
+K:\src\Core\Window.cpp ^
+K:\src\Core\WindowManager.cpp
 
 set krystal_source_files=^
 %krystal_third_party_source_files% ^

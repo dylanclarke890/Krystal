@@ -5,14 +5,25 @@
 
 namespace Krys
 {
+  /// @brief Owns the memory it points to.
+  /// @tparam T The underlying type of the data being pointed to.
   template <typename T>
   using Unique = std::unique_ptr<T>;
 
+  /// @brief Shares the memory it points to via reference counting.
+  /// @tparam T The underlying type of the data being pointed to.
   template <typename T>
   using Ref = std::shared_ptr<T>;
 
+  /// @brief Weakly references a resource.
+  /// @tparam T The underlying type of the data being pointed to.
   template <typename T>
   using WeakRef = std::weak_ptr<T>;
+
+  /// @brief Non-owning pointer to a resource.
+  /// @tparam T The underlying type of the data being pointed to.
+  template <typename T>
+  using Ptr = T *const;
 
   template <typename T, typename... Args>
   constexpr Unique<T> CreateUnique(Args &&...args)

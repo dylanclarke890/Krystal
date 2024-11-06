@@ -32,6 +32,7 @@ namespace Krys
     virtual NO_DISCARD EventType GetEventType() const noexcept = 0;
 
   protected:
+    /// @brief Constructs an `Event`.
     Event() noexcept = default;
   };
 }

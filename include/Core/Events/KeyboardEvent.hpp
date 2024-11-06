@@ -23,14 +23,6 @@ namespace Krys
     /// @brief Gets the state of the key.
     NO_DISCARD KeyState GetState() const noexcept;
 
-    /// @brief Checks if the key is pressed.
-    /// @returns `true` if the key is `KeyState::Pressed`.
-    NO_DISCARD bool IsPressed() const noexcept;
-
-    /// @brief Checks if the key was released.
-    /// @returns `true` if the key is `KeyState::Released`.
-    NO_DISCARD bool WasReleased() const noexcept;
-
   private:
     Key _key;
     KeyState _state;

@@ -3,12 +3,12 @@
 
 namespace Krys
 {
-  WindowManager::WindowManager(EventManager *eventManager) noexcept
-      : _eventManager(eventManager), _currentWindow(nullptr)
+  WindowManager::WindowManager(Ptr<EventManager> eventManager, Ptr<InputManager> inputManager) noexcept
+      : _eventManager(eventManager), _inputManager(inputManager), _currentWindow(nullptr)
   {
   }
 
-  Window *WindowManager::GetCurrentWindow() const noexcept
+  Ptr<Window> WindowManager::GetCurrentWindow() const noexcept
   {
     return _currentWindow.get();
   }

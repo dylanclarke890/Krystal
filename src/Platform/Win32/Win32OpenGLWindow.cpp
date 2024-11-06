@@ -1,12 +1,14 @@
 #include <glad/wgl.h>
+#include <hidusage.h>
 
 #include "Core/Defines.hpp"
 #include "Platform/Win32/Win32OpenGLWindow.hpp"
 
 namespace Krys::Platform
 {
-  Win32OpenGLWindow::Win32OpenGLWindow(uint32 width, uint32 height, EventManager *eventManager) noexcept
-      : Win32Window(width, height, eventManager)
+  Win32OpenGLWindow::Win32OpenGLWindow(uint32 width, uint32 height, Ptr<EventManager> eventManager,
+                                       Ptr<InputManager> inputManager) noexcept
+      : Win32Window(width, height, eventManager, inputManager)
   {
     const auto instance = ::GetModuleHandleA(NULL);
 
@@ -52,7 +54,7 @@ namespace Krys::Platform
     if (!_windowHandle)
       KRYS_CRITICAL("Unable to create window: %s", ::GetLastError());
 
-    ::SetWindowLongPtr(_windowHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+    ::SetWindowLongPtrA(_windowHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
     TIMECAPS timeCaps;
     if (::timeGetDevCaps(&timeCaps, sizeof(timeCaps)) == TIMERR_NOCANDO)
@@ -65,7 +67,25 @@ namespace Krys::Platform
 
     _deviceContext = ::GetDC(_windowHandle);
 
+    // register for raw mouse events
+    RAWINPUTDEVICE rid;
+    rid.usUsagePage = HID_USAGE_PAGE_GENERIC;
+    rid.usUsage = HID_USAGE_GENERIC_MOUSE;
+    rid.dwFlags = RIDEV_INPUTSINK;
+    rid.hwndTarget = _windowHandle;
+
+    ::RegisterRawInputDevices(&rid, 1, sizeof(rid));
+
+    // optional: confine cursor to window
+    // ::ClipCursor(&GET_WINDOW_DIMENSIONS);
+
+    // ensure mouse visibility reference count is 0 (mouse is hidden)
+    while (::ShowCursor(FALSE) >= 0)
+    {
+    }
+
     ::ShowWindow(_windowHandle, SW_SHOW);
+    ::UpdateWindow(_windowHandle);
   }
 
   void Win32OpenGLWindow::InitOpenGLExtensions(HINSTANCE instance) const noexcept

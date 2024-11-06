@@ -2,8 +2,9 @@
 
 namespace Krys
 {
-  Window::Window(uint32 width, uint32 height, EventManager *eventManager) noexcept
-      : _width(width), _height(height), _eventManager(eventManager)
+  Window::Window(uint32 width, uint32 height, Ptr<EventManager> eventManager,
+                 Ptr<InputManager> inputManager) noexcept
+      : _width(width), _height(height), _eventManager(eventManager), _inputManager(inputManager)
   {
   }
 

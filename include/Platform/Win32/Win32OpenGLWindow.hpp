@@ -7,7 +7,8 @@ namespace Krys::Platform
   class Win32OpenGLWindow : public Win32Window
   {
   public:
-    Win32OpenGLWindow(uint32 width, uint32 height, EventManager *eventManager) noexcept;
+    Win32OpenGLWindow(uint32 width, uint32 height, Ptr<EventManager> eventManager,
+                      Ptr<InputManager> inputManager) noexcept;
     ~Win32OpenGLWindow() noexcept override = default;
 
   private:

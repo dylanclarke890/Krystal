@@ -16,14 +16,4 @@ namespace Krys
   {
     return _state;
   }
-
-  NO_DISCARD bool KeyboardEvent::IsPressed() const noexcept
-  {
-    return _state == KeyState::Pressed;
-  }
-
-  NO_DISCARD bool KeyboardEvent::WasReleased() const noexcept
-  {
-    return _state == KeyState::Released;
-  }
 }

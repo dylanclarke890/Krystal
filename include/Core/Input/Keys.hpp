@@ -8,6 +8,7 @@ namespace Krys
   enum class KeyState : uint8
   {
     Pressed,
+    Held,
     Released
   };
 

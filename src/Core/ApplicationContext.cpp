@@ -7,14 +7,19 @@ namespace Krys
     std::transform(argv, argv + argc, std::begin(_args), [](const char *arg) -> string { return arg; });
   }
 
-  EventManager *ApplicationContext::GetEventManager() const noexcept
+  Ptr<EventManager> ApplicationContext::GetEventManager() const noexcept
   {
     return _eventManager.get();
   }
 
-  WindowManager *ApplicationContext::GetWindowManager() const noexcept
+  Ptr<WindowManager> ApplicationContext::GetWindowManager() const noexcept
   {
     return _windowManager.get();
+  }
+
+  Ptr<InputManager> ApplicationContext::GetInputManager() const noexcept
+  {
+    return _inputManager.get();
   }
 
   const List<string> &ApplicationContext::GetArgs() const noexcept
