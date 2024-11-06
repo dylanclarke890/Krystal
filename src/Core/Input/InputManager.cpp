@@ -74,6 +74,16 @@ namespace Krys
     _customInputDevices.emplace(id, std::move(device));
   }
 
+  const Mouse &InputManager::GetMouse() const noexcept
+  {
+    return _mouse;
+  }
+
+  const Keyboard &InputManager::GetKeyboard() const noexcept
+  {
+    return _keyboard;
+  }
+
   Ptr<HID> InputManager::GetDevice(const DeviceId id) const noexcept
   {
     auto result = _customInputDevices.find(id);

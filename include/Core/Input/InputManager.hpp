@@ -30,6 +30,12 @@ namespace Krys
     /// @param device The device to register.
     void RegisterHID(const DeviceId id, Unique<HID> device) noexcept;
 
+    /// @brief Get the mouse.
+    const Mouse &GetMouse() const noexcept;
+
+    /// @brief Get the keyboard.
+    const Keyboard &GetKeyboard() const noexcept;
+
     /// @brief Get a registered device by id.
     /// @param id The previously registered id of the device.
     /// @returns The device, or `nullptr` if it wasn't found.
