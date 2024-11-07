@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Base/Macros.hpp"
+#include "Base/Types.hpp"
 #include "Core/Events/Event.hpp"
-#include "Core/Types.hpp"
 
 namespace Krys
 {

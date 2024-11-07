@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Detection.hpp"
+#include "Base/Detection.hpp"
 
 // TODO: fix these
 #define KRYS_ENABLE_ASSERTS 1

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core/Defines.hpp"
-#include "Core/Pointers.hpp"
-#include "Core/Types.hpp"
+#include "Base/Defines.hpp"
+#include "Base/Pointers.hpp"
+#include "Base/Types.hpp"
 #include "Core/ApplicationContext.hpp"
 
 namespace Krys

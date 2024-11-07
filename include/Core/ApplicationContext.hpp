@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Core/Attributes.hpp"
+#include "Base/Attributes.hpp"
+#include "Base/Macros.hpp"
+#include "Base/Pointers.hpp"
+#include "Base/Types.hpp"
 #include "Core/Events/EventManager.hpp"
 #include "Core/Input/InputManager.hpp"
-#include "Core/Pointers.hpp"
-#include "Core/Types.hpp"
 #include "Core/WindowManager.hpp"
 
 namespace Krys

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Detection.hpp"
+#include "Base/Detection.hpp"
 
 #if defined(KRYS_COMPILER_VISUAL_STUDIO)
   #include <emmintrin.h>

@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Core/Attributes.hpp"
+#include "Base/Attributes.hpp"
+#include "Base/Macros.hpp"
+#include "Base/Pointers.hpp"
+#include "Base/Types.hpp"
 #include "Core/Events/EventManager.hpp"
 #include "Core/Input/HID.hpp"
 #include "Core/Input/Keyboard.hpp"
 #include "Core/Input/Mouse.hpp"
-#include "Core/Pointers.hpp"
-#include "Core/Types.hpp"
 
 namespace Krys
 {
@@ -20,7 +21,7 @@ namespace Krys
     /// @param eventManager The `EventManager` to dispatch events to.
     InputManager(Ptr<EventManager> eventManager) noexcept;
 
-    /// @brief Frees registered devices.
+    /// @brief Base destructor. Frees registered devices.
     virtual ~InputManager() noexcept;
 
     /// @brief Polls all registered devices for input.
@@ -31,20 +32,20 @@ namespace Krys
     void RegisterHID(const DeviceId id, Unique<HID> device) noexcept;
 
     /// @brief Get the mouse.
-    const Mouse &GetMouse() const noexcept;
+    NO_DISCARD const Mouse &GetMouse() const noexcept;
 
     /// @brief Get the keyboard.
-    const Keyboard &GetKeyboard() const noexcept;
+    NO_DISCARD const Keyboard &GetKeyboard() const noexcept;
 
     /// @brief Get a registered device by id.
     /// @param id The previously registered id of the device.
     /// @returns The device, or `nullptr` if it wasn't found.
-    Ptr<HID> GetDevice(const DeviceId id) const noexcept;
+    NO_DISCARD Ptr<HID> GetDevice(const DeviceId id) const noexcept;
 
   private:
     /// @brief Clear the mouse state. Needs to be called prior to processing this frame's events.
     void ResetMouse() noexcept;
-    
+
     /// @brief Clear the keyboard state. Needs to be called prior to processing this frame's events.
     void ResetKeyboard() noexcept;
 

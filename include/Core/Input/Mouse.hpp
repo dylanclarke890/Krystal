@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core/Attributes.hpp"
+#include "Base/Attributes.hpp"
+#include "Base/Types.hpp"
 #include "Core/Input/Buttons.hpp"
-#include "Core/Types.hpp"
 
 namespace Krys
 {

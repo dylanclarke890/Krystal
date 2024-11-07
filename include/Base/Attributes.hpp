@@ -16,9 +16,4 @@ namespace Krys
 
 /// @brief Convenience macro for the attribute equivalent.
 #define BRANCH_UNLIKELY [[unlikely]]
-
-/// @brief Deletes copy and assign constructors for the given class.
-#define NO_COPY_AND_ASSIGN(Class)                                                                            \
-  Class(const Class &) = delete;                                                                             \
-  Class &operator=(const Class &) = delete;
 }

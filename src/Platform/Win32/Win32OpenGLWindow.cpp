@@ -1,7 +1,7 @@
 #include <glad/wgl.h>
 #include <hidusage.h>
 
-#include "Core/Defines.hpp"
+#include "Base/Defines.hpp"
 #include "Platform/Win32/Win32OpenGLWindow.hpp"
 
 namespace Krys::Platform

@@ -5,8 +5,8 @@
 #endif
 #include <windows.h>
 
+#include "Base/Pointers.hpp"
 #include "Core/Input/Keys.hpp"
-#include "Core/Pointers.hpp"
 #include "Core/Window.hpp"
 
 namespace Krys::Platform

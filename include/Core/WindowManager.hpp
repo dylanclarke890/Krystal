@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Pointers.hpp"
-#include "Core/Types.hpp"
+#include "Base/Pointers.hpp"
+#include "Base/Types.hpp"
 
 namespace Krys
 {

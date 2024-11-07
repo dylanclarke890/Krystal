@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Macros.hpp"
-#include "Core/Types.hpp"
+#include "Base/Macros.hpp"
+#include "Base/Types.hpp"
 
 namespace Krys
 {

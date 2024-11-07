@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Attributes.hpp"
+#include "Base/Attributes.hpp"
 #include "Core/Events/Event.hpp"
 #include "Core/Input/Keys.hpp"
 

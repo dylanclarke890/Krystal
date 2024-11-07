@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Core/Attributes.hpp"
-#include "Core/Pointers.hpp"
+#include "Base/Attributes.hpp"
+#include "Base/Macros.hpp"
+#include "Base/Pointers.hpp"
 #include "Core/StringId.hpp"
 
 namespace Krys

@@ -5,7 +5,7 @@
 #include <mutex>
 #include <sstream>
 
-#include "Core/Types.hpp"
+#include "Base/Types.hpp"
 
 namespace Krys
 {
