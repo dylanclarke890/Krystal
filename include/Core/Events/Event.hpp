@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
-#include "Core/StringId.hpp"
+#include "Core/Utils/StringId.hpp"
 
 namespace Krys
 {

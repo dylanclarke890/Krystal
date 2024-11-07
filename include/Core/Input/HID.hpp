@@ -3,7 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Pointers.hpp"
-#include "Core/StringId.hpp"
+#include "Core/Utils/StringId.hpp"
 
 namespace Krys
 {

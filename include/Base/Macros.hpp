@@ -2,7 +2,7 @@
 
 namespace Krys
 {
-/// @brief Define bitwise operators for an enum class.
+/// @brief Defines bitwise operators for an enum class.
 /// @param EnumClass The enum class to define the operators for.
 /// @param type The underlying type of the enum (e.g., unsigned short).
 #define ENUM_CLASS_BITWISE_OPERATORS(EnumClass, type)                                                        \
