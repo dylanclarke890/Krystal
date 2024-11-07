@@ -1,7 +1,7 @@
 #include "Core/Input/InputManager.hpp"
-#include "Core/Events/KeyboardEvent.hpp"
-#include "Core/Events/MouseButtonEvent.hpp"
-#include "Core/Events/MouseMoveEvent.hpp"
+#include "Core/Events/Input/KeyboardEvent.hpp"
+#include "Core/Events/Input/MouseButtonEvent.hpp"
+#include "Core/Events/Input/MouseMoveEvent.hpp"
 
 namespace Krys
 {

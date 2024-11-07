@@ -1,8 +1,8 @@
 #include "Platform/Win32/Input/Win32InputManager.hpp"
-#include "Core/Events/KeyboardEvent.hpp"
-#include "Core/Events/MouseButtonEvent.hpp"
-#include "Core/Events/MouseMoveEvent.hpp"
-#include "Core/Events/ScrollWheelEvent.hpp"
+#include "Core/Events/Input/KeyboardEvent.hpp"
+#include "Core/Events/Input/MouseButtonEvent.hpp"
+#include "Core/Events/Input/MouseMoveEvent.hpp"
+#include "Core/Events/Input/ScrollWheelEvent.hpp"
 
 namespace Krys
 {

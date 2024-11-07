@@ -36,10 +36,10 @@ K:\src\Platform\Win32\Win32WindowManager.cpp
 set krystal_core_source_files=^
 K:\src\Core\Events\EventDispatcher.cpp ^
 K:\src\Core\Events\EventManager.cpp ^
-K:\src\Core\Events\KeyboardEvent.cpp ^
-K:\src\Core\Events\MouseButtonEvent.cpp ^
-K:\src\Core\Events\MouseMoveEvent.cpp ^
-K:\src\Core\Events\ScrollWheelEvent.cpp ^
+K:\src\Core\Events\Input\KeyboardEvent.cpp ^
+K:\src\Core\Events\Input\MouseButtonEvent.cpp ^
+K:\src\Core\Events\Input\MouseMoveEvent.cpp ^
+K:\src\Core\Events\Input\ScrollWheelEvent.cpp ^
 K:\src\Core\Input\InputManager.cpp ^
 K:\src\Core\Input\Keyboard.cpp ^
 K:\src\Core\Input\Mouse.cpp ^
