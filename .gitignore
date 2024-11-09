@@ -11,3 +11,6 @@ assimpd.lib
 assimpd.pdb
 zlibstaticd.lib
 zlibstaticd.pdb
+
+# python
+__pycache__
