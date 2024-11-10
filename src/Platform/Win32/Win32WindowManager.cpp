@@ -2,6 +2,7 @@
 #include "Base/Defines.hpp"
 #include "Core/Events/EventManager.hpp"
 #include "Platform/Win32/Win32OpenGLWindow.hpp"
+#include "Core/Debug/Macros.hpp"
 
 namespace Krys::Platform
 {
