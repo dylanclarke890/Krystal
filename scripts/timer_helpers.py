@@ -15,4 +15,4 @@ def end_timer():
   end_time: datetime = datetime.now()
   time_taken: timedelta = end_time - compile_start
   print(f"Build finished at: {format_date(end_time)}")
-  print(f"Total time taken: ({str(round(time_taken.total_seconds(), 3))}s)")
+  print(f"Build completed in {str(round(time_taken.total_seconds(), 3))}s")
