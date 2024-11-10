@@ -3,8 +3,8 @@ from datetime import timedelta, datetime
 
 compile_start: datetime = datetime.now()
 
-def format_date(date: datetime):
-  return date.strftime("%H:%M:%S:%f")[:-3]
+def format_date(date: datetime, ms_precision: int = 3):
+  return date.strftime("%H:%M:%S:%f")[:-(6-ms_precision)]
 
 def start_timer():
   os.system('cls')

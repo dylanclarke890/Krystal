@@ -4,34 +4,34 @@ import sys
 from glob import glob
 import subprocess
 
-def capture_vs_environment():
-  vs_vars_path = r"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"
-  command = f'"{vs_vars_path}" x64 & set'
-  output = subprocess.check_output(command, shell=True, text=True)
-  env = {}
+def capture_vs_environment()->dict[str, str]:
+  vs_vars_path: str = r"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"
+  command: str = f'"{vs_vars_path}" x64 & set'
+  output: str = subprocess.check_output(command, shell=True, text=True)
+  env: dict[str, str] = {}
   for line in output.splitlines():
     if '=' in line:
       key, value = line.split('=', 1)
       env[key] = value
   return env
 
-def setup_build_environment():
+def setup_build_environment()->None:
   if is_vs_environment_initialized():
     print("Environment already initialized.")
-  else:
-    print("Initializing environment...")
-    os.environ.update(capture_vs_environment())
+    return None
+  print("Initializing environment...")
+  os.environ.update(capture_vs_environment())
 
 # Check for specific environment variables that vcvarsall.bat would set
-def is_vs_environment_initialized():
+def is_vs_environment_initialized()->bool:
   return 'VSCMD_VER' in os.environ and 'INCLUDE' in os.environ
 
-PROJECT_TYPE_LIBRARY = "lib"
-PROJECT_TYPE_EXE = "link"
+PROJECT_TYPE_LIBRARY: str = "lib"
+PROJECT_TYPE_EXE: str = "link"
 
 class Project:
   name: str
-  type = PROJECT_TYPE_LIBRARY
+  type: str = PROJECT_TYPE_LIBRARY
   src_root: str
   third_party_root: str
   include_dirs: list[str] = []
@@ -55,43 +55,43 @@ class Project:
   # Regular expression to match #include "file.h" or #include <file>
   include_pattern = re.compile(r'#include\s*[<"]([^">]+)[">]')
 
-  def ensure_build_dirs_exist(self):
+  def ensure_build_dirs_exist(self)->None:
     if not os.path.exists(self.build_output_dir):
       os.mkdir(self.build_output_dir)
     if not os.path.exists(self.build_object_output_dir):
       os.mkdir(self.build_object_output_dir)
 
-  def compile_translation_units(self, source_files, env):
+  def compile_translation_units(self, source_files: str, env: dict[str, str]):
     os.chdir(self.build_output_dir)
-    compiler_settings = self.get_compiler_settings()
-    disabled_warnings = self.get_disabled_warnings()
-    defines = self.get_defines()
-    include_dirs = self.get_include_dirs()
-    cl_command = " ".join(["cl", compiler_settings, disabled_warnings, source_files, defines, include_dirs])
+    compiler_settings: str = self.get_compiler_settings()
+    disabled_warnings: str = self.get_disabled_warnings()
+    defines: str = self.get_defines()
+    include_dirs: str = self.get_include_dirs()
+    cl_command: str = " ".join(["cl", compiler_settings, disabled_warnings, source_files, defines, include_dirs])
     return subprocess.run(cl_command, shell=True, env=env).returncode
 
-  def link(self, env):
+  def link(self, env: dict[str, str])->int:
     os.chdir(self.build_output_dir)
-    obj_files = " ".join(self.get_matching_files([self.build_object_output_dir + "**/*.obj"]))
-    linker_settings = self.get_linker_settings()
-    linked_libs = self.get_linked_libraries()
-    linker_type = self.type
-    link_command = " ".join([linker_type, linker_settings, obj_files, linked_libs]).replace("  ", " ")
+    obj_files: str = " ".join(self.get_matching_files([self.build_object_output_dir + "**/*.obj"]))
+    linker_settings: str = self.get_linker_settings()
+    linked_libs: str = self.get_linked_libraries()
+    linker_type: str = self.type
+    link_command: str = " ".join([linker_type, linker_settings, obj_files, linked_libs]).replace("  ", " ")
     return subprocess.run(link_command, shell=True, env=env).returncode
 
-  def build(self):
+  def build(self)->int:
     print(f"Building '{self.name}'")
-    saved_current_working_dir = os.curdir
+    saved_current_working_dir: str = os.curdir
     self.ensure_build_dirs_exist()
 
-    source_files = self.get_source_files()
+    source_files: str = self.get_source_files()
     if not source_files:
       return 0
        
     setup_build_environment()
-    env = os.environ.copy()
+    env: dict[str, str] = os.environ.copy()
 
-    returncode = self.compile_translation_units(source_files, env)
+    returncode: int = self.compile_translation_units(source_files, env)
     print("Error occurred during compilation." if returncode else "Compiled successfully.")
 
     returncode = self.link(env)
@@ -100,16 +100,16 @@ class Project:
     os.chdir(saved_current_working_dir)
     return returncode
 
-  def get_matching_files(self, file_search_patterns: list[str]) -> list[str]:
-    matches = [glob(self.replace_forward_slashes(pattern), recursive=True) for pattern in file_search_patterns]
+  def get_matching_files(self, file_search_patterns: list[str])->list[str]:
+    matches: list[list[str]] = [glob(self.replace_forward_slashes(pattern), recursive=True) for pattern in file_search_patterns]
     return [x for xs in matches for x in xs]
 
-  def extract_filename_without_extension(self, file_path):
-    filename = os.path.basename(file_path)
+  def extract_filename_without_extension(self, file_path)->str:
+    filename: str = os.path.basename(file_path)
     filename_without_extension, _ = os.path.splitext(filename)
     return filename_without_extension
 
-  def any_include_changed_after_obj_last_modified(self, obj_last_compiled, file_path, already_checked, already_warned):
+  def any_include_changed_after_obj_last_modified(self, obj_last_compiled, file_path, already_checked, already_warned)->bool:
     if file_path in already_checked:
       return False
     already_checked[file_path] = True
@@ -148,7 +148,7 @@ class Project:
 
     return False
 
-  def file_needs_compiling(self, file_path, already_checked, already_warned):
+  def file_needs_compiling(self, file_path, already_checked, already_warned)->bool:
     try:
       source_last_modified = os.path.getmtime(file_path)
       file_name = self.extract_filename_without_extension(file_path)
@@ -162,7 +162,7 @@ class Project:
     except FileNotFoundError:
       return True # .obj file doesn't exist
 
-  def get_files(self):
+  def get_files(self)->list[str]:
     files = []
     for _, file_paths in self.third_party_source_files.items():
       files.extend(
@@ -175,19 +175,22 @@ class Project:
     return files
 
   def get_source_files(self) -> str:
+    files: list[str] = self.get_files()
     # When triggered by the on save task, the file saved is passed as an 
     # argument. We can skip checking files in that case and just recompile the one that changed.
     if (len(sys.argv) >= 3):
-      file_path = sys.argv[2]
-      file_name = file_path.split("\\")[-1]
-      if ".c" in file_name:
+      file_path: str = sys.argv[2]
+      file_name: str = file_path.split("\\")[-1]
+      if next((file for file in files if file.endswith(file_name)), None) is not None:
         print(f"Recompiling {file_name}")
         return file_path
+      elif ".h" not in file_name:
+        print(f"{file_name} not included in source files - compilation skipped.")
+        return ""
 
     already_checked = {name: True for name in self.ignore_files}
     already_warned = {name: True for name in self.ignore_includes}
     
-    files = self.get_files()
     files_needing_compilation = [file for file in files if self.file_needs_compiling(file, already_checked, already_warned)]
 
     count = len(files_needing_compilation)

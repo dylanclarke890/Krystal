@@ -17,9 +17,7 @@ defines = {
   "_ITERATOR_DEBUG_LEVEL":"2"
 }
 
-disabled_warnings = [
-  "4100", "4201"
-]
+disabled_warnings = []
 
 ignore_includes = [
   "stddef.h", "stdio.h", "stdint.h", "stdlib.h",
@@ -27,13 +25,6 @@ ignore_includes = [
   "signal.h", "TargetConditionals.h", "dlfcn.h",
   "string.h", "inttypes.h"
 ]
-
-# ---------- DISABLED WARNINGS ----------
-# |  CODE  | DESCRIPTION
-# |--------|------------------------------
-# |  4100  | unreferenced formal parameter (we'll likely never really need this).
-# |  4201  | nameless union/struct (we should re-enable this after replacing glm).
-# ---------- DISABLED WARNINGS ----------
 
 # ----------- COMPILER FLAGS ------------
 # |  FLAG  |  DESCRIPTION
