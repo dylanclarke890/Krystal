@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Core.h"
-#include "DataProcessing/Bytes.h"
-#include "DataProcessing/Endian.h"
-#include "IO/IO.h"
+#include "Base/Bytes.hpp"
+#include "Base/Types.hpp"
+#include "Core/IO/IO.hpp"
 
 namespace Krys::IO
 {
@@ -26,7 +25,7 @@ namespace Krys::IO
       CloseStream();
     }
 
-    bool IsEOF() const noexcept
+    NO_DISCARD bool IsEOF() const noexcept
     {
       return _stream.eof();
     }
@@ -45,7 +44,7 @@ namespace Krys::IO
         _stream.close();
     }
 
-    List<byte> ReadBytes(size_t numBytes) noexcept
+    NO_DISCARD List<byte> ReadBytes(size_t numBytes) noexcept
     {
       if (!_stream.is_open() || _stream.eof())
         return {};
@@ -59,7 +58,7 @@ namespace Krys::IO
 
     template <typename T>
     REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-    T Read() noexcept
+    NO_DISCARD T Read() noexcept
     {
       auto bytes = ReadBytes(sizeof(T));
       return Bytes::AsNumeric<T, SourceEndianness, DestinationEndianness>(bytes);
@@ -67,13 +66,13 @@ namespace Krys::IO
 
     template <typename T>
     REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-    List<T> Read(size_t count) noexcept
+    NO_DISCARD List<T> Read(size_t count) noexcept
     {
       auto bytes = ReadBytes(sizeof(T) * count);
       return Bytes::AsNumericArray<T, SourceEndianness, DestinationEndianness>(bytes);
     }
 
-    string ReadJson(size_t length)
+    NO_DISCARD string ReadJson(size_t length)
     {
       auto bytes = ReadBytes(length);
       return Bytes::AsString(bytes, length);

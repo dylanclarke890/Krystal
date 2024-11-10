@@ -23,8 +23,8 @@ namespace Krys::Maths
     return Min<T>(Max<T>(value, min), max);
   }
 
-  constexpr Vec3 Lerp(const Vec3 &a, const Vec3 &b, float weight) noexcept
-  {
-    return ((1.0f - weight) * a) + (weight * b);
-  }
+  // constexpr Vec3 Lerp(const Vec3 &a, const Vec3 &b, float weight) noexcept
+  // {
+  //   return ((1.0f - weight) * a) + (weight * b);
+  // }
 }

@@ -1,6 +1,5 @@
-#include "IO.h"
-
-#include "Core.h"
+#include "Core/IO/IO.hpp"
+#include "Base/Defines.hpp"
 
 #include <algorithm>
 #include <filesystem>
@@ -25,7 +24,8 @@ namespace Krys::IO
       if (extensions.empty())
         return true;
 
-      return std::any_of(extensions.begin(), extensions.end(), [&extension](stringview v) { return v == extension; });
+      return std::any_of(extensions.begin(), extensions.end(),
+                         [&extension](stringview v) { return v == extension; });
     };
 
     const auto ProcessEntry = [&](const fs::directory_entry &entry) -> void
@@ -33,7 +33,8 @@ namespace Krys::IO
       string path {entry.path().string()};
       if (error)
       {
-        KRYS_ASSERT(false, "Error iterating through directory '%s': %s", path.data(), error.message().c_str());
+        KRYS_ASSERT(false, "Error iterating through directory '%s': %s", path.data(),
+                    error.message().c_str());
       }
 
       string extension {entry.path().extension().string()};
