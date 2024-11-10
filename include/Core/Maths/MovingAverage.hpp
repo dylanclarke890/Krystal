@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Types.h"
+#include "Base/Attributes.hpp"
+#include "Base/Types.hpp"
 
 namespace Krys
 {
-  template <ArithmeticType SampleType>
+  template <ArithmeticType SampleType, int MaxSamples>
   class MovingAverage
   {
-    SampleType _samples[MaxSamples];
-    SampleType _sum;
+    Array<SampleType, MaxSamples> _samples;
     uint32 _currentSample;
-    uint32 _sampleCount;
+    SampleType _sum;
 
   public:
     constexpr MovingAverage() noexcept : _sum(static_cast<SampleType>(0)), _currentSample(0), _sampleCount(0)
@@ -19,7 +19,7 @@ namespace Krys
 
     constexpr void Add(SampleType sample) noexcept
     {
-      if (_sampleCount == MaxSamples)
+      if (_samples.size() == MaxSamples)
       {
         _sum -= _samples[_currentSample];
       }
@@ -38,11 +38,11 @@ namespace Krys
       }
     }
 
-    constexpr NO_DISCARD float32 GetAverage() const noexcept
+    constexpr NO_DISCARD SampleType GetAverage() const noexcept
     {
-      if (_sampleCount != 0)
+      if (_samples.size() != 0)
       {
-        return static_cast<float32>(_sum) / static_cast<float32>(_sampleCount);
+        return _sum / static_cast<SampleType>(_samples.size());
       }
       return 0.0f;
     }

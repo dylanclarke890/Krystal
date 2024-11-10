@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Core.h"
+#include "Base/Attributes.hpp"
+#include "Base/Types.hpp"
 
 namespace Krys
 {
@@ -9,18 +10,21 @@ namespace Krys
   {
     T Left, Right, Bottom, Top;
 
-    BoundingBox() noexcept = default;
+    constexpr BoundingBox() noexcept : Left(T(0)), Right(T(0)), Bottom(T(0)), Top(T(0))
+    {
+    }
+
     constexpr BoundingBox(T left, T right, T bottom, T top) noexcept
         : Left(left), Right(right), Bottom(bottom), Top(top)
     {
     }
 
-    constexpr T GetWidth() const noexcept
+    constexpr NO_DISCARD T GetWidth() const noexcept
     {
       return Right - Left;
     }
 
-    constexpr T GetHeight() const noexcept
+    constexpr NO_DISCARD T GetHeight() const noexcept
     {
       return Top - Bottom;
     }

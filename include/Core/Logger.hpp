@@ -9,6 +9,11 @@
 
 namespace Krys
 {
+  // TODO: this.
+  class LogService
+  {
+  };
+
   enum class LogLevel
   {
     Debug,
