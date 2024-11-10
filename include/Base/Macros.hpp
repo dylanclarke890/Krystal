@@ -62,6 +62,10 @@ namespace Krys
   Class(const Class &) = delete;                                                                             \
   Class &operator=(const Class &) = delete;
 
+#define STATIC_CLASS(Class)                                                                                  \
+  NO_COPY_AND_ASSIGN(Class)                                                                                  \
+  Class() = delete;
+
 /// @brief Defines bitwise operators for an enum class.
 /// @param EnumClass The enum class to define the operators for.
 /// @param type The underlying type of the enum (e.g., unsigned short).

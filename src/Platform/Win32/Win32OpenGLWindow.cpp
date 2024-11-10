@@ -20,7 +20,7 @@ namespace Krys::Platform
     windowClass.lpszClassName = "KrystalOpenGLWindowClass";
 
     if (!::RegisterClassA(&windowClass))
-      KRYS_CRITICAL("Unable to register class: %s", ::GetLastError());
+      KRYS_FATAL("Unable to register class: %s", ::GetLastError());
 
     RECT windowDimensions = {0, 0, static_cast<LONG>(width), static_cast<LONG>(height)};
     int windowStyles = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
@@ -52,18 +52,18 @@ namespace Krys::Platform
                                       0);                        // additional application data;
 
     if (!_windowHandle)
-      KRYS_CRITICAL("Unable to create window: %s", ::GetLastError());
+      KRYS_FATAL("Unable to create window: %s", ::GetLastError());
 
     ::SetWindowLongPtrA(_windowHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
     TIMECAPS timeCaps;
     if (::timeGetDevCaps(&timeCaps, sizeof(timeCaps)) == TIMERR_NOCANDO)
-      KRYS_CRITICAL("timeGetDevCaps failed");
+      KRYS_FATAL("timeGetDevCaps failed");
 
     KRYS_INFO("Timer precision range - min: %dms, max: %dms", timeCaps.wPeriodMin, timeCaps.wPeriodMax);
 
     if (::timeBeginPeriod(timeCaps.wPeriodMin) == TIMERR_NOCANDO)
-      KRYS_CRITICAL("timeBeginPeriod failed");
+      KRYS_FATAL("timeBeginPeriod failed");
 
     _deviceContext = ::GetDC(_windowHandle);
 

@@ -1,6 +1,6 @@
 #include "Core/Debug/ScopedProfiler.hpp"
-#include "Base/Defines.hpp"
 #include "Base/Lazy.hpp"
+#include "Core/Debug/Macros.hpp"
 
 #ifndef WIN32_LEAN_AND_MEAN
   #define WIN32_LEAN_AND_MEAN
@@ -10,7 +10,7 @@
 namespace Krys::Debug
 {
   uint64 GetPerformanceFrequency() noexcept;
-  static Lazy<uint64> PerformanceCounterFrequency(GetPerformanceFrequency);
+  static Lazy<uint64> PerformanceCounterFrequency([]() { return GetPerformanceFrequency(); });
 
   ScopedProfiler::ScopedProfiler(const string &name) noexcept : _start(0), _name(name)
   {

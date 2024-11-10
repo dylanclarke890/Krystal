@@ -1,4 +1,5 @@
 #include "Core/Application.hpp"
+#include "Core/Debug/Macros.hpp"
 #include "Core/Events/EventManager.hpp"
 #include "Core/Window.hpp"
 #include "Core/WindowManager.hpp"
@@ -15,6 +16,8 @@ namespace Krys
   {
     while (true)
     {
+      KRYS_SCOPED_PROFILER("Frame");
+
       _context->GetWindowManager()->GetCurrentWindow()->Poll();
       _context->GetInputManager()->PollDevices();
       _context->GetEventManager()->ProcessEvents();
