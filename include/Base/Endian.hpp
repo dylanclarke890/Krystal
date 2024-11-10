@@ -3,7 +3,9 @@
 #include <bit>
 #include <type_traits>
 
-#include "Core.h"
+#include "Base/Attributes.hpp"
+#include "Base/Defines.hpp"
+#include "Base/Types.hpp"
 
 namespace Krys::Endian
 {
@@ -80,17 +82,11 @@ namespace Krys::Endian
   {
     if constexpr (SourceEndianness == Type::Little)
     {
-      if constexpr (IsLittleEndian())
-        return value;
-      else
-        return SwapEndian(value);
+      return IsLittleEndian() ? value : SwapEndian(value);
     }
     else if constexpr (SourceEndianness == Type::Big)
     {
-      if constexpr (IsBigEndian())
-        return value;
-      else
-        return SwapEndian(value);
+      return IsBigEndian() ? value : SwapEndian(value);
     }
 
     return value;

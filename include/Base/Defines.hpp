@@ -75,6 +75,27 @@
   #define KRYS_ASSERT(condition, format, ...)
 #endif
 
+// Compiler-specific macros for disabling and restoring warnings
+#if defined(_MSC_VER) // Microsoft Visual C++
+  #define KRYS_DISABLE_WARNING_PUSH() __pragma(warning(push))
+  #define KRYS_DISABLE_WARNING_POP() __pragma(warning(pop))
+  #define KRYS_DISABLE_WARNING(msvcWarningCode, gccWarningName) __pragma(warning(disable : msvcWarningCode))
+#elif defined(__GNUC__) || defined(__clang__) // GCC or Clang
+  #define KRYS_DISABLE_WARNING_PUSH() _Pragma("GCC diagnostic push")
+  #define KRYS_DISABLE_WARNING_POP() _Pragma("GCC diagnostic pop")
+  #if defined(__clang__)
+    #define KRYS_DISABLE_WARNING(msvcWarningCode, gccWarningName)                                            \
+      _Pragma("clang diagnostic ignored \"" gccWarningName "\"")
+  #else
+    #define KRYS_DISABLE_WARNING(msvcWarningCode, gccWarningName)                                            \
+      _Pragma("GCC diagnostic ignored \"" gccWarningName "\"")
+  #endif
+#else
+  #define KRYS_DISABLE_WARNING_PUSH()
+  #define KRYS_DISABLE_WARNING_POP()
+  #define KRYS_DISABLE_WARNING(msvcWarningCode, gccWarningName)
+#endif
+
 #ifdef __INTELLISENSE__
   /// @brief Intellisense sometimes loses when parsing code with require statements.
   /// This macro hides them from intellisense while ensuring they are included when actually compiling.
