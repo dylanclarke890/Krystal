@@ -1,4 +1,4 @@
-#include "Core/Concurrency/ReadersWriterLock.h"
+#include "Core/Concurrency/ReadersWriterLock.hpp"
 
 #include <thread>
 
@@ -38,7 +38,8 @@ namespace Krys::Concurrency
       uint32 current = _state.load(std::memory_order_acquire);
 
       // Check if the writer lock is not held.
-      if (current < WRITER_LOCK && _state.compare_exchange_weak(current, current + 1, std::memory_order_acquire))
+      if (current < WRITER_LOCK
+          && _state.compare_exchange_weak(current, current + 1, std::memory_order_acquire))
         return; // Acquired read lock successfully.
 
       std::this_thread::yield(); // Allow other threads a chance to release the writer lock.

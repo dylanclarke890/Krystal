@@ -1,8 +1,7 @@
-#include "Core/Concurrency/ReentrantLock.h"
+#include "Core/Concurrency/ReentrantLock.hpp"
+#include "Core/Debug/Macros.hpp"
 
 #include <thread>
-
-#include "Core.h"
 
 namespace Krys::Concurrency
 {

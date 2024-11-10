@@ -1,6 +1,5 @@
-#include "Core/Concurrency/SpinLock.h"
-
-#include "Types.h"
+#include "Core/Concurrency/SpinLock.hpp"
+#include "Base/Types.hpp"
 #include <thread>
 
 namespace Krys::Concurrency

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Types.h"
+#include "Base/Types.hpp"
 #include <atomic>
 
 namespace Krys::Concurrency

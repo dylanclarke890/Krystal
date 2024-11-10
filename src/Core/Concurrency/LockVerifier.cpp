@@ -1,4 +1,5 @@
-#include "Core/Concurrency/LockVerifier.h"
+#include "Core/Concurrency/LockVerifier.hpp"
+#include "Core/Debug/Macros.hpp"
 
 namespace Krys::Concurrency
 {
