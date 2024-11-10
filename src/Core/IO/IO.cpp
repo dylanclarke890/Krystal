@@ -1,5 +1,5 @@
 #include "Core/IO/IO.hpp"
-#include "Base/Defines.hpp"
+#include "Core/Debug/Macros.hpp"
 
 #include <algorithm>
 #include <filesystem>
@@ -13,7 +13,7 @@ namespace Krys::IO
 
   List<FileInfo> ListFiles(const stringview &directory, List<stringview> extensions, bool recursive) noexcept
   {
-    KRYS_PERFORMANCE_TIMER("ListFiles");
+    KRYS_SCOPED_PROFILER("ListFiles");
     KRYS_ASSERT(PathExists(directory), "Directory '%s' does not exist", directory.data());
 
     std::error_code error {};
@@ -57,7 +57,7 @@ namespace Krys::IO
   FileInfo GetPathInfo(const stringview &filepath) noexcept
   {
     KRYS_ASSERT(PathExists(filepath), "Path '%s' does not exist", filepath.data());
-    KRYS_PERFORMANCE_TIMER("GetPathInfo");
+    KRYS_SCOPED_PROFILER("GetPathInfo");
 
     auto fsPath = fs::path(filepath);
     FileInfo fileInfo {fsPath.stem().string(), fsPath.extension().string(), fsPath.string()};
@@ -74,7 +74,7 @@ namespace Krys::IO
 
   bool PathExists(const stringview &path) noexcept
   {
-    KRYS_PERFORMANCE_TIMER("PathExists");
+    KRYS_SCOPED_PROFILER("PathExists");
 
     std::error_code error {};
     return fs::exists(path, error);
@@ -83,7 +83,7 @@ namespace Krys::IO
   bool IsDirectory(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
-    KRYS_PERFORMANCE_TIMER("IsDirectory");
+    KRYS_SCOPED_PROFILER("IsDirectory");
 
     std::error_code error {};
     return fs::directory_entry(path, error).is_directory(error);
@@ -92,7 +92,7 @@ namespace Krys::IO
   bool IsFile(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
-    KRYS_PERFORMANCE_TIMER("IsFile");
+    KRYS_SCOPED_PROFILER("IsFile");
 
     std::error_code error {};
     return fs::directory_entry(path, error).is_regular_file(error);
@@ -101,7 +101,7 @@ namespace Krys::IO
   string ReadFileText(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.data());
-    KRYS_PERFORMANCE_TIMER("ReadFileText");
+    KRYS_SCOPED_PROFILER("ReadFileText");
 
     std::ifstream fileStream(path.data());
     if (!fileStream.is_open())
@@ -120,7 +120,7 @@ namespace Krys::IO
   bool WriteFileText(const stringview &path, const stringview &content) noexcept
   {
     KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.data());
-    KRYS_PERFORMANCE_TIMER("WriteFileText");
+    KRYS_SCOPED_PROFILER("WriteFileText");
 
     std::ofstream fileStream(path.data());
     if (!fileStream.is_open())
