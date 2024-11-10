@@ -19,7 +19,7 @@ namespace Krys::IO
     std::error_code error {};
     List<FileInfo> entries {};
 
-    const auto HasValidExtension = [&](stringview extension)
+    const auto HasValidExtension = [&](stringview extension) -> bool
     {
       if (extensions.empty())
         return true;
