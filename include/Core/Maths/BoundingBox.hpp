@@ -5,7 +5,7 @@
 
 namespace Krys
 {
-  template <ArithmeticType T>
+  template <IsArithmeticT T>
   struct BoundingBox
   {
     T Left, Right, Bottom, Top;

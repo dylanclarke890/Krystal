@@ -5,7 +5,7 @@
 
 namespace Krys
 {
-  template <ArithmeticType SampleType, int MaxSamples>
+  template <IsArithmeticT SampleType, int MaxSamples>
   class MovingAverage
   {
     Array<SampleType, MaxSamples> _samples;

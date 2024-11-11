@@ -11,22 +11,22 @@ namespace Krys::Maths
 {
   constexpr inline NO_DISCARD float SignedByteToFloat(int8 c) noexcept
   {
-    return Max(c / 127.0f, -1.0f);
+    return Max(static_cast<float>(c) / 127.0f, -1.0f);
   }
 
   constexpr inline NO_DISCARD float UnsignedByteToFloat(uint8 c) noexcept
   {
-    return c / 255.0f;
+    return static_cast<float>(c) / 255.0f;
   }
 
   constexpr inline NO_DISCARD float SignedShortToFloat(int16 c) noexcept
   {
-    return Max(c / 32767.0f, -1.0f);
+    return Max(static_cast<float>(c) / 32767.0f, -1.0f);
   }
 
   constexpr inline NO_DISCARD float UnsignedShortToFloat(uint16 c) noexcept
   {
-    return c / 65535.0f;
+    return static_cast<float>(c) / 65535.0f;
   }
 
   constexpr inline NO_DISCARD int8 FloatToSignedByte(float f) noexcept
