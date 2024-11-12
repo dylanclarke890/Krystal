@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Base/Attributes.hpp"
 #include "Base/Bytes.hpp"
+#include "Base/Macros.hpp"
 #include "Base/Types.hpp"
 #include "Core/IO/IO.hpp"
 

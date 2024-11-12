@@ -5,26 +5,28 @@
 
 namespace Krys
 {
-  template <IsArithmeticT T>
+  template <IsArithmeticT TNumber>
   struct BoundingBox
   {
-    T Left, Right, Bottom, Top;
+    using dimension_t = TNumber;
+    dimension_t Left, Right, Bottom, Top;
 
-    constexpr BoundingBox() noexcept : Left(T(0)), Right(T(0)), Bottom(T(0)), Top(T(0))
+    constexpr BoundingBox() noexcept
+        : Left(dimension_t(0)), Right(dimension_t(0)), Bottom(dimension_t(0)), Top(dimension_t(0))
     {
     }
 
-    constexpr BoundingBox(T left, T right, T bottom, T top) noexcept
+    constexpr BoundingBox(dimension_t left, dimension_t right, dimension_t bottom, dimension_t top) noexcept
         : Left(left), Right(right), Bottom(bottom), Top(top)
     {
     }
 
-    constexpr NO_DISCARD T GetWidth() const noexcept
+    constexpr NO_DISCARD dimension_t GetWidth() const noexcept
     {
       return Right - Left;
     }
 
-    constexpr NO_DISCARD T GetHeight() const noexcept
+    constexpr NO_DISCARD dimension_t GetHeight() const noexcept
     {
       return Top - Bottom;
     }

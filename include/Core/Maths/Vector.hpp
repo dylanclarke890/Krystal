@@ -8,8 +8,8 @@
 
 namespace Krys
 {
-  template <IsArithmeticT T>
-  using vec1_t = Krys::Maths::Vector<T, 1>;
+  template <IsArithmeticT TComponent>
+  using vec1_t = Krys::Maths::Vector<TComponent, 1>;
   using Vec1 = vec1_t<float>;
   using Vec1f = vec1_t<float>;
   using Vec1i = vec1_t<int>;
@@ -25,8 +25,8 @@ namespace Krys
   using Vec1ull = vec1_t<unsigned long long>;
   using Vec1b = vec1_t<bool>;
 
-  template <IsArithmeticT T>
-  using vec2_t = Krys::Maths::Vector<T, 2>;
+  template <IsArithmeticT TComponent>
+  using vec2_t = Krys::Maths::Vector<TComponent, 2>;
   using Vec2 = vec2_t<float>;
   using Vec2f = vec2_t<float>;
   using Vec2i = vec2_t<int>;
@@ -42,8 +42,8 @@ namespace Krys
   using Vec2ull = vec2_t<unsigned long long>;
   using Vec2b = vec2_t<bool>;
 
-  template <IsArithmeticT T>
-  using vec3_t = Krys::Maths::Vector<T, 3>;
+  template <IsArithmeticT TComponent>
+  using vec3_t = Krys::Maths::Vector<TComponent, 3>;
   using Vec3 = vec3_t<float>;
   using Vec3f = vec3_t<float>;
   using Vec3i = vec3_t<int>;
@@ -59,8 +59,8 @@ namespace Krys
   using Vec3ull = vec3_t<unsigned long long>;
   using Vec3b = vec3_t<bool>;
 
-  template <IsArithmeticT T>
-  using vec4_t = Krys::Maths::Vector<T, 4>;
+  template <IsArithmeticT TComponent>
+  using vec4_t = Krys::Maths::Vector<TComponent, 4>;
   using Vec4 = vec4_t<float>;
   using Vec4f = vec4_t<float>;
   using Vec4i = vec4_t<int>;

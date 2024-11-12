@@ -5,6 +5,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Defines.hpp"
+#include "Base/Macros.hpp"
 #include "Base/Types.hpp"
 
 namespace Krys::Endian

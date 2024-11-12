@@ -5,46 +5,38 @@
 
 namespace Krys
 {
-  template <IsArithmeticT SampleType, int MaxSamples>
+  template <IsArithmeticT TSampleType, int MaxSamples>
   class MovingAverage
   {
-    Array<SampleType, MaxSamples> _samples;
-    uint32 _currentSample;
-    SampleType _sum;
+    using sample_t = TSampleType;
+    Array<sample_t, MaxSamples> _samples;
+    uint32 _currentSample, _sampleCount;
+    sample_t _sum;
 
   public:
-    constexpr MovingAverage() noexcept : _sum(static_cast<SampleType>(0)), _currentSample(0), _sampleCount(0)
+    constexpr MovingAverage() noexcept
+        : _sum(static_cast<sample_t>(0)), _samples({}), _currentSample(0), _sampleCount(0)
     {
     }
 
-    constexpr void Add(SampleType sample) noexcept
+    constexpr void Add(sample_t sample) noexcept
     {
-      if (_samples.size() == MaxSamples)
-      {
+      if (_sampleCount == MaxSamples)
         _sum -= _samples[_currentSample];
-      }
       else
-      {
         _sampleCount++;
-      }
 
-      _samples[_currentSample] = data;
-      _sum += data;
+      _samples[_currentSample] = sample;
+      _sum += sample;
 
-      _currentSample++;
-      if (_currentSample >= MaxSamples)
-      {
-        _currentSample = 0;
-      }
+      _currentSample = (_currentSample + 1) % MaxSamples;
     }
 
-    constexpr NO_DISCARD SampleType GetAverage() const noexcept
+    constexpr NO_DISCARD sample_t GetAverage() const noexcept
     {
-      if (_samples.size() != 0)
-      {
-        return _sum / static_cast<SampleType>(_samples.size());
-      }
-      return 0.0f;
+      if (_sampleCount == 0)
+        return static_cast<sample_t>(0);
+      return _sum / static_cast<sample_t>(_sampleCount);
     }
   };
 }

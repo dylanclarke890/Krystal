@@ -2,6 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Endian.hpp"
+#include "Base/Macros.hpp"
 #include "Base/Types.hpp"
 
 namespace Krys::Bytes
