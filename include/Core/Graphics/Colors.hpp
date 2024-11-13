@@ -2,7 +2,7 @@
 
 #include "Maths/Vector.hpp"
 
-namespace Krys::Graphics::Colors
+namespace Krys::Colors
 {
   using namespace Krys::Maths;
 

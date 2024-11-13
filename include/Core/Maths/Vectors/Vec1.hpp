@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
 #include "Core/Maths/Vectors/Base.hpp"
@@ -11,9 +12,11 @@ namespace Krys::Maths
   struct Vector<TComponent, 1>
   {
   private:
-    static constexpr count_t TotalComponents = 1;
+    static constexpr vec_length_t Length = 1;
+
+  public:
     using component_t = TComponent;
-    using vec_t = Vector<component_t, TotalComponents>;
+    using vec_t = Vector<component_t, Length>;
 
   public:
     component_t x;
@@ -22,19 +25,19 @@ namespace Krys::Maths
 
 #pragma region Construction
 
-    constexpr Vector(const vec_t &other) noexcept : x(other.x)
-    {
-    }
-
-    constexpr Vector(vec_t &&other) noexcept : x(std::move(other.x))
-    {
-    }
-
     explicit constexpr Vector() noexcept : x(component_t(0))
     {
     }
 
     explicit constexpr Vector(component_t scalar) noexcept : x(scalar)
+    {
+    }
+
+    constexpr Vector(const vec_t &other) noexcept : x(other.x)
+    {
+    }
+
+    constexpr Vector(vec_t &&other) noexcept : x(std::move(other.x))
     {
     }
 
@@ -69,6 +72,21 @@ namespace Krys::Maths
     }
 
 #pragma endregion Equality
+
+#pragma region Element Access
+
+    constexpr NO_DISCARD vec_length_t GetLength() const noexcept
+    {
+      return Length;
+    }
+
+    constexpr NO_DISCARD component_t operator[](vec_length_t index) const noexcept
+    {
+      KRYS_ASSERT(index < Length, "Index out of bounds", 0);
+      return x;
+    }
+
+#pragma endregion Element Access
 
 #pragma region Addition
 

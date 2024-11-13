@@ -1,50 +1,22 @@
 #pragma once
 
+#include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 
 namespace Krys::Maths
 {
-  using count_t = ushort;
-  
-  template <IsArithmeticT TComponent, count_t Count>
+  using vec_length_t = ushort;
+
+  template <IsArithmeticT TComponent, vec_length_t Length>
   struct Vector;
 
+  /// @brief Checks that type `TVector` supports all basic maths operations, both with another `TVector` and
+  /// with the primitive numeric type `TComponent`, along with other requirements such as being copyable and
+  /// assignable etc.
   template <typename TVector, typename TComponent>
-  concept IVector =
-    IsCopyableT<TVector> && IsArithmeticT<TComponent> && requires(TVector vec, TComponent scalar) {
-      // Assignment
-      { vec = vec } -> std::same_as<TVector &>;
-
-      // Equality
-      { vec == vec } -> std::same_as<bool>;
-      { vec != vec } -> std::same_as<bool>;
-
-      // Addition
-      { vec + vec } -> std::same_as<TVector>;
-      { vec += vec } -> std::same_as<TVector &>;
-      { vec + scalar } -> std::same_as<TVector>;
-      { vec += scalar } -> std::same_as<TVector &>;
-
-      // Subtraction
-      { vec - vec } -> std::same_as<TVector>;
-      { vec -= vec } -> std::same_as<TVector &>;
-      { vec - scalar } -> std::same_as<TVector>;
-      { vec -= scalar } -> std::same_as<TVector &>;
-
-      // Division
-      { vec / vec } -> std::same_as<TVector>;
-      { vec /= vec } -> std::same_as<TVector &>;
-      { vec / scalar } -> std::same_as<TVector>;
-      { vec /= scalar } -> std::same_as<TVector &>;
-
-      // Multiplication
-      { vec *vec } -> std::same_as<TVector>;
-      { vec *= vec } -> std::same_as<TVector &>;
-      { vec *scalar } -> std::same_as<TVector>;
-      { vec *= scalar } -> std::same_as<TVector &>;
-
-      // Unary operators
-      { -vec } -> std::same_as<TVector>;
-      { +vec } -> std::same_as<TVector>;
-    };
+  concept IsVector = IsComparableT<TVector> && IsNegatableT<TVector> && IsCopyableT<TVector>
+                     && SupportsArithmeticOperations<TVector, TVector> && requires(TVector vec) {
+                          { vec.GetLength() } -> std::same_as<vec_length_t>;
+                          { vec[0] } -> std::same_as<TComponent>;
+                        } && IsArithmeticT<TComponent> && SupportsArithmeticOperations<TVector, TComponent>;
 }

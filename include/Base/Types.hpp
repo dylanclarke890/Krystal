@@ -64,10 +64,4 @@ namespace Krys
 
   template <typename T>
   using Func = std::function<T>;
-
-  template <typename T>
-  concept IsArithmeticT = std::is_arithmetic_v<T>;
-
-  template <typename T>
-  concept IsCopyableT = std::copyable<T>;
 }

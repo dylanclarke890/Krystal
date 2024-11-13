@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
 #include "Core/Maths/Vectors/Base.hpp"
@@ -11,9 +12,11 @@ namespace Krys::Maths
   struct Vector<TComponent, 4>
   {
   private:
-    static constexpr count_t TotalComponents = 4;
+    static constexpr vec_length_t Length = 4;
+
+  public:
     using component_t = TComponent;
-    using vec_t = Vector<component_t, TotalComponents>;
+    using vec_t = Vector<component_t, Length>;
 
   public:
     component_t x, y, z, w;
@@ -21,15 +24,6 @@ namespace Krys::Maths
     constexpr ~Vector() noexcept = default;
 
 #pragma region Construction
-
-    constexpr Vector(const vec_t &other) noexcept : x(other.x), y(other.y), z(other.z), w(other.w)
-    {
-    }
-
-    constexpr Vector(vec_t &&other) noexcept
-        : x(std::move(other.x)), y(std::move(other.y)), z(std::move(other.z)), w(std::move(other.w))
-    {
-    }
 
     explicit constexpr Vector() noexcept
         : x(component_t(0)), y(component_t(0)), z(component_t(0)), w(component_t(0))
@@ -42,6 +36,15 @@ namespace Krys::Maths
 
     explicit constexpr Vector(component_t x, component_t y, component_t z, component_t w) noexcept
         : x(x), y(y), z(z), w(w)
+    {
+    }
+
+    constexpr Vector(const vec_t &other) noexcept : x(other.x), y(other.y), z(other.z), w(other.w)
+    {
+    }
+
+    constexpr Vector(vec_t &&other) noexcept
+        : x(std::move(other.x)), y(std::move(other.y)), z(std::move(other.z)), w(std::move(other.w))
     {
     }
 
@@ -82,6 +85,28 @@ namespace Krys::Maths
     }
 
 #pragma endregion Equality
+
+#pragma region Element Access
+
+    constexpr NO_DISCARD vec_length_t GetLength() const noexcept
+    {
+      return Length;
+    }
+
+    constexpr NO_DISCARD component_t operator[](vec_length_t index) const noexcept
+    {
+      KRYS_ASSERT(index < Length, "Index out of bounds", 0);
+      switch (index)
+      {
+        case 0:  return x;
+        case 1:  return y;
+        case 2:  return z;
+        default:
+        case 3:  return w;
+      }
+    }
+
+#pragma endregion Element Access
 
 #pragma region Addition
 

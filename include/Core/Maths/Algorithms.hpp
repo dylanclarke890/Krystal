@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 
 namespace Krys::Maths
