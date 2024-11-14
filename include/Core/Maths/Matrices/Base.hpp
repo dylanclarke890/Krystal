@@ -17,9 +17,9 @@ namespace Krys::Maths
          { mat.GetColLength() } -> std::same_as<vec_length_t>;
          { mat.GetRowLength() } -> std::same_as<vec_length_t>;
        };
-       
+
   template <typename TMatrix, typename TComponent>
   concept IsSquareMatrix = IsMatrix<TMatrix, TComponent> && requires(TMatrix mat) {
-    { TMatrix::I } -> std::same_as<const TMatrix>;
+    { TMatrix::I } -> std::same_as<const TMatrix &>;
   };
 }
