@@ -44,6 +44,7 @@ namespace Krys
 
   template <IsArithmeticT TComponent>
   using mat3x3_t = MTL::Matrix<TComponent, 3, 3>;
+  using Mat3 = mat3x3_t<float>;
 
   template <IsArithmeticT TComponent>
   using mat3x4_t = MTL::Matrix<TComponent, 3, 4>;
