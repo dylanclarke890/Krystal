@@ -25,22 +25,4 @@ namespace Krys
   using Mat4 = mat4x4_t<float>;
 
 #pragma endregion Square Matrices
-
-  // template <IsArithmeticT TComponent>
-  // using mat2x3_t = MTL::Matrix<TComponent, 2, 3>;
-
-  // template <IsArithmeticT TComponent>
-  // using mat2x4_t = MTL::Matrix<TComponent, 2, 4>;
-
-  // template <IsArithmeticT TComponent>
-  // using mat3x2_t = MTL::Matrix<TComponent, 3, 2>;
-
-  // template <IsArithmeticT TComponent>
-  // using mat3x4_t = MTL::Matrix<TComponent, 3, 4>;
-
-  // template <IsArithmeticT TComponent>
-  // using mat4x2_t = MTL::Matrix<TComponent, 4, 2>;
-
-  // template <IsArithmeticT TComponent>
-  // using mat4x3_t = MTL::Matrix<TComponent, 4, 3>;
 }
