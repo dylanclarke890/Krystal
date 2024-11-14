@@ -6,6 +6,7 @@
 #include "Core/Debug/Macros.hpp"
 #include "Core/Maths/Matrices/Base.hpp"
 #include "Core/Maths/Vectors/Base.hpp"
+#include "Core/Maths/Vectors/Vec3.hpp"
 
 namespace Krys::MTL
 {
@@ -24,7 +25,10 @@ namespace Krys::MTL
     using mat_t = Matrix<component_t, RowLength, ColLength>;
     using mat_transpose_t = Matrix<component_t, ColLength, RowLength>;
 
-    static constexpr mat_t I = mat_t(component_t(1));
+    static constexpr mat_t I() noexcept
+    {
+      return mat_t(component_t(1));
+    }
 
   private:
     column_t _values[RowLength];
@@ -119,7 +123,7 @@ namespace Krys::MTL
 
     constexpr NO_DISCARD const column_t &operator[](vec_length_t col) const noexcept
     {
-      KRYS_ASSERT(index < Length, "Index out of bounds", 0);
+      KRYS_ASSERT(col < ColLength, "Index out of bounds", 0);
       return _values[col];
     }
 

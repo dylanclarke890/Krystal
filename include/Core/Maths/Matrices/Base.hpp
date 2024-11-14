@@ -20,6 +20,6 @@ namespace Krys::MTL
 
   template <typename TMatrix, typename TComponent>
   concept IsSquareMatrix = IsMatrix<TMatrix, TComponent> && requires(TMatrix mat) {
-    { TMatrix::I } -> std::same_as<const TMatrix &>;
+    { TMatrix::I() } -> std::same_as<TMatrix>;
   };
 }

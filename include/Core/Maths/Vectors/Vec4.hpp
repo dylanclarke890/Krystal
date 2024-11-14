@@ -97,11 +97,11 @@ namespace Krys::MTL
     REQUIRES((Index < Length))
     constexpr NO_DISCARD const component_t &Get() const noexcept
     {
-      if (Index == 0)
+      if constexpr (Index == 0)
         return x;
-      if (Index == 1)
+      if constexpr (Index == 1)
         return y;
-      if (Index == 2)
+      if constexpr (Index == 2)
         return z;
       return w;
     }
@@ -142,7 +142,7 @@ namespace Krys::MTL
       return *this;
     }
 
-    constexpr NO_DISCARD vec_t &operator+=(component_t scalar) const noexcept
+    constexpr NO_DISCARD vec_t &operator+=(component_t scalar) noexcept
     {
       x += scalar;
       y += scalar;

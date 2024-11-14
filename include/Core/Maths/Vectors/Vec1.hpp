@@ -113,7 +113,7 @@ namespace Krys::MTL
       return *this;
     }
 
-    constexpr NO_DISCARD vec_t &operator+=(component_t scalar) const noexcept
+    constexpr NO_DISCARD vec_t &operator+=(component_t scalar) noexcept
     {
       x += scalar;
       return *this;

@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Maths/Vector.h"
-#include "Types.h"
+#include "Base/Types.hpp"
+#include "Core/Maths/Matrix.hpp"
+#include "Core/Maths/Vector.hpp"
 
-namespace Krys::Maths
+namespace Krys
 {
   class Transform
   {

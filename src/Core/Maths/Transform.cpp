@@ -1,28 +1,29 @@
-#include "Maths/Transform.h"
+#include "Core/Maths/Transform.hpp"
 
-namespace Krys::Maths
+namespace Krys
 {
   constexpr Vec3 DEFAULT_TRANSLATION = Vec3(0.0f);
   constexpr Vec3 DEFAULT_SCALE = Vec3(1.0f);
   constexpr Vec3 DEFAULT_ROTATION = Vec3(0.0f);
 
   Transform::Transform() noexcept
-      : _translation(DEFAULT_TRANSLATION), _scale(DEFAULT_SCALE), _eulerRotation(DEFAULT_ROTATION), _matrix(MAT4_I)
+      : _translation(DEFAULT_TRANSLATION), _scale(DEFAULT_SCALE), _eulerRotation(DEFAULT_ROTATION),
+        _matrix(Mat4::I())
   {
   }
 
   Transform::Transform(const Vec3 &translation) noexcept
-      : _translation(translation), _scale(DEFAULT_SCALE), _eulerRotation(DEFAULT_ROTATION), _matrix(MAT4_I)
+      : _translation(translation), _scale(DEFAULT_SCALE), _eulerRotation(DEFAULT_ROTATION), _matrix(Mat4::I())
   {
   }
 
   Transform::Transform(const Vec3 &translation, const Vec3 &scale) noexcept
-      : _translation(translation), _scale(scale), _eulerRotation(DEFAULT_ROTATION), _matrix(MAT4_I)
+      : _translation(translation), _scale(scale), _eulerRotation(DEFAULT_ROTATION), _matrix(Mat4::I())
   {
   }
 
   Transform::Transform(const Vec3 &translation, const Vec3 &scale, const Vec3 &rotation) noexcept
-      : _translation(translation), _scale(scale), _eulerRotation(rotation), _matrix(MAT4_I)
+      : _translation(translation), _scale(scale), _eulerRotation(rotation), _matrix(Mat4::I())
   {
   }
 
@@ -68,16 +69,16 @@ namespace Krys::Maths
 
   void Transform::ComputeMatrix() noexcept
   {
-    Mat4 matrix = glm::translate(MAT4_I, _translation);
+    // Mat4 matrix = glm::translate(Mat4::I, _translation);
 
-    if (_eulerRotation.x)
-      matrix *= glm::rotate(MAT4_I, glm::radians(_eulerRotation.x), ROTATE_AXIS_X);
-    if (_eulerRotation.y)
-      matrix *= glm::rotate(MAT4_I, glm::radians(_eulerRotation.y), ROTATE_AXIS_Y);
-    if (_eulerRotation.z)
-      matrix *= glm::rotate(MAT4_I, glm::radians(_eulerRotation.z), ROTATE_AXIS_Z);
+    // if (_eulerRotation.x)
+    //   matrix *= glm::rotate(Mat4::I, glm::radians(_eulerRotation.x), ROTATE_AXIS_X);
+    // if (_eulerRotation.y)
+    //   matrix *= glm::rotate(Mat4::I, glm::radians(_eulerRotation.y), ROTATE_AXIS_Y);
+    // if (_eulerRotation.z)
+    //   matrix *= glm::rotate(Mat4::I, glm::radians(_eulerRotation.z), ROTATE_AXIS_Z);
 
-    _matrix = matrix * glm::scale(MAT4_I, _scale);
+    // _matrix = matrix * glm::scale(Mat4::I, _scale);
     _dirty = false;
   }
 }
