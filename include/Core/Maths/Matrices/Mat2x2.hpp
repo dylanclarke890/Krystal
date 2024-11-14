@@ -24,20 +24,20 @@ namespace Krys::MTL
     using mat_t = Matrix<component_t, RowLength, ColLength>;
     using mat_transpose_t = Matrix<component_t, ColLength, RowLength>;
 
+    static constexpr mat_t I = mat_t(static_cast<component_t>(1));
+
   private:
     column_t _values[RowLength];
 
   public:
-    static constexpr mat_t I = mat_t(static_cast<component_t>(1));
-
 #pragma region Construction
 
-    explicit constexpr Matrix() noexcept : _values {column_t(0, 0), column_t(0, 0)}
+    explicit constexpr Matrix() noexcept : _values {column_t(component_t(0)), column_t(component_t(0))}
     {
     }
 
     explicit constexpr Matrix(component_t scalar) noexcept
-        : _values {column_t(scalar, 0), column_t(0, scalar)}
+        : _values {column_t(scalar, component_t(0)), column_t(component_t(0), scalar)}
     {
     }
 
@@ -47,7 +47,7 @@ namespace Krys::MTL
     }
 
     explicit constexpr Matrix(const column_t &col0, const column_t &col1) noexcept
-        : _values {column_t(col0.x, col0.y), column_t(col1.x, col1.y)}
+        : _values {column_t(col0), column_t(col1)}
     {
     }
 
@@ -104,6 +104,13 @@ namespace Krys::MTL
       return RowLength;
     }
 
+    template <vec_length_t Index>
+    REQUIRES((Index < ColLength))
+    constexpr NO_DISCARD const column_t &Get() const noexcept
+    {
+      return _values[Index];
+    }
+
     constexpr NO_DISCARD const column_t &operator[](vec_length_t col) const noexcept
     {
       KRYS_ASSERT(index < Length, "Index out of bounds", 0);
@@ -121,8 +128,7 @@ namespace Krys::MTL
 
     constexpr NO_DISCARD mat_t operator+(component_t scalar) const noexcept
     {
-      return mat_t(_values[0].x + scalar, _values[0].y + scalar, _values[1].x + scalar,
-                   _values[1].y + scalar);
+      return mat_t(_values[0] + scalar, _values[1] + scalar);
     }
 
     constexpr NO_DISCARD mat_t &operator+=(const mat_t &other) noexcept
@@ -134,10 +140,8 @@ namespace Krys::MTL
 
     constexpr NO_DISCARD mat_t &operator+=(component_t scalar) noexcept
     {
-      _values[0].x += scalar;
-      _values[0].y += scalar;
-      _values[1].x += scalar;
-      _values[1].y += scalar;
+      _values[0] += scalar;
+      _values[1] += scalar;
       return *this;
     }
 
@@ -152,8 +156,7 @@ namespace Krys::MTL
 
     constexpr NO_DISCARD mat_t operator-(component_t scalar) const noexcept
     {
-      return mat_t(_values[0].x - scalar, _values[0].y - scalar, _values[1].x - scalar,
-                   _values[1].y - scalar);
+      return mat_t(_values[0] - scalar, _values[1] - scalar);
     }
 
     constexpr NO_DISCARD mat_t &operator-=(const mat_t &other) noexcept
@@ -165,10 +168,8 @@ namespace Krys::MTL
 
     constexpr NO_DISCARD mat_t &operator-=(component_t scalar) noexcept
     {
-      _values[0].x -= scalar;
-      _values[0].y -= scalar;
-      _values[1].x -= scalar;
-      _values[1].y -= scalar;
+      _values[0] -= scalar;
+      _values[1] -= scalar;
       return *this;
     }
 
@@ -196,8 +197,7 @@ namespace Krys::MTL
 
     constexpr NO_DISCARD mat_t operator*(component_t scalar) const noexcept
     {
-      return mat_t(_values[0].x * scalar, _values[0].y * scalar, _values[1].x * scalar,
-                   _values[1].y * scalar);
+      return mat_t(_values[0] * scalar, _values[1] * scalar);
     }
 
     constexpr NO_DISCARD column_t operator*(const column_t &vector) const noexcept
@@ -233,10 +233,8 @@ namespace Krys::MTL
 
     constexpr NO_DISCARD mat_t &operator*=(component_t scalar) noexcept
     {
-      _values[0].x *= scalar;
-      _values[0].y *= scalar;
-      _values[1].x *= scalar;
-      _values[1].y *= scalar;
+      _values[0] *= scalar;
+      _values[1] *= scalar;
       return *this;
     }
 
@@ -247,17 +245,14 @@ namespace Krys::MTL
     constexpr NO_DISCARD mat_t operator/(component_t scalar) const noexcept
     {
       KRYS_ASSERT(scalar != 0, "Division by zero", 0);
-      return mat_t(_values[0].x / scalar, _values[0].y / scalar, _values[1].x / scalar,
-                   _values[1].y / scalar);
+      return mat_t(_values[0] / scalar, _values[1] / scalar);
     }
 
     constexpr mat_t &operator/=(component_t scalar) noexcept
     {
       KRYS_ASSERT(scalar != 0, "Division by zero", 0);
-      _values[0].x /= scalar;
-      _values[0].y /= scalar;
-      _values[1].x /= scalar;
-      _values[1].y /= scalar;
+      _values[0] /= scalar;
+      _values[1] /= scalar;
       return *this;
     }
 
@@ -267,7 +262,7 @@ namespace Krys::MTL
 
     constexpr NO_DISCARD mat_t operator-() const noexcept
     {
-      return mat_t(column_t(-_values[0].x, -_values[0].y), column_t(-_values[1].x, -_values[1].y));
+      return mat_t(-_values[0], -_values[1]);
     }
 
     constexpr NO_DISCARD mat_t operator+() const noexcept
