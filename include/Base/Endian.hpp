@@ -4,7 +4,6 @@
 #include <type_traits>
 
 #include "Base/Attributes.hpp"
-#include "Base/Defines.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
 

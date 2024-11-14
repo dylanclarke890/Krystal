@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base/Concepts.hpp"
-#include "Base/Defines.hpp"
 #include "Base/Types.hpp"
 #include "Core/Maths/Matrices/Base.hpp"
 #include "Core/Maths/Matrices/Mat2x2.hpp"

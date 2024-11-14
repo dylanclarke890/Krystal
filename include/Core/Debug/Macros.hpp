@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Base/Defines.hpp"
 #include "Base/Macros.hpp"
+#include "Base/Detection.hpp"
 
 #ifdef KRYS_ENABLE_DEBUG_BREAK
   #if defined(KRYS_PLATFORM_WINDOWS)

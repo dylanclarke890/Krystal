@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
-#include "Base/Defines.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"

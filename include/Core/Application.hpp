@@ -1,9 +1,12 @@
 #pragma once
 
-#include "Base/Defines.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Core/ApplicationContext.hpp"
+
+#ifdef KRYS_ENABLE_TESTS
+  #include "Core/Debug/StaticTests.hpp"
+#endif
 
 namespace Krys
 {
