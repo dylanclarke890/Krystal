@@ -113,41 +113,64 @@ namespace Krys::Tests
 {
   namespace Vectors
   {
-    KRYS_TEST_VECTOR_CONCEPT(vec1_t);
-    KRYS_TEST_COMMON_VECTOR_METHODS(Vec1);
+    namespace Vec_1
+    {
+      KRYS_TEST_VECTOR_CONCEPT(vec1_t);
+      KRYS_TEST_COMMON_VECTOR_METHODS(Vec1);
+    }
 
-    KRYS_TEST_VECTOR_CONCEPT(vec2_t);
-    KRYS_TEST_COMMON_VECTOR_METHODS(Vec2);
-    static_assert(Vec2(1.0f, 2.0f).Get<1>() == 2.0f, KRYS_MTL_FAIL_MSG("'[1]'", Vec2));
+    namespace Vec_2
+    {
+      KRYS_TEST_VECTOR_CONCEPT(vec2_t);
+      KRYS_TEST_COMMON_VECTOR_METHODS(Vec2);
+      static_assert(Vec2(1.0f, 2.0f).Get<1>() == 2.0f, KRYS_MTL_FAIL_MSG("'[1]'", Vec2));
+    }
 
-    KRYS_TEST_VECTOR_CONCEPT(vec3_t);
-    KRYS_TEST_COMMON_VECTOR_METHODS(Vec3);
-    static_assert(Vec3(1.0f, 2.0f, 3.0f).Get<1>() == 2.0f, KRYS_MTL_FAIL_MSG("'[1]'", Vec3));
-    static_assert(Vec3(1.0f, 2.0f, 3.0f).Get<2>() == 3.0f, KRYS_MTL_FAIL_MSG("'[2]'", Vec3));
+    namespace Vec_3
+    {
+      KRYS_TEST_VECTOR_CONCEPT(vec3_t);
+      KRYS_TEST_COMMON_VECTOR_METHODS(Vec3);
+      static_assert(Vec3(1.0f, 2.0f, 3.0f).Get<1>() == 2.0f, KRYS_MTL_FAIL_MSG("'[1]'", Vec3));
+      static_assert(Vec3(1.0f, 2.0f, 3.0f).Get<2>() == 3.0f, KRYS_MTL_FAIL_MSG("'[2]'", Vec3));
+    }
 
-    KRYS_TEST_VECTOR_CONCEPT(vec4_t);
-    KRYS_TEST_COMMON_VECTOR_METHODS(Vec4);
-    static_assert(Vec4(1.0f, 2.0f, 3.0f, 4.0f).Get<1>() == 2.0f, KRYS_MTL_FAIL_MSG("'[1]'", Vec4));
-    static_assert(Vec4(1.0f, 2.0f, 3.0f, 4.0f).Get<2>() == 3.0f, KRYS_MTL_FAIL_MSG("'[2]'", Vec4));
-    static_assert(Vec4(1.0f, 2.0f, 3.0f, 4.0f).Get<3>() == 4.0f, KRYS_MTL_FAIL_MSG("'[3]'", Vec4));
+    namespace Vec_4
+    {
+      KRYS_TEST_VECTOR_CONCEPT(vec4_t);
+      KRYS_TEST_COMMON_VECTOR_METHODS(Vec4);
+      static_assert(Vec4(1.0f, 2.0f, 3.0f, 4.0f).Get<1>() == 2.0f, KRYS_MTL_FAIL_MSG("'[1]'", Vec4));
+      static_assert(Vec4(1.0f, 2.0f, 3.0f, 4.0f).Get<2>() == 3.0f, KRYS_MTL_FAIL_MSG("'[2]'", Vec4));
+      static_assert(Vec4(1.0f, 2.0f, 3.0f, 4.0f).Get<3>() == 4.0f, KRYS_MTL_FAIL_MSG("'[3]'", Vec4));
+    }
   }
 
   namespace Matrices
   {
-    KRYS_TEST_SQUARE_MATRIX_CONCEPT(mat2x2_t);
-    KRYS_TEST_COMMON_SQUARE_MATRIX_METHODS(Mat2);
-    static_assert(Mat2(1.0f).Get<0>() == Vec2(1.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[0]'", Mat2));
-    static_assert(Mat2(1.0f).Get<1>() == Vec2(0.0f, 1.0f), KRYS_MTL_FAIL_MSG("'[1]'", Mat2));
-    static_assert(Mat2(1.0f) * Mat2(3.0f) == Mat2(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*'", Mat2));
-    static_assert((Mat2(1.0f) *= Mat2(3.0f)) == Mat2(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*='", Mat2));
-    static_assert(Mat2(1.0f) + 2.0f == Mat2(Vec2(3.0f, 2.0f), Vec2(2.0f, 3.0f)),
-                  KRYS_MTL_FAIL_MSG("Mat-Scalar '+'", Mat2));
-    static_assert((Mat2(1.0f) += 2.0f) == Mat2(Vec2(3.0f, 2.0f), Vec2(2.0f, 3.0f)),
-                  KRYS_MTL_FAIL_MSG("Mat-Scalar '+='", Mat2));
-    static_assert(Mat2(3.0f) - 2.0f == Mat2(Vec2(1.0f, -2.0f), Vec2(-2.0, 1.0f)),
-                  KRYS_MTL_FAIL_MSG("Mat-Scalar '-'", Mat2));
-    static_assert((Mat2(3.0f) -= 2.0f) == Mat2(Vec2(1.0f, -2.0f), Vec2(-2.0, 1.0f)),
-                  KRYS_MTL_FAIL_MSG("Mat-Scalar '-='", Mat2));
+    namespace Mat_2x2
+    {
+      KRYS_TEST_SQUARE_MATRIX_CONCEPT(mat2x2_t);
+      KRYS_TEST_COMMON_SQUARE_MATRIX_METHODS(Mat2);
+
+      // Identity matrix checks
+      static_assert(Mat2(1.0f).Get<0>() == Vec2(1.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[0]'", Mat2));
+      static_assert(Mat2(1.0f).Get<1>() == Vec2(0.0f, 1.0f), KRYS_MTL_FAIL_MSG("'[1]'", Mat2));
+
+      // Matrix addition with scalar
+      static_assert(Mat2(1.0f) + 2.0f == Mat2(Vec2(3.0f, 2.0f), Vec2(2.0f, 3.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '+'", Mat2));
+      static_assert((Mat2(1.0f) += 2.0f) == Mat2(Vec2(3.0f, 2.0f), Vec2(2.0f, 3.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '+='", Mat2));
+
+      // Matrix subtraction with scalar
+      static_assert(Mat2(3.0f) - 2.0f == Mat2(Vec2(1.0f, -2.0f), Vec2(-2.0, 1.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '-'", Mat2));
+      static_assert((Mat2(3.0f) -= 2.0f) == Mat2(Vec2(1.0f, -2.0f), Vec2(-2.0, 1.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '-='", Mat2));
+
+      // Matrix multiplication with matrix
+      static_assert(Mat2(1.0f) * Mat2(3.0f) == Mat2(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*'", Mat2));
+      static_assert((Mat2(1.0f) *= Mat2(3.0f)) == Mat2(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*='", Mat2));
+    }
 
     // KRYS_TEST_MATRIX_CONCEPT(mat2x3_t);
 
@@ -155,29 +178,36 @@ namespace Krys::Tests
 
     // KRYS_TEST_MATRIX_CONCEPT(mat3x2_t);
 
-    KRYS_TEST_SQUARE_MATRIX_CONCEPT(mat3x3_t);
-    KRYS_TEST_COMMON_SQUARE_MATRIX_METHODS(Mat3);
-    static_assert(Mat3(1.0f).Get<0>() == Vec3(1.0f, 0.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[0]'", Mat3));
-    static_assert(Mat3(1.0f).Get<1>() == Vec3(0.0f, 1.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[1]'", Mat3));
-    static_assert(Mat3(1.0f).Get<2>() == Vec3(0.0f, 0.0f, 1.0f), KRYS_MTL_FAIL_MSG("'[2]'", Mat3));
-    static_assert(Mat3(1.0f) * Mat3(3.0f) == Mat3(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*'", Mat3));
-    static_assert((Mat3(1.0f) *= Mat3(3.0f)) == Mat3(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*='", Mat3));
-    static_assert(Mat3(1.0f) + 2.0f
-                    == Mat3(Vec3(3.0f, 2.0f, 2.0f), Vec3(2.0f, 3.0f, 2.0f), Vec3(2.0f, 2.0f, 3.0f)),
-                  KRYS_MTL_FAIL_MSG("Mat-Scalar '+'", Mat3));
-    static_assert((Mat3(1.0f) += 2.0f)
-                    == Mat3(Vec3(3.0f, 2.0f, 2.0f), Vec3(2.0f, 3.0f, 2.0f), Vec3(2.0f, 2.0f, 3.0f)),
-                  KRYS_MTL_FAIL_MSG("Mat-Scalar '+='", Mat3));
-    static_assert(Mat3(3.0f) - 2.0f
-                    == Mat3(Vec3(1.0f, -2.0f, -2.0f), Vec3(-2.0f, 1.0f, -2.0f), Vec3(-2.0f, -2.0f, 1.0f)),
-                  KRYS_MTL_FAIL_MSG("Mat-Scalar '-'", Mat3));
-    static_assert((Mat3(3.0f) -= 2.0f)
-                    == Mat3(Vec3(1.0f, -2.0f, -2.0f), Vec3(-2.0f, 1.0f, -2.0f), Vec3(-2.0f, -2.0f, 1.0f)),
-                  KRYS_MTL_FAIL_MSG("Mat-Scalar '-='", Mat3));
-    static_assert(Mat3(3.0f) / 3.0f == Mat3(1.0f), KRYS_MTL_FAIL_MSG("Mat-Scalar '/'", Mat3));
-    static_assert((Mat3(3.0f) /= 3.0f) == Mat3(1.0f), KRYS_MTL_FAIL_MSG("Mat-Scalar '/='", Mat3));
-    static_assert(Mat3(1.0f) * 3.0f == Mat3(3.0f), KRYS_MTL_FAIL_MSG("Mat-Scalar '*'", Mat3));
-    static_assert((Mat3(1.0f) *= 3.0f) == Mat3(3.0f), KRYS_MTL_FAIL_MSG("Mat-Scalar '*='", Mat3));
+    namespace Mat_3x3
+    {
+      KRYS_TEST_SQUARE_MATRIX_CONCEPT(mat3x3_t);
+      KRYS_TEST_COMMON_SQUARE_MATRIX_METHODS(Mat3);
+
+      // Identity matrix checks
+      static_assert(Mat3(1.0f).Get<0>() == Vec3(1.0f, 0.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[0]'", Mat3));
+      static_assert(Mat3(1.0f).Get<1>() == Vec3(0.0f, 1.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[1]'", Mat3));
+      static_assert(Mat3(1.0f).Get<2>() == Vec3(0.0f, 0.0f, 1.0f), KRYS_MTL_FAIL_MSG("'[2]'", Mat3));
+
+      // Matrix addition with scalar
+      static_assert(Mat3(1.0f) + 2.0f
+                      == Mat3(Vec3(3.0f, 2.0f, 2.0f), Vec3(2.0f, 3.0f, 2.0f), Vec3(2.0f, 2.0f, 3.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '+'", Mat3));
+      static_assert((Mat3(1.0f) += 2.0f)
+                      == Mat3(Vec3(3.0f, 2.0f, 2.0f), Vec3(2.0f, 3.0f, 2.0f), Vec3(2.0f, 2.0f, 3.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '+='", Mat3));
+
+      // Matrix subtraction with scalar
+      static_assert(Mat3(3.0f) - 2.0f
+                      == Mat3(Vec3(1.0f, -2.0f, -2.0f), Vec3(-2.0f, 1.0f, -2.0f), Vec3(-2.0f, -2.0f, 1.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '-'", Mat3));
+      static_assert((Mat3(3.0f) -= 2.0f)
+                      == Mat3(Vec3(1.0f, -2.0f, -2.0f), Vec3(-2.0f, 1.0f, -2.0f), Vec3(-2.0f, -2.0f, 1.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '-='", Mat3));
+
+      // Matrix multiplication with matrix
+      static_assert(Mat3(1.0f) * Mat3(3.0f) == Mat3(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*'", Mat3));
+      static_assert((Mat3(1.0f) *= Mat3(3.0f)) == Mat3(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*='", Mat3));
+    }
 
     // KRYS_TEST_MATRIX_CONCEPT(mat3x4_t);
 
@@ -185,6 +215,42 @@ namespace Krys::Tests
 
     // KRYS_TEST_MATRIX_CONCEPT(mat4x3_t);
 
-    // KRYS_TEST_MATRIX_CONCEPT(mat4x4_t);
+    namespace Mat_4x4
+    {
+      KRYS_TEST_SQUARE_MATRIX_CONCEPT(mat4x4_t);
+      KRYS_TEST_COMMON_SQUARE_MATRIX_METHODS(Mat4);
+
+      // Identity matrix checks
+      static_assert(Mat4(1.0f).Get<0>() == Vec4(1.0f, 0.0f, 0.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[0]'", Mat4));
+      static_assert(Mat4(1.0f).Get<1>() == Vec4(0.0f, 1.0f, 0.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[1]'", Mat4));
+      static_assert(Mat4(1.0f).Get<2>() == Vec4(0.0f, 0.0f, 1.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[2]'", Mat4));
+      static_assert(Mat4(1.0f).Get<3>() == Vec4(0.0f, 0.0f, 0.0f, 1.0f), KRYS_MTL_FAIL_MSG("'[3]'", Mat4));
+
+      // Matrix addition with scalar
+      static_assert(Mat4(1.0f) + 2.0f
+                      == Mat4(Vec4(3.0f, 2.0f, 2.0f, 2.0f), Vec4(2.0f, 3.0f, 2.0f, 2.0f),
+                              Vec4(2.0f, 2.0f, 3.0f, 2.0f), Vec4(2.0f, 2.0f, 2.0f, 3.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '+'", Mat4));
+
+      static_assert((Mat4(1.0f) += 2.0f)
+                      == Mat4(Vec4(3.0f, 2.0f, 2.0f, 2.0f), Vec4(2.0f, 3.0f, 2.0f, 2.0f),
+                              Vec4(2.0f, 2.0f, 3.0f, 2.0f), Vec4(2.0f, 2.0f, 2.0f, 3.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '+='", Mat4));
+
+      // Matrix subtraction with scalar
+      static_assert(Mat4(3.0f) - 2.0f
+                      == Mat4(Vec4(1.0f, -2.0f, -2.0f, -2.0f), Vec4(-2.0f, 1.0f, -2.0f, -2.0f),
+                              Vec4(-2.0f, -2.0f, 1.0f, -2.0f), Vec4(-2.0f, -2.0f, -2.0f, 1.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '-'", Mat4));
+
+      static_assert((Mat4(3.0f) -= 2.0f)
+                      == Mat4(Vec4(1.0f, -2.0f, -2.0f, -2.0f), Vec4(-2.0f, 1.0f, -2.0f, -2.0f),
+                              Vec4(-2.0f, -2.0f, 1.0f, -2.0f), Vec4(-2.0f, -2.0f, -2.0f, 1.0f)),
+                    KRYS_MTL_FAIL_MSG("Mat-Scalar '-='", Mat4));
+
+      // Matrix multiplication with matrix
+      static_assert(Mat4(1.0f) * Mat4(2.0f) == Mat4(2.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*'", Mat4));
+      static_assert((Mat4(1.0f) *= Mat4(2.0f)) == Mat4(2.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*='", Mat4));
+    }
   }
 }

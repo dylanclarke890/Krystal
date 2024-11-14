@@ -24,7 +24,7 @@ namespace Krys::MTL
     using mat_t = Matrix<component_t, RowLength, ColLength>;
     using mat_transpose_t = Matrix<component_t, ColLength, RowLength>;
 
-    static constexpr mat_t I = mat_t(static_cast<component_t>(1));
+    static constexpr mat_t I = mat_t(component_t(1));
 
   private:
     column_t _values[RowLength];
@@ -46,7 +46,7 @@ namespace Krys::MTL
 
     explicit constexpr Matrix(component_t x0, component_t y0, component_t z0, component_t x1, component_t y1,
                               component_t z1, component_t x2, component_t y2, component_t z2) noexcept
-        : _values {column_t(x0, y0), column_t(x1, y1)}
+        : _values {column_t(x0, y0, z0), column_t(x1, y1, z0), column_t(x2, y2, z2)}
     {
     }
 
