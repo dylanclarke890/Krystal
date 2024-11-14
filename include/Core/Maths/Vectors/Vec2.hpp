@@ -86,6 +86,15 @@ namespace Krys::MTL
       return Length;
     }
 
+    template <vec_length_t Index>
+    REQUIRES((Index < Length))
+    constexpr NO_DISCARD const component_t &Get() const noexcept
+    {
+      if (Index == 0)
+        return x;
+      return y;
+    }
+
     constexpr NO_DISCARD component_t operator[](vec_length_t index) const noexcept
     {
       KRYS_ASSERT(index < Length, "Index out of bounds", 0);
