@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Maths/Vector.hpp"
+#include "Maths/Vectors/Vec4.hpp"
 
 namespace Krys::Colors
 {

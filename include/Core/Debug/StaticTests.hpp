@@ -1,9 +1,14 @@
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 #include "Core/Maths/Matrices/Base.hpp"
-#include "Core/Maths/Matrix.hpp"
-#include "Core/Maths/Vector.hpp"
+#include "Core/Maths/Matrices/Mat2x2.hpp"
+#include "Core/Maths/Matrices/Mat3x3.hpp"
+#include "Core/Maths/Matrices/Mat4x4.hpp"
 #include "Core/Maths/Vectors/Base.hpp"
+#include "Core/Maths/Vectors/Vec1.hpp"
+#include "Core/Maths/Vectors/Vec2.hpp"
+#include "Core/Maths/Vectors/Vec3.hpp"
+#include "Core/Maths/Vectors/Vec4.hpp"
 
 #pragma region Test Macros
 

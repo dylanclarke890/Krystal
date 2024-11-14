@@ -3,7 +3,7 @@
 #include <random>
 
 #include "Base/Types.hpp"
-#include "Maths/Vector.hpp"
+#include "Maths/Vectors/Vec2.hpp"
 
 namespace Krys
 {
