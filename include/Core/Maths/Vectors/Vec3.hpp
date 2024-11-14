@@ -6,7 +6,7 @@
 #include "Core/Debug/Macros.hpp"
 #include "Core/Maths/Vectors/Base.hpp"
 
-namespace Krys::Maths
+namespace Krys::MTL
 {
   template <IsArithmeticT TComponent>
   struct Vector<TComponent, 3>

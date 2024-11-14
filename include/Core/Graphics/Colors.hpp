@@ -4,8 +4,6 @@
 
 namespace Krys::Colors
 {
-  using namespace Krys::Maths;
-
   static Vec4 White = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
   static Vec4 Black = Vec4(0.0f, 0.0f, 0.0f, 1.0f);
   static Vec4 Red = Vec4(1.0f, 0.0f, 0.0f, 1.0f);

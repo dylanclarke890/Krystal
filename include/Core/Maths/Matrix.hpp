@@ -17,7 +17,7 @@
 namespace Krys
 {
   template <IsArithmeticT TComponent>
-  using mat2x2_t = Maths::Matrix<TComponent, 2, 2>;
+  using mat2x2_t = MTL::Matrix<TComponent, 2, 2>;
   using Mat2 = mat2x2_t<float>;
   using Mat2b = mat2x2_t<bool>;
   using Mat2f = mat2x2_t<float>;
@@ -34,26 +34,26 @@ namespace Krys
   using Mat2ull = mat2x2_t<unsigned long long>;
 
   template <IsArithmeticT TComponent>
-  using mat2x3_t = Maths::Matrix<TComponent, 2, 3>;
+  using mat2x3_t = MTL::Matrix<TComponent, 2, 3>;
 
   template <IsArithmeticT TComponent>
-  using mat2x4_t = Maths::Matrix<TComponent, 2, 4>;
+  using mat2x4_t = MTL::Matrix<TComponent, 2, 4>;
 
   template <IsArithmeticT TComponent>
-  using mat3x2_t = Maths::Matrix<TComponent, 3, 2>;
+  using mat3x2_t = MTL::Matrix<TComponent, 3, 2>;
 
   template <IsArithmeticT TComponent>
-  using mat3x3_t = Maths::Matrix<TComponent, 3, 3>;
+  using mat3x3_t = MTL::Matrix<TComponent, 3, 3>;
 
   template <IsArithmeticT TComponent>
-  using mat3x4_t = Maths::Matrix<TComponent, 3, 4>;
+  using mat3x4_t = MTL::Matrix<TComponent, 3, 4>;
 
   template <IsArithmeticT TComponent>
-  using mat4x2_t = Maths::Matrix<TComponent, 4, 2>;
+  using mat4x2_t = MTL::Matrix<TComponent, 4, 2>;
 
   template <IsArithmeticT TComponent>
-  using mat4x3_t = Maths::Matrix<TComponent, 4, 3>;
+  using mat4x3_t = MTL::Matrix<TComponent, 4, 3>;
 
   template <IsArithmeticT TComponent>
-  using mat4x4_t = Maths::Matrix<TComponent, 4, 4>;
+  using mat4x4_t = MTL::Matrix<TComponent, 4, 4>;
 }

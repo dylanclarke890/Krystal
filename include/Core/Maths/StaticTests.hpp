@@ -9,17 +9,17 @@
 
 /// @brief Ensures that `VType` conforms to the `IsVector` concept for the given `CType`.
 #define KRYS_TEST_VECTOR_CONCEPT_TYPE(VType, CType)                                                          \
-  static_assert(Maths::IsVector<VType<CType>, CType>,                                                        \
+  static_assert(MTL::IsVector<VType<CType>, CType>,                                                          \
                 "'" #VType "(" #CType ")' is not a valid Vector implementation.");
 
 /// @brief Ensures that `MType` conforms to the `IsMatrix` concept for the given `CType`.
 #define KRYS_TEST_MATRIX_CONCEPT_TYPE(MType, CType)                                                          \
-  static_assert(Maths::IsMatrix<MType<CType>, CType>,                                                        \
+  static_assert(MTL::IsMatrix<MType<CType>, CType>,                                                          \
                 "'" #MType "(" #CType ")' is not a valid Matrix implementation.");
 
 /// @brief Ensures that `MType` conforms to the `IsSquareMatrix` concept for the given `CType`.
 #define KRYS_TEST_SQUARE_MATRIX_CONCEPT_TYPE(MType, CType)                                                   \
-  static_assert(Maths::IsSquareMatrix<MType<CType>, CType>,                                                  \
+  static_assert(MTL::IsSquareMatrix<MType<CType>, CType>,                                                    \
                 "'" #MType "(" #CType ")' is not a valid square Matrix implementation.");
 
 /// @brief Ensures that `VType` conforms to the `IsVector` concept for the supported range of types.
@@ -94,8 +94,8 @@
   static_assert(VType(1.0f) * 3.0f == VType(3.0f), KRYS_MTL_FAIL_MSG("Vec-Scalar '*'", VType));              \
   static_assert((VType(1.0f) *= 3.0f) == VType(3.0f), KRYS_MTL_FAIL_MSG("Vec-Scalar '*='", VType))
 
-/// @brief Performs basic static tests on `MType` for the common matrix methods.
-#define KRYS_TEST_COMMON_MATRIX_METHODS(MType)                                                               \
+/// @brief Performs basic static tests on `MType` for the common square matrix methods.
+#define KRYS_TEST_COMMON_SQUARE_MATRIX_METHODS(MType)                                                        \
   static_assert(MType(1.0f) == MType(1.0f), KRYS_MTL_FAIL_MSG("Equality comparison", MType));                \
   static_assert(-MType(1.0f) == MType(-1.0f), KRYS_MTL_FAIL_MSG("Unary minus", MType));                      \
   static_assert(MType(1.0f) + MType(2.0f) == MType(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '+'", MType));          \
@@ -135,7 +135,7 @@ namespace Krys::Tests
   namespace Matrices
   {
     KRYS_TEST_SQUARE_MATRIX_CONCEPT(mat2x2_t);
-    KRYS_TEST_COMMON_MATRIX_METHODS(Mat2);
+    KRYS_TEST_COMMON_SQUARE_MATRIX_METHODS(Mat2);
     static_assert(Mat2(1.0f)[0] == Vec2(1.0f, 0.0f), KRYS_MTL_FAIL_MSG("'[0]'", Mat2));
     static_assert(Mat2(1.0f)[1] == Vec2(0.0f, 1.0f), KRYS_MTL_FAIL_MSG("'[1]'", Mat2));
     static_assert(Mat2(1.0f) * Mat2(3.0f) == Mat2(3.0f), KRYS_MTL_FAIL_MSG("Mat-Mat '*'", Mat2));

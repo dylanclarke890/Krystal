@@ -4,7 +4,7 @@
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 
-namespace Krys::Maths
+namespace Krys::MTL
 {
   template <IsArithmeticT TNumber>
   NO_DISCARD constexpr TNumber Max(TNumber a, TNumber b) noexcept

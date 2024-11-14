@@ -3,7 +3,7 @@
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 
-namespace Krys::Maths
+namespace Krys::MTL
 {
   using vec_length_t = ushort;
 

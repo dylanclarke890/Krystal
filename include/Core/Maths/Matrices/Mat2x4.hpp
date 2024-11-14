@@ -7,7 +7,7 @@
 #include "Core/Maths/Matrices/Base.hpp"
 #include "Core/Maths/Vectors/Base.hpp"
 
-namespace Krys::Maths
+namespace Krys::MTL
 {
   template <IsArithmeticT TComponent>
   struct Matrix<TComponent, 2, 2>

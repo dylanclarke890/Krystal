@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace Krys::Maths
+namespace Krys::MTL
 {
   constexpr inline NO_DISCARD float SignedByteToFloat(int8 c) noexcept
   {

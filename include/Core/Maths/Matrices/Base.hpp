@@ -4,7 +4,7 @@
 #include "Base/Types.hpp"
 #include "Core/Maths/Vectors/Base.hpp"
 
-namespace Krys::Maths
+namespace Krys::MTL
 {
   template <IsArithmeticT TComponent, vec_length_t RowLength, vec_length_t ColLength>
   struct Matrix;
