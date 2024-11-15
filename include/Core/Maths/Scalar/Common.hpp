@@ -32,6 +32,12 @@ namespace Krys::MTL
     return std::isnormal(a);
   }
 
+  template <IsFloatingPointT TFloat>
+  constexpr NO_DISCARD bool IsDenormal(TFloat a) noexcept
+  {
+    return std::fpclassify(x) == FP_SUBNORMAL;
+  }
+
 #pragma region Min
 
   template <IsArithmeticT TNumber>
