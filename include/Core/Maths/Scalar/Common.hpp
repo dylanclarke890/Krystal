@@ -9,25 +9,25 @@
 namespace Krys::MTL
 {
   template <IsFloatingPointT TFloat>
-  constexpr NO_DISCARD TFloat IsNaN(TFloat a) noexcept
+  constexpr NO_DISCARD bool IsNaN(TFloat a) noexcept
   {
     return std::isnan(a);
   }
 
   template <IsFloatingPointT TFloat>
-  constexpr NO_DISCARD TFloat IsFinite(TFloat a) noexcept
+  constexpr NO_DISCARD bool IsFinite(TFloat a) noexcept
   {
     return std::isfinite(a);
   }
 
   template <IsFloatingPointT TFloat>
-  constexpr NO_DISCARD TFloat IsInf(TFloat a) noexcept
+  constexpr NO_DISCARD bool IsInf(TFloat a) noexcept
   {
     return std::isinf(a);
   }
 
   template <IsFloatingPointT TFloat>
-  constexpr NO_DISCARD TFloat IsNormal(TFloat a) noexcept
+  constexpr NO_DISCARD bool IsNormal(TFloat a) noexcept
   {
     return std::isnormal(a);
   }
