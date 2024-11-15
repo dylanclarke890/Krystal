@@ -4,7 +4,7 @@
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 
-namespace Krys
+namespace Krys::MTL
 {
   template <IsArithmeticT TNumber>
   struct BoundingBox
