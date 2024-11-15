@@ -5,6 +5,18 @@
 
 namespace Krys
 {
+  /// @brief Checks type `T` is an integral type.
+  template <typename T>
+  concept IsIntegralT = std::is_integral_v<T>;
+
+  /// @brief Checks type `T` is an unsigned type.
+  template <typename T>
+  concept IsUnsignedT = std::is_unsigned_v<T>;
+
+  /// @brief Checks type `T` is a floating point type.
+  template <typename T>
+  concept IsFloatingPointT = std::is_floating_point_v<T>;
+
   /// @brief Checks type `T` is an arithmetic type (built-in numeric type).
   template <typename T>
   concept IsArithmeticT = std::is_arithmetic_v<T>;

@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
-#include "Maths/Algorithms.hpp"
+#include "Maths/Algorithms/Scalar.hpp"
 
 #include <algorithm>
 #include <cmath>
