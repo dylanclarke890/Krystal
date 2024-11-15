@@ -10,7 +10,7 @@ namespace Krys::MTL
 {
   /// @brief Converts `degrees` to radians.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param degrees
+  /// @param degrees The input value.
   /// @returns The converted value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Radians(TNumber degrees) noexcept
@@ -20,7 +20,7 @@ namespace Krys::MTL
 
   /// @brief Converts `radians` to degrees.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians
+  /// @param radians The input value.
   /// @returns The converted value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Degrees(TNumber radians) noexcept
@@ -30,7 +30,7 @@ namespace Krys::MTL
 
   /// @brief Computes sine.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians
+  /// @param radians The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Sin(TNumber radians) noexcept
@@ -40,7 +40,7 @@ namespace Krys::MTL
 
   /// @brief Computes cosine.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians
+  /// @param radians The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Cos(TNumber radians) noexcept
@@ -50,7 +50,7 @@ namespace Krys::MTL
 
   /// @brief Computes tangent.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians
+  /// @param radians The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Tan(TNumber radians) noexcept
@@ -60,7 +60,7 @@ namespace Krys::MTL
 
   /// @brief Computes arc sine.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians
+  /// @param radians The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Asin(TNumber radians) noexcept
@@ -70,7 +70,7 @@ namespace Krys::MTL
 
   /// @brief Computes arc cosine.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians
+  /// @param radians The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Acos(TNumber radians) noexcept
@@ -80,7 +80,7 @@ namespace Krys::MTL
 
   /// @brief Computes arc tangent.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians
+  /// @param radians The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Atan(TNumber radians) noexcept
@@ -90,7 +90,7 @@ namespace Krys::MTL
 
   /// @brief Computes arc tangent, using signs to determine quadrants.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians
+  /// @param radians The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Atan2(TNumber radians) noexcept

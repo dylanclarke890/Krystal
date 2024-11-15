@@ -10,7 +10,7 @@ namespace Krys::MTL
 {
   /// @brief Computes hyperbolic sine.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param num
+  /// @param num The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Sinh(TNumber num) noexcept
@@ -20,7 +20,7 @@ namespace Krys::MTL
 
   /// @brief Computes hyperbolic cosine.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param num
+  /// @param num The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Cosh(TNumber num) noexcept
@@ -30,7 +30,7 @@ namespace Krys::MTL
 
   /// @brief Computes hyperbolic tangent.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param num
+  /// @param num The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Tanh(TNumber num) noexcept
@@ -40,7 +40,7 @@ namespace Krys::MTL
 
   /// @brief Computes the inverse hyperbolic sine.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param num
+  /// @param num The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Asinh(TNumber num) noexcept
@@ -50,7 +50,7 @@ namespace Krys::MTL
 
   /// @brief Computes the inverse hyperbolic cosine.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param num
+  /// @param num The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Acosh(TNumber num) noexcept
@@ -60,7 +60,7 @@ namespace Krys::MTL
 
   /// @brief Computes the inverse hyperbolic tangent.
   /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param num
+  /// @param num The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Atanh(TNumber num) noexcept
