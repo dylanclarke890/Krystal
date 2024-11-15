@@ -10,6 +10,9 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   struct Vector;
 
+  template <IsArithmeticT TComponent, vec_length_t Length>
+  using vector_t = Vector<TComponent, Length>;
+
   /// @brief Checks that type `TVector` supports all basic maths operations, both with another `TVector` and
   /// with the primitive numeric type `TComponent`, along with other requirements such as being copyable and
   /// assignable etc.
