@@ -17,7 +17,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   constexpr NO_DISCARD vector_t<TComponent, Length> Radians(vector_t<TComponent, Length> v) noexcept
   {
-    return MTL::Map<TComponent, Length>(v, [](TComponent val) { return MTL::Radians<TComponent>(val); });
+    using T = TComponent;
+    return MTL::Map<T, Length, T>(v, [](T val) { return MTL::Radians<T>(val); });
   }
 
   /// @brief Converts each component in `v` to degrees.
@@ -28,7 +29,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   constexpr NO_DISCARD vector_t<TComponent, Length> Degrees(vector_t<TComponent, Length> v) noexcept
   {
-    return MTL::Map<TComponent, Length>(v, [](TComponent val) { return MTL::Degrees<TComponent>(val); });
+    using T = TComponent;
+    return MTL::Map<T, Length, T>(v, [](T val) { return MTL::Degrees<T>(val); });
   }
 
   /// @brief Computes sine for each component in `v`.
@@ -40,7 +42,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   constexpr NO_DISCARD vector_t<TComponent, Length> Sin(vector_t<TComponent, Length> v) noexcept
   {
-    return MTL::Map<TComponent, Length>(v, [](TComponent val) { return MTL::Sin<TComponent>(val); });
+    using T = TComponent;
+    return MTL::Map<T, Length, T>(v, [](T val) { return MTL::Sin<T>(val); });
   }
 
   /// @brief Computes cosine for each component in `v`.
@@ -52,7 +55,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   constexpr NO_DISCARD vector_t<TComponent, Length> Cos(vector_t<TComponent, Length> v) noexcept
   {
-    return MTL::Map<TComponent, Length>(v, [](TComponent val) { return MTL::Cos<TComponent>(val); });
+    using T = TComponent;
+    return MTL::Map<T, Length, T>(v, [](T val) { return MTL::Cos<T>(val); });
   }
 
   /// @brief Computes tangent for each component in `v`.
@@ -64,7 +68,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   constexpr NO_DISCARD vector_t<TComponent, Length> Tan(vector_t<TComponent, Length> v) noexcept
   {
-    return MTL::Map<TComponent, Length>(v, [](TComponent val) { return MTL::Tan<TComponent>(val); });
+    using T = TComponent;
+    return MTL::Map<T, Length, T>(v, [](T val) { return MTL::Tan<T>(val); });
   }
 
   /// @brief Computes arc sine for each component in `v`.
@@ -76,7 +81,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   constexpr NO_DISCARD vector_t<TComponent, Length> Asin(vector_t<TComponent, Length> v) noexcept
   {
-    return MTL::Map<TComponent, Length>(v, [](TComponent val) { return MTL::Asin<TComponent>(val); });
+    using T = TComponent;
+    return MTL::Map<T, Length, T>(v, [](T val) { return MTL::Asin<T>(val); });
   }
 
   /// @brief Computes arc cosine for each component in `v`.
@@ -88,7 +94,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   constexpr NO_DISCARD vector_t<TComponent, Length> Acos(vector_t<TComponent, Length> v) noexcept
   {
-    return MTL::Map<TComponent, Length>(v, [](TComponent val) { return MTL::Acos<TComponent>(val); });
+    using T = TComponent;
+    return MTL::Map<T, Length, T>(v, [](T val) { return MTL::Acos<T>(val); });
   }
 
   /// @brief Computes arc tangent for each component in `v`.
@@ -100,7 +107,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   constexpr NO_DISCARD vector_t<TComponent, Length> Atan(vector_t<TComponent, Length> v) noexcept
   {
-    return MTL::Map<TComponent, Length>(v, [](TComponent val) { return MTL::Atan<TComponent>(val); });
+    using T = TComponent;
+    return MTL::Map<T, Length, T>(v, [](T val) { return MTL::Atan<T>(val); });
   }
 
   /// @brief Computes arc tangent for each component in `v`, using signs to determine quadrants.
@@ -112,6 +120,7 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t Length>
   constexpr NO_DISCARD vector_t<TComponent, Length> Atan2(vector_t<TComponent, Length> v) noexcept
   {
-    return MTL::Map<TComponent, Length>(v, [](TComponent val) { return MTL::Atan2<TComponent>(val); });
+    using T = TComponent;
+    return MTL::Map<T, Length, T>(v, [](T val) { return MTL::Atan2<T>(val); });
   }
 }

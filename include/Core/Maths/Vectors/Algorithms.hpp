@@ -16,15 +16,16 @@ namespace Krys::MTL
   constexpr void ForEach(const vector_t<TComponent, Length> &v, Func<void(TComponent v)> func) noexcept;
 
   /// @brief Creates a new vector by applying a function to each component of the input vector.
-  /// @tparam TComponent The underlying arithmetic type of the vector.
+  /// @tparam TComponentIn The underlying arithmetic type of the input vector.
   /// @tparam Length The size of the vector.
+  /// @tparam TComponentOut The underlying arithmetic type of the output vector.
   /// @param v The input vector.
   /// @param func A callable object or lambda that returns the transformed value for each component.
   /// @return A vector where each component is the result of applying `func` to the corresponding input
   /// component.
-  template <IsArithmeticT TComponent, vec_length_t Length>
-  constexpr vector_t<TComponent, Length> Map(const vector_t<TComponent, Length> &v,
-                                             Func<TComponent(TComponent v)> func) noexcept;
+  template <IsArithmeticT TComponentIn, vec_length_t Length, IsArithmeticT TComponentOut>
+  constexpr vector_t<TComponentOut, Length> Map(const vector_t<TComponentIn, Length> &v,
+                                                Func<TComponentOut(TComponentIn v)> func) noexcept;
 
   /// @brief Computes the sum of all components of the vector.
   /// @tparam TComponent The underlying arithmetic type of the vector.
@@ -80,32 +81,32 @@ namespace Krys::MTL
 
 #pragma region Map
 
-  template <IsArithmeticT TComponent>
-  constexpr vector_t<TComponent, 1> Map(const vector_t<TComponent, 1> &v,
-                                        Func<TComponent(TComponent)> func) noexcept
+  template <IsArithmeticT TComponentIn, IsArithmeticT TComponentOut>
+  constexpr vector_t<TComponentOut, 1> Map(const vector_t<TComponentIn, 1> &v,
+                                           Func<TComponentOut(TComponentIn)> func) noexcept
   {
-    return vector_t<TComponent, 1>(func(v.x));
+    return vector_t<TComponentOut, 1>(func(v.x), func(v.y));
   }
 
-  template <IsArithmeticT TComponent>
-  constexpr vector_t<TComponent, 2> Map(const vector_t<TComponent, 2> &v,
-                                        Func<TComponent(TComponent)> func) noexcept
+  template <IsArithmeticT TComponentIn, IsArithmeticT TComponentOut>
+  constexpr vector_t<TComponentOut, 2> Map(const vector_t<TComponentIn, 2> &v,
+                                           Func<TComponentOut(TComponentIn)> func) noexcept
   {
-    return vector_t<TComponent, 2>(func(v.x), func(v.y));
+    return vector_t<TComponentOut, 2>(func(v.x), func(v.y));
   }
 
-  template <IsArithmeticT TComponent>
-  constexpr vector_t<TComponent, 3> Map(const vector_t<TComponent, 3> &v,
-                                        Func<TComponent(TComponent)> func) noexcept
+  template <IsArithmeticT TComponentIn, IsArithmeticT TComponentOut>
+  constexpr vector_t<TComponentOut, 3> Map(const vector_t<TComponentIn, 3> &v,
+                                           Func<TComponentOut(TComponentIn)> func) noexcept
   {
-    return vector_t<TComponent, 3>(func(v.x), func(v.y), func(v.z));
+    return vector_t<TComponentOut, 3>(func(v.x), func(v.y), func(v.z));
   }
 
-  template <IsArithmeticT TComponent>
-  constexpr vector_t<TComponent, 4> Map(const vector_t<TComponent, 4> &v,
-                                        Func<TComponent(TComponent)> func) noexcept
+  template <IsArithmeticT TComponentIn, IsArithmeticT TComponentOut>
+  constexpr vector_t<TComponentOut, 4> Map(const vector_t<TComponentIn, 4> &v,
+                                           Func<TComponentOut(TComponentIn)> func) noexcept
   {
-    return vector_t<TComponent, 4>(func(v.x), func(v.y), func(v.z), func(v.w));
+    return vector_t<TComponentOut, 4>(func(v.x), func(v.y), func(v.z), func(v.w));
   }
 
 #pragma endregion Map
