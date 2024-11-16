@@ -134,4 +134,18 @@ namespace Krys::MTL
     using T = TComponent;
     return MTL::Map<T, bool, CL, RL>(m, [](T val) -> bool { return MTL::IsNegative(val); });
   }
+
+  /// @brief Checks the sign of each component in the given matrix.
+  /// @tparam TComponent A signed arithmetic type.
+  /// @tparam CL The column length of the matrix.
+  /// @tparam RL The row length of the matrix.
+  /// @param m The input matrix.
+  /// @return A matrix where each component is `1` if `m[i][j] > 0`, `0` if `m[i][j] == 0`, or `-1` if
+  /// `m[i][j] < 0`.
+  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Sign(const matrix_t<TComponent, CL, RL> &m) noexcept
+  {
+    using T = TComponent;
+    return MTL::Map<T, T, CL, RL>(m, [](T val) -> T { return MTL::Sign(val); });
+  }
 }

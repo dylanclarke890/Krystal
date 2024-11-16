@@ -91,13 +91,13 @@ namespace Krys::MTL
     return x > 0;
   }
 
-  /// @brief Checks if the given number is negative.
-  /// @tparam TNumber An arithmetic type.
+  /// @brief Checks the sign of the given number.
+  /// @tparam TNumber A signed type.
   /// @param x The input value.
-  /// @return `true` if `x` is negative, otherwise `false`.
-  template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD bool IsNegative(TNumber x) noexcept
+  /// @return `1` if `x > 0`, `0` if ``x == 0`, or `-1` if `x < 0`.
+  template <IsSignedT TNumber>
+  constexpr NO_DISCARD bool Sign(TNumber x) noexcept
   {
-    return x < 0;
+    return x > TNumber(0) ? TNumber(1) : x < 0 ? TNumber(-1) : TNumber(0);
   }
 }

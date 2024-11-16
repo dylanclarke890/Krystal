@@ -13,6 +13,10 @@ namespace Krys
   template <typename T>
   concept IsUnsignedT = std::is_unsigned_v<T>;
 
+  /// @brief Checks type `T` is a signed type.
+  template <typename T>
+  concept IsSignedT = std::is_signed_v<T>;
+
   /// @brief Checks type `T` is a floating point type.
   template <typename T>
   concept IsFloatingPointT = std::is_floating_point_v<T>;
