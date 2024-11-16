@@ -8,18 +8,36 @@ namespace Krys::MTL
 {
 #pragma region Min
 
+  /// @brief Returns the smaller of two values.
+  /// @tparam TNumber An arithmetic type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @returns The smaller of `a` and `b`.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Min(TNumber a, TNumber b) noexcept
   {
     return a < b ? a : b;
   }
 
+  /// @brief Returns the smallest of three values.
+  /// @tparam TNumber An arithmetic type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @param c The third value.
+  /// @returns The smallest of `a`, `b`, and `c`.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Min(TNumber a, TNumber b, TNumber c) noexcept
   {
     return MTL::Min(MTL::Min(a, b), c);
   }
 
+  /// @brief Returns the smallest of four values.
+  /// @tparam TNumber An arithmetic type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @param c The third value.
+  /// @param d The fourth value.
+  /// @returns The smallest of `a`, `b`, `c`, and `d`.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Min(TNumber a, TNumber b, TNumber c, TNumber d) noexcept
   {
@@ -30,6 +48,11 @@ namespace Krys::MTL
 
 #pragma region FMin
 
+  /// @brief Returns the smaller of two floating-point values, ignoring NaN.
+  /// @tparam TFloat A floating-point type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @returns The smaller of `a` and `b`, or `b` if `a` is NaN.
   template <IsFloatingPointT TFloat>
   constexpr NO_DISCARD TFloat FMin(TFloat a, TFloat b) noexcept
   {
@@ -38,6 +61,12 @@ namespace Krys::MTL
     return MTL::Min(a, b);
   }
 
+  /// @brief Returns the smallest of three floating-point values, ignoring NaN.
+  /// @tparam TNumber A floating-point type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @param c The third value.
+  /// @returns The smallest of `a`, `b`, and `c`, ignoring NaN values.
   template <IsFloatingPointT TNumber>
   constexpr NO_DISCARD TNumber FMin(TNumber a, TNumber b, TNumber c) noexcept
   {
@@ -50,6 +79,13 @@ namespace Krys::MTL
     return MTL::Min(a, b, c);
   }
 
+  /// @brief Returns the smallest of four floating-point values, ignoring NaN.
+  /// @tparam TNumber A floating-point type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @param c The third value.
+  /// @param d The fourth value.
+  /// @returns The smallest of `a`, `b`, `c`, and `d`, ignoring NaN values.
   template <IsFloatingPointT TNumber>
   constexpr NO_DISCARD TNumber FMin(TNumber a, TNumber b, TNumber c, TNumber d) noexcept
   {
@@ -68,18 +104,36 @@ namespace Krys::MTL
 
 #pragma region Max
 
+  /// @brief Returns the larger of two values.
+  /// @tparam TNumber An arithmetic type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @returns The larger of `a` and `b`.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Max(TNumber a, TNumber b) noexcept
   {
     return a > b ? a : b;
   }
 
+  /// @brief Returns the largest of three values.
+  /// @tparam TNumber An arithmetic type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @param c The third value.
+  /// @returns The largest of `a`, `b`, and `c`.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Max(TNumber a, TNumber b, TNumber c) noexcept
   {
     return MTL::Max(MTL::Max(a, b), c);
   }
 
+  /// @brief Returns the largest of four values.
+  /// @tparam TNumber An arithmetic type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @param c The third value.
+  /// @param d The fourth value.
+  /// @returns The largest of `a`, `b`, `c`, and `d`.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Max(TNumber a, TNumber b, TNumber c, TNumber d) noexcept
   {
@@ -90,6 +144,11 @@ namespace Krys::MTL
 
 #pragma region FMax
 
+  /// @brief Returns the larger of two floating-point values, ignoring NaN.
+  /// @tparam TFloat A floating-point type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @returns The larger of `a` and `b`, or `b` if `a` is NaN.
   template <IsFloatingPointT TFloat>
   constexpr NO_DISCARD TFloat FMax(TFloat a, TFloat b) noexcept
   {
@@ -98,6 +157,12 @@ namespace Krys::MTL
     return MTL::Max(a, b);
   }
 
+  /// @brief Returns the largest of three floating-point values, ignoring NaN.
+  /// @tparam TNumber A floating-point type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @param c The third value.
+  /// @returns The largest of `a`, `b`, and `c`, ignoring NaN values.
   template <IsFloatingPointT TNumber>
   constexpr NO_DISCARD TNumber FMax(TNumber a, TNumber b, TNumber c) noexcept
   {
@@ -110,6 +175,13 @@ namespace Krys::MTL
     return MTL::Max(a, b, c);
   }
 
+  /// @brief Returns the largest of four floating-point values, ignoring NaN.
+  /// @tparam TNumber A floating-point type.
+  /// @param a The first value.
+  /// @param b The second value.
+  /// @param c The third value.
+  /// @param d The fourth value.
+  /// @returns The largest of `a`, `b`, `c`, and `d`, ignoring NaN values.
   template <IsFloatingPointT TNumber>
   constexpr NO_DISCARD TNumber FMax(TNumber a, TNumber b, TNumber c, TNumber d) noexcept
   {
@@ -126,6 +198,12 @@ namespace Krys::MTL
 
 #pragma endregion FMax
 
+  /// @brief Clamps a value to lie within the specified range.
+  /// @tparam TNumber An arithmetic type.
+  /// @param value The input value.
+  /// @param min The lower bound of the range.
+  /// @param max The upper bound of the range.
+  /// @returns The clamped value, such that `min <= result <= max`.
   template <IsArithmeticT TNumber>
   constexpr NO_DISCARD TNumber Clamp(TNumber value, TNumber min, TNumber max) noexcept
   {
