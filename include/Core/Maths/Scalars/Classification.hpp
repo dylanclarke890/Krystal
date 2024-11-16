@@ -64,7 +64,7 @@ namespace Krys::MTL
   /// @param x The input value.
   /// @return `true` if `x` is even, otherwise `false`.
   /// @note For floating-point types, this function is undefined and should not be used.
-  template <IsArithmeticT TNumber>
+  template <IsIntegralT TNumber>
   constexpr NO_DISCARD bool IsEven(TNumber x) noexcept
   {
     return x % 2 == 0;
@@ -75,7 +75,7 @@ namespace Krys::MTL
   /// @param x The input value.
   /// @return `true` if `x` is odd, otherwise `false`.
   /// @note For floating-point types, this function is undefined and should not be used.
-  template <IsArithmeticT TNumber>
+  template <IsIntegralT TNumber>
   constexpr NO_DISCARD bool IsOdd(TNumber x) noexcept
   {
     return x % 2 != 0;
@@ -85,10 +85,20 @@ namespace Krys::MTL
   /// @tparam TNumber An arithmetic type.
   /// @param x The input value.
   /// @return `true` if `x` is positive, otherwise `false`.
-  template <IsArithmeticT TNumber>
+  template <IsSignedT TNumber>
   constexpr NO_DISCARD bool IsPositive(TNumber x) noexcept
   {
-    return x > 0;
+    return !std::signbit(x);
+  }
+
+  /// @brief Checks if the given number is negative.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @return `true` if `x` is negative, otherwise `false`.
+  template <IsSignedT TNumber>
+  constexpr NO_DISCARD bool IsNegative(TNumber x) noexcept
+  {
+    return std::signbit(x);
   }
 
   /// @brief Checks the sign of the given number.
@@ -96,8 +106,8 @@ namespace Krys::MTL
   /// @param x The input value.
   /// @return `1` if `x > 0`, `0` if ``x == 0`, or `-1` if `x < 0`.
   template <IsSignedT TNumber>
-  constexpr NO_DISCARD bool Sign(TNumber x) noexcept
+  constexpr NO_DISCARD TNumber Sign(TNumber x) noexcept
   {
-    return x > TNumber(0) ? TNumber(1) : x < 0 ? TNumber(-1) : TNumber(0);
+    return MTL::IsPositive(x) ? TNumber(1) : MTL::IsNegative(x) ? TNumber(-1) : TNumber(0);
   }
 }

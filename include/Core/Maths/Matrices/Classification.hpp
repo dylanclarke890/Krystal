@@ -86,7 +86,7 @@ namespace Krys::MTL
   /// @param m The input matrix.
   /// @return A matrix where each component is `true` if the corresponding component in `m` is even, otherwise
   /// `false`.
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  template <IsIntegralT TComponent, vec_length_t CL, vec_length_t RL>
   constexpr NO_DISCARD matrix_t<bool, CL, RL> IsEven(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
     using T = TComponent;
@@ -100,7 +100,7 @@ namespace Krys::MTL
   /// @param m The input matrix.
   /// @return A matrix where each component is `true` if the corresponding component in `m` is odd, otherwise
   /// `false`.
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  template <IsIntegralT TComponent, vec_length_t CL, vec_length_t RL>
   constexpr NO_DISCARD matrix_t<bool, CL, RL> IsOdd(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
     using T = TComponent;
@@ -114,7 +114,7 @@ namespace Krys::MTL
   /// @param m The input matrix.
   /// @return A matrix where each component is `true` if the corresponding component in `m` is positive,
   /// otherwise `false`.
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  template <IsSignedT TComponent, vec_length_t CL, vec_length_t RL>
   constexpr NO_DISCARD matrix_t<bool, CL, RL> IsPositive(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
     using T = TComponent;
@@ -128,7 +128,7 @@ namespace Krys::MTL
   /// @param m The input matrix.
   /// @return A matrix where each component is `true` if the corresponding component in `m` is negative,
   /// otherwise `false`.
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  template <IsSignedT TComponent, vec_length_t CL, vec_length_t RL>
   constexpr NO_DISCARD matrix_t<bool, CL, RL> IsNegative(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
     using T = TComponent;
@@ -142,7 +142,7 @@ namespace Krys::MTL
   /// @param m The input matrix.
   /// @return A matrix where each component is `1` if `m[i][j] > 0`, `0` if `m[i][j] == 0`, or `-1` if
   /// `m[i][j] < 0`.
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  template <IsSignedT TComponent, vec_length_t CL, vec_length_t RL>
   constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Sign(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
     using T = TComponent;

@@ -80,7 +80,7 @@ namespace Krys::MTL
   /// @param v The input vector.
   /// @return A vector where each component is `true` if the corresponding component in `v` is even, otherwise
   /// `false`.
-  template <IsArithmeticT TComponent, vec_length_t L>
+  template <IsSignedT TComponent, vec_length_t L>
   constexpr NO_DISCARD vector_t<bool, L> IsEven(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
@@ -93,7 +93,7 @@ namespace Krys::MTL
   /// @param v The input vector.
   /// @return A vector where each component is `true` if the corresponding component in `v` is odd, otherwise
   /// `false`.
-  template <IsArithmeticT TComponent, vec_length_t L>
+  template <IsSignedT TComponent, vec_length_t L>
   constexpr NO_DISCARD vector_t<bool, L> IsOdd(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
@@ -106,7 +106,7 @@ namespace Krys::MTL
   /// @param v The input vector.
   /// @return A vector where each component is `true` if the corresponding component in `v` is positive,
   /// otherwise `false`.
-  template <IsArithmeticT TComponent, vec_length_t L>
+  template <IsSignedT TComponent, vec_length_t L>
   constexpr NO_DISCARD vector_t<bool, L> IsPositive(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
@@ -119,7 +119,7 @@ namespace Krys::MTL
   /// @param v The input vector.
   /// @return A vector where each component is `true` if the corresponding component in `v` is negative,
   /// otherwise `false`.
-  template <IsArithmeticT TComponent, vec_length_t L>
+  template <IsSignedT TComponent, vec_length_t L>
   constexpr NO_DISCARD vector_t<bool, L> IsNegative(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
