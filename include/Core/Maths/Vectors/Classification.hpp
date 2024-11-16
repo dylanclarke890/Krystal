@@ -19,7 +19,7 @@ namespace Krys::MTL
   constexpr NO_DISCARD vector_t<bool, L> IsNaN(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
-    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return IsNaN(val); });
+    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return MTL::IsNaN(val); });
   }
 
   /// @brief Checks if each component of the vector is finite.
@@ -32,7 +32,7 @@ namespace Krys::MTL
   constexpr NO_DISCARD vector_t<bool, L> IsFinite(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
-    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return IsFinite(val); });
+    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return MTL::IsFinite(val); });
   }
 
   /// @brief Checks if each component of the vector is infinite.
@@ -45,7 +45,7 @@ namespace Krys::MTL
   constexpr NO_DISCARD vector_t<bool, L> IsInf(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
-    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return IsInf(val); });
+    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return MTL::IsInf(val); });
   }
 
   /// @brief Checks if each component of the vector is normal.
@@ -58,7 +58,7 @@ namespace Krys::MTL
   constexpr NO_DISCARD vector_t<bool, L> IsNormal(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
-    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return IsNormal(val); });
+    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return MTL::IsNormal(val); });
   }
 
   /// @brief Checks if each component of the vector is denormalized.
@@ -71,7 +71,7 @@ namespace Krys::MTL
   constexpr NO_DISCARD vector_t<bool, L> IsDenormal(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
-    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return IsDenormal(val); });
+    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return MTL::IsDenormal(val); });
   }
 
   /// @brief Checks if each component of the vector is even.
@@ -84,7 +84,7 @@ namespace Krys::MTL
   constexpr NO_DISCARD vector_t<bool, L> IsEven(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
-    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return IsEven(val); });
+    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return MTL::IsEven(val); });
   }
 
   /// @brief Checks if each component of the vector is odd.
@@ -97,7 +97,7 @@ namespace Krys::MTL
   constexpr NO_DISCARD vector_t<bool, L> IsOdd(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
-    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return IsOdd(val); });
+    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return MTL::IsOdd(val); });
   }
 
   /// @brief Checks if each component of the vector is positive.
@@ -110,7 +110,7 @@ namespace Krys::MTL
   constexpr NO_DISCARD vector_t<bool, L> IsPositive(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
-    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return IsPositive(val); });
+    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return MTL::IsPositive(val); });
   }
 
   /// @brief Checks if each component of the vector is negative.
@@ -123,6 +123,6 @@ namespace Krys::MTL
   constexpr NO_DISCARD vector_t<bool, L> IsNegative(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
-    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return IsNegative(val); });
+    return MTL::Map<T, bool, L>(v, [](T val) -> bool { return MTL::IsNegative(val); });
   }
 }
