@@ -41,6 +41,43 @@ namespace Krys::MTL
   constexpr vector_t<TOut, L> Zip(const vector_t<TComponentInA, L> &a, const vector_t<TComponentInB, L> &b,
                                   Func<TOut(TComponentInA a, TComponentInB b)> func) noexcept;
 
+  /// @brief Creates a new vector from three input vectors by applying a function to each component triplet of
+  /// the input vectors.
+  /// @tparam TComponentInA The underlying arithmetic type of the first input vector.
+  /// @tparam TComponentInB The underlying arithmetic type of the second input vector.
+  /// @tparam TComponentInC The underlying arithmetic type of the third input vector.
+  /// @tparam TOut The underlying arithmetic type of the output vector.
+  /// @tparam L The length of the input vectors.
+  /// @param v The input vector.
+  /// @param func A callable object or lambda that returns the transformed value for each component.
+  /// @return A vector where each component is the result of applying `func` to the corresponding triplet of
+  /// input components.
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TOut, vec_length_t L>
+  constexpr vector_t<TOut, L>
+    Zip(const vector_t<TComponentInA, L> &a, const vector_t<TComponentInB, L> &b,
+        const vector_t<TComponentInC, L> &c,
+        Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c)> func) noexcept;
+
+  /// @brief Creates a new vector from three input vectors by applying a function to each component quadruplet
+  /// of the input vectors.
+  /// @tparam TComponentInA The underlying arithmetic type of the first input vector.
+  /// @tparam TComponentInB The underlying arithmetic type of the second input vector.
+  /// @tparam TComponentInC The underlying arithmetic type of the third input vector.
+  /// @tparam TComponentInD The underlying arithmetic type of the fourth input vector.
+  /// @tparam TOut The underlying arithmetic type of the output vector.
+  /// @tparam L The length of the input vectors.
+  /// @param v The input vector.
+  /// @param func A callable object or lambda that returns the transformed value for each component.
+  /// @return A vector where each component is the result of applying `func` to the corresponding quadruplet
+  /// of input components.
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TComponentInD, IsArithmeticT TOut, vec_length_t L>
+  constexpr vector_t<TOut, L>
+    Zip(const vector_t<TComponentInA, L> &a, const vector_t<TComponentInB, L> &b,
+        const vector_t<TComponentInC, L> &c, const vector_t<TComponentInD, L> &d,
+        Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c, TComponentInD d)> func) noexcept;
+
   /// @brief Computes the sum of all components of the vector.
   /// @tparam TComponent The underlying arithmetic type of the input vector.
   /// @tparam L The length of the input vector.
@@ -149,6 +186,80 @@ namespace Krys::MTL
                                   Func<TOut(TComponentInA a, TComponentInB b)> func) noexcept
   {
     return vector_t<TOut, 4>(func(a.x, b.x), func(a.y, b.y), func(a.z, b.z), func(a.w, b.w));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TOut>
+  constexpr vector_t<TOut, 1> Zip(const vector_t<TComponentInA, 1> &a, const vector_t<TComponentInB, 1> &b,
+                                  const vector_t<TComponentInC, 1> &c,
+                                  Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c)> func) noexcept
+  {
+    return vector_t<TOut, 1>(func(a.x, b.x, c.x));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TOut>
+  constexpr vector_t<TOut, 2> Zip(const vector_t<TComponentInA, 2> &a, const vector_t<TComponentInB, 2> &b,
+                                  const vector_t<TComponentInC, 2> &c,
+                                  Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c)> func) noexcept
+  {
+    return vector_t<TOut, 2>(func(a.x, b.x, c.x), func(a.y, b.y, c.y));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TOut>
+  constexpr vector_t<TOut, 3> Zip(const vector_t<TComponentInA, 3> &a, const vector_t<TComponentInB, 3> &b,
+                                  const vector_t<TComponentInC, 3> &c,
+                                  Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c)> func) noexcept
+  {
+    return vector_t<TOut, 3>(func(a.x, b.x, c.x), func(a.y, b.y, c.y), func(a.z, b.z, c.z));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TOut>
+  constexpr vector_t<TOut, 4> Zip(const vector_t<TComponentInA, 4> &a, const vector_t<TComponentInB, 4> &b,
+                                  const vector_t<TComponentInC, 4> &c,
+                                  Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c)> func) noexcept
+  {
+    return vector_t<TOut, 4>(func(a.x, b.x, c.x), func(a.y, b.y, c.y), func(a.z, b.z, c.z),
+                             func(a.w, b.w, c.w));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TComponentInD, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 1> Zip(const vector_t<TComponentInA, 1> &a, const vector_t<TComponentInB, 1> &b,
+                                  const vector_t<TComponentInC, 1> &c, const vector_t<TComponentInD, 1> &d,
+                                  Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c)> func) noexcept
+  {
+    return vector_t<TOut, 1>(func(a.x, b.x, c.x, d.x));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TComponentInD, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 2> Zip(const vector_t<TComponentInA, 2> &a, const vector_t<TComponentInB, 2> &b,
+                                  const vector_t<TComponentInC, 2> &c, const vector_t<TComponentInD, 2> &d,
+                                  Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c)> func) noexcept
+  {
+    return vector_t<TOut, 2>(func(a.x, b.x, c.x, d.x), func(a.y, b.y, c.y, d.y));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TComponentInD, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 3> Zip(const vector_t<TComponentInA, 3> &a, const vector_t<TComponentInB, 3> &b,
+                                  const vector_t<TComponentInC, 3> &c, const vector_t<TComponentInD, 3> &d,
+                                  Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c)> func) noexcept
+  {
+    return vector_t<TOut, 3>(func(a.x, b.x, c.x, d.x), func(a.y, b.y, c.y, d.y), func(a.z, b.z, c.z, d.z));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TComponentInC,
+            IsArithmeticT TComponentInD, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 4> Zip(const vector_t<TComponentInA, 4> &a, const vector_t<TComponentInB, 4> &b,
+                                  const vector_t<TComponentInC, 4> &c, const vector_t<TComponentInD, 4> &d,
+                                  Func<TOut(TComponentInA a, TComponentInB b, TComponentInC c)> func) noexcept
+  {
+    return vector_t<TOut, 4>(func(a.x, b.x, c.x, d.x), func(a.y, b.y, c.y, d.y), func(a.z, b.z, c.z, d.z),
+                             func(a.w, b.w, c.w, d.w));
   }
 
 #pragma endregion Zip
