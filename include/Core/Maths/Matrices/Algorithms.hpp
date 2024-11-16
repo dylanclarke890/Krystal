@@ -38,8 +38,8 @@ namespace Krys::MTL
   /// @tparam RL The row length of the input matrix.
   /// @param v The input matrix.
   /// @param func A callable object or lambda that returns the transformed value for each component.
-  /// @return A matrix where each component is the result of applying `func` to the corresponding input
-  /// component.
+  /// @return A matrix where each component is the result of applying `func` to the corresponding pair of
+  /// input components.
   template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TOut, vec_length_t CL,
             vec_length_t RL>
   constexpr matrix_t<TOut, CL, RL> Zip(const matrix_t<TComponentInA, CL, RL> &a,

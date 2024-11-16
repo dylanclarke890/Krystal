@@ -35,8 +35,8 @@ namespace Krys::MTL
   /// @tparam L The length of the input vectors.
   /// @param v The input vector.
   /// @param func A callable object or lambda that returns the transformed value for each component.
-  /// @return A vector where each component is the result of applying `func` to the corresponding input
-  /// component.
+  /// @return A vector where each component is the result of applying `func` to the corresponding pair of
+  /// input components.
   template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TOut, vec_length_t L>
   constexpr vector_t<TOut, L> Zip(const vector_t<TComponentInA, L> &a, const vector_t<TComponentInB, L> &b,
                                   Func<TOut(TComponentInA a, TComponentInB b)> func) noexcept;
