@@ -9,7 +9,7 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes hyperbolic sine for each component in `v`.
+  /// @brief Computes the hyperbolic sine for each component in `v`.
   /// @tparam TComponent The underlying arithmetic type of the input vector.
   /// @tparam L The length of the input vector.
   /// @param v The input vector.
@@ -21,7 +21,7 @@ namespace Krys::MTL
     return MTL::Map<T, T, L>(v, [](T val) -> T { return MTL::Sinh<T>(val); });
   }
 
-  /// @brief Computes hyperbolic cosine for each component in `v`.
+  /// @brief Computes the hyperbolic cosine for each component in `v`.
   /// @tparam TComponent The underlying arithmetic type of the input vector.
   /// @tparam L The length of the input vector.
   /// @param v The input vector.
@@ -33,7 +33,7 @@ namespace Krys::MTL
     return MTL::Map<T, T, L>(v, [](T val) -> T { return MTL::Cosh<T>(val); });
   }
 
-  /// @brief Computes hyperbolic tangent for each component in `v`.
+  /// @brief Computes the hyperbolic tangent for each component in `v`.
   /// @tparam TComponent The underlying arithmetic type of the input vector.
   /// @tparam L The length of the input vector.
   /// @param v The input vector.
