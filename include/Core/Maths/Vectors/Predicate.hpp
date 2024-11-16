@@ -8,28 +8,28 @@
 namespace Krys::MTL
 {
   /// @brief Checks if any of the components in `v` satisfy the predicate.
-  /// @tparam TComponent The underlying arithmetic type of the vector.
-  /// @tparam Length The size of the vector.
+  /// @tparam TComponent The underlying arithmetic type of the input vector.
+  /// @tparam L The length of the input vector.
   /// @param v The vector to check.
   /// @returns True if any of the components satified the predicate, false otherwise.
-  template <IsArithmeticT TComponent, vec_length_t Length>
-  constexpr bool AnyOf(const vector_t<TComponent, Length> &v, Func<bool(TComponent)> predicate) noexcept;
+  template <IsArithmeticT TComponent, vec_length_t L>
+  constexpr bool AnyOf(const vector_t<TComponent, L> &v, Func<bool(TComponent)> predicate) noexcept;
 
   /// @brief Checks if all of the components in `v` satisfy the predicate.
-  /// @tparam TComponent The underlying arithmetic type of the vector.
-  /// @tparam Length The size of the vector.
+  /// @tparam TComponent The underlying arithmetic type of the input vector.
+  /// @tparam L The length of the input vector.
   /// @param v The vector to check.
   /// @returns True if all of the components satified the predicate, false otherwise.
-  template <IsArithmeticT TComponent, vec_length_t Length>
-  constexpr bool AllOf(const vector_t<TComponent, Length> &v, Func<bool(TComponent)> predicate) noexcept;
+  template <IsArithmeticT TComponent, vec_length_t L>
+  constexpr bool AllOf(const vector_t<TComponent, L> &v, Func<bool(TComponent)> predicate) noexcept;
 
   /// @brief Checks if none of the components in `v` satisfy the predicate.
-  /// @tparam TComponent The underlying arithmetic type of the vector.
-  /// @tparam Length The size of the vector.
+  /// @tparam TComponent The underlying arithmetic type of the input vector.
+  /// @tparam L The length of the input vector.
   /// @param v The vector to check.
   /// @returns True if none of the components satified the predicate, false otherwise.
-  template <IsArithmeticT TComponent, vec_length_t Length>
-  constexpr bool NoneOf(const vector_t<TComponent, Length> &v, Func<bool(TComponent)> predicate) noexcept;
+  template <IsArithmeticT TComponent, vec_length_t L>
+  constexpr bool NoneOf(const vector_t<TComponent, L> &v, Func<bool(TComponent)> predicate) noexcept;
 
 #pragma region AnyOf
 

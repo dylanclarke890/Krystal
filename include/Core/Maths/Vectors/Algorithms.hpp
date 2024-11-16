@@ -9,40 +9,54 @@ namespace Krys::MTL
 {
   /// @brief Applies a function to each component of the vector.
   /// @tparam TComponent The underlying arithmetic type of the vector.
-  /// @tparam Length The size of the vector.
+  /// @tparam L The length of the input vector.
   /// @param v The input vector.
   /// @param func A callable object or lambda to be applied to each component.
-  template <IsArithmeticT TComponent, vec_length_t Length>
-  constexpr void ForEach(const vector_t<TComponent, Length> &v, Func<void(TComponent v)> func) noexcept;
+  template <IsArithmeticT TComponent, vec_length_t L>
+  constexpr void ForEach(const vector_t<TComponent, L> &v, Func<void(TComponent v)> func) noexcept;
 
   /// @brief Creates a new vector by applying a function to each component of the input vector.
   /// @tparam TComponentIn The underlying arithmetic type of the input vector.
-  /// @tparam Length The size of the vector.
-  /// @tparam TComponentOut The underlying arithmetic type of the output vector.
+  /// @tparam TOut The underlying arithmetic type of the output vector.
+  /// @tparam L The length of the input vector.
   /// @param v The input vector.
   /// @param func A callable object or lambda that returns the transformed value for each component.
   /// @return A vector where each component is the result of applying `func` to the corresponding input
   /// component.
-  template <IsArithmeticT TComponentIn, vec_length_t Length, IsArithmeticT TComponentOut>
-  constexpr vector_t<TComponentOut, Length> Map(const vector_t<TComponentIn, Length> &v,
-                                                Func<TComponentOut(TComponentIn v)> func) noexcept;
+  template <IsArithmeticT TComponentIn, IsArithmeticT TOut, vec_length_t L>
+  constexpr vector_t<TOut, L> Map(const vector_t<TComponentIn, L> &v,
+                                  Func<TOut(TComponentIn v)> func) noexcept;
+
+  /// @brief Creates a new vector from two input vectors by applying a function to each component pair of
+  /// the input vectors.
+  /// @tparam TComponentInA The underlying arithmetic type of the first input vector.
+  /// @tparam TComponentInB The underlying arithmetic type of the second input vector.
+  /// @tparam TOut The underlying arithmetic type of the output vector.
+  /// @tparam L The length of the input vectors.
+  /// @param v The input vector.
+  /// @param func A callable object or lambda that returns the transformed value for each component.
+  /// @return A vector where each component is the result of applying `func` to the corresponding input
+  /// component.
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TOut, vec_length_t L>
+  constexpr vector_t<TOut, L> Zip(const vector_t<TComponentInA, L> &a, const vector_t<TComponentInB, L> &b,
+                                  Func<TOut(TComponentInA a, TComponentInB b)> func) noexcept;
 
   /// @brief Computes the sum of all components of the vector.
-  /// @tparam TComponent The underlying arithmetic type of the vector.
-  /// @tparam Length The size of the vector.
+  /// @tparam TComponent The underlying arithmetic type of the input vector.
+  /// @tparam L The length of the input vector.
   /// @param v The input vector.
   /// @return The sum of the components of `v`.
-  template <IsArithmeticT TComponent, vec_length_t Length>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, Length> &v) noexcept;
+  template <IsArithmeticT TComponent, vec_length_t L>
+  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, L> &v) noexcept;
 
   /// @brief Computes the sum of all components of the vector after applying a function to each component.
-  /// @tparam TComponent The underlying arithmetic type of the vector.
-  /// @tparam Length The size of the vector.
+  /// @tparam TComponent The underlying arithmetic type of the input vector.
+  /// @tparam L The length of the input vector.
   /// @param v The input vector.
   /// @param func A callable object or lambda to transform each component before summing.
   /// @return The sum of the transformed components of `v`.
-  template <IsArithmeticT TComponent, vec_length_t Length>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, Length> &v,
+  template <IsArithmeticT TComponent, vec_length_t L>
+  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, L> &v,
                                       Func<TComponent(TComponent v)> func) noexcept;
 
 #pragma region ForEach
@@ -81,35 +95,63 @@ namespace Krys::MTL
 
 #pragma region Map
 
-  template <IsArithmeticT TComponentIn, IsArithmeticT TComponentOut>
-  constexpr vector_t<TComponentOut, 1> Map(const vector_t<TComponentIn, 1> &v,
-                                           Func<TComponentOut(TComponentIn)> func) noexcept
+  template <IsArithmeticT TComponentIn, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 1> Map(const vector_t<TComponentIn, 1> &v, Func<TOut(TComponentIn)> func) noexcept
   {
-    return vector_t<TComponentOut, 1>(func(v.x), func(v.y));
+    return vector_t<TOut, 1>(func(v.x));
   }
 
-  template <IsArithmeticT TComponentIn, IsArithmeticT TComponentOut>
-  constexpr vector_t<TComponentOut, 2> Map(const vector_t<TComponentIn, 2> &v,
-                                           Func<TComponentOut(TComponentIn)> func) noexcept
+  template <IsArithmeticT TComponentIn, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 2> Map(const vector_t<TComponentIn, 2> &v, Func<TOut(TComponentIn)> func) noexcept
   {
-    return vector_t<TComponentOut, 2>(func(v.x), func(v.y));
+    return vector_t<TOut, 2>(func(v.x), func(v.y));
   }
 
-  template <IsArithmeticT TComponentIn, IsArithmeticT TComponentOut>
-  constexpr vector_t<TComponentOut, 3> Map(const vector_t<TComponentIn, 3> &v,
-                                           Func<TComponentOut(TComponentIn)> func) noexcept
+  template <IsArithmeticT TComponentIn, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 3> Map(const vector_t<TComponentIn, 3> &v, Func<TOut(TComponentIn)> func) noexcept
   {
-    return vector_t<TComponentOut, 3>(func(v.x), func(v.y), func(v.z));
+    return vector_t<TOut, 3>(func(v.x), func(v.y), func(v.z));
   }
 
-  template <IsArithmeticT TComponentIn, IsArithmeticT TComponentOut>
-  constexpr vector_t<TComponentOut, 4> Map(const vector_t<TComponentIn, 4> &v,
-                                           Func<TComponentOut(TComponentIn)> func) noexcept
+  template <IsArithmeticT TComponentIn, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 4> Map(const vector_t<TComponentIn, 4> &v, Func<TOut(TComponentIn)> func) noexcept
   {
-    return vector_t<TComponentOut, 4>(func(v.x), func(v.y), func(v.z), func(v.w));
+    return vector_t<TOut, 4>(func(v.x), func(v.y), func(v.z), func(v.w));
   }
 
 #pragma endregion Map
+
+#pragma region Zip
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 1> Zip(const vector_t<TComponentInA, 1> &a, const vector_t<TComponentInB, 1> &b,
+                                  Func<TOut(TComponentInA a, TComponentInB b)> func) noexcept
+  {
+    return vector_t<TOut, 1>(func(a.x, b.x));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 2> Zip(const vector_t<TComponentInA, 2> &a, const vector_t<TComponentInB, 2> &b,
+                                  Func<TOut(TComponentInA a, TComponentInB b)> func) noexcept
+  {
+    return vector_t<TOut, 2>(func(a.x, b.x), func(a.y, b.y));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 3> Zip(const vector_t<TComponentInA, 3> &a, const vector_t<TComponentInB, 3> &b,
+                                  Func<TOut(TComponentInA a, TComponentInB b)> func) noexcept
+  {
+    return vector_t<TOut, 3>(func(a.x, b.x), func(a.y, b.y), func(a.z, b.z));
+  }
+
+  template <IsArithmeticT TComponentInA, IsArithmeticT TComponentInB, IsArithmeticT TOut>
+  constexpr vector_t<TOut, 4> Zip(const vector_t<TComponentInA, 4> &a, const vector_t<TComponentInB, 4> &b,
+                                  Func<TOut(TComponentInA a, TComponentInB b)> func) noexcept
+  {
+    return vector_t<TOut, 4>(func(a.x, b.x), func(a.y, b.y), func(a.z, b.z), func(a.w, b.w));
+  }
+
+#pragma endregion Zip
 
 #pragma region Sum
 
