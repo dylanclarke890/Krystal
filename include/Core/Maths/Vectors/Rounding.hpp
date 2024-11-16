@@ -3,6 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
+#include "Core/Maths/Scalars/Rounding.hpp"
 #include "Core/Maths/Vectors/Algorithms.hpp"
 #include "Core/Maths/Vectors/Base.hpp"
 
