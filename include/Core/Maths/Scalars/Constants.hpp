@@ -242,4 +242,12 @@ namespace Krys::MTL
   {
     return TNumber(1.61803398874989484820458683436563811);
   }
+
+  /// @tparam TNumber An arithmetic type.
+  /// @returns cos(1 / 2).
+  template <typename TNumber>
+  constexpr NO_DISCARD TNumber CosOneHalf()
+  {
+    return TNumber(0.877582561890372716130286068203503191);
+  }
 }
