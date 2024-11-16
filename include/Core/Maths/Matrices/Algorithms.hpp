@@ -19,7 +19,8 @@ namespace Krys::MTL
   /// @brief Creates a new matrix by applying a function to each component of the input matrix.
   /// @tparam TComponentIn The underlying arithmetic type of the input matrix.
   /// @tparam TOut The underlying arithmetic type of the output matrix.
-  /// @tparam L The length of the input matrix.
+  /// @tparam CL The column length of the input matrix.
+  /// @tparam RL The row length of the input matrix.
   /// @param v The input matrix.
   /// @param func A callable object or lambda that returns the transformed value for each component.
   /// @return A matrix where each component is the result of applying `func` to the corresponding input
@@ -33,7 +34,8 @@ namespace Krys::MTL
   /// @tparam TComponentInA The underlying arithmetic type of the first input matrix.
   /// @tparam TComponentInB The underlying arithmetic type of the second input matrix.
   /// @tparam TOut The underlying arithmetic type of the output matrix.
-  /// @tparam L The length of the input matrices.
+  /// @tparam CL The column length of the input matrix.
+  /// @tparam RL The row length of the input matrix.
   /// @param v The input matrix.
   /// @param func A callable object or lambda that returns the transformed value for each component.
   /// @return A matrix where each component is the result of applying `func` to the corresponding input
@@ -46,7 +48,8 @@ namespace Krys::MTL
 
   /// @brief Computes the sum of all components of the matrix.
   /// @tparam TComponent The underlying arithmetic type of the input matrix.
-  /// @tparam L The length of the input matrix.
+  /// @tparam CL The column length of the input matrix.
+  /// @tparam RL The row length of the input matrix.
   /// @param v The input matrix.
   /// @return The sum of the components of `v`.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
@@ -54,7 +57,8 @@ namespace Krys::MTL
 
   /// @brief Computes the sum of all components of the matrix after applying a function to each component.
   /// @tparam TComponent The underlying arithmetic type of the input matrix.
-  /// @tparam L The length of the input matrix.
+  /// @tparam CL The column length of the input matrix.
+  /// @tparam RL The row length of the input matrix.
   /// @param v The input matrix.
   /// @param func A callable object or lambda to transform each component before summing.
   /// @return The sum of the transformed components of `v`.
