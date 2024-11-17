@@ -60,6 +60,19 @@ namespace Krys::MTL
     return MTL::Zip<T, T, T, T, L>(a, b, c, d, [](T x, T y, T z, T w) -> T { return MTL::Min(x, y, z, w); });
   }
 
+  /// @brief Performs a component-wise minimum operation between the vector `a` and scalar `b`.
+  /// @tparam TComponent The underlying arithmetic type of the vectors.
+  /// @tparam L The length of the vectors.
+  /// @param a The first input vector.
+  /// @param b The minimum value each component is allowed to be.
+  /// @return A vector where each component is the smaller of the corresponding component of `a` and `b`.
+  template <IsArithmeticT TComponent, vec_length_t L>
+  constexpr NO_DISCARD vector_t<TComponent, L> Min(const vector_t<TComponent, L> &a, TComponent b) noexcept
+  {
+    using T = TComponent;
+    return MTL::Zip<T, T, L>(a, vector_t<T, L>(b), [](T x, T y) -> T { return MTL::Min(x, y); });
+  }
+
 #pragma endregion Min
 
 #pragma region FMin
@@ -114,6 +127,20 @@ namespace Krys::MTL
     return MTL::Zip<T, T, T, T, L>(a, b, c, d, [](T x, T y, T z, T w) -> T { return MTL::FMin(x, y, z, w); });
   }
 
+  /// @brief Performs a component-wise minimum operation between the vector `a` and floating point `b`.
+  /// @tparam TComponent The underlying floating-point type of the vectors.
+  /// @tparam L The length of the vectors.
+  /// @param a The first input vector.
+  /// @param b The minimum value each component is allowed to be.
+  /// @return A vector where each component is the smaller of the corresponding component of `a` and `b`,
+  /// ignoring NaN.
+  template <IsFloatingPointT TComponent, vec_length_t L>
+  constexpr NO_DISCARD vector_t<TComponent, L> FMin(const vector_t<TComponent, L> &a, TComponent b) noexcept
+  {
+    using T = TComponent;
+    return MTL::Zip<T, T, L>(a, vector_t<T, L>(b), [](T x, T y) -> T { return MTL::FMin(x, y); });
+  }
+
 #pragma endregion FMin
 
 #pragma region Max
@@ -165,6 +192,19 @@ namespace Krys::MTL
   {
     using T = TComponent;
     return MTL::Zip<T, T, T, T, L>(a, b, c, d, [](T x, T y, T z, T w) -> T { return MTL::Max(x, y, z, w); });
+  }
+
+  /// @brief Performs a component-wise maximum operation between the vector `a` and scalar `b`.
+  /// @tparam TComponent The underlying arithmetic type of the vectors.
+  /// @tparam L The length of the vectors.
+  /// @param a The first input vector.
+  /// @param b The maximum value each component is allowed to be.
+  /// @return A vector where each component is the larger of the corresponding component of `a` and `b`.
+  template <IsArithmeticT TComponent, vec_length_t L>
+  constexpr NO_DISCARD vector_t<TComponent, L> Max(const vector_t<TComponent, L> &a, TComponent b) noexcept
+  {
+    using T = TComponent;
+    return MTL::Max<T, L>(a, vector_t<T, L>(b), [](T x, T y) -> T { return MTL::Max(x, y); });
   }
 
 #pragma endregion Max
@@ -221,6 +261,20 @@ namespace Krys::MTL
     return MTL::Zip<T, T, T, T, L>(a, b, c, d, [](T x, T y, T z, T w) -> T { return MTL::FMax(x, y, z, w); });
   }
 
+  /// @brief Performs a component-wise maximum operation between the vector `a` and floating point `b`.
+  /// @tparam TComponent The underlying floating-point type of the vectors.
+  /// @tparam L The length of the vectors.
+  /// @param a The first input vector.
+  /// @param b The maximum value each component is allowed to be.
+  /// @return A vector where each component is the larger of the corresponding component of `a` and `b`,
+  /// ignoring NaN.
+  template <IsFloatingPointT TComponent, vec_length_t L>
+  constexpr NO_DISCARD vector_t<TComponent, L> FMax(const vector_t<TComponent, L> &a, TComponent b) noexcept
+  {
+    using T = TComponent;
+    return MTL::Zip<T, T, L>(a, vector_t<T, L>(b), [](T x, T y) -> T { return MTL::FMax(x, y); });
+  }
+
 #pragma endregion FMax
 
 #pragma region Clamp
@@ -241,6 +295,22 @@ namespace Krys::MTL
   {
     using T = TComponent;
     return MTL::Zip<T, T, T, L>(value, min, max,
+                                [](T v, T mn, T mx) -> T { return MTL::Min(MTL::Max(v, mn), mx); });
+  }
+
+  /// @brief Clamps each component of the vector between the scalar values `min` and `max`.
+  /// @tparam TComponent The underlying arithmetic type of the vector.
+  /// @tparam L The length of the vector.
+  /// @param value The input vector to clamp.
+  /// @param min The minimum scalar value for clamping.
+  /// @param max The maximum scalar value for clamping.
+  /// @return A vector where each component is clamped between `min` and `max`.
+  template <IsArithmeticT TComponent, vec_length_t L>
+  constexpr NO_DISCARD vector_t<TComponent, L> Clamp(const vector_t<TComponent, L> &value, TComponent min,
+                                                     TComponent max) noexcept
+  {
+    using T = TComponent;
+    return MTL::Map<T, T, T, L>(value, vector_t<T, L>(min), vector_t<T, L>(max),
                                 [](T v, T mn, T mx) -> T { return MTL::Min(MTL::Max(v, mn), mx); });
   }
 
