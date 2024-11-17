@@ -75,4 +75,26 @@ namespace Krys
   template <typename TA, typename TB>
   concept SupportsArithmeticOperations =
     IsAddableT<TA, TB> && IsSubtractableT<TA, TB> && IsDivisibleT<TA, TB> && IsMultipliableT<TA, TB>;
+
+/// @brief Determines if the current code is being evaluated in a compile-time context.
+/// @returns `true` if the current context is a compile-time evaluation; otherwise `false`.
+/// @example
+/// constexpr int Foo() {
+///   KRYS_IF_COMPILE_CONTEXT {
+///     return 42; // Compile-time specific logic
+///   }
+///   return 0; // Runtime fallback
+/// }
+#define KRYS_IF_COMPILE_CONTEXT if constexpr(std::is_constant_evaluated())
+
+/// @brief Determines if the current code will be evaluated at runtime.
+/// @returns `true` if the current context is a runtime evaluation; otherwise `false`.
+/// @example
+/// constexpr int Bar() {
+///   KRYS_IF_RUNTIME_CONTEXT {
+///     return 42; // Runtime specific logic
+///   }
+///   return 0; // Compile-time fallback
+/// }
+#define KRYS_IF_RUNTIME_CONTEXT if constexpr(!std::is_constant_evaluated())
 }

@@ -81,3 +81,4 @@ SpacesInLineCommentPrefix:
  Minimum: 1
  Maximum: 1
 SpacesInParens: Never
+IfMacros: [KRYS_IF_COMPILE_CONTEXT, KRYS_IF_RUNTIME_CONTEXT]
