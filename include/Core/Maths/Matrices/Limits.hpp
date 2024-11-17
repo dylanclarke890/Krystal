@@ -64,6 +64,21 @@ namespace Krys::MTL
                                         [](T x, T y, T z, T w) -> T { return MTL::Min(x, y, z, w); });
   }
 
+  /// @brief Performs a component-wise minimum operation between the matrix `a` and scalar `b`.
+  /// @tparam TComponent The underlying arithmetic type of the matrices.
+  /// @tparam CL The column length of the matrices.
+  /// @tparam RL The row length of the matrices.
+  /// @param a The input matrix.
+  /// @param b The minimum value each component is allowed to be.
+  /// @return A matrix where each component is the smaller of the corresponding component of `a` and `b`.
+  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Min(const matrix_t<TComponent, CL, RL> &a,
+                                                        TComponent b) noexcept
+  {
+    using T = TComponent;
+    return MTL::Zip<T, T, CL, RL>(a, matrix_t<T, CL, RL>(b), [](T x, T y) -> T { return MTL::Min(x, y); });
+  }
+
 #pragma endregion Min
 
 #pragma region FMin
@@ -120,6 +135,22 @@ namespace Krys::MTL
     using T = TComponent;
     return MTL::Zip<T, T, T, T, CL, RL>(a, b, c, d,
                                         [](T x, T y, T z, T w) -> T { return MTL::FMin(x, y, z, w); });
+  }
+
+  /// @brief Performs a component-wise minimum operation between the matrix `a` and floating point `b`.
+  /// @tparam TComponent The underlying floating-point type of the matrices.
+  /// @tparam CL The column length of the matrices.
+  /// @tparam RL The row length of the matrices.
+  /// @param a The input matrix.
+  /// @param b The minimum value each component is allowed to be.
+  /// @return A matrix where each component is the smaller of the corresponding component of `a` and `b`,
+  /// ignoring NaN.
+  template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
+  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> FMin(const matrix_t<TComponent, CL, RL> &a,
+                                                         TComponent b) noexcept
+  {
+    using T = TComponent;
+    return MTL::Zip<T, T, CL, RL>(a, matrix_t<T, L>(b), [](T x, T y) -> T { return MTL::FMin(x, y); });
   }
 
 #pragma endregion FMin
@@ -179,6 +210,21 @@ namespace Krys::MTL
                                         [](T x, T y, T z, T w) -> T { return MTL::Max(x, y, z, w); });
   }
 
+  /// @brief Performs a component-wise maximum operation between the matrix `a` and scalar `b`.
+  /// @tparam TComponent The underlying arithmetic type of the matrices.
+  /// @tparam CL The column length of the matrices.
+  /// @tparam RL The row length of the matrices.
+  /// @param a The input matrix.
+  /// @param b The maximum value each component is allowed to be.
+  /// @return A matrix where each component is the larger of the corresponding component of `a` and `b`.
+  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Min(const matrix_t<TComponent, CL, RL> &a,
+                                                        TComponent b) noexcept
+  {
+    using T = TComponent;
+    return MTL::Zip<T, T, CL, RL>(a, matrix_t<T, CL, RL>(b), [](T x, T y) -> T { return MTL::Max(x, y); });
+  }
+
 #pragma endregion Max
 
 #pragma region FMax
@@ -236,6 +282,22 @@ namespace Krys::MTL
                                         [](T x, T y, T z, T w) -> T { return MTL::FMax(x, y, z, w); });
   }
 
+  /// @brief Performs a component-wise maximum operation between the matrix `a` and floating point `b`.
+  /// @tparam TComponent The underlying floating-point type of the matrices.
+  /// @tparam CL The column length of the matrices.
+  /// @tparam RL The row length of the matrices.
+  /// @param a The input matrix.
+  /// @param b The maximum value each component is allowed to be.
+  /// @return A matrix where each component is the larger of the corresponding component of `a` and `b`,
+  /// ignoring NaN.
+  template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
+  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
+                                                         TComponent b) noexcept
+  {
+    using T = TComponent;
+    return MTL::Zip<T, T, CL, RL>(a, matrix_t<T, L>(b), [](T x, T y) -> T { return MTL::FMax(x, y); });
+  }
+
 #pragma endregion FMax
 
 #pragma region Clamp
@@ -258,6 +320,23 @@ namespace Krys::MTL
     using T = TComponent;
     return MTL::Zip<T, T, T, CL, RL>(value, min, max,
                                      [](T v, T mn, T mx) -> T { return MTL::Min(MTL::Max(v, mn), mx); });
+  }
+
+  /// @brief Clamps each component of the matrix between the scalar values `min` and `max`.
+  /// @tparam TComponent The underlying arithmetic type of the matrix.
+  /// @tparam CL The column length of the matrix.
+  /// @tparam RL The row length of the matrix.
+  /// @param value The input matrix to clamp.
+  /// @param min The minimum scalar value for clamping.
+  /// @param max The maximum scalar value for clamping.
+  /// @return A matrix where each component is clamped between `min` and `max`.
+  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Clamp(const matrix_t<TComponent, CL, RL> &value,
+                                                          TComponent min, TComponent max) noexcept
+  {
+    using T = TComponent;
+    return MTL::Map<T, T, T, L>(value, matrix_t<T, CL, RL>(min), matrix_t<T, CL, RL>(max),
+                                [](T v, T mn, T mx) -> T { return MTL::Min(MTL::Max(v, mn), mx); });
   }
 
 #pragma endregion Clamp
