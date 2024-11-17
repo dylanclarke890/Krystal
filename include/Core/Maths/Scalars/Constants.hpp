@@ -1,6 +1,8 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 
+#include <limits>
+
 namespace Krys::MTL
 {
   /// @tparam TNumber An arithmetic type.
@@ -17,6 +19,14 @@ namespace Krys::MTL
   constexpr NO_DISCARD TNumber One() noexcept
   {
     return TNumber(1);
+  }
+
+  /// @tparam TNumber A floating point type.
+  /// @returns the epsilon constant.
+  template <IsFloatingPointT TNumber>
+  constexpr NO_DISCARD TNumber Epsilon() noexcept
+  {
+    return std::numeric_limits<TNumber>::epsilon();
   }
 
   /// @tparam TNumber An arithmetic type.
