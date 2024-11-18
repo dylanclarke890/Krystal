@@ -19,7 +19,7 @@ defines = {
   "_ITERATOR_DEBUG_LEVEL":"2"
 }
 
-disabled_warnings = []
+disabled_warnings = ["5063", "4702"]
 
 ignore_includes = [
   "stddef.h", "stdio.h", "stdint.h", "stdlib.h",

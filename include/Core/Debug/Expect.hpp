@@ -12,6 +12,14 @@
 /// @param b The second value to compare.
 #define KRYS_EXPECT_NOT_EQUAL(msg, a, b) static_assert((a) != (b), msg " failed: Values are equal.")
 
+/// @brief Macro to assert value is between two values at compile time.
+/// @param msg A message describing the assertion.
+/// @param expr The expression to check.
+/// @param min The min valid value.
+/// @param max The max valid value.
+#define KRYS_EXPECT_IN_RANGE(msg, expr, min, max)                                                            \
+  static_assert(((expr) >= min) && ((expr) <= max), msg " failed: was not in the provided range.")
+
 /// @brief Macro to assert that a value is true at compile time.
 /// @param msg A message describing the assertion.
 /// @param expr The expression to check.
