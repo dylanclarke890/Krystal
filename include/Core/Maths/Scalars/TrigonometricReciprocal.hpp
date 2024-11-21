@@ -68,15 +68,4 @@ namespace Krys::MTL
   {
     return MTL::Atan(TNumber(1) / x);
   }
-
-  /// @brief Computes secant, using signs to determine quadrants.
-  /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param y The opposite value.
-  /// @param x The adjacent value.
-  /// @returns The computed value.
-  template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber SecAtan2(TNumber y, TNumber x) noexcept
-  {
-    return TNumber(1) / MTL::Atan2(y, x);
-  }
 }

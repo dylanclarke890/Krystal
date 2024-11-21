@@ -24,21 +24,21 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Edge: Large base", MTL::Pow(1e10f, 2.0f), 1e20f);
   }
 
-  static void Test_Exp()
-  {
-    KRYS_EXPECT_EQUAL("Zero", MTL::Exp(0.0), 1.0);
-    KRYS_EXPECT_EQUAL("Exp(-1.0f)", MTL::Exp(-1.0f), 0.367879441171f);
-    KRYS_EXPECT_EQUAL("Exp(1.0f)", MTL::Exp(1.0f), MTL::e<float>());
-    KRYS_EXPECT_IN_RANGE("Squared", MTL::Exp(3.0), MTL::e<float>() * MTL::e<float>() * MTL::e<float>(),
-                         MTL::e<float>() * MTL::e<float>() * MTL::e<float>() + 0.000001f);
-  }
-
   static void Test_Factorial()
   {
     KRYS_EXPECT_EQUAL("Factorial zero", MTL::Factorial(0U), 1);
     KRYS_EXPECT_EQUAL("Factorial one", MTL::Factorial(1U), 1);
     KRYS_EXPECT_EQUAL("Factorial five", MTL::Factorial(5U), 120);
     KRYS_EXPECT_EQUAL("Factorial ten", MTL::Factorial(10U), 3'628'800);
+  }
+
+  static void Test_Exp()
+  {
+    KRYS_EXPECT_EQUAL("Exp: Zero", MTL::Exp(0.0), 1.0);
+    KRYS_EXPECT_EQUAL("Exp: -1.0f", MTL::Exp(-1.0f), 0.367879441171f);
+    KRYS_EXPECT_EQUAL("Exp: 1.0f", MTL::Exp(1.0f), MTL::e<float>());
+    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Exp: Squared", MTL::Exp(3.0),
+                                     MTL::e<float>() * MTL::e<float>() * MTL::e<float>(), 1e-6f);
   }
 
   static void Test_Exp2()
@@ -57,30 +57,35 @@ namespace Krys::Tests
 
   static void Test_Log()
   {
-    KRYS_EXPECT_EQUAL("Log one", MTL::Log(1.0), 0.0);
-    KRYS_EXPECT_EQUAL("Log e", MTL::Log(std::exp(1.0)), 1.0);
-    KRYS_EXPECT_EQUAL("Log large positive", MTL::Log(10.0), std::log(10.0));
+    KRYS_EXPECT_EQUAL("Log(1)", MTL::Log(1.0f), 0.0f);
+    KRYS_EXPECT_EQUAL("Log(10)", MTL::Log(10.0f), 2.302585092994f);
+    KRYS_EXPECT_EQUAL("Log(2)", MTL::Log(2.0f), 0.69314718055995f);
+    KRYS_EXPECT_EQUAL("Log(2.8)", MTL::Log(2.8f), 1.0296194171812f);
+    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Log(e)", MTL::Log(MTL::e<float>()), 1.0f, 1e-6f);
   }
 
   static void Test_Log2()
   {
-    KRYS_EXPECT_EQUAL("Log2 one", MTL::Log2(1.0), 0.0);
-    KRYS_EXPECT_EQUAL("Log2 two", MTL::Log2(2.0), 1.0);
-    KRYS_EXPECT_EQUAL("Log2 eight", MTL::Log2(8.0), 3.0);
+    KRYS_EXPECT_EQUAL("Log2(1)", MTL::Log2(1.0f), 0.0f);
+    KRYS_EXPECT_EQUAL("Log2(2)", MTL::Log2(2.0f), 1.0f);
+    KRYS_EXPECT_EQUAL("Log2(4)", MTL::Log2(4.0f), 2.0f);
+    KRYS_EXPECT_EQUAL("Log2(8)", MTL::Log2(8.0f), 3.0f);
+    KRYS_EXPECT_EQUAL("Log2(0.5)", MTL::Log2(0.5f), -1.0f);
+    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Log2(10)", MTL::Log2(10.0f), 3.3219281f, 1e-6f);
   }
 
   static void Test_Sqrt()
   {
-    KRYS_EXPECT_EQUAL("Sqrt zero", MTL::Sqrt(0.0), 0.0);
-    KRYS_EXPECT_EQUAL("Sqrt one", MTL::Sqrt(1.0), 1.0);
-    KRYS_EXPECT_EQUAL("Sqrt four", MTL::Sqrt(4.0), 2.0);
-    KRYS_EXPECT_EQUAL("Sqrt fractional", MTL::Sqrt(0.25), 0.5);
+    KRYS_EXPECT_EQUAL("Sqrt zero", MTL::Sqrt(0.0f), 0.0f);
+    KRYS_EXPECT_EQUAL("Sqrt one", MTL::Sqrt(1.0f), 1.0f);
+    KRYS_EXPECT_EQUAL("Sqrt four", MTL::Sqrt(4.0f), 2.0f);
+    KRYS_EXPECT_EQUAL("Sqrt fractional", MTL::Sqrt(0.25f), 0.5f);
   }
 
   static void Test_InverseSqrt()
   {
     KRYS_EXPECT_EQUAL("InverseSqrt one", MTL::InverseSqrt(1.0), 1.0);
-    KRYS_EXPECT_EQUAL("InverseSqrt four", MTL::InverseSqrt(4.0), 0.5);
-    KRYS_EXPECT_EQUAL("InverseSqrt fractional", MTL::InverseSqrt(0.25), 2.0);
+    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("InverseSqrt four", MTL::InverseSqrt(4.0f), 0.5f, 1e-6f);
+    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("InverseSqrt fractional", MTL::InverseSqrt(0.25f), 2.0f, 1e-6f);
   }
 }

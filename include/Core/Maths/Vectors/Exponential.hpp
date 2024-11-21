@@ -59,18 +59,6 @@ namespace Krys::MTL
     return MTL::Map<T, T, L>(v, [](T x) -> T { return MTL::Pow(static_cast<T>(10), x); });
   }
 
-  /// @brief Computes the exponential integral for each component in the input vector.
-  /// @tparam TComponent The underlying floating point type of the vector.
-  /// @tparam L The length of the vector.
-  /// @param v The input vector.
-  /// @returns A vector where each component contains the exponential integral for the corresponding input.
-  template <IsFloatingPointT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> Exp10(const vector_t<TComponent, L> &v) noexcept
-  {
-    using T = TComponent;
-    return MTL::Map<T, T, L>(v, [](T x) -> T { return MTL::ExpIntegral(x); });
-  }
-
   /// @brief Computes the natural logarithm (`ln(x)`) for each component in the input vector.
   /// @tparam TComponent The underlying arithmetic type of the vector.
   /// @tparam L The length of the vector.
