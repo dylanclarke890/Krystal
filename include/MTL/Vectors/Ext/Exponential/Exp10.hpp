@@ -14,7 +14,7 @@ namespace Krys::MTL
   /// @param v The input vector.
   /// @returns A vector where each component is `10^x` for the corresponding input.
   template <IsArithmeticT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> Exp10(const vector_t<TComponent, L> &v) noexcept
+  NO_DISCARD constexpr vector_t<TComponent, L> Exp10(const vector_t<TComponent, L> &v) noexcept
   {
     using T = TComponent;
     return MTL::Map<T, T, L>(v, [](T x) -> T { return MTL::Pow(static_cast<T>(10), x); });

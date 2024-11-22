@@ -19,7 +19,7 @@ namespace Krys::MTL
   /// @return A matrix where each component is clamped between the corresponding components of `min` and
   /// `max`.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Clamp(const matrix_t<TComponent, CL, RL> &value,
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Clamp(const matrix_t<TComponent, CL, RL> &value,
                                                           const matrix_t<TComponent, CL, RL> &min,
                                                           const matrix_t<TComponent, CL, RL> &max) noexcept
   {
@@ -37,7 +37,7 @@ namespace Krys::MTL
   /// @param max The maximum scalar value for clamping.
   /// @return A matrix where each component is clamped between `min` and `max`.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Clamp(const matrix_t<TComponent, CL, RL> &value,
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Clamp(const matrix_t<TComponent, CL, RL> &value,
                                                           TComponent min, TComponent max) noexcept
   {
     using T = TComponent;

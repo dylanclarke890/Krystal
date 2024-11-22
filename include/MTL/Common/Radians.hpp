@@ -10,7 +10,7 @@ namespace Krys::MTL
   /// @param degrees The input value.
   /// @returns The converted value.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Radians(TNumber degrees) noexcept
+  NO_DISCARD constexpr TNumber Radians(TNumber degrees) noexcept
   {
     return degrees * static_cast<TNumber>(0.01745329251994329576923690768489);
   }

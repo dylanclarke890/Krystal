@@ -11,7 +11,7 @@ namespace Krys::MTL
   /// @param b The second value.
   /// @returns The larger of `a` and `b`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Max(TNumber a, TNumber b) noexcept
+  NO_DISCARD constexpr TNumber Max(TNumber a, TNumber b) noexcept
   {
     return a > b ? a : b;
   }
@@ -23,7 +23,7 @@ namespace Krys::MTL
   /// @param c The third value.
   /// @returns The largest of `a`, `b`, and `c`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Max(TNumber a, TNumber b, TNumber c) noexcept
+  NO_DISCARD constexpr TNumber Max(TNumber a, TNumber b, TNumber c) noexcept
   {
     return MTL::Max(MTL::Max(a, b), c);
   }
@@ -36,7 +36,7 @@ namespace Krys::MTL
   /// @param d The fourth value.
   /// @returns The largest of `a`, `b`, `c`, and `d`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Max(TNumber a, TNumber b, TNumber c, TNumber d) noexcept
+  NO_DISCARD constexpr TNumber Max(TNumber a, TNumber b, TNumber c, TNumber d) noexcept
   {
     return MTL::Max(MTL::Max(a, b), MTL::Max(c, d));
   }

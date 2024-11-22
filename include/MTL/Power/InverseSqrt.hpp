@@ -2,7 +2,6 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "Base/Types.hpp"
 #include "MTL/Power/Sqrt.hpp"
 
 #include <cmath>
@@ -14,7 +13,7 @@ namespace Krys::MTL
   /// @param x The input value (must be greater than zero).
   /// @returns The inverse square root of `x`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber InverseSqrt(TNumber x) noexcept
+  NO_DISCARD constexpr TNumber InverseSqrt(TNumber x) noexcept
   {
     if (x <= TNumber(0))
       return -1; // Indicate an error for non-positive inputs

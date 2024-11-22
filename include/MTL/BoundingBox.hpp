@@ -21,12 +21,12 @@ namespace Krys::MTL
     {
     }
 
-    constexpr NO_DISCARD dimension_t GetWidth() const noexcept
+    NO_DISCARD constexpr dimension_t GetWidth() const noexcept
     {
       return Right - Left;
     }
 
-    constexpr NO_DISCARD dimension_t GetHeight() const noexcept
+    NO_DISCARD constexpr dimension_t GetHeight() const noexcept
     {
       return Top - Bottom;
     }

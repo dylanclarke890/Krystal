@@ -6,12 +6,12 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes cotangent.
-  /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians The input value.
-  /// @returns The computed value.
+  /// @brief Computes the hyperbolic cotangent of `x`.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @returns The hyperbolic cotangent of `x`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Coth(TNumber radians) noexcept
+  NO_DISCARD constexpr TNumber Coth(TNumber radians) noexcept
   {
     return TNumber(1) / MTL::Tanh(radians);
   }

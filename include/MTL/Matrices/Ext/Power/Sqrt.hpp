@@ -16,7 +16,7 @@ namespace Krys::MTL
   /// @param v The input matrix.
   /// @returns A matrix where each component is the square root of the corresponding input.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Sqrt(const matrix_t<TComponent, CL, RL> &v) noexcept
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Sqrt(const matrix_t<TComponent, CL, RL> &v) noexcept
   {
     using T = TComponent;
     return MTL::Map<T, T, CL, RL>(v, [](T x) -> T { return MTL::Sqrt(x); });

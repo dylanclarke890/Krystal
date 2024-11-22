@@ -2,7 +2,6 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "Base/Types.hpp"
 #include "MTL/Hyperbolic/Cosh.hpp"
 #include "MTL/Hyperbolic/Sinh.hpp"
 
@@ -10,7 +9,10 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes hyperbolic tangent of `x`.
+  /// @brief Computes the hyperbolic tangent of `x`.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @returns The hyperbolic tangent of `x`.
   template <IsArithmeticT TNumber>
   constexpr TNumber Tanh(TNumber x) noexcept
   {

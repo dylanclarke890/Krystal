@@ -9,7 +9,10 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes inverse hyperbolic sine of `x`.
+  /// @brief Computes the inverse hyperbolic sine of `x`.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @returns The inverse hyperbolic sine of `x`.
   template <IsArithmeticT TNumber>
   constexpr TNumber Asinh(TNumber x) noexcept
   {

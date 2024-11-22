@@ -7,16 +7,23 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes the absolute value of a signed number.
-  /// @tparam TNumber A signed arithmetic type.
+  /// @brief Computes the absolute value of `x`.
+  /// @tparam TNumber An arithmetic type.
   /// @param x The input value.
   /// @returns The absolute value of `x`.
-  template <IsSignedT TNumber>
-  constexpr NO_DISCARD TNumber Abs(TNumber x) noexcept
+  template <IsArithmeticT TNumber>
+  NO_DISCARD constexpr TNumber Abs(TNumber x) noexcept
   {
     KRYS_IF_COMPILE_CONTEXT
-      return (x < static_cast<TNumber>(0)) ? -x : x;
+    {
+      if (IsUnsignedT<TNumber>)
+        return x;
 
+      return (x < TNumber(0)) ? -x : x;
+    }
+
+    if constexpr (IsUnsignedT<TNumber>)
+      return x;
     return std::abs(x);
   }
 }

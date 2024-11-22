@@ -16,7 +16,7 @@ namespace Krys::MTL
   /// @param b The second input matrix.
   /// @return A matrix where each component is the larger of the corresponding components of `a` and `b`.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
                                                          const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     using T = TComponent;
@@ -33,7 +33,7 @@ namespace Krys::MTL
   /// @return A matrix where each component is the largest of the corresponding components of `a`, `b` and
   /// `c`, ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
                                                          const matrix_t<TComponent, CL, RL> &b,
                                                          const matrix_t<TComponent, CL, RL> &c) noexcept
   {
@@ -52,7 +52,7 @@ namespace Krys::MTL
   /// @return A matrix where each component is the largest of the corresponding components of `a`, `b`, `c`
   /// and `d`, ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL>
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL>
     FMax(const matrix_t<TComponent, CL, RL> &a, const matrix_t<TComponent, CL, RL> &b,
          const matrix_t<TComponent, CL, RL> &c, const matrix_t<TComponent, CL, RL> &d) noexcept
   {
@@ -70,7 +70,7 @@ namespace Krys::MTL
   /// @return A matrix where each component is the larger of the corresponding component of `a` and `b`,
   /// ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
                                                          TComponent b) noexcept
   {
     using T = TComponent;

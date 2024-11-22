@@ -9,12 +9,12 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes the base-2 logarithm of `x`, i.e., the value `y` such that `2^y = x`.
+  /// @brief Computes the base-2 logarithm of `x` (`2^y = x`).
   /// @tparam TNumber An arithmetic type.
   /// @param x The input value (must be greater than zero).
   /// @returns The base-2 logarithm of `x`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Log2(TNumber x) noexcept
+  NO_DISCARD constexpr TNumber Log2(TNumber x) noexcept
   {
     KRYS_IF_COMPILE_CONTEXT
     {

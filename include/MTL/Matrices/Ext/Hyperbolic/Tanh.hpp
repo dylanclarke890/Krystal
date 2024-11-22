@@ -15,7 +15,7 @@ namespace Krys::MTL
   /// @param v The input matrix.
   /// @returns The converted matrix.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Tanh(matrix_t<TComponent, CL, RL> v) noexcept
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Tanh(matrix_t<TComponent, CL, RL> v) noexcept
   {
     using T = TComponent;
     return MTL::Map<T, T, CL, RL>(v, [](T val) -> T { return MTL::Tanh<T>(val); });

@@ -7,18 +7,19 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes the largest integer that isn't greater than `x`.
-  /// @tparam TNumber A floating-point type.
+  /// @brief Computes the largest integer that is smaller than `x`.
+  /// @tparam TFloat A floating-point type.
   /// @param x The input value.
-  /// @return The largest integer that isn't greater than `x`.
-  template <IsFloatingPointT TNumber>
-  constexpr NO_DISCARD TNumber Floor(TNumber x) noexcept
+  /// @return The largest integer that is smaller than `x`.
+  template <IsFloatingPointT TFloat>
+  NO_DISCARD constexpr TFloat Floor(TFloat x) noexcept
   {
     KRYS_IF_COMPILE_CONTEXT
     {
       if (static_cast<long long>(x) == x)
         return x;
-      return (x > 0.0) ? static_cast<long long>(x) : static_cast<long long>(x) - 1;
+
+      return static_cast<long long>(x) - ((x < TFloat(0)) ? 1LL : 0LL);
     }
 
     return std::floor(x);

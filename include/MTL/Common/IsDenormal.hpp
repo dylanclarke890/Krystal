@@ -9,19 +9,19 @@
 
 namespace Krys::MTL
 {
-  /// @brief Checks if the given floating-point number is denormalized (too small to be represented as a
+  /// @brief Checks if `x` is denormalized (too small to be represented as a
   /// normalized number).
   /// @tparam TFloat A floating-point type.
   /// @param x The input value.
   /// @return `true` if `x` is denormalized, otherwise `false`.
   template <IsFloatingPointT TFloat>
-  constexpr NO_DISCARD bool IsDenormal(TFloat x) noexcept
+  NO_DISCARD constexpr bool IsDenormal(TFloat x) noexcept
   {
     KRYS_IF_COMPILE_CONTEXT
     {
-      if (MTL::IsNaN(x))
+      if (MTL::IsNaN(x) || x == TFloat(0))
         return false;
-      return MTL::Abs(x) < std::numeric_limits<TFloat>::min() && MTL::Abs(x) > 0;
+      return MTL::Abs(x) < std::numeric_limits<TFloat>::min();
     }
 
     return std::fpclassify(x) == FP_SUBNORMAL;

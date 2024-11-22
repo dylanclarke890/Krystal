@@ -84,7 +84,7 @@ namespace Krys::MTL
   /// @param v The input vector.
   /// @return The sum of the components of `v`.
   template <IsArithmeticT TComponent, vec_length_t L>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, L> &v) noexcept;
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, L> &v) noexcept;
 
   /// @brief Computes the sum of all components of the vector after applying a function to each component.
   /// @tparam TComponent The underlying arithmetic type of the input vector.
@@ -93,7 +93,7 @@ namespace Krys::MTL
   /// @param func A callable object or lambda to transform each component before summing.
   /// @return The sum of the transformed components of `v`.
   template <IsArithmeticT TComponent, vec_length_t L>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, L> &v,
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, L> &v,
                                       Func<TComponent(TComponent v)> func) noexcept;
 
 #pragma region ForEach
@@ -267,52 +267,52 @@ namespace Krys::MTL
 #pragma region Sum
 
   template <IsArithmeticT TComponent>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, 1> &v) noexcept
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, 1> &v) noexcept
   {
     return TComponent(v.x);
   }
 
   template <IsArithmeticT TComponent>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, 2> &v) noexcept
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, 2> &v) noexcept
   {
     return TComponent(v.x + v.y);
   }
 
   template <IsArithmeticT TComponent>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, 3> &v) noexcept
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, 3> &v) noexcept
   {
     return TComponent(v.x + v.y + v.z);
   }
 
   template <IsArithmeticT TComponent>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, 4> &v) noexcept
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, 4> &v) noexcept
   {
     return TComponent(v.x + v.y + v.z + v.w);
   }
 
   template <IsArithmeticT TComponent>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, 1> &v,
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, 1> &v,
                                       Func<TComponent(TComponent)> func) noexcept
   {
     return TComponent(func(v.x));
   }
 
   template <IsArithmeticT TComponent>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, 2> &v,
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, 2> &v,
                                       Func<TComponent(TComponent)> func) noexcept
   {
     return TComponent(func(v.x) + func(v.y));
   }
 
   template <IsArithmeticT TComponent>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, 3> &v,
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, 3> &v,
                                       Func<TComponent(TComponent)> func) noexcept
   {
     return TComponent(func(v.x) + func(v.y) + func(v.z));
   }
 
   template <IsArithmeticT TComponent>
-  constexpr NO_DISCARD TComponent Sum(const vector_t<TComponent, 4> &v,
+  NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, 4> &v,
                                       Func<TComponent(TComponent)> func) noexcept
   {
     return TComponent(func(v.x) + func(v.y) + func(v.z) + func(v.w));

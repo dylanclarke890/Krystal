@@ -15,7 +15,7 @@ namespace Krys::MTL
   /// @param b The second input vector.
   /// @return A vector where each component is the larger of the corresponding components of `a` and `b`.
   template <IsArithmeticT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> Max(const vector_t<TComponent, L> &a,
+  NO_DISCARD constexpr vector_t<TComponent, L> Max(const vector_t<TComponent, L> &a,
                                                    const vector_t<TComponent, L> &b) noexcept
   {
     using T = TComponent;
@@ -31,7 +31,7 @@ namespace Krys::MTL
   /// @return A vector where each component is the largest of the corresponding components of `a`, `b` and
   /// `c`.
   template <IsArithmeticT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> Max(const vector_t<TComponent, L> &a,
+  NO_DISCARD constexpr vector_t<TComponent, L> Max(const vector_t<TComponent, L> &a,
                                                    const vector_t<TComponent, L> &b,
                                                    const vector_t<TComponent, L> &c) noexcept
   {
@@ -49,7 +49,7 @@ namespace Krys::MTL
   /// @return A vector where each component is the largest of the corresponding components of `a`, `b`, `c`
   /// and `d`.
   template <IsArithmeticT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L>
+  NO_DISCARD constexpr vector_t<TComponent, L>
     Max(const vector_t<TComponent, L> &a, const vector_t<TComponent, L> &b, const vector_t<TComponent, L> &c,
         const vector_t<TComponent, L> &d) noexcept
   {
@@ -64,7 +64,7 @@ namespace Krys::MTL
   /// @param b The maximum value each component is allowed to be.
   /// @return A vector where each component is the larger of the corresponding component of `a` and `b`.
   template <IsArithmeticT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> Max(const vector_t<TComponent, L> &a, TComponent b) noexcept
+  NO_DISCARD constexpr vector_t<TComponent, L> Max(const vector_t<TComponent, L> &a, TComponent b) noexcept
   {
     using T = TComponent;
     return MTL::Max<T, L>(a, vector_t<T, L>(b), [](T x, T y) -> T { return MTL::Max(x, y); });

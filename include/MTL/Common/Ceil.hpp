@@ -7,18 +7,19 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes the smallest integer that isn't smaller than `x`.
-  /// @tparam TNumber A floating point type.
+  /// @brief Computes the smallest integer that is larger than `x`.
+  /// @tparam TFloat A floating point type.
   /// @param x The input value.
-  /// @return The smallest integer that isn't smaller than `x`.
-  template <IsFloatingPointT TNumber>
-  constexpr NO_DISCARD TNumber Ceil(TNumber x) noexcept
+  /// @return The smallest integer that is larger than `x`.
+  template <IsFloatingPointT TFloat>
+  NO_DISCARD constexpr TFloat Ceil(TFloat x) noexcept
   {
     KRYS_IF_COMPILE_CONTEXT
     {
       if (static_cast<long long>(x) == x)
         return x;
-      return (x > 0.0) ? static_cast<long long>(x) + 1 : static_cast<long long>(x);
+
+      return static_cast<long long>(x) + ((x < TFloat(0)) ? 0LL : 1LL);
     }
 
     return std::ceil(x);

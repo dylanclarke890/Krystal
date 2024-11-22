@@ -11,7 +11,7 @@ namespace Krys::MTL
   /// @param x The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Asec(TNumber x) noexcept
+  NO_DISCARD constexpr TNumber Asec(TNumber x) noexcept
   {
     return MTL::Acos(TNumber(1) / x);
   }

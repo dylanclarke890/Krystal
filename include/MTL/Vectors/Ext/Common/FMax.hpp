@@ -17,7 +17,7 @@ namespace Krys::MTL
   /// @return A vector where each component is the larger of the corresponding components of `a` and `b`, or
   /// `b` if `a` is NaN.
   template <IsFloatingPointT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> FMax(const vector_t<TComponent, L> &a,
+  NO_DISCARD constexpr vector_t<TComponent, L> FMax(const vector_t<TComponent, L> &a,
                                                     const vector_t<TComponent, L> &b) noexcept
   {
     using T = TComponent;
@@ -33,7 +33,7 @@ namespace Krys::MTL
   /// @return A vector where each component is the largest of the corresponding components of `a`, `b` and
   /// `c`,ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> FMax(const vector_t<TComponent, L> &a,
+  NO_DISCARD constexpr vector_t<TComponent, L> FMax(const vector_t<TComponent, L> &a,
                                                     const vector_t<TComponent, L> &b,
                                                     const vector_t<TComponent, L> &c) noexcept
   {
@@ -51,7 +51,7 @@ namespace Krys::MTL
   /// @return A vector where each component is the largest of the corresponding components of `a`, `b`, `c`
   /// and `d`,ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L>
+  NO_DISCARD constexpr vector_t<TComponent, L>
     FMax(const vector_t<TComponent, L> &a, const vector_t<TComponent, L> &b, const vector_t<TComponent, L> &c,
          const vector_t<TComponent, L> &d) noexcept
   {
@@ -67,7 +67,7 @@ namespace Krys::MTL
   /// @return A vector where each component is the larger of the corresponding component of `a` and `b`,
   /// ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> FMax(const vector_t<TComponent, L> &a, TComponent b) noexcept
+  NO_DISCARD constexpr vector_t<TComponent, L> FMax(const vector_t<TComponent, L> &a, TComponent b) noexcept
   {
     using T = TComponent;
     return MTL::Zip<T, T, L>(a, vector_t<T, L>(b), [](T x, T y) -> T { return MTL::FMax(x, y); });

@@ -11,7 +11,7 @@ namespace Krys::MTL
   /// @param radians The input value.
   /// @returns The computed value.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Csc(TNumber radians) noexcept
+  NO_DISCARD constexpr TNumber Csc(TNumber radians) noexcept
   {
     return TNumber(1) / MTL::Sin(radians);
   }

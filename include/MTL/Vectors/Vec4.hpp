@@ -58,7 +58,7 @@ namespace Krys
 
 #pragma region Assignment
 
-      constexpr NO_DISCARD vec_t &operator=(const vec_t &other) noexcept
+      constexpr vec_t &operator=(const vec_t &other) noexcept
       {
         x = other.x;
         y = other.y;
@@ -67,7 +67,7 @@ namespace Krys
         return *this;
       }
 
-      constexpr NO_DISCARD vec_t &operator=(vec_t &&other) noexcept
+      constexpr vec_t &operator=(vec_t &&other) noexcept
       {
         x = std::move(other.x);
         y = std::move(other.y);
@@ -94,14 +94,14 @@ namespace Krys
 
 #pragma region Element Access
 
-      constexpr NO_DISCARD vec_length_t GetLength() const noexcept
+      NO_DISCARD constexpr vec_length_t GetLength() const noexcept
       {
         return Length;
       }
 
       template <vec_length_t Index>
       REQUIRES((Index < Length))
-      constexpr NO_DISCARD const component_t &Get() const noexcept
+      NO_DISCARD constexpr const component_t &Get() const noexcept
       {
         if constexpr (Index == 0)
           return x;
@@ -112,7 +112,7 @@ namespace Krys
         return w;
       }
 
-      constexpr NO_DISCARD component_t operator[](vec_length_t index) const noexcept
+      NO_DISCARD constexpr component_t operator[](vec_length_t index) const noexcept
       {
         KRYS_ASSERT(index < Length, "Index out of bounds", 0);
         switch (index)
@@ -129,17 +129,17 @@ namespace Krys
 
 #pragma region Addition
 
-      constexpr NO_DISCARD vec_t operator+(const vec_t &other) const noexcept
+      NO_DISCARD constexpr vec_t operator+(const vec_t &other) const noexcept
       {
         return vec_t(x + other.x, y + other.y, z + other.z, w + other.w);
       }
 
-      constexpr NO_DISCARD vec_t operator+(component_t scalar) const noexcept
+      NO_DISCARD constexpr vec_t operator+(component_t scalar) const noexcept
       {
         return vec_t(x + scalar, y + scalar, z + scalar, w + scalar);
       }
 
-      constexpr NO_DISCARD vec_t &operator+=(const vec_t &other) noexcept
+      NO_DISCARD constexpr vec_t &operator+=(const vec_t &other) noexcept
       {
         x += other.x;
         y += other.y;
@@ -148,7 +148,7 @@ namespace Krys
         return *this;
       }
 
-      constexpr NO_DISCARD vec_t &operator+=(component_t scalar) noexcept
+      NO_DISCARD constexpr vec_t &operator+=(component_t scalar) noexcept
       {
         x += scalar;
         y += scalar;
@@ -161,17 +161,17 @@ namespace Krys
 
 #pragma region Subtraction
 
-      constexpr NO_DISCARD vec_t operator-(const vec_t &other) const noexcept
+      NO_DISCARD constexpr vec_t operator-(const vec_t &other) const noexcept
       {
         return vec_t(x - other.x, y - other.y, z - other.z, w - other.w);
       }
 
-      constexpr NO_DISCARD vec_t operator-(component_t scalar) const noexcept
+      NO_DISCARD constexpr vec_t operator-(component_t scalar) const noexcept
       {
         return vec_t(x - scalar, y - scalar, z - scalar, w - scalar);
       }
 
-      constexpr NO_DISCARD vec_t &operator-=(const vec_t &other) noexcept
+      NO_DISCARD constexpr vec_t &operator-=(const vec_t &other) noexcept
       {
         x -= other.x;
         y -= other.y;
@@ -180,7 +180,7 @@ namespace Krys
         return *this;
       }
 
-      constexpr NO_DISCARD vec_t &operator-=(component_t scalar) noexcept
+      NO_DISCARD constexpr vec_t &operator-=(component_t scalar) noexcept
       {
         x -= scalar;
         y -= scalar;
@@ -193,21 +193,21 @@ namespace Krys
 
 #pragma region Division
 
-      constexpr NO_DISCARD vec_t operator/(const vec_t &other) const noexcept
+      NO_DISCARD constexpr vec_t operator/(const vec_t &other) const noexcept
       {
         KRYS_ASSERT(other.x != 0 && other.y != 0 && other.z != 0 && other.w != 0, "Division by zero", 0);
 
         return vec_t(x / other.x, y / other.y, z / other.z, w / other.w);
       }
 
-      constexpr NO_DISCARD vec_t operator/(component_t scalar) const noexcept
+      NO_DISCARD constexpr vec_t operator/(component_t scalar) const noexcept
       {
         KRYS_ASSERT(scalar != 0, "Division by zero", 0);
 
         return vec_t(x / scalar, y / scalar, z / scalar, w / scalar);
       }
 
-      constexpr NO_DISCARD vec_t &operator/=(const vec_t &other) noexcept
+      NO_DISCARD constexpr vec_t &operator/=(const vec_t &other) noexcept
       {
         KRYS_ASSERT(other.x != 0 && other.y != 0 && other.z != 0 && other.w != 0, "Division by zero", 0);
 
@@ -218,7 +218,7 @@ namespace Krys
         return *this;
       }
 
-      constexpr NO_DISCARD vec_t &operator/=(component_t scalar) noexcept
+      NO_DISCARD constexpr vec_t &operator/=(component_t scalar) noexcept
       {
         KRYS_ASSERT(scalar != 0, "Division by zero", 0);
 
@@ -233,17 +233,17 @@ namespace Krys
 
 #pragma region Multiplication
 
-      constexpr NO_DISCARD vec_t operator*(const vec_t &other) const noexcept
+      NO_DISCARD constexpr vec_t operator*(const vec_t &other) const noexcept
       {
         return vec_t(x * other.x, y * other.y, z * other.z, w * other.w);
       }
 
-      constexpr NO_DISCARD vec_t operator*(component_t scalar) const noexcept
+      NO_DISCARD constexpr vec_t operator*(component_t scalar) const noexcept
       {
         return vec_t(x * scalar, y * scalar, z * scalar, w * scalar);
       }
 
-      constexpr NO_DISCARD vec_t &operator*=(const vec_t &other) noexcept
+      NO_DISCARD constexpr vec_t &operator*=(const vec_t &other) noexcept
       {
         x *= other.x;
         y *= other.y;
@@ -252,7 +252,7 @@ namespace Krys
         return *this;
       }
 
-      constexpr NO_DISCARD vec_t &operator*=(component_t scalar) noexcept
+      NO_DISCARD constexpr vec_t &operator*=(component_t scalar) noexcept
       {
         x *= scalar;
         y *= scalar;
@@ -265,12 +265,12 @@ namespace Krys
 
 #pragma region Unary
 
-      constexpr NO_DISCARD vec_t operator-() const noexcept
+      NO_DISCARD constexpr vec_t operator-() const noexcept
       {
         return vec_t(-x, -y, -z, -w);
       }
 
-      constexpr NO_DISCARD vec_t operator+() const noexcept
+      NO_DISCARD constexpr vec_t operator+() const noexcept
       {
         return *this;
       }

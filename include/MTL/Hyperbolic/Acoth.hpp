@@ -6,12 +6,12 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes inverse cotangent.
-  /// @tparam TNumber An arithmetic type (floating point types are advised).
+  /// @brief Computes the inverse hyperbolic cotangent of `x`.
+  /// @tparam TNumber An arithmetic type.
   /// @param x The input value.
-  /// @returns The computed value.
+  /// @returns The inverse hyperbolic cotangent of `x`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Acoth(TNumber x) noexcept
+  NO_DISCARD constexpr TNumber Acoth(TNumber x) noexcept
   {
     return MTL::Atanh(TNumber(1) / x);
   }

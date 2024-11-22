@@ -10,31 +10,31 @@
 
 namespace Krys::MTL
 {
-  /// @brief Determines if the given number is negative.
-  /// @tparam TNumber A signed type (floating-point or integral).
+  /// @brief Determines if `x` is negative.
+  /// @tparam TSigned A signed type.
   /// @param x The input value.
   /// @return `true` if `x` is negative.
-  template <IsSignedT TNumber>
-  constexpr NO_DISCARD bool Signbit(TNumber x) noexcept
+  template <IsSignedT TSigned>
+  NO_DISCARD constexpr bool Signbit(TSigned x) noexcept
   {
-    KRYS_IF_COMPILE_CONTEXT
+    if constexpr (IsIntegralT<TSigned>)
     {
-      constexpr TNumber ZERO = 0;
-      if (IsIntegralT<TNumber>)
-        return (x < ZERO);
-
-      if (x == ZERO || MTL::IsNaN(x))
-      {
-        // Cast to it's bit representation.
-        using as_uint_t = std::conditional_t<std::is_same_v<TNumber, float>, uint32, uint64>;
-        as_uint_t bits = std::bit_cast<as_uint_t>(x);
-        // Check MSB (sign bit).
-        return (bits & (as_uint_t(1) << (sizeof(as_uint_t) * 8 - 1))) != as_uint_t(0);
-      }
-
-      return (x < ZERO);
+      return (x < TSigned(0));
     }
+    else if constexpr (IsFloatingPointT<TSigned>)
+    {
+      if (MTL::IsNaN(x))
+        return false; // NaN values do not have a meaningful sign bit.
 
-    return std::signbit(x);
+      using as_uint_t = std::conditional_t<std::is_same_v<TSigned, float>, uint32, uint64>;
+      as_uint_t bits = std::bit_cast<as_uint_t>(x);
+
+      // Check the most significant bit (MSB), which represents the sign bit.
+      return (bits & (as_uint_t(1) << (sizeof(as_uint_t) * 8 - 1))) != 0;
+    }
+    else
+    {
+      static_assert(false, "Unsupported type for Signbit");
+    }
   }
 }

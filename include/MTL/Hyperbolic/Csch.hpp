@@ -8,12 +8,12 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes cosecant.
-  /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians The input value.
-  /// @returns The computed value.
+  /// @brief Computes the hyperbolic cosecant of `x`.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @returns The hyperbolic cosecant of `x`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Csch(TNumber radians) noexcept
+  NO_DISCARD constexpr TNumber Csch(TNumber radians) noexcept
   {
     return TNumber(1) / MTL::Sinh(radians);
   }

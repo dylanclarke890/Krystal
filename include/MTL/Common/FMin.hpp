@@ -9,11 +9,11 @@ namespace Krys::MTL
 {
   /// @brief Returns the smaller of two floating-point values, ignoring NaN.
   /// @tparam TFloat A floating-point type.
-  /// @param a The first value.
-  /// @param b The second value.
+  /// @param a The first input value.
+  /// @param b The second input value.
   /// @returns The smaller of `a` and `b`, or `b` if `a` is NaN.
   template <IsFloatingPointT TFloat>
-  constexpr NO_DISCARD TFloat FMin(TFloat a, TFloat b) noexcept
+  NO_DISCARD constexpr TFloat FMin(TFloat a, TFloat b) noexcept
   {
     if (MTL::IsNaN(a))
       return b;
@@ -21,13 +21,13 @@ namespace Krys::MTL
   }
 
   /// @brief Returns the smallest of three floating-point values, ignoring NaN.
-  /// @tparam TNumber A floating-point type.
-  /// @param a The first value.
-  /// @param b The second value.
-  /// @param c The third value.
+  /// @tparam TFloat A floating-point type.
+  /// @param a The first input value.
+  /// @param b The second input value.
+  /// @param c The third input value.
   /// @returns The smallest of `a`, `b`, and `c`, ignoring NaN values.
-  template <IsFloatingPointT TNumber>
-  constexpr NO_DISCARD TNumber FMin(TNumber a, TNumber b, TNumber c) noexcept
+  template <IsFloatingPointT TFloat>
+  NO_DISCARD constexpr TFloat FMin(TFloat a, TFloat b, TFloat c) noexcept
   {
     if (MTL::IsNaN(a))
       return MTL::FMin(b, c);
@@ -39,14 +39,14 @@ namespace Krys::MTL
   }
 
   /// @brief Returns the smallest of four floating-point values, ignoring NaN.
-  /// @tparam TNumber A floating-point type.
-  /// @param a The first value.
-  /// @param b The second value.
-  /// @param c The third value.
-  /// @param d The fourth value.
+  /// @tparam TFloat A floating-point type.
+  /// @param a The first input value.
+  /// @param b The second input value.
+  /// @param c The third input value.
+  /// @param d The fourth input value.
   /// @returns The smallest of `a`, `b`, `c`, and `d`, ignoring NaN values.
-  template <IsFloatingPointT TNumber>
-  constexpr NO_DISCARD TNumber FMin(TNumber a, TNumber b, TNumber c, TNumber d) noexcept
+  template <IsFloatingPointT TFloat>
+  NO_DISCARD constexpr TFloat FMin(TFloat a, TFloat b, TFloat c, TFloat d) noexcept
   {
     if (MTL::IsNaN(a))
       return MTL::FMin(b, c, d);

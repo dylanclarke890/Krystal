@@ -32,7 +32,7 @@ namespace Krys::MTL
       _currentSample = (_currentSample + 1) % MaxSamples;
     }
 
-    constexpr NO_DISCARD sample_t GetAverage() const noexcept
+    NO_DISCARD constexpr sample_t GetAverage() const noexcept
     {
       if (_sampleCount == 0)
         return static_cast<sample_t>(0);

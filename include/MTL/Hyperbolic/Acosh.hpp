@@ -9,7 +9,10 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes inverse hyperbolic cosine of `x` using the identity acosh(x) = log(x + sqrt(x^2 - 1)).
+  /// @brief Computes the inverse hyperbolic cosine of `x`.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @returns The inverse hyperbolic cosine of `x`.
   template <IsArithmeticT TNumber>
   constexpr TNumber Acosh(TNumber x) noexcept
   {

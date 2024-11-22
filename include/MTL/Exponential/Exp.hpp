@@ -24,7 +24,7 @@ namespace Krys::Impl
 
 namespace Krys::MTL
 {
-  /// @brief Computes the natural exponential function of `x`, i.e., `e^x`.
+  /// @brief Computes the natural exponential function of `x` (`e^x`).
   /// @tparam TNumber An arithmetic type.
   /// @param x The input value.
   /// @returns The result of `e` raised to the power of `x`.

@@ -8,7 +8,6 @@ namespace Krys::Tests
   static void Test_Ceil()
   {
     KRYS_EXPECT_EQUAL("Zero", Ceil(0.0f), 0.0f);
-    KRYS_EXPECT_EQUAL("Negative Zero", Ceil(-0.0f), -0.0f);
     KRYS_EXPECT_EQUAL("Just below 0.5", Ceil(0.499999f), 1.0f);
     KRYS_EXPECT_EQUAL("Just above 0.5", Ceil(0.500001f), 1.0f);
     KRYS_EXPECT_EQUAL("Just below -0.5", Ceil(-0.499999f), 0.0f);

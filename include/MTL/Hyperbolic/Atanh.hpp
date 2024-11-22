@@ -9,7 +9,10 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes inverse hyperbolic tangent of `x`.
+  /// @brief Computes the inverse hyperbolic tangent of `x`.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @returns The inverse hyperbolic tangent of `x`.
   template <IsArithmeticT TNumber>
   constexpr TNumber Atanh(TNumber x) noexcept
   {

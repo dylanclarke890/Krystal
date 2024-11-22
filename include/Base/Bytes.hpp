@@ -12,7 +12,7 @@ namespace Krys::Bytes
 
   template <typename T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD T AsNumeric(const byte *bytes) noexcept
+  NO_DISCARD constexpr T AsNumeric(const byte *bytes) noexcept
   {
     T value;
     std::memcpy(&value, bytes, sizeof(T));
@@ -21,14 +21,14 @@ namespace Krys::Bytes
 
   template <typename T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD T AsNumeric(const List<byte> &bytes) noexcept
+  NO_DISCARD constexpr T AsNumeric(const List<byte> &bytes) noexcept
   {
     return AsNumeric<T, TSource, TDestination>(bytes.data());
   }
 
   template <typename T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD List<T> AsNumericArray(const List<byte> &bytes) noexcept
+  NO_DISCARD constexpr List<T> AsNumericArray(const List<byte> &bytes) noexcept
   {
     KRYS_ASSERT(bytes.size() % sizeof(T) == 0,
                 "Unable to convert all bytes to the specified type. Unexpected number of bytes. ", 0);
@@ -43,7 +43,7 @@ namespace Krys::Bytes
     return elements;
   }
 
-  constexpr NO_DISCARD string AsString(const List<byte> &bytes, const size_t length) noexcept
+  NO_DISCARD constexpr string AsString(const List<byte> &bytes, const size_t length) noexcept
   {
     return string(reinterpret_cast<const char *>(bytes.data()), length);
   }

@@ -73,14 +73,14 @@ namespace Krys
 
 #pragma region Assignment
 
-      constexpr NO_DISCARD mat_t &operator=(const mat_t &other) noexcept
+      NO_DISCARD constexpr mat_t &operator=(const mat_t &other) noexcept
       {
         _values[0] = other._values[0];
         _values[1] = other._values[1];
         return *this;
       }
 
-      constexpr NO_DISCARD mat_t &operator=(mat_t &&other) noexcept
+      NO_DISCARD constexpr mat_t &operator=(mat_t &&other) noexcept
       {
         _values = std::move(other._values);
         return *this;
@@ -104,24 +104,24 @@ namespace Krys
 
 #pragma region Element Access
 
-      constexpr NO_DISCARD vec_length_t GetColLength() const noexcept
+      NO_DISCARD constexpr vec_length_t GetColLength() const noexcept
       {
         return ColLength;
       }
 
-      constexpr NO_DISCARD vec_length_t GetRowLength() const noexcept
+      NO_DISCARD constexpr vec_length_t GetRowLength() const noexcept
       {
         return RowLength;
       }
 
       template <vec_length_t Index>
       REQUIRES((Index < ColLength))
-      constexpr NO_DISCARD const column_t &Get() const noexcept
+      NO_DISCARD constexpr const column_t &Get() const noexcept
       {
         return _values[Index];
       }
 
-      constexpr NO_DISCARD const column_t &operator[](vec_length_t col) const noexcept
+      NO_DISCARD constexpr const column_t &operator[](vec_length_t col) const noexcept
       {
         KRYS_ASSERT(col < ColLength, "Index out of bounds", 0);
         return _values[col];
@@ -131,24 +131,24 @@ namespace Krys
 
 #pragma region Addition
 
-      constexpr NO_DISCARD mat_t operator+(const mat_t &other) const noexcept
+      NO_DISCARD constexpr mat_t operator+(const mat_t &other) const noexcept
       {
         return mat_t(_values[0] + other._values[0], _values[1] + other._values[1]);
       }
 
-      constexpr NO_DISCARD mat_t operator+(component_t scalar) const noexcept
+      NO_DISCARD constexpr mat_t operator+(component_t scalar) const noexcept
       {
         return mat_t(_values[0] + scalar, _values[1] + scalar);
       }
 
-      constexpr NO_DISCARD mat_t &operator+=(const mat_t &other) noexcept
+      NO_DISCARD constexpr mat_t &operator+=(const mat_t &other) noexcept
       {
         _values[0] += other._values[0];
         _values[1] += other._values[1];
         return *this;
       }
 
-      constexpr NO_DISCARD mat_t &operator+=(component_t scalar) noexcept
+      NO_DISCARD constexpr mat_t &operator+=(component_t scalar) noexcept
       {
         _values[0] += scalar;
         _values[1] += scalar;
@@ -159,24 +159,24 @@ namespace Krys
 
 #pragma region Subtraction
 
-      constexpr NO_DISCARD mat_t operator-(const mat_t &other) const noexcept
+      NO_DISCARD constexpr mat_t operator-(const mat_t &other) const noexcept
       {
         return mat_t(_values[0] - other._values[0], _values[1] - other._values[1]);
       }
 
-      constexpr NO_DISCARD mat_t operator-(component_t scalar) const noexcept
+      NO_DISCARD constexpr mat_t operator-(component_t scalar) const noexcept
       {
         return mat_t(_values[0] - scalar, _values[1] - scalar);
       }
 
-      constexpr NO_DISCARD mat_t &operator-=(const mat_t &other) noexcept
+      NO_DISCARD constexpr mat_t &operator-=(const mat_t &other) noexcept
       {
         _values[0] -= other._values[0];
         _values[1] -= other._values[1];
         return *this;
       }
 
-      constexpr NO_DISCARD mat_t &operator-=(component_t scalar) noexcept
+      NO_DISCARD constexpr mat_t &operator-=(component_t scalar) noexcept
       {
         _values[0] -= scalar;
         _values[1] -= scalar;
@@ -187,7 +187,7 @@ namespace Krys
 
 #pragma region Multiplication
 
-      constexpr NO_DISCARD mat_t operator*(const mat_t &other) const noexcept
+      NO_DISCARD constexpr mat_t operator*(const mat_t &other) const noexcept
       {
         const column_t &a0 = _values[0];
         const column_t &a1 = _values[1];
@@ -205,12 +205,12 @@ namespace Krys
         return mat_t(c0, c1);
       }
 
-      constexpr NO_DISCARD mat_t operator*(component_t scalar) const noexcept
+      NO_DISCARD constexpr mat_t operator*(component_t scalar) const noexcept
       {
         return mat_t(_values[0] * scalar, _values[1] * scalar);
       }
 
-      constexpr NO_DISCARD column_t operator*(const column_t &vector) const noexcept
+      NO_DISCARD constexpr column_t operator*(const column_t &vector) const noexcept
       {
         const column_t &a0 = _values[0];
         const column_t &a1 = _values[1];
@@ -223,7 +223,7 @@ namespace Krys
         return col;
       }
 
-      constexpr NO_DISCARD mat_t &operator*=(const mat_t &other) noexcept
+      NO_DISCARD constexpr mat_t &operator*=(const mat_t &other) noexcept
       {
         const column_t &a0 = _values[0];
         const column_t &a1 = _values[1];
@@ -241,7 +241,7 @@ namespace Krys
         return *this;
       }
 
-      constexpr NO_DISCARD mat_t &operator*=(component_t scalar) noexcept
+      NO_DISCARD constexpr mat_t &operator*=(component_t scalar) noexcept
       {
         _values[0] *= scalar;
         _values[1] *= scalar;
@@ -252,7 +252,7 @@ namespace Krys
 
 #pragma region Division
 
-      constexpr NO_DISCARD mat_t operator/(component_t scalar) const noexcept
+      NO_DISCARD constexpr mat_t operator/(component_t scalar) const noexcept
       {
         KRYS_ASSERT(scalar != 0, "Division by zero", 0);
         return mat_t(_values[0] / scalar, _values[1] / scalar);
@@ -270,12 +270,12 @@ namespace Krys
 
 #pragma region Unary
 
-      constexpr NO_DISCARD mat_t operator-() const noexcept
+      NO_DISCARD constexpr mat_t operator-() const noexcept
       {
         return mat_t(-_values[0], -_values[1]);
       }
 
-      constexpr NO_DISCARD mat_t operator+() const noexcept
+      NO_DISCARD constexpr mat_t operator+() const noexcept
       {
         return *this;
       }

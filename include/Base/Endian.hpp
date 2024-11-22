@@ -16,19 +16,19 @@ namespace Krys::Endian
     System
   };
 
-  constexpr NO_DISCARD bool IsBigEndian() noexcept
+  NO_DISCARD constexpr bool IsBigEndian() noexcept
   {
     return std::endian::native == std::endian::big;
   }
 
-  constexpr NO_DISCARD bool IsLittleEndian() noexcept
+  NO_DISCARD constexpr bool IsLittleEndian() noexcept
   {
     return std::endian::native == std::endian::little;
   }
 
   template <typename T>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD T SwapEndian(T value)
+  NO_DISCARD constexpr T SwapEndian(T value)
   {
     if constexpr (std::is_integral_v<T>)
     {
@@ -51,7 +51,7 @@ namespace Krys::Endian
   /// the value is assumed to already be represented as big endian and is returned unchanged.
   template <typename T>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD T ToBigEndian(T value) noexcept
+  NO_DISCARD constexpr T ToBigEndian(T value) noexcept
   {
     if constexpr (IsBigEndian())
       return value;
@@ -63,7 +63,7 @@ namespace Krys::Endian
   /// the value is assumed to already be represented as little endian and is returned unchanged.
   template <typename T>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD T ToLittleEndian(T value) noexcept
+  NO_DISCARD constexpr T ToLittleEndian(T value) noexcept
   {
     if constexpr (IsLittleEndian())
       return value;
@@ -78,7 +78,7 @@ namespace Krys::Endian
   /// @return The value converted to the system's native endianness.
   template <typename T, Endian::Type SourceEndianness>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD T ToSystemEndian(T value) noexcept
+  NO_DISCARD constexpr T ToSystemEndian(T value) noexcept
   {
     if constexpr (SourceEndianness == Type::Little)
     {
@@ -95,7 +95,7 @@ namespace Krys::Endian
   /// Convert a value from one endian representation to another.
   template <typename T, Endian::Type SourceEndianness, Endian::Type DestinationEndianness>
   REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
-  constexpr NO_DISCARD T Convert(T value) noexcept
+  NO_DISCARD constexpr T Convert(T value) noexcept
   {
     if constexpr (SourceEndianness == DestinationEndianness)
       return value;

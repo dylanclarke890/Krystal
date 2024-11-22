@@ -6,12 +6,12 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes secant.
-  /// @tparam TNumber An arithmetic type (floating point types are advised).
-  /// @param radians The input value.
-  /// @returns The computed value.
+  /// @brief Computes the hyperbolic secant of `x`.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @returns The hyperbolic secant of `x`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Sech(TNumber radians) noexcept
+  NO_DISCARD constexpr TNumber Sech(TNumber radians) noexcept
   {
     return TNumber(1) / MTL::Cosh(radians);
   }

@@ -1,6 +1,8 @@
 #include "MTL/Common/IsDenormal.hpp"
 #include "Core/Debug/Expect.hpp"
 
+#include <limits>
+
 namespace Krys::Tests
 {
   using namespace Krys::MTL;

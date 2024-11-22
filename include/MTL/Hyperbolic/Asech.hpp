@@ -6,12 +6,12 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes inverse secant.
-  /// @tparam TNumber An arithmetic type (floating point types are advised).
+  /// @brief Computes the inverse hyperbolic secant of `x`.
+  /// @tparam TNumber An arithmetic type.
   /// @param x The input value.
-  /// @returns The computed value.
+  /// @returns The inverse hyperbolic secant of `x`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Asech(TNumber x) noexcept
+  NO_DISCARD constexpr TNumber Asech(TNumber x) noexcept
   {
     return MTL::Acosh(TNumber(1) / x);
   }

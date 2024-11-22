@@ -8,7 +8,7 @@
 
 namespace Krys::Impl
 {
-  // Helper function for computing cosh using Taylor series expansion
+  // Helper function for computing cosh using Taylor series expansion.
   template <IsArithmeticT TNumber>
   constexpr TNumber _compute_cosh(TNumber x, size_t n, TNumber current_power, TNumber current_factorial,
                                   size_t max_terms) noexcept
@@ -24,7 +24,10 @@ namespace Krys::Impl
 
 namespace Krys::MTL
 {
-  /// @brief Computes hyperbolic cosine of `x`.
+  /// @brief Computes the hyperbolic cosine of `x`.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @returns The hyperbolic cosine of `x`.
   template <IsArithmeticT TNumber>
   constexpr TNumber Cosh(TNumber x) noexcept
   {

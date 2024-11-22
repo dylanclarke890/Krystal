@@ -15,7 +15,7 @@ namespace Krys::MTL
   /// @param v The input vector.
   /// @returns A vector with each component rounded to the nearest integer.
   template <IsFloatingPointT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> Round(vector_t<TComponent, L> v) noexcept
+  NO_DISCARD constexpr vector_t<TComponent, L> Round(vector_t<TComponent, L> v) noexcept
   {
     using T = TComponent;
     return MTL::Map<T, T, L>(v, [](T val) -> T { return MTL::Round(val); });

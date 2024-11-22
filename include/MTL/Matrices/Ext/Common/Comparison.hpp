@@ -15,7 +15,7 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<bool, CL, RL> LessThan(const matrix_t<TComponent, CL, RL> &a,
+  NO_DISCARD constexpr matrix_t<bool, CL, RL> LessThan(const matrix_t<TComponent, CL, RL> &a,
                                                        const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     using T = TComponent;
@@ -30,7 +30,7 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<bool, CL, RL> LessThanOrEqual(const matrix_t<TComponent, CL, RL> &a,
+  NO_DISCARD constexpr matrix_t<bool, CL, RL> LessThanOrEqual(const matrix_t<TComponent, CL, RL> &a,
                                                               const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     using T = TComponent;
@@ -45,7 +45,7 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<bool, CL, RL> Equal(const matrix_t<TComponent, CL, RL> &a,
+  NO_DISCARD constexpr matrix_t<bool, CL, RL> Equal(const matrix_t<TComponent, CL, RL> &a,
                                                     const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     using T = TComponent;
@@ -60,7 +60,7 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<bool, CL, RL> NotEqual(const matrix_t<TComponent, CL, RL> &a,
+  NO_DISCARD constexpr matrix_t<bool, CL, RL> NotEqual(const matrix_t<TComponent, CL, RL> &a,
                                                        const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     using T = TComponent;
@@ -75,7 +75,7 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<bool, CL, RL> GreaterThan(const matrix_t<TComponent, CL, RL> &a,
+  NO_DISCARD constexpr matrix_t<bool, CL, RL> GreaterThan(const matrix_t<TComponent, CL, RL> &a,
                                                           const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     using T = TComponent;
@@ -90,7 +90,7 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<bool, CL, RL>
+  NO_DISCARD constexpr matrix_t<bool, CL, RL>
     GreaterThanOrEqual(const matrix_t<TComponent, CL, RL> &a, const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     using T = TComponent;

@@ -15,7 +15,7 @@ namespace Krys::MTL
   /// @param m The input matrix.
   /// @returns A matrix with each component rounded up to the smallest integer.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Ceil(const matrix_t<TComponent, CL, RL> &m) noexcept
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Ceil(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
     using T = TComponent;
     return MTL::Map<T, T, CL, RL>(m, [](T val) -> T { return MTL::Ceil<T>(val); });

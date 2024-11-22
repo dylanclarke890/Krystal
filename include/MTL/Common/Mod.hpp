@@ -12,11 +12,11 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @returns The modulus of `a` and `b`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Mod(TNumber a, TNumber b) noexcept
+  NO_DISCARD constexpr TNumber Mod(TNumber a, TNumber b) noexcept
   {
-    if constexpr (IsFloatingPointT<TNumber>())
-      return static_cast<TNumber>(x - (MTL::Trunc<TNumber>(x / y) * y));
-
-    return a % b;
+    if constexpr (IsFloatingPointT<TNumber>)
+      return TNumber(a - (MTL::Trunc<TNumber>(a / b) * b));
+    else
+      return a % b;
   }
 }

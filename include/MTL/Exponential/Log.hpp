@@ -8,7 +8,7 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes the natural logarithm of `x`, i.e., ln(x).
+  /// @brief Computes the natural logarithm of `x` (ln(x)).
   /// @tparam TNumber An arithmetic type.
   /// @param x The input value.
   /// @returns The result of ln(x).

@@ -16,7 +16,7 @@ namespace Krys::MTL
   /// @param exponent The exponent matrix.
   /// @returns A matrix where each component is `base[i][j]` raised to the power of `exponent[i][j]`.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  constexpr NO_DISCARD matrix_t<TComponent, CL, RL> Pow(const matrix_t<TComponent, CL, RL> &base,
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Pow(const matrix_t<TComponent, CL, RL> &base,
                                                         const matrix_t<TComponent, CL, RL> &exponent) noexcept
   {
     using T = TComponent;

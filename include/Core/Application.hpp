@@ -4,10 +4,6 @@
 #include "Base/Types.hpp"
 #include "Core/ApplicationContext.hpp"
 
-#ifdef KRYS_ENABLE_TESTS
-  #include "Core/Debug/StaticTests.hpp"
-#endif
-
 namespace Krys
 {
   /// @brief Base class for a Krystal application.

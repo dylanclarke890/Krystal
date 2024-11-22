@@ -3,7 +3,7 @@
 
 namespace Krys::Tests
 {
-  constexpr void Test_Constructors()
+  static void Test_Constructors()
   {
     // Default constructor
     constexpr vec3_t<float> defaultVec;
@@ -36,7 +36,7 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Move constructor z", moveVec.z, 5.0f);
   }
 
-  constexpr void Test_EqualityOperators()
+  static void Test_EqualityOperators()
   {
     constexpr vec3_t<float> v1(1.0f, 2.0f, 3.0f);
     constexpr vec3_t<float> v2(1.0f, 2.0f, 3.0f);
@@ -48,7 +48,7 @@ namespace Krys::Tests
     KRYS_EXPECT_TRUE("Inequality operator (different vectors)", v1 != v3);
   }
 
-  constexpr void Test_ElementAccess()
+  static void Test_ElementAccess()
   {
     constexpr vec3_t<float> v(3.3f, 4.4f, 5.5f);
     KRYS_EXPECT_EQUAL("Element access operator x", v[0], 3.3f);
@@ -60,7 +60,7 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("GetLength() function", v.GetLength(), 3);
   }
 
-  constexpr void Test_ArithmeticOperators()
+  static void Test_ArithmeticOperators()
   {
     constexpr vec3_t<float> v1(1.0f, 2.0f, 3.0f);
     constexpr vec3_t<float> v2(4.0f, 5.0f, 6.0f);
@@ -110,7 +110,7 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Division operator (vector / scalar) z", divScalar.z, 3.0f);
   }
 
-  constexpr void Test_UnaryOperator()
+  static void Test_UnaryOperator()
   {
     constexpr vec3_t<float> v(1.0f, -2.0f, 3.0f);
     constexpr vec3_t<float> negative = -v;

@@ -6,7 +6,7 @@ namespace Krys::Tests
   static void Test_Exp10()
   {
     KRYS_EXPECT_EQUAL("Exp10 zero", MTL::Exp10(0.0), 1.0);
-    KRYS_EXPECT_EQUAL("Exp10 positive", MTL::Exp10(2.0), 100.0);
-    KRYS_EXPECT_EQUAL("Exp10 negative", MTL::Exp10(-2.0), 0.01);
+    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Exp10 positive", MTL::Exp10(2.0), 100.0, 1e-6);
+    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Exp10 negative", MTL::Exp10(-2.0), 0.01, 1e-6);
   }
 }

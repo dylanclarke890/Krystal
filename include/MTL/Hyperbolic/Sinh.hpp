@@ -24,7 +24,10 @@ namespace Krys::Impl
 
 namespace Krys::MTL
 {
-  /// @brief Computes hyperbolic sine of `x`.
+  /// @brief Computes the hyperbolic sine of `x`.
+  /// @tparam TNumber An arithmetic type.
+  /// @param x The input value.
+  /// @returns The hyperbolic sine of `x`.
   template <IsArithmeticT TNumber>
   constexpr TNumber Sinh(TNumber x) noexcept
   {

@@ -6,12 +6,12 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes inverse cosecant.
-  /// @tparam TNumber An arithmetic type (floating point types are advised).
+  /// @brief Computes the inverse hyperbolic cosecant of `x`.
+  /// @tparam TNumber An arithmetic type.
   /// @param x The input value.
-  /// @returns The computed value.
+  /// @returns The inverse hyperbolic cosecant of `x`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Acsch(TNumber x) noexcept
+  NO_DISCARD constexpr TNumber Acsch(TNumber x) noexcept
   {
     return MTL::Asinh(TNumber(1) / x);
   }

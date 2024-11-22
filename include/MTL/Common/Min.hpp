@@ -11,7 +11,7 @@ namespace Krys::MTL
   /// @param b The second value.
   /// @returns The smaller of `a` and `b`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Min(TNumber a, TNumber b) noexcept
+  NO_DISCARD constexpr TNumber Min(TNumber a, TNumber b) noexcept
   {
     return a < b ? a : b;
   }
@@ -23,7 +23,7 @@ namespace Krys::MTL
   /// @param c The third value.
   /// @returns The smallest of `a`, `b`, and `c`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Min(TNumber a, TNumber b, TNumber c) noexcept
+  NO_DISCARD constexpr TNumber Min(TNumber a, TNumber b, TNumber c) noexcept
   {
     return MTL::Min(MTL::Min(a, b), c);
   }
@@ -36,7 +36,7 @@ namespace Krys::MTL
   /// @param d The fourth value.
   /// @returns The smallest of `a`, `b`, `c`, and `d`.
   template <IsArithmeticT TNumber>
-  constexpr NO_DISCARD TNumber Min(TNumber a, TNumber b, TNumber c, TNumber d) noexcept
+  NO_DISCARD constexpr TNumber Min(TNumber a, TNumber b, TNumber c, TNumber d) noexcept
   {
     return MTL::Min(MTL::Min(a, b), MTL::Min(c, d));
   }

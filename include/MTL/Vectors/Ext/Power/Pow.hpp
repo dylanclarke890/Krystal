@@ -15,7 +15,7 @@ namespace Krys::MTL
   /// @param exponent The exponent vector.
   /// @returns A vector where each component is `base[i]` raised to the power of `exponent[i]`.
   template <IsArithmeticT TComponent, vec_length_t L>
-  constexpr NO_DISCARD vector_t<TComponent, L> Pow(const vector_t<TComponent, L> &base,
+  NO_DISCARD constexpr vector_t<TComponent, L> Pow(const vector_t<TComponent, L> &base,
                                                    const vector_t<TComponent, L> &exponent) noexcept
   {
     using T = TComponent;
