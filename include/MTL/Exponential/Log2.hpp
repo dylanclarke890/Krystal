@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Constants.hpp"
-#include "MTL/Log.hpp"
+#include "MTL/Common/Constants.hpp"
+#include "MTL/Exponential/Log.hpp"
 
 #include <cmath>
 

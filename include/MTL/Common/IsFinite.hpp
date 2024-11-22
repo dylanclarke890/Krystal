@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/IsInfinite.hpp"
-#include "MTL/IsNaN.hpp"
+#include "MTL/Common/IsInfinite.hpp"
+#include "MTL/Common/IsNaN.hpp"
 
 #include <cmath>
 

@@ -3,8 +3,8 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
-#include "MTL/IsNaN.hpp"
-#include "MTL/Max.hpp"
+#include "MTL/Common/IsNaN.hpp"
+#include "MTL/Common/Max.hpp"
 
 namespace Krys::MTL
 {

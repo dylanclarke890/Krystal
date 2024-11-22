@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Cosh.hpp"
+#include "MTL/Hyperbolic/Cosh.hpp"
 
 namespace Krys::MTL
 {

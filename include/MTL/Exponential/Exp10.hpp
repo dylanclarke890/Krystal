@@ -2,9 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Pow.hpp"
+#include "MTL/Power/Pow.hpp"
 
-#include <cmath>
 
 namespace Krys::MTL
 {

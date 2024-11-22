@@ -3,7 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
-#include "MTL/Log.hpp"
+#include "MTL/Exponential/Log.hpp"
 
 #include <cmath>
 

@@ -3,8 +3,8 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
-#include "MTL/Cosh.hpp"
-#include "MTL/Sinh.hpp"
+#include "MTL/Hyperbolic/Cosh.hpp"
+#include "MTL/Hyperbolic/Sinh.hpp"
 
 #include <cmath>
 

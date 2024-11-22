@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Tanh.hpp"
+#include "MTL/Hyperbolic/Tanh.hpp"
 
 namespace Krys::MTL
 {

@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Max.hpp"
-#include "MTL/Min.hpp"
+#include "MTL/Common/Max.hpp"
+#include "MTL/Common/Min.hpp"
 
 namespace Krys::MTL
 {

@@ -3,9 +3,9 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
-#include "MTL/Constants.hpp"
-#include "MTL/Factorial.hpp"
-#include "MTL/Pow.hpp"
+#include "MTL/Common/Constants.hpp"
+#include "MTL/Common/Factorial.hpp"
+#include "MTL/Power/Pow.hpp"
 
 #include <cmath>
 

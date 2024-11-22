@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Log.hpp"
-#include "MTL/Sqrt.hpp"
+#include "MTL/Exponential/Log.hpp"
+#include "MTL/Power/Sqrt.hpp"
 
 #include <cmath>
 

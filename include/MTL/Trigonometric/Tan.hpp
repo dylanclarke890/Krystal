@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Cos.hpp"
-#include "MTL/Sin.hpp"
+#include "MTL/Trigonometric/Cos.hpp"
+#include "MTL/Trigonometric/Sin.hpp"
 
 #include <cmath>
 

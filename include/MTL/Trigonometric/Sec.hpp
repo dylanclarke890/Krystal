@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Cos.hpp"
+#include "MTL/Trigonometric/Cos.hpp"
 
 namespace Krys::MTL
 {

@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/IsDenormal.hpp"
-#include "MTL/IsFinite.hpp"
+#include "MTL/Common/IsDenormal.hpp"
+#include "MTL/Common/IsFinite.hpp"
 
 #include <cmath>
 

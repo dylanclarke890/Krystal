@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Atan.hpp"
-#include "MTL/Constants.hpp"
+#include "MTL/Common/Constants.hpp"
+#include "MTL/Trigonometric/Atan.hpp"
 
 #include <cmath>
 

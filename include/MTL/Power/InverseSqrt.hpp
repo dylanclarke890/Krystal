@@ -3,8 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
-#include "MTL/Constants.hpp"
-#include "MTL/Sqrt.hpp"
+#include "MTL/Power/Sqrt.hpp"
 
 #include <cmath>
 

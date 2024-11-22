@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Trunc.hpp"
+#include "MTL/Common/Trunc.hpp"
 
 namespace Krys::MTL
 {

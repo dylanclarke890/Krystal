@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Sinh.hpp"
+#include "MTL/Hyperbolic/Sinh.hpp"
 
 #include <cmath>
 
