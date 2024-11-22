@@ -3,6 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "MTL/IsNaN.hpp"
+#include "MTL/Min.hpp"
 
 namespace Krys::MTL
 {

@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "Base/Types.hpp"
-#include "MTL/Classify/IsInfinite.hpp"
+#include "MTL/IsInfinite.hpp"
+#include "MTL/IsNaN.hpp"
 
 #include <cmath>
 
@@ -17,7 +17,9 @@ namespace Krys::MTL
   constexpr NO_DISCARD bool IsFinite(TFloat x) noexcept
   {
     KRYS_IF_COMPILE_CONTEXT
+    {
       return !MTL::IsNaN(x) && !MTL::IsInfinite(x);
+    }
 
     return std::isfinite(x);
   }

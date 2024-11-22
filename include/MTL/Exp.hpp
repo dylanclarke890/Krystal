@@ -18,7 +18,7 @@ namespace Krys::Impl
 
     TNumber current_term = current_power / current_factorial;
     return current_term
-           + _compute_exp(x, term + 1, current_power * x, current_factorial * (term + 1), max_terms);
+           + Impl::_compute_exp(x, term + 1, current_power * x, current_factorial * (term + 1), max_terms);
   }
 }
 
@@ -35,11 +35,11 @@ namespace Krys::MTL
     {
       // Use the property e^x = 1 / e^-x for negative inputs
       if (x < TNumber(0))
-        return TNumber(1) / Exp(-x);
+        return TNumber(1) / MTL::Exp(-x);
 
       // Taylor series expansion for e^x: T(1) + x + x^2/2! + ...
       constexpr size_t max_terms = 30;
-      return TNumber(1) + _compute_exp(x, 1, x, TNumber(1), max_terms);
+      return TNumber(1) + Impl::_compute_exp(x, 1, x, TNumber(1), max_terms);
     }
 
     return std::exp(x);

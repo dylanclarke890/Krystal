@@ -3,7 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "MTL/Abs.hpp"
-#include "MTL/Classify/IsNaN.hpp"
+#include "MTL/IsNaN.hpp"
 
 #include <cmath>
 
