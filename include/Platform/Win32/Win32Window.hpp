@@ -20,8 +20,8 @@ namespace Krys::Platform
 
     void Poll() noexcept override;
 
-    HDC GetDeviceContext() const noexcept;
-    HWND GetWindowHandle() const noexcept;
+    NO_DISCARD HDC GetDeviceContext() const noexcept;
+    NO_DISCARD HWND GetWindowHandle() const noexcept;
 
   protected:
     static LRESULT CALLBACK StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept;
