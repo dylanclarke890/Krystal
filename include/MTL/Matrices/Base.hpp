@@ -2,7 +2,7 @@
 
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
-#include "Core/Maths/Vectors/Base.hpp"
+#include "MTL/Vectors/Base.hpp"
 
 namespace Krys::MTL
 {

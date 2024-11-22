@@ -4,9 +4,9 @@
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
-#include "Core/Maths/Matrices/Base.hpp"
-#include "Core/Maths/Vectors/Base.hpp"
-#include "Core/Maths/Vectors/Vec4.hpp"
+#include "MTL/Matrices/Base.hpp"
+#include "MTL/Vectors/Base.hpp"
+#include "MTL/Vectors/Vec4.hpp"
 
 namespace Krys
 {

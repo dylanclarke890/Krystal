@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Base/Types.hpp"
-#include "Core/Maths/Matrices/Mat4x4.hpp"
-#include "Core/Maths/Vectors/Vec3.hpp"
+#include "MTL/Matrices/Mat4x4.hpp"
+#include "MTL/Vectors/Vec3.hpp"
 
 namespace Krys
 {

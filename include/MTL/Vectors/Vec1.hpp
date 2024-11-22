@@ -4,7 +4,7 @@
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
-#include "Core/Maths/Vectors/Base.hpp"
+#include "MTL/Vectors/Base.hpp"
 
 namespace Krys
 {
@@ -52,6 +52,12 @@ namespace Krys
 #pragma region Assignment
 
       constexpr NO_DISCARD vec_t &operator=(const vec_t &other) noexcept
+      {
+        x = other.x;
+        return *this;
+      }
+
+      constexpr NO_DISCARD vec_t &operator=(vec_t &other) noexcept
       {
         x = other.x;
         return *this;

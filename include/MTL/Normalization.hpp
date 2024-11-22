@@ -2,7 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
-#include "Core/Maths/Scalars/Limits.hpp"
+#include "MTL/Common/Max.hpp"
+#include "MTL/Common/Round.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -31,21 +32,21 @@ namespace Krys::MTL
 
   constexpr inline NO_DISCARD int8 FloatToSignedByte(float f) noexcept
   {
-    return static_cast<int8>(std::round(Max(f, -1.0f) * 127.0f));
+    return static_cast<int8>(MTL::Round(MTL::Max(f, -1.0f) * 127.0f));
   }
 
   constexpr inline NO_DISCARD uint8 FloatToUnsignedByte(float f) noexcept
   {
-    return static_cast<uint8>(std::round(f * 255.0f));
+    return static_cast<uint8>(MTL::Round(f * 255.0f));
   }
 
   constexpr inline NO_DISCARD int16 FloatToSignedShort(float f) noexcept
   {
-    return static_cast<int16>(std::round(Max(f, -1.0f) * 32767.0f));
+    return static_cast<int16>(MTL::Round(MTL::Max(f, -1.0f) * 32767.0f));
   }
 
   constexpr inline NO_DISCARD uint16 FloatToUnsignedShort(float f) noexcept
   {
-    return static_cast<uint16>(std::round(f * 65535.0f));
+    return static_cast<uint16>(MTL::Round(f * 65535.0f));
   }
 }
