@@ -20,7 +20,7 @@ namespace Krys::Platform
     windowClass.lpszClassName = "KrystalOpenGLWindowClass";
 
     if (!::RegisterClassA(&windowClass))
-      KRYS_FATAL("Unable to register class: %s", ::GetLastError());
+      KRYS_FATAL("Unable to register class: %d", ::GetLastError());
 
     RECT windowDimensions = {0, 0, static_cast<LONG>(width), static_cast<LONG>(height)};
     int windowStyles = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
@@ -28,7 +28,7 @@ namespace Krys::Platform
     // TODO: account for dpi?
 
     if (!::AdjustWindowRect(&windowDimensions, windowStyles, 0))
-      KRYS_ASSERT(false, "Error adjusting window rect %s", ::GetLastError());
+      KRYS_ASSERT(false, "Error adjusting window rect %d", ::GetLastError());
 
     // Calculate the total width and height of the window
     int totalWidth = windowDimensions.right - windowDimensions.left;
@@ -52,7 +52,7 @@ namespace Krys::Platform
                                       0);                        // additional application data;
 
     if (!_windowHandle)
-      KRYS_FATAL("Unable to create window: %s", ::GetLastError());
+      KRYS_FATAL("Unable to create window: %d", ::GetLastError());
 
     ::SetWindowLongPtrA(_windowHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
@@ -101,8 +101,7 @@ namespace Krys::Platform
     wc.hInstance = instance;
     wc.lpszClassName = "wgl_extension_loader_class";
 
-    auto registerSuccess = ::RegisterClassA(&wc);
-    KRYS_ASSERT(registerSuccess, "unable to register temporary window class", 0);
+    KRYS_ASSERT(::RegisterClassA(&wc), "unable to register temporary window class", 0);
 
     HWND fakeWND = ::CreateWindowA(wc.lpszClassName, "Fake Window",   // window class, title
                                    WS_CLIPSIBLINGS | WS_CLIPCHILDREN, // style
@@ -123,19 +122,16 @@ namespace Krys::Platform
     int fakePFDID = ::ChoosePixelFormat(fakeDC, &fakePFD);
     KRYS_ASSERT(fakePFDID != 0, "ChoosePixelFormat() failed.", 0);
 
-    BOOL setPixelFormatSuccess = ::SetPixelFormat(fakeDC, fakePFDID, &fakePFD);
-    KRYS_ASSERT(setPixelFormatSuccess, "Failed to set the pixel format", 0);
+    KRYS_ASSERT_ALWAYS_EVAL(::SetPixelFormat(fakeDC, fakePFDID, &fakePFD), "Failed to set the pixel format",
+                            0);
 
     // TODO: DescribePixelFormat?
 
     HGLRC fakeRC = ::wglCreateContext(fakeDC);
     KRYS_ASSERT(fakeRC, "Failed to create OpenGL context", 0);
 
-    BOOL makeCurrentSuccess = ::wglMakeCurrent(fakeDC, fakeRC);
-    KRYS_ASSERT(makeCurrentSuccess, "Failed to make OpenGL context current", 0);
-
-    int32 wglVersion = ::gladLoaderLoadWGL(fakeDC);
-    KRYS_ASSERT(wglVersion, "glad WGL loader failed.", 0);
+    KRYS_ASSERT_ALWAYS_EVAL(::wglMakeCurrent(fakeDC, fakeRC), "Failed to make OpenGL context current", 0);
+    KRYS_ASSERT_ALWAYS_EVAL(::gladLoaderLoadWGL(fakeDC), "glad WGL loader failed.", 0);
 
     ::wglMakeCurrent(NULL, NULL);
     ::wglDeleteContext(fakeRC);

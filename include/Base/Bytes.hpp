@@ -43,7 +43,7 @@ namespace Krys::Bytes
     return elements;
   }
 
-  NO_DISCARD constexpr string AsString(const List<byte> &bytes, const size_t length) noexcept
+  NO_DISCARD string AsString(const List<byte> &bytes, const size_t length) noexcept
   {
     return string(reinterpret_cast<const char *>(bytes.data()), length);
   }

@@ -6,6 +6,9 @@
 #include "Base/Types.hpp"
 #include "Core/IO/IO.hpp"
 
+#include <fstream>
+#include <iostream>
+
 namespace Krys::IO
 {
   template <Endian::Type SourceEndianness = Endian::Type::System,

@@ -2,12 +2,12 @@
 
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
+#include "Core/Window.hpp"
 
 namespace Krys
 {
   class EventManager;
   class InputManager;
-  class Window;
 
   /// @brief Handles the creation and management of a `Window`.
   class WindowManager

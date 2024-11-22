@@ -1,5 +1,4 @@
 #include "Core/WindowManager.hpp"
-#include "Core/Window.hpp"
 
 namespace Krys
 {

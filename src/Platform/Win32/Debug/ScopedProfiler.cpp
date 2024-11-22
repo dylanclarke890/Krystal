@@ -21,14 +21,15 @@ namespace Krys::Debug
 
   ScopedProfiler::~ScopedProfiler() noexcept
   {
+#ifdef KRYS_ENABLE_LOGGING
     LARGE_INTEGER end;
     QueryPerformanceCounter(&end);
 
     const uint64 difference = static_cast<uint64>(end.QuadPart) - _start;
     const uint64 frequency = PerformanceCounterFrequency.val();
     const double elapsedMs = static_cast<double>(difference) / static_cast<double>(frequency) * 1000.0f;
-
     KRYS_LOG("%s took %.3f ms.", _name.c_str(), elapsedMs);
+#endif
   }
 
   uint64 GetPerformanceFrequency() noexcept

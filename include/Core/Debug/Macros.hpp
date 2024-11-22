@@ -41,7 +41,7 @@
   #define KRYS_DEBUG(message, ...)
   #define KRYS_INFO(message, ...)
   #define KRYS_ERROR(message, ...)
-  #define KRYS_CRITICAL(message, ...)
+  #define KRYS_FATAL(message, ...)
 #endif
 
 #ifdef KRYS_ENABLE_ASSERTS
@@ -54,6 +54,17 @@
         KRYS_DEBUG_BREAK();                                                                                  \
       }                                                                                                      \
     } while (false)
+  #define KRYS_ASSERT_ALWAYS_EVAL(condition, format, ...)                                                    \
+    do                                                                                                       \
+    {                                                                                                        \
+      if (!(condition))                                                                                      \
+      {                                                                                                      \
+        KRYS_ERROR(format VA_ARGS(__VA_ARGS__));                                                             \
+        KRYS_DEBUG_BREAK();                                                                                  \
+      }                                                                                                      \
+    } while (false)
+
 #else
   #define KRYS_ASSERT(condition, format, ...)
+  #define KRYS_ASSERT_ALWAYS_EVAL(condition, format, ...) (condition)
 #endif
