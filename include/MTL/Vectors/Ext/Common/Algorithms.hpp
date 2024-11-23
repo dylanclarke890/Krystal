@@ -118,11 +118,11 @@ namespace Krys::MTL
   {
     if constexpr (L == 1)
       return TComponent(v.x);
-    if constexpr (L == 2)
+    else if constexpr (L == 2)
       return TComponent(v.x + v.y);
-    if constexpr (L == 3)
+    else if constexpr (L == 3)
       return TComponent(v.x + v.y + v.z);
-    if constexpr (L == 4)
+    else if constexpr (L == 4)
       return TComponent(v.x + v.y + v.z + v.w);
     else
       static_assert(false, "Unsupported number of components.");
@@ -139,11 +139,11 @@ namespace Krys::MTL
   {
     if constexpr (L == 1)
       return TComponent(func(v.x));
-    if constexpr (L == 2)
+    else if constexpr (L == 2)
       return TComponent(func(v.x) + func(v.y));
-    if constexpr (L == 3)
+    else if constexpr (L == 3)
       return TComponent(func(v.x) + func(v.y) + func(v.z));
-    if constexpr (L == 4)
+    else if constexpr (L == 4)
       return TComponent(func(v.x) + func(v.y) + func(v.z) + func(v.w));
     else
       static_assert(false, "Unsupported number of components.");
