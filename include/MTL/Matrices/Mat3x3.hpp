@@ -57,7 +57,7 @@ namespace Krys
       explicit constexpr Matrix(component_t x0, component_t y0, component_t z0, component_t x1,
                                 component_t y1, component_t z1, component_t x2, component_t y2,
                                 component_t z2) noexcept
-          : _values {column_t(x0, y0, z0), column_t(x1, y1, z0), column_t(x2, y2, z2)}
+          : _values {column_t(x0, y0, z0), column_t(x1, y1, z1), column_t(x2, y2, z2)}
       {
       }
 
