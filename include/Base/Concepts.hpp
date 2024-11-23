@@ -25,6 +25,14 @@ namespace Krys
   template <typename T>
   concept IsArithmeticT = std::is_arithmetic_v<T>;
 
+  /// @brief Checks type `T` is callable type that returns a boolean.
+  template <typename T, class... TArgs>
+  concept IsPredicateCallableT = std::predicate<T, TArgs...>;
+
+  /// @brief Checks type `T` is callable type that does not cause side effects.
+  template <typename T, class... TArgs>
+  concept IsRegularCallableT = std::regular_invocable<T, TArgs...>;
+
   /// @brief Checks type `T` is copyable.
   template <typename T>
   concept IsCopyableT = std::copyable<T>;

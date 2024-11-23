@@ -44,6 +44,8 @@ namespace Krys
   typedef std::string string;
   typedef std::string_view stringview;
 
+  using std::declval;
+
   template <typename T>
   using Nullable = std::optional<T>;
 
