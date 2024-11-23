@@ -21,6 +21,7 @@ def get_engine_project():
   code.linker_settings.extend([f"OUT:{code.build_output_dir}Krystal.lib"])
   code.custom_source_files = {
     "Core": ["Core/**/*.cpp"],
+    "MTL": ["MTL/**/*.cpp"],
     "Win32Platform": ["Platform/Win32/**/*.cpp"],
   }
   code.third_party_source_files = {
