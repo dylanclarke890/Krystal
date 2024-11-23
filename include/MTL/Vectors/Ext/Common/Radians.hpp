@@ -8,15 +8,14 @@
 
 namespace Krys::MTL
 {
-  /// @brief Converts each component in `v` to degrees.
+  /// @brief Converts each component in `v` to radians.
   /// @tparam TComponent The underlying arithmetic type of the input vector.
   /// @tparam L The length of the input vector.
   /// @param v The input vector.
   /// @returns The converted vector.
   template <IsArithmeticT TComponent, vec_length_t L>
-  NO_DISCARD constexpr vector_t<TComponent, L> Degrees(vector_t<TComponent, L> v) noexcept
+  NO_DISCARD constexpr vector_t<TComponent, L> Radians(const vector_t<TComponent, L> &v) noexcept
   {
-    using T = TComponent;
-    return MTL::Map<T, T, L>(v, [](T val) -> T { return MTL::Degrees<T>(val); });
+    return MTL::MapEach(v, [](TComponent val) -> TComponent { return MTL::Radians(val); });
   }
 }

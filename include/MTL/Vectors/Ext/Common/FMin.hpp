@@ -19,8 +19,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr vector_t<TComponent, L> FMin(const vector_t<TComponent, L> &a,
                                                     const vector_t<TComponent, L> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, L>(a, b, [](T x, T y) -> T { return MTL::FMin(x, y); });
+    return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return MTL::FMin(x, y); });
   }
 
   /// @brief Performs a component-wise minimum operation between three floating point vectors, ignoring NaN.
@@ -36,26 +35,8 @@ namespace Krys::MTL
                                                     const vector_t<TComponent, L> &b,
                                                     const vector_t<TComponent, L> &c) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, T, L>(a, b, c, [](T x, T y, T z) -> T { return MTL::FMin(x, y, z); });
-  }
-
-  /// @brief Performs a component-wise minimum operation between four floating point vectors, ignoring NaN.
-  /// @tparam TComponent The underlying floating-point type of the vectors.
-  /// @tparam L The length of the vectors.
-  /// @param a The first input vector.
-  /// @param b The second input vector.
-  /// @param c The third input vector.
-  /// @param d The fourth input vector.
-  /// @return A vector where each component is the smallest of the corresponding components of `a`, `b`, `c`
-  /// and `d`,ignoring NaN.
-  template <IsFloatingPointT TComponent, vec_length_t L>
-  NO_DISCARD constexpr vector_t<TComponent, L>
-    FMin(const vector_t<TComponent, L> &a, const vector_t<TComponent, L> &b, const vector_t<TComponent, L> &c,
-         const vector_t<TComponent, L> &d) noexcept
-  {
-    using T = TComponent;
-    return MTL::Zip<T, T, T, T, L>(a, b, c, d, [](T x, T y, T z, T w) -> T { return MTL::FMin(x, y, z, w); });
+    return MTL::Zip(a, b, c, [](TComponent x, TComponent y, TComponent z) -> TComponent
+                    { return MTL::FMin(x, y, z); });
   }
 
   /// @brief Performs a component-wise minimum operation between the vector `a` and floating point `b`.
@@ -68,7 +49,7 @@ namespace Krys::MTL
   template <IsFloatingPointT TComponent, vec_length_t L>
   NO_DISCARD constexpr vector_t<TComponent, L> FMin(const vector_t<TComponent, L> &a, TComponent b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, L>(a, vector_t<T, L>(b), [](T x, T y) -> T { return MTL::FMin(x, y); });
+    return MTL::Zip(a, vector_t<TComponent, L>(b),
+                    [](TComponent x, TComponent y) -> TComponent { return MTL::FMin(x, y); });
   }
 }

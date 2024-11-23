@@ -16,7 +16,6 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t L>
   NO_DISCARD constexpr vector_t<TComponent, L> Degrees(vector_t<TComponent, L> v) noexcept
   {
-    using T = TComponent;
-    return MTL::Map<T, T, L>(v, [](T val) -> T { return MTL::Degrees<T>(val); });
+    return MTL::MapEach(v, [](TComponent val) -> TComponent { return MTL::Degrees(val); });
   }
 }

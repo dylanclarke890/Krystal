@@ -22,9 +22,8 @@ namespace Krys::MTL
                                                      const vector_t<TComponent, L> &min,
                                                      const vector_t<TComponent, L> &max) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, T, L>(value, min, max,
-                                [](T v, T mn, T mx) -> T { return MTL::Min(MTL::Max(v, mn), mx); });
+    return MTL::Zip(value, min, max, [](TComponent v, TComponent mn, TComponent mx) -> TComponent
+                    { return MTL::Min(MTL::Max(v, mn), mx); });
   }
 
   /// @brief Clamps each component of the vector between the scalar values `min` and `max`.
@@ -38,8 +37,8 @@ namespace Krys::MTL
   NO_DISCARD constexpr vector_t<TComponent, L> Clamp(const vector_t<TComponent, L> &value, TComponent min,
                                                      TComponent max) noexcept
   {
-    using T = TComponent;
-    return MTL::Map<T, T, T, L>(value, vector_t<T, L>(min), vector_t<T, L>(max),
-                                [](T v, T mn, T mx) -> T { return MTL::Min(MTL::Max(v, mn), mx); });
+    return MTL::Map(value, vector_t<TComponent, L>(min), vector_t<TComponent, L>(max),
+                    [](TComponent v, TComponent mn, TComponent mx) -> TComponent
+                    { return MTL::Min(MTL::Max(v, mn), mx); });
   }
 }

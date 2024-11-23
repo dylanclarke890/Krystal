@@ -16,7 +16,6 @@ namespace Krys::MTL
   template <IsFloatingPointT TComponent, vec_length_t L>
   NO_DISCARD constexpr vector_t<TComponent, L> Floor(vector_t<TComponent, L> v) noexcept
   {
-    using T = TComponent;
-    return MTL::Map<T, T, L>(v, [](T val) -> T { return MTL::Floor(val); });
+    return MTL::MapEach(v, [](TComponent val) -> TComponent { return MTL::Floor(val); });
   }
 }

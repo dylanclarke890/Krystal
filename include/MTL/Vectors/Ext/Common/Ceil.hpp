@@ -16,7 +16,6 @@ namespace Krys::MTL
   template <IsFloatingPointT TComponent, vec_length_t L>
   NO_DISCARD constexpr vector_t<TComponent, L> Ceil(vector_t<TComponent, L> v) noexcept
   {
-    using T = TComponent;
-    return MTL::Map<T, T, L>(v, [](T val) -> T { return MTL::Ceil(val); });
+    return MTL::MapEach(v, [](TComponent x) -> TComponent { return MTL::Ceil(x); });
   }
 }
