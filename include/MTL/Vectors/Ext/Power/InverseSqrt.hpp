@@ -16,7 +16,6 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t L>
   NO_DISCARD constexpr vector_t<TComponent, L> InverseSqrt(const vector_t<TComponent, L> &v) noexcept
   {
-    using T = TComponent;
-    return MTL::Map<T, T, L>(v, [](T x) -> T { return MTL::InverseSqrt<T>(x); });
+    return MTL::Map(v, [](TComponent x) -> TComponent { return MTL::InverseSqrt(x); });
   }
 }

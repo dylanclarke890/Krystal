@@ -18,7 +18,6 @@ namespace Krys::MTL
   NO_DISCARD constexpr vector_t<TComponent, L> Pow(const vector_t<TComponent, L> &base,
                                                    const vector_t<TComponent, L> &exponent) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, T, L>(base, exponent, [](T b, T e) -> T { return MTL::Pow<T>(b, e); });
+    return MTL::Zip(base, exponent, [](TComponent b, TComponent e) -> TComponent { return MTL::Pow(b, e); });
   }
 }
