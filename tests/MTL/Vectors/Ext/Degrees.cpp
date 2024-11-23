@@ -1,4 +1,4 @@
-#include "MTL/Vectors/Ext/Common/Degrees.hpp"
+#include "MTL/Vectors/Ext/Degrees.hpp"
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Vectors/Vec1.hpp"

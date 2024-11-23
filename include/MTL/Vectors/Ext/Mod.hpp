@@ -2,9 +2,9 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Vectors/Base.hpp"
-#include "MTL/Vectors/Ext/Common/Algorithms.hpp"
 #include "MTL/Common/Mod.hpp"
+#include "MTL/Vectors/Base.hpp"
+#include "MTL/Vectors/Ext/Algorithms.hpp"
 
 namespace Krys::MTL
 {

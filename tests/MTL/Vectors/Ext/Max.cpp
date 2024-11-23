@@ -1,4 +1,4 @@
-#include "MTL/Vectors/Ext/Common/Max.hpp"
+#include "MTL/Vectors/Ext/Max.hpp"
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Vectors/Vec1.hpp"

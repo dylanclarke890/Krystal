@@ -1,4 +1,4 @@
-#include "MTL/Vectors/Ext/Common/Comparison.hpp"
+#include "MTL/Vectors/Ext/Comparison.hpp"
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Vectors/Vec1.hpp"
 #include "MTL/Vectors/Vec2.hpp"

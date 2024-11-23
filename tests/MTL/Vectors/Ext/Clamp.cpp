@@ -1,4 +1,4 @@
-#include "MTL/Vectors/Ext/Common/Clamp.hpp"
+#include "MTL/Vectors/Ext/Clamp.hpp"
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Vectors/Vec1.hpp"

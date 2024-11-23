@@ -3,7 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "MTL/Matrices/Base.hpp"
-#include "MTL/Matrices/Ext/Common/Algorithms.hpp"
+#include "MTL/Matrices/Ext/Algorithms.hpp"
 
 namespace Krys::MTL
 {

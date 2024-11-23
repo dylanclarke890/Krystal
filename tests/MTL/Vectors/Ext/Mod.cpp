@@ -1,4 +1,4 @@
-#include "MTL/Vectors/Ext/Common/Mod.hpp"
+#include "MTL/Vectors/Ext/Mod.hpp"
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Vectors/Vec1.hpp"
