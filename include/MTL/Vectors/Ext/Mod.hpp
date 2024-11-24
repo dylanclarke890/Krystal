@@ -14,8 +14,7 @@ namespace Krys::MTL
   /// @param v The input vector.
   /// @returns A vector where each component is the modulus of the corresponding input component.
   template <IsArithmeticT TComponent, vec_length_t L>
-  NO_DISCARD constexpr vector_t<TComponent, L> Mod(const vector_t<TComponent, L> &a,
-                                                   const vector_t<TComponent, L> &b) noexcept
+  NO_DISCARD constexpr auto Mod(const vector_t<TComponent, L> &a, const vector_t<TComponent, L> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return MTL::Mod(x, y); });
   }

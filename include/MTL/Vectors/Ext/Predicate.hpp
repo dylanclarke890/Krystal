@@ -10,7 +10,7 @@ namespace Krys::MTL
   /// @tparam TComponent The underlying arithmetic type of the input vector.
   /// @tparam L The length of the input vector.
   /// @param v The vector to check.
-  /// @returns True if any of the components satified the predicate, false otherwise.
+  /// @returns True if any of the components satisfied the predicate, false otherwise.
   template <IsArithmeticT TComponent, vec_length_t L, IsPredicateCallableT<TComponent> TFunc>
   constexpr bool AnyOf(const vector_t<TComponent, L> &v, TFunc predicate) noexcept
   {
@@ -30,7 +30,7 @@ namespace Krys::MTL
   /// @tparam TComponent The underlying arithmetic type of the input vector.
   /// @tparam L The length of the input vector.
   /// @param v The vector to check.
-  /// @returns True if all of the components satified the predicate, false otherwise.
+  /// @returns True if all of the components satisfied the predicate, false otherwise.
   template <IsArithmeticT TComponent, vec_length_t L, IsPredicateCallableT<TComponent> TFunc>
   constexpr bool AllOf(const vector_t<TComponent, L> &v, TFunc predicate) noexcept
   {
@@ -50,7 +50,7 @@ namespace Krys::MTL
   /// @tparam TComponent The underlying arithmetic type of the input vector.
   /// @tparam L The length of the input vector.
   /// @param v The vector to check.
-  /// @returns True if none of the components satified the predicate, false otherwise.
+  /// @returns True if none of the components satisfied the predicate, false otherwise.
   template <IsArithmeticT TComponent, vec_length_t L, IsPredicateCallableT<TComponent> TFunc>
   constexpr bool NoneOf(const vector_t<TComponent, L> &v, TFunc predicate) noexcept
   {
