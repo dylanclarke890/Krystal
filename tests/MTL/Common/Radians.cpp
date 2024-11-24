@@ -11,5 +11,8 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Radians: 90 degrees", Radians(90.0), 1.5707963267948966, 1e-6);
     KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Radians: 180 degrees", Radians(180.0), 3.141592653589793, 1e-6);
     KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Radians: 360 degrees", Radians(360.0), 6.283185307179586, 1e-6);
+    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Radians: literal operator _deg", 360.0_rad, 6.283185307179586, 1e-6);
+    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Radians: literal operator _degrees", 360.0_radians, 6.283185307179586,
+                                     1e-6);
   }
 }
