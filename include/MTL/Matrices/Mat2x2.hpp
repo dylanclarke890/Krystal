@@ -149,7 +149,7 @@ namespace Krys
 
       NO_DISCARD constexpr mat_t &operator+=(component_t scalar) noexcept
       {
-        *this = *this _ scalar;
+        *this = *this + scalar;
         return *this;
       }
 

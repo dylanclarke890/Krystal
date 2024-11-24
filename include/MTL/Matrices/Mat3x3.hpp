@@ -152,17 +152,13 @@ namespace Krys
 
       NO_DISCARD constexpr mat_t &operator+=(const mat_t &other) noexcept
       {
-        _values[0] += other._values[0];
-        _values[1] += other._values[1];
-        _values[2] += other._values[2];
+        *this = *this + other;
         return *this;
       }
 
       NO_DISCARD constexpr mat_t &operator+=(component_t scalar) noexcept
       {
-        _values[0] += scalar;
-        _values[1] += scalar;
-        _values[2] += scalar;
+        *this = *this + scalar;
         return *this;
       }
 
@@ -183,17 +179,13 @@ namespace Krys
 
       NO_DISCARD constexpr mat_t &operator-=(const mat_t &other) noexcept
       {
-        _values[0] -= other._values[0];
-        _values[1] -= other._values[1];
-        _values[2] -= other._values[2];
+        *this = *this - other;
         return *this;
       }
 
       NO_DISCARD constexpr mat_t &operator-=(component_t scalar) noexcept
       {
-        _values[0] -= scalar;
-        _values[1] -= scalar;
-        _values[2] -= scalar;
+        *this = *this - scalar;
         return *this;
       }
 
@@ -267,10 +259,7 @@ namespace Krys
 
       constexpr mat_t &operator/=(component_t scalar) noexcept
       {
-        KRYS_ASSERT(scalar != 0, "Division by zero", 0);
-        _values[0] /= scalar;
-        _values[1] /= scalar;
-        _values[2] /= scalar;
+        *this = *this / scalar;
         return *this;
       }
 
