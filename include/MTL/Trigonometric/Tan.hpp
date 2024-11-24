@@ -21,9 +21,10 @@ namespace Krys::MTL
       TNumber cos_x = Cos(x);
       if (cos_x == TNumber(0))
         return std::numeric_limits<TNumber>::infinity();
-      return Sin(x) / cos_x;
+      else
+        return Sin(x) / cos_x;
     }
-
-    return std::tan(x);
+    else
+      return std::tan(x);
   }
 }

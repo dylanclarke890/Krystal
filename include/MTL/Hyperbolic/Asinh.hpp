@@ -18,7 +18,7 @@ namespace Krys::MTL
   {
     KRYS_IF_COMPILE_CONTEXT
       return MTL::Log(x + MTL::Sqrt(x * x + TNumber(1)));
-
-    return std::asinh(x);
+    else
+      return std::asinh(x);
   }
 }

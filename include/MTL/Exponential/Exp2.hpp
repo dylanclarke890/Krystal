@@ -18,7 +18,7 @@ namespace Krys::MTL
   {
     KRYS_IF_COMPILE_CONTEXT
       return MTL::Exp(x * MTL::LnTwo<TNumber>());
-
-    return std::exp2(x);
+    else
+      return std::exp2(x);
   }
 }

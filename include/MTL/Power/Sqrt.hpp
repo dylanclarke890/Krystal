@@ -2,6 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
+#include "MTL/Common/Abs.hpp"
 
 #include <cmath>
 
@@ -28,13 +29,12 @@ namespace Krys::MTL
       {
         TFloat next_guess = (guess + x / guess) / 2;
         TFloat diff = next_guess - guess;
-        diff = diff < 0 ? -diff : diff;
-        if (diff < epsilon)
+        if (MTL::Abs(diff) < epsilon)
           return next_guess;
         guess = next_guess;
       }
     }
-
-    return std::sqrt(x);
+    else
+      return std::sqrt(x);
   }
 }

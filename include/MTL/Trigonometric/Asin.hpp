@@ -11,19 +11,19 @@
 
 namespace Krys::Impl
 {
-  // Helper function for computing the arcsine using Taylor series expansion
+  /// @brief Helper function for computing the arcsine using Taylor series expansion.
   template <IsArithmeticT TNumber>
-  constexpr TNumber _compute_asin(TNumber x, size_t n, TNumber current_power, TNumber current_factorial,
-                                  size_t max_terms) noexcept
+  constexpr TNumber ComputeAsin(TNumber x, size_t n, TNumber power, TNumber factorial) noexcept
   {
+    constexpr size_t max_terms = 10; // Adjust for desired accuracy
     if (n >= max_terms)
       return TNumber(0);
 
-    TNumber numerator = MTL::Factorial(2 * n) * current_power;
-    TNumber denominator =
-      MTL::Pow(TNumber(4), static_cast<int>(n)) * MTL::Pow(MTL::Factorial(n), static_cast<size_t>(2)) * (2 * n + 1);
-    TNumber current_term = numerator / denominator;
-    return current_term + _compute_asin(x, n + 1, current_power * x * x, current_factorial, max_terms);
+    TNumber numerator = MTL::Factorial(2 * n) * power;
+    TNumber denominator = MTL::Pow(TNumber(4), static_cast<int>(n))
+                          * MTL::Pow(MTL::Factorial(n), static_cast<size_t>(2)) * (2 * n + 1);
+    TNumber currentTerm = numerator / denominator;
+    return currentTerm + ComputeAsin(x, n + 1, power * x * x, factorial);
   }
 }
 
@@ -40,16 +40,14 @@ namespace Krys::MTL
     {
       if (x < TNumber(-1) || x > TNumber(1))
         return std::numeric_limits<TNumber>::quiet_NaN(); // Undefined for |x| > 1
-
-      if (x == TNumber(1))
+      else if (x == TNumber(1))
         return MTL::Pi<TNumber>() / TNumber(2);
-      if (x == TNumber(-1))
+      else if (x == TNumber(-1))
         return -MTL::Pi<TNumber>() / TNumber(2);
-
-      constexpr size_t max_terms = 10; // Adjust for desired accuracy
-      return Impl::_compute_asin(x, 0, x, TNumber(1), max_terms);
+      else
+        return Impl::ComputeAsin(x, 0, x, TNumber(1));
     }
-
-    return std::asin(x);
+    else
+      return std::asin(x);
   }
 }

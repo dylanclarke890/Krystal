@@ -20,11 +20,12 @@ namespace Krys::MTL
     {
       if (x <= TNumber(0))
         return -std::numeric_limits<TNumber>::infinity(); // Log2 undefined for x <= 0
-      if (x == TNumber(1))
+      else if (x == TNumber(1))
         return TNumber(0); // log2(1) = 0
-      return MTL::Log(x) / MTL::LnTwo<TNumber>();
+      else
+        return MTL::Log(x) / MTL::LnTwo<TNumber>();
     }
-
-    return std::log2(x);
+    else
+      return std::log2(x);
   }
 }

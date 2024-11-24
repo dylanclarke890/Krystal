@@ -2,22 +2,28 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "Base/Types.hpp"
+#include "MTL/Common/Abs.hpp"
 #include "MTL/Common/Constants.hpp"
 
 #include <cmath>
 
 namespace Krys::Impl
 {
-  // Helper function for computing the arctangent using Taylor series expansion
+  /// @brief Helper function for computing the arctangent using Taylor series expansion.
   template <IsArithmeticT TNumber>
-  constexpr TNumber _compute_atan(TNumber x, size_t n, TNumber current_power, size_t max_terms) noexcept
+  constexpr TNumber ComputeAtan(TNumber x, int n, TNumber power) noexcept
   {
-    if (n >= max_terms)
+    constexpr int MAX_TERMS = 100;
+    if (n >= MAX_TERMS)
       return TNumber(0);
+
     int sign = (n % 2 == 0) ? 1 : -1;
-    TNumber current_term = sign * current_power / TNumber(2 * n + 1);
-    return current_term + _compute_atan(x, n + 1, current_power * x * x, max_terms);
+
+    TNumber currentTerm = sign * power / TNumber(2 * n + 1);
+    if (MTL::Abs(currentTerm) < std::numeric_limits<TNumber>::epsilon())
+      return TNumber(0);
+    else
+      return currentTerm + ComputeAtan(x, n + 1, power * x * x);
   }
 }
 
@@ -32,22 +38,19 @@ namespace Krys::MTL
   {
     KRYS_IF_COMPILE_CONTEXT
     {
-      constexpr size_t max_terms = 15; // Adjust for desired accuracy
       constexpr TNumber PI = MTL::Pi<TNumber>();
-
       if (x == TNumber(1))
-        return Pi<TNumber>() / TNumber(4);
-      if (x == TNumber(-1))
-        return -Pi<TNumber>() / TNumber(4);
-
-      if (x < TNumber(-1))
-        return -PI / TNumber(2) - Impl::_compute_atan(TNumber(1) / x, 0, TNumber(1) / x, max_terms);
+        return PI / TNumber(4);
+      else if (x == TNumber(-1))
+        return -PI / TNumber(4);
+      else if (x < TNumber(-1))
+        return -PI / TNumber(2) - Impl::ComputeAtan(TNumber(1) / x, 0, TNumber(1) / x);
       else if (x > TNumber(1))
-        return PI / TNumber(2) - Impl::_compute_atan(TNumber(1) / x, 0, TNumber(1) / x, max_terms);
+        return PI / TNumber(2) - Impl::ComputeAtan(TNumber(1) / x, 0, TNumber(1) / x);
       else
-        return Impl::_compute_atan(x, 0, x, max_terms);
+        return Impl::ComputeAtan(x, 0, x);
     }
-
-    return std::atan(x);
+    else
+      return std::atan(x);
   }
 }

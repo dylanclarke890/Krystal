@@ -34,7 +34,7 @@ namespace Krys::MTL
       else
         return TNumber(0); // Undefined, return 0 or handle error
     }
-
-    return std::atan2(y, x);
+    else
+      return std::atan2(y, x);
   }
 }

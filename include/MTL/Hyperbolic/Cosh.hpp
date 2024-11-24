@@ -2,23 +2,25 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "Base/Types.hpp"
+#include "MTL/Common/Abs.hpp"
 
 #include <cmath>
 
 namespace Krys::Impl
 {
-  // Helper function for computing cosh using Taylor series expansion.
+  /// @brief Helper function for computing cosh using Taylor series expansion.
   template <IsArithmeticT TNumber>
-  constexpr TNumber _compute_cosh(TNumber x, size_t n, TNumber current_power, TNumber current_factorial,
-                                  size_t max_terms) noexcept
+  constexpr TNumber ComputeCosh(TNumber x, int n, TNumber power, TNumber factorial) noexcept
   {
-    if (n >= max_terms)
+    constexpr int MAX_TERMS = 100;
+    if (n >= MAX_TERMS)
       return TNumber(0);
-    TNumber current_term = current_power / current_factorial;
-    return current_term
-           + _compute_cosh(x, n + 1, current_power * x * x, current_factorial * (2 * n + 1) * (2 * n + 2),
-                           max_terms);
+
+    TNumber currentTerm = power / factorial;
+    if (MTL::Abs(currentTerm) < std::numeric_limits<TNumber>::epsilon())
+      return TNumber(0);
+    else
+      return currentTerm + ComputeCosh(x, n + 1, power * x * x, factorial * (2 * n + 1) * (2 * n + 2));
   }
 }
 
@@ -32,11 +34,8 @@ namespace Krys::MTL
   constexpr TNumber Cosh(TNumber x) noexcept
   {
     KRYS_IF_COMPILE_CONTEXT
-    {
-      constexpr size_t max_terms = 11; // Adjust for desired accuracy
-      return Impl::_compute_cosh(x, 0, TNumber(1), TNumber(1), max_terms);
-    }
-
-    return std::cosh(x);
+      return Impl::ComputeCosh(x, 0, TNumber(1), TNumber(1));
+    else
+      return std::cosh(x);
   }
 }

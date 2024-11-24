@@ -17,7 +17,7 @@ namespace Krys::MTL
   {
     if (x <= TNumber(0))
       return -1; // Indicate an error for non-positive inputs
-
-    return TNumber(1) / Sqrt(x);
+    else
+      return TNumber(1) / Sqrt(x);
   }
 }

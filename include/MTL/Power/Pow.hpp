@@ -34,8 +34,8 @@ namespace Krys::MTL
       }
       return result;
     }
-
-    return static_cast<TBase>(std::pow(base, exp));
+    else
+      return static_cast<TBase>(std::pow(base, exp));
   }
 
   /// @brief Computes `x^n` for floating-point exponents.

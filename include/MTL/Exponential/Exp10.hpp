@@ -4,7 +4,6 @@
 #include "Base/Concepts.hpp"
 #include "MTL/Power/Pow.hpp"
 
-
 namespace Krys::MTL
 {
   /// @brief Computes 10 raised to the power of `x` (`10^x`).

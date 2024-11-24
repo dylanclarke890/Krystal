@@ -18,12 +18,13 @@ namespace Krys::MTL
   {
     KRYS_IF_COMPILE_CONTEXT
     {
-      TNumber cosh_x = MTL::Cosh(x);
-      if (cosh_x == TNumber(0))
+      TNumber coshX = MTL::Cosh(x);
+      if (coshX == TNumber(0))
         return std::numeric_limits<TNumber>::infinity();
-      return MTL::Sinh(x) / cosh_x;
+      else
+        return MTL::Sinh(x) / coshX;
     }
-
-    return std::tanh(x);
+    else
+      return std::tanh(x);
   }
 }

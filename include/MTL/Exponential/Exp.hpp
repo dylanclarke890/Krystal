@@ -2,23 +2,27 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "Base/Types.hpp"
+#include "MTL/Common/Abs.hpp"
 
 #include <cmath>
 
 namespace Krys::Impl
 {
-  // Recursive helper to compute the Taylor series
+  /// @brief Recursive helper to compute the Taylor series.
   template <IsArithmeticT TNumber>
-  constexpr TNumber _compute_exp(TNumber x, size_t term, TNumber current_power, TNumber current_factorial,
-                                 size_t max_terms) noexcept
+  constexpr TNumber ComputeExp(TNumber x, int term, TNumber power, TNumber factorial) noexcept
   {
-    if (term >= max_terms)
+    constexpr int MAX_TERMS = 100;
+    if (term >= MAX_TERMS)
       return TNumber(0);
+    term++;
 
-    TNumber current_term = current_power / current_factorial;
-    return current_term
-           + Impl::_compute_exp(x, term + 1, current_power * x, current_factorial * (term + 1), max_terms);
+    // Taylor series expansion for e^x: T(1) + x + x^2/2! + ...
+    TNumber currentTerm = power / factorial;
+    if (MTL::Abs(currentTerm) < std::numeric_limits<TNumber>::epsilon())
+      return TNumber(0);
+    else
+      return currentTerm + Impl::ComputeExp(x, term, power * x, factorial * term);
   }
 }
 
@@ -33,15 +37,13 @@ namespace Krys::MTL
   {
     KRYS_IF_COMPILE_CONTEXT
     {
-      // Use the property e^x = 1 / e^-x for negative inputs
+      // Use the reciprocal e^x = 1 / e^-x for negative inputs
       if (x < TNumber(0))
         return TNumber(1) / MTL::Exp(-x);
-
-      // Taylor series expansion for e^x: T(1) + x + x^2/2! + ...
-      constexpr size_t max_terms = 30;
-      return TNumber(1) + Impl::_compute_exp(x, 1, x, TNumber(1), max_terms);
+      else
+        return TNumber(1) + Impl::ComputeExp(x, 1, x, TNumber(1));
     }
-
-    return std::exp(x);
+    else
+      return std::exp(x);
   }
 }

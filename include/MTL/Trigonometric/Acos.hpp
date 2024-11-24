@@ -20,10 +20,10 @@ namespace Krys::MTL
     {
       if (x < TNumber(-1) || x > TNumber(1))
         return std::numeric_limits<TNumber>::quiet_NaN(); // Undefined for |x| > 1
-
-      return MTL::Pi<TNumber>() / 2 - MTL::Asin(x);
+      else
+        return MTL::Pi<TNumber>() / 2 - MTL::Asin(x);
     }
-
-    return std::acos(x);
+    else
+      return std::acos(x);
   }
 }
