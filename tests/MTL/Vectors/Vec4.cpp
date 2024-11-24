@@ -20,7 +20,7 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Constructor with scalar w", scalarVec.w, 5.0f);
 
     // Constructor with components
-    constexpr vec4_t<float> componentVec(3.0f, 4.0f, 5.0f, 6.0f);
+    constexpr vec4_t<float> componentVec = {3.0f, 4.0f, 5.0f, 6.0f};
     KRYS_EXPECT_EQUAL("Constructor with components x", componentVec.x, 3.0f);
     KRYS_EXPECT_EQUAL("Constructor with components y", componentVec.y, 4.0f);
     KRYS_EXPECT_EQUAL("Constructor with components z", componentVec.z, 5.0f);

@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <string>
 #include <string_view>
+#include <initializer_list>
 #include <type_traits>
 #include <unordered_map>
 #include <vector>
@@ -45,6 +46,7 @@ namespace Krys
   typedef std::string_view stringview;
 
   using std::declval;
+  using std::initializer_list;
 
   template <typename T>
   using Nullable = std::optional<T>;

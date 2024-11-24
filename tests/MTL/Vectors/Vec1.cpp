@@ -10,7 +10,7 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Default constructor", defaultVec.x, 0.0f);
 
     // Constructor with scalar
-    constexpr vec1_t<float> scalarVec(5.0f);
+    constexpr vec1_t<float> scalarVec = {5.0f};
     KRYS_EXPECT_EQUAL("Constructor with scalar", scalarVec.x, 5.0f);
 
     // Copy constructor

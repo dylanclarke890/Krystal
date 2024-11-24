@@ -14,7 +14,7 @@ namespace Krys::Tests
     constexpr mat2x2_t<float> scalar(2.0f);
     KRYS_EXPECT_EQUAL("Scalar Matrix Construction", scalar, (mat2x2_t<float>(2.0f, 0.0f, 0.0f, 2.0f)));
 
-    constexpr mat2x2_t<float> components(1.0f, 2.0f, 3.0f, 4.0f);
+    constexpr mat2x2_t<float> components({1.0f, 2.0f}, {3.0f, 4.0f});
     KRYS_EXPECT_EQUAL("Component-wise Matrix Construction", components,
                       (mat2x2_t<float>(1.0f, 2.0f, 3.0f, 4.0f)));
 

@@ -45,6 +45,16 @@ namespace Krys
       {
       }
 
+      constexpr Vector(initializer_list<component_t> il) noexcept
+      {
+        auto it = il.begin();
+        x = (it != il.end()) ? *it++ : TComponent(0);
+        y = (it != il.end()) ? *it++ : TComponent(0);
+        z = (it != il.end()) ? *it++ : TComponent(0);
+        w = (it != il.end()) ? *it++ : TComponent(0);
+        KRYS_ASSERT(it == il.end(), "Too many initializer list values", 0);
+      }
+
       constexpr Vector(const vec_t &other) noexcept : x(other.x), y(other.y), z(other.z), w(other.w)
       {
       }
