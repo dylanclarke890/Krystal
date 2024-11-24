@@ -4,7 +4,7 @@
 /// @param msg A message describing the assertion.
 /// @param a The first value to compare.
 /// @param b The second value to compare.
-#define KRYS_EXPECT_EQUAL(msg, a, b) static_assert((a) == (b), msg ": NEQUAL")
+#define KRYS_EXPECT_EQUAL(msg, a, b) static_assert(((a) == (b)), msg ": NEQUAL")
 
 /// @brief Macro to assert inequality between two values at compile time.
 /// @param msg A message describing the assertion.
