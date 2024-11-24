@@ -105,11 +105,12 @@ namespace Krys
       {
         if constexpr (Index == 0)
           return x;
-        if constexpr (Index == 1)
+        else if constexpr (Index == 1)
           return y;
-        if constexpr (Index == 2)
+        else if constexpr (Index == 2)
           return z;
-        return w;
+        else
+          return w;
       }
 
       NO_DISCARD constexpr component_t operator[](vec_length_t index) const noexcept
@@ -141,19 +142,13 @@ namespace Krys
 
       NO_DISCARD constexpr vec_t &operator+=(const vec_t &other) noexcept
       {
-        x += other.x;
-        y += other.y;
-        z += other.z;
-        w += other.w;
+        *this = *this + other;
         return *this;
       }
 
       NO_DISCARD constexpr vec_t &operator+=(component_t scalar) noexcept
       {
-        x += scalar;
-        y += scalar;
-        z += scalar;
-        w += scalar;
+        *this = *this + scalar;
         return *this;
       }
 
@@ -173,19 +168,13 @@ namespace Krys
 
       NO_DISCARD constexpr vec_t &operator-=(const vec_t &other) noexcept
       {
-        x -= other.x;
-        y -= other.y;
-        z -= other.z;
-        w -= other.w;
+        *this = *this - other;
         return *this;
       }
 
       NO_DISCARD constexpr vec_t &operator-=(component_t scalar) noexcept
       {
-        x -= scalar;
-        y -= scalar;
-        z -= scalar;
-        w -= scalar;
+        *this = *this - scalar;
         return *this;
       }
 
@@ -196,36 +185,24 @@ namespace Krys
       NO_DISCARD constexpr vec_t operator/(const vec_t &other) const noexcept
       {
         KRYS_ASSERT(other.x != 0 && other.y != 0 && other.z != 0 && other.w != 0, "Division by zero", 0);
-
         return vec_t(x / other.x, y / other.y, z / other.z, w / other.w);
       }
 
       NO_DISCARD constexpr vec_t operator/(component_t scalar) const noexcept
       {
         KRYS_ASSERT(scalar != 0, "Division by zero", 0);
-
         return vec_t(x / scalar, y / scalar, z / scalar, w / scalar);
       }
 
       NO_DISCARD constexpr vec_t &operator/=(const vec_t &other) noexcept
       {
-        KRYS_ASSERT(other.x != 0 && other.y != 0 && other.z != 0 && other.w != 0, "Division by zero", 0);
-
-        x /= other.x;
-        y /= other.y;
-        z /= other.z;
-        w /= other.w;
+        *this = *this / other;
         return *this;
       }
 
       NO_DISCARD constexpr vec_t &operator/=(component_t scalar) noexcept
       {
-        KRYS_ASSERT(scalar != 0, "Division by zero", 0);
-
-        x /= scalar;
-        y /= scalar;
-        z /= scalar;
-        w /= scalar;
+        *this = *this / scalar;
         return *this;
       }
 
@@ -245,19 +222,13 @@ namespace Krys
 
       NO_DISCARD constexpr vec_t &operator*=(const vec_t &other) noexcept
       {
-        x *= other.x;
-        y *= other.y;
-        z *= other.z;
-        w *= other.w;
+        *this = *this * other;
         return *this;
       }
 
       NO_DISCARD constexpr vec_t &operator*=(component_t scalar) noexcept
       {
-        x *= scalar;
-        y *= scalar;
-        z *= scalar;
-        w *= scalar;
+        *this = *this * scalar;
         return *this;
       }
 
