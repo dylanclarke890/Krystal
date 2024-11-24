@@ -54,15 +54,7 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
   NO_DISCARD constexpr auto Min(const matrix_t<TComponent, CL, RL> &a, TComponent b) noexcept
   {
-    using mat_col_t = matrix_t<TComponent, CL, RL>::column_t;
-    if constexpr (CL == 2 && RL == 2)
-      return Min(a, matrix_t<TComponent, CL, RL>(mat_col_t(b), mat_col_t(b)));
-    else if constexpr (CL == 3 && RL == 3)
-      return Min(a, matrix_t<TComponent, CL, RL>(mat_col_t(b), mat_col_t(b), mat_col_t(b)));
-    else if constexpr (CL == 4 && RL == 4)
-      return Min(a, matrix_t<TComponent, CL, RL>(mat_col_t(b), mat_col_t(b), mat_col_t(b), mat_col_t(b)));
-    else
-      static_assert(false, "Unsupported number of cols/rows.");
+    return MTL::MapEach(a, [&b](TComponent v) { return Min(v, b); });
   }
 
 #pragma endregion Min
@@ -112,8 +104,7 @@ namespace Krys::MTL
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
   NO_DISCARD constexpr auto FMin(const matrix_t<TComponent, CL, RL> &a, TComponent b) noexcept
   {
-    return MTL::Zip(a, matrix_t<TComponent, CL, RL>(b),
-                    [](TComponent x, TComponent y) -> TComponent { return MTL::FMin(x, y); });
+    return MTL::MapEach(a, [&b](TComponent v) { return FMin(v, b); });
   }
 
 #pragma endregion FMin
@@ -161,15 +152,7 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
   NO_DISCARD constexpr auto Max(const matrix_t<TComponent, CL, RL> &a, TComponent b) noexcept
   {
-    using mat_col_t = matrix_t<TComponent, CL, RL>::column_t;
-    if constexpr (CL == 2 && RL == 2)
-      return Max(a, matrix_t<TComponent, CL, RL>(mat_col_t(b), mat_col_t(b)));
-    else if constexpr (CL == 3 && RL == 3)
-      return Max(a, matrix_t<TComponent, CL, RL>(mat_col_t(b), mat_col_t(b), mat_col_t(b)));
-    else if constexpr (CL == 4 && RL == 4)
-      return Max(a, matrix_t<TComponent, CL, RL>(mat_col_t(b), mat_col_t(b), mat_col_t(b), mat_col_t(b)));
-    else
-      static_assert(false, "Unsupported number of cols/rows.");
+    return MTL::MapEach(a, [&b](TComponent v) { return Max(v, b); });
   }
 
 #pragma endregion Max
@@ -218,8 +201,7 @@ namespace Krys::MTL
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
   NO_DISCARD constexpr auto FMax(const matrix_t<TComponent, CL, RL> &a, TComponent b) noexcept
   {
-    return MTL::Zip(a, matrix_t<TComponent, CL, RL>(b),
-                    [](TComponent x, TComponent y) -> TComponent { return MTL::FMax(x, y); });
+    return MTL::MapEach(a, [&b](TComponent v) { return FMax(v, b); });
   }
 
 #pragma endregion FMax
