@@ -143,15 +143,13 @@ namespace Krys
 
       NO_DISCARD constexpr mat_t &operator+=(const mat_t &other) noexcept
       {
-        _values[0] += other._values[0];
-        _values[1] += other._values[1];
+        *this = *this + other;
         return *this;
       }
 
       NO_DISCARD constexpr mat_t &operator+=(component_t scalar) noexcept
       {
-        _values[0] += scalar;
-        _values[1] += scalar;
+        *this = *this _ scalar;
         return *this;
       }
 
@@ -171,15 +169,13 @@ namespace Krys
 
       NO_DISCARD constexpr mat_t &operator-=(const mat_t &other) noexcept
       {
-        _values[0] -= other._values[0];
-        _values[1] -= other._values[1];
+        *this = *this - other;
         return *this;
       }
 
       NO_DISCARD constexpr mat_t &operator-=(component_t scalar) noexcept
       {
-        _values[0] -= scalar;
-        _values[1] -= scalar;
+        *this = *this - scalar;
         return *this;
       }
 
@@ -194,12 +190,13 @@ namespace Krys
         const column_t &b0 = other._values[0];
         const column_t &b1 = other._values[1];
 
-        const column_t c0 = column_t(a0[0] * b0[0] + a0[1] * b1[0], // row 1, col 1
-                                     a1[0] * b0[0] + a1[1] * b1[0]  // row 2, col 1
+        // Each entry of the resulting matrix is computed correctly
+        const column_t c0 = column_t(a0[0] * b0[0] + a1[0] * b0[1], // row 1, col 1
+                                     a0[1] * b0[0] + a1[1] * b0[1]  // row 2, col 1
         );
 
-        const column_t c1 = column_t(a0[0] * b0[1] + a0[1] * b1[1], // row 1, col 2
-                                     a1[0] * b0[1] + a1[1] * b1[1]  // row 2, col 2
+        const column_t c1 = column_t(a0[0] * b1[0] + a1[0] * b1[1], // row 1, col 2
+                                     a0[1] * b1[0] + a1[1] * b1[1]  // row 2, col 2
         );
 
         return mat_t(c0, c1);
@@ -212,39 +209,25 @@ namespace Krys
 
       NO_DISCARD constexpr column_t operator*(const column_t &vector) const noexcept
       {
-        const column_t &a0 = _values[0];
-        const column_t &a1 = _values[1];
-        const column_t &v = vector;
+        // Matrix columns
+        const column_t &col0 = _values[0];
+        const column_t &col1 = _values[1];
 
-        const column_t col = column_t(a0[0] * v[0] + a0[1] * v[1], // Row 1
-                                      a1[0] * v[0] + a1[1] * v[1]  // Row 2
+        // Resulting vector is the dot product of rows (implicitly derived) and the input vector
+        return column_t(col0[0] * vector[0] + col1[0] * vector[1], // Row 1
+                        col0[1] * vector[0] + col1[1] * vector[1]  // Row 2
         );
-
-        return col;
       }
 
       NO_DISCARD constexpr mat_t &operator*=(const mat_t &other) noexcept
       {
-        const column_t &a0 = _values[0];
-        const column_t &a1 = _values[1];
-        const column_t &b0 = other._values[0];
-        const column_t &b1 = other._values[1];
-
-        _values[0] = column_t(a0[0] * b0[0] + a0[1] * b1[0], // row 1, col 1
-                              a1[0] * b0[0] + a1[1] * b1[0]  // row 2, col 1
-        );
-
-        _values[1] = column_t(a0[0] * b0[1] + a0[1] * b1[1], // row 1, col 2
-                              a1[0] * b0[1] + a1[1] * b1[1]  // row 2, col 2
-        );
-
+        *this = *this * other;
         return *this;
       }
 
       NO_DISCARD constexpr mat_t &operator*=(component_t scalar) noexcept
       {
-        _values[0] *= scalar;
-        _values[1] *= scalar;
+        *this = *this * scalar;
         return *this;
       }
 
@@ -260,9 +243,7 @@ namespace Krys
 
       constexpr mat_t &operator/=(component_t scalar) noexcept
       {
-        KRYS_ASSERT(scalar != 0, "Division by zero", 0);
-        _values[0] /= scalar;
-        _values[1] /= scalar;
+        *this = *this / scalar;
         return *this;
       }
 
