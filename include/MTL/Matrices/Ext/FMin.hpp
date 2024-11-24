@@ -17,8 +17,8 @@ namespace Krys::MTL
   /// @return A matrix where each component is the smaller of the corresponding components of `a` and `b`, or
   /// `b` if `a` is NaN.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMin(const matrix_t<TComponent, CL, RL> &a,
-                                                         const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto FMin(const matrix_t<TComponent, CL, RL> &a,
+                                 const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return MTL::FMin(x, y); });
   }
@@ -33,9 +33,8 @@ namespace Krys::MTL
   /// @return A matrix where each component is the smallest of the corresponding components of `a`, `b` and
   /// `c`, ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMin(const matrix_t<TComponent, CL, RL> &a,
-                                                         const matrix_t<TComponent, CL, RL> &b,
-                                                         const matrix_t<TComponent, CL, RL> &c) noexcept
+  NO_DISCARD constexpr auto FMin(const matrix_t<TComponent, CL, RL> &a, const matrix_t<TComponent, CL, RL> &b,
+                                 const matrix_t<TComponent, CL, RL> &c) noexcept
   {
     return MTL::Zip(a, b, c, [](TComponent x, TComponent y, TComponent z) -> TComponent
                     { return MTL::FMin(x, y, z); });
@@ -50,8 +49,7 @@ namespace Krys::MTL
   /// @return A matrix where each component is the smaller of the corresponding component of `a` and `b`,
   /// ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMin(const matrix_t<TComponent, CL, RL> &a,
-                                                         TComponent b) noexcept
+  NO_DISCARD constexpr auto FMin(const matrix_t<TComponent, CL, RL> &a, TComponent b) noexcept
   {
     return MTL::Zip(a, matrix_t<TComponent, L>(b),
                     [](TComponent x, TComponent y) -> TComponent { return MTL::FMin(x, y); });

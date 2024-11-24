@@ -15,7 +15,7 @@ namespace Krys::MTL
   /// @param m The input matrix.
   /// @returns A matrix where each component is the absolute value of the corresponding input component.
   template <IsSignedT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Abs(const matrix_t<TComponent, CL, RL> &m) noexcept
+  NO_DISCARD constexpr auto Abs(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
     return MTL::MapEach(m, [](TComponent x) -> TComponent { return MTL::Abs(x); });
   }

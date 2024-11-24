@@ -12,7 +12,7 @@ namespace Krys::MTL
   /// @tparam CL The column length of the input matrix.
   /// @tparam RL The row length of the input matrix.
   /// @param v The matrix to check.
-  /// @returns True if any of the components satified the predicate, false otherwise.
+  /// @returns True if any of the components satisfied the predicate, false otherwise.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL,
             IsPredicateCallableT<TComponent> TFunc>
   constexpr bool AnyOf(const matrix_t<TComponent, CL, RL> &v, TFunc predicate) noexcept
@@ -37,7 +37,7 @@ namespace Krys::MTL
   /// @tparam CL The column length of the input matrix.
   /// @tparam RL The row length of the input matrix.
   /// @param v The matrix to check.
-  /// @returns True if all of the components satified the predicate, false otherwise.
+  /// @returns True if all of the components satisfied the predicate, false otherwise.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL,
             IsPredicateCallableT<TComponent> TFunc>
   constexpr bool AllOf(const matrix_t<TComponent, CL, RL> &v, TFunc predicate) noexcept
@@ -62,7 +62,7 @@ namespace Krys::MTL
   /// @tparam CL The column length of the input matrix.
   /// @tparam RL The row length of the input matrix.
   /// @param v The matrix to check.
-  /// @returns True if none of the components satified the predicate, false otherwise.
+  /// @returns True if none of the components satisfied the predicate, false otherwise.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL,
             IsPredicateCallableT<TComponent> TFunc>
   constexpr bool NoneOf(const matrix_t<TComponent, CL, RL> &v, TFunc predicate) noexcept

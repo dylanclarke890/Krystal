@@ -227,22 +227,4 @@ namespace Krys::MTL
     else
       static_assert(false, "Unsupported number of rows/columns");
   }
-
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> &Fill(matrix_t<TComponent, CL, RL> &m,
-                                                          TComponent v) noexcept
-  {
-    using mat_col_t = matrix_t<TComponent, CL, RL>::column_t;
-    if constexpr (CL == 2 && RL == 2)
-      m = matrix_t<TComponent, CL, RL>(mat_col_t(v, v), mat_col_t(v, v));
-    else if constexpr (CL == 3 && RL == 3)
-      m = matrix_t<TComponent, CL, RL>(mat_col_t(v, v, v), mat_col_t(v, v, v), mat_col_t(v, v, v));
-    else if constexpr (CL == 4 && RL == 4)
-      m =  matrix_t<TComponent, CL, RL>(mat_col_t(v, v, v, v), mat_col_t(v, v, v, v),
-                                          mat_col_t(v, v, v, v), mat_col_t(v, v, v, v));
-    else
-      static_assert(false, "Unsupported number of cols/rows.");
-
-    return m;
-  }
 }

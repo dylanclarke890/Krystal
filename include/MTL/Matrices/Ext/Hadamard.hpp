@@ -15,8 +15,8 @@ namespace Krys::MTL
   /// @param b The second input matrix.
   /// @return The hadamard product of `a` and `b`.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Hadamard(const matrix_t<TComponent, CL, RL> &a,
-                                                             const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto Hadamard(const matrix_t<TComponent, CL, RL> &a,
+                                     const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return x * y; });
   }

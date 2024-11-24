@@ -15,7 +15,7 @@ namespace Krys::MTL
   /// @param v The input matrix.
   /// @returns The converted matrix.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Degrees(const matrix_t<TComponent, CL, RL>& m) noexcept
+  NO_DISCARD constexpr auto Degrees(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
     return MTL::MapEach(m, [](TComponent x) -> TComponent { return MTL::Degrees(x); });
   }

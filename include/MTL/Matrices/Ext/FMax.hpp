@@ -16,8 +16,8 @@ namespace Krys::MTL
   /// @param b The second input matrix.
   /// @return A matrix where each component is the larger of the corresponding components of `a` and `b`.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
-                                                         const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto FMax(const matrix_t<TComponent, CL, RL> &a,
+                                 const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return MTL::FMax(x, y); });
   }
@@ -32,9 +32,8 @@ namespace Krys::MTL
   /// @return A matrix where each component is the largest of the corresponding components of `a`, `b` and
   /// `c`, ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
-                                                         const matrix_t<TComponent, CL, RL> &b,
-                                                         const matrix_t<TComponent, CL, RL> &c) noexcept
+  NO_DISCARD constexpr auto FMax(const matrix_t<TComponent, CL, RL> &a, const matrix_t<TComponent, CL, RL> &b,
+                                 const matrix_t<TComponent, CL, RL> &c) noexcept
   {
     return MTL::Zip(a, b, c, [](TComponent x, TComponent y, TComponent z) -> TComponent
                     { return MTL::FMax(x, y, z); });
@@ -49,8 +48,7 @@ namespace Krys::MTL
   /// @return A matrix where each component is the larger of the corresponding component of `a` and `b`,
   /// ignoring NaN.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
-                                                         TComponent b) noexcept
+  NO_DISCARD constexpr auto FMax(const matrix_t<TComponent, CL, RL> &a, TComponent b) noexcept
   {
     return MTL::Zip(a, matrix_t<TComponent, CL, RL>(b),
                     [](TComponent x, TComponent y) -> TComponent { return MTL::FMax(x, y); });

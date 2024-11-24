@@ -16,8 +16,8 @@ namespace Krys::MTL
   /// @param b The second input matrix.
   /// @return A matrix where each component is the smaller of the corresponding components of `a` and `b`.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Min(const matrix_t<TComponent, CL, RL> &a,
-                                                        const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto Min(const matrix_t<TComponent, CL, RL> &a,
+                                const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return MTL::Min(x, y); });
   }
@@ -32,9 +32,8 @@ namespace Krys::MTL
   /// @return A matrix where each component is the smallest of the corresponding components of `a`, `b` and
   /// `c`.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Min(const matrix_t<TComponent, CL, RL> &a,
-                                                        const matrix_t<TComponent, CL, RL> &b,
-                                                        const matrix_t<TComponent, CL, RL> &c) noexcept
+  NO_DISCARD constexpr auto Min(const matrix_t<TComponent, CL, RL> &a, const matrix_t<TComponent, CL, RL> &b,
+                                const matrix_t<TComponent, CL, RL> &c) noexcept
   {
     return MTL::Zip(a, b, c,
                     [](TComponent x, TComponent y, TComponent z) -> TComponent { return MTL::Min(x, y, z); });
@@ -48,8 +47,7 @@ namespace Krys::MTL
   /// @param b The minimum value each component is allowed to be.
   /// @return A matrix where each component is the smaller of the corresponding component of `a` and `b`.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Min(const matrix_t<TComponent, CL, RL> &a,
-                                                        TComponent b) noexcept
+  NO_DISCARD constexpr auto Min(const matrix_t<TComponent, CL, RL> &a, TComponent b) noexcept
   {
     using mat_col_t = matrix_t<TComponent, CL, RL>::column_t;
     if constexpr (CL == 2 && RL == 2)

@@ -15,8 +15,8 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<bool, CL, RL> LessThan(const matrix_t<TComponent, CL, RL> &a,
-                                                       const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto LessThan(const matrix_t<TComponent, CL, RL> &a,
+                                     const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a < b; });
   }
@@ -29,8 +29,8 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<bool, CL, RL> LessThanOrEqual(const matrix_t<TComponent, CL, RL> &a,
-                                                              const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto LessThanOrEqual(const matrix_t<TComponent, CL, RL> &a,
+                                            const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a <= b; });
   }
@@ -43,8 +43,8 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<bool, CL, RL> Equal(const matrix_t<TComponent, CL, RL> &a,
-                                                    const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto Equal(const matrix_t<TComponent, CL, RL> &a,
+                                  const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a == b; });
   }
@@ -57,8 +57,8 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<bool, CL, RL> NotEqual(const matrix_t<TComponent, CL, RL> &a,
-                                                       const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto NotEqual(const matrix_t<TComponent, CL, RL> &a,
+                                     const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a != b; });
   }
@@ -71,8 +71,8 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<bool, CL, RL> GreaterThan(const matrix_t<TComponent, CL, RL> &a,
-                                                          const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto GreaterThan(const matrix_t<TComponent, CL, RL> &a,
+                                        const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a > b; });
   }
@@ -85,8 +85,8 @@ namespace Krys::MTL
   /// @param b Right operand.
   /// @return A `CL`, `RL` size bool matrix where each component represents the result of the comparison.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<bool, CL, RL>
-    GreaterThanOrEqual(const matrix_t<TComponent, CL, RL> &a, const matrix_t<TComponent, CL, RL> &b) noexcept
+  NO_DISCARD constexpr auto GreaterThanOrEqual(const matrix_t<TComponent, CL, RL> &a,
+                                               const matrix_t<TComponent, CL, RL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a >= b; });
   }

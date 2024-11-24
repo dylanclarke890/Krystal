@@ -15,7 +15,7 @@ namespace Krys::MTL
   /// @param m The input matrix.
   /// @returns A matrix with each component truncated to the nearest integer not greater in magnitude.
   template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Trunc(const matrix_t<TComponent, CL, RL> &m) noexcept
+  NO_DISCARD constexpr auto Trunc(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
     return MTL::MapEach(m, [](TComponent x) -> TComponent { return MTL::Trunc(x); });
   }
