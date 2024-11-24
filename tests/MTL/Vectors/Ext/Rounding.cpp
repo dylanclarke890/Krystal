@@ -1,0 +1,88 @@
+#include "MTL/Vectors/Ext/Rounding.hpp"
+#include "Core/Debug/Expect.hpp"
+#include "MTL/Common/Constants.hpp"
+#include "MTL/Vectors/Vec1.hpp"
+#include "MTL/Vectors/Vec2.hpp"
+#include "MTL/Vectors/Vec3.hpp"
+#include "MTL/Vectors/Vec4.hpp"
+
+namespace Krys::Tests
+{
+  using namespace Krys::MTL;
+
+  static void Test_Ceil()
+  {
+    // Vec1
+    constexpr vec1_t<float> v1 {1.1f};
+    KRYS_EXPECT_EQUAL("Ceil Vec1", Ceil(v1), (vec1_t<float> {2.0f}));
+
+    // Vec2
+    constexpr vec2_t<float> v2 {1.1f, -2.3f};
+    KRYS_EXPECT_EQUAL("Ceil Vec2", Ceil(v2), (vec2_t<float> {2.0f, -2.0f}));
+
+    // Vec3
+    constexpr vec3_t<float> v3 {1.1f, -2.3f, 3.7f};
+    KRYS_EXPECT_EQUAL("Ceil Vec3", Ceil(v3), (vec3_t<float> {2.0f, -2.0f, 4.0f}));
+
+    // Vec4
+    constexpr vec4_t<float> v4 {1.1f, -2.3f, 3.7f, 4.5f};
+    KRYS_EXPECT_EQUAL("Ceil Vec4", Ceil(v4), (vec4_t<float> {2.0f, -2.0f, 4.0f, 5.0f}));
+  }
+
+  static void Test_Floor()
+  {
+    // Vec1
+    constexpr vec1_t<float> v1 {1.9f};
+    KRYS_EXPECT_EQUAL("Floor Vec1", Floor(v1), (vec1_t<float> {1.0f}));
+
+    // Vec2
+    constexpr vec2_t<float> v2 {1.9f, -2.1f};
+    KRYS_EXPECT_EQUAL("Floor Vec2", Floor(v2), (vec2_t<float> {1.0f, -3.0f}));
+
+    // Vec3
+    constexpr vec3_t<float> v3 {1.9f, -2.1f, 3.7f};
+    KRYS_EXPECT_EQUAL("Floor Vec3", Floor(v3), (vec3_t<float> {1.0f, -3.0f, 3.0f}));
+
+    // Vec4
+    constexpr vec4_t<float> v4 {1.9f, -2.1f, 3.7f, -4.8f};
+    KRYS_EXPECT_EQUAL("Floor Vec4", Floor(v4), (vec4_t<float> {1.0f, -3.0f, 3.0f, -5.0f}));
+  }
+
+  static void Test_Round()
+  {
+    // Vec1
+    constexpr vec1_t<float> v1 {5.7f};
+    KRYS_EXPECT_EQUAL("Round Vec1", Round(v1), (vec1_t<float> {6.0f}));
+
+    // Vec2
+    constexpr vec2_t<float> v2 {5.4f, -8.6f};
+    KRYS_EXPECT_EQUAL("Round Vec2", Round(v2), (vec2_t<float> {5.0f, -9.0f}));
+
+    // Vec3
+    constexpr vec3_t<float> v3 {5.5f, -8.3f, 14.49f};
+    KRYS_EXPECT_EQUAL("Round Vec3", Round(v3), (vec3_t<float> {6.0f, -8.0f, 14.0f}));
+
+    // Vec4
+    constexpr vec4_t<float> v4 {5.75f, -8.25f, 14.5f, -20.75f};
+    KRYS_EXPECT_EQUAL("Round Vec4", Round(v4), (vec4_t<float> {6.0f, -8.0f, 15.0f, -21.0f}));
+  }
+
+  static void Test_Trunc()
+  {
+    // Vec1
+    constexpr vec1_t<float> v1 {5.7f};
+    KRYS_EXPECT_EQUAL("Trunc Vec1", Trunc(v1), (vec1_t<float> {5.0f}));
+
+    // Vec2
+    constexpr vec2_t<float> v2 {5.7f, -8.3f};
+    KRYS_EXPECT_EQUAL("Trunc Vec2", Trunc(v2), (vec2_t<float> {5.0f, -8.0f}));
+
+    // Vec3
+    constexpr vec3_t<float> v3 {5.7f, -8.3f, 14.99f};
+    KRYS_EXPECT_EQUAL("Trunc Vec3", Trunc(v3), (vec3_t<float> {5.0f, -8.0f, 14.0f}));
+
+    // Vec4
+    constexpr vec4_t<float> v4 {5.7f, -8.3f, 14.99f, -20.75f};
+    KRYS_EXPECT_EQUAL("Trunc Vec4", Trunc(v4), (vec4_t<float> {5.0f, -8.0f, 14.0f, -20.0f}));
+  }
+}

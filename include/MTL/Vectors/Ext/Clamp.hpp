@@ -18,12 +18,11 @@ namespace Krys::MTL
   /// @return A vector where each component is clamped between the corresponding components of `min` and
   /// `max`.
   template <IsArithmeticT TComponent, vec_length_t L>
-  NO_DISCARD constexpr vector_t<TComponent, L> Clamp(const vector_t<TComponent, L> &value,
-                                                     const vector_t<TComponent, L> &min,
-                                                     const vector_t<TComponent, L> &max) noexcept
+  NO_DISCARD constexpr auto Clamp(const vector_t<TComponent, L> &value, const vector_t<TComponent, L> &min,
+                                  const vector_t<TComponent, L> &max) noexcept
   {
-    return MTL::Zip(value, min, max, [](TComponent v, TComponent mn, TComponent mx) -> TComponent
-                    { return MTL::Min(MTL::Max(v, mn), mx); });
+    return MTL::Zip(value, min, max, [](TComponent v, TComponent lo, TComponent hi) -> TComponent
+                    { return MTL::Clamp(v, lo, hi); });
   }
 
   /// @brief Clamps each component of the vector between the scalar values `min` and `max`.
@@ -34,9 +33,9 @@ namespace Krys::MTL
   /// @param max The maximum scalar value for clamping.
   /// @return A vector where each component is clamped between `min` and `max`.
   template <IsArithmeticT TComponent, vec_length_t L>
-  NO_DISCARD constexpr vector_t<TComponent, L> Clamp(const vector_t<TComponent, L> &value, TComponent min,
-                                                     TComponent max) noexcept
+  NO_DISCARD constexpr auto Clamp(const vector_t<TComponent, L> &value, TComponent min,
+                                  TComponent max) noexcept
   {
-    return MTL::Clamp(value, vector_t<TComponent, L>(min), vector_t<TComponent, L>(max));
+    return MTL::MapEach(value, [&min, &max](TComponent v) -> TComponent { return MTL::Clamp((v, min, max); });
   }
 }
