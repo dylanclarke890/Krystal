@@ -21,7 +21,7 @@ namespace Krys::MTL
 
       return static_cast<long long>(x) + ((x < TFloat(0)) ? 0LL : 1LL);
     }
-
-    return std::ceil(x);
+    else
+      return std::ceil(x);
   }
 }

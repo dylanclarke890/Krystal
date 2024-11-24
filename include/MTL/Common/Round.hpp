@@ -16,7 +16,7 @@ namespace Krys::MTL
   {
     KRYS_IF_COMPILE_CONTEXT
       return TFloat(static_cast<long long>(x + (x > TFloat(0) ? TFloat(0.5) : TFloat(-0.5))));
-
-    return std::round(x);
+    else
+      return std::round(x);
   }
 }

@@ -21,9 +21,9 @@ namespace Krys::MTL
 
       return (x < TNumber(0)) ? -x : x;
     }
-
-    if constexpr (IsUnsignedT<TNumber>)
+    else if constexpr (IsUnsignedT<TNumber>)
       return x;
-    return std::abs(x);
+    else
+      return std::abs(x);
   }
 }

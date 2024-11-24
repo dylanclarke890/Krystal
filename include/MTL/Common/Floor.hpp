@@ -18,10 +18,10 @@ namespace Krys::MTL
     {
       if (static_cast<long long>(x) == x)
         return x;
-
-      return static_cast<long long>(x) - ((x < TFloat(0)) ? 1LL : 0LL);
+      else
+        return static_cast<long long>(x) - ((x < TFloat(0)) ? 1LL : 0LL);
     }
-
-    return std::floor(x);
+    else
+      return std::floor(x);
   }
 }

@@ -16,7 +16,7 @@ namespace Krys::MTL
   {
     KRYS_IF_COMPILE_CONTEXT
       return TFloat(static_cast<long long>(x));
-
-    return std::trunc(x);
+    else
+      return std::trunc(x);
   }
 }

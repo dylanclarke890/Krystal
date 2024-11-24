@@ -17,7 +17,8 @@ namespace Krys::MTL
   {
     if (MTL::IsNaN(a))
       return b;
-    return MTL::Max(a, b);
+    else
+      return MTL::Max(a, b);
   }
 
   /// @brief Returns the largest of three floating-point values, ignoring NaN.
@@ -31,11 +32,12 @@ namespace Krys::MTL
   {
     if (MTL::IsNaN(a))
       return MTL::FMax(b, c);
-    if (MTL::IsNaN(b))
+    else if (MTL::IsNaN(b))
       return MTL::FMax(a, c);
-    if (MTL::IsNaN(c))
+    else if (MTL::IsNaN(c))
       return MTL::Max(a, b);
-    return MTL::Max(a, b, c);
+    else
+      return MTL::Max(a, b, c);
   }
 
   /// @brief Returns the largest of four floating-point values, ignoring NaN.
@@ -50,12 +52,13 @@ namespace Krys::MTL
   {
     if (MTL::IsNaN(a))
       return MTL::FMax(b, c, d);
-    if (MTL::IsNaN(b))
+    else if (MTL::IsNaN(b))
       return MTL::Max(a, MTL::FMax(c, d));
-    if (MTL::IsNaN(c))
+    else if (MTL::IsNaN(c))
       return MTL::FMax(MTL::Max(a, b), d);
-    if (MTL::IsNaN(d))
+    else if (MTL::IsNaN(d))
       return MTL::Max(a, b, c);
-    return MTL::Max(a, b, c, d);
+    else
+      return MTL::Max(a, b, c, d);
   }
 }

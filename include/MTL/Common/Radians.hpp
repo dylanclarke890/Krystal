@@ -6,12 +6,12 @@
 namespace Krys::MTL
 {
   /// @brief Converts `degrees` to radians.
-  /// @tparam TNumber An arithmetic type (floating point types are advised).
+  /// @tparam TFloat A floating point type.
   /// @param degrees The input value.
   /// @returns The converted value.
-  template <IsArithmeticT TNumber>
-  NO_DISCARD constexpr TNumber Radians(TNumber degrees) noexcept
+  template <IsArithmeticT TFloat>
+  NO_DISCARD constexpr TFloat Radians(TFloat degrees) noexcept
   {
-    return degrees * static_cast<TNumber>(0.01745329251994329576923690768489);
+    return degrees * static_cast<TFloat>(0.01745329251994329576923690768489);
   }
 }

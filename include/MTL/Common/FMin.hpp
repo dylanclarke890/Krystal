@@ -17,7 +17,8 @@ namespace Krys::MTL
   {
     if (MTL::IsNaN(a))
       return b;
-    return MTL::Min(a, b);
+    else
+      return MTL::Min(a, b);
   }
 
   /// @brief Returns the smallest of three floating-point values, ignoring NaN.
@@ -31,11 +32,12 @@ namespace Krys::MTL
   {
     if (MTL::IsNaN(a))
       return MTL::FMin(b, c);
-    if (MTL::IsNaN(b))
+    else if (MTL::IsNaN(b))
       return MTL::FMin(a, c);
-    if (MTL::IsNaN(c))
+    else if (MTL::IsNaN(c))
       return MTL::Min(a, b);
-    return MTL::Min(a, b, c);
+    else
+      return MTL::Min(a, b, c);
   }
 
   /// @brief Returns the smallest of four floating-point values, ignoring NaN.
@@ -50,12 +52,13 @@ namespace Krys::MTL
   {
     if (MTL::IsNaN(a))
       return MTL::FMin(b, c, d);
-    if (MTL::IsNaN(b))
+    else if (MTL::IsNaN(b))
       return MTL::Min(a, MTL::FMin(c, d));
-    if (MTL::IsNaN(c))
+    else if (MTL::IsNaN(c))
       return MTL::FMin(MTL::Min(a, b), d);
-    if (MTL::IsNaN(d))
+    else if (MTL::IsNaN(d))
       return MTL::Min(a, b, c);
-    return MTL::Min(a, b, c, d);
+    else
+      return MTL::Min(a, b, c, d);
   }
 }

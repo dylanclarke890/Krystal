@@ -18,9 +18,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr bool Signbit(TSigned x) noexcept
   {
     if constexpr (IsIntegralT<TSigned>)
-    {
       return (x < TSigned(0));
-    }
     else if constexpr (IsFloatingPointT<TSigned>)
     {
       if (MTL::IsNaN(x))
@@ -33,8 +31,6 @@ namespace Krys::MTL
       return (bits & (as_uint_t(1) << (sizeof(as_uint_t) * 8 - 1))) != 0;
     }
     else
-    {
       static_assert(false, "Unsupported type for Signbit");
-    }
   }
 }

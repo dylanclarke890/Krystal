@@ -5,15 +5,15 @@
 
 namespace Krys::MTL
 {
-  /// @brief Computes the factorial of `n`.
+  /// @brief Computes the factorial of `x`.
   /// @tparam TNumber An unsigned integer type.
   /// @param n The input value.
-  /// @returns The factorial of `n`, i.e., `n! = n * (n-1) * ... * 1`. For `n = 0`, returns `1`.
+  /// @returns The factorial of `x` (`x!`). Returns `1` when `x = 0`.
   template <IsUnsignedT TUnsignedInteger>
-  constexpr TUnsignedInteger Factorial(TUnsignedInteger n) noexcept
+  constexpr TUnsignedInteger Factorial(TUnsignedInteger x) noexcept
   {
     TUnsignedInteger result = TUnsignedInteger(1);
-    for (TUnsignedInteger i = 1; i <= n; i++)
+    for (TUnsignedInteger i = 1; i <= x; i++)
       result *= i;
     return result;
   }

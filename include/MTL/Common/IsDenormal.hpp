@@ -13,7 +13,7 @@ namespace Krys::MTL
   /// normalized number).
   /// @tparam TFloat A floating-point type.
   /// @param x The input value.
-  /// @return `true` if `x` is denormalized, otherwise `false`.
+  /// @return `true` if `x` is denormalized.
   template <IsFloatingPointT TFloat>
   NO_DISCARD constexpr bool IsDenormal(TFloat x) noexcept
   {
@@ -21,9 +21,10 @@ namespace Krys::MTL
     {
       if (MTL::IsNaN(x) || x == TFloat(0))
         return false;
-      return MTL::Abs(x) < std::numeric_limits<TFloat>::min();
+      else
+        return MTL::Abs(x) < std::numeric_limits<TFloat>::min();
     }
-
-    return std::fpclassify(x) == FP_SUBNORMAL;
+    else
+      return std::fpclassify(x) == FP_SUBNORMAL;
   }
 }
