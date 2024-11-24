@@ -39,18 +39,6 @@ namespace Krys::MTL
   NO_DISCARD constexpr auto Clamp(const matrix_t<TComponent, CL, RL> &value, TComponent min,
                                   TComponent max) noexcept
   {
-    using mat_col_t = matrix_t<TComponent, CL, RL>::column_t;
-    if constexpr (CL == 2 && RL == 2)
-      return Clamp(value, matrix_t<TComponent, CL, RL>(mat_col_t(min), mat_col_t(min)),
-                   matrix_t<TComponent, CL, RL>(mat_col_t(max), mat_col_t(max)));
-    else if constexpr (CL == 3 && RL == 3)
-      return Clamp(value, matrix_t<TComponent, CL, RL>(mat_col_t(min), mat_col_t(min), mat_col_t(min)),
-                   matrix_t<TComponent, CL, RL>(mat_col_t(max), mat_col_t(max), mat_col_t(max)));
-    else if constexpr (CL == 4 && RL == 4)
-      return Clamp(
-        value, matrix_t<TComponent, CL, RL>(mat_col_t(min), mat_col_t(min), mat_col_t(min), mat_col_t(min)),
-        matrix_t<TComponent, CL, RL>(mat_col_t(max), mat_col_t(max), mat_col_t(max), mat_col_t(max)));
-    else
-      static_assert(false, "Unsupported number of cols/rows.");
+    return MTL::MapEach(value, [&min, &max](TComponent v) { return MTL::Clamp(v, min, max); });
   }
 }
