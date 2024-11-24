@@ -61,7 +61,7 @@ namespace Krys
       {
       }
 
-      constexpr Matrix(const mat_t &other) noexcept : _values(other._values)
+      constexpr Matrix(const mat_t &other) noexcept : _values(other._values[0], other._values[1])
       {
       }
 

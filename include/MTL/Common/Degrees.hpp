@@ -12,6 +12,6 @@ namespace Krys::MTL
   template <IsArithmeticT TNumber>
   NO_DISCARD constexpr TNumber Degrees(TNumber radians) noexcept
   {
-    return radians * TNumber(57.295779513082320876798154814105);
+    return TNumber(static_cast<double>(radians) * 57.295779513082320876798154814105);
   }
 }

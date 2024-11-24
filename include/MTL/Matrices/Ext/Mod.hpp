@@ -15,9 +15,9 @@ namespace Krys::MTL
   /// @param m The input matrix.
   /// @returns A matrix where each component is the modulus of the corresponding input component.
   template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Mod(const matrix_t<TComponent, CL, RL> &m) noexcept
+  NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Mod(const matrix_t<TComponent, CL, RL> &a,
+                                                        const matrix_t<TComponent, CL, RL> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Map<T, T, CL, RL>(m, [](T x) -> T { return MTL::Mod<T>(x); });
+    return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return MTL::Mod(x, y); });
   }
 }

@@ -23,9 +23,8 @@ namespace Krys::MTL
                                                           const matrix_t<TComponent, CL, RL> &min,
                                                           const matrix_t<TComponent, CL, RL> &max) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, T, CL, RL>(value, min, max,
-                                     [](T v, T mn, T mx) -> T { return MTL::Min(MTL::Max(v, mn), mx); });
+    return MTL::Zip(value, min, max, [](TComponent v, TComponent lo, TComponent hi) -> TComponent
+                    { return MTL::Clamp(v, lo, hi); });
   }
 
   /// @brief Clamps each component of the matrix between the scalar values `min` and `max`.
@@ -40,8 +39,18 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Clamp(const matrix_t<TComponent, CL, RL> &value,
                                                           TComponent min, TComponent max) noexcept
   {
-    using T = TComponent;
-    return MTL::Map<T, T, T, L>(value, matrix_t<T, CL, RL>(min), matrix_t<T, CL, RL>(max),
-                                [](T v, T mn, T mx) -> T { return MTL::Min(MTL::Max(v, mn), mx); });
+    using mat_col_t = matrix_t<TComponent, CL, RL>::column_t;
+    if constexpr (CL == 2 && RL == 2)
+      return Clamp(value, matrix_t<TComponent, CL, RL>(mat_col_t(min), mat_col_t(min)),
+                   matrix_t<TComponent, CL, RL>(mat_col_t(max), mat_col_t(max)));
+    else if constexpr (CL == 3 && RL == 3)
+      return Clamp(value, matrix_t<TComponent, CL, RL>(mat_col_t(min), mat_col_t(min), mat_col_t(min)),
+                   matrix_t<TComponent, CL, RL>(mat_col_t(max), mat_col_t(max), mat_col_t(max)));
+    else if constexpr (CL == 4 && RL == 4)
+      return Clamp(
+        value, matrix_t<TComponent, CL, RL>(mat_col_t(min), mat_col_t(min), mat_col_t(min), mat_col_t(min)),
+        matrix_t<TComponent, CL, RL>(mat_col_t(max), mat_col_t(max), mat_col_t(max), mat_col_t(max)));
+    else
+      static_assert(false, "Unsupported number of cols/rows.");
   }
 }

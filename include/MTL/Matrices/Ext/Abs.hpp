@@ -17,6 +17,6 @@ namespace Krys::MTL
   template <IsSignedT TComponent, vec_length_t CL, vec_length_t RL>
   NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Abs(const matrix_t<TComponent, CL, RL> &m) noexcept
   {
-    return MTL::Map(m, [](TComponent x) -> TComponent { return MTL::Abs(x); });
+    return MTL::MapEach(m, [](TComponent x) -> TComponent { return MTL::Abs(x); });
   }
 }

@@ -19,8 +19,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Min(const matrix_t<TComponent, CL, RL> &a,
                                                         const matrix_t<TComponent, CL, RL> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, CL, RL>(a, b, [](T x, T y) -> T { return MTL::Min(x, y); });
+    return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return MTL::Min(x, y); });
   }
 
   /// @brief Performs a component-wise minimum operation between three matrices.
@@ -37,28 +36,8 @@ namespace Krys::MTL
                                                         const matrix_t<TComponent, CL, RL> &b,
                                                         const matrix_t<TComponent, CL, RL> &c) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, T, CL, RL>(a, b, c, [](T x, T y, T z) -> T { return MTL::Min(x, y, z); });
-  }
-
-  /// @brief Performs a component-wise minimum operation between four matrices.
-  /// @tparam TComponent The underlying arithmetic type of the matrices.
-  /// @tparam CL The column length of the matrices.
-  /// @tparam RL The row length of the matrices.
-  /// @param a The first input matrix.
-  /// @param b The second input matrix.
-  /// @param c The third input matrix.
-  /// @param d The fourth input matrix.
-  /// @return A matrix where each component is the smallest of the corresponding components of `a`, `b`, `c`
-  /// and `d`.
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL>
-    Min(const matrix_t<TComponent, CL, RL> &a, const matrix_t<TComponent, CL, RL> &b,
-        const matrix_t<TComponent, CL, RL> &c, const matrix_t<TComponent, CL, RL> &d) noexcept
-  {
-    using T = TComponent;
-    return MTL::Zip<T, T, T, T, CL, RL>(a, b, c, d,
-                                        [](T x, T y, T z, T w) -> T { return MTL::Min(x, y, z, w); });
+    return MTL::Zip(a, b, c,
+                    [](TComponent x, TComponent y, TComponent z) -> TComponent { return MTL::Min(x, y, z); });
   }
 
   /// @brief Performs a component-wise minimum operation between the matrix `a` and scalar `b`.
@@ -72,7 +51,15 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<TComponent, CL, RL> Min(const matrix_t<TComponent, CL, RL> &a,
                                                         TComponent b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, CL, RL>(a, matrix_t<T, CL, RL>(b), [](T x, T y) -> T { return MTL::Min(x, y); });
+    using mat_col_t = matrix_t<TComponent, CL, RL>::column_t;
+    if constexpr (CL == 2 && RL == 2)
+      return Min(a, matrix_t<TComponent, CL, RL>(mat_col_t(b), mat_col_t(b)));
+    else if constexpr (CL == 3 && RL == 3)
+      return Min(a, matrix_t<TComponent, CL, RL>(mat_col_t(b), mat_col_t(b), mat_col_t(b)));
+    else if constexpr (CL == 4 && RL == 4)
+      return Min(
+        a, matrix_t<TComponent, CL, RL>(mat_col_t(b), mat_col_t(b), mat_col_t(b), mat_col_t(b)));
+    else
+      static_assert(false, "Unsupported number of cols/rows.");
   }
 }

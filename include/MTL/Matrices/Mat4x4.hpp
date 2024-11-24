@@ -13,7 +13,7 @@ namespace Krys
   template <IsArithmeticT TComponent>
   using mat4x4_t = MTL::Matrix<TComponent, 4, 4>;
   using Mat4 = mat4x4_t<float>;
-  
+
   namespace MTL
   {
     template <IsArithmeticT TComponent>
@@ -71,7 +71,8 @@ namespace Krys
       {
       }
 
-      constexpr Matrix(const mat_t &other) noexcept : _values(other._values)
+      constexpr Matrix(const mat_t &other) noexcept
+          : _values(other._values[0], other._values[1], other._values[2], other._values[3])
       {
       }
 

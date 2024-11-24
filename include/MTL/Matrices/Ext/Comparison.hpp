@@ -18,8 +18,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<bool, CL, RL> LessThan(const matrix_t<TComponent, CL, RL> &a,
                                                        const matrix_t<TComponent, CL, RL> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, bool, CL, RL>(a, b, [](T a, T b) -> bool { return a < b; });
+    return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a < b; });
   }
 
   /// @brief Performs a component-wise `<=` comparison between `a` and `b`.
@@ -33,8 +32,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<bool, CL, RL> LessThanOrEqual(const matrix_t<TComponent, CL, RL> &a,
                                                               const matrix_t<TComponent, CL, RL> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, bool, CL, RL>(a, b, [](T a, T b) -> bool { return a <= b; });
+    return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a <= b; });
   }
 
   /// @brief Performs a component-wise `==` comparison between `a` and `b`.
@@ -48,8 +46,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<bool, CL, RL> Equal(const matrix_t<TComponent, CL, RL> &a,
                                                     const matrix_t<TComponent, CL, RL> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, bool, CL, RL>(a, b, [](T a, T b) -> bool { return a == b; });
+    return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a == b; });
   }
 
   /// @brief Performs a component-wise `!=` comparison between `a` and `b`.
@@ -63,8 +60,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<bool, CL, RL> NotEqual(const matrix_t<TComponent, CL, RL> &a,
                                                        const matrix_t<TComponent, CL, RL> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, bool, CL, RL>(a, b, [](T a, T b) -> bool { return a != b; });
+    return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a != b; });
   }
 
   /// @brief Performs a component-wise `>` comparison between `a` and `b`.
@@ -78,8 +74,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<bool, CL, RL> GreaterThan(const matrix_t<TComponent, CL, RL> &a,
                                                           const matrix_t<TComponent, CL, RL> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, bool, CL, RL>(a, b, [](T a, T b) -> bool { return a > b; });
+    return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a > b; });
   }
 
   /// @brief Performs a component-wise `>=` comparison between `a` and `b`.
@@ -93,7 +88,6 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<bool, CL, RL>
     GreaterThanOrEqual(const matrix_t<TComponent, CL, RL> &a, const matrix_t<TComponent, CL, RL> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, bool, CL, RL>(a, b, [](T a, T b) -> bool { return a >= b; });
+    return MTL::Zip(a, b, [](TComponent a, TComponent b) -> bool { return a >= b; });
   }
 }

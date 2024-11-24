@@ -19,8 +19,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
                                                          const matrix_t<TComponent, CL, RL> &b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, CL, RL>(a, b, [](T x, T y) -> T { return MTL::FMax(x, y); });
+    return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return MTL::FMax(x, y); });
   }
 
   /// @brief Performs a component-wise maximum operation between three floating point matrices, ignoring NaN.
@@ -37,28 +36,8 @@ namespace Krys::MTL
                                                          const matrix_t<TComponent, CL, RL> &b,
                                                          const matrix_t<TComponent, CL, RL> &c) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, T, CL, RL>(a, b, c, [](T x, T y, T z) -> T { return MTL::FMax(x, y, z); });
-  }
-
-  /// @brief Performs a component-wise maximum operation between four floating point matrices, ignoring NaN.
-  /// @tparam TComponent The underlying floating-point type of the matrices.
-  /// @tparam CL The column length of the matrices.
-  /// @tparam RL The row length of the matrices.
-  /// @param a The first input matrix.
-  /// @param b The second input matrix.
-  /// @param c The third input matrix.
-  /// @param d The fourth input matrix.
-  /// @return A matrix where each component is the largest of the corresponding components of `a`, `b`, `c`
-  /// and `d`, ignoring NaN.
-  template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr matrix_t<TComponent, CL, RL>
-    FMax(const matrix_t<TComponent, CL, RL> &a, const matrix_t<TComponent, CL, RL> &b,
-         const matrix_t<TComponent, CL, RL> &c, const matrix_t<TComponent, CL, RL> &d) noexcept
-  {
-    using T = TComponent;
-    return MTL::Zip<T, T, T, T, CL, RL>(a, b, c, d,
-                                        [](T x, T y, T z, T w) -> T { return MTL::FMax(x, y, z, w); });
+    return MTL::Zip(a, b, c, [](TComponent x, TComponent y, TComponent z) -> TComponent
+                    { return MTL::FMax(x, y, z); });
   }
 
   /// @brief Performs a component-wise maximum operation between the matrix `a` and floating point `b`.
@@ -73,7 +52,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr matrix_t<TComponent, CL, RL> FMax(const matrix_t<TComponent, CL, RL> &a,
                                                          TComponent b) noexcept
   {
-    using T = TComponent;
-    return MTL::Zip<T, T, CL, RL>(a, matrix_t<T, L>(b), [](T x, T y) -> T { return MTL::FMax(x, y); });
+    return MTL::Zip(a, matrix_t<TComponent, CL, RL>(b),
+                    [](TComponent x, TComponent y) -> TComponent { return MTL::FMax(x, y); });
   }
 }
