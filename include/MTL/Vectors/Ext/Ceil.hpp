@@ -14,7 +14,7 @@ namespace Krys::MTL
   /// @param v The input vector.
   /// @returns A vector with each component rounded up to the smallest integer.
   template <IsFloatingPointT TComponent, vec_length_t L>
-  NO_DISCARD constexpr vector_t<TComponent, L> Ceil(vector_t<TComponent, L> v) noexcept
+  NO_DISCARD constexpr auto Ceil(vector_t<TComponent, L> v) noexcept
   {
     return MTL::MapEach(v, [](TComponent x) -> TComponent { return MTL::Ceil(x); });
   }
