@@ -210,7 +210,6 @@ namespace Krys
 #pragma endregion Subtraction
 
 #pragma region Multiplication
-
       NO_DISCARD constexpr mat_t operator*(const mat_t &other) const noexcept
       {
         const column_t &a0 = _values[0];
@@ -223,25 +222,30 @@ namespace Krys
         const column_t &b2 = other._values[2];
         const column_t &b3 = other._values[3];
 
-        column_t c0(a0[0] * b0[0] + a0[1] * b1[0] + a0[2] * b2[0] + a0[3] * b3[0],
-                    a1[0] * b0[0] + a1[1] * b1[0] + a1[2] * b2[0] + a1[3] * b3[0],
-                    a2[0] * b0[0] + a2[1] * b1[0] + a2[2] * b2[0] + a2[3] * b3[0],
-                    a3[0] * b0[0] + a3[1] * b1[0] + a3[2] * b2[0] + a3[3] * b3[0]);
+        // Compute resulting columns
+        column_t c0(a0[0] * b0[0] + a1[0] * b0[1] + a2[0] * b0[2] + a3[0] * b0[3], // Row 1, Col 1
+                    a0[1] * b0[0] + a1[1] * b0[1] + a2[1] * b0[2] + a3[1] * b0[3], // Row 2, Col 1
+                    a0[2] * b0[0] + a1[2] * b0[1] + a2[2] * b0[2] + a3[2] * b0[3], // Row 3, Col 1
+                    a0[3] * b0[0] + a1[3] * b0[1] + a2[3] * b0[2] + a3[3] * b0[3]  // Row 4, Col 1
+        );
 
-        column_t c1(a0[0] * b0[1] + a0[1] * b1[1] + a0[2] * b2[1] + a0[3] * b3[1],
-                    a1[0] * b0[1] + a1[1] * b1[1] + a1[2] * b2[1] + a1[3] * b3[1],
-                    a2[0] * b0[1] + a2[1] * b1[1] + a2[2] * b2[1] + a2[3] * b3[1],
-                    a3[0] * b0[1] + a3[1] * b1[1] + a3[2] * b2[1] + a3[3] * b3[1]);
+        column_t c1(a0[0] * b1[0] + a1[0] * b1[1] + a2[0] * b1[2] + a3[0] * b1[3], // Row 1, Col 2
+                    a0[1] * b1[0] + a1[1] * b1[1] + a2[1] * b1[2] + a3[1] * b1[3], // Row 2, Col 2
+                    a0[2] * b1[0] + a1[2] * b1[1] + a2[2] * b1[2] + a3[2] * b1[3], // Row 3, Col 2
+                    a0[3] * b1[0] + a1[3] * b1[1] + a2[3] * b1[2] + a3[3] * b1[3]  // Row 4, Col 2
+        );
 
-        column_t c2(a0[0] * b0[2] + a0[1] * b1[2] + a0[2] * b2[2] + a0[3] * b3[2],
-                    a1[0] * b0[2] + a1[1] * b1[2] + a1[2] * b2[2] + a1[3] * b3[2],
-                    a2[0] * b0[2] + a2[1] * b1[2] + a2[2] * b2[2] + a2[3] * b3[2],
-                    a3[0] * b0[2] + a3[1] * b1[2] + a3[2] * b2[2] + a3[3] * b3[2]);
+        column_t c2(a0[0] * b2[0] + a1[0] * b2[1] + a2[0] * b2[2] + a3[0] * b2[3], // Row 1, Col 3
+                    a0[1] * b2[0] + a1[1] * b2[1] + a2[1] * b2[2] + a3[1] * b2[3], // Row 2, Col 3
+                    a0[2] * b2[0] + a1[2] * b2[1] + a2[2] * b2[2] + a3[2] * b2[3], // Row 3, Col 3
+                    a0[3] * b2[0] + a1[3] * b2[1] + a2[3] * b2[2] + a3[3] * b2[3]  // Row 4, Col 3
+        );
 
-        column_t c3(a0[0] * b0[3] + a0[1] * b1[3] + a0[2] * b2[3] + a0[3] * b3[3],
-                    a1[0] * b0[3] + a1[1] * b1[3] + a1[2] * b2[3] + a1[3] * b3[3],
-                    a2[0] * b0[3] + a2[1] * b1[3] + a2[2] * b2[3] + a2[3] * b3[3],
-                    a3[0] * b0[3] + a3[1] * b1[3] + a3[2] * b2[3] + a3[3] * b3[3]);
+        column_t c3(a0[0] * b3[0] + a1[0] * b3[1] + a2[0] * b3[2] + a3[0] * b3[3], // Row 1, Col 4
+                    a0[1] * b3[0] + a1[1] * b3[1] + a2[1] * b3[2] + a3[1] * b3[3], // Row 2, Col 4
+                    a0[2] * b3[0] + a1[2] * b3[1] + a2[2] * b3[2] + a3[2] * b3[3], // Row 3, Col 4
+                    a0[3] * b3[0] + a1[3] * b3[1] + a2[3] * b3[2] + a3[3] * b3[3]  // Row 4, Col 4
+        );
 
         return mat_t(c0, c1, c2, c3);
       }
@@ -270,45 +274,13 @@ namespace Krys
 
       NO_DISCARD constexpr mat_t &operator*=(const mat_t &other) noexcept
       {
-        const column_t &a0 = _values[0];
-        const column_t &a1 = _values[1];
-        const column_t &a2 = _values[2];
-        const column_t &a3 = _values[3];
-
-        const column_t &b0 = other._values[0];
-        const column_t &b1 = other._values[1];
-        const column_t &b2 = other._values[2];
-        const column_t &b3 = other._values[3];
-
-        _values[0] = column_t(a0[0] * b0[0] + a0[1] * b1[0] + a0[2] * b2[0] + a0[3] * b3[0],
-                              a1[0] * b0[0] + a1[1] * b1[0] + a1[2] * b2[0] + a1[3] * b3[0],
-                              a2[0] * b0[0] + a2[1] * b1[0] + a2[2] * b2[0] + a2[3] * b3[0],
-                              a3[0] * b0[0] + a3[1] * b1[0] + a3[2] * b2[0] + a3[3] * b3[0]);
-
-        _values[1] = column_t(a0[0] * b0[1] + a0[1] * b1[1] + a0[2] * b2[1] + a0[3] * b3[1],
-                              a1[0] * b0[1] + a1[1] * b1[1] + a1[2] * b2[1] + a1[3] * b3[1],
-                              a2[0] * b0[1] + a2[1] * b1[1] + a2[2] * b2[1] + a2[3] * b3[1],
-                              a3[0] * b0[1] + a3[1] * b1[1] + a3[2] * b2[1] + a3[3] * b3[1]);
-
-        _values[2] = column_t(a0[0] * b0[2] + a0[1] * b1[2] + a0[2] * b2[2] + a0[3] * b3[2],
-                              a1[0] * b0[2] + a1[1] * b1[2] + a1[2] * b2[2] + a1[3] * b3[2],
-                              a2[0] * b0[2] + a2[1] * b1[2] + a2[2] * b2[2] + a2[3] * b3[2],
-                              a3[0] * b0[2] + a3[1] * b1[2] + a3[2] * b2[2] + a3[3] * b3[2]);
-
-        _values[3] = column_t(a0[0] * b0[3] + a0[1] * b1[3] + a0[2] * b2[3] + a0[3] * b3[3],
-                              a1[0] * b0[3] + a1[1] * b1[3] + a1[2] * b2[3] + a1[3] * b3[3],
-                              a2[0] * b0[3] + a2[1] * b1[3] + a2[2] * b2[3] + a2[3] * b3[3],
-                              a3[0] * b0[3] + a3[1] * b1[3] + a3[2] * b2[3] + a3[3] * b3[3]);
-
+        *this = *this * other;
         return *this;
       }
 
       NO_DISCARD constexpr mat_t &operator*=(component_t scalar) noexcept
       {
-        _values[0] *= scalar;
-        _values[1] *= scalar;
-        _values[2] *= scalar;
-        _values[3] *= scalar;
+        *this = *this * scalar;
         return *this;
       }
 
