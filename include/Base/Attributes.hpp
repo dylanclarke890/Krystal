@@ -16,4 +16,7 @@ namespace Krys
 
 /// @brief Convenience macro for the attribute equivalent.
 #define BRANCH_UNLIKELY [[unlikely]]
+
+/// @brief Convenience macro for the attribute equivalent.
+#define MAYBE_UNUSED [[maybe_unused]]
 }
