@@ -31,21 +31,16 @@ namespace Krys::Endian
   NO_DISCARD constexpr T SwapEndian(T value)
   {
     if constexpr (std::is_integral_v<T>)
-    {
       return std::byteswap(value);
-    }
     // For floating-point types, use std::bit_cast to swap bytes
     else if constexpr (std::is_floating_point_v<T>)
     {
-      using UnsignedT = std::conditional_t<sizeof(T) == 4, uint32, uint64>;
-      UnsignedT temp = std::bit_cast<UnsignedT>(value);
+      using as_uint_t = std::conditional_t<sizeof(T) == 4, uint32, uint64>;
+      as_uint_t temp = std::bit_cast<as_uint_t>(value);
       temp = std::byteswap(temp);
       return std::bit_cast<T>(temp);
     }
   }
-
-  KRYS_DISABLE_WARNING_PUSH()
-  KRYS_DISABLE_WARNING(4'702, "-Wunreachable-code")
 
   /// @brief Converts a value to big endian. If the underlying system is big endian,
   /// the value is assumed to already be represented as big endian and is returned unchanged.
@@ -55,8 +50,8 @@ namespace Krys::Endian
   {
     if constexpr (IsBigEndian())
       return value;
-
-    return SwapEndian(value);
+    else
+      return SwapEndian(value);
   }
 
   /// @brief Converts a value to little endian. If the underlying system is little endian,
@@ -67,8 +62,8 @@ namespace Krys::Endian
   {
     if constexpr (IsLittleEndian())
       return value;
-
-    return SwapEndian(value);
+    else
+      return SwapEndian(value);
   }
 
   /// @brief Converts a value to the system's native endian.
@@ -81,15 +76,11 @@ namespace Krys::Endian
   NO_DISCARD constexpr T ToSystemEndian(T value) noexcept
   {
     if constexpr (SourceEndianness == Type::Little)
-    {
       return IsLittleEndian() ? value : SwapEndian(value);
-    }
     else if constexpr (SourceEndianness == Type::Big)
-    {
       return IsBigEndian() ? value : SwapEndian(value);
-    }
-
-    return value;
+    else
+      return value;
   }
 
   /// Convert a value from one endian representation to another.
@@ -99,11 +90,9 @@ namespace Krys::Endian
   {
     if constexpr (SourceEndianness == DestinationEndianness)
       return value;
-
-    if constexpr (DestinationEndianness == Type::System)
+    else if constexpr (DestinationEndianness == Type::System)
       return ToSystemEndian<T, SourceEndianness>(value);
-
-    if constexpr (SourceEndianness == Type::System)
+    else if constexpr (SourceEndianness == Type::System)
     {
       if constexpr (DestinationEndianness == Type::Little)
         return ToLittleEndian(value);
@@ -112,10 +101,8 @@ namespace Krys::Endian
       else
         return value;
     }
-
-    // from == Big && to == Little or vice versa.
-    return SwapEndian(value);
+    else
+      // from == Big && to == Little or vice versa.
+      return SwapEndian(value);
   }
-
-  KRYS_DISABLE_WARNING_POP()
 }
