@@ -18,8 +18,8 @@ namespace Krys::MTL
     {
       if (IsUnsignedT<TNumber>)
         return x;
-
-      return (x < TNumber(0)) ? -x : x;
+      else
+        return (x < TNumber(0)) ? -x : x;
     }
     else if constexpr (IsUnsignedT<TNumber>)
       return x;

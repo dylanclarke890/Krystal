@@ -15,7 +15,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr TNumber Mod(TNumber a, TNumber b) noexcept
   {
     if constexpr (IsFloatingPointT<TNumber>)
-      return TNumber(a - (MTL::Trunc<TNumber>(a / b) * b));
+      return TNumber(a - (MTL::Trunc(a / b) * b));
     else
       return a % b;
   }

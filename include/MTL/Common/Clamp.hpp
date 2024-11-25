@@ -16,8 +16,8 @@ namespace Krys::MTL
   NO_DISCARD constexpr TNumber Clamp(TNumber value, TNumber min, TNumber max) noexcept
   {
     if constexpr (IsFloatingPointT<TNumber>)
-      return MTL::FMin<TNumber>(MTL::FMax<TNumber>(value, min), max);
+      return MTL::FMin(MTL::FMax(value, min), max);
     else
-      return MTL::Min<TNumber>(MTL::Max<TNumber>(value, min), max);
+      return MTL::Min(MTL::Max(value, min), max);
   }
 }
