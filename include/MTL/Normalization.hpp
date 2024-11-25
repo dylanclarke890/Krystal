@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
-#include "MTL/Common/Max.hpp"
-#include "MTL/Common/Round.hpp"
+#include "MTL/Common/MinMax.hpp"
+#include "MTL/Common/Rounding.hpp"
 
 #include <algorithm>
 #include <cmath>

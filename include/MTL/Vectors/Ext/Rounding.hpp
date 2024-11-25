@@ -2,10 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Common/Ceil.hpp"
-#include "MTL/Common/Floor.hpp"
-#include "MTL/Common/Round.hpp"
-#include "MTL/Common/Trunc.hpp"
+#include "MTL/Common/Rounding.hpp"
 #include "MTL/Vectors/Base.hpp"
 #include "MTL/Vectors/Ext/Algorithms.hpp"
 

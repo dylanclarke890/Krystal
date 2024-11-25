@@ -2,10 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "MTL/Common/FMax.hpp"
-#include "MTL/Common/FMin.hpp"
-#include "MTL/Common/Max.hpp"
-#include "MTL/Common/Min.hpp"
+#include "MTL/Common/MinMax.hpp"
 #include "MTL/Matrices/Base.hpp"
 #include "MTL/Matrices/Ext/Algorithms.hpp"
 
