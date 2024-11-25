@@ -2,6 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
+#include "MTL/Common/FpClassify.hpp"
 
 namespace Krys::MTL
 {

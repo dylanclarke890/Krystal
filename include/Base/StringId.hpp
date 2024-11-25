@@ -1,16 +1,17 @@
 #pragma once
 
+#include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
 
 namespace Krys
 {
   /// @brief FNV-1a 32bit hashing algorithm.
-  constexpr uint32 fnv1a_32(char const *s, size_t count)
+  NO_DISCARD constexpr uint32 fnv1a_32(char const *s, size_t count) noexcept
   {
     return ((count ? fnv1a_32(s, count - 1) : 2'166'136'261u) ^ s[count]) * 16'777'619u;
   }
 
-  constexpr uint32 operator""_sid(char const *s, size_t count)
+  NO_DISCARD constexpr uint32 operator""_sid(char const *s, size_t count) noexcept
   {
     return fnv1a_32(s, count);
   }
@@ -35,17 +36,17 @@ namespace Krys
     {
     }
 
-    constexpr bool operator==(const StringId &other) const noexcept
+    NO_DISCARD constexpr bool operator==(const StringId &other) const noexcept
     {
       return _hash == other._hash;
     }
 
-    constexpr bool operator!=(const StringId &other) const noexcept
+    NO_DISCARD constexpr bool operator!=(const StringId &other) const noexcept
     {
       return !(*this == other);
     }
 
-    constexpr operator uint32() const noexcept
+    NO_DISCARD constexpr operator uint32() const noexcept
     {
       return _hash;
     }

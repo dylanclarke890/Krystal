@@ -15,12 +15,12 @@ namespace Krys::MTL
     return TFloat(static_cast<double>(radians) * 57.295779513082320876798154814105);
   }
 
-  constexpr NO_DISCARD long double operator""_deg(long double value)
+  NO_DISCARD constexpr  long double operator""_deg(long double value)
   {
     return MTL::Degrees(value);
   }
 
-  constexpr NO_DISCARD long double operator""_degrees(long double value)
+   NO_DISCARD constexpr  long double operator""_degrees(long double value)
   {
     return MTL::Degrees(value);
   }
