@@ -109,4 +109,13 @@ namespace Krys::Tests
     constexpr Vec2 C = MTL::Refract(A, B, 0.5f);
     KRYS_EXPECT_EQUAL("Refract", C, Vec2(0.0, -1.0));
   }
+
+  static void Test_FaceForward()
+  {
+    constexpr Vec3 n(0.0f, 0.0f, 1.0f);
+    constexpr Vec3 i(1.0f, 0.0f, 1.0f);
+    constexpr Vec3 nRef(0.0f, 0.0f, 1.0f);
+    constexpr Vec3 F = MTL::FaceForward(n, i, nRef);
+    KRYS_EXPECT_EQUAL("Reflect", F, Vec3(0, 0, -1));
+  }
 }

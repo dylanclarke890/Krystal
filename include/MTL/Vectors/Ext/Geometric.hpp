@@ -116,4 +116,16 @@ namespace Krys::MTL
   {
     return vector_t<TComponent, 3> {a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
   }
+
+  /// @tparam TComponent The underlying floating-point type of the vectors.
+  /// @tparam L The length of the vectors.
+  /// @param v The incident vector.
+  /// @param n The normal vector (should be normalized).
+  /// @return `n` if `Dot(nRef, i)` < `0.0`, otherwise `-n`.
+  template <IsFloatingPointT TComponent, vec_length_t L>
+  constexpr auto FaceForward(const vector_t<TComponent, L> &n, const vector_t<TComponent, L> &i,
+                             const vector_t<TComponent, L> &nRef) noexcept
+  {
+    return MTL::Dot(nRef, i) < static_cast<TComponent>(0) ? n : -n;
+  }
 }
