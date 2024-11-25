@@ -15,46 +15,46 @@ namespace Krys::Tests
   static void Test_Length()
   {
     constexpr float l1 = MTL::Length(Vec1 {1.0f});
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec1 Length", l1 - 1.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec1 Length", l1 - 1.0f, 0.0f, 1e-6f);
 
     constexpr float l2 = MTL::Length(Vec2 {1.0f, 0.0f});
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec2 Length", l2 - 1.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec2 Length", l2 - 1.0f, 0.0f, 1e-6f);
 
     constexpr float l3 = MTL::Length(Vec3 {1.0f, 0.0f, 0.0f});
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec3 Length", l3 - 1.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec3 Length", l3 - 1.0f, 0.0f, 1e-6f);
 
     constexpr float l4 = MTL::Length(Vec4 {1.0f, 0.0f, 0.0f, 0.0f});
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec4 Length", l4 - 1.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec4 Length", l4 - 1.0f, 0.0f, 1e-6f);
   }
 
   static void Test_Distance()
   {
     constexpr float d1 = MTL::Distance(Vec1 {1.0f}, Vec1 {1.0f});
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec1 Length", d1, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec1 Length", d1, 0.0f, 1e-6f);
 
     constexpr float d2 = MTL::Distance(Vec2 {1.0f, 0.0f}, Vec2 {1.0f, 0.0f});
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec2 Length", d2, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec2 Length", d2, 0.0f, 1e-6f);
 
     constexpr float d3 = MTL::Distance(Vec3 {1.0f, 0.0f, 0.0f}, Vec3 {1.0f, 0.0f, 0.0f});
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec3 Length", d3, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec3 Length", d3, 0.0f, 1e-6f);
 
     constexpr float d4 = MTL::Distance(Vec4 {1.0f, 0.0f, 0.0f, 0.0f}, Vec4 {1.0f, 0.0f, 0.0f, 0.0f});
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec4 Length", d4, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec4 Length", d4, 0.0f, 1e-6f);
   }
 
   static void Test_Dot()
   {
     constexpr float d1 = MTL::Dot(Vec1(1), Vec1(1));
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec1 Dot", d1 - 1.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec1 Dot", d1 - 1.0f, 0.0f, 1e-6f);
 
     constexpr float d2 = MTL::Dot(Vec2(1), Vec2(1));
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec2 Dot", d2 - 2.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec2 Dot", d2 - 2.0f, 0.0f, 1e-6f);
 
     constexpr float d3 = MTL::Dot(Vec3(1), Vec3(1));
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec3 Dot", d3 - 3.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec3 Dot", d3 - 3.0f, 0.0f, 1e-6f);
 
     constexpr float d4 = MTL::Dot(Vec4(1), Vec4(1));
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Vec4 Dot", d4 - 4.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec4 Dot", d4 - 4.0f, 0.0f, 1e-6f);
   }
 
   static void Test_Cross()

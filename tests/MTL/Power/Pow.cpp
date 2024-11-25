@@ -16,6 +16,6 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Pow - Float: 2.0^-2", MTL::Pow(2.0f, -2.0f), 0.25f);
     KRYS_EXPECT_EQUAL("Pow - Float: 2.0^0", MTL::Pow(2.0f, 0.0f), 1.0f);
     KRYS_EXPECT_EQUAL("Pow - Float: 0.0^5.0", MTL::Pow(0.0f, 5.0f), 0.0f);
-    KRYS_EXPECT_EQUAL_WITH_TOLERANCE("Edge: Large negative exponent", MTL::Pow(2.0, 10.0), 1'024.0, 1e-6f);
+    KRYS_EXPECT_NEAR("Edge: Large negative exponent", MTL::Pow(2.0, 10.0), 1'024.0, 1e-6f);
   }
 }

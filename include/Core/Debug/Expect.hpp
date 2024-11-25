@@ -38,7 +38,7 @@
 /// @param expr The expression to check.
 /// @param value The max valid value.
 /// @param tolerance The tolerance for error. A common value is 1e-6f, the error precision of floats.
-#define KRYS_EXPECT_EQUAL_WITH_TOLERANCE(msg, expr, value, tolerance)                                        \
+#define KRYS_EXPECT_NEAR(msg, expr, value, tolerance)                                        \
   KRYS_EXPECT_GREATER_THAN(msg, expr, ((value) - tolerance));                                                \
   KRYS_EXPECT_LESS_THAN(msg, expr, ((value) + tolerance))
 
