@@ -3,7 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
-#include "MTL/Common/IsNaN.hpp"
+#include "MTL/Common/FpClassify.hpp"
 
 #include <bit>
 #include <cmath>
