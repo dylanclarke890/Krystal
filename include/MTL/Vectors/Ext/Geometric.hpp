@@ -85,7 +85,7 @@ namespace Krys::MTL
   template <IsFloatingPointT TComponent, vec_length_t L>
   constexpr auto Reflect(const vector_t<TComponent, L> &v, const vector_t<TComponent, L> &n) noexcept
   {
-    return v - TComponent(2) * MTL::Dot(v, n) * n;
+    return v - n * MTL::Dot(n, v) * TComponent(2);
   }
 
   /// @brief Computes the refraction of vector `v` given a normal `n` and a refraction index.
