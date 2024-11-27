@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
-#include "Base/Lazy.hpp"
 #include "Base/Types.hpp"
 
 namespace Krys::Debug

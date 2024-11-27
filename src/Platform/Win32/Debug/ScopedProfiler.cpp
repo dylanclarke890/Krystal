@@ -1,6 +1,6 @@
 #include "Core/Debug/ScopedProfiler.hpp"
-#include "Base/Lazy.hpp"
 #include "Core/Debug/Macros.hpp"
+#include "Utils/Lazy.hpp"
 
 #ifndef WIN32_LEAN_AND_MEAN
   #define WIN32_LEAN_AND_MEAN
