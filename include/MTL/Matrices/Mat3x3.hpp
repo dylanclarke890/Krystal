@@ -29,7 +29,7 @@ namespace Krys
       using column_t = Vector<component_t, ColLength>;
 
       using mat_t = Matrix<component_t, RowLength, ColLength>;
-      using mat_transpose_t = Matrix<component_t, ColLength, RowLength>;
+      using transpose_t = Matrix<component_t, ColLength, RowLength>;
 
       static constexpr mat_t I() noexcept
       {
