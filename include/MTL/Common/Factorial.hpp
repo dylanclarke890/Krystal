@@ -10,7 +10,7 @@ namespace Krys::MTL
   /// @param n The input value.
   /// @returns The factorial of `x` (`x!`). Returns `1` when `x = 0`.
   template <IsUnsignedT TUnsignedInteger>
-  constexpr TUnsignedInteger Factorial(TUnsignedInteger x) noexcept
+  NO_DISCARD constexpr TUnsignedInteger Factorial(TUnsignedInteger x) noexcept
   {
     TUnsignedInteger result = TUnsignedInteger(1);
     for (TUnsignedInteger i = 1; i <= x; i++)

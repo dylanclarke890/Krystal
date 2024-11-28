@@ -148,4 +148,24 @@ namespace Krys::MTL
     else
       static_assert(false, "Unsupported number of components.");
   }
+
+  /// @brief Reverses a vector.
+  /// @tparam TComponent The underlying arithmetic type of the input vector.
+  /// @tparam L The length of the input vector.
+  /// @param v The input vector.
+  /// @return The new vector in which the components are reversed.
+  template <IsArithmeticT TComponent, vec_length_t L>
+  NO_DISCARD constexpr auto Reverse(const vector_t<TComponent, L> &v) noexcept -> vector_t<TComponent, L>
+  {
+    if constexpr (L == 1)
+      return vector_t<TComponent, 1>(v.x);
+    else if constexpr (L == 2)
+      return vector_t<TComponent, 2>(v.y, v.x);
+    else if constexpr (L == 3)
+      return vector_t<TComponent, 3>(v.z, v.y, v.x);
+    else if constexpr (L == 4)
+      return vector_t<TComponent, 4>(v.w, v.z, v.y, v.x);
+    else
+      static_assert(false, "Unsupported number of components.");
+  }
 }

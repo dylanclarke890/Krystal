@@ -159,4 +159,23 @@ namespace Krys::Tests
     constexpr int sum4 = Sum(v4, square);
     KRYS_EXPECT_EQUAL("SumWithFunc Vec4", sum4, 30);
   }
+
+  static void Test_Reverse()
+  {
+    // Vec1
+    constexpr vec1_t<int> v1 {2};
+    KRYS_EXPECT_EQUAL("Reverse Vec1", Reverse(v1), (vec1_t<int> {2}));
+
+    // Vec2
+    constexpr vec2_t<int> v2 {1, 2};
+    KRYS_EXPECT_EQUAL("Reverse Vec2", Reverse(v2), (vec2_t<int> {2, 1}));
+
+    // Vec3
+    constexpr vec3_t<int> v3 {1, 2, 3};
+    KRYS_EXPECT_EQUAL("Reverse Vec3", Reverse(v3), (vec3_t<int> {3, 2, 1}));
+
+    // Vec4
+    constexpr vec4_t<int> v4 {1, 2, 3, 4};
+    KRYS_EXPECT_EQUAL("Reverse Vec4", Reverse(v4), (vec4_t<int> {4, 3, 2, 1}));
+  }
 }

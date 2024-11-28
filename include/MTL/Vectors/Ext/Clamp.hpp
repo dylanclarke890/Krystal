@@ -36,6 +36,6 @@ namespace Krys::MTL
   NO_DISCARD constexpr auto Clamp(const vector_t<TComponent, L> &value, TComponent min,
                                   TComponent max) noexcept
   {
-    return MTL::MapEach(value, [&min, &max](TComponent v) -> TComponent { return MTL::Clamp((v, min, max); });
+    return MTL::MapEach(value, [&min, &max](TComponent v) -> TComponent { return MTL::Clamp(v, min, max); });
   }
 }
