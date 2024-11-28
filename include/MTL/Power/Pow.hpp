@@ -56,7 +56,7 @@ namespace Krys::MTL
       // Use e^(exp * log(base)) for floating-point exponents
       return MTL::Exp(exp * MTL::Log(base));
     }
-
-    return std::pow(base, exp);
+    else
+      return std::pow(base, exp);
   }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Concepts.hpp"
 #include "Base/Endian.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
@@ -10,8 +11,7 @@ namespace Krys::Bytes
   typedef Endian::Type Endianness;
   constexpr Endian::Type SystemEndian = Endian::Type::System;
 
-  template <typename T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
-  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  template <IsArithmeticT T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
   NO_DISCARD constexpr T AsNumeric(const byte *bytes) noexcept
   {
     T value;
@@ -19,15 +19,13 @@ namespace Krys::Bytes
     return Endian::Convert<T, TSource, TDestination>(value);
   }
 
-  template <typename T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
-  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  template <IsArithmeticT T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
   NO_DISCARD constexpr T AsNumeric(const List<byte> &bytes) noexcept
   {
     return AsNumeric<T, TSource, TDestination>(bytes.data());
   }
 
-  template <typename T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
-  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  template <IsArithmeticT T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
   NO_DISCARD constexpr List<T> AsNumericArray(const List<byte> &bytes) noexcept
   {
     KRYS_ASSERT(bytes.size() % sizeof(T) == 0,
