@@ -31,11 +31,6 @@ namespace Krys
       using mat_t = Matrix<component_t, RowLength, ColLength>;
       using transpose_t = Matrix<component_t, ColLength, RowLength>;
 
-      static constexpr mat_t I() noexcept
-      {
-        return mat_t(component_t(1));
-      }
-
     private:
       column_t _values[RowLength];
 

@@ -8,22 +8,23 @@ namespace Krys
 
   Transform::Transform() noexcept
       : _translation(DEFAULT_TRANSLATION), _scale(DEFAULT_SCALE), _eulerRotation(DEFAULT_ROTATION),
-        _matrix(Mat4::I())
+        _matrix(Mat4(1.0f))
   {
   }
 
   Transform::Transform(const Vec3 &translation) noexcept
-      : _translation(translation), _scale(DEFAULT_SCALE), _eulerRotation(DEFAULT_ROTATION), _matrix(Mat4::I())
+      : _translation(translation), _scale(DEFAULT_SCALE), _eulerRotation(DEFAULT_ROTATION),
+        _matrix(Mat4(1.0f))
   {
   }
 
   Transform::Transform(const Vec3 &translation, const Vec3 &scale) noexcept
-      : _translation(translation), _scale(scale), _eulerRotation(DEFAULT_ROTATION), _matrix(Mat4::I())
+      : _translation(translation), _scale(scale), _eulerRotation(DEFAULT_ROTATION), _matrix(Mat4(1.0f))
   {
   }
 
   Transform::Transform(const Vec3 &translation, const Vec3 &scale, const Vec3 &rotation) noexcept
-      : _translation(translation), _scale(scale), _eulerRotation(rotation), _matrix(Mat4::I())
+      : _translation(translation), _scale(scale), _eulerRotation(rotation), _matrix(Mat4(1.0f))
   {
   }
 

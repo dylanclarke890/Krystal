@@ -8,7 +8,7 @@ namespace Krys::Tests
   static void Test_Mat3x3()
   {
     // Construction
-    constexpr mat3x3_t<float> identity = mat3x3_t<float>::I();
+    constexpr mat3x3_t<float> identity = mat3x3_t<float>(1);
     KRYS_EXPECT_EQUAL("Identity Matrix Construction", identity,
                       (mat3x3_t<float>(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f)));
 
