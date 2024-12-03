@@ -7,39 +7,33 @@
 #include "MTL/Matrices/Base.hpp"
 #include "MTL/Matrices/ImplMacros.hpp"
 #include "MTL/Vectors/Base.hpp"
-#include "MTL/Vectors/Vec2.hpp"
+#include "MTL/Vectors/Vec3.hpp"
 
 namespace Krys
 {
   template <IsArithmeticT TComponent>
-  using mat2x2_t = MTL::Matrix<TComponent, 2, 2>;
-  using Mat2 = mat2x2_t<float>;
+  using mat2x3_t = MTL::Matrix<TComponent, 2, 3>;
+  using Mat2x3 = mat2x3_t<float>;
 
   namespace MTL
   {
     template <IsArithmeticT TComponent>
-    struct Matrix<TComponent, 2, 2>
+    struct Matrix<TComponent, 2, 3>
     {
-      KRYS_MATRIX_PROPERTIES(2, 2);
+      KRYS_MATRIX_PROPERTIES(2, 3);
 
     public:
-      KRYS_MATRIX_TWO_COLUMNS_COMMON_CONSTRUCTORS()
+      KRYS_MATRIX_THREE_COLUMNS_COMMON_CONSTRUCTORS()
       KRYS_MATRIX_ELEMENT_ACCESS()
-      KRYS_MATRIX_TWO_COLUMNS_ASSIGNMENT()
-      KRYS_MATRIX_TWO_COLUMNS_EQUALITY()
-      KRYS_MATRIX_TWO_COLUMNS_ADDITION()
-      KRYS_MATRIX_TWO_COLUMNS_SUBTRACTION()
-      KRYS_MATRIX_TWO_COLUMNS_COMMON_MULTIPLICATION()
-      KRYS_MATRIX_TWO_COLUMNS_DIVISION()
-      KRYS_MATRIX_TWO_COLUMNS_UNARY()
+      KRYS_MATRIX_THREE_COLUMNS_ASSIGNMENT()
+      KRYS_MATRIX_THREE_COLUMNS_EQUALITY()
+      KRYS_MATRIX_THREE_COLUMNS_ADDITION()
+      KRYS_MATRIX_THREE_COLUMNS_SUBTRACTION()
+      KRYS_MATRIX_THREE_COLUMNS_COMMON_MULTIPLICATION()
+      KRYS_MATRIX_THREE_COLUMNS_DIVISION()
+      KRYS_MATRIX_THREE_COLUMNS_UNARY()
 
-      explicit constexpr Matrix(component_t scalar) noexcept
-          : _values {column_t(scalar, component_t(0)), column_t(component_t(0), scalar)}
-      {
-      }
-
-      explicit constexpr Matrix(component_t x0, component_t y0, component_t x1, component_t y1) noexcept
-          : _values {column_t(x0, y0), column_t(x1, y1)}
+      explicit constexpr Matrix(component_t scalar) noexcept : _values {column_t(scalar), column_t(scalar)}
       {
       }
 
