@@ -8,14 +8,14 @@ private:                                                                        
                                                                                                              \
 public:                                                                                                      \
   using component_t = TComponent;                                                                            \
-  using row_t = Vector<component_t, RowLength>;                                                              \
-  using column_t = Vector<component_t, ColLength>;                                                           \
+  using row_t = Vector<component_t, ColLength>;                                                              \
+  using column_t = Vector<component_t, RowLength>;                                                           \
                                                                                                              \
   using mat_t = Matrix<component_t, RowLength, ColLength>;                                                   \
   using transpose_t = Matrix<component_t, ColLength, RowLength>;                                             \
                                                                                                              \
 private:                                                                                                     \
-  column_t _values[RowLength]
+  column_t _values[ColLength]
 
 #define KRYS_MATRIX_ELEMENT_ACCESS()                                                                         \
   NO_DISCARD constexpr vec_length_t GetColLength() const noexcept                                            \

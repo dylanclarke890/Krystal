@@ -7,7 +7,7 @@
 #include "MTL/Matrices/Base.hpp"
 #include "MTL/Matrices/ImplMacros.hpp"
 #include "MTL/Vectors/Base.hpp"
-#include "MTL/Vectors/Vec3.hpp"
+#include "MTL/Vectors/Vec2.hpp"
 
 namespace Krys
 {
@@ -33,7 +33,14 @@ namespace Krys
       KRYS_MATRIX_THREE_COLUMNS_DIVISION()
       KRYS_MATRIX_THREE_COLUMNS_UNARY()
 
-      explicit constexpr Matrix(component_t scalar) noexcept : _values {column_t(scalar), column_t(scalar)}
+      explicit constexpr Matrix(component_t scalar) noexcept
+          : _values {column_t(scalar), column_t(scalar), column_t(scalar)}
+      {
+      }
+
+      explicit constexpr Matrix(component_t x0, component_t y0, component_t x1, component_t y1,
+                                component_t x2, component_t y2) noexcept
+          : _values {column_t(x0, y0), column_t(x1, y1), column_t(x2, y2)}
       {
       }
 
