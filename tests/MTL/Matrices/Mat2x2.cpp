@@ -3,63 +3,69 @@
 
 namespace Krys::Tests
 {
-  using namespace Krys::MTL;
+  using mat_t = Krys::mat2x2_t<float>;
 
-  static void Test_Mat2x2()
+  static void Test_Mat2x2_Constructors()
   {
-    // Construction
-    constexpr mat2x2_t<float> identity = mat2x2_t<float>(1);
-    KRYS_EXPECT_EQUAL("Identity Matrix Construction", identity, (mat2x2_t<float>(1.0f, 0.0f, 0.0f, 1.0f)));
+    constexpr mat_t scalar(1);
+    KRYS_EXPECT_EQUAL("Mat2x2 Scalar Constructor", scalar, mat_t({1, 0}, {0, 1}));
 
-    constexpr mat2x2_t<float> scalar(2.0f);
-    KRYS_EXPECT_EQUAL("Scalar Matrix Construction", scalar, (mat2x2_t<float>(2.0f, 0.0f, 0.0f, 2.0f)));
+    constexpr mat_t copy(scalar);
+    KRYS_EXPECT_EQUAL("Mat2x2 Copy Constructor", copy, scalar);
 
-    constexpr mat2x2_t<float> components({1.0f, 2.0f}, {3.0f, 4.0f});
-    KRYS_EXPECT_EQUAL("Component-wise Matrix Construction", components,
-                      (mat2x2_t<float>(1.0f, 2.0f, 3.0f, 4.0f)));
+    constexpr mat_t move_src(scalar);
+    constexpr mat_t move_dst(std::move(move_src));
+    KRYS_EXPECT_EQUAL("Mat2x2 Move Constructor", move_dst, scalar);
+  }
 
-    // Copy Construction
-    constexpr mat2x2_t<float> copy(components);
-    KRYS_EXPECT_EQUAL("Copy Constructor", copy, components);
+  static void Test_Mat2x2_Equality()
+  {
+    constexpr mat_t mat(1, 2, 3, 4);
+    constexpr mat_t unequal(2, 3, 4, 5);
 
-    // Move Construction
-    constexpr mat2x2_t<float> temp_move(components);
-    constexpr mat2x2_t<float> move(std::move(temp_move));
-    KRYS_EXPECT_EQUAL("Move Constructor", move, components);
+    KRYS_EXPECT_TRUE("Mat2x2 Equality Comparison - Equal", mat == mat);
+    KRYS_EXPECT_FALSE("Mat2x2 Equality Comparison - Not Equal", mat == unequal);
+    KRYS_EXPECT_TRUE("Mat2x2 Inequality Comparison - Not Equal", mat != unequal);
+  }
 
-    // Equality
-    constexpr mat2x2_t<float> unequal(2.0f, 3.0f, 4.0f, 5.0f);
-    KRYS_EXPECT_TRUE("Equality Comparison (Equal)", components == copy);
-    KRYS_EXPECT_FALSE("Equality Comparison (Not Equal)", components == unequal);
-    KRYS_EXPECT_TRUE("Inequality Comparison (Not Equal)", components != unequal);
+  static void Test_Mat2x2_ElementAccess()
+  {
+    constexpr mat_t mat(1, 2, 3, 4);
+    KRYS_EXPECT_EQUAL("Mat2x2 Element Access [0]", mat[0], Vec2(1, 2));
+    KRYS_EXPECT_EQUAL("Mat2x2 Element Access [1]", mat[1], Vec2(3, 4));
+  }
 
-    // Addition
-    constexpr mat2x2_t<float> sum = components + scalar;
-    KRYS_EXPECT_EQUAL("Matrix Addition", sum, (mat2x2_t<float>(3.0f, 2.0f, 3.0f, 6.0f)));
+  static void Test_Mat2x2_Unary()
+  {
+    KRYS_EXPECT_EQUAL("Mat2x2 Unary Negation", -mat_t(1, 2, 3, 4), mat_t(-1, -2, -3, -4));
+    KRYS_EXPECT_EQUAL("Mat2x2 Unary Plus", +mat_t(1, -2, 3, -4), mat_t(1, -2, 3, -4));
+  }
 
-    // Subtraction
-    constexpr mat2x2_t<float> diff = components - scalar;
-    KRYS_EXPECT_EQUAL("Matrix Subtraction", diff, (mat2x2_t<float>(-1.0f, 2.0f, 3.0f, 2.0f)));
+  static void Test_Mat2x2_Addition()
+  {
+    constexpr mat_t mat(1, 2, 3, 4);
 
-    // Multiplication
-    constexpr mat2x2_t<float> product = components * scalar;
-    KRYS_EXPECT_EQUAL("Matrix Scalar Multiplication", product, (mat2x2_t<float>(2.0f, 4.0f, 6.0f, 8.0f)));
+    KRYS_EXPECT_EQUAL("Mat2x2 Matrix Addition", mat + mat_t(9, 8, 7, 6), mat_t(10, 10, 10, 10));
+    KRYS_EXPECT_EQUAL("Mat2x2 Scalar Addition", mat + 9.0f, mat_t(10, 11, 12, 13));
+  }
 
-    constexpr mat2x2_t<float> mat_product = components * identity;
-    KRYS_EXPECT_EQUAL("Matrix Multiplication with Identity", mat_product, components);
+  static void Test_Mat2x2_Subtraction()
+  {
+    constexpr mat_t mat(1, 2, 3, 4);
 
-    // Division
-    constexpr mat2x2_t<float> quotient = components / 2.0f;
-    KRYS_EXPECT_EQUAL("Matrix Scalar Division", quotient, (mat2x2_t<float>(0.5f, 1.0f, 1.5f, 2.0f)));
+    KRYS_EXPECT_EQUAL("Mat2x2 Matrix Subtraction", mat - mat_t(3, 4, 5, 6), mat_t(-2, -2, -2, -2));
+    KRYS_EXPECT_EQUAL("Mat2x2 Scalar Subtraction", mat - 5.0f, mat_t(-4, -3, -2, -1));
+  }
 
-    // Negation
-    constexpr mat2x2_t<float> negated = -components;
-    KRYS_EXPECT_EQUAL("Matrix Negation", negated, (mat2x2_t<float>(-1.0f, -2.0f, -3.0f, -4.0f)));
+  static void Test_Mat2x2_Multiplication()
+  {
+    constexpr mat_t mat(1, 2, 3, 4);
+    KRYS_EXPECT_EQUAL("Mat2x2 Scalar Multiplication", mat * 2.0f, mat_t(2, 4, 6, 8));
+  }
 
-    // Element Access
-    constexpr auto col0 = components[0];
-    constexpr auto col1 = components[1];
-    KRYS_EXPECT_EQUAL("Element Access (Column 0)", col0, (mat2x2_t<float>::column_t(1.0f, 2.0f)));
-    KRYS_EXPECT_EQUAL("Element Access (Column 1)", col1, (mat2x2_t<float>::column_t(3.0f, 4.0f)));
+  static void Test_Mat2x2_Division()
+  {
+    constexpr mat_t mat(1, 2, 3, 4);
+    KRYS_EXPECT_EQUAL("Mat2x2 Scalar Division", mat / 2.0f, mat_t(0.5f, 1.0f, 1.5f, 2.0f));
   }
 }

@@ -3,86 +3,84 @@
 
 namespace Krys::Tests
 {
-  using namespace Krys::MTL;
+  using mat_t = Krys::mat4x4_t<float>;
 
-  static void Test_Mat4x4()
+  static void Test_Mat4x4_Constructors()
   {
-    // Construction
-    constexpr mat4x4_t<float> identity = mat4x4_t<float>(1);
-    KRYS_EXPECT_EQUAL("Identity Matrix Construction", identity,
-                      (mat4x4_t<float>(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-                                       0.0f, 0.0f, 0.0f, 1.0f)));
+    constexpr mat_t scalar(1);
+    KRYS_EXPECT_EQUAL("Mat4x4 Scalar Constructor", scalar,
+                      mat_t({1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}));
 
-    constexpr mat4x4_t<float> scalar(2.0f);
-    KRYS_EXPECT_EQUAL("Scalar Matrix Construction", scalar,
-                      (mat4x4_t<float>(2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f,
-                                       0.0f, 0.0f, 0.0f, 2.0f)));
+    constexpr mat_t copy(scalar);
+    KRYS_EXPECT_EQUAL("Mat4x4 Copy Constructor", copy, scalar);
 
-    constexpr mat4x4_t<float> components(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f,
-                                         12.0f, 13.0f, 14.0f, 15.0f, 16.0f);
-    KRYS_EXPECT_EQUAL("Component-wise Matrix Construction", components,
-                      (mat4x4_t<float>(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f,
-                                       12.0f, 13.0f, 14.0f, 15.0f, 16.0f)));
+    constexpr mat_t move_src(scalar);
+    constexpr mat_t move_dst(std::move(move_src));
+    KRYS_EXPECT_EQUAL("Mat4x4 Move Constructor", move_dst, scalar);
+  }
 
-    // Copy Construction
-    constexpr mat4x4_t<float> copy(components);
-    KRYS_EXPECT_EQUAL("Copy Constructor", copy, components);
+  static void Test_Mat4x4_Equality()
+  {
+    constexpr mat_t mat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+    constexpr mat_t unequal(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
 
-    // Move Construction
-    constexpr mat4x4_t<float> temp_move(components);
-    constexpr mat4x4_t<float> move(std::move(temp_move));
-    KRYS_EXPECT_EQUAL("Move Constructor", move, components);
+    KRYS_EXPECT_TRUE("Mat4x4 Equality Comparison - Equal", mat == mat);
+    KRYS_EXPECT_FALSE("Mat4x4 Equality Comparison - Not Equal", mat == unequal);
+    KRYS_EXPECT_TRUE("Mat4x4 Inequality Comparison - Not Equal", mat != unequal);
+  }
 
-    // Equality
-    constexpr mat4x4_t<float> unequal(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f,
-                                      13.0f, 14.0f, 15.0f, 16.0f, 17.0f);
-    KRYS_EXPECT_TRUE("Equality Comparison (Equal)", components == copy);
-    KRYS_EXPECT_FALSE("Equality Comparison (Not Equal)", components == unequal);
-    KRYS_EXPECT_TRUE("Inequality Comparison (Not Equal)", components != unequal);
+  static void Test_Mat4x4_ElementAccess()
+  {
+    constexpr mat_t mat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+    KRYS_EXPECT_EQUAL("Mat4x4 Element Access [0]", mat[0], Vec4(1, 2, 3, 4));
+    KRYS_EXPECT_EQUAL("Mat4x4 Element Access [1]", mat[1], Vec4(5, 6, 7, 8));
+    KRYS_EXPECT_EQUAL("Mat4x4 Element Access [2]", mat[2], Vec4(9, 10, 11, 12));
+    KRYS_EXPECT_EQUAL("Mat4x4 Element Access [3]", mat[3], Vec4(13, 14, 15, 16));
+  }
 
-    // Addition
-    constexpr mat4x4_t<float> sum = components + scalar;
-    KRYS_EXPECT_EQUAL("Matrix Addition", sum,
-                      (mat4x4_t<float>(3.0f, 2.0f, 3.0f, 4.0f, 5.0f, 8.0f, 7.0f, 8.0f, 9.0f, 10.0f, 13.0f,
-                                       12.0f, 13.0f, 14.0f, 15.0f, 18.0f)));
+  static void Test_Mat4x4_Unary()
+  {
+    KRYS_EXPECT_EQUAL("Mat4x4 Unary Negation", -mat_t(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+                      mat_t(-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16));
+    KRYS_EXPECT_EQUAL("Mat4x4 Unary Plus",
+                      +mat_t(1, -2, 3, -4, 5, -6, 7, -8, 9, 10, 11, -12, -13, -14, 15, 16),
+                      mat_t(1, -2, 3, -4, 5, -6, 7, -8, 9, 10, 11, -12, -13, -14, 15, 16));
+  }
 
-    // Subtraction
-    constexpr mat4x4_t<float> diff = components - scalar;
-    KRYS_EXPECT_EQUAL("Matrix Subtraction", diff,
-                      (mat4x4_t<float>(-1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 4.0f, 7.0f, 8.0f, 9.0f, 10.0f, 9.0f,
-                                       12.0f, 13.0f, 14.0f, 15.0f, 14.0f)));
+  static void Test_Mat4x4_Addition()
+  {
+    constexpr mat_t mat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
-    // Multiplication
-    constexpr mat4x4_t<float> product = components * 2.0f;
-    KRYS_EXPECT_EQUAL("Matrix Scalar Multiplication", product,
-                      (mat4x4_t<float>(2.0f, 4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f, 20.0f,
-                                       22.0f, 24.0f, 26.0f, 28.0f, 30.0f, 32.0f)));
+    KRYS_EXPECT_EQUAL("Mat4x4 Matrix Addition",
+                      mat + mat_t(9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6),
+                      mat_t(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10));
+    KRYS_EXPECT_EQUAL("Mat4x4 Scalar Addition", mat + 9.0f,
+                      mat_t(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25));
+  }
 
-    constexpr mat4x4_t<float> mat_product = components * identity;
-    KRYS_EXPECT_EQUAL("Matrix Multiplication with Identity", mat_product, components);
+  static void Test_Mat4x4_Subtraction()
+  {
+    constexpr mat_t mat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
-    // Division
-    constexpr mat4x4_t<float> quotient = components / 2.0f;
-    KRYS_EXPECT_EQUAL("Matrix Scalar Division", quotient,
-                      (mat4x4_t<float>(0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f,
-                                       6.5f, 7.0f, 7.5f, 8.0f)));
+    KRYS_EXPECT_EQUAL("Mat4x4 Matrix Subtraction",
+                      mat - mat_t(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18),
+                      mat_t(-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2));
+    KRYS_EXPECT_EQUAL("Mat4x4 Scalar Subtraction", mat - 5.0f,
+                      mat_t(-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
+  }
 
-    // Negation
-    constexpr mat4x4_t<float> negated = -components;
-    KRYS_EXPECT_EQUAL("Matrix Negation", negated,
-                      (mat4x4_t<float>(-1.0f, -2.0f, -3.0f, -4.0f, -5.0f, -6.0f, -7.0f, -8.0f, -9.0f, -10.0f,
-                                       -11.0f, -12.0f, -13.0f, -14.0f, -15.0f, -16.0f)));
+  static void Test_Mat4x4_Multiplication()
+  {
+    constexpr mat_t mat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+    KRYS_EXPECT_EQUAL("Mat4x4 Scalar Multiplication", mat * 2.0f,
+                      mat_t(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32));
+  }
 
-    // Element Access
-    constexpr auto col0 = components[0];
-    constexpr auto col1 = components[1];
-    constexpr auto col2 = components[2];
-    constexpr auto col3 = components[3];
-    KRYS_EXPECT_EQUAL("Element Access (Column 0)", col0, (mat4x4_t<float>::column_t(1.0f, 2.0f, 3.0f, 4.0f)));
-    KRYS_EXPECT_EQUAL("Element Access (Column 1)", col1, (mat4x4_t<float>::column_t(5.0f, 6.0f, 7.0f, 8.0f)));
-    KRYS_EXPECT_EQUAL("Element Access (Column 2)", col2,
-                      (mat4x4_t<float>::column_t(9.0f, 10.0f, 11.0f, 12.0f)));
-    KRYS_EXPECT_EQUAL("Element Access (Column 3)", col3,
-                      (mat4x4_t<float>::column_t(13.0f, 14.0f, 15.0f, 16.0f)));
+  static void Test_Mat4x4_Division()
+  {
+    constexpr mat_t mat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+    KRYS_EXPECT_EQUAL(
+      "Mat4x4 Scalar Division", mat / 2.0f,
+      mat_t(0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f, 8.0f));
   }
 }
