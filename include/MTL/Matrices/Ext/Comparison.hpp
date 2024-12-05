@@ -4,6 +4,7 @@
 #include "Base/Concepts.hpp"
 #include "MTL/Matrices/Base.hpp"
 #include "MTL/Matrices/Ext/Algorithms.hpp"
+#include "MTL/Matrices/Ext/Predicate.hpp"
 
 namespace Krys::MTL
 {
