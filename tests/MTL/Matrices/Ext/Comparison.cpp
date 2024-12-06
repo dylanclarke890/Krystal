@@ -74,31 +74,31 @@ namespace Krys::Tests
   static void Test_Mat2x4_Comparison()
   {
     using res_t = mat2x4_t<bool>;
-    constexpr Mat2x4 a {1, 2, 3, 4, 3, 2};
-    constexpr Mat2x4 b {1, 2, 4, 3, 2, 3};
+    constexpr Mat2x4 a {1, 2, 3, 4, 3, 2, 4, 7};
+    constexpr Mat2x4 b {1, 2, 4, 3, 2, 3, 5, 6};
 
     KRYS_EXPECT_EQUAL("Comparison (LT) Mat2x4-Mat2x4", LessThan(a, b),
-                      res_t(false, false, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LT) Mat2x4-Scalar", LessThan(a, 5.0f));
+                      res_t(false, false, true, false, false, true, true, false));
+    KRYS_EXPECT_FALSE("Comparison (LT) Mat2x4-Scalar", LessThan(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (LE) Mat2x4-Mat2x4", LessThanOrEqual(a, b),
-                      res_t(true, true, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LE) Mat2x4-Scalar", LessThanOrEqual(a, 5.0f));
+                      res_t(true, true, true, false, false, true, true, false));
+    KRYS_EXPECT_FALSE("Comparison (LE) Mat2x4-Scalar", LessThanOrEqual(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (EQ) Mat2x4-Mat2x4", Equal(a, b),
-                      res_t(true, true, false, false, false, false));
+                      res_t(true, true, false, false, false, false, false, false));
     KRYS_EXPECT_FALSE("Comparison (EQ) Mat2x4-Scalar", Equal(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (NE) Mat2x4-Mat2x4", NotEqual(a, b),
-                      res_t(false, false, true, true, true, true));
+                      res_t(false, false, true, true, true, true, true, true));
     KRYS_EXPECT_TRUE("Comparison (NE) Mat2x4-Scalar", NotEqual(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (GT) Mat2x4-Mat2x4", GreaterThan(a, b),
-                      res_t(false, false, false, true, true, false));
+                      res_t(false, false, false, true, true, false, false, true));
     KRYS_EXPECT_FALSE("Comparison (GT) Mat2x4-Scalar", GreaterThan(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (GE) Mat2x4-Mat2x4", GreaterThanOrEqual(a, b),
-                      res_t(true, true, false, true, true, false));
+                      res_t(true, true, false, true, true, false, false, true));
     KRYS_EXPECT_FALSE("Comparison (GE) Mat2x4-Scalar", GreaterThanOrEqual(a, 5.0f));
   }
 
@@ -136,155 +136,163 @@ namespace Krys::Tests
   static void Test_Mat3x3_Comparison()
   {
     using res_t = mat3x3_t<bool>;
-    constexpr Mat3x3 a {1, 2, 3, 4, 3, 2};
-    constexpr Mat3x3 b {1, 2, 4, 3, 2, 3};
+    constexpr Mat3x3 a {1, 2, 3, 4, 3, 2, 1, 2, 3};
+    constexpr Mat3x3 b {1, 2, 4, 3, 2, 3, 1, 2, 4};
 
     KRYS_EXPECT_EQUAL("Comparison (LT) Mat3x3-Mat3x3", LessThan(a, b),
-                      res_t(false, false, true, false, false, true));
+                      res_t(false, false, true, false, false, true, false, false, true));
     KRYS_EXPECT_TRUE("Comparison (LT) Mat3x3-Scalar", LessThan(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (LE) Mat3x3-Mat3x3", LessThanOrEqual(a, b),
-                      res_t(true, true, true, false, false, true));
+                      res_t(true, true, true, false, false, true, true, true, true));
     KRYS_EXPECT_TRUE("Comparison (LE) Mat3x3-Scalar", LessThanOrEqual(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (EQ) Mat3x3-Mat3x3", Equal(a, b),
-                      res_t(true, true, false, false, false, false));
+                      res_t(true, true, false, false, false, false, true, true, false));
     KRYS_EXPECT_FALSE("Comparison (EQ) Mat3x3-Scalar", Equal(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (NE) Mat3x3-Mat3x3", NotEqual(a, b),
-                      res_t(false, false, true, true, true, true));
+                      res_t(false, false, true, true, true, true, false, false, true));
     KRYS_EXPECT_TRUE("Comparison (NE) Mat3x3-Scalar", NotEqual(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (GT) Mat3x3-Mat3x3", GreaterThan(a, b),
-                      res_t(false, false, false, true, true, false));
+                      res_t(false, false, false, true, true, false, false, false, false));
     KRYS_EXPECT_FALSE("Comparison (GT) Mat3x3-Scalar", GreaterThan(a, 5.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (GE) Mat3x3-Mat3x3", GreaterThanOrEqual(a, b),
-                      res_t(true, true, false, true, true, false));
+                      res_t(true, true, false, true, true, false, true, true, false));
     KRYS_EXPECT_FALSE("Comparison (GE) Mat3x3-Scalar", GreaterThanOrEqual(a, 5.0f));
   }
 
   static void Test_Mat3x4_Comparison()
   {
     using res_t = mat3x4_t<bool>;
-    constexpr Mat3x4 a {1, 2, 3, 4, 3, 2};
-    constexpr Mat3x4 b {1, 2, 4, 3, 2, 3};
+    constexpr Mat3x4 a {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    constexpr Mat3x4 b {2, 3, 4, 5, 4, 5, 6, 7, 8, 9, 10, 11};
 
     KRYS_EXPECT_EQUAL("Comparison (LT) Mat3x4-Mat3x4", LessThan(a, b),
-                      res_t(false, false, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LT) Mat3x4-Scalar", LessThan(a, 5.0f));
+                      res_t(true, true, true, true, false, false, false, false, false, false, false, false));
+    KRYS_EXPECT_TRUE("Comparison (LT) Mat3x4-Scalar", LessThan(a, 15.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (LE) Mat3x4-Mat3x4", LessThanOrEqual(a, b),
-                      res_t(true, true, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LE) Mat3x4-Scalar", LessThanOrEqual(a, 5.0f));
+                      res_t(true, true, true, true, false, false, false, false, false, false, false, false));
+    KRYS_EXPECT_TRUE("Comparison (LE) Mat3x4-Scalar", LessThanOrEqual(a, 15.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (EQ) Mat3x4-Mat3x4", Equal(a, b),
-                      res_t(true, true, false, false, false, false));
-    KRYS_EXPECT_FALSE("Comparison (EQ) Mat3x4-Scalar", Equal(a, 5.0f));
+    KRYS_EXPECT_EQUAL(
+      "Comparison (EQ) Mat3x4-Mat3x4", Equal(a, b),
+      res_t(false, false, false, false, false, false, false, false, false, false, false, false));
+    KRYS_EXPECT_FALSE("Comparison (EQ) Mat3x4-Scalar", Equal(a, 15.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (NE) Mat3x4-Mat3x4", NotEqual(a, b),
-                      res_t(false, false, true, true, true, true));
-    KRYS_EXPECT_TRUE("Comparison (NE) Mat3x4-Scalar", NotEqual(a, 5.0f));
+                      res_t(true, true, true, true, true, true, true, true, true, true, true, true));
+    KRYS_EXPECT_TRUE("Comparison (NE) Mat3x4-Scalar", NotEqual(a, 15.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (GT) Mat3x4-Mat3x4", GreaterThan(a, b),
-                      res_t(false, false, false, true, true, false));
-    KRYS_EXPECT_FALSE("Comparison (GT) Mat3x4-Scalar", GreaterThan(a, 5.0f));
+                      res_t(false, false, false, false, true, true, true, true, true, true, true, true));
+    KRYS_EXPECT_FALSE("Comparison (GT) Mat3x4-Scalar", GreaterThan(a, 15.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (GE) Mat3x4-Mat3x4", GreaterThanOrEqual(a, b),
-                      res_t(true, true, false, true, true, false));
-    KRYS_EXPECT_FALSE("Comparison (GE) Mat3x4-Scalar", GreaterThanOrEqual(a, 5.0f));
+                      res_t(false, false, false, false, true, true, true, true, true, true, true, true));
+    KRYS_EXPECT_FALSE("Comparison (GE) Mat3x4-Scalar", GreaterThanOrEqual(a, 15.0f));
   }
 
   static void Test_Mat4x2_Comparison()
   {
     using res_t = mat4x2_t<bool>;
-    constexpr Mat4x2 a {1, 2, 3, 4, 3, 2};
-    constexpr Mat4x2 b {1, 2, 4, 3, 2, 3};
+    constexpr Mat4x2 a {1, 2, 3, 4, 3, 2, 4, 7};
+    constexpr Mat4x2 b {1, 2, 4, 3, 2, 3, 5, 6};
 
-    KRYS_EXPECT_EQUAL("Comparison (LT) Mat4x2-Mat4x2", LessThan(a, b),
-                      res_t(false, false, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LT) Mat4x2-Scalar", LessThan(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (LT) Mat2x4-Mat2x4", LessThan(a, b),
+                      res_t(false, false, true, false, false, true, true, false));
+    KRYS_EXPECT_FALSE("Comparison (LT) Mat2x4-Scalar", LessThan(a, 5.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (LE) Mat4x2-Mat4x2", LessThanOrEqual(a, b),
-                      res_t(true, true, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LE) Mat4x2-Scalar", LessThanOrEqual(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (LE) Mat2x4-Mat2x4", LessThanOrEqual(a, b),
+                      res_t(true, true, true, false, false, true, true, false));
+    KRYS_EXPECT_FALSE("Comparison (LE) Mat2x4-Scalar", LessThanOrEqual(a, 5.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (EQ) Mat4x2-Mat4x2", Equal(a, b),
-                      res_t(true, true, false, false, false, false));
-    KRYS_EXPECT_FALSE("Comparison (EQ) Mat4x2-Scalar", Equal(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (EQ) Mat2x4-Mat2x4", Equal(a, b),
+                      res_t(true, true, false, false, false, false, false, false));
+    KRYS_EXPECT_FALSE("Comparison (EQ) Mat2x4-Scalar", Equal(a, 5.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (NE) Mat4x2-Mat4x2", NotEqual(a, b),
-                      res_t(false, false, true, true, true, true));
-    KRYS_EXPECT_TRUE("Comparison (NE) Mat4x2-Scalar", NotEqual(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (NE) Mat2x4-Mat2x4", NotEqual(a, b),
+                      res_t(false, false, true, true, true, true, true, true));
+    KRYS_EXPECT_TRUE("Comparison (NE) Mat2x4-Scalar", NotEqual(a, 5.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (GT) Mat4x2-Mat4x2", GreaterThan(a, b),
-                      res_t(false, false, false, true, true, false));
-    KRYS_EXPECT_FALSE("Comparison (GT) Mat4x2-Scalar", GreaterThan(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (GT) Mat2x4-Mat2x4", GreaterThan(a, b),
+                      res_t(false, false, false, true, true, false, false, true));
+    KRYS_EXPECT_FALSE("Comparison (GT) Mat2x4-Scalar", GreaterThan(a, 5.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (GE) Mat4x2-Mat4x2", GreaterThanOrEqual(a, b),
-                      res_t(true, true, false, true, true, false));
-    KRYS_EXPECT_FALSE("Comparison (GE) Mat4x2-Scalar", GreaterThanOrEqual(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (GE) Mat2x4-Mat2x4", GreaterThanOrEqual(a, b),
+                      res_t(true, true, false, true, true, false, false, true));
+    KRYS_EXPECT_FALSE("Comparison (GE) Mat2x4-Scalar", GreaterThanOrEqual(a, 5.0f));
   }
 
   static void Test_Mat4x3_Comparison()
   {
-    using res_t = mat2x4_t<bool>;
-    constexpr Mat2x4 a {1, 2, 3, 4, 3, 2};
-    constexpr Mat2x4 b {1, 2, 4, 3, 2, 3};
+    using res_t = mat4x3_t<bool>;
+    constexpr Mat4x3 a {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    constexpr Mat4x3 b {2, 3, 4, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-    KRYS_EXPECT_EQUAL("Comparison (LT) Mat2x4-Mat2x4", LessThan(a, b),
-                      res_t(false, false, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LT) Mat2x4-Scalar", LessThan(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (LT) Mat4x3-Mat4x3", LessThan(a, b),
+                      res_t(true, true, true, false, false, false, false, false, false, false, false, false));
+    KRYS_EXPECT_TRUE("Comparison (LT) Mat4x3-Scalar", LessThan(a, 15.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (LE) Mat2x4-Mat2x4", LessThanOrEqual(a, b),
-                      res_t(true, true, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LE) Mat2x4-Scalar", LessThanOrEqual(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (LE) Mat4x3-Mat4x3", LessThanOrEqual(a, b),
+                      res_t(true, true, true, false, false, false, false, false, false, false, false, false));
+    KRYS_EXPECT_TRUE("Comparison (LE) Mat4x3-Scalar", LessThanOrEqual(a, 15.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (EQ) Mat2x4-Mat2x4", Equal(a, b),
-                      res_t(true, true, false, false, false, false));
-    KRYS_EXPECT_FALSE("Comparison (EQ) Mat2x4-Scalar", Equal(a, 5.0f));
+    KRYS_EXPECT_EQUAL(
+      "Comparison (EQ) Mat4x3-Mat4x3", Equal(a, b),
+      res_t(false, false, false, false, false, false, false, false, false, false, false, false));
+    KRYS_EXPECT_FALSE("Comparison (EQ) Mat4x3-Scalar", Equal(a, 15.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (NE) Mat2x4-Mat2x4", NotEqual(a, b),
-                      res_t(false, false, true, true, true, true));
-    KRYS_EXPECT_TRUE("Comparison (NE) Mat2x4-Scalar", NotEqual(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (NE) Mat4x3-Mat4x3", NotEqual(a, b),
+                      res_t(true, true, true, true, true, true, true, true, true, true, true, true));
+    KRYS_EXPECT_TRUE("Comparison (NE) Mat4x3-Scalar", NotEqual(a, 15.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (GT) Mat2x4-Mat2x4", GreaterThan(a, b),
-                      res_t(false, false, false, true, true, false));
-    KRYS_EXPECT_FALSE("Comparison (GT) Mat2x4-Scalar", GreaterThan(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (GT) Mat4x3-Mat4x3", GreaterThan(a, b),
+                      res_t(false, false, false, true, true, true, true, true, true, true, true, true));
+    KRYS_EXPECT_FALSE("Comparison (GT) Mat4x3-Scalar", GreaterThan(a, 15.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (GE) Mat2x4-Mat2x4", GreaterThanOrEqual(a, b),
-                      res_t(true, true, false, true, true, false));
-    KRYS_EXPECT_FALSE("Comparison (GE) Mat2x4-Scalar", GreaterThanOrEqual(a, 5.0f));
+    KRYS_EXPECT_EQUAL("Comparison (GE) Mat4x3-Mat4x3", GreaterThanOrEqual(a, b),
+                      res_t(false, false, false, true, true, true, true, true, true, true, true, true));
+    KRYS_EXPECT_FALSE("Comparison (GE) Mat4x3-Scalar", GreaterThanOrEqual(a, 15.0f));
   }
 
   static void Test_Mat4x4_Comparison()
   {
     using res_t = mat4x4_t<bool>;
-    constexpr Mat4x4 a {1, 2, 3, 4, 3, 2};
-    constexpr Mat4x4 b {1, 2, 4, 3, 2, 3};
+    constexpr Mat4x4 a {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+    constexpr Mat4x4 b {{2, 3, 4, 5}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15}};
 
     KRYS_EXPECT_EQUAL("Comparison (LT) Mat4x4-Mat4x4", LessThan(a, b),
-                      res_t(false, false, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LT) Mat4x4-Scalar", LessThan(a, 5.0f));
+                      res_t(true, true, true, true, false, false, false, false, false, false, false, false,
+                            false, false, false, false));
+    KRYS_EXPECT_TRUE("Comparison (LT) Mat4x4-Scalar", LessThan(a, 20.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (LE) Mat4x4-Mat4x4", LessThanOrEqual(a, b),
-                      res_t(true, true, true, false, false, true));
-    KRYS_EXPECT_TRUE("Comparison (LE) Mat4x4-Scalar", LessThanOrEqual(a, 5.0f));
+                      res_t(true, true, true, true, false, false, false, false, false, false, false, false,
+                            false, false, false, false));
+    KRYS_EXPECT_TRUE("Comparison (LE) Mat4x4-Scalar", LessThanOrEqual(a, 20.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (EQ) Mat4x4-Mat4x4", Equal(a, b),
-                      res_t(true, true, false, false, false, false));
-    KRYS_EXPECT_FALSE("Comparison (EQ) Mat4x4-Scalar", Equal(a, 5.0f));
+                      res_t(false, false, false, false, false, false, false, false, false, false, false,
+                            false, false, false, false, false));
+    KRYS_EXPECT_FALSE("Comparison (EQ) Mat4x4-Scalar", Equal(a, 20.0f));
 
-    KRYS_EXPECT_EQUAL("Comparison (NE) Mat4x4-Mat4x4", NotEqual(a, b),
-                      res_t(false, false, true, true, true, true));
-    KRYS_EXPECT_TRUE("Comparison (NE) Mat4x4-Scalar", NotEqual(a, 5.0f));
+    KRYS_EXPECT_EQUAL(
+      "Comparison (NE) Mat4x4-Mat4x4", NotEqual(a, b),
+      res_t(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true));
+    KRYS_EXPECT_TRUE("Comparison (NE) Mat4x4-Scalar", NotEqual(a, 20.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (GT) Mat4x4-Mat4x4", GreaterThan(a, b),
-                      res_t(false, false, false, true, true, false));
-    KRYS_EXPECT_FALSE("Comparison (GT) Mat4x4-Scalar", GreaterThan(a, 5.0f));
+                      res_t(false, false, false, false, true, true, true, true, true, true, true, true, true,
+                            true, true, true));
+    KRYS_EXPECT_FALSE("Comparison (GT) Mat4x4-Scalar", GreaterThan(a, 20.0f));
 
     KRYS_EXPECT_EQUAL("Comparison (GE) Mat4x4-Mat4x4", GreaterThanOrEqual(a, b),
-                      res_t(true, true, false, true, true, false));
-    KRYS_EXPECT_FALSE("Comparison (GE) Mat4x4-Scalar", GreaterThanOrEqual(a, 5.0f));
+                      res_t(false, false, false, false, true, true, true, true, true, true, true, true, true,
+                            true, true, true));
+    KRYS_EXPECT_FALSE("Comparison (GE) Mat4x4-Scalar", GreaterThanOrEqual(a, 20.0f));
   }
 }

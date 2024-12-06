@@ -15,6 +15,8 @@ namespace Krys::MTL
   NO_DISCARD constexpr auto
     Inverse(const matrix_t<TComponent, RL, CL> &m) noexcept -> matrix_t<TComponent, RL, CL>
   {
+    KRYS_STATIC_ASSERT_SQUARE_MATRIX(RL, CL);
+    
     if constexpr (RL == 2 && CL == 2)
     {
       TComponent oneOverDeterminant = TComponent(1) / (m[0].x * m[1].y - m[1].x * m[0].y);
@@ -33,7 +35,5 @@ namespace Krys::MTL
       return matrix_t<TComponent, 4, 4>(m[0] / oneOverDeterminant, m[1] / oneOverDeterminant,
                                         m[2] / oneOverDeterminant, m[3] / oneOverDeterminant);
     }
-    else
-      static_assert(false, "'Inverse' is only supported for square matrices.");
   }
 }

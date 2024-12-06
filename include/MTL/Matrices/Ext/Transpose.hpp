@@ -14,7 +14,8 @@ namespace Krys::MTL
   NO_DISCARD constexpr auto
     Transpose(const matrix_t<TComponent, RL, CL> &m) noexcept -> matrix_t<TComponent, CL, RL>
   {
-    static_assert(CL <= 4 && RL <= 4, "Unsupported number of cols/rows.");
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     using transpose_t = matrix_t<TComponent, RL, CL>::transpose_t;
     using col_t = transpose_t::column_t;
 

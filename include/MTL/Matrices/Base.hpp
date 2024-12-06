@@ -20,4 +20,11 @@ namespace Krys::MTL
          { mat.GetColLength() } -> std::same_as<vec_length_t>;
          { mat.GetRowLength() } -> std::same_as<vec_length_t>;
        };
+
+#define KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL)                                                               \
+  static_assert(RL >= 2 && RL <= 4 && CL >= 2 && CL <= 4, "Matrix must be between 2x2 and 4x4.")
+
+#define KRYS_STATIC_ASSERT_SQUARE_MATRIX(RL, CL)                                                             \
+  KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);                                                                    \
+  static_assert(RL == CL, "Matrix must be square.");
 }

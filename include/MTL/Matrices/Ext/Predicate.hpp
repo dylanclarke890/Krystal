@@ -17,19 +17,57 @@ namespace Krys::MTL
             IsPredicateCallableT<TComponent> TFunc>
   constexpr bool AnyOf(const matrix_t<TComponent, RL, CL> &v, TFunc predicate) noexcept
   {
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     if constexpr (RL == 2 && CL == 2)
+    {
       return predicate(v[0].x) || predicate(v[0].y) || predicate(v[1].x) || predicate(v[1].y);
+    }
+    else if constexpr (RL == 2 && CL == 3)
+    {
+      return predicate(v[0].x) || predicate(v[0].y) || predicate(v[1].x) || predicate(v[1].y)
+             || predicate(v[2].x) || predicate(v[2].y);
+    }
+    else if constexpr (RL == 2 && CL == 4)
+    {
+      return predicate(v[0].x) || predicate(v[0].y) || predicate(v[1].x) || predicate(v[1].y)
+             || predicate(v[2].x) || predicate(v[2].y) || predicate(v[3].x) || predicate(v[3].y);
+    }
+    else if constexpr (RL == 3 && CL == 2)
+    {
+      return predicate(v[0].x) || predicate(v[0].y) || predicate(v[0].z) || predicate(v[1].x)
+             || predicate(v[1].y) || predicate(v[1].z);
+    }
     else if constexpr (RL == 3 && CL == 3)
+    {
       return predicate(v[0].x) || predicate(v[0].y) || predicate(v[0].z) || predicate(v[1].x)
              || predicate(v[1].y) || predicate(v[1].z) || predicate(v[2].x) || predicate(v[2].y)
              || predicate(v[2].z);
+    }
+    else if constexpr (RL == 3 && CL == 4)
+    {
+      return predicate(v[0].x) || predicate(v[0].y) || predicate(v[0].z) || predicate(v[1].x)
+             || predicate(v[1].y) || predicate(v[1].z) || predicate(v[2].x) || predicate(v[2].y)
+             || predicate(v[2].z) || predicate(v[3].x) || predicate(v[3].y) || predicate(v[3].z);
+    }
+    else if constexpr (RL == 4 && CL == 2)
+    {
+      return predicate(v[0].x) || predicate(v[0].y) || predicate(v[0].z) || predicate(v[0].w)
+             || predicate(v[1].x) || predicate(v[1].y) || predicate(v[1].z) || predicate(v[1].w);
+    }
+    else if constexpr (RL == 4 && CL == 3)
+    {
+      return predicate(v[0].x) || predicate(v[0].y) || predicate(v[0].z) || predicate(v[0].w)
+             || predicate(v[1].x) || predicate(v[1].y) || predicate(v[1].z) || predicate(v[1].w)
+             || predicate(v[2].x) || predicate(v[2].y) || predicate(v[2].z) || predicate(v[2].w);
+    }
     else if constexpr (RL == 4 && CL == 4)
+    {
       return predicate(v[0].x) || predicate(v[0].y) || predicate(v[0].z) || predicate(v[0].w)
              || predicate(v[1].x) || predicate(v[1].y) || predicate(v[1].z) || predicate(v[1].w)
              || predicate(v[2].x) || predicate(v[2].y) || predicate(v[2].z) || predicate(v[2].w)
              || predicate(v[3].x) || predicate(v[3].y) || predicate(v[3].z) || predicate(v[3].w);
-    else
-      static_assert(false, "Unsupported number of components");
+    }
   }
 
   /// @brief Checks if all of the components in `v` satisfy the predicate.
@@ -42,19 +80,57 @@ namespace Krys::MTL
             IsPredicateCallableT<TComponent> TFunc>
   constexpr bool AllOf(const matrix_t<TComponent, RL, CL> &v, TFunc predicate) noexcept
   {
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     if constexpr (RL == 2 && CL == 2)
+    {
       return predicate(v[0].x) && predicate(v[0].y) && predicate(v[1].x) && predicate(v[1].y);
+    }
+    else if constexpr (RL == 2 && CL == 3)
+    {
+      return predicate(v[0].x) && predicate(v[0].y) && predicate(v[1].x) && predicate(v[1].y)
+             && predicate(v[2].x) && predicate(v[2].y);
+    }
+    else if constexpr (RL == 2 && CL == 4)
+    {
+      return predicate(v[0].x) && predicate(v[0].y) && predicate(v[1].x) && predicate(v[1].y)
+             && predicate(v[2].x) && predicate(v[2].y) && predicate(v[3].x) && predicate(v[3].y);
+    }
+    else if constexpr (RL == 3 && CL == 2)
+    {
+      return predicate(v[0].x) && predicate(v[0].y) && predicate(v[0].z) && predicate(v[1].x)
+             && predicate(v[1].y) && predicate(v[1].z);
+    }
     else if constexpr (RL == 3 && CL == 3)
+    {
       return predicate(v[0].x) && predicate(v[0].y) && predicate(v[0].z) && predicate(v[1].x)
              && predicate(v[1].y) && predicate(v[1].z) && predicate(v[2].x) && predicate(v[2].y)
              && predicate(v[2].z);
+    }
+    else if constexpr (RL == 3 && CL == 4)
+    {
+      return predicate(v[0].x) && predicate(v[0].y) && predicate(v[0].z) && predicate(v[1].x)
+             && predicate(v[1].y) && predicate(v[1].z) && predicate(v[2].x) && predicate(v[2].y)
+             && predicate(v[2].z) && predicate(v[3].x) && predicate(v[3].y) && predicate(v[3].z);
+    }
+    else if constexpr (RL == 4 && CL == 2)
+    {
+      return predicate(v[0].x) && predicate(v[0].y) && predicate(v[0].z) && predicate(v[0].w)
+             && predicate(v[1].x) && predicate(v[1].y) && predicate(v[1].z) && predicate(v[1].w);
+    }
+    else if constexpr (RL == 4 && CL == 3)
+    {
+      return predicate(v[0].x) && predicate(v[0].y) && predicate(v[0].z) && predicate(v[0].w)
+             && predicate(v[1].x) && predicate(v[1].y) && predicate(v[1].z) && predicate(v[1].w)
+             && predicate(v[2].x) && predicate(v[2].y) && predicate(v[2].z) && predicate(v[2].w);
+    }
     else if constexpr (RL == 4 && CL == 4)
+    {
       return predicate(v[0].x) && predicate(v[0].y) && predicate(v[0].z) && predicate(v[0].w)
              && predicate(v[1].x) && predicate(v[1].y) && predicate(v[1].z) && predicate(v[1].w)
              && predicate(v[2].x) && predicate(v[2].y) && predicate(v[2].z) && predicate(v[2].w)
              && predicate(v[3].x) && predicate(v[3].y) && predicate(v[3].z) && predicate(v[3].w);
-    else
-      static_assert(false, "Unsupported number of components");
+    }
   }
 
   /// @brief Checks if none of the components in `v` satisfy the predicate.
@@ -67,18 +143,56 @@ namespace Krys::MTL
             IsPredicateCallableT<TComponent> TFunc>
   constexpr bool NoneOf(const matrix_t<TComponent, RL, CL> &v, TFunc predicate) noexcept
   {
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     if constexpr (RL == 2 && CL == 2)
+    {
       return !predicate(v[0].x) && !predicate(v[0].y) && !predicate(v[1].x) && !predicate(v[1].y);
+    }
+    else if constexpr (RL == 2 && CL == 3)
+    {
+      return !predicate(v[0].x) && !predicate(v[0].y) && !predicate(v[1].x) && !predicate(v[1].y)
+             && !predicate(v[2].x) && !predicate(v[2].y);
+    }
+    else if constexpr (RL == 2 && CL == 4)
+    {
+      return !predicate(v[0].x) && !predicate(v[0].y) && !predicate(v[1].x) && !predicate(v[1].y)
+             && !predicate(v[2].x) && !predicate(v[2].y) && !predicate(v[3].x) && !predicate(v[3].y);
+    }
+    else if constexpr (RL == 3 && CL == 2)
+    {
+      return !predicate(v[0].x) && !predicate(v[0].y) && !predicate(v[0].z) && !predicate(v[1].x)
+             && !predicate(v[1].y) && !predicate(v[1].z);
+    }
     else if constexpr (RL == 3 && CL == 3)
+    {
       return !predicate(v[0].x) && !predicate(v[0].y) && !predicate(v[0].z) && !predicate(v[1].x)
              && !predicate(v[1].y) && !predicate(v[1].z) && !predicate(v[2].x) && !predicate(v[2].y)
              && !predicate(v[2].z);
+    }
+    else if constexpr (RL == 3 && CL == 4)
+    {
+      return !predicate(v[0].x) && !predicate(v[0].y) && !predicate(v[0].z) && !predicate(v[1].x)
+             && !predicate(v[1].y) && !predicate(v[1].z) && !predicate(v[2].x) && !predicate(v[2].y)
+             && !predicate(v[2].z) && !predicate(v[3].x) && !predicate(v[3].y) && !predicate(v[3].z);
+    }
+    else if constexpr (RL == 4 && CL == 2)
+    {
+      return !predicate(v[0].x) && !predicate(v[0].y) && !predicate(v[0].z) && !predicate(v[0].w)
+             && !predicate(v[1].x) && !predicate(v[1].y) && !predicate(v[1].z) && !predicate(v[1].w);
+    }
+    else if constexpr (RL == 4 && CL == 3)
+    {
+      return !predicate(v[0].x) && !predicate(v[0].y) && !predicate(v[0].z) && !predicate(v[0].w)
+             && !predicate(v[1].x) && !predicate(v[1].y) && !predicate(v[1].z) && !predicate(v[1].w)
+             && !predicate(v[2].x) && !predicate(v[2].y) && !predicate(v[2].z) && !predicate(v[2].w);
+    }
     else if constexpr (RL == 4 && CL == 4)
+    {
       return !predicate(v[0].x) && !predicate(v[0].y) && !predicate(v[0].z) && !predicate(v[0].w)
              && !predicate(v[1].x) && !predicate(v[1].y) && !predicate(v[1].z) && !predicate(v[1].w)
              && !predicate(v[2].x) && !predicate(v[2].y) && !predicate(v[2].z) && !predicate(v[2].w)
              && !predicate(v[3].x) && !predicate(v[3].y) && !predicate(v[3].z) && !predicate(v[3].w);
-    else
-      static_assert(false, "Unsupported number of components");
+    }
   }
 }

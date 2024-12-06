@@ -1,64 +1,125 @@
 #include "MTL/Matrices/Ext/Predicate.hpp"
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
+#include "MTL/Matrices/Mat2x3.hpp"
+#include "MTL/Matrices/Mat2x4.hpp"
+#include "MTL/Matrices/Mat3x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
+#include "MTL/Matrices/Mat3x4.hpp"
+#include "MTL/Matrices/Mat4x2.hpp"
+#include "MTL/Matrices/Mat4x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
 
 namespace Krys::Tests
 {
   using namespace Krys::MTL;
 
-  static void Test_AnyOf()
+  constexpr auto IsMoreThan16 = [](int value)
   {
-    // Mat2x2
-    constexpr mat2x2_t<int> m1 {1, -1, 0, 5};
-    KRYS_EXPECT_TRUE("AnyOf Mat2x2 (True)", AnyOf(m1, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("AnyOf Mat2x2 (False)", AnyOf(m1, [](int value) { return value > 10; }));
+    return value > 16;
+  };
 
-    // Mat3x3
-    constexpr mat3x3_t<int> m2 {1, 2, 3, 4, -5, 6, 7, 8, 9};
-    KRYS_EXPECT_TRUE("AnyOf Mat3x3 (True)", AnyOf(m2, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("AnyOf Mat3x3 (False)", AnyOf(m2, [](int value) { return value > 10; }));
+  constexpr auto IsLessThan16 = [](int value)
+  {
+    return value < 16;
+  };
 
-    // Mat4x4
-    constexpr mat4x4_t<int> m3 {1, 2, -3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-    KRYS_EXPECT_TRUE("AnyOf Mat4x4 (True)", AnyOf(m3, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("AnyOf Mat4x4 (False)", AnyOf(m3, [](int value) { return value > 20; }));
+  static void Test_Mat2x2_Predicate()
+  {
+    constexpr Mat2x2 mat {1, -1, 0, 5};
+    KRYS_EXPECT_TRUE("AnyOf Mat2x2 (True)", AnyOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Mat2x2 (False)", AnyOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Mat2x2 (True)", AllOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Mat2x2 (False)", AllOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Mat2x2 (True)", NoneOf(mat, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Mat2x2 (False)", NoneOf(mat, IsLessThan16));
   }
 
-  static void Test_AllOf()
+  static void Test_Mat2x3_Predicate()
   {
-    // Mat2x2
-    constexpr mat2x2_t<int> m1 {1, 2, 3, 4};
-    KRYS_EXPECT_TRUE("AllOf Mat2x2 (True)", AllOf(m1, [](int value) { return value > 0; }));
-    KRYS_EXPECT_FALSE("AllOf Mat2x2 (False)", AllOf(m1, [](int value) { return value < 3; }));
-
-    // Mat3x3
-    constexpr mat3x3_t<int> m2 {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    KRYS_EXPECT_TRUE("AllOf Mat3x3 (True)", AllOf(m2, [](int value) { return value > 0; }));
-    KRYS_EXPECT_FALSE("AllOf Mat3x3 (False)", AllOf(m2, [](int value) { return value <= 5; }));
-
-    // Mat4x4
-    constexpr mat4x4_t<int> m3 {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-    KRYS_EXPECT_TRUE("AllOf Mat4x4 (True)", AllOf(m3, [](int value) { return value > 0; }));
-    KRYS_EXPECT_FALSE("AllOf Mat4x4 (False)", AllOf(m3, [](int value) { return value < 10; }));
+    constexpr Mat2x3 mat {1, -1, 0, 5, 4, 2};
+    KRYS_EXPECT_TRUE("AnyOf Mat2x3 (True)", AnyOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Mat2x3 (False)", AnyOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Mat2x3 (True)", AllOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Mat2x3 (False)", AllOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Mat2x3 (True)", NoneOf(mat, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Mat2x3 (False)", NoneOf(mat, IsLessThan16));
   }
 
-  static void Test_NoneOf()
+  static void Test_Mat2x4_Predicate()
   {
-    // Mat2x2
-    constexpr mat2x2_t<int> m1 {1, 2, 3, 4};
-    KRYS_EXPECT_TRUE("NoneOf Mat2x2 (True)", NoneOf(m1, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("NoneOf Mat2x2 (False)", NoneOf(m1, [](int value) { return value > 2; }));
+    constexpr Mat2x4 mat {1, -1, 0, 5, 4, 2, 4, 1};
+    KRYS_EXPECT_TRUE("AnyOf Mat2x4 (True)", AnyOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Mat2x4 (False)", AnyOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Mat2x4 (True)", AllOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Mat2x4 (False)", AllOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Mat2x4 (True)", NoneOf(mat, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Mat2x4 (False)", NoneOf(mat, IsLessThan16));
+  }
 
-    // Mat3x3
-    constexpr mat3x3_t<int> m2 {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    KRYS_EXPECT_TRUE("NoneOf Mat3x3 (True)", NoneOf(m2, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("NoneOf Mat3x3 (False)", NoneOf(m2, [](int value) { return value == 5; }));
+  static void Test_Mat3x2_Predicate()
+  {
+    constexpr Mat3x2 mat {1, -1, 0, 5, 4, 2};
+    KRYS_EXPECT_TRUE("AnyOf Mat3x2 (True)", AnyOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Mat3x2 (False)", AnyOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Mat3x2 (True)", AllOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Mat3x2 (False)", AllOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Mat3x2 (True)", NoneOf(mat, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Mat3x2 (False)", NoneOf(mat, IsLessThan16));
+  }
 
-    // Mat4x4
-    constexpr mat4x4_t<int> m3 {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-    KRYS_EXPECT_TRUE("NoneOf Mat4x4 (True)", NoneOf(m3, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("NoneOf Mat4x4 (False)", NoneOf(m3, [](int value) { return value == 8; }));
+  static void Test_Mat3x3_Predicate()
+  {
+    constexpr Mat3x3 mat {1, -1, 0, 5, 4, 2, 2, 1, 0};
+    KRYS_EXPECT_TRUE("AnyOf Mat3x3 (True)", AnyOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Mat3x3 (False)", AnyOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Mat3x3 (True)", AllOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Mat3x3 (False)", AllOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Mat3x3 (True)", NoneOf(mat, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Mat3x3 (False)", NoneOf(mat, IsLessThan16));
+  }
+
+  static void Test_Mat3x4_Predicate()
+  {
+    constexpr Mat3x4 mat {1, -1, 0, 5, 4, 2, 2, 1, 0, 1, 3, 9};
+    KRYS_EXPECT_TRUE("AnyOf Mat3x4 (True)", AnyOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Mat3x4 (False)", AnyOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Mat3x4 (True)", AllOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Mat3x4 (False)", AllOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Mat3x4 (True)", NoneOf(mat, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Mat3x4 (False)", NoneOf(mat, IsLessThan16));
+  }
+
+  static void Test_Mat4x2_Predicate()
+  {
+    constexpr Mat4x2 mat {1, -1, 0, 5, 4, 2, 4, 1};
+    KRYS_EXPECT_TRUE("AnyOf Mat4x2 (True)", AnyOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Mat4x2 (False)", AnyOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Mat4x2 (True)", AllOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Mat4x2 (False)", AllOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Mat4x2 (True)", NoneOf(mat, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Mat4x2 (False)", NoneOf(mat, IsLessThan16));
+  }
+
+  static void Test_Mat4x3_Predicate()
+  {
+    constexpr Mat4x3 mat {1, -1, 0, 5, 4, 2, 2, 1, 0, 1, 3, 9};
+    KRYS_EXPECT_TRUE("AnyOf Mat4x3 (True)", AnyOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Mat4x3 (False)", AnyOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Mat4x3 (True)", AllOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Mat4x3 (False)", AllOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Mat4x3 (True)", NoneOf(mat, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Mat4x3 (False)", NoneOf(mat, IsLessThan16));
+  }
+
+  static void Test_Mat4x4_Predicate()
+  {
+    constexpr Mat4x4 mat {1, -1, 0, 5, 4, 2, 2, 1, 0, 1, 3, 9, 11, 12, 13, 14};
+    KRYS_EXPECT_TRUE("AnyOf Mat4x4 (True)", AnyOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Mat4x4 (False)", AnyOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Mat4x4 (True)", AllOf(mat, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Mat4x4 (False)", AllOf(mat, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Mat4x4 (True)", NoneOf(mat, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Mat4x4 (False)", NoneOf(mat, IsLessThan16));
   }
 }

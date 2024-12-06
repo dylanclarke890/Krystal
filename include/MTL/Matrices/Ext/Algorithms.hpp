@@ -16,6 +16,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL, IsRegularCallableT<TComponent> TFunc>
   constexpr void ForEach(const matrix_t<TComponent, RL, CL> &v, TFunc func) noexcept
   {
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     if constexpr (RL == 2 && CL == 2)
     {
       func(v[0].x);
@@ -142,8 +144,6 @@ namespace Krys::MTL
       func(v[3].z);
       func(v[3].w);
     }
-    else
-      static_assert(false, "Unsupported number of rows/columns");
   }
 
   /// @brief Creates a new matrix by applying a function to each component of the input matrix.
@@ -159,6 +159,8 @@ namespace Krys::MTL
   constexpr auto MapEach(const matrix_t<TComponent, RL, CL> &v,
                          TFunc func) noexcept -> matrix_t<decltype(func(declval<TComponent>())), RL, CL>
   {
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     using return_t = decltype(func(declval<TComponent>()));
     if constexpr (RL == 2 && CL == 2)
     {
@@ -208,8 +210,6 @@ namespace Krys::MTL
                                       func(v[2].z), func(v[2].w), func(v[3].x), func(v[3].y), func(v[3].z),
                                       func(v[3].w));
     }
-    else
-      static_assert(false, "Unsupported number of rows/columns");
   }
 
   /// @brief Creates a new matrix from two input matrices by applying a function to each component pair of
@@ -229,6 +229,8 @@ namespace Krys::MTL
                      TFunc func) noexcept
     -> matrix_t<decltype(func(declval<TComponentA>(), declval<TComponentB>())), RL, CL>
   {
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     using return_t = decltype(func(declval<TComponentA>(), declval<TComponentB>()));
     if constexpr (RL == 2 && CL == 2)
     {
@@ -285,8 +287,6 @@ namespace Krys::MTL
         func(a[2].x, b[2].x), func(a[2].y, b[2].y), func(a[2].z, b[2].z), func(a[2].w, b[2].w),
         func(a[3].x, b[3].x), func(a[3].y, b[3].y), func(a[3].z, b[3].z), func(a[3].w, b[3].w));
     }
-    else
-      static_assert(false, "Unsupported number of rows/columns");
   }
 
   /// @brief Creates a new matrix from three input matrices by applying a function to each component triplet
@@ -307,6 +307,8 @@ namespace Krys::MTL
     -> matrix_t<decltype(func(declval<TComponentA>(), declval<TComponentB>(), declval<TComponentC>())), RL,
                 CL>
   {
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     using return_t = decltype(func(declval<TComponentA>(), declval<TComponentB>(), declval<TComponentC>()));
 
     if constexpr (RL == 2 && CL == 2)
@@ -373,8 +375,6 @@ namespace Krys::MTL
         func(a[3].x, b[3].x, c[3].x), func(a[3].y, b[3].y, c[3].y), func(a[3].z, b[3].z, c[3].z),
         func(a[3].w, b[3].w, c[3].w));
     }
-    else
-      static_assert(false, "Unsupported number of rows/columns");
   }
 
   /// @brief Computes the sum of all components of the matrix.
@@ -386,6 +386,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL>
   NO_DISCARD constexpr TComponent Sum(const matrix_t<TComponent, RL, CL> &v) noexcept
   {
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     if constexpr (RL == 2 && CL == 2)
     {
       return TComponent(v[0].x + v[0].y + v[1].x + v[1].y);
@@ -425,8 +427,6 @@ namespace Krys::MTL
       return TComponent(v[0].x + v[0].y + v[0].z + v[0].w + v[1].x + v[1].y + v[1].z + v[1].w + v[2].x
                         + v[2].y + v[2].z + v[2].w + v[3].x + v[3].y + v[3].z + v[3].w);
     }
-    else
-      static_assert(false, "Unsupported number of rows/columns");
   }
 
   /// @brief Computes the sum of all components of the matrix after applying a function to each component.
@@ -439,6 +439,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL, IsRegularCallableT<TComponent> TFunc>
   NO_DISCARD constexpr TComponent Sum(const matrix_t<TComponent, RL, CL> &v, TFunc func) noexcept
   {
+    KRYS_STATIC_ASSERT_MATRIX_SIZE(RL, CL);
+
     if constexpr (RL == 2 && CL == 2)
     {
       return TComponent(func(v[0].x) + func(v[0].y) + func(v[1].x) + func(v[1].y));
@@ -487,7 +489,5 @@ namespace Krys::MTL
                         + func(v[2].z) + func(v[2].w) + func(v[3].x) + func(v[3].y) + func(v[3].z)
                         + func(v[3].w));
     }
-    else
-      static_assert(false, "Unsupported number of rows/columns");
   }
 }
