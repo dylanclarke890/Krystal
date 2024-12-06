@@ -2,135 +2,253 @@
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
+#include "MTL/Matrices/Mat2x3.hpp"
+#include "MTL/Matrices/Mat2x4.hpp"
+#include "MTL/Matrices/Mat3x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
+#include "MTL/Matrices/Mat3x4.hpp"
+#include "MTL/Matrices/Mat4x2.hpp"
+#include "MTL/Matrices/Mat4x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
 
 namespace Krys::Tests
 {
   using namespace Krys::MTL;
 
-  static void Test_ForEach()
+#pragma region Test Helpers
+
+  constexpr auto Square = [](int value)
   {
-    // Mat2x2
-    constexpr mat2x2_t<int> v1 {1, 2, 3, 4};
-    constexpr auto sum1 = [&]()
+    return value * value;
+  };
+
+  constexpr auto AddTwo = [](int left, int right)
+  {
+    return left + right;
+  };
+
+  constexpr auto AddThree = [](int first, int second, int third)
+  {
+    return first + second + third;
+  };
+
+#pragma endregion Test Helpers
+
+  static void Test_Mat2x2_Algorithms()
+  {
+    using mat_t = mat2x2_t<int>;
+    constexpr mat_t mat {{1, 2}, {3, 4}};
+
+    constexpr int forEachSum = [&mat]()
     {
       int total = 0;
-      ForEach(v1, [&](int value) { total += value; });
+      ForEach(mat, [&](int value) { total += value; });
       return total;
     }();
-    KRYS_EXPECT_EQUAL("ForEach Mat2x2", sum1, 10);
 
-    // Mat3x3
-    constexpr mat3x3_t<int> v2 {1, 2, 3, 4, 1, 2, 3, 4, 1};
-    constexpr auto sum2 = [&]()
+    KRYS_EXPECT_EQUAL("Mat2x2 ForEach", forEachSum, 10);
+    KRYS_EXPECT_EQUAL("Mat2x2 MapEach", MapEach(mat, Square), mat_t({1, 4}, {9, 16}));
+    KRYS_EXPECT_EQUAL("Mat2x2 Zip(Two)", Zip(mat, mat_t {{2, 3}, {4, 5}}, AddTwo), mat_t({3, 5}, {7, 9}));
+    KRYS_EXPECT_EQUAL("Mat2x2 Zip(Three)", Zip(mat, mat_t {{2, 3}, {4, 5}}, mat_t {{2, 3}, {4, 5}}, AddThree),
+                      mat_t({5, 8}, {11, 14}));
+    KRYS_EXPECT_EQUAL("Mat2x2 Sum(Basic)", Sum(mat), 10);
+    KRYS_EXPECT_EQUAL("Mat2x2 Sum(WithFunc)", Sum(mat, Square), 30);
+  }
+
+  static void Test_Mat2x3_Algorithms()
+  {
+    using mat_t = mat2x3_t<int>;
+    constexpr mat_t mat {{1, 2}, {3, 4}, {5, 6}};
+
+    constexpr int forEachSum = [&mat]()
     {
       int total = 0;
-      ForEach(v2, [&](int value) { total += value; });
+      ForEach(mat, [&](int value) { total += value; });
       return total;
     }();
-    KRYS_EXPECT_EQUAL("ForEach Mat3x3", sum2, 21);
 
-    // Mat4x4
-    constexpr mat4x4_t<int> v3 {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
-    constexpr auto sum3 = [&]()
+    KRYS_EXPECT_EQUAL("Mat2x3 ForEach", forEachSum, 21);
+    KRYS_EXPECT_EQUAL("Mat2x3 MapEach", MapEach(mat, Square), mat_t({1, 4}, {9, 16}, {25, 36}));
+    KRYS_EXPECT_EQUAL("Mat2x3 Zip(Two)", Zip(mat, mat_t {{2, 3}, {4, 5}, {6, 7}}, AddTwo),
+                      mat_t({3, 5}, {7, 9}, {11, 13}));
+    KRYS_EXPECT_EQUAL("Mat2x3 Zip(Three)",
+                      Zip(mat, mat_t {{2, 3}, {4, 5}, {6, 7}}, mat_t {{2, 3}, {4, 5}, {6, 7}}, AddThree),
+                      mat_t({5, 8}, {11, 14}, {17, 20}));
+    KRYS_EXPECT_EQUAL("Mat2x3 Sum(Basic)", Sum(mat), 21);
+    KRYS_EXPECT_EQUAL("Mat2x3 Sum(WithFunc)", Sum(mat, Square), 91);
+  }
+
+  static void Test_Mat2x4_Algorithms()
+  {
+    using mat_t = mat2x4_t<int>;
+    constexpr mat_t mat {{1, 2}, {3, 4}, {5, 6}, {7, 8}};
+
+    constexpr int forEachSum = [&mat]()
     {
       int total = 0;
-      ForEach(v3, [&](int value) { total += value; });
+      ForEach(mat, [&](int value) { total += value; });
       return total;
     }();
-    KRYS_EXPECT_EQUAL("ForEach Mat4x4", sum3, 40);
+
+    KRYS_EXPECT_EQUAL("Mat2x4 ForEach", forEachSum, 36);
+    KRYS_EXPECT_EQUAL("Mat2x4 MapEach", MapEach(mat, Square), mat_t({1, 4}, {9, 16}, {25, 36}, {49, 64}));
+    KRYS_EXPECT_EQUAL("Mat2x4 Zip(Two)", Zip(mat, mat_t {{2, 3}, {4, 5}, {6, 7}, {6, 7}}, AddTwo),
+                      mat_t({3, 5}, {7, 9}, {11, 13}, {13, 15}));
+    KRYS_EXPECT_EQUAL(
+      "Mat2x4 Zip(Three)",
+      Zip(mat, mat_t {{2, 3}, {4, 5}, {6, 7}, {6, 7}}, mat_t {{2, 3}, {4, 5}, {6, 7}, {6, 7}}, AddThree),
+      mat_t({5, 8}, {11, 14}, {17, 20}, {19, 22}));
+    KRYS_EXPECT_EQUAL("Mat2x4 Sum(Basic)", Sum(mat), 36);
+    KRYS_EXPECT_EQUAL("Mat2x4 Sum(WithFunc)", Sum(mat, Square), 204);
   }
 
-  static void Test_Map()
+  static void Test_Mat3x2_Algorithms()
   {
-    constexpr auto square = [](int value)
+    using mat_t = mat3x2_t<int>;
+    constexpr mat_t mat {{1, 2, 3}, {4, 5, 6}};
+
+    constexpr int forEachSum = [&mat]()
     {
-      return value * value;
-    };
+      int total = 0;
+      ForEach(mat, [&](int value) { total += value; });
+      return total;
+    }();
 
-    // Mat2x2
-    constexpr mat2x2_t<int> v1 {2, 3, 4, 5};
-    constexpr mat2x2_t<int> squared1 = MapEach(v1, square);
-    KRYS_EXPECT_EQUAL("MapEach Mat2x2", squared1, (mat2x2_t<int> {4, 9, 16, 25}));
-
-    // Mat3x3
-    constexpr mat3x3_t<int> v2 {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    constexpr mat3x3_t<int> squared2 = MapEach(v2, square);
-    KRYS_EXPECT_EQUAL("MapEach Mat3x3", squared2, (mat3x3_t<int> {1, 4, 9, 16, 25, 36, 49, 64, 81}));
-
-    // Mat4x4
-    constexpr mat4x4_t<int> v3 {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-    constexpr mat4x4_t<int> squared3 = MapEach(v3, square);
-    KRYS_EXPECT_EQUAL("MapEach Mat4x4", squared3,
-                      (mat4x4_t<int> {1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256}));
+    KRYS_EXPECT_EQUAL("Mat3x2 ForEach", forEachSum, 21);
+    KRYS_EXPECT_EQUAL("Mat3x2 MapEach", MapEach(mat, Square), mat_t({1, 4, 9}, {16, 25, 36}));
+    KRYS_EXPECT_EQUAL("Mat3x2 Zip(Two)", Zip(mat, mat_t {{2, 3, 4}, {5, 6, 7}}, AddTwo),
+                      mat_t({3, 5, 7}, {9, 11, 13}));
+    KRYS_EXPECT_EQUAL("Mat3x2 Zip(Three)",
+                      Zip(mat, mat_t {{2, 3, 4}, {5, 6, 7}}, mat_t {{2, 3, 4}, {5, 6, 7}}, AddThree),
+                      mat_t({5, 8, 11}, {14, 17, 20}));
+    KRYS_EXPECT_EQUAL("Mat3x2 Sum(Basic)", Sum(mat), 21);
+    KRYS_EXPECT_EQUAL("Mat3x2 Sum(WithFunc)", Sum(mat, Square), 91);
   }
 
-  static void Test_Zip()
+  static void Test_Mat3x3_Algorithms()
   {
-    constexpr auto add = [](int left, int right)
+    using mat_t = mat3x3_t<int>;
+    constexpr mat_t mat {{1, 2, 3}, {4, 5, 4}, {3, 2, 1}};
+
+    constexpr int forEachSum = [&mat]()
     {
-      return left + right;
-    };
+      int total = 0;
+      ForEach(mat, [&](int value) { total += value; });
+      return total;
+    }();
 
-    // Mat2x2
-    constexpr mat2x2_t<int> a1 {1, 2, 3, 4}, b1 {4, 3, 2, 1};
-    constexpr mat2x2_t<int> summed1 = Zip(a1, b1, add);
-    KRYS_EXPECT_EQUAL("Zip Mat2x2", summed1, (mat2x2_t<int> {5, 5, 5, 5}));
-
-    // Mat3x3
-    constexpr mat3x3_t<int> a2 {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    constexpr mat3x3_t<int> b2 {9, 8, 7, 6, 5, 4, 3, 2, 1};
-    constexpr mat3x3_t<int> summed2 = Zip(a2, b2, add);
-    KRYS_EXPECT_EQUAL("Zip Mat3x3", summed2, (mat3x3_t<int> {10, 10, 10, 10, 10, 10, 10, 10, 10}));
-
-    // Mat4x4
-    constexpr mat4x4_t<int> a3 {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-    constexpr mat4x4_t<int> b3 {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-    constexpr mat4x4_t<int> summed3 = Zip(a3, b3, add);
-    KRYS_EXPECT_EQUAL("Zip Mat4x4", summed3,
-                      (mat4x4_t<int> {17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17}));
+    KRYS_EXPECT_EQUAL("Mat3x3 ForEach", forEachSum, 25);
+    KRYS_EXPECT_EQUAL("Mat3x3 MapEach", MapEach(mat, Square), mat_t({1, 4, 9}, {16, 25, 16}, {9, 4, 1}));
+    KRYS_EXPECT_EQUAL("Mat3x3 Zip(Two)", Zip(mat, mat_t {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}}, AddTwo),
+                      mat_t({3, 5, 7}, {9, 11, 11}, {11, 11, 11}));
+    KRYS_EXPECT_EQUAL(
+      "Mat3x3 Zip(Three)",
+      Zip(mat, mat_t {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}}, mat_t {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}}, AddThree),
+      mat_t({5, 8, 11}, {14, 17, 18}, {19, 20, 21}));
+    KRYS_EXPECT_EQUAL("Mat3x3 Sum(Basic)", Sum(mat), 25);
+    KRYS_EXPECT_EQUAL("Mat3x3 Sum(WithFunc)", Sum(mat, Square), 85);
   }
 
-  static void Test_Sum()
+  static void Test_Mat3x4_Algorithms()
   {
-    // Mat2x2
-    constexpr mat2x2_t<int> v1 {1, 2, 3, 4};
-    constexpr int sum1 = Sum(v1);
-    KRYS_EXPECT_EQUAL("Sum Mat2x2", sum1, 10);
+    using mat_t = mat3x4_t<int>;
+    constexpr mat_t mat {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}};
 
-    // Mat3x3
-    constexpr mat3x3_t<int> v2 {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    constexpr int sum2 = Sum(v2);
-    KRYS_EXPECT_EQUAL("Sum Mat3x3", sum2, 45);
-
-    // Mat4x4
-    constexpr mat4x4_t<int> v3 {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-    constexpr int sum3 = Sum(v3);
-    KRYS_EXPECT_EQUAL("Sum Mat4x4", sum3, 136);
-  }
-
-  static void Test_SumWithFunc()
-  {
-    constexpr auto square = [](int value)
+    constexpr int forEachSum = [&mat]()
     {
-      return value * value;
-    };
+      int total = 0;
+      ForEach(mat, [&](int value) { total += value; });
+      return total;
+    }();
 
-    // Mat2x2
-    constexpr mat2x2_t<int> v1 {vec2_t<int> {1, 2}, vec2_t<int> {3, 4}};
-    constexpr int sum1 = Sum(v1, square);
-    KRYS_EXPECT_EQUAL("SumWithFunc Mat2x2", sum1, 30);
+    KRYS_EXPECT_EQUAL("Mat3x4 ForEach", forEachSum, 78);
+    KRYS_EXPECT_EQUAL("Mat3x4 MapEach", MapEach(mat, Square),
+                      mat_t({1, 4, 9}, {16, 25, 36}, {49, 64, 81}, {100, 121, 144}));
+    KRYS_EXPECT_EQUAL("Mat3x4 Zip(Two)",
+                      Zip(mat, mat_t {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}, {11, 12, 13}}, AddTwo),
+                      mat_t({3, 5, 7}, {9, 11, 13}, {15, 17, 19}, {21, 23, 25}));
+    KRYS_EXPECT_EQUAL("Mat3x4 Zip(Three)",
+                      Zip(mat, mat_t {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}, {11, 12, 13}},
+                          mat_t {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}, {11, 12, 13}}, AddThree),
+                      mat_t({5, 8, 11}, {14, 17, 20}, {23, 26, 29}, {32, 35, 38}));
+    KRYS_EXPECT_EQUAL("Mat3x4 Sum(Basic)", Sum(mat), 78);
+    KRYS_EXPECT_EQUAL("Mat3x4 Sum(WithFunc)", Sum(mat, Square), 650);
+  }
 
-    // Mat3x3
-    constexpr mat3x3_t<int> v2 {vec3_t<int> {1, 2, 3}, vec3_t<int> {4, 5, 6}, vec3_t<int> {7, 8, 9}};
-    constexpr int sum2 = Sum(v2, square);
-    KRYS_EXPECT_EQUAL("SumWithFunc Mat3x3", sum2, 285);
+  static void Test_Mat4x2_Algorithms()
+  {
+    using mat_t = mat4x2_t<int>;
+    constexpr mat_t mat {{1, 2, 3, 4}, {5, 6, 7, 8}};
 
-    // Mat4x4
-    constexpr mat4x4_t<int> v3 {vec4_t<int> {1, 2, 3, 4}, vec4_t<int> {5, 6, 7, 8},
-                                vec4_t<int> {9, 10, 11, 12}, vec4_t<int> {13, 14, 15, 16}};
-    constexpr int sum3 = Sum(v3, square);
-    KRYS_EXPECT_EQUAL("SumWithFunc Mat4x4", sum3, 1'496);
+    constexpr int forEachSum = [&mat]()
+    {
+      int total = 0;
+      ForEach(mat, [&](int value) { total += value; });
+      return total;
+    }();
+
+    KRYS_EXPECT_EQUAL("Mat4x2 ForEach", forEachSum, 36);
+    KRYS_EXPECT_EQUAL("Mat4x2 MapEach", MapEach(mat, Square), mat_t({1, 4, 9, 16}, {25, 36, 49, 64}));
+    KRYS_EXPECT_EQUAL("Mat4x2 Zip(Two)", Zip(mat, mat_t {{2, 3, 4, 5}, {6, 7, 8, 9}}, AddTwo),
+                      mat_t({3, 5, 7, 9}, {11, 13, 15, 17}));
+    KRYS_EXPECT_EQUAL(
+      "Mat4x2 Zip(Three)",
+      Zip(mat, mat_t {{2, 3, 4, 5}, {6, 7, 8, 9}}, mat_t {{2, 3, 4, 5}, {6, 7, 8, 9}}, AddThree),
+      mat_t({5, 8, 11, 14}, {17, 20, 23, 26}));
+    KRYS_EXPECT_EQUAL("Mat4x2 Sum(Basic)", Sum(mat), 36);
+    KRYS_EXPECT_EQUAL("Mat4x2 Sum(WithFunc)", Sum(mat, Square), 204);
+  }
+
+  static void Test_Mat4x3_Algorithms()
+  {
+    using mat_t = mat4x3_t<int>;
+    constexpr mat_t mat {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
+
+    constexpr int forEachSum = [&mat]()
+    {
+      int total = 0;
+      ForEach(mat, [&](int value) { total += value; });
+      return total;
+    }();
+
+    KRYS_EXPECT_EQUAL("Mat4x3 ForEach", forEachSum, 78);
+    KRYS_EXPECT_EQUAL("Mat4x3 MapEach", MapEach(mat, Square),
+                      mat_t({1, 4, 9, 16}, {25, 36, 49, 64}, {81, 100, 121, 144}));
+    KRYS_EXPECT_EQUAL("Mat4x3 Zip(Two)",
+                      Zip(mat, mat_t {{2, 3, 4, 5}, {6, 7, 8, 9}, {10, 11, 12, 13}}, AddTwo),
+                      mat_t({3, 5, 7, 9}, {11, 13, 15, 17}, {19, 21, 23, 25}));
+    KRYS_EXPECT_EQUAL("Mat4x3 Zip(Three)",
+                      Zip(mat, mat_t {{2, 3, 4, 5}, {6, 7, 8, 9}, {10, 11, 12, 13}},
+                          mat_t {{2, 3, 4, 5}, {6, 7, 8, 9}, {10, 11, 12, 13}}, AddThree),
+                      mat_t({5, 8, 11, 14}, {17, 20, 23, 26}, {29, 32, 35, 38}));
+    KRYS_EXPECT_EQUAL("Mat4x3 Sum(Basic)", Sum(mat), 78);
+    KRYS_EXPECT_EQUAL("Mat4x3 Sum(WithFunc)", Sum(mat, Square), 650);
+  }
+
+  static void Test_Mat4x4_Algorithms()
+  {
+    using mat_t = mat4x4_t<int>;
+    constexpr mat_t mat {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+
+    constexpr int forEachSum = [&mat]()
+    {
+      int total = 0;
+      ForEach(mat, [&](int value) { total += value; });
+      return total;
+    }();
+
+    KRYS_EXPECT_EQUAL("Mat4x4 ForEach", forEachSum, 136);
+    KRYS_EXPECT_EQUAL("Mat4x4 MapEach", MapEach(mat, Square),
+                      mat_t({1, 4, 9, 16}, {25, 36, 49, 64}, {81, 100, 121, 144}, {169, 196, 225, 256}));
+    KRYS_EXPECT_EQUAL(
+      "Mat4x4 Zip(Two)",
+      Zip(mat, mat_t {{2, 3, 4, 5}, {6, 7, 8, 9}, {10, 11, 12, 13}, {14, 15, 16, 17}}, AddTwo),
+      mat_t({3, 5, 7, 9}, {11, 13, 15, 17}, {19, 21, 23, 25}, {27, 29, 31, 33}));
+    KRYS_EXPECT_EQUAL("Mat4x4 Zip(Three)",
+                      Zip(mat, mat_t {{2, 3, 4, 5}, {6, 7, 8, 9}, {10, 11, 12, 13}, {14, 15, 16, 17}},
+                          mat_t {{2, 3, 4, 5}, {6, 7, 8, 9}, {10, 11, 12, 13}, {14, 15, 16, 17}}, AddThree),
+                      mat_t({5, 8, 11, 14}, {17, 20, 23, 26}, {29, 32, 35, 38}, {41, 44, 47, 50}));
+    KRYS_EXPECT_EQUAL("Mat4x4 Sum(Basic)", Sum(mat), 136);
+    KRYS_EXPECT_EQUAL("Mat4x4 Sum(WithFunc)", Sum(mat, Square), 1'496);
   }
 }
