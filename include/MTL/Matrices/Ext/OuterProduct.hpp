@@ -6,12 +6,12 @@ namespace Krys::MTL
 {
   /// @brief Computes the outer product of `m`.
   /// @tparam TComponent The underlying arithmetic type of the input matrix.
-  /// @tparam CL The column length of the input matrix.
   /// @tparam RL The row length of the input matrix.
+  /// @tparam CL The column length of the input matrix.
   /// @param m The input matrix.
   /// @return The outer product of `m`.
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr auto OuterProduct(const matrix_t<TComponent, CL, RL> &m) noexcept
+  template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto OuterProduct(const matrix_t<TComponent, RL, CL> &m) noexcept
   {
     if constexpr (CL == 2 && RL == 2)
       return matrix_t<TComponent, 2, 2>();

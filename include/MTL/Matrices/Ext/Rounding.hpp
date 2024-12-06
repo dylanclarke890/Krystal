@@ -10,12 +10,12 @@ namespace Krys::MTL
 {
   /// @brief Computes the smallest integer not smaller than each component of the matrix.
   /// @tparam TComponent The underlying floating-point type of the matrix.
-  /// @tparam CL The column length of the matrix.
   /// @tparam RL The row length of the matrix.
+  /// @tparam CL The column length of the matrix.
   /// @param m The input matrix.
   /// @returns A matrix with each component rounded up to the smallest integer.
-  template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr auto Ceil(const matrix_t<TComponent, CL, RL> &m) noexcept
+  template <IsFloatingPointT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto Ceil(const matrix_t<TComponent, RL, CL> &m) noexcept
   {
     return MTL::MapEach(m, [](TComponent x) -> TComponent { return MTL::Ceil(x); });
   }
@@ -26,8 +26,8 @@ namespace Krys::MTL
   /// @tparam RL The row length of the matrix.
   /// @param m The input matrix.
   /// @returns A matrix with each component rounded down to the largest integer.
-  template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr auto Floor(const matrix_t<TComponent, CL, RL> &m) noexcept
+  template <IsFloatingPointT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto Floor(const matrix_t<TComponent, RL, CL> &m) noexcept
   {
     return MTL::MapEach(m, [](TComponent x) -> TComponent { return MTL::Floor(x); });
   }
@@ -39,8 +39,8 @@ namespace Krys::MTL
   /// @tparam RL The row length of the matrix.
   /// @param m The input matrix.
   /// @returns A matrix with each component rounded to the nearest integer.
-  template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr auto Round(const matrix_t<TComponent, CL, RL> &m) noexcept
+  template <IsFloatingPointT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto Round(const matrix_t<TComponent, RL, CL> &m) noexcept
   {
     return MTL::MapEach(m, [](TComponent x) -> TComponent { return MTL::Round(x); });
   }
@@ -51,8 +51,8 @@ namespace Krys::MTL
   /// @tparam RL The row length of the matrix.
   /// @param m The input matrix.
   /// @returns A matrix with each component truncated to the nearest integer not greater in magnitude.
-  template <IsFloatingPointT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr auto Trunc(const matrix_t<TComponent, CL, RL> &m) noexcept
+  template <IsFloatingPointT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto Trunc(const matrix_t<TComponent, RL, CL> &m) noexcept
   {
     return MTL::MapEach(m, [](TComponent x) -> TComponent { return MTL::Trunc(x); });
   }

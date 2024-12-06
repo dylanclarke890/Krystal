@@ -383,7 +383,7 @@ namespace Krys::MTL
   /// @tparam CL The column length of the input matrix.
   /// @param v The input matrix.
   /// @return The sum of the components of `v`.
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
+  template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL>
   NO_DISCARD constexpr TComponent Sum(const matrix_t<TComponent, RL, CL> &v) noexcept
   {
     if constexpr (RL == 2 && CL == 2)

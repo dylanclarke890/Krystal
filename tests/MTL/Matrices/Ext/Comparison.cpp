@@ -2,7 +2,12 @@
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
 #include "MTL/Matrices/Mat2x3.hpp"
+#include "MTL/Matrices/Mat2x4.hpp"
+#include "MTL/Matrices/Mat3x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
+#include "MTL/Matrices/Mat3x4.hpp"
+#include "MTL/Matrices/Mat4x2.hpp"
+#include "MTL/Matrices/Mat4x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
 
 namespace Krys::Tests

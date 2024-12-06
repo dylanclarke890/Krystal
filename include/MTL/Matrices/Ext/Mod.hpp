@@ -10,13 +10,13 @@ namespace Krys::MTL
 {
   /// @brief Computes the modulus of each component in the input matrix.
   /// @tparam TComponent An arithmetic type.
-  /// @tparam CL The column length of the matrix.
   /// @tparam RL The row length of the matrix.
+  /// @tparam CL The column length of the matrix.
   /// @param m The input matrix.
   /// @returns A matrix where each component is the modulus of the corresponding input component.
-  template <IsArithmeticT TComponent, vec_length_t CL, vec_length_t RL>
-  NO_DISCARD constexpr auto Mod(const matrix_t<TComponent, CL, RL> &a,
-                                const matrix_t<TComponent, CL, RL> &b) noexcept
+  template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto Mod(const matrix_t<TComponent, RL, CL> &a,
+                                const matrix_t<TComponent, RL, CL> &b) noexcept
   {
     return MTL::Zip(a, b, [](TComponent x, TComponent y) -> TComponent { return MTL::Mod(x, y); });
   }
