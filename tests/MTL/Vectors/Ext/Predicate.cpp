@@ -10,72 +10,69 @@ namespace Krys::Tests
 {
   using namespace Krys::MTL;
 
-  static void Test_AnyOf()
+#pragma region Test Helpers
+
+  constexpr auto IsMoreThan16 = [](int value)
   {
-    // Vec1
-    constexpr vec1_t<int> v1 {1};
-    KRYS_EXPECT_TRUE("AnyOf Vec1 (True)", AnyOf(v1, [](int value) { return value > 0; }));
-    KRYS_EXPECT_FALSE("AnyOf Vec1 (False)", AnyOf(v1, [](int value) { return value < 0; }));
+    return value > 16;
+  };
 
-    // Vec2
-    constexpr vec2_t<int> v2 {1, -1};
-    KRYS_EXPECT_TRUE("AnyOf Vec2 (True)", AnyOf(v2, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("AnyOf Vec2 (False)", AnyOf(v2, [](int value) { return value > 10; }));
+  constexpr auto IsLessThan16 = [](int value)
+  {
+    return value < 16;
+  };
 
-    // Vec3
-    constexpr vec3_t<int> v3 {1, 2, 3};
-    KRYS_EXPECT_TRUE("AnyOf Vec3 (True)", AnyOf(v3, [](int value) { return value == 2; }));
-    KRYS_EXPECT_FALSE("AnyOf Vec3 (False)", AnyOf(v3, [](int value) { return value < 0; }));
+#pragma endregion Test Helpers
 
-    // Vec4
-    constexpr vec4_t<int> v4 {0, -1, 2, 3};
-    KRYS_EXPECT_TRUE("AnyOf Vec4 (True)", AnyOf(v4, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("AnyOf Vec4 (False)", AnyOf(v4, [](int value) { return value > 10; }));
+  static void Test_Vec1_Predicate()
+  {
+    using vec_t = vec1_t<int>;
+
+    constexpr vec_t vec {1};
+    KRYS_EXPECT_TRUE("AnyOf Vec1 (True)", AnyOf(vec, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Vec1 (False)", AnyOf(vec, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Vec1 (True)", AllOf(vec, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Vec1 (False)", AllOf(vec, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Vec1 (True)", NoneOf(vec, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Vec1 (False)", NoneOf(vec, IsLessThan16));
   }
 
-  static void Test_AllOf()
+  static void Test_Vec2_Predicate()
   {
-    // Vec1
-    constexpr vec1_t<int> v1 {1};
-    KRYS_EXPECT_TRUE("AllOf Vec1 (True)", AllOf(v1, [](int value) { return value > 0; }));
-    KRYS_EXPECT_FALSE("AllOf Vec1 (False)", AllOf(v1, [](int value) { return value < 0; }));
+    using vec_t = vec2_t<int>;
 
-    // Vec2
-    constexpr vec2_t<int> v2 {1, -1};
-    KRYS_EXPECT_FALSE("AllOf Vec2 (False)", AllOf(v2, [](int value) { return value > 0; }));
-    KRYS_EXPECT_TRUE("AllOf Vec2 (True)", AllOf(v2, [](int value) { return value != 0; }));
-
-    // Vec3
-    constexpr vec3_t<int> v3 {1, 2, 3};
-    KRYS_EXPECT_TRUE("AllOf Vec3 (True)", AllOf(v3, [](int value) { return value > 0; }));
-    KRYS_EXPECT_FALSE("AllOf Vec3 (False)", AllOf(v3, [](int value) { return value < 3; }));
-
-    // Vec4
-    constexpr vec4_t<int> v4 {0, 1, 2, 3};
-    KRYS_EXPECT_FALSE("AllOf Vec4 (False)", AllOf(v4, [](int value) { return value > 0; }));
-    KRYS_EXPECT_TRUE("AllOf Vec4 (True)", AllOf(v4, [](int value) { return value <= 3; }));
+    constexpr vec_t vec(1, 2);
+    KRYS_EXPECT_TRUE("AnyOf Vec2 (True)", AnyOf(vec, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Vec2 (False)", AnyOf(vec, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Vec2 (True)", AllOf(vec, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Vec2 (False)", AllOf(vec, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Vec2 (True)", NoneOf(vec, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Vec2 (False)", NoneOf(vec, IsLessThan16));
   }
 
-  static void Test_NoneOf()
+  static void Test_Vec3_Predicate()
   {
-    // Vec1
-    constexpr vec1_t<int> v1 {1};
-    KRYS_EXPECT_TRUE("NoneOf Vec1 (True)", NoneOf(v1, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("NoneOf Vec1 (False)", NoneOf(v1, [](int value) { return value > 0; }));
+    using vec_t = vec3_t<int>;
 
-    // Vec2
-    constexpr vec2_t<int> v2 {1, -1};
-    KRYS_EXPECT_FALSE("NoneOf Vec2 (False)", NoneOf(v2, [](int value) { return value < 0; }));
-    KRYS_EXPECT_TRUE("NoneOf Vec2 (True)", NoneOf(v2, [](int value) { return value > 10; }));
+    constexpr vec_t vec(1, 2, 3);
+    KRYS_EXPECT_TRUE("AnyOf Vec3 (True)", AnyOf(vec, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Vec3 (False)", AnyOf(vec, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Vec3 (True)", AllOf(vec, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Vec3 (False)", AllOf(vec, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Vec3 (True)", NoneOf(vec, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Vec3 (False)", NoneOf(vec, IsLessThan16));
+  }
 
-    // Vec3
-    constexpr vec3_t<int> v3 {1, 2, 3};
-    KRYS_EXPECT_TRUE("NoneOf Vec3 (True)", NoneOf(v3, [](int value) { return value < 0; }));
-    KRYS_EXPECT_FALSE("NoneOf Vec3 (False)", NoneOf(v3, [](int value) { return value == 2; }));
+  static void Test_Vec4_Predicate()
+  {
+    using vec_t = vec4_t<int>;
 
-    // Vec4
-    constexpr vec4_t<int> v4 {0, -1, 2, 3};
-    KRYS_EXPECT_FALSE("NoneOf Vec4 (False)", NoneOf(v4, [](int value) { return value < 0; }));
-    KRYS_EXPECT_TRUE("NoneOf Vec4 (True)", NoneOf(v4, [](int value) { return value > 10; }));
+    constexpr vec_t vec(1, 2, 3, 4);
+    KRYS_EXPECT_TRUE("AnyOf Vec4 (True)", AnyOf(vec, IsLessThan16));
+    KRYS_EXPECT_FALSE("AnyOf Vec4 (False)", AnyOf(vec, IsMoreThan16));
+    KRYS_EXPECT_TRUE("AllOf Vec4 (True)", AllOf(vec, IsLessThan16));
+    KRYS_EXPECT_FALSE("AllOf Vec4 (False)", AllOf(vec, IsMoreThan16));
+    KRYS_EXPECT_TRUE("NoneOf Vec4 (True)", NoneOf(vec, IsMoreThan16));
+    KRYS_EXPECT_FALSE("NoneOf Vec4 (False)", NoneOf(vec, IsLessThan16));
   }
 }

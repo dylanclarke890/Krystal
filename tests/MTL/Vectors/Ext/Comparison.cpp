@@ -9,135 +9,99 @@ namespace Krys::Tests
 {
   using namespace Krys::MTL;
 
-  static void Test_LessThan()
+  static void Test_Vec1_Comparison()
   {
-    // Vec1
-    constexpr vec1_t<int> a1 {1}, b1 {2};
-    constexpr vec1_t<bool> result1 = LessThan(a1, b1);
-    KRYS_EXPECT_TRUE("LessThan Vec1 - Vec", result1.x);
-    KRYS_EXPECT_TRUE("LessThan Vec1 - Scalar", LessThan(a1, 3));
+    using vec_t = vec1_t<int>;
+    using res_t = vec1_t<bool>;
 
-    // Vec2
-    constexpr vec2_t<int> a2 {1, 3}, b2 {2, 2};
-    constexpr vec2_t<bool> result2 = LessThan(a2, b2);
-    KRYS_EXPECT_TRUE("LessThan Vec2.x", result2.x);
-    KRYS_EXPECT_FALSE("LessThan Vec2.y", result2.y);
-    KRYS_EXPECT_TRUE("LessThan Vec2 - Scalar", LessThan(a2, 4));
+    constexpr vec_t a(1);
 
-    // Vec3
-    constexpr vec3_t<int> a3 {1, 3, 5}, b3 {2, 2, 6};
-    constexpr vec3_t<bool> result3 = LessThan(a3, b3);
-    KRYS_EXPECT_TRUE("LessThan Vec3.x", result3.x);
-    KRYS_EXPECT_FALSE("LessThan Vec3.y", result3.y);
-    KRYS_EXPECT_TRUE("LessThan Vec3.z", result3.z);
-    KRYS_EXPECT_TRUE("LessThan Vec3 - Scalar", LessThan(a3, 6));
+    constexpr vec_t b(2);
+    KRYS_EXPECT_EQUAL("Comparison (LT) Vec1-Vec1", LessThan(a, b), res_t(true));
+    KRYS_EXPECT_EQUAL("Comparison (LE) Vec1-Vec1", LessThanOrEqual(a, b), res_t(true));
+    KRYS_EXPECT_EQUAL("Comparison (EQ) Vec1-Vec1", Equal(a, b), res_t(false));
+    KRYS_EXPECT_EQUAL("Comparison (NE) Vec1-Vec1", NotEqual(a, b), res_t(true));
+    KRYS_EXPECT_EQUAL("Comparison (GT) Vec1-Vec1", GreaterThan(a, b), res_t(false));
+    KRYS_EXPECT_EQUAL("Comparison (GE) Vec1-Vec1", GreaterThanOrEqual(a, b), res_t(false));
 
-    // Vec4
-    constexpr vec4_t<int> a4 {1, 3, 5, 7}, b4 {2, 2, 6, 6};
-    constexpr vec4_t<bool> result4 = LessThan(a4, b4);
-    KRYS_EXPECT_TRUE("LessThan Vec4.x", result4.x);
-    KRYS_EXPECT_FALSE("LessThan Vec4.y", result4.y);
-    KRYS_EXPECT_TRUE("LessThan Vec4.z", result4.z);
-    KRYS_EXPECT_FALSE("LessThan Vec4.w", result4.w);
-    KRYS_EXPECT_TRUE("LessThan Vec4 - Scalar", LessThan(a4, 8));
+    constexpr int scalar = 5;
+    KRYS_EXPECT_TRUE("Comparison (LT) Vec1-Scalar", LessThan(a, scalar));
+    KRYS_EXPECT_TRUE("Comparison (LE) Vec1-Scalar", LessThanOrEqual(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (EQ) Vec1-Scalar", Equal(a, scalar));
+    KRYS_EXPECT_TRUE("Comparison (NE) Vec1-Scalar", NotEqual(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (GT) Vec1-Scalar", GreaterThan(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (GE) Vec1-Scalar", GreaterThanOrEqual(a, scalar));
   }
 
-  static void Test_LessThanOrEqual()
+  static void Test_Vec2_Comparison()
   {
-    // Vec1
-    constexpr vec1_t<int> a1 {2}, b1 {2};
-    constexpr vec1_t<bool> result1 = LessThanOrEqual(a1, b1);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec1 - Vec", result1.x);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec1 - Scalar", LessThanOrEqual(a1, 3));
+    using vec_t = vec2_t<int>;
+    using res_t = vec2_t<bool>;
 
-    // Vec2
-    constexpr vec2_t<int> a2 {1, 3}, b2 {2, 3};
-    constexpr vec2_t<bool> result2 = LessThanOrEqual(a2, b2);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec2.x", result2.x);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec2.y", result2.y);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec2 - Scalar", LessThanOrEqual(a2, 4));
+    constexpr vec_t a(1, 2);
 
-    // Vec3
-    constexpr vec3_t<int> a3 {1, 3, 5}, b3 {2, 3, 5};
-    constexpr vec3_t<bool> result3 = LessThanOrEqual(a3, b3);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec3.x", result3.x);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec3.y", result3.y);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec3.z", result3.z);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec3 - Scalar", LessThanOrEqual(a3, 6));
+    constexpr vec_t b(2, 1);
+    KRYS_EXPECT_EQUAL("Comparison (LT) Vec2-Vec2", LessThan(a, b), res_t(true, false));
+    KRYS_EXPECT_EQUAL("Comparison (LE) Vec2-Vec2", LessThanOrEqual(a, b), res_t(true, false));
+    KRYS_EXPECT_EQUAL("Comparison (EQ) Vec2-Vec2", Equal(a, b), res_t(false, false));
+    KRYS_EXPECT_EQUAL("Comparison (NE) Vec2-Vec2", NotEqual(a, b), res_t(true, true));
+    KRYS_EXPECT_EQUAL("Comparison (GT) Vec2-Vec2", GreaterThan(a, b), res_t(false, true));
+    KRYS_EXPECT_EQUAL("Comparison (GE) Vec2-Vec2", GreaterThanOrEqual(a, b), res_t(false, true));
 
-    // Vec4
-    constexpr vec4_t<int> a4 {1, 3, 5, 7}, b4 {2, 3, 6, 7};
-    constexpr vec4_t<bool> result4 = LessThanOrEqual(a4, b4);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec4.x", result4.x);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec4.y", result4.y);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec4.z", result4.z);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec4.w", result4.w);
-    KRYS_EXPECT_TRUE("LessThanOrEqual Vec4 - Scalar", LessThanOrEqual(a4, 8));
+    constexpr int scalar = 5;
+    KRYS_EXPECT_TRUE("Comparison (LT) Vec2-Scalar", LessThan(a, scalar));
+    KRYS_EXPECT_TRUE("Comparison (LE) Vec2-Scalar", LessThanOrEqual(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (EQ) Vec2-Scalar", Equal(a, scalar));
+    KRYS_EXPECT_TRUE("Comparison (NE) Vec2-Scalar", NotEqual(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (GT) Vec2-Scalar", GreaterThan(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (GE) Vec2-Scalar", GreaterThanOrEqual(a, scalar));
   }
 
-  static void Test_Equal()
+  static void Test_Vec3_Comparison()
   {
-    // Vec1
-    constexpr vec1_t<int> a1 {1}, b1 {1};
-    constexpr vec1_t<bool> result1 = Equal(a1, b1);
-    KRYS_EXPECT_TRUE("Equal Vec1 - Vec", result1.x);
-    KRYS_EXPECT_TRUE("Equal Vec1 - Scalar", Equal(a1, 1));
+    using vec_t = vec3_t<int>;
+    using res_t = vec3_t<bool>;
 
-    // Vec2
-    constexpr vec2_t<int> a2 {1, 3}, b2 {1, 3};
-    constexpr vec2_t<bool> result2 = Equal(a2, b2);
-    KRYS_EXPECT_TRUE("Equal Vec2.x", result2.x);
-    KRYS_EXPECT_TRUE("Equal Vec2.y", result2.y);
-    KRYS_EXPECT_FALSE("Equal Vec2 - Scalar", Equal(a2, 4));
+    constexpr vec_t a(1, 2, 3);
 
-    // Vec3
-    constexpr vec3_t<int> a3 {1, 3, 5}, b3 {1, 3, 5};
-    constexpr vec3_t<bool> result3 = Equal(a3, b3);
-    KRYS_EXPECT_TRUE("Equal Vec3.x", result3.x);
-    KRYS_EXPECT_TRUE("Equal Vec3.y", result3.y);
-    KRYS_EXPECT_TRUE("Equal Vec3.z", result3.z);
-    KRYS_EXPECT_FALSE("Equal Vec3 - Scalar", Equal(a3, 6));
+    constexpr vec_t b(2, 1, 3);
+    KRYS_EXPECT_EQUAL("Comparison (LT) Vec3-Vec3", LessThan(a, b), res_t(true, false, false));
+    KRYS_EXPECT_EQUAL("Comparison (LE) Vec3-Vec3", LessThanOrEqual(a, b), res_t(true, false, true));
+    KRYS_EXPECT_EQUAL("Comparison (EQ) Vec3-Vec3", Equal(a, b), res_t(false, false, true));
+    KRYS_EXPECT_EQUAL("Comparison (NE) Vec3-Vec3", NotEqual(a, b), res_t(true, true, false));
+    KRYS_EXPECT_EQUAL("Comparison (GT) Vec3-Vec3", GreaterThan(a, b), res_t(false, true, false));
+    KRYS_EXPECT_EQUAL("Comparison (GE) Vec3-Vec3", GreaterThanOrEqual(a, b), res_t(false, true, true));
 
-    // Vec4
-    constexpr vec4_t<int> a4 {1, 3, 5, 7}, b4 {1, 3, 5, 7};
-    constexpr vec4_t<bool> result4 = Equal(a4, b4);
-    KRYS_EXPECT_TRUE("Equal Vec4.x", result4.x);
-    KRYS_EXPECT_TRUE("Equal Vec4.y", result4.y);
-    KRYS_EXPECT_TRUE("Equal Vec4.z", result4.z);
-    KRYS_EXPECT_TRUE("Equal Vec4.w", result4.w);
-    KRYS_EXPECT_FALSE("Equal Vec4 - Scalar", Equal(a4, 8));
+    constexpr int scalar = 5;
+    KRYS_EXPECT_TRUE("Comparison (LT) Vec3-Scalar", LessThan(a, scalar));
+    KRYS_EXPECT_TRUE("Comparison (LE) Vec3-Scalar", LessThanOrEqual(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (EQ) Vec3-Scalar", Equal(a, scalar));
+    KRYS_EXPECT_TRUE("Comparison (NE) Vec3-Scalar", NotEqual(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (GT) Vec3-Scalar", GreaterThan(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (GE) Vec3-Scalar", GreaterThanOrEqual(a, scalar));
   }
 
-  static void Test_NotEqual()
+  static void Test_Vec4_Comparison()
   {
-    // Vec1
-    constexpr vec1_t<int> a1 {1}, b1 {2};
-    constexpr vec1_t<bool> result1 = NotEqual(a1, b1);
-    KRYS_EXPECT_TRUE("NotEqual Vec1 - Vec", result1.x);
-    KRYS_EXPECT_TRUE("NotEqual Vec1 - Scalar", NotEqual(a1, 2));
+    using vec_t = vec4_t<int>;
+    using res_t = vec4_t<bool>;
 
-    // Vec2
-    constexpr vec2_t<int> a2 {1, 3}, b2 {1, 2};
-    constexpr vec2_t<bool> result2 = NotEqual(a2, b2);
-    KRYS_EXPECT_FALSE("NotEqual Vec2.x", result2.x);
-    KRYS_EXPECT_TRUE("NotEqual Vec2.y", result2.y);
-    KRYS_EXPECT_TRUE("NotEqual Vec2 - Scalar", NotEqual(a2, 4));
+    constexpr vec_t a(1, 2, 3, 4);
 
-    // Vec3
-    constexpr vec3_t<int> a3 {1, 3, 5}, b3 {1, 2, 5};
-    constexpr vec3_t<bool> result3 = NotEqual(a3, b3);
-    KRYS_EXPECT_FALSE("NotEqual Vec3.x", result3.x);
-    KRYS_EXPECT_TRUE("NotEqual Vec3.y", result3.y);
-    KRYS_EXPECT_FALSE("NotEqual Vec3.z", result3.z);
-    KRYS_EXPECT_TRUE("NotEqual Vec3 - Scalar", NotEqual(a3, 6));
+    constexpr vec_t b(2, 1, 3, 4);
+    KRYS_EXPECT_EQUAL("Comparison (LT) Vec3-Vec3", LessThan(a, b), res_t(true, false, false, false));
+    KRYS_EXPECT_EQUAL("Comparison (LE) Vec3-Vec3", LessThanOrEqual(a, b), res_t(true, false, true, true));
+    KRYS_EXPECT_EQUAL("Comparison (EQ) Vec3-Vec3", Equal(a, b), res_t(false, false, true, true));
+    KRYS_EXPECT_EQUAL("Comparison (NE) Vec3-Vec3", NotEqual(a, b), res_t(true, true, false, false));
+    KRYS_EXPECT_EQUAL("Comparison (GT) Vec3-Vec3", GreaterThan(a, b), res_t(false, true, false, false));
+    KRYS_EXPECT_EQUAL("Comparison (GE) Vec3-Vec3", GreaterThanOrEqual(a, b), res_t(false, true, true, true));
 
-    // Vec4
-    constexpr vec4_t<int> a4 {1, 3, 5, 7}, b4 {1, 3, 5, 7};
-    constexpr vec4_t<bool> result4 = NotEqual(a4, b4);
-    KRYS_EXPECT_FALSE("NotEqual Vec4.x", result4.x);
-    KRYS_EXPECT_FALSE("NotEqual Vec4.y", result4.y);
-    KRYS_EXPECT_FALSE("NotEqual Vec4.z", result4.z);
-    KRYS_EXPECT_FALSE("NotEqual Vec4.w", result4.w);
-    KRYS_EXPECT_TRUE("NotEqual Vec4 - Scalar", NotEqual(a4, 8));
+    constexpr int scalar = 5;
+    KRYS_EXPECT_TRUE("Comparison (LT) Vec3-Scalar", LessThan(a, scalar));
+    KRYS_EXPECT_TRUE("Comparison (LE) Vec3-Scalar", LessThanOrEqual(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (EQ) Vec3-Scalar", Equal(a, scalar));
+    KRYS_EXPECT_TRUE("Comparison (NE) Vec3-Scalar", NotEqual(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (GT) Vec3-Scalar", GreaterThan(a, scalar));
+    KRYS_EXPECT_FALSE("Comparison (GE) Vec3-Scalar", GreaterThanOrEqual(a, scalar));
   }
 }

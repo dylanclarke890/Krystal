@@ -10,30 +10,39 @@ namespace Krys::Tests
 {
   using namespace Krys::MTL;
 
-  static void Test_Clamp()
+  static void Test_Vec1_Clamp()
   {
-    // Vec1
-    constexpr vec1_t<int> v1 {5};
-    constexpr vec1_t<int> min1 {1};
-    constexpr vec1_t<int> max1 {4};
-    KRYS_EXPECT_EQUAL("Clamp Vec1", Clamp(v1, min1, max1), (vec1_t<int> {4}));
+    using vec_t = vec1_t<int>;
+    constexpr vec_t vec(6);
 
-    // Vec2
-    constexpr vec2_t<int> v2 {5, -1};
-    constexpr vec2_t<int> min2 {0, 0};
-    constexpr vec2_t<int> max2 {3, 3};
-    KRYS_EXPECT_EQUAL("Clamp Vec2", Clamp(v2, min2, max2), (vec2_t<int> {3, 0}));
+    KRYS_EXPECT_EQUAL("Clamp Vec1-Vec1", Clamp(vec, vec_t(1), vec_t(5)), vec_t(5));
+    KRYS_EXPECT_EQUAL("Clamp Vec1-Scalar", Clamp(vec, 4, 7), vec_t(6));
+  }
 
-    // Vec3
-    constexpr vec3_t<int> v3 {5, -1, 10};
-    constexpr vec3_t<int> min3 {1, 0, 0};
-    constexpr vec3_t<int> max3 {4, 2, 8};
-    KRYS_EXPECT_EQUAL("Clamp Vec3", Clamp(v3, min3, max3), (vec3_t<int> {4, 0, 8}));
+  static void Test_Vec2_Clamp()
+  {
+    using vec_t = vec2_t<int>;
+    constexpr vec_t vec(6, 3);
 
-    // Vec4
-    constexpr vec4_t<int> v4 {5, -1, 10, 3};
-    constexpr vec4_t<int> min4 {1, 0, 0, 2};
-    constexpr vec4_t<int> max4 {4, 2, 8, 5};
-    KRYS_EXPECT_EQUAL("Clamp Vec4", Clamp(v4, min4, max4), (vec4_t<int> {4, 0, 8, 3}));
+    KRYS_EXPECT_EQUAL("Clamp Vec2-Vec2", Clamp(vec, vec_t(1, 4), vec_t(5, 5)), vec_t(5, 4));
+    KRYS_EXPECT_EQUAL("Clamp Vec2-Scalar", Clamp(vec, 4, 7), vec_t(6, 4));
+  }
+
+  static void Test_Vec3_Clamp()
+  {
+    using vec_t = vec3_t<int>;
+    constexpr vec_t vec {5, -1, 10};
+
+    KRYS_EXPECT_EQUAL("Clamp Vec3-Vec3", Clamp(vec, vec_t(1, 0, 0), vec_t(4, 2, 8)), vec_t(4, 0, 8));
+    KRYS_EXPECT_EQUAL("Clamp Vec3-Scalar", Clamp(vec, 1, 9), vec_t(5, 1, 9));
+  }
+
+  static void Test_Vec4_Clamp()
+  {
+    using vec_t = vec4_t<int>;
+    constexpr vec_t vec {5, -1, 10, 11};
+
+    KRYS_EXPECT_EQUAL("Clamp Vec3-Vec3", Clamp(vec, vec_t(1, 0, 0, 0), vec_t(4, 2, 8, 1)), vec_t(4, 0, 8, 1));
+    KRYS_EXPECT_EQUAL("Clamp Vec3-Scalar", Clamp(vec, 1, 9), vec_t(5, 1, 9, 9));
   }
 }

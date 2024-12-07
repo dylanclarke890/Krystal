@@ -9,24 +9,37 @@
 namespace Krys::Tests
 {
   using namespace Krys::MTL;
+  constexpr float PI = Pi<float>();
 
-  static void Test_Degrees()
+  static void Test_Vec1_Degrees()
   {
-    // Vec1
-    constexpr vec1_t<float> v1 {3.141592653589793f}; // PI radians
-    KRYS_EXPECT_EQUAL("Degrees Vec1", Degrees(v1), (vec1_t<float> {180.0f}));
+    using vec_t = vec1_t<float>;
 
-    // Vec2
-    constexpr vec2_t<float> v2 {1.5707963267948966f, 3.141592653589793f}; // PI/2 and PI radians
-    KRYS_EXPECT_EQUAL("Degrees Vec2", Degrees(v2), (vec2_t<float> {90.0f, 180.0f}));
+    constexpr vec_t vec(PI);
+    KRYS_EXPECT_EQUAL("Degrees Vec1", Degrees(vec), vec_t(180.0f));
+  }
 
-    // Vec3
-    constexpr vec3_t<float> v3 {0.0f, 1.5707963267948966f, 3.141592653589793f}; // 0, PI/2, and PI radians
-    KRYS_EXPECT_EQUAL("Degrees Vec3", Degrees(v3), (vec3_t<float> {0.0f, 90.0f, 180.0f}));
+  static void Test_Vec2_Degrees()
+  {
+    using vec_t = vec2_t<float>;
 
-    // Vec4
-    constexpr vec4_t<float> v4 {0.0f, 1.5707963267948966f, 3.141592653589793f,
-                                4.71238898038469f}; // 0, PI/2, PI, 3PI/2 radians
-    KRYS_EXPECT_EQUAL("Degrees Vec4", Degrees(v4), (vec4_t<float> {0.0f, 90.0f, 180.0f, 270.0f}));
+    constexpr vec_t vec(PI, PI / 2);
+    KRYS_EXPECT_EQUAL("Degrees Vec2", Degrees(vec), vec_t(180, 90));
+  }
+
+  static void Test_Vec3_Degrees()
+  {
+    using vec_t = vec3_t<float>;
+
+    constexpr vec_t vec(PI, PI / 2, PI / 3);
+    KRYS_EXPECT_EQUAL("Degrees Vec3", Degrees(vec), vec_t(180, 90, 60));
+  }
+
+  static void Test_Vec4_Degrees()
+  {
+    using vec_t = vec4_t<float>;
+
+    constexpr vec_t vec(PI, PI / 2, PI / 3, PI / 4);
+    KRYS_EXPECT_EQUAL("Degrees Vec4", Degrees(vec), vec_t(180, 90, 60, 45));
   }
 }

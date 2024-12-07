@@ -9,28 +9,37 @@
 namespace Krys::Tests
 {
   using namespace Krys::MTL;
+  constexpr float PI = Pi<float>();
 
-  static void Test_Radians()
+  static void Test_Vec1_Radians()
   {
-    // Vec1
-    constexpr vec1_t<float> v1 {180.0f};
-    KRYS_EXPECT_EQUAL("Radians Vec1", Radians(v1), (vec1_t<float> {MTL::Pi<float>()}));
+    using vec_t = Vec1;
+    constexpr vec_t vec(180);
 
-    // Vec2
-    constexpr vec2_t<float> v2 {90.0f, 360.0f};
-    KRYS_EXPECT_EQUAL("Radians Vec2", Radians(v2),
-                      (vec2_t<float> {MTL::Pi<float>() / 2.0f, 2.0f * MTL::Pi<float>()}));
+    KRYS_EXPECT_EQUAL("Radians Vec1", Radians(vec), vec_t(PI));
+  }
 
-    // Vec3
-    constexpr vec3_t<float> v3 {45.0f, 180.0f, 270.0f};
-    KRYS_EXPECT_EQUAL(
-      "Radians Vec3", Radians(v3),
-      (vec3_t<float> {MTL::Pi<float>() / 4.0f, MTL::Pi<float>(), 3.0f * MTL::Pi<float>() / 2.0f}));
+  static void Test_Vec2_Radians()
+  {
+    using vec_t = Vec2;
+    constexpr vec_t vec(180, 90);
 
-    // Vec4
-    constexpr vec4_t<float> v4 {0.0f, 30.0f, 60.0f, 360.0f};
-    KRYS_EXPECT_EQUAL(
-      "Radians Vec4", Radians(v4),
-      (vec4_t<float> {0.0f, MTL::Pi<float>() / 6.0f, MTL::Pi<float>() / 3.0f, 2.0f * MTL::Pi<float>()}));
+    KRYS_EXPECT_EQUAL("Radians Vec2", Radians(vec), vec_t(PI, PI / 2));
+  }
+
+  static void Test_Vec3_Radians()
+  {
+    using vec_t = Vec3;
+    constexpr vec_t vec(180, 90, 60);
+
+    KRYS_EXPECT_EQUAL("Radians Vec3", Radians(vec), vec_t(PI, PI / 2, PI / 3));
+  }
+
+  static void Test_Vec4_Radians()
+  {
+    using vec_t = Vec4;
+    constexpr vec_t vec(180, 90, 60, 45);
+
+    KRYS_EXPECT_EQUAL("Radians Vec4", Radians(vec), vec_t(PI, PI / 2, PI / 3, PI / 4));
   }
 }

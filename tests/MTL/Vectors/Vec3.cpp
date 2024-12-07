@@ -3,119 +3,79 @@
 
 namespace Krys::Tests
 {
-  static void Test_Constructors()
+  using vec_t = vec3_t<float>;
+
+  static void Test_Vec3_Constructors()
   {
-    // Default constructor
-    constexpr vec3_t<float> defaultVec;
-    KRYS_EXPECT_EQUAL("Default constructor x", defaultVec.x, 0.0f);
-    KRYS_EXPECT_EQUAL("Default constructor y", defaultVec.y, 0.0f);
-    KRYS_EXPECT_EQUAL("Default constructor z", defaultVec.z, 0.0f);
+    constexpr vec_t empty(0);
+    KRYS_EXPECT_EQUAL("Vec3 Default Constructor", empty, vec_t(0, 0, 0));
 
-    // Constructor with scalar
-    constexpr vec3_t<float> scalarVec(5.0f);
-    KRYS_EXPECT_EQUAL("Constructor with scalar x", scalarVec.x, 5.0f);
-    KRYS_EXPECT_EQUAL("Constructor with scalar y", scalarVec.y, 5.0f);
-    KRYS_EXPECT_EQUAL("Constructor with scalar z", scalarVec.z, 5.0f);
+    constexpr vec_t scalar(1);
+    KRYS_EXPECT_EQUAL("Vec3 Scalar Constructor", scalar, vec_t(1, 1, 1));
 
-    // Constructor with components
-    constexpr vec3_t<float> componentVec(3.0f, 4.0f, 5.0f);
-    KRYS_EXPECT_EQUAL("Constructor with components x", componentVec.x, 3.0f);
-    KRYS_EXPECT_EQUAL("Constructor with components y", componentVec.y, 4.0f);
-    KRYS_EXPECT_EQUAL("Constructor with components z", componentVec.z, 5.0f);
+    constexpr vec_t copy(scalar);
+    KRYS_EXPECT_EQUAL("Vec3 Copy Constructor", copy, scalar);
 
-    // Copy constructor
-    constexpr vec3_t<float> copyVec(componentVec);
-    KRYS_EXPECT_EQUAL("Copy constructor x", copyVec.x, 3.0f);
-    KRYS_EXPECT_EQUAL("Copy constructor y", copyVec.y, 4.0f);
-    KRYS_EXPECT_EQUAL("Copy constructor z", copyVec.z, 5.0f);
-
-    // Move constructor
-    constexpr vec3_t<float> moveVec(std::move(componentVec));
-    KRYS_EXPECT_EQUAL("Move constructor x", moveVec.x, 3.0f);
-    KRYS_EXPECT_EQUAL("Move constructor y", moveVec.y, 4.0f);
-    KRYS_EXPECT_EQUAL("Move constructor z", moveVec.z, 5.0f);
+    constexpr vec_t move_src(scalar);
+    constexpr vec_t move_dst(std::move(move_src));
+    KRYS_EXPECT_EQUAL("Vec3 Move Constructor", move_dst, scalar);
   }
 
-  static void Test_EqualityOperators()
+  static void Test_Vec3_Equality()
   {
-    constexpr vec3_t<float> v1(1.0f, 2.0f, 3.0f);
-    constexpr vec3_t<float> v2(1.0f, 2.0f, 3.0f);
-    constexpr vec3_t<float> v3(4.0f, 5.0f, 6.0f);
+    constexpr vec_t vec(1, 0, 3);
+    constexpr vec_t unequal(0, 1, 2);
 
-    KRYS_EXPECT_TRUE("Equality operator (equal vectors)", v1 == v2);
-    KRYS_EXPECT_FALSE("Equality operator (different vectors)", v1 == v3);
-    KRYS_EXPECT_FALSE("Inequality operator (equal vectors)", v1 != v2);
-    KRYS_EXPECT_TRUE("Inequality operator (different vectors)", v1 != v3);
+    KRYS_EXPECT_TRUE("Vec3 Equality Comparison - Equal", vec == vec);
+    KRYS_EXPECT_FALSE("Vec3 Equality Comparison - Not Equal", vec == unequal);
+    KRYS_EXPECT_TRUE("Vec3 Inequality Comparison - Not Equal", vec != unequal);
   }
 
-  static void Test_ElementAccess()
+  static void Test_Vec3_ElementAccess()
   {
-    constexpr vec3_t<float> v(3.3f, 4.4f, 5.5f);
-    KRYS_EXPECT_EQUAL("Element access operator x", v[0], 3.3f);
-    KRYS_EXPECT_EQUAL("Element access operator y", v[1], 4.4f);
-    KRYS_EXPECT_EQUAL("Element access operator z", v[2], 5.5f);
-    KRYS_EXPECT_EQUAL("Get<0>() function", v.Get<0>(), 3.3f);
-    KRYS_EXPECT_EQUAL("Get<1>() function", v.Get<1>(), 4.4f);
-    KRYS_EXPECT_EQUAL("Get<2>() function", v.Get<2>(), 5.5f);
-    KRYS_EXPECT_EQUAL("GetLength() function", v.GetLength(), 3);
+    constexpr vec_t vec(1, 2, 3);
+    KRYS_EXPECT_EQUAL("Vec3 GetLength()", vec.GetLength(), 3);
+
+    KRYS_EXPECT_EQUAL("Vec3 Element Access [0]", vec[0], 1);
+    KRYS_EXPECT_EQUAL("Vec3 Element Access [1]", vec[1], 2);
+    KRYS_EXPECT_EQUAL("Vec3 Element Access [2]", vec[2], 3);
+
+    KRYS_EXPECT_EQUAL("Vec3 Element Access Get<0>()", vec.Get<0>(), 1);
+    KRYS_EXPECT_EQUAL("Vec3 Element Access Get<1>()", vec.Get<1>(), 2);
+    KRYS_EXPECT_EQUAL("Vec3 Element Access Get<2>()", vec.Get<2>(), 3);
   }
 
-  static void Test_ArithmeticOperators()
+  static void Test_Vec3_Unary()
   {
-    constexpr vec3_t<float> v1(1.0f, 2.0f, 3.0f);
-    constexpr vec3_t<float> v2(4.0f, 5.0f, 6.0f);
-
-    // Addition
-    constexpr vec3_t<float> addVecs = v1 + v2;
-    KRYS_EXPECT_EQUAL("Addition operator x", addVecs.x, 5.0f);
-    KRYS_EXPECT_EQUAL("Addition operator y", addVecs.y, 7.0f);
-    KRYS_EXPECT_EQUAL("Addition operator z", addVecs.z, 9.0f);
-
-    constexpr vec3_t<float> addScalar = v1 + 2.0f;
-    KRYS_EXPECT_EQUAL("Addition operator (vector + scalar) x", addScalar.x, 3.0f);
-    KRYS_EXPECT_EQUAL("Addition operator (vector + scalar) y", addScalar.y, 4.0f);
-    KRYS_EXPECT_EQUAL("Addition operator (vector + scalar) z", addScalar.z, 5.0f);
-
-    // Subtraction
-    constexpr vec3_t<float> subVecs = v1 - v2;
-    KRYS_EXPECT_EQUAL("Subtraction operator x", subVecs.x, -3.0f);
-    KRYS_EXPECT_EQUAL("Subtraction operator y", subVecs.y, -3.0f);
-    KRYS_EXPECT_EQUAL("Subtraction operator z", subVecs.z, -3.0f);
-
-    constexpr vec3_t<float> subScalar = v1 - 1.0f;
-    KRYS_EXPECT_EQUAL("Subtraction operator (vector - scalar) x", subScalar.x, 0.0f);
-    KRYS_EXPECT_EQUAL("Subtraction operator (vector - scalar) y", subScalar.y, 1.0f);
-    KRYS_EXPECT_EQUAL("Subtraction operator (vector - scalar) z", subScalar.z, 2.0f);
-
-    // Multiplication
-    constexpr vec3_t<float> mulVecs = v1 * v2;
-    KRYS_EXPECT_EQUAL("Multiplication operator x", mulVecs.x, 4.0f);
-    KRYS_EXPECT_EQUAL("Multiplication operator y", mulVecs.y, 10.0f);
-    KRYS_EXPECT_EQUAL("Multiplication operator z", mulVecs.z, 18.0f);
-
-    constexpr vec3_t<float> mulScalar = v1 * 2.0f;
-    KRYS_EXPECT_EQUAL("Multiplication operator (vector * scalar) x", mulScalar.x, 2.0f);
-    KRYS_EXPECT_EQUAL("Multiplication operator (vector * scalar) y", mulScalar.y, 4.0f);
-    KRYS_EXPECT_EQUAL("Multiplication operator (vector * scalar) z", mulScalar.z, 6.0f);
-
-    // Division
-    constexpr vec3_t<float> divVecs = v2 / v1;
-    KRYS_EXPECT_EQUAL("Division operator x", divVecs.x, 4.0f);
-    KRYS_EXPECT_EQUAL("Division operator y", divVecs.y, 2.5f);
-    KRYS_EXPECT_EQUAL("Division operator z", divVecs.z, 2.0f);
-
-    constexpr vec3_t<float> divScalar = v2 / 2.0f;
-    KRYS_EXPECT_EQUAL("Division operator (vector / scalar) x", divScalar.x, 2.0f);
-    KRYS_EXPECT_EQUAL("Division operator (vector / scalar) y", divScalar.y, 2.5f);
-    KRYS_EXPECT_EQUAL("Division operator (vector / scalar) z", divScalar.z, 3.0f);
+    KRYS_EXPECT_EQUAL("Vec3 Unary Negation", -vec_t(1, 3, 5), vec_t(-1, -3, -5));
+    KRYS_EXPECT_EQUAL("Vec3 Unary Plus", +vec_t(-1, 3, -5), vec_t(-1, 3, -5));
   }
 
-  static void Test_UnaryOperator()
+  static void Test_Vec3_Addition()
   {
-    constexpr vec3_t<float> v(1.0f, -2.0f, 3.0f);
-    constexpr vec3_t<float> negative = -v;
-    KRYS_EXPECT_EQUAL("Unary minus operator x", negative.x, -1.0f);
-    KRYS_EXPECT_EQUAL("Unary minus operator y", negative.y, 2.0f);
-    KRYS_EXPECT_EQUAL("Unary minus operator z", negative.z, -3.0f);
+    constexpr vec_t vec(1, 2, 3);
+    KRYS_EXPECT_EQUAL("Vec3 Vector Addition", vec + vec_t(9, 8, 7), vec_t(10));
+    KRYS_EXPECT_EQUAL("Vec3 Scalar Addition", vec + 9.0f, vec_t(10, 11, 12));
+  }
+
+  static void Test_Vec3_Subtraction()
+  {
+    constexpr vec_t vec(1, 2, 3);
+    KRYS_EXPECT_EQUAL("Vec3 Vector Subtraction", vec - vec_t(9, 10, 11), vec_t(-8, -8, -8));
+    KRYS_EXPECT_EQUAL("Vec3 Scalar Subtraction", vec - 9.0f, vec_t(-8, -7, -6));
+  }
+
+  static void Test_Vec3_Multiplication()
+  {
+    constexpr vec_t vec(3, 4, 5);
+    KRYS_EXPECT_EQUAL("Vec3 Vector Multiplication", vec * vec_t(5, 2, 4), vec_t(15, 8, 20));
+    KRYS_EXPECT_EQUAL("Vec3 Scalar Multiplication", vec * 5.0f, vec_t(15, 20, 25));
+  }
+
+  static void Test_Vec3_Division()
+  {
+    constexpr vec_t vec(2, 4, 6);
+    KRYS_EXPECT_EQUAL("Vec3 Vector Division", vec / vec_t(2, 4, 6), vec_t(1, 1, 1));
+    KRYS_EXPECT_EQUAL("Vec3 Scalar Division", vec / 4.0f, vec_t(0.5f, 1, 1.5f));
   }
 }
