@@ -10,20 +10,24 @@ namespace Krys::Tests
 
   static void Test_Mat2x2_Inverse()
   {
-    constexpr matrix_t<float, 2, 2> m2x2 {vec2_t<float> {4, 2}, vec2_t<float> {7, 6}};
-    KRYS_EXPECT_EQUAL("Inverse Mat2x2", Inverse(m2x2),
-                      (mat2x2_t<float> {vec2_t<float> {0.6f, -0.2f}, vec2_t<float> {-0.7f, 0.4f}}));
+    using mat_t = Mat2x2;
+    constexpr mat_t mat {{4, 2}, {7, 6}};
+    KRYS_EXPECT_EQUAL("Inverse Mat2x2", Inverse(mat), mat_t({0.6f, -0.2f}, {-0.7f, 0.4f}));
   }
 
   static void Test_Mat3x3_Inverse()
   {
-    constexpr matrix_t<float, 3, 3> m3x3 {vec3_t<float> {1, -1, 1}, vec3_t<float> {2, 0, -1},
-                                          vec3_t<float> {-1, 1, 0}};
+    using mat_t = Mat3x3;
+    constexpr mat_t mat {{1, -1, 1}, {2, 0, -1}, {-1, 1, 0}};
+    KRYS_EXPECT_EQUAL("Inverse Mat3x3", Inverse(mat),
+                      mat_t({0.5f, 0.5f, 0.5f}, {0.5f, 0.5f, 1.5f}, {1.0f, 0.0f, 1.0f}));
   }
 
   static void Test_Mat4x4_Inverse()
   {
-    constexpr matrix_t<float, 4, 4> m4x4 {vec4_t<float> {1, 2, 3, 4}, vec4_t<float> {5, 6, 7, 8},
-                                          vec4_t<float> {9, 10, 11, 12}, vec4_t<float> {13, 14, 15, 16}};
+    using mat_t = Mat4x4;
+    constexpr mat_t mat {{1, 0, 0, 0}, {0, 2, 0, 0}, {0, 0, 3, 0}, {0, 0, 0, 4}};
+    KRYS_EXPECT_EQUAL("Inverse Mat4x4", Inverse(mat),
+                      mat_t({1, 0, 0, 0}, {0, 0.5f, 0, 0}, {0, 0, 0.33333333333333f, 0}, {0, 0, 0, 0.25f}));
   }
 }
