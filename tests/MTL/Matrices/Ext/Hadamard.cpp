@@ -1,37 +1,97 @@
 #include "MTL/Matrices/Ext/Hadamard.hpp"
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
+#include "MTL/Matrices/Mat2x3.hpp"
+#include "MTL/Matrices/Mat2x4.hpp"
+#include "MTL/Matrices/Mat3x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
+#include "MTL/Matrices/Mat3x4.hpp"
+#include "MTL/Matrices/Mat4x2.hpp"
+#include "MTL/Matrices/Mat4x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
 
 namespace Krys::Tests
 {
   using namespace Krys::MTL;
 
-  static void Test_Hadamard()
+  static void Test_Mat2x2_Hadamard()
   {
-    // 2x2 matrices
-    constexpr mat2x2_t<float> matA2x2 {1.0f, 2.0f, 3.0f, 4.0f};
-    constexpr mat2x2_t<float> matB2x2 {5.0f, 6.0f, 7.0f, 8.0f};
-    constexpr mat2x2_t<float> expected2x2 {5.0f, 12.0f, 21.0f, 32.0f};
-    constexpr auto result2x2 = Hadamard(matA2x2, matB2x2);
-    KRYS_EXPECT_EQUAL("Hadamard 2x2", result2x2, expected2x2);
+    using mat_t = Mat2x2;
+    constexpr mat_t a {1, 2, 3, 4};
+    constexpr mat_t b {5, 6, 7, 8};
+    constexpr mat_t result {5, 12, 21, 32};
+    KRYS_EXPECT_EQUAL("Hadamard Mat2x2", Hadamard(a, b), result);
+  }
 
-    // 3x3 matrices
-    constexpr mat3x3_t<float> matA3x3 {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f};
-    constexpr mat3x3_t<float> matB3x3 {9.0f, 8.0f, 7.0f, 6.0f, 5.0f, 4.0f, 3.0f, 2.0f, 1.0f};
-    constexpr mat3x3_t<float> expected3x3 {9.0f, 16.0f, 21.0f, 24.0f, 25.0f, 24.0f, 21.0f, 16.0f, 9.0f};
-    constexpr auto result3x3 = Hadamard(matA3x3, matB3x3);
-    KRYS_EXPECT_EQUAL("Hadamard 3x3", result3x3, expected3x3);
+  static void Test_Mat2x3_Hadamard()
+  {
+    using mat_t = Mat2x3;
+    constexpr mat_t a {1, 2, 3, 4, -2, 3};
+    constexpr mat_t b {5, 6, 7, 8, 3, -2};
+    constexpr mat_t result {5, 12, 21, 32, -6, -6};
+    KRYS_EXPECT_EQUAL("Hadamard Mat2x3", Hadamard(a, b), result);
+  }
 
-    // 4x4 matrices
-    constexpr mat4x4_t<float> matA4x4 {1.0f, 2.0f,  3.0f,  4.0f,  5.0f,  6.0f,  7.0f,  8.0f,
-                                       9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f};
-    constexpr mat4x4_t<float> matB4x4 {16.0f, 15.0f, 14.0f, 13.0f, 12.0f, 11.0f, 10.0f, 9.0f,
-                                       8.0f,  7.0f,  6.0f,  5.0f,  4.0f,  3.0f,  2.0f,  1.0f};
-    constexpr mat4x4_t<float> expected4x4 {16.0f, 30.0f, 42.0f, 52.0f, 60.0f, 66.0f, 70.0f, 72.0f,
-                                           72.0f, 70.0f, 66.0f, 60.0f, 52.0f, 42.0f, 30.0f, 16.0f};
-    constexpr auto result4x4 = Hadamard(matA4x4, matB4x4);
-    KRYS_EXPECT_EQUAL("Hadamard 4x4", result4x4, expected4x4);
+  static void Test_Mat2x4_Hadamard()
+  {
+    using mat_t = Mat2x4;
+    constexpr mat_t a {1, 2, 3, 4, -2, 3, 0, 5};
+    constexpr mat_t b {5, 6, 7, 8, 3, -2, 4, 1};
+    constexpr mat_t result {5, 12, 21, 32, -6, -6, 0, 5};
+    KRYS_EXPECT_EQUAL("Hadamard Mat2x4", Hadamard(a, b), result);
+  }
+
+  static void Test_Mat3x2_Hadamard()
+  {
+    using mat_t = Mat3x2;
+    constexpr mat_t a {1, 2, 3, 4, -2, 3};
+    constexpr mat_t b {5, 6, 7, 8, 3, -2};
+    constexpr mat_t result {5, 12, 21, 32, -6, -6};
+    KRYS_EXPECT_EQUAL("Hadamard Mat3x2", Hadamard(a, b), result);
+  }
+
+  static void Test_Mat3x3_Hadamard()
+  {
+    using mat_t = Mat3x3;
+    constexpr mat_t a {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    constexpr mat_t b {9, 8, 7, 6, 5, 4, 3, 2, 1};
+    constexpr mat_t result {9, 16, 21, 24, 25, 24, 21, 16, 9};
+    KRYS_EXPECT_EQUAL("Hadamard Mat3x3", Hadamard(a, b), result);
+  }
+
+  static void Test_Mat3x4_Hadamard()
+  {
+    using mat_t = Mat3x4;
+    constexpr mat_t a {1, 2, 3, 4, 5, 6, 7, 8, -1, -2, -3, -4};
+    constexpr mat_t b {4, 3, 2, 1, -1, -2, -3, -4, 1, 2, 3, 4};
+    constexpr mat_t result {4, 6, 6, 4, -5, -12, -21, -32, -1, -4, -9, -16};
+    KRYS_EXPECT_EQUAL("Hadamard Mat3x4", Hadamard(a, b), result);
+  }
+
+  static void Test_Mat4x2_Hadamard()
+  {
+    using mat_t = Mat4x2;
+    constexpr mat_t a {1, 2, 3, 4, -2, 3, 0, 5};
+    constexpr mat_t b {5, 6, 7, 8, 3, -2, 4, 1};
+    constexpr mat_t result {5, 12, 21, 32, -6, -6, 0, 5};
+    KRYS_EXPECT_EQUAL("Hadamard Mat4x2", Hadamard(a, b), result);
+  }
+
+  static void Test_Mat4x3_Hadamard()
+  {
+    using mat_t = Mat4x3;
+    constexpr mat_t a {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    constexpr mat_t b {12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    constexpr mat_t result {12, 22, 30, 36, 40, 42, 42, 40, 36, 30, 22, 12};
+    KRYS_EXPECT_EQUAL("Hadamard Mat4x3", Hadamard(a, b), result);
+  }
+
+  static void Test_Mat4x4_Hadamard()
+  {
+    using mat_t = Mat4x4;
+    constexpr mat_t a {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    constexpr mat_t b {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    constexpr mat_t result {16, 30, 42, 52, 60, 66, 70, 72, 72, 70, 66, 60, 52, 42, 30, 16};
+    KRYS_EXPECT_EQUAL("Hadamard Mat4x4", Hadamard(a, b), result);
   }
 }

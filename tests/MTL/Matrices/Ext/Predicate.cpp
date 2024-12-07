@@ -14,6 +14,8 @@ namespace Krys::Tests
 {
   using namespace Krys::MTL;
 
+#pragma region Test Helpers
+
   constexpr auto IsMoreThan16 = [](int value)
   {
     return value > 16;
@@ -23,6 +25,8 @@ namespace Krys::Tests
   {
     return value < 16;
   };
+
+#pragma endregion Test Helpers
 
   static void Test_Mat2x2_Predicate()
   {

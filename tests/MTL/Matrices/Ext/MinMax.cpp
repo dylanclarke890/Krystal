@@ -1,96 +1,203 @@
 #include "MTL/Matrices/Ext/MinMax.hpp"
 #include "Core/Debug/Expect.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
+#include "MTL/Matrices/Mat2x3.hpp"
+#include "MTL/Matrices/Mat2x4.hpp"
+#include "MTL/Matrices/Mat3x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
+#include "MTL/Matrices/Mat3x4.hpp"
+#include "MTL/Matrices/Mat4x2.hpp"
+#include "MTL/Matrices/Mat4x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
 
 namespace Krys::Tests
 {
   using namespace Krys::MTL;
 
-  static void Test_Min()
+  static void Test_Mat2x2_MinMax()
   {
-    // mat2x2
-    constexpr mat2x2_t<int> v1 {1, -2, 3, -4};
-    constexpr int scalar1 = 1;
-    KRYS_EXPECT_EQUAL("Min Mat2x2", Min(v1, scalar1), (mat2x2_t<int> {1, -2, 1, -4}));
+    using mati_t = mat2x2_t<int>;
+    constexpr mati_t mati {1, -2, 3, -4};
+    KRYS_EXPECT_EQUAL("Min Mat2x2-Scalar", Min(mati, 1), mati_t(1, -2, 1, -4));
+    KRYS_EXPECT_EQUAL("Min Mat2x2-Mat2x2", Min(mati, mati_t(1, 1, 1, 1)), mati_t(1, -2, 1, -4));
+    KRYS_EXPECT_EQUAL("Max Mat2x2-Scalar", Max(mati, 1), mati_t(1, 1, 3, 1));
+    KRYS_EXPECT_EQUAL("Max Mat2x2-Mat2x2", Max(mati, mati_t(1, 1, 1, 1)), mati_t(1, 1, 3, 1));
 
-    // mat3x3
-    constexpr mat3x3_t<int> v2 {1, -1, 0, 5, -5, 10, 4, 3, -3};
-    constexpr int scalar2 = -3;
-    KRYS_EXPECT_EQUAL("Min Mat3x3", Min(v2, scalar2), (mat3x3_t<int> {-3, -3, -3, -3, -5, -3, -3, -3, -3}));
-
-    // mat4x4
-    constexpr mat4x4_t<int> v3 {10, 20, 30, 40, -5, -15, -25, -35, 0, 5, 15, 25, -10, -20, -30, -40};
-    constexpr int scalar3 = -10;
-    KRYS_EXPECT_EQUAL(
-      "Min Mat4x4", Min(v3, scalar3),
-      (mat4x4_t<int> {-10, -10, -10, -10, -10, -15, -25, -35, -10, -10, -10, -10, -10, -20, -30, -40}));
+    using matf_t = mat2x2_t<float>;
+    constexpr matf_t matf {1, -2, 3, -4};
+    KRYS_EXPECT_EQUAL("FMin Mat2x2-Scalar", FMin(matf, 1.0f), matf_t(1, -2, 1, -4));
+    KRYS_EXPECT_EQUAL("FMin Mat2x2-Mat2x2", FMin(matf, matf_t(1, 1, 1, 1)), matf_t(1, -2, 1, -4));
+    KRYS_EXPECT_EQUAL("FMax Mat2x2-Scalar", FMax(matf, 1.0f), matf_t(1, 1, 3, 1));
+    KRYS_EXPECT_EQUAL("FMax Mat2x2-Mat2x2", FMax(matf, matf_t(1, 1, 1, 1)), matf_t(1, 1, 3, 1));
   }
 
-  static void Test_FMin()
+  static void Test_Mat2x3_MinMax()
   {
-    // mat2x2
-    constexpr mat2x2_t<float> v1 {1.0f, -2.0f, 3.0f, -4.0f};
-    constexpr mat2x2_t<float> v2 {0.0f, 0.0f, 2.0f, 2.0f};
-    KRYS_EXPECT_EQUAL("FMin Mat2x2", FMin(v1, v2), (mat2x2_t<float> {0.0f, -2.0f, 2.0f, -4.0f}));
+    using mati_t = mat2x3_t<int>;
+    constexpr mati_t mati {1, -2, 3, -4, 5, -6};
+    KRYS_EXPECT_EQUAL("Min Mat2x3-Scalar", Min(mati, 1), mati_t(1, -2, 1, -4, 1, -6));
+    KRYS_EXPECT_EQUAL("Min Mat2x3-Mat2x3", Min(mati, mati_t(1, 1, 1, 1, 1, 1)), mati_t(1, -2, 1, -4, 1, -6));
+    KRYS_EXPECT_EQUAL("Max Mat2x3-Scalar", Max(mati, 1), mati_t(1, 1, 3, 1, 5, 1));
+    KRYS_EXPECT_EQUAL("Max Mat2x3-Mat2x3", Max(mati, mati_t(1, 1, 1, 1, 1, 1)), mati_t(1, 1, 3, 1, 5, 1));
 
-    // mat3x3
-    constexpr mat3x3_t<float> v3 {1.0f, -1.0f, 0.0f, 5.0f, -5.0f, 10.0f, 4.0f, 3.0f, -3.0f};
-    constexpr mat3x3_t<float> v4 {2.0f, -2.0f, 1.0f, 0.0f, -10.0f, 5.0f, 5.0f, 0.0f, -1.0f};
-    KRYS_EXPECT_EQUAL("FMin Mat3x3", FMin(v3, v4),
-                      (mat3x3_t<float> {1.0f, -2.0f, 0.0f, 0.0f, -10.0f, 5.0f, 4.0f, 0.0f, -3.0f}));
-
-    // mat4x4
-    constexpr mat4x4_t<float> v5 {10.0f, 20.0f, 30.0f, 40.0f, -5.0f,  -15.0f, -25.0f, -35.0f,
-                                  0.0f,  5.0f,  15.0f, 25.0f, -10.0f, -20.0f, -30.0f, -40.0f};
-    constexpr mat4x4_t<float> v6 {15.0f, 10.0f, 35.0f, 20.0f, -10.0f, -10.0f, -30.0f, -40.0f,
-                                  10.0f, 0.0f,  20.0f, 15.0f, -5.0f,  -15.0f, -35.0f, -45.0f};
-    KRYS_EXPECT_EQUAL("FMin Mat4x4", FMin(v5, v6),
-                      (mat4x4_t<float> {10.0f, 10.0f, 30.0f, 20.0f, -10.0f, -15.0f, -30.0f, -40.0f, 0.0f,
-                                        0.0f, 15.0f, 15.0f, -10.0f, -20.0f, -35.0f, -45.0f}));
+    using matf_t = mat2x3_t<float>;
+    constexpr matf_t matf {1, -2, 3, -4, 5, -6};
+    KRYS_EXPECT_EQUAL("FMin Mat2x3-Scalar", FMin(matf, 1.0f), matf_t(1, -2, 1, -4, 1, -6));
+    KRYS_EXPECT_EQUAL("FMin Mat2x3-Mat2x3", FMin(matf, matf_t(1, 1, 1, 1, 1, 1)),
+                      matf_t(1, -2, 1, -4, 1, -6));
+    KRYS_EXPECT_EQUAL("FMax Mat2x3-Scalar", FMax(matf, 1.0f), matf_t(1, 1, 3, 1, 5, 1));
+    KRYS_EXPECT_EQUAL("FMax Mat2x3-Mat2x3", FMax(matf, matf_t(1, 1, 1, 1, 1, 1)), matf_t(1, 1, 3, 1, 5, 1));
   }
 
-  static void Test_Max()
+  static void Test_Mat2x4_MinMax()
   {
-    // mat2x2
-    constexpr mat2x2_t<int> v1 {1, -2, 3, -4};
-    constexpr int scalar1 = 0;
-    KRYS_EXPECT_EQUAL("Max Mat2x2", Max(v1, scalar1), (mat2x2_t<int> {1, 0, 3, 0}));
+    using mati_t = mat2x4_t<int>;
+    constexpr mati_t mati {1, -2, 3, -4, 5, -6, 7, -8};
+    KRYS_EXPECT_EQUAL("Min Mat2x4-Scalar", Min(mati, 1), mati_t(1, -2, 1, -4, 1, -6, 1, -8));
+    KRYS_EXPECT_EQUAL("Min Mat2x4-Mat2x4", Min(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, -2, 1, -4, 1, -6, 1, -8));
+    KRYS_EXPECT_EQUAL("Max Mat2x4-Scalar", Max(mati, 1), mati_t(1, 1, 3, 1, 5, 1, 7, 1));
+    KRYS_EXPECT_EQUAL("Max Mat2x4-Mat2x4", Max(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, 1, 3, 1, 5, 1, 7, 1));
 
-    // mat3x3
-    constexpr mat3x3_t<int> v2 {1, -1, 0, 5, -5, 10, 4, 3, -3};
-    constexpr int scalar2 = 5;
-    KRYS_EXPECT_EQUAL("Max Mat3x3", Max(v2, scalar2), (mat3x3_t<int> {5, 5, 5, 5, 5, 10, 5, 5, 5}));
-
-    // mat4x4
-    constexpr mat4x4_t<int> v3 {10, 20, 30, 40, -5, -15, -25, -35, 0, 5, 15, 25, -10, -20, -30, -40};
-    constexpr int scalar3 = 25;
-    KRYS_EXPECT_EQUAL("Max Mat4x4", Max(v3, scalar3),
-                      (mat4x4_t<int> {25, 25, 30, 40, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25}));
+    using matf_t = mat2x4_t<float>;
+    constexpr matf_t matf {1, -2, 3, -4, 5, -6, 7, -8};
+    KRYS_EXPECT_EQUAL("FMin Mat2x4-Scalar", FMin(matf, 1.0f), matf_t(1, -2, 1, -4, 1, -6, 1, -8));
+    KRYS_EXPECT_EQUAL("FMin Mat2x4-Mat2x4", FMin(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, -2, 1, -4, 1, -6, 1, -8));
+    KRYS_EXPECT_EQUAL("FMax Mat2x4-Scalar", FMax(matf, 1.0f), matf_t(1, 1, 3, 1, 5, 1, 7, 1));
+    KRYS_EXPECT_EQUAL("FMax Mat2x4-Mat2x4", FMax(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, 1, 3, 1, 5, 1, 7, 1));
   }
 
-  static void Test_FMax()
+  static void Test_Mat3x2_MinMax()
   {
-    // mat2x2
-    constexpr mat2x2_t<float> v1 {1.0f, -2.0f, 3.0f, -4.0f};
-    constexpr mat2x2_t<float> v2 {0.0f, 0.0f, 2.0f, 2.0f};
-    KRYS_EXPECT_EQUAL("FMax Mat2x2", FMax(v1, v2), (mat2x2_t<float> {1.0f, 0.0f, 3.0f, 2.0f}));
+    using mati_t = mat3x2_t<int>;
+    constexpr mati_t mati {1, -2, 3, -4, 5, -6};
+    KRYS_EXPECT_EQUAL("Min Mat3x2-Scalar", Min(mati, 1), mati_t(1, -2, 1, -4, 1, -6));
+    KRYS_EXPECT_EQUAL("Min Mat3x2-Mat3x2", Min(mati, mati_t(1, 1, 1, 1, 1, 1)), mati_t(1, -2, 1, -4, 1, -6));
+    KRYS_EXPECT_EQUAL("Max Mat3x2-Scalar", Max(mati, 1), mati_t(1, 1, 3, 1, 5, 1));
+    KRYS_EXPECT_EQUAL("Max Mat3x2-Mat3x2", Max(mati, mati_t(1, 1, 1, 1, 1, 1)), mati_t(1, 1, 3, 1, 5, 1));
 
-    // mat3x3
-    constexpr mat3x3_t<float> v3 {1.0f, -1.0f, 0.0f, 5.0f, -5.0f, 10.0f, 4.0f, 3.0f, -3.0f};
-    constexpr mat3x3_t<float> v4 {2.0f, -2.0f, 1.0f, 0.0f, -10.0f, 5.0f, 5.0f, 0.0f, -1.0f};
-    KRYS_EXPECT_EQUAL("FMax Mat3x3", FMax(v3, v4),
-                      (mat3x3_t<float> {2.0f, -1.0f, 1.0f, 5.0f, -5.0f, 10.0f, 5.0f, 3.0f, -1.0f}));
-
-    // mat4x4
-    constexpr mat4x4_t<float> v5 {10.0f, 20.0f, 30.0f, 40.0f, -5.0f,  -15.0f, -25.0f, -35.0f,
-                                  0.0f,  5.0f,  15.0f, 25.0f, -10.0f, -20.0f, -30.0f, -40.0f};
-    constexpr mat4x4_t<float> v6 {15.0f, 10.0f, 35.0f, 20.0f, -10.0f, -10.0f, -30.0f, -40.0f,
-                                  10.0f, 0.0f,  20.0f, 15.0f, -5.0f,  -15.0f, -35.0f, -45.0f};
-    KRYS_EXPECT_EQUAL("FMax Mat4x4", FMax(v5, v6),
-                      (mat4x4_t<float> {15.0f, 20.0f, 35.0f, 40.0f, -5.0f, -10.0f, -25.0f, -35.0f, 10.0f,
-                                        5.0f, 20.0f, 25.0f, -5.0f, -15.0f, -30.0f, -40.0f}));
+    using matf_t = mat3x2_t<float>;
+    constexpr matf_t matf {1, -2, 3, -4, 5, -6};
+    KRYS_EXPECT_EQUAL("FMin Mat3x2-Scalar", FMin(matf, 1.0f), matf_t(1, -2, 1, -4, 1, -6));
+    KRYS_EXPECT_EQUAL("FMin Mat3x2-Mat3x2", FMin(matf, matf_t(1, 1, 1, 1, 1, 1)),
+                      matf_t(1, -2, 1, -4, 1, -6));
+    KRYS_EXPECT_EQUAL("FMax Mat3x2-Scalar", FMax(matf, 1.0f), matf_t(1, 1, 3, 1, 5, 1));
+    KRYS_EXPECT_EQUAL("FMax Mat3x2-Mat3x2", FMax(matf, matf_t(1, 1, 1, 1, 1, 1)), matf_t(1, 1, 3, 1, 5, 1));
   }
 
+  static void Test_Mat3x3_MinMax()
+  {
+    using mati_t = mat3x3_t<int>;
+    constexpr mati_t mati {1, -2, 3, -4, 5, -6, 7, -8, 9};
+    KRYS_EXPECT_EQUAL("Min Mat3x3-Scalar", Min(mati, 1), mati_t(1, -2, 1, -4, 1, -6, 1, -8, 1));
+    KRYS_EXPECT_EQUAL("Min Mat3x3-Mat3x3", Min(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, -2, 1, -4, 1, -6, 1, -8, 1));
+    KRYS_EXPECT_EQUAL("Max Mat3x3-Scalar", Max(mati, 1), mati_t(1, 1, 3, 1, 5, 1, 7, 1, 9));
+    KRYS_EXPECT_EQUAL("Max Mat3x3-Mat3x3", Max(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, 1, 3, 1, 5, 1, 7, 1, 9));
+
+    using matf_t = mat3x3_t<float>;
+    constexpr matf_t matf {1, -2, 3, -4, 5, -6, 7, -8, 9};
+    KRYS_EXPECT_EQUAL("FMin Mat3x3-Scalar", FMin(matf, 1.0f), matf_t(1, -2, 1, -4, 1, -6, 1, -8, 1));
+    KRYS_EXPECT_EQUAL("FMin Mat3x3-Mat3x3", FMin(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, -2, 1, -4, 1, -6, 1, -8, 1));
+    KRYS_EXPECT_EQUAL("FMax Mat3x3-Scalar", FMax(matf, 1.0f), matf_t(1, 1, 3, 1, 5, 1, 7, 1, 9));
+    KRYS_EXPECT_EQUAL("FMax Mat3x3-Mat3x3", FMax(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, 1, 3, 1, 5, 1, 7, 1, 9));
+  }
+
+  static void Test_Mat3x4_MinMax()
+  {
+    using mati_t = mat3x4_t<int>;
+    constexpr mati_t mati {1, -2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12};
+    KRYS_EXPECT_EQUAL("Min Mat3x4-Scalar", Min(mati, 1), mati_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12));
+    KRYS_EXPECT_EQUAL("Min Mat3x4-Mat3x4", Min(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12));
+    KRYS_EXPECT_EQUAL("Max Mat3x4-Scalar", Max(mati, 1), mati_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1));
+    KRYS_EXPECT_EQUAL("Max Mat3x4-Mat3x4", Max(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1));
+
+    using matf_t = mat3x4_t<float>;
+    constexpr matf_t matf {1, -2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12};
+    KRYS_EXPECT_EQUAL("FMin Mat3x4-Scalar", FMin(matf, 1.0f),
+                      matf_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12));
+    KRYS_EXPECT_EQUAL("FMin Mat3x4-Mat3x4", FMin(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12));
+    KRYS_EXPECT_EQUAL("FMax Mat3x4-Scalar", FMax(matf, 1.0f), matf_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1));
+    KRYS_EXPECT_EQUAL("FMax Mat3x4-Mat3x4", FMax(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1));
+  }
+
+  static void Test_Mat4x2_MinMax()
+  {
+    using mati_t = mat4x2_t<int>;
+    constexpr mati_t mati {1, -2, 3, -4, 5, -6, 7, -8};
+    KRYS_EXPECT_EQUAL("Min Mat4x2-Scalar", Min(mati, 1), mati_t(1, -2, 1, -4, 1, -6, 1, -8));
+    KRYS_EXPECT_EQUAL("Min Mat4x2-Mat4x2", Min(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, -2, 1, -4, 1, -6, 1, -8));
+    KRYS_EXPECT_EQUAL("Max Mat4x2-Scalar", Max(mati, 1), mati_t(1, 1, 3, 1, 5, 1, 7, 1));
+    KRYS_EXPECT_EQUAL("Max Mat4x2-Mat4x2", Max(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, 1, 3, 1, 5, 1, 7, 1));
+
+    using matf_t = mat4x2_t<float>;
+    constexpr matf_t matf {1, -2, 3, -4, 5, -6, 7, -8};
+    KRYS_EXPECT_EQUAL("FMin Mat4x2-Scalar", FMin(matf, 1.0f), matf_t(1, -2, 1, -4, 1, -6, 1, -8));
+    KRYS_EXPECT_EQUAL("FMin Mat4x2-Mat4x2", FMin(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, -2, 1, -4, 1, -6, 1, -8));
+    KRYS_EXPECT_EQUAL("FMax Mat4x2-Scalar", FMax(matf, 1.0f), matf_t(1, 1, 3, 1, 5, 1, 7, 1));
+    KRYS_EXPECT_EQUAL("FMax Mat4x2-Mat4x2", FMax(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, 1, 3, 1, 5, 1, 7, 1));
+  }
+
+  static void Test_Mat4x3_MinMax()
+  {
+    using mati_t = mat4x3_t<int>;
+    constexpr mati_t mati {1, -2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12};
+    KRYS_EXPECT_EQUAL("Min Mat4x3-Scalar", Min(mati, 1), mati_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12));
+    KRYS_EXPECT_EQUAL("Min Mat4x3-Mat4x3", Min(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12));
+    KRYS_EXPECT_EQUAL("Max Mat4x3-Scalar", Max(mati, 1), mati_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1));
+    KRYS_EXPECT_EQUAL("Max Mat4x3-Mat4x3", Max(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1));
+
+    using matf_t = mat4x3_t<float>;
+    constexpr matf_t matf {1, -2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12};
+    KRYS_EXPECT_EQUAL("FMin Mat4x3-Scalar", FMin(matf, 1.0f),
+                      matf_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12));
+    KRYS_EXPECT_EQUAL("FMin Mat4x3-Mat4x3", FMin(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12));
+    KRYS_EXPECT_EQUAL("FMax Mat4x3-Scalar", FMax(matf, 1.0f), matf_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1));
+    KRYS_EXPECT_EQUAL("FMax Mat4x3-Mat4x3", FMax(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1));
+  }
+
+  static void Test_Mat4x4_MinMax()
+  {
+    using mati_t = mat4x4_t<int>;
+    constexpr mati_t mati {1, -2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12, 13, -14, 15, -16};
+    KRYS_EXPECT_EQUAL("Min Mat4x4-Scalar", Min(mati, 1),
+                      mati_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12, 1, -14, 1, -16));
+    KRYS_EXPECT_EQUAL("Min Mat4x4-Mat4x4", Min(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12, 1, -14, 1, -16));
+    KRYS_EXPECT_EQUAL("Max Mat4x4-Scalar", Max(mati, 1),
+                      mati_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1, 13, 1, 15, 1));
+    KRYS_EXPECT_EQUAL("Max Mat4x4-Mat4x4", Max(mati, mati_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      mati_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1, 13, 1, 15, 1));
+
+    using matf_t = mat4x4_t<float>;
+    constexpr matf_t matf {1, -2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12, 13, -14, 15, -16};
+    KRYS_EXPECT_EQUAL("FMin Mat4x4-Scalar", FMin(matf, 1.0f),
+                      matf_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12, 1, -14, 1, -16));
+    KRYS_EXPECT_EQUAL("FMin Mat4x4-Mat4x4",
+                      FMin(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, -2, 1, -4, 1, -6, 1, -8, 1, -10, 1, -12, 1, -14, 1, -16));
+    KRYS_EXPECT_EQUAL("FMax Mat4x4-Scalar", FMax(matf, 1.0f),
+                      matf_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1, 13, 1, 15, 1));
+    KRYS_EXPECT_EQUAL("FMax Mat4x4-Mat4x4",
+                      FMax(matf, matf_t(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+                      matf_t(1, 1, 3, 1, 5, 1, 7, 1, 9, 1, 11, 1, 13, 1, 15, 1));
+  }
 }
