@@ -35,7 +35,20 @@ private:                                                                        
     return _values[Index];                                                                                   \
   }                                                                                                          \
                                                                                                              \
+  template <vec_length_t Index>                                                                              \
+  REQUIRES((Index < ColLength))                                                                              \
+  NO_DISCARD constexpr column_t &Get() noexcept                                                              \
+  {                                                                                                          \
+    return _values[Index];                                                                                   \
+  }                                                                                                          \
+                                                                                                             \
   NO_DISCARD constexpr const column_t &operator[](vec_length_t col) const noexcept                           \
+  {                                                                                                          \
+    KRYS_ASSERT(col < ColLength, "Index out of bounds", 0);                                                  \
+    return _values[col];                                                                                     \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr column_t &operator[](vec_length_t col) noexcept                                       \
   {                                                                                                          \
     KRYS_ASSERT(col < ColLength, "Index out of bounds", 0);                                                  \
     return _values[col];                                                                                     \
@@ -64,16 +77,17 @@ private:                                                                        
   }
 
 #define KRYS_MATRIX_TWO_COLUMNS_ASSIGNMENT()                                                                 \
-  NO_DISCARD constexpr mat_t &operator=(const mat_t &other) noexcept                                         \
+  constexpr mat_t &operator=(const mat_t &other) noexcept                                                    \
   {                                                                                                          \
     _values[0] = other._values[0];                                                                           \
     _values[1] = other._values[1];                                                                           \
     return *this;                                                                                            \
   }                                                                                                          \
                                                                                                              \
-  NO_DISCARD constexpr mat_t &operator=(mat_t &&other) noexcept                                              \
+  constexpr mat_t &operator=(mat_t &&other) noexcept                                                         \
   {                                                                                                          \
-    _values = std::move(other._values);                                                                      \
+    _values[0] = std::move(other._values[0]);                                                                \
+    _values[1] = std::move(other._values[1]);                                                                \
     return *this;                                                                                            \
   }
 
@@ -201,7 +215,7 @@ private:                                                                        
   }
 
 #define KRYS_MATRIX_THREE_COLUMNS_ASSIGNMENT()                                                               \
-  NO_DISCARD constexpr mat_t &operator=(const mat_t &other) noexcept                                         \
+  constexpr mat_t &operator=(const mat_t &other) noexcept                                                    \
   {                                                                                                          \
     _values[0] = other._values[0];                                                                           \
     _values[1] = other._values[1];                                                                           \
@@ -209,9 +223,11 @@ private:                                                                        
     return *this;                                                                                            \
   }                                                                                                          \
                                                                                                              \
-  NO_DISCARD constexpr mat_t &operator=(mat_t &&other) noexcept                                              \
+  constexpr mat_t &operator=(mat_t &&other) noexcept                                                         \
   {                                                                                                          \
-    _values = std::move(other._values);                                                                      \
+    _values[0] = std::move(other._values[0]);                                                                           \
+    _values[1] = std::move(other._values[1]);                                                                           \
+    _values[2] = std::move(other._values[2]);                                                                           \
     return *this;                                                                                            \
   }
 
@@ -344,7 +360,7 @@ private:                                                                        
   }
 
 #define KRYS_MATRIX_FOUR_COLUMNS_ASSIGNMENT()                                                                \
-  NO_DISCARD constexpr mat_t &operator=(const mat_t &other) noexcept                                         \
+  constexpr mat_t &operator=(const mat_t &other) noexcept                                                    \
   {                                                                                                          \
     _values[0] = other._values[0];                                                                           \
     _values[1] = other._values[1];                                                                           \
@@ -353,9 +369,12 @@ private:                                                                        
     return *this;                                                                                            \
   }                                                                                                          \
                                                                                                              \
-  NO_DISCARD constexpr mat_t &operator=(mat_t &&other) noexcept                                              \
+  constexpr mat_t &operator=(mat_t &&other) noexcept                                                         \
   {                                                                                                          \
-    _values = std::move(other._values);                                                                      \
+    _values[0] = std::move(other._values[0]);                                                                           \
+    _values[1] = std::move(other._values[1]);                                                                           \
+    _values[2] = std::move(other._values[2]);                                                                           \
+    _values[3] = std::move(other._values[3]);                                                                           \
     return *this;                                                                                            \
   }
 

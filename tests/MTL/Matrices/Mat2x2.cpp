@@ -18,6 +18,50 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Mat2x2 Move Constructor", move_dst, scalar);
   }
 
+  static void Test_Mat2x2_Assignment()
+  {
+    constexpr auto TestCopy = []()
+    {
+      mat_t a {};
+      mat_t b {5, 3, 1, 2};
+
+      a = b;
+      return a == mat_t(5, 3, 1, 2);
+    };
+
+    constexpr auto TestMove = []()
+    {
+      mat_t a {};
+      mat_t b {5, 3, 1, 2};
+
+      a = std::move(b);
+      return a == mat_t(5, 3, 1, 2);
+    };
+
+    constexpr auto TestIndexAssignment = []()
+    {
+      mat_t a {};
+
+      a[0] = {5, 3};
+      a[1] = {1, 2};
+      return a == mat_t(5, 3, 1, 2);
+    };
+
+    constexpr auto TestGetAssignment = []()
+    {
+      mat_t a {};
+
+      a.Get<0>() = {5, 3};
+      a.Get<1>() = {1, 2};
+      return a == mat_t(5, 3, 1, 2);
+    };
+
+    KRYS_EXPECT_TRUE("Mat2x2 Copy Assignment", TestCopy());
+    KRYS_EXPECT_TRUE("Mat2x2 Move Assignment", TestMove());
+    KRYS_EXPECT_TRUE("Mat2x2 Index Assignment", TestIndexAssignment());
+    KRYS_EXPECT_TRUE("Mat2x2 Get Assignment", TestGetAssignment());
+  }
+
   static void Test_Mat2x2_Equality()
   {
     constexpr mat_t mat(1, 2, 3, 4);

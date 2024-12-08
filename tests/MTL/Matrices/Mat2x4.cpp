@@ -18,6 +18,56 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Mat2x4 Move Constructor", move_dst, scalar);
   }
 
+  static void Test_Mat2x4_Assignment()
+  {
+    constexpr auto TestCopy = []()
+    {
+      mat_t a {};
+      mat_t b {5, 3, 1, 2, 4, 5, 7, 8};
+
+      a = b;
+      return a == mat_t(5, 3, 1, 2, 4, 5, 7, 8);
+    };
+
+    constexpr auto TestMove = []()
+    {
+      mat_t a {};
+      mat_t b {5, 3, 1, 2, 4, 5, 7, 8};
+
+      a = std::move(b);
+      return a == mat_t(5, 3, 1, 2, 4, 5, 7, 8);
+    };
+
+    constexpr auto TestIndexAssignment = []()
+    {
+      mat_t a {};
+
+      a[0] = {5, 3};
+      a[1] = {1, 2};
+      a[2] = {4, 5};
+      a[3] = {7, 8};
+
+      return a == mat_t(5, 3, 1, 2, 4, 5, 7, 8);
+    };
+
+    constexpr auto TestGetAssignment = []()
+    {
+      mat_t a {};
+
+      a.Get<0>() = {5, 3};
+      a.Get<1>() = {1, 2};
+      a.Get<2>() = {4, 5};
+      a.Get<3>() = {7, 8};
+
+      return a == mat_t(5, 3, 1, 2, 4, 5, 7, 8);
+    };
+
+    KRYS_EXPECT_TRUE("Mat2x4 Copy Assignment", TestCopy());
+    KRYS_EXPECT_TRUE("Mat2x4 Move Assignment", TestMove());
+    KRYS_EXPECT_TRUE("Mat2x4 Index Assignment", TestIndexAssignment());
+    KRYS_EXPECT_TRUE("Mat2x4 Get Assignment", TestGetAssignment());
+  }
+
   static void Test_Mat2x4_Equality()
   {
     constexpr mat_t mat(1, 2, 3, 4, 5, 6, 7, 8);
