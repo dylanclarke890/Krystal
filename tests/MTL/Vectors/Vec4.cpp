@@ -21,6 +21,54 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Vec4 Move Constructor", move_dst, scalar);
   }
 
+  static void Test_Vec3_Assignment()
+  {
+    constexpr auto TestCopy = []()
+    {
+      vec_t a {};
+      vec_t b {5, 3, 2, 1};
+
+      a = b;
+      return a == vec_t(5, 3, 2, 1);
+    };
+
+    constexpr auto TestMove = []()
+    {
+      vec_t a {};
+      vec_t b {5, 3, 2, 1};
+
+      a = std::move(b);
+      return a == vec_t(5, 3, 2, 1);
+    };
+
+    constexpr auto TestIndexAssignment = []()
+    {
+      vec_t a {};
+
+      a[0] = 5.0f;
+      a[1] = 3.0f;
+      a[2] = 2.0f;
+      a[3] = 1.0f;
+      return a == vec_t(5, 3, 2, 1);
+    };
+
+    constexpr auto TestGetAssignment = []()
+    {
+      vec_t a {};
+
+      a.Get<0>() = 5.0f;
+      a.Get<1>() = 3.0f;
+      a.Get<2>() = 2.0f;
+      a.Get<3>() = 1.0f;
+      return a == vec_t(5, 3, 2, 1);
+    };
+
+    KRYS_EXPECT_TRUE("Vec4 Copy Assignment", TestCopy());
+    KRYS_EXPECT_TRUE("Vec4 Move Assignment", TestMove());
+    KRYS_EXPECT_TRUE("Vec4 Index Assignment", TestIndexAssignment());
+    KRYS_EXPECT_TRUE("Vec4 Get Assignment", TestGetAssignment());
+  }
+
   static void Test_Vec4_Equality()
   {
     constexpr vec_t vec(1, 0, 3, 4);

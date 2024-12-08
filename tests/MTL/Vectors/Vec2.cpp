@@ -21,6 +21,50 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Vec2 Move Constructor", move_dst, scalar);
   }
 
+  static void Test_Vec2_Assignment()
+  {
+    constexpr auto TestCopy = []()
+    {
+      vec_t a {};
+      vec_t b {5, 3};
+
+      a = b;
+      return a == vec_t(5, 3);
+    };
+
+    constexpr auto TestMove = []()
+    {
+      vec_t a {};
+      vec_t b {5, 3};
+
+      a = std::move(b);
+      return a == vec_t(5, 3);
+    };
+
+    constexpr auto TestIndexAssignment = []()
+    {
+      vec_t a {};
+
+      a[0] = 5.0f;
+      a[1] = 3.0f;
+      return a == vec_t(5, 3);
+    };
+
+    constexpr auto TestGetAssignment = []()
+    {
+      vec_t a {};
+
+      a.Get<0>() = 5.0f;
+      a.Get<1>() = 3.0f;
+      return a == vec_t(5, 3);
+    };
+
+    KRYS_EXPECT_TRUE("Vec2 Copy Assignment", TestCopy());
+    KRYS_EXPECT_TRUE("Vec2 Move Assignment", TestMove());
+    KRYS_EXPECT_TRUE("Vec2 Index Assignment", TestIndexAssignment());
+    KRYS_EXPECT_TRUE("Vec2 Get Assignment", TestGetAssignment());
+  }
+
   static void Test_Vec2_Equality()
   {
     constexpr vec_t vec(1, 0);

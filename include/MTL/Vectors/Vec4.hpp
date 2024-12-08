@@ -123,7 +123,34 @@ namespace Krys
           return w;
       }
 
+      template <vec_length_t Index>
+      REQUIRES((Index < Length))
+      NO_DISCARD constexpr component_t &Get() noexcept
+      {
+        if constexpr (Index == 0)
+          return x;
+        else if constexpr (Index == 1)
+          return y;
+        else if constexpr (Index == 2)
+          return z;
+        else
+          return w;
+      }
+
       NO_DISCARD constexpr component_t operator[](vec_length_t index) const noexcept
+      {
+        KRYS_ASSERT(index < Length, "Index out of bounds", 0);
+        switch (index)
+        {
+          case 0:  return x;
+          case 1:  return y;
+          case 2:  return z;
+          default:
+          case 3:  return w;
+        }
+      }
+
+      NO_DISCARD constexpr component_t& operator[](vec_length_t index) noexcept
       {
         KRYS_ASSERT(index < Length, "Index out of bounds", 0);
         switch (index)

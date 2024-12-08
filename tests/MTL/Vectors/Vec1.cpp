@@ -7,7 +7,7 @@ namespace Krys::Tests
 
   static void Test_Vec1_Constructors()
   {
-    constexpr vec_t empty(0);
+    constexpr vec_t empty {};
     KRYS_EXPECT_EQUAL("Vec1 Default Constructor", empty, vec_t(0));
 
     constexpr vec_t scalar(1);
@@ -19,6 +19,48 @@ namespace Krys::Tests
     constexpr vec_t move_src(scalar);
     constexpr vec_t move_dst(std::move(move_src));
     KRYS_EXPECT_EQUAL("Vec1 Move Constructor", move_dst, scalar);
+  }
+
+  static void Test_Vec1_Assignment()
+  {
+    constexpr auto TestCopy = []()
+    {
+      vec_t a {};
+      vec_t b {5};
+
+      a = b;
+      return a == vec_t(5);
+    };
+
+    constexpr auto TestMove = []()
+    {
+      vec_t a {};
+      vec_t b {5};
+
+      a = std::move(b);
+      return a == vec_t(5);
+    };
+
+    constexpr auto TestIndexAssignment = []()
+    {
+      vec_t a {};
+
+      a[0] = 5.0f;
+      return a == vec_t(5);
+    };
+
+    constexpr auto TestGetAssignment = []()
+    {
+      vec_t a {};
+
+      a.Get<0>() = 5.0f;
+      return a == vec_t(5);
+    };
+
+    KRYS_EXPECT_TRUE("Vec1 Copy Assignment", TestCopy());
+    KRYS_EXPECT_TRUE("Vec1 Move Assignment", TestMove());
+    KRYS_EXPECT_TRUE("Vec1 Index Assignment", TestIndexAssignment());
+    KRYS_EXPECT_TRUE("Vec1 Get Assignment", TestGetAssignment());
   }
 
   static void Test_Vec1_Equality()
