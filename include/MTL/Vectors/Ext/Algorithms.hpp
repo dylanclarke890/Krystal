@@ -25,8 +25,8 @@ namespace Krys::MTL
       func(v.z);
     if constexpr (L > 3)
       func(v.w);
-    if constexpr (L > 4)
-      static_assert(false, "Unsupported number of components.");
+    
+    static_assert(L <= 4, "Unsupported number of components.");
   }
 
   /// @brief Creates a new vector by applying a function to each component of the input vector.
@@ -40,6 +40,8 @@ namespace Krys::MTL
   NO_DISCARD constexpr auto MapEach(const vector_t<TComponent, L> &v,
                                     TFunc func) noexcept -> vector_t<decltype(func(declval<TComponent>())), L>
   {
+    static_assert(L <= 4, "Unsupported number of components");
+
     using TReturn = decltype(func(declval<TComponent>()));
     if constexpr (L == 1)
       return vector_t<TReturn, 1>(func(v.x));
@@ -49,8 +51,6 @@ namespace Krys::MTL
       return vector_t<TReturn, 3>(func(v.x), func(v.y), func(v.z));
     else if constexpr (L == 4)
       return vector_t<TReturn, 4>(func(v.x), func(v.y), func(v.z), func(v.w));
-    else
-      static_assert(false, "Unsupported number of components");
   }
 
   /// @brief Creates a new vector from two input vectors by applying a function to each component pair of
@@ -66,6 +66,8 @@ namespace Krys::MTL
     Zip(const vector_t<TComponentA, L> &a, const vector_t<TComponentB, L> &b,
         TFunc func) noexcept -> vector_t<decltype(func(declval<TComponentA>(), declval<TComponentB>())), L>
   {
+    static_assert(L <= 4, "Unsupported number of components");
+
     using TReturn = decltype(func(declval<TComponentA>(), declval<TComponentB>()));
     if constexpr (L == 1)
       return vector_t<TReturn, 1>(func(a.x, b.x));
@@ -75,8 +77,6 @@ namespace Krys::MTL
       return vector_t<TReturn, 3>(func(a.x, b.x), func(a.y, b.y), func(a.z, b.z));
     else if constexpr (L == 4)
       return vector_t<TReturn, 4>(func(a.x, b.x), func(a.y, b.y), func(a.z, b.z), func(a.w, b.w));
-    else
-      static_assert(false, "Unsupported number of components");
   }
 
   /// @brief Creates a new vector from three input vectors by applying a function to each component triplet of
@@ -94,6 +94,8 @@ namespace Krys::MTL
                                 const vector_t<TComponentC, L> &c, TFunc func) noexcept
     -> vector_t<decltype(func(declval<TComponentA>(), declval<TComponentB>(), declval<TComponentC>())), L>
   {
+    static_assert(L <= 4, "Unsupported number of components");
+
     using TReturn = decltype(func(declval<TComponentA>(), declval<TComponentB>(), declval<TComponentC>()));
     if constexpr (L == 1)
       return vector_t<TReturn, 1>(func(a.x, b.x, c.x));
@@ -104,8 +106,6 @@ namespace Krys::MTL
     else if constexpr (L == 4)
       return vector_t<TReturn, 4>(func(a.x, b.x, c.x), func(a.y, b.y, c.y), func(a.z, b.z, c.z),
                                   func(a.w, b.w, c.w));
-    else
-      static_assert(false, "Unsupported number of components");
   }
 
   /// @brief Computes the sum of all components of the vector.
@@ -116,6 +116,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t L>
   NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, L> &v) noexcept
   {
+    static_assert(L <= 4, "Unsupported number of components");
+
     if constexpr (L == 1)
       return TComponent(v.x);
     else if constexpr (L == 2)
@@ -124,8 +126,6 @@ namespace Krys::MTL
       return TComponent(v.x + v.y + v.z);
     else if constexpr (L == 4)
       return TComponent(v.x + v.y + v.z + v.w);
-    else
-      static_assert(false, "Unsupported number of components.");
   }
 
   /// @brief Computes the sum of all components of the vector after applying a function to each component.
@@ -137,6 +137,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t L, IsRegularCallableT<TComponent> TFunc>
   NO_DISCARD constexpr TComponent Sum(const vector_t<TComponent, L> &v, TFunc func) noexcept
   {
+    static_assert(L <= 4, "Unsupported number of components");
+
     if constexpr (L == 1)
       return TComponent(func(v.x));
     else if constexpr (L == 2)
@@ -145,8 +147,6 @@ namespace Krys::MTL
       return TComponent(func(v.x) + func(v.y) + func(v.z));
     else if constexpr (L == 4)
       return TComponent(func(v.x) + func(v.y) + func(v.z) + func(v.w));
-    else
-      static_assert(false, "Unsupported number of components.");
   }
 
   /// @brief Reverses a vector.
@@ -157,6 +157,8 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t L>
   NO_DISCARD constexpr auto Reverse(const vector_t<TComponent, L> &v) noexcept -> vector_t<TComponent, L>
   {
+    static_assert(L <= 4, "Unsupported number of components");
+
     if constexpr (L == 1)
       return vector_t<TComponent, 1>(v.x);
     else if constexpr (L == 2)
@@ -165,7 +167,5 @@ namespace Krys::MTL
       return vector_t<TComponent, 3>(v.z, v.y, v.x);
     else if constexpr (L == 4)
       return vector_t<TComponent, 4>(v.w, v.z, v.y, v.x);
-    else
-      static_assert(false, "Unsupported number of components.");
   }
 }

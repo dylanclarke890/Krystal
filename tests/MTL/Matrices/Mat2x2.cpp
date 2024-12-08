@@ -103,8 +103,11 @@ namespace Krys::Tests
 
   static void Test_Mat2x2_Multiplication()
   {
-    constexpr mat_t mat(1, 2, 3, 4);
-    KRYS_EXPECT_EQUAL("Mat2x2 Scalar Multiplication", mat * 2.0f, mat_t(2, 4, 6, 8));
+    constexpr mat_t mat({1, 3}, {2, 4});
+
+    KRYS_EXPECT_EQUAL("Mat2x2 Scalar Multiplication", mat * 2.0f, mat_t({2, 6}, {4, 8}));
+    KRYS_EXPECT_EQUAL("Mat2x2 Matrix Multiplication", mat * mat_t({5, 7}, {6, 8}), mat_t({19, 43}, {22, 50}));
+    KRYS_EXPECT_EQUAL("Mat2x2 Vector Multiplication", mat * Vec2(1), Vec2(3, 7));
   }
 
   static void Test_Mat2x2_Division()

@@ -58,16 +58,13 @@ namespace Krys
         const column_t &b1 = other._values[1];
         const column_t &b2 = other._values[2];
 
-        // Compute each column of the resulting matrix
-        return mat_t(column_t(a0[0] * b0[0] + a1[0] * b0[1] + a2[0] * b0[2], // Column 0
-                              a0[1] * b0[0] + a1[1] * b0[1] + a2[1] * b0[2],
-                              a0[2] * b0[0] + a1[2] * b0[1] + a2[2] * b0[2]),
-                     column_t(a0[0] * b1[0] + a1[0] * b1[1] + a2[0] * b1[2], // Column 1
-                              a0[1] * b1[0] + a1[1] * b1[1] + a2[1] * b1[2],
-                              a0[2] * b1[0] + a1[2] * b1[1] + a2[2] * b1[2]),
-                     column_t(a0[0] * b2[0] + a1[0] * b2[1] + a2[0] * b2[2], // Column 2
-                              a0[1] * b2[0] + a1[1] * b2[1] + a2[1] * b2[2],
-                              a0[2] * b2[0] + a1[2] * b2[1] + a2[2] * b2[2]));
+        return mat_t(
+          column_t(a0[0] * b0[0] + a1[0] * b0[1] + a2[0] * b0[2], a0[1] * b0[0] + a1[1] * b0[1] + a2[1] * b0[2],
+                   a0[2] * b0[0] + a1[2] * b0[1] + a2[2] * b0[2]),
+          column_t(a0[0] * b1[0] + a1[0] * b1[1] + a2[0] * b1[2], a0[1] * b1[0] + a1[1] * b1[1] + a2[1] * b1[2],
+                   a0[2] * b1[0] + a1[2] * b1[1] + a2[2] * b1[2]),
+          column_t(a0[0] * b2[0] + a1[0] * b2[1] + a2[0] * b2[2], a0[1] * b2[0] + a1[1] * b2[1] + a2[1] * b2[2],
+                   a0[2] * b2[0] + a1[2] * b2[1] + a2[2] * b2[2]));
       }
 
       NO_DISCARD constexpr column_t operator*(const column_t &vector) const noexcept
@@ -77,9 +74,9 @@ namespace Krys
         const column_t &a2 = _values[2];
         const column_t &v = vector;
 
-        const column_t col = column_t(a0[0] * v[0] + a0[1] * v[1] + a0[2] * v[2], // Row 1
-                                      a1[0] * v[0] + a1[1] * v[1] + a1[2] * v[2], // Row 2
-                                      a2[0] * v[0] + a2[1] * v[1] + a2[2] * v[2]  // Row 3
+        const column_t col = column_t(a0[0] * v[0] + a0[1] * v[1] + a0[2] * v[2],
+                                      a1[0] * v[0] + a1[1] * v[1] + a1[2] * v[2],
+                                      a2[0] * v[0] + a2[1] * v[1] + a2[2] * v[2] 
         );
 
         return col;

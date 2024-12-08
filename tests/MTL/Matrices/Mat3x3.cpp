@@ -112,8 +112,15 @@ namespace Krys::Tests
 
   static void Test_Mat3x3_Multiplication()
   {
-    constexpr mat_t mat(1, 2, 3, 4, 5, 6, 7, 8, 9);
-    KRYS_EXPECT_EQUAL("Mat3x3 Scalar Multiplication", mat * 2.0f, mat_t(2, 4, 6, 8, 10, 12, 14, 16, 18));
+    KRYS_EXPECT_EQUAL("Mat3x3 Scalar Multiplication", mat_t({1, 4, 7}, {2, 5, 8}, {3, 6, 9}) * 2.0f,
+                      mat_t({2, 8, 14}, {4, 10, 16}, {6, 12, 18}));
+
+    constexpr mat_t a({3, 2, 7}, {-2, 6, 1}, {-1, -5, -8});
+    constexpr mat_t b({1, 0, -3}, {9, 11, 2}, {4, 5, -7});
+    KRYS_EXPECT_EQUAL("Mat3x3 Matrix Multiplication", a * b, mat_t({6, 17, 31}, {3, 74, 58}, {9, 73, 89}));
+
+    constexpr Vec3 v(1, 1, 1);
+    KRYS_EXPECT_EQUAL("Mat3x3 Vector Multiplication", a * v, Vec3(12, 5, -14));
   }
 
   static void Test_Mat3x3_Division()

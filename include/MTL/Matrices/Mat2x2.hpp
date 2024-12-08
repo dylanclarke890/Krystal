@@ -44,31 +44,25 @@ namespace Krys
       {
       }
 
-      NO_DISCARD constexpr mat_t operator*(const mat_t &other) const noexcept
+      NO_DISCARD constexpr auto operator*(const mat_t &other) const noexcept
       {
         const column_t &a0 = _values[0];
         const column_t &a1 = _values[1];
+
         const column_t &b0 = other._values[0];
         const column_t &b1 = other._values[1];
 
-        const column_t c0 = column_t(a0[0] * b0[0] + a1[0] * b0[1], // row 1, col 1
-                                     a0[1] * b0[0] + a1[1] * b0[1]  // row 2, col 1
-        );
-
-        const column_t c1 = column_t(a0[0] * b1[0] + a1[0] * b1[1], // row 1, col 2
-                                     a0[1] * b1[0] + a1[1] * b1[1]  // row 2, col 2
-        );
+        const column_t c0 = {a0[0] * b0[0] + a1[0] * b0[1], a0[1] * b0[0] + a1[1] * b0[1]};
+        const column_t c1 = {a0[0] * b1[0] + a1[0] * b1[1], a0[1] * b1[0] + a1[1] * b1[1]};
 
         return mat_t(c0, c1);
       }
 
       NO_DISCARD constexpr column_t operator*(const column_t &vector) const noexcept
       {
-        // Matrix columns
         const column_t &col0 = _values[0];
         const column_t &col1 = _values[1];
 
-        // Resulting vector is the dot product of rows (implicitly derived) and the input vector
         return column_t(col0[0] * vector[0] + col1[0] * vector[1], // Row 1
                         col0[1] * vector[0] + col1[1] * vector[1]  // Row 2
         );

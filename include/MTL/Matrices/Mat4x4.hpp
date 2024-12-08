@@ -63,7 +63,6 @@ namespace Krys
         const column_t &b2 = other._values[2];
         const column_t &b3 = other._values[3];
 
-        // Compute resulting columns
         column_t c0(a0[0] * b0[0] + a1[0] * b0[1] + a2[0] * b0[2] + a3[0] * b0[3], // Row 1, Col 1
                     a0[1] * b0[0] + a1[1] * b0[1] + a2[1] * b0[2] + a3[1] * b0[3], // Row 2, Col 1
                     a0[2] * b0[0] + a1[2] * b0[1] + a2[2] * b0[2] + a3[2] * b0[3], // Row 3, Col 1
@@ -99,10 +98,10 @@ namespace Krys
         const column_t &a3 = _values[3];
         const column_t &v = vector;
 
-        const column_t col = column_t(a0[0] * v[0] + a0[1] * v[1] + a0[2] * v[2], // Row 1
-                                      a1[0] * v[0] + a1[1] * v[1] + a1[2] * v[2], // Row 2
-                                      a2[0] * v[0] + a2[1] * v[1] + a2[2] * v[2], // Row 3
-                                      a3[0] * v[0] + a3[1] * v[1] + a3[2] * v[2]  // Row 4
+        const column_t col = column_t(a0[0] * v[0] + a0[1] * v[1] + a0[2] * v[2]+ a0[3] * v[3],
+                                      a1[0] * v[0] + a1[1] * v[1] + a1[2] * v[2]+ a1[3] * v[3],
+                                      a2[0] * v[0] + a2[1] * v[1] + a2[2] * v[2]+ a2[3] * v[3],
+                                      a3[0] * v[0] + a3[1] * v[1] + a3[2] * v[2]+ a3[3] * v[3]
         );
 
         return col;

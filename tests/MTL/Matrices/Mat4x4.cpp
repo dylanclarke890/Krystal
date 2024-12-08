@@ -63,10 +63,10 @@ namespace Krys::Tests
       return a == mat_t(5, 3, 1, 2, 4, 5, 2, 5, 1, 2, 2, 2, 3, 1, 3, 1);
     };
 
-    KRYS_EXPECT_TRUE("Mat4x3 Copy Assignment", TestCopy());
-    KRYS_EXPECT_TRUE("Mat4x3 Move Assignment", TestMove());
-    KRYS_EXPECT_TRUE("Mat4x3 Index Assignment", TestIndexAssignment());
-    KRYS_EXPECT_TRUE("Mat4x3 Get Assignment", TestGetAssignment());
+    KRYS_EXPECT_TRUE("Mat4x4 Copy Assignment", TestCopy());
+    KRYS_EXPECT_TRUE("Mat4x4 Move Assignment", TestMove());
+    KRYS_EXPECT_TRUE("Mat4x4 Index Assignment", TestIndexAssignment());
+    KRYS_EXPECT_TRUE("Mat4x4 Get Assignment", TestGetAssignment());
   }
 
   static void Test_Mat4x4_Equality()
@@ -124,6 +124,22 @@ namespace Krys::Tests
     constexpr mat_t mat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
     KRYS_EXPECT_EQUAL("Mat4x4 Scalar Multiplication", mat * 2.0f,
                       mat_t(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32));
+  }
+
+  static void Test_Mat3x3_Multiplication()
+  {
+    KRYS_EXPECT_EQUAL("Mat4x4 Scalar Multiplication",
+                      mat_t({1, 4, 7, 2}, {2, 5, 8, 3}, {3, 6, 9, 4}, {1, 2, 3, 4}) * 2.0f,
+                      mat_t({2, 8, 14, 4}, {4, 10, 16, 6}, {6, 12, 18, 8}, {2, 4, 6, 8}));
+
+    constexpr mat_t a({3, 2, 7, 1}, {-2, 6, 1, -3}, {-1, -5, -8, 2}, {3, 5, 1, 2});
+    constexpr mat_t b({1, 0, -3, 1}, {9, 11, 2, 2}, {4, 5, -7, 3}, {1, 2, 3, 4});
+    KRYS_EXPECT_EQUAL("Mat4x4 Matrix Multiplication", a * b,
+                      mat_t({9, 22, 32, -3}, {9, 84, 60, -16}, {18, 88, 92, -19}, {8, 19, -11, 9}));
+
+    constexpr Vec4 v(1, 1, 1, 1);
+    constexpr auto result = a * v;
+    KRYS_EXPECT_EQUAL("Mat4x4 Vector Multiplication", a * v, Vec4(13, 2, -12, 11));
   }
 
   static void Test_Mat4x4_Division()

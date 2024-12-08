@@ -68,11 +68,12 @@ private:                                                                        
   {                                                                                                          \
   }                                                                                                          \
                                                                                                              \
-  constexpr Matrix(const mat_t &other) noexcept : _values(other._values[0], other._values[1])                \
+  constexpr Matrix(const mat_t &other) noexcept : _values {other._values[0], other._values[1]}               \
   {                                                                                                          \
   }                                                                                                          \
                                                                                                              \
-  constexpr Matrix(mat_t &&other) noexcept : _values(std::move(other._values))                               \
+  constexpr Matrix(mat_t &&other) noexcept                                                                   \
+      : _values {std::move(other._values[0]), std::move(other._values[1])}                                   \
   {                                                                                                          \
   }
 
@@ -206,11 +207,12 @@ private:                                                                        
   }                                                                                                          \
                                                                                                              \
   constexpr Matrix(const mat_t &other) noexcept                                                              \
-      : _values(other._values[0], other._values[1], other._values[2])                                        \
+      : _values {other._values[0], other._values[1], other._values[2]}                                       \
   {                                                                                                          \
   }                                                                                                          \
                                                                                                              \
-  constexpr Matrix(mat_t &&other) noexcept : _values(std::move(other._values))                               \
+  constexpr Matrix(mat_t &&other) noexcept                                                                   \
+      : _values {std::move(other._values[0]), std::move(other._values[1]), std::move(other._values[2])}      \
   {                                                                                                          \
   }
 
@@ -225,9 +227,9 @@ private:                                                                        
                                                                                                              \
   constexpr mat_t &operator=(mat_t &&other) noexcept                                                         \
   {                                                                                                          \
-    _values[0] = std::move(other._values[0]);                                                                           \
-    _values[1] = std::move(other._values[1]);                                                                           \
-    _values[2] = std::move(other._values[2]);                                                                           \
+    _values[0] = std::move(other._values[0]);                                                                \
+    _values[1] = std::move(other._values[1]);                                                                \
+    _values[2] = std::move(other._values[2]);                                                                \
     return *this;                                                                                            \
   }
 
@@ -351,11 +353,13 @@ private:                                                                        
   }                                                                                                          \
                                                                                                              \
   constexpr Matrix(const mat_t &other) noexcept                                                              \
-      : _values(other._values[0], other._values[1], other._values[2], other._values[3])                      \
+      : _values {other._values[0], other._values[1], other._values[2], other._values[3]}                     \
   {                                                                                                          \
   }                                                                                                          \
                                                                                                              \
-  constexpr Matrix(mat_t &&other) noexcept : _values(std::move(other._values))                               \
+  constexpr Matrix(mat_t &&other) noexcept                                                                   \
+      : _values {std::move(other._values[0]), std::move(other._values[1]), std::move(other._values[2]),      \
+                 std::move(other._values[3])}                                                                \
   {                                                                                                          \
   }
 
@@ -371,10 +375,10 @@ private:                                                                        
                                                                                                              \
   constexpr mat_t &operator=(mat_t &&other) noexcept                                                         \
   {                                                                                                          \
-    _values[0] = std::move(other._values[0]);                                                                           \
-    _values[1] = std::move(other._values[1]);                                                                           \
-    _values[2] = std::move(other._values[2]);                                                                           \
-    _values[3] = std::move(other._values[3]);                                                                           \
+    _values[0] = std::move(other._values[0]);                                                                \
+    _values[1] = std::move(other._values[1]);                                                                \
+    _values[2] = std::move(other._values[2]);                                                                \
+    _values[3] = std::move(other._values[3]);                                                                \
     return *this;                                                                                            \
   }
 

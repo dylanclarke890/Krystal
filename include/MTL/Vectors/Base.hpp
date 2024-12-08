@@ -6,7 +6,7 @@
 
 namespace Krys::MTL
 {
-  using vec_length_t = ushort;
+  using vec_length_t = int;
 
   template <IsArithmeticT TComponent, vec_length_t Length>
   struct Vector;

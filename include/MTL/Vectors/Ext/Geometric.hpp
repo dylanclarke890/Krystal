@@ -5,6 +5,7 @@
 #include "MTL/Power/InverseSqrt.hpp"
 #include "MTL/Power/Sqrt.hpp"
 #include "MTL/Vectors/Base.hpp"
+#include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Ext/Algorithms.hpp"
 
 namespace Krys::MTL
@@ -18,6 +19,8 @@ namespace Krys::MTL
   template <IsFloatingPointT TComponent, vec_length_t L>
   constexpr TComponent Dot(const vector_t<TComponent, L> &a, const vector_t<TComponent, L> &b) noexcept
   {
+    static_assert(L <= 4, "Unsupported number of components");
+    
     if constexpr (L == 1)
       return a.x * b.x;
     else if constexpr (L == 2)
@@ -26,8 +29,6 @@ namespace Krys::MTL
       return a.x * b.x + a.y * b.y + a.z * b.z;
     else if constexpr (L == 4)
       return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
-    else
-      static_assert(false, "Unsupported number of components");
   }
 
   /// @brief Computes the length (magnitude) of a vector.
@@ -112,9 +113,9 @@ namespace Krys::MTL
   /// @param b The second vector.
   /// @return The cross product of `a` and `b`.
   template <IsFloatingPointT TComponent>
-  constexpr auto Cross(const vector_t<TComponent, 3> &a, const vector_t<TComponent, 3> &b) noexcept
+  constexpr auto Cross(const vec3_t<TComponent> &a, const vec3_t<TComponent> &b) noexcept
   {
-    return vector_t<TComponent, 3> {a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
+    return vec3_t<TComponent> {a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
   }
 
   /// @tparam TComponent The underlying floating-point type of the vectors.
