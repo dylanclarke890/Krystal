@@ -36,12 +36,12 @@ namespace Krys::Tests
                       mat_t({2, 0, 0, 0}, {0, 3, 0, 0}, {0, 0, 4, 0}, {0, 0, 0, 1}));
   }
 
-  static void Test_LookAtLH()
+  static void Test_LookAt_LH()
   {
     using mat_t = Mat4x4;
     using vec_t = Vec3;
 
-    KRYS_EXPECT_EQUAL("LookAtLH", LookAtLH(vec_t(0, 3, 5), vec_t(0), vec_t(0, 0, 1)),
+    KRYS_EXPECT_EQUAL("LookAtLH", LookAt_LH(vec_t(0, 3, 5), vec_t(0), vec_t(0, 0, 1)),
                       mat_t({1, 0, 0, 0}, {0, -0.857493f, -0.5144958f, 0}, {0, 0.5144958f, -0.857493f, 0},
                             {0, 0, 5.8309526f, 1}));
   }
@@ -51,8 +51,7 @@ namespace Krys::Tests
     using mat_t = Mat4x4;
     using vec_t = Vec3;
 
-    constexpr mat_t rh = LookAtRH(vec_t(0, 3, 5), vec_t(0), vec_t(0, 0, 1));
-    KRYS_EXPECT_EQUAL("LookAtRH", LookAtRH(vec_t(0, 3, 5), vec_t(0), vec_t(0, 0, 1)),
+    KRYS_EXPECT_EQUAL("LookAtRH", LookAt_RH(vec_t(0, 3, 5), vec_t(0), vec_t(0, 0, 1)),
                       mat_t({-1, 0, 0, 0}, {0, -0.857493f, 0.5144958f, 0}, {0, 0.5144958f, 0.857493f, 0},
                             {0, 0, -5.8309526f, 1}));
   }

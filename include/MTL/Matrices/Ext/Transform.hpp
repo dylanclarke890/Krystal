@@ -77,12 +77,12 @@ namespace Krys::MTL
     return result;
   }
 
-  /// @brief
+  /// @brief Constructs a right handed look at matrix.
   /// @tparam TComponent The underlying floating-point type of the matrix.
-  /// @returns
+  /// @returns The look at matrix.
   template <IsFloatingPointT TComponent>
-  NO_DISCARD constexpr auto LookAtRH(const vec3_t<TComponent> &eye, const vec3_t<TComponent> &center,
-                                     const vec3_t<TComponent> &up) noexcept -> mat4x4_t<TComponent>
+  NO_DISCARD constexpr auto LookAt_RH(const vec3_t<TComponent> &eye, const vec3_t<TComponent> &center,
+                                      const vec3_t<TComponent> &up) noexcept -> mat4x4_t<TComponent>
   {
     const vec3_t<TComponent> f(MTL::Normalize(center - eye));
     const vec3_t<TComponent> s(MTL::Normalize(MTL::Cross(f, up)));
@@ -104,12 +104,12 @@ namespace Krys::MTL
     return result;
   }
 
-  /// @brief
+  /// @brief Constructs a left handed look at matrix.
   /// @tparam TComponent The underlying floating-point type of the matrix.
-  /// @returns
+  /// @returns The look at matrix.
   template <IsFloatingPointT TComponent>
-  NO_DISCARD constexpr auto LookAtLH(const vec3_t<TComponent> &eye, const vec3_t<TComponent> &center,
-                                     const vec3_t<TComponent> &up) noexcept -> mat4x4_t<TComponent>
+  NO_DISCARD constexpr auto LookAt_LH(const vec3_t<TComponent> &eye, const vec3_t<TComponent> &center,
+                                      const vec3_t<TComponent> &up) noexcept -> mat4x4_t<TComponent>
   {
     const vec3_t<TComponent> f(MTL::Normalize(center - eye));
     const vec3_t<TComponent> s(MTL::Normalize(MTL::Cross(up, f)));
@@ -129,5 +129,19 @@ namespace Krys::MTL
     result[3][1] = -MTL::Dot(u, eye);
     result[3][2] = -MTL::Dot(f, eye);
     return result;
+  }
+
+  /// @brief
+  /// @tparam TComponent The underlying floating-point type of the matrix.
+  /// @returns
+  template <IsFloatingPointT TComponent>
+  NO_DISCARD constexpr auto LookAt(const vec3_t<TComponent> &eye, const vec3_t<TComponent> &center,
+                                   const vec3_t<TComponent> &up) noexcept -> mat4x4_t<TComponent>
+  {
+#if KRYS_MATRIX_HANDEDNESS == KRYS_MATRIX_HANDEDNESS_LH
+    return LookAt_LH(eye, center, up);
+#else
+    return LookAt_RH(eye, center, up);
+#endif
   }
 }

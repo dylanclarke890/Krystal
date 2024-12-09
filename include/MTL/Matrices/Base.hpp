@@ -6,6 +6,14 @@
 
 namespace Krys::MTL
 {
+#define KRYS_MATRIX_HANDEDNESS_LH 1
+#define KRYS_MATRIX_HANDEDNESS_RH 2
+#define KRYS_MATRIX_HANDEDNESS KRYS_MATRIX_HANDEDNESS_LH
+
+#define KRYS_MATRIX_DEPTH_RANGE_ZERO_TO_ONE 1
+#define KRYS_MATRIX_DEPTH_RANGE_NEGATIVE_ONE_TO_ONE 2
+#define KRYS_MATRIX_DEPTH_RANGE KRYS_MATRIX_DEPTH_RANGE_ZERO_TO_ONE
+
   template <IsArithmeticT TComponent, vec_length_t RowLength, vec_length_t ColLength>
   struct Matrix;
 
