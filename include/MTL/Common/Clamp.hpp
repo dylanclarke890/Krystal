@@ -24,7 +24,7 @@ namespace Krys::MTL
       else
         return MTL::Min(MTL::Max(value, min), max);
     }
-
-    return std::clamp(value, min, max);
+    else
+      return std::clamp(value, min, max);
   }
 }
