@@ -1,4 +1,4 @@
-#include "MTL/Common/IsEven.hpp"
+#include "MTL/Common/Parity.hpp"
 #include "Core/Debug/Expect.hpp"
 
 namespace Krys::Tests
@@ -12,5 +12,14 @@ namespace Krys::Tests
     KRYS_EXPECT_FALSE("Odd positive", IsEven(1));
     KRYS_EXPECT_FALSE("Odd negative", IsEven(-1));
     KRYS_EXPECT_TRUE("Zero", IsEven(0));
+  }
+
+  static void Test_IsOdd()
+  {
+    KRYS_EXPECT_TRUE("Odd positive", IsOdd(1));
+    KRYS_EXPECT_TRUE("Odd negative", IsOdd(-1));
+    KRYS_EXPECT_FALSE("Even positive", IsOdd(2));
+    KRYS_EXPECT_FALSE("Even negative", IsOdd(-2));
+    KRYS_EXPECT_FALSE("Zero", IsOdd(0));
   }
 }
