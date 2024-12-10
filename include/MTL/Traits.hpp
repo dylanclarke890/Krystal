@@ -7,7 +7,7 @@
 
 namespace Krys::MTL
 {
-  template <IsArithmeticT T>
+  template <IsArithmeticT TComponent>
   struct Traits
   {
     static constexpr bool IsVec = false;
