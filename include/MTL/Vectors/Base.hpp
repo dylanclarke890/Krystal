@@ -15,15 +15,21 @@ namespace Krys::MTL
   using vector_t = Vector<TComponent, Length>;
 
   template <IsArithmeticT TComponent, vec_length_t L>
-  NO_DISCARD constexpr auto operator+(const TComponent &scalar, const vector_t<TComponent, L> &obj)
+  NO_DISCARD constexpr auto operator+(const TComponent &scalar, const vector_t<TComponent, L> &vec)
   {
-    return obj + scalar;
+    return vec + scalar;
   }
 
   template <IsArithmeticT TComponent, vec_length_t L>
-  NO_DISCARD constexpr auto operator*(const TComponent &scalar, const vector_t<TComponent, L> &obj)
+  NO_DISCARD constexpr auto operator*(const TComponent &scalar, const vector_t<TComponent, L> &vec)
   {
-    return obj * scalar;
+    return vec * scalar;
+  }
+
+  template <IsArithmeticT TComponent, vec_length_t L>
+  NO_DISCARD constexpr auto operator-(const TComponent &scalar, const vector_t<TComponent, L> &vec)
+  {
+    return -(vec - scalar); // Scalar - Vector = -(Vector - Scalar)
   }
 
   /// @brief Checks that type `TVector` supports all basic maths operations, both with another `TVector` and
