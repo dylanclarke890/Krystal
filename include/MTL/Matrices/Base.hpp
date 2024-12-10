@@ -20,6 +20,24 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t RowLength, vec_length_t ColLength>
   using matrix_t = Matrix<TComponent, RowLength, ColLength>;
 
+  template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto operator+(const TComponent &scalar, const matrix_t<TComponent, RL, CL> &mat)
+  {
+    return mat + scalar;
+  }
+
+  template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto operator*(const TComponent &scalar, const matrix_t<TComponent, RL, CL> &mat)
+  {
+    return mat * scalar;
+  }
+
+  template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto operator-(const TComponent &scalar, const matrix_t<TComponent, RL, CL> &mat)
+  {
+    return -(mat - scalar); // Scalar - Vector = -(Vector - Scalar)
+  }
+
   template <typename TMatrix, typename TComponent>
   concept IsMatrix =
     IsComparableT<TMatrix> && IsArithmeticT<TComponent> && SupportsArithmeticOperations<TMatrix, TComponent>
