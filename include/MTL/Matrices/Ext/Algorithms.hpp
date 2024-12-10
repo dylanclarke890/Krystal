@@ -5,6 +5,7 @@
 #include "Base/Types.hpp"
 #include "MTL/Matrices/Base.hpp"
 
+// TODO: some of these methods will cause issues if a specific order of evaluation is necessary.
 namespace Krys::MTL
 {
   /// @brief Applies a function to each component of the matrix.
