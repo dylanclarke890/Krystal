@@ -4,6 +4,8 @@
 #include "Base/Concepts.hpp"
 #include "MTL/Common/MinMax.hpp"
 
+#include <algorithm>
+
 namespace Krys::MTL
 {
   /// @brief Clamps `value` to lie within the specified range.
@@ -15,9 +17,14 @@ namespace Krys::MTL
   template <IsArithmeticT TNumber>
   NO_DISCARD constexpr TNumber Clamp(TNumber value, TNumber min, TNumber max) noexcept
   {
-    if constexpr (IsFloatingPointT<TNumber>)
-      return MTL::FMin(MTL::FMax(value, min), max);
-    else
-      return MTL::Min(MTL::Max(value, min), max);
+    KRYS_IF_COMPILE_CONTEXT
+    {
+      if constexpr (IsFloatingPointT<TNumber>)
+        return MTL::FMin(MTL::FMax(value, min), max);
+      else
+        return MTL::Min(MTL::Max(value, min), max);
+    }
+
+    return std::clamp(value, min, max);
   }
 }
