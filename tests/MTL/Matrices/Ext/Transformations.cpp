@@ -13,7 +13,7 @@ namespace Krys::Tests
     using mat_t = Mat4x4;
 
     constexpr mat_t mat {1};
-    KRYS_EXPECT_EQUAL("Transform", Translate(mat, {1, 3, 4}),
+    KRYS_EXPECT_EQUAL("Translate", Translate(mat, {1, 3, 4}),
                       mat_t({1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {1, 3, 4, 1}));
   }
 
