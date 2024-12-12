@@ -28,6 +28,7 @@ namespace Krys::MTL::Bits
   NO_DISCARD constexpr T RotateRight(T value, fast_int16 count) noexcept
   {
     const int size = sizeof(T) * 8;
+    count %= size;
     return (value >> T(count)) | (value << T(size - count));
   }
 
