@@ -1,4 +1,4 @@
-#include "MTL/Common/MortonCodes.hpp"
+#include "MTL/MortonCodes.hpp"
 #include "Core/Debug/Expect.hpp"
 
 namespace Krys::Tests
