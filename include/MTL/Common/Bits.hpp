@@ -13,19 +13,19 @@ namespace Krys::MTL::Bits
   }
 
   template <IsUnsignedT T>
-  NO_DISCARD constexpr T Set(T value, fast_uint16 first, fast_uint16 count) noexcept
+  NO_DISCARD constexpr T Set(T value, int first, int count) noexcept
   {
     return value | T(Mask(count) << first);
   }
 
   template <IsUnsignedT T>
-  NO_DISCARD constexpr T Unset(T value, fast_uint16 first, fast_uint16 count) noexcept
+  NO_DISCARD constexpr T Unset(T value, int first, int count) noexcept
   {
     return value & ~T(Mask(count) << first);
   }
 
   template <IsIntegralT T>
-  NO_DISCARD constexpr T RotateRight(T value, fast_int16 count) noexcept
+  NO_DISCARD constexpr T RotateRight(T value, int count) noexcept
   {
     const int size = sizeof(T) * 8;
     count %= size;
@@ -33,7 +33,7 @@ namespace Krys::MTL::Bits
   }
 
   template <IsIntegralT T>
-  NO_DISCARD constexpr T RotateLeft(T value, fast_int16 count) noexcept
+  NO_DISCARD constexpr T RotateLeft(T value, int count) noexcept
   {
     const int size = sizeof(T) * 8;
     return (value << T(count)) | (value >> T(size - count));
