@@ -115,4 +115,99 @@ namespace Krys::Tests
     constexpr mat_t mat(1, 2, 3, 4);
     KRYS_EXPECT_EQUAL("Mat2x2 Scalar Division", mat / 2.0f, mat_t(0.5f, 1.0f, 1.5f, 2.0f));
   }
+
+  static void Test_Mat2x2_Bitwise_ShiftLeft()
+  {
+    using imat = mat2x2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat2x2 << - Scalar", imat(1, 1, 1, 1) << 1, imat(2, 2, 2, 2));
+    constexpr imat mat = ([]() {
+        imat mat(1, 1, 1, 1);
+        mat <<= 2;
+        return mat;
+      })();
+    KRYS_EXPECT_EQUAL("Mat2x2 <<= - Scalar", mat, imat(4, 4, 4, 4));
+  }
+
+  static void Test_Mat2x2_Bitwise_ShiftRight()
+  {
+    using imat = mat2x2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat2x2 >> - Scalar", imat(2, 2, 2, 2) >> 1, imat(1, 1, 1, 1));
+    constexpr imat mat = ([]() {
+        imat mat(4, 4, 4, 4);
+        mat >>= 2;
+        return mat;
+      })();
+    KRYS_EXPECT_EQUAL("Mat2x2 >>= - Scalar", mat, imat(1, 1, 1, 1));
+  }
+
+  static void Test_Mat2x2_Bitwise_Or()
+  {
+    using imat = mat2x2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat2x2 | - Scalar", imat(2, 2, 2, 2) | 1, imat(3, 3, 3, 3));
+    constexpr imat scalar = ([]() {
+        imat mat(2, 2, 2, 2);
+        mat |= 1;
+        return mat;
+      })();
+    KRYS_EXPECT_EQUAL("Mat2x2 |= - Scalar", scalar, imat(3, 3, 3, 3));
+
+    KRYS_EXPECT_EQUAL("Mat2x2 | - Vector", imat(2, 2, 2, 2) | imat(1, 1, 1, 1), imat(3, 3, 3, 3));
+    constexpr imat mat = ([]() {
+        imat mat(2, 2, 2, 2);
+        mat |= imat(1, 1, 1, 1);
+        return mat;
+      })();
+    KRYS_EXPECT_EQUAL("Mat2x2 |= - Vector", mat, imat(3, 3, 3, 3));
+  }
+
+  static void Test_Mat2x2_Bitwise_Xor()
+  {
+    using imat = mat2x2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat2x2 ^ - Scalar", imat(2, 2, 2, 2) ^ 1, imat(3, 3, 3, 3));
+    constexpr imat scalar = ([]() {
+        imat mat(2, 2, 2, 2);
+        mat ^= 1;
+        return mat;
+      })();
+    KRYS_EXPECT_EQUAL("Mat2x2 ^= - Scalar", scalar, imat(3, 3, 3, 3));
+
+    KRYS_EXPECT_EQUAL("Mat2x2 ^ - Vector", imat(2, 2, 2, 2) ^ imat(1, 1, 1, 1), imat(3, 3, 3, 3));
+    constexpr imat mat = ([]() {
+        imat mat(5, 5, 5, 5);
+        mat ^= imat(2, 2, 2, 2);
+        return mat;
+      })();
+    KRYS_EXPECT_EQUAL("Mat2x2 ^= - Vector", mat, imat(7, 7, 7, 7));
+  }
+
+  static void Test_Mat2x2_Bitwise_And()
+  {
+    using imat = mat2x2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat2x2 & - Scalar", imat(3, 3, 3, 3) & 1, imat(1, 1, 1, 1));
+    constexpr imat scalar = ([]() {
+        imat mat(3, 3, 3, 3);
+        mat &= 1;
+        return mat;
+      })();
+    KRYS_EXPECT_EQUAL("Mat2x2 &= - Scalar", scalar, imat(1, 1, 1, 1));
+
+    KRYS_EXPECT_EQUAL("Mat2x2 & - Vector", imat(3, 3, 3, 3) & imat(1, 1, 1, 1), imat(1, 1, 1, 1));
+    constexpr imat mat = ([]() {
+        imat mat(7, 7, 7, 7);
+        mat &= imat(3, 3, 3, 3);
+        return mat;
+      })();
+    KRYS_EXPECT_EQUAL("Mat2x2 &= - Vector", mat, imat(3, 3, 3, 3));
+  }
+
+  static void Test_Mat2x2_Bitwise_Not()
+  {
+    using imat = mat2x2_t<int>;
+    KRYS_EXPECT_EQUAL("Mat2x2 ~", ~imat(1, 1, 1, 1), imat(~1, ~1, ~1, ~1));
+  }
 }

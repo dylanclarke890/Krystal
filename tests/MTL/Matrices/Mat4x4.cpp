@@ -149,4 +149,114 @@ namespace Krys::Tests
       "Mat4x4 Scalar Division", mat / 2.0f,
       mat_t(0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f, 8.0f));
   }
+
+  static void Test_Mat4x4_Bitwise_ShiftLeft()
+  {
+    using imat = mat4x4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat4x4 << - Scalar", imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1) << 1,
+                      imat(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2));
+    constexpr imat vec = ([]() {
+        imat vec(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+        vec <<= 2;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Mat4x4 <<= - Scalar", vec, imat(8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8));
+  }
+
+  static void Test_Mat4x4_Bitwise_ShiftRight()
+  {
+    using imat = mat4x4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat4x4 >> - Scalar", imat(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2) >> 1,
+                      imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+    constexpr imat vec = ([]() {
+        imat vec(4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4);
+        vec >>= 2;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Mat4x4 >>= - Scalar", vec, imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+  }
+
+  static void Test_Mat4x4_Bitwise_Or()
+  {
+    using imat = mat4x4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat4x4 | - Scalar", imat(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2) | 1,
+                      imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
+    constexpr imat scalar = ([]() {
+        imat vec(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+        vec |= 1;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Mat4x4 |= - Scalar", scalar, imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
+
+    KRYS_EXPECT_EQUAL("Mat4x4 | - Vector",
+                      imat(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
+                        | imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                      imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
+    constexpr imat vec = ([]() {
+        imat vec(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+        vec |= imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Mat4x4 |= - Vector", vec, imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
+  }
+
+  static void Test_Mat4x4_Bitwise_Xor()
+  {
+    using imat = mat4x4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat4x4 ^ - Scalar", imat(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2) ^ 1,
+                      imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
+    constexpr imat scalar = ([]() {
+        imat vec(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+        vec ^= 1;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Mat4x4 ^= - Scalar", scalar, imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
+
+    KRYS_EXPECT_EQUAL("Mat4x4 ^ - Vector",
+                      imat(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
+                        ^ imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                      imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
+    constexpr imat vec = ([]() {
+        imat vec(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5);
+        vec ^= imat(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Mat4x4 ^= - Vector", vec, imat(7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7));
+  }
+
+  static void Test_Mat4x4_Bitwise_And()
+  {
+    using imat = mat4x4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Mat4x4 & - Scalar", imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3) & 1,
+                      imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+    constexpr imat scalar = ([]() {
+        imat vec(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3);
+        vec &= 1;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Mat4x4 &= - Scalar", scalar, imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+
+    KRYS_EXPECT_EQUAL("Mat4x4 & - Vector",
+                      imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3)
+                        & imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                      imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+    constexpr imat vec = ([]() {
+        imat vec(7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
+        vec &= imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3);
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Mat4x4 &= - Vector", vec, imat(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
+  }
+
+  static void Test_Mat4x4_Bitwise_Not()
+  {
+    using imat = mat4x4_t<int>;
+    KRYS_EXPECT_EQUAL("Mat4x4 ~", ~imat(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                      imat(~1, ~1, ~1, ~1, ~1, ~1, ~1, ~1, ~1, ~1, ~1, ~1, ~1, ~1, ~1, ~1));
+  }
 }

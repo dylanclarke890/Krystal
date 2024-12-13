@@ -191,6 +191,121 @@ private:                                                                        
     return *this;                                                                                            \
   }
 
+#define KRYS_MATRIX_TWO_COLUMNS_BITWISE_SHIFT()                                                              \
+  NO_DISCARD constexpr mat_t operator<<(int shift) const noexcept                                            \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] << shift, _values[1] << shift);                                                  \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator>>(int shift) const noexcept                                            \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] >> shift, _values[1] >> shift);                                                  \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator<<=(int shift) noexcept                                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this << shift;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator>>=(int shift) noexcept                                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this >> shift;                                                                                  \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_TWO_COLUMNS_BITWISE_OR()                                                                 \
+  NO_DISCARD constexpr mat_t operator|(TComponent scalar) const noexcept                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] | scalar, _values[1] | scalar);                                                  \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator|(const mat_t &other) const noexcept                                    \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] | other._values[0], _values[1] | other._values[1]);                              \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator|=(TComponent scalar) noexcept                                              \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this | scalar;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator|=(const mat_t &other) noexcept                                             \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this | other;                                                                                   \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_TWO_COLUMNS_BITWISE_XOR()                                                                \
+  NO_DISCARD constexpr mat_t operator^(TComponent scalar) const noexcept                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] ^ scalar, _values[1] ^ scalar);                                                  \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator^(const mat_t &other) const noexcept                                    \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] ^ other._values[0], _values[1] ^ other._values[1]);                              \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator^=(TComponent scalar) noexcept                                              \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this ^ scalar;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator^=(const mat_t &other) noexcept                                             \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this ^ other;                                                                                   \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_TWO_COLUMNS_BITWISE_AND()                                                                \
+  NO_DISCARD constexpr mat_t operator&(TComponent scalar) const noexcept                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] & scalar, _values[1] & scalar);                                                  \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator&(const mat_t &other) const noexcept                                    \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] & other._values[0], _values[1] & other._values[1]);                              \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator&=(TComponent scalar) noexcept                                              \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this & scalar;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator&=(const mat_t &other) noexcept                                             \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this & other;                                                                                   \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_TWO_COLUMNS_BITWISE_NOT()                                                                \
+  NO_DISCARD constexpr mat_t operator~() const noexcept                                                      \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(~_values[0], ~_values[1]);                                                                  \
+  }
+
 #pragma endregion Two Column Matrices
 
 #pragma region Three Column Matrices
@@ -333,6 +448,124 @@ private:                                                                        
   NO_DISCARD constexpr mat_t operator+() const noexcept                                                      \
   {                                                                                                          \
     return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_THREE_COLUMNS_BITWISE_SHIFT()                                                            \
+  NO_DISCARD constexpr mat_t operator<<(int shift) const noexcept                                            \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] << shift, _values[1] << shift, _values[2] << shift);                             \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator>>(int shift) const noexcept                                            \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] >> shift, _values[1] >> shift, _values[2] >> shift);                             \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator<<=(int shift) noexcept                                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this << shift;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator>>=(int shift) noexcept                                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this >> shift;                                                                                  \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_THREE_COLUMNS_BITWISE_OR()                                                               \
+  NO_DISCARD constexpr mat_t operator|(TComponent scalar) const noexcept                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] | scalar, _values[1] | scalar, _values[2] | scalar);                             \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator|(const mat_t &other) const noexcept                                    \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] | other._values[0], _values[1] | other._values[1],                               \
+                 _values[2] | other._values[2]);                                                             \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator|=(TComponent scalar) noexcept                                              \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this | scalar;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator|=(const mat_t &other) noexcept                                             \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this | other;                                                                                   \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_THREE_COLUMNS_BITWISE_XOR()                                                              \
+  NO_DISCARD constexpr mat_t operator^(TComponent scalar) const noexcept                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] ^ scalar, _values[1] ^ scalar, _values[2] ^ scalar);                             \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator^(const mat_t &other) const noexcept                                    \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] ^ other._values[0], _values[1] ^ other._values[1],                               \
+                 _values[2] ^ other._values[2]);                                                             \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator^=(TComponent scalar) noexcept                                              \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this ^ scalar;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator^=(const mat_t &other) noexcept                                             \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this ^ other;                                                                                   \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_THREE_COLUMNS_BITWISE_AND()                                                              \
+  NO_DISCARD constexpr mat_t operator&(TComponent scalar) const noexcept                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] & scalar, _values[1] & scalar, _values[2] & scalar);                             \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator&(const mat_t &other) const noexcept                                    \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] & other._values[0], _values[1] & other._values[1],                               \
+                 _values[2] & other._values[2]);                                                             \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator&=(TComponent scalar) noexcept                                              \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this & scalar;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator&=(const mat_t &other) noexcept                                             \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this & other;                                                                                   \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_THREE_COLUMNS_BITWISE_NOT()                                                              \
+  NO_DISCARD constexpr mat_t operator~() const noexcept                                                      \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(~_values[0], ~_values[1], ~_values[2]);                                                     \
   }
 
 #pragma endregion Three Column Matrices
@@ -482,6 +715,124 @@ private:                                                                        
   NO_DISCARD constexpr mat_t operator+() const noexcept                                                      \
   {                                                                                                          \
     return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_FOUR_COLUMNS_BITWISE_SHIFT()                                                             \
+  NO_DISCARD constexpr mat_t operator<<(int shift) const noexcept                                            \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] << shift, _values[1] << shift, _values[2] << shift, _values[3] << shift);        \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator>>(int shift) const noexcept                                            \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] >> shift, _values[1] >> shift, _values[2] >> shift, _values[3] >> shift);        \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator<<=(int shift) noexcept                                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this << shift;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator>>=(int shift) noexcept                                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this >> shift;                                                                                  \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_FOUR_COLUMNS_BITWISE_OR()                                                                \
+  NO_DISCARD constexpr mat_t operator|(TComponent scalar) const noexcept                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] | scalar, _values[1] | scalar, _values[2] | scalar, _values[3] | scalar);        \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator|(const mat_t &other) const noexcept                                    \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] | other._values[0], _values[1] | other._values[1],                               \
+                 _values[2] | other._values[2], _values[3] | other._values[3]);                              \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator|=(TComponent scalar) noexcept                                              \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this | scalar;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator|=(const mat_t &other) noexcept                                             \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this | other;                                                                                   \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_FOUR_COLUMNS_BITWISE_XOR()                                                               \
+  NO_DISCARD constexpr mat_t operator^(TComponent scalar) const noexcept                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] ^ scalar, _values[1] ^ scalar, _values[2] ^ scalar, _values[3] ^ scalar);        \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator^(const mat_t &other) const noexcept                                    \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] ^ other._values[0], _values[1] ^ other._values[1],                               \
+                 _values[2] ^ other._values[2], _values[3] ^ other._values[3]);                              \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator^=(TComponent scalar) noexcept                                              \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this ^ scalar;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator^=(const mat_t &other) noexcept                                             \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this ^ other;                                                                                   \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_FOUR_COLUMNS_BITWISE_AND()                                                               \
+  NO_DISCARD constexpr mat_t operator&(TComponent scalar) const noexcept                                     \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] & scalar, _values[1] & scalar, _values[2] & scalar, _values[3] & scalar);        \
+  }                                                                                                          \
+                                                                                                             \
+  NO_DISCARD constexpr mat_t operator&(const mat_t &other) const noexcept                                    \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(_values[0] & other._values[0], _values[1] & other._values[1],                               \
+                 _values[2] & other._values[2], _values[2] & other._values[3]);                              \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator&=(TComponent scalar) noexcept                                              \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this & scalar;                                                                                  \
+    return *this;                                                                                            \
+  }                                                                                                          \
+                                                                                                             \
+  constexpr const mat_t &operator&=(const mat_t &other) noexcept                                             \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    *this = *this & other;                                                                                   \
+    return *this;                                                                                            \
+  }
+
+#define KRYS_MATRIX_FOUR_COLUMNS_BITWISE_NOT()                                                              \
+  NO_DISCARD constexpr mat_t operator~() const noexcept                                                      \
+  requires(IsIntegralT<TComponent>)                                                                          \
+  {                                                                                                          \
+    return mat_t(~_values[0], ~_values[1], ~_values[2], ~_values[3]);                                        \
   }
 
 #pragma endregion Four Column Matrices

@@ -33,6 +33,13 @@ namespace Krys
       KRYS_MATRIX_FOUR_COLUMNS_COMMON_MULTIPLICATION()
       KRYS_MATRIX_FOUR_COLUMNS_DIVISION()
       KRYS_MATRIX_FOUR_COLUMNS_UNARY()
+      KRYS_MATRIX_FOUR_COLUMNS_BITWISE_SHIFT()
+      KRYS_MATRIX_FOUR_COLUMNS_BITWISE_OR()
+      KRYS_MATRIX_FOUR_COLUMNS_BITWISE_XOR()
+      KRYS_MATRIX_FOUR_COLUMNS_BITWISE_NOT()
+      KRYS_MATRIX_FOUR_COLUMNS_BITWISE_AND()
+
+#pragma region Constructors
 
       explicit constexpr Matrix(component_t scalar) noexcept
           : _values {column_t(scalar, component_t(0), component_t(0), component_t(0)),
@@ -50,6 +57,10 @@ namespace Krys
                      column_t(x3, y3, z3, w3)}
       {
       }
+
+#pragma endregion Constructors
+
+#pragma region Multiplication
 
       NO_DISCARD constexpr mat_t operator*(const mat_t &other) const noexcept
       {
@@ -106,6 +117,8 @@ namespace Krys
 
         return col;
       }
+
+#pragma endregion Multiplication
     };
   }
 }
