@@ -120,4 +120,99 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Vec2 Vector Division", vec / vec_t(2, 4), vec_t(1, 1));
     KRYS_EXPECT_EQUAL("Vec2 Scalar Division", vec / 4.0f, vec_t(0.5f, 1));
   }
+
+  static void Test_Vec2_Bitwise_ShiftLeft()
+  {
+    using ivec = vec2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec2 << - Scalar", ivec(1) << 1, ivec(2));
+    constexpr ivec vec = ([]() {
+        ivec vec(1);
+        vec <<= 2;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec2 <<= - Scalar", vec, ivec(4));
+  }
+
+  static void Test_Vec2_Bitwise_ShiftRight()
+  {
+    using ivec = vec2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec2 >> - Scalar", ivec(2) >> 1, ivec(1));
+    constexpr ivec vec = ([]() {
+        ivec vec(4);
+        vec >>= 2;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec2 >>= - Scalar", vec, ivec(1));
+  }
+
+  static void Test_Vec2_Bitwise_Or()
+  {
+    using ivec = vec2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec2 | - Scalar", ivec(2) | 1, ivec(3));
+    constexpr ivec scalar = ([]() {
+        ivec vec(2);
+        vec |= 1;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec2 |= - Scalar", scalar, ivec(3));
+
+    KRYS_EXPECT_EQUAL("Vec2 | - Vector", ivec(2) | ivec(1), ivec(3));
+    constexpr ivec vec = ([]() {
+        ivec vec(2);
+        vec |= ivec(1);
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec2 |= - Vector", vec, ivec(3));
+  }
+
+  static void Test_Vec2_Bitwise_Xor()
+  {
+    using ivec = vec2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec2 ^ - Scalar", ivec(2) ^ 1, ivec(3));
+    constexpr ivec scalar = ([]() {
+        ivec vec(2);
+        vec ^= 1;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec2 ^= - Scalar", scalar, ivec(3));
+
+    KRYS_EXPECT_EQUAL("Vec2 ^ - Vector", ivec(2) ^ ivec(1), ivec(3));
+    constexpr ivec vec = ([]() {
+        ivec vec(5);
+        vec ^= ivec(2);
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec2 ^= - Vector", vec, ivec(7));
+  }
+
+  static void Test_Vec2_Bitwise_And()
+  {
+    using ivec = vec2_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec2 & - Scalar", ivec(3) & 1, ivec(1));
+    constexpr ivec scalar = ([]() {
+        ivec vec(3);
+        vec &= 1;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec2 &= - Scalar", scalar, ivec(1));
+
+    KRYS_EXPECT_EQUAL("Vec2 & - Vector", ivec(3) & ivec(1), ivec(1));
+    constexpr ivec vec = ([]() {
+        ivec vec(7);
+        vec &= ivec(3);
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec2 &= - Vector", vec, ivec(3));
+  }
+
+  static void Test_Vec2_Bitwise_Not()
+  {
+    using ivec = vec2_t<int>;
+    KRYS_EXPECT_EQUAL("Vec2 ~", ~ivec(1), ivec(~1));
+  }
 }

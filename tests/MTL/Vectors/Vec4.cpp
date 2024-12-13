@@ -21,7 +21,7 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Vec4 Move Constructor", move_dst, scalar);
   }
 
-  static void Test_Vec3_Assignment()
+  static void Test_Vec4_Assignment()
   {
     constexpr auto TestCopy = []()
     {
@@ -127,5 +127,100 @@ namespace Krys::Tests
     constexpr vec_t vec(2, 4, 6, 8);
     KRYS_EXPECT_EQUAL("Vec4 Vector Division", vec / vec_t(2, 4, 6, 8), vec_t(1, 1, 1, 1));
     KRYS_EXPECT_EQUAL("Vec4 Scalar Division", vec / 4.0f, vec_t(0.5f, 1, 1.5f, 2));
+  }
+
+  static void Test_Vec4_Bitwise_ShiftLeft()
+  {
+    using ivec = vec4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec4 << - Scalar", ivec(1) << 1, ivec(2));
+    constexpr ivec vec = ([]() {
+        ivec vec(1);
+        vec <<= 2;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec4 <<= - Scalar", vec, ivec(4));
+  }
+
+  static void Test_Vec4_Bitwise_ShiftRight()
+  {
+    using ivec = vec4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec4 >> - Scalar", ivec(2) >> 1, ivec(1));
+    constexpr ivec vec = ([]() {
+        ivec vec(4);
+        vec >>= 2;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec4 >>= - Scalar", vec, ivec(1));
+  }
+
+  static void Test_Vec4_Bitwise_Or()
+  {
+    using ivec = vec4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec4 | - Scalar", ivec(2) | 1, ivec(3));
+    constexpr ivec scalar = ([]() {
+        ivec vec(2);
+        vec |= 1;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec4 |= - Scalar", scalar, ivec(3));
+
+    KRYS_EXPECT_EQUAL("Vec4 | - Vector", ivec(2) | ivec(1), ivec(3));
+    constexpr ivec vec = ([]() {
+        ivec vec(2);
+        vec |= ivec(1);
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec4 |= - Vector", vec, ivec(3));
+  }
+
+  static void Test_Vec4_Bitwise_Xor()
+  {
+    using ivec = vec4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec4 ^ - Scalar", ivec(2) ^ 1, ivec(3));
+    constexpr ivec scalar = ([]() {
+        ivec vec(2);
+        vec ^= 1;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec4 ^= - Scalar", scalar, ivec(3));
+
+    KRYS_EXPECT_EQUAL("Vec4 ^ - Vector", ivec(2) ^ ivec(1), ivec(3));
+    constexpr ivec vec = ([]() {
+        ivec vec(5);
+        vec ^= ivec(2);
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec4 ^= - Vector", vec, ivec(7));
+  }
+
+  static void Test_Vec4_Bitwise_And()
+  {
+    using ivec = vec4_t<int>;
+
+    KRYS_EXPECT_EQUAL("Vec4 & - Scalar", ivec(3) & 1, ivec(1));
+    constexpr ivec scalar = ([]() {
+        ivec vec(3);
+        vec &= 1;
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec4 &= - Scalar", scalar, ivec(1));
+
+    KRYS_EXPECT_EQUAL("Vec4 & - Vector", ivec(3) & ivec(1), ivec(1));
+    constexpr ivec vec = ([]() {
+        ivec vec(7);
+        vec &= ivec(3);
+        return vec;
+      })();
+    KRYS_EXPECT_EQUAL("Vec4 &= - Vector", vec, ivec(3));
+  }
+
+  static void Test_Vec4_Bitwise_Not()
+  {
+    using ivec = vec4_t<int>;
+    KRYS_EXPECT_EQUAL("Vec4 ~", ~ivec(1), ivec(~1));
   }
 }

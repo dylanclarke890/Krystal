@@ -241,7 +241,7 @@ namespace Krys
 
 #pragma endregion Unary
 
-#pragma region Bitwise
+#pragma region Bitwise Shift
 
       NO_DISCARD constexpr vec_t operator<<(int shift) const noexcept
       requires(IsIntegralT<TComponent>)
@@ -269,6 +269,10 @@ namespace Krys
         return *this;
       }
 
+#pragma endregion Bitwise Shift
+
+#pragma region Bitwise Or
+
       NO_DISCARD constexpr vec_t operator|(TComponent scalar) const noexcept
       requires(IsIntegralT<TComponent>)
       {
@@ -294,6 +298,10 @@ namespace Krys
         *this = *this | other;
         return *this;
       }
+
+#pragma endregion Bitwise Or
+
+#pragma region Bitwise Xor
 
       NO_DISCARD constexpr vec_t operator^(TComponent scalar) const noexcept
       requires(IsIntegralT<TComponent>)
@@ -321,6 +329,10 @@ namespace Krys
         return *this;
       }
 
+#pragma endregion Bitwise Xor
+
+#pragma region Bitwise And
+
       NO_DISCARD constexpr vec_t operator&(TComponent scalar) const noexcept
       requires(IsIntegralT<TComponent>)
       {
@@ -347,13 +359,17 @@ namespace Krys
         return *this;
       }
 
+#pragma endregion Bitwise And
+
+#pragma region Bitwise Not
+
       NO_DISCARD constexpr vec_t operator~() const noexcept
       requires(IsIntegralT<TComponent>)
       {
         return vec_t(~x);
       }
 
-#pragma endregion Bitwise
+#pragma endregion Bitwise Not
     };
   }
 }

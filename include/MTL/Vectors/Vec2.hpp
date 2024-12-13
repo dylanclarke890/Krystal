@@ -263,6 +263,136 @@ namespace Krys
       }
 
 #pragma endregion Unary
+
+#pragma region Bitwise Shift
+
+      NO_DISCARD constexpr vec_t operator<<(int shift) const noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        return vec_t(x << shift, y << shift);
+      }
+
+      NO_DISCARD constexpr vec_t operator>>(int shift) const noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        return vec_t(x >> shift, y >> shift);
+      }
+
+      constexpr const vec_t &operator<<=(int shift) noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        *this = *this << shift;
+        return *this;
+      }
+
+      constexpr const vec_t &operator>>=(int shift) noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        *this = *this >> shift;
+        return *this;
+      }
+
+#pragma endregion Bitwise Shift
+
+#pragma region Bitwise Or
+
+      NO_DISCARD constexpr vec_t operator|(TComponent scalar) const noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        return vec_t(x | scalar, x | scalar);
+      }
+
+      NO_DISCARD constexpr vec_t operator|(const vec_t &other) const noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        return vec_t(x | other.x, x | other.y);
+      }
+
+      constexpr const vec_t &operator|=(TComponent scalar) noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        *this = *this | scalar;
+        return *this;
+      }
+
+      constexpr const vec_t &operator|=(const vec_t &other) noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        *this = *this | other;
+        return *this;
+      }
+
+#pragma endregion Bitwise Or
+
+#pragma region Bitwise Xor
+
+      NO_DISCARD constexpr vec_t operator^(TComponent scalar) const noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        return vec_t(x ^ scalar, y ^ scalar);
+      }
+
+      NO_DISCARD constexpr vec_t operator^(const vec_t &other) const noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        return vec_t(x ^ other.x, y ^ other.y);
+      }
+
+      constexpr const vec_t &operator^=(TComponent scalar) noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        *this = *this ^ scalar;
+        return *this;
+      }
+
+      constexpr const vec_t &operator^=(const vec_t &other) noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        *this = *this ^ other;
+        return *this;
+      }
+
+#pragma endregion Bitwise Xor
+
+#pragma region Bitwise And
+
+      NO_DISCARD constexpr vec_t operator&(TComponent scalar) const noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        return vec_t(x & scalar, y & scalar);
+      }
+
+      NO_DISCARD constexpr vec_t operator&(const vec_t &other) const noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        return vec_t(x & other.x, y & other.y);
+      }
+
+      constexpr const vec_t &operator&=(TComponent scalar) noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        *this = *this & scalar;
+        return *this;
+      }
+
+      constexpr const vec_t &operator&=(const vec_t &other) noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        *this = *this & other;
+        return *this;
+      }
+
+#pragma endregion Bitwise And
+
+#pragma region Bitwise Not
+
+      NO_DISCARD constexpr vec_t operator~() const noexcept
+      requires(IsIntegralT<TComponent>)
+      {
+        return vec_t(~x, ~y);
+      }
+
+#pragma endregion Bitwise Not
     };
   }
 }
