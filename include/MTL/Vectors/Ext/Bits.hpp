@@ -10,7 +10,7 @@
 namespace Krys::MTL::Bits
 {
   template <IsUnsignedT TComponent, vec_length_t L>
-  NO_DISCARD constexpr auto Mask(vector_t<TComponent, L> v) noexcept
+  NO_DISCARD constexpr auto Mask(const vector_t<TComponent, L> &v) noexcept
   {
     return MTL::MapEach(v, [](TComponent val) -> TComponent { return MTL::Bits::Mask(val); });
   }
