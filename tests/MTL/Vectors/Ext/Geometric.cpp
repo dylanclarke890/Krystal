@@ -14,40 +14,37 @@ namespace Krys::Tests
 {
   static void Test_Length()
   {
-    constexpr float l1 = MTL::Length(Vec1 {1.0f});
-    KRYS_EXPECT_NEAR("Vec1 Length", l1 - 1.0f, 0.0f, 1e-6f);
-
-    constexpr float l2 = MTL::Length(Vec2 {1.0f, 0.0f});
-    KRYS_EXPECT_NEAR("Vec2 Length", l2 - 1.0f, 0.0f, 1e-6f);
-
-    constexpr float l3 = MTL::Length(Vec3 {1.0f, 0.0f, 0.0f});
-    KRYS_EXPECT_NEAR("Vec3 Length", l3 - 1.0f, 0.0f, 1e-6f);
-
-    constexpr float l4 = MTL::Length(Vec4 {1.0f, 0.0f, 0.0f, 0.0f});
-    KRYS_EXPECT_NEAR("Vec4 Length", l4 - 1.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec1 Length", MTL::Length(Vec1 {1.0f}) - 1.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec2 Length", MTL::Length(Vec2 {1.0f, 0.0f}) - 1.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec3 Length", MTL::Length(Vec3 {1.0f, 0.0f, 0.0f}) - 1.0f, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec4 Length", MTL::Length(Vec4 {1.0f, 0.0f, 0.0f, 0.0f}) - 1.0f, 0.0f, 1e-6f);
   }
 
   static void Test_LengthSquared()
   {
-    KRYS_EXPECT_EQUAL("Vec1 Length", MTL::LengthSquared(Vec1 {2.0f}), 4.0f);
-    KRYS_EXPECT_EQUAL("Vec2 Length", MTL::LengthSquared(Vec2 {2.0f}), 4.0f);
-    KRYS_EXPECT_EQUAL("Vec3 Length", MTL::LengthSquared(Vec3 {2.0f}), 4.0f);
-    KRYS_EXPECT_EQUAL("Vec4 Length", MTL::LengthSquared(Vec4 {2.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec1 LengthSquared", MTL::LengthSquared(Vec1 {2.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec2 LengthSquared", MTL::LengthSquared(Vec2 {2.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec3 LengthSquared", MTL::LengthSquared(Vec3 {2.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec4 LengthSquared", MTL::LengthSquared(Vec4 {2.0f}), 4.0f);
   }
 
   static void Test_Distance()
   {
-    constexpr float d1 = MTL::Distance(Vec1 {1.0f}, Vec1 {1.0f});
-    KRYS_EXPECT_NEAR("Vec1 Length", d1, 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec1 Distance", MTL::Distance(Vec1 {1.0f}, Vec1 {1.0f}), 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec2 Distance", MTL::Distance(Vec2 {1.0f, 0.0f}, Vec2 {1.0f, 0.0f}), 0.0f, 1e-6f);
+    KRYS_EXPECT_NEAR("Vec3 Distance", MTL::Distance(Vec3 {1.0f, 0.0f, 0.0f}, Vec3 {1.0f, 0.0f, 0.0f}), 0.0f,
+                     1e-6f);
+    KRYS_EXPECT_NEAR("Vec4 Distance",
+                     MTL::Distance(Vec4 {1.0f, 0.0f, 0.0f, 0.0f}, Vec4 {1.0f, 0.0f, 0.0f, 0.0f}), 0.0f,
+                     1e-6f);
+  }
 
-    constexpr float d2 = MTL::Distance(Vec2 {1.0f, 0.0f}, Vec2 {1.0f, 0.0f});
-    KRYS_EXPECT_NEAR("Vec2 Length", d2, 0.0f, 1e-6f);
-
-    constexpr float d3 = MTL::Distance(Vec3 {1.0f, 0.0f, 0.0f}, Vec3 {1.0f, 0.0f, 0.0f});
-    KRYS_EXPECT_NEAR("Vec3 Length", d3, 0.0f, 1e-6f);
-
-    constexpr float d4 = MTL::Distance(Vec4 {1.0f, 0.0f, 0.0f, 0.0f}, Vec4 {1.0f, 0.0f, 0.0f, 0.0f});
-    KRYS_EXPECT_NEAR("Vec4 Length", d4, 0.0f, 1e-6f);
+  static void Test_DistanceSquared()
+  {
+    KRYS_EXPECT_EQUAL("Vec1 DistanceSquared", MTL::DistanceSquared(Vec1 {2.0f}, Vec1 {4.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec2 DistanceSquared", MTL::DistanceSquared(Vec2 {2.0f}, Vec2 {4.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec3 DistanceSquared", MTL::DistanceSquared(Vec3 {2.0f}, Vec3 {4.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec4 DistanceSquared", MTL::DistanceSquared(Vec4 {2.0f}, Vec4 {4.0f}), 4.0f);
   }
 
   static void Test_Dot()

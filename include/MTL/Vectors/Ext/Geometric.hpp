@@ -76,6 +76,18 @@ namespace Krys::MTL
     return MTL::Length(a - b);
   }
 
+  /// @brief Computes the squared distance between two vectors.
+  /// @tparam TComponent The underlying floating-point type of the vectors.
+  /// @tparam L The length of the vectors.
+  /// @param a The first vector.
+  /// @param b The second vector.
+  /// @return The squared distance between `a` and `b`.
+  template <IsFloatingPointT TComponent, vec_length_t L>
+  constexpr TComponent DistanceSquared(const vector_t<TComponent, L> &a, const vector_t<TComponent, L> &b) noexcept
+  {
+    return MTL::LengthSquared(a - b);
+  }
+
   /// @brief Projects vector `a` onto vector `b`.
   /// @tparam TComponent The underlying floating-point type of the vectors.
   /// @tparam L The length of the vectors.
