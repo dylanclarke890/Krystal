@@ -189,7 +189,7 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t L>
   NO_DISCARD constexpr auto MaxOf(const vector_t<TComponent, L> &v) noexcept -> TComponent
   {
-    TComponent max = std::numeric_limits<TComponent>::min();
+    TComponent max = std::numeric_limits<TComponent>::lowest();
     ForEach(v,
             [&max](TComponent val)
             {
