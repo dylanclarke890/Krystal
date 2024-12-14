@@ -27,6 +27,14 @@ namespace Krys::Tests
     KRYS_EXPECT_NEAR("Vec4 Length", l4 - 1.0f, 0.0f, 1e-6f);
   }
 
+  static void Test_LengthSquared()
+  {
+    KRYS_EXPECT_EQUAL("Vec1 Length", MTL::LengthSquared(Vec1 {2.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec2 Length", MTL::LengthSquared(Vec2 {2.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec3 Length", MTL::LengthSquared(Vec3 {2.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec4 Length", MTL::LengthSquared(Vec4 {2.0f}), 4.0f);
+  }
+
   static void Test_Distance()
   {
     constexpr float d1 = MTL::Distance(Vec1 {1.0f}, Vec1 {1.0f});

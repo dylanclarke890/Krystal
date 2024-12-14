@@ -5,6 +5,8 @@
 #include "Base/Types.hpp"
 #include "MTL/Vectors/Base.hpp"
 
+#include <limits>
+
 namespace Krys::MTL
 {
   /// @brief Applies a function to each component of the vector.
@@ -25,7 +27,7 @@ namespace Krys::MTL
       func(v.z);
     if constexpr (L > 3)
       func(v.w);
-    
+
     static_assert(L <= 4, "Unsupported number of components.");
   }
 
@@ -167,5 +169,35 @@ namespace Krys::MTL
       return vector_t<TComponent, 3>(v.z, v.y, v.x);
     else if constexpr (L == 4)
       return vector_t<TComponent, 4>(v.w, v.z, v.y, v.x);
+  }
+
+  template <IsArithmeticT TComponent, vec_length_t L>
+  NO_DISCARD constexpr auto MinOf(const vector_t<TComponent, L> &v) noexcept -> TComponent
+  {
+    TComponent min = std::numeric_limits<TComponent>::max();
+    ForEach(v,
+            [&min](TComponent val)
+            {
+              if (val < min)
+              {
+                min = val;
+              }
+            });
+    return min;
+  }
+
+  template <IsArithmeticT TComponent, vec_length_t L>
+  NO_DISCARD constexpr auto MaxOf(const vector_t<TComponent, L> &v) noexcept -> TComponent
+  {
+    TComponent max = std::numeric_limits<TComponent>::min();
+    ForEach(v,
+            [&max](TComponent val)
+            {
+              if (val > max)
+              {
+                max = val;
+              }
+            });
+    return max;
   }
 }

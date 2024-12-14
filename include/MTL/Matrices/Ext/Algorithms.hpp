@@ -491,4 +491,34 @@ namespace Krys::MTL
                         + func(v[3].w));
     }
   }
+
+  template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto MinOf(const matrix_t<TComponent, RL, CL> &m) noexcept -> TComponent
+  {
+    TComponent min = std::numeric_limits<TComponent>::max();
+    ForEach(m,
+            [&min](TComponent val)
+            {
+              if (val < min)
+              {
+                min = val;
+              }
+            });
+    return min;
+  }
+
+  template <IsArithmeticT TComponent, vec_length_t RL, vec_length_t CL>
+  NO_DISCARD constexpr auto MaxOf(const matrix_t<TComponent, RL, CL> &m) noexcept -> TComponent
+  {
+    TComponent max = std::numeric_limits<TComponent>::min();
+    ForEach(m,
+            [&max](TComponent val)
+            {
+              if (val > max)
+              {
+                max = val;
+              }
+            });
+    return max;
+  }
 }

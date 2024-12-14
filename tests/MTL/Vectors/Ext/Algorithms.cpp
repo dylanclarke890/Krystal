@@ -48,6 +48,8 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Vec1 Sum(Basic)", Sum(vec), 2);
     KRYS_EXPECT_EQUAL("Vec1 Sum(WithFunc)", Sum(vec, Square), 4);
     KRYS_EXPECT_EQUAL("Vec1 Reverse", Reverse(vec), vec_t(2));
+    KRYS_EXPECT_EQUAL("Vec1 MinOf", MinOf(vec), 2);
+    KRYS_EXPECT_EQUAL("Vec1 MaxOf", MaxOf(vec), 2);
   }
 
   static void Test_Vec2_Algorithms()
@@ -69,6 +71,8 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Vec2 Sum(Basic)", Sum(vec), 5);
     KRYS_EXPECT_EQUAL("Vec2 Sum(WithFunc)", Sum(vec, Square), 13);
     KRYS_EXPECT_EQUAL("Vec2 Reverse", Reverse(vec), vec_t(3, 2));
+    KRYS_EXPECT_EQUAL("Vec2 MinOf", MinOf(vec), 2);
+    KRYS_EXPECT_EQUAL("Vec2 MaxOf", MaxOf(vec), 3);
   }
 
   static void Test_Vec3_Algorithms()
@@ -90,6 +94,8 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Vec3 Sum(Basic)", Sum(vec), 9);
     KRYS_EXPECT_EQUAL("Vec3 Sum(WithFunc)", Sum(vec, Square), 29);
     KRYS_EXPECT_EQUAL("Vec3 Reverse", Reverse(vec), vec_t(4, 3, 2));
+    KRYS_EXPECT_EQUAL("Vec3 MinOf", MinOf(vec), 2);
+    KRYS_EXPECT_EQUAL("Vec3 MaxOf", MaxOf(vec), 4);
   }
 
   static void Test_Vec4_Algorithms()
@@ -112,5 +118,7 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Vec4 Sum(Basic)", Sum(vec), 14);
     KRYS_EXPECT_EQUAL("Vec4 Sum(WithFunc)", Sum(vec, Square), 54);
     KRYS_EXPECT_EQUAL("Vec4 Reverse", Reverse(vec), vec_t(5, 4, 3, 2));
+    KRYS_EXPECT_EQUAL("Vec4 MinOf", MinOf(vec), 2);
+    KRYS_EXPECT_EQUAL("Vec4 MaxOf", MaxOf(vec), 5);
   }
 }

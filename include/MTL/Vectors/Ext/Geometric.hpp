@@ -42,6 +42,17 @@ namespace Krys::MTL
     return MTL::Sqrt(MTL::Dot(x, x));
   }
 
+  /// @brief Computes the squared length (magnitude) of a vector.
+  /// @tparam TComponent The underlying floating-point type of the vector.
+  /// @tparam L The length of the vector.
+  /// @param x The input vector.
+  /// @return The squared length of the vector.
+  template <IsFloatingPointT TComponent, vec_length_t L>
+  constexpr TComponent LengthSquared(const vector_t<TComponent, L> &x) noexcept
+  {
+    return MTL::Dot(x, x);
+  }
+
   /// @brief Normalizes a vector (scales it to length 1).
   /// @tparam TComponent The underlying floating-point type of the vector.
   /// @tparam L The length of the vector.

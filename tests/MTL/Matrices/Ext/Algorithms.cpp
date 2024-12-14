@@ -53,6 +53,8 @@ namespace Krys::Tests
                       mat_t({5, 8}, {11, 14}));
     KRYS_EXPECT_EQUAL("Mat2x2 Sum(Basic)", Sum(mat), 10);
     KRYS_EXPECT_EQUAL("Mat2x2 Sum(WithFunc)", Sum(mat, Square), 30);
+    KRYS_EXPECT_EQUAL("Mat2x2 MinOf", MinOf(mat), 1);
+    KRYS_EXPECT_EQUAL("Mat2x2 MaxOf", MaxOf(mat), 4);
   }
 
   static void Test_Mat2x3_Algorithms()
@@ -76,6 +78,8 @@ namespace Krys::Tests
                       mat_t({5, 8}, {11, 14}, {17, 20}));
     KRYS_EXPECT_EQUAL("Mat2x3 Sum(Basic)", Sum(mat), 21);
     KRYS_EXPECT_EQUAL("Mat2x3 Sum(WithFunc)", Sum(mat, Square), 91);
+    KRYS_EXPECT_EQUAL("Mat2x3 MinOf", MinOf(mat), 1);
+    KRYS_EXPECT_EQUAL("Mat2x3 MaxOf", MaxOf(mat), 6);
   }
 
   static void Test_Mat2x4_Algorithms()
@@ -100,6 +104,8 @@ namespace Krys::Tests
       mat_t({5, 8}, {11, 14}, {17, 20}, {19, 22}));
     KRYS_EXPECT_EQUAL("Mat2x4 Sum(Basic)", Sum(mat), 36);
     KRYS_EXPECT_EQUAL("Mat2x4 Sum(WithFunc)", Sum(mat, Square), 204);
+    KRYS_EXPECT_EQUAL("Mat2x4 MinOf", MinOf(mat), 1);
+    KRYS_EXPECT_EQUAL("Mat2x4 MaxOf", MaxOf(mat), 8);
   }
 
   static void Test_Mat3x2_Algorithms()
@@ -123,6 +129,8 @@ namespace Krys::Tests
                       mat_t({5, 8, 11}, {14, 17, 20}));
     KRYS_EXPECT_EQUAL("Mat3x2 Sum(Basic)", Sum(mat), 21);
     KRYS_EXPECT_EQUAL("Mat3x2 Sum(WithFunc)", Sum(mat, Square), 91);
+    KRYS_EXPECT_EQUAL("Mat3x2 MinOf", MinOf(mat), 1);
+    KRYS_EXPECT_EQUAL("Mat3x2 MaxOf", MaxOf(mat), 6);
   }
 
   static void Test_Mat3x3_Algorithms()
@@ -147,6 +155,8 @@ namespace Krys::Tests
       mat_t({5, 8, 11}, {14, 17, 18}, {19, 20, 21}));
     KRYS_EXPECT_EQUAL("Mat3x3 Sum(Basic)", Sum(mat), 25);
     KRYS_EXPECT_EQUAL("Mat3x3 Sum(WithFunc)", Sum(mat, Square), 85);
+    KRYS_EXPECT_EQUAL("Mat3x3 MinOf", MinOf(mat), 1);
+    KRYS_EXPECT_EQUAL("Mat3x3 MaxOf", MaxOf(mat), 5);
   }
 
   static void Test_Mat3x4_Algorithms()
@@ -173,6 +183,8 @@ namespace Krys::Tests
                       mat_t({5, 8, 11}, {14, 17, 20}, {23, 26, 29}, {32, 35, 38}));
     KRYS_EXPECT_EQUAL("Mat3x4 Sum(Basic)", Sum(mat), 78);
     KRYS_EXPECT_EQUAL("Mat3x4 Sum(WithFunc)", Sum(mat, Square), 650);
+    KRYS_EXPECT_EQUAL("Mat3x4 MinOf", MinOf(mat), 1);
+    KRYS_EXPECT_EQUAL("Mat3x4 MaxOf", MaxOf(mat), 12);
   }
 
   static void Test_Mat4x2_Algorithms()
@@ -197,6 +209,8 @@ namespace Krys::Tests
       mat_t({5, 8, 11, 14}, {17, 20, 23, 26}));
     KRYS_EXPECT_EQUAL("Mat4x2 Sum(Basic)", Sum(mat), 36);
     KRYS_EXPECT_EQUAL("Mat4x2 Sum(WithFunc)", Sum(mat, Square), 204);
+    KRYS_EXPECT_EQUAL("Mat4x2 MinOf", MinOf(mat), 1);
+    KRYS_EXPECT_EQUAL("Mat4x2 MaxOf", MaxOf(mat), 8);
   }
 
   static void Test_Mat4x3_Algorithms()
@@ -223,6 +237,8 @@ namespace Krys::Tests
                       mat_t({5, 8, 11, 14}, {17, 20, 23, 26}, {29, 32, 35, 38}));
     KRYS_EXPECT_EQUAL("Mat4x3 Sum(Basic)", Sum(mat), 78);
     KRYS_EXPECT_EQUAL("Mat4x3 Sum(WithFunc)", Sum(mat, Square), 650);
+    KRYS_EXPECT_EQUAL("Mat4x3 MinOf", MinOf(mat), 1);
+    KRYS_EXPECT_EQUAL("Mat4x3 MaxOf", MaxOf(mat), 12);
   }
 
   static void Test_Mat4x4_Algorithms()
@@ -250,5 +266,7 @@ namespace Krys::Tests
                       mat_t({5, 8, 11, 14}, {17, 20, 23, 26}, {29, 32, 35, 38}, {41, 44, 47, 50}));
     KRYS_EXPECT_EQUAL("Mat4x4 Sum(Basic)", Sum(mat), 136);
     KRYS_EXPECT_EQUAL("Mat4x4 Sum(WithFunc)", Sum(mat, Square), 1'496);
+    KRYS_EXPECT_EQUAL("Mat4x4 MinOf", MinOf(mat), 1);
+    KRYS_EXPECT_EQUAL("Mat4x4 MaxOf", MaxOf(mat), 16);
   }
 }
