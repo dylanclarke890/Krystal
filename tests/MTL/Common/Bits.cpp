@@ -21,6 +21,12 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Unset", MTL::Bits::Unset<uint8>(0b00'011'000, 3, 2), 0b00'000'000);
   }
 
+  static void Test_Bits_Count()
+  {
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count<uint8>(0b00'011'000), 2);
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count<uint8>(0b11'111'111), 8);
+  }
+
   static void Test_Bits_RotateLeft()
   {
     KRYS_EXPECT_EQUAL("RotateLeft", MTL::Bits::RotateLeft<uint8>(0b10'000'000U, 1), 0b00'000'001U);

@@ -19,6 +19,15 @@ namespace Krys::MTL::Bits
   }
 
   template <IsUnsignedT T>
+  NO_DISCARD constexpr uint32 Count(T value) noexcept
+  {
+    uint count;
+    for (count = 0; value; count++)
+      value &= value - 1; // clear the least significant bit set
+    return count;
+  }
+
+  template <IsUnsignedT T>
   NO_DISCARD constexpr T Unset(T value, uint first, uint count) noexcept
   {
     return value & ~T(Mask(count) << first);

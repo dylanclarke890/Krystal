@@ -215,6 +215,64 @@ namespace Krys::Tests
 
 #pragma endregion Unset
 
+#pragma region Count
+
+  static void Test_Bits_Mat2x2_Count()
+  {
+    using mat_t = mat2x2_t<uint32>;
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count(mat_t(0b00'011'000)), mat_t(2));
+  }
+
+  static void Test_Bits_Mat2x3_Count()
+  {
+    using mat_t = mat2x3_t<uint32>;
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count(mat_t(0b00'011'000)), mat_t(2));
+  }
+
+  static void Test_Bits_Mat2x4_Count()
+  {
+    using mat_t = mat2x4_t<uint32>;
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count(mat_t(0b00'011'000)), mat_t(2));
+  }
+
+  static void Test_Bits_Mat3x2_Count()
+  {
+    using mat_t = mat2x2_t<uint32>;
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count(mat_t(0b00'011'000)), mat_t(2));
+  }
+
+  static void Test_Bits_Mat3x3_Count()
+  {
+    using mat_t = mat2x2_t<uint32>;
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count(mat_t(0b00'011'000)), mat_t(2));
+  }
+
+  static void Test_Bits_Mat3x4_Count()
+  {
+    using mat_t = mat2x2_t<uint32>;
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count(mat_t(0b00'011'000)), mat_t(2));
+  }
+
+  static void Test_Bits_Mat4x2_Count()
+  {
+    using mat_t = mat2x2_t<uint32>;
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count(mat_t(0b00'011'000)), mat_t(2));
+  }
+
+  static void Test_Bits_Mat4x3_Count()
+  {
+    using mat_t = mat2x2_t<uint32>;
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count(mat_t(0b00'011'000)), mat_t(2));
+  }
+
+  static void Test_Bits_Mat4x4_Count()
+  {
+    using mat_t = mat2x2_t<uint32>;
+    KRYS_EXPECT_EQUAL("Count", MTL::Bits::Count(mat_t(0b00'011'000)), mat_t(2));
+  }
+
+#pragma endregion Count
+
 #pragma region RotateLeft
 
   static void Test_Bits_Mat2x2_RotateLeft()

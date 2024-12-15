@@ -28,6 +28,12 @@ namespace Krys::MTL::Bits
   }
 
   template <IsUnsignedT TComponent, vec_length_t L>
+  NO_DISCARD constexpr auto Count(const vector_t<TComponent, L> &v) noexcept
+  {
+    return MapEach(v, [](TComponent x) { return Count(x); });
+  }
+
+  template <IsUnsignedT TComponent, vec_length_t L>
   NO_DISCARD constexpr auto RotateRight(const vector_t<TComponent, L> &v, int count) noexcept
   {
     return MapEach(v, [&](TComponent x) { return RotateRight(x, count); });
