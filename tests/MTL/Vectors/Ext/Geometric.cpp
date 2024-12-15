@@ -123,4 +123,20 @@ namespace Krys::Tests
     constexpr Vec3 F = MTL::FaceForward(n, i, nRef);
     KRYS_EXPECT_EQUAL("FaceForward", F, Vec3(0, 0, -1));
   }
+
+  static void Test_TriangleNormal()
+  {
+    using vec3 = vec3_t<float>;
+
+    constexpr float epsilon = 1e-5f;
+
+    // Triangle in the XY plane
+    constexpr vec3 p1(0, 0, 0);
+    constexpr vec3 p2(1, 0, 0);
+    constexpr vec3 p3(0, 1, 0);
+    constexpr vec3 expectedNormal(0, 0, 1); // Normal points along +Z axis
+
+    constexpr vec3 result = MTL::TriangleNormal(p1, p2, p3);
+    KRYS_EXPECT_EQUAL("TriangleNormal XY Plane", result, expectedNormal);
+  }
 }

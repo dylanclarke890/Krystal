@@ -5,8 +5,8 @@
 #include "MTL/Power/InverseSqrt.hpp"
 #include "MTL/Power/Sqrt.hpp"
 #include "MTL/Vectors/Base.hpp"
-#include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Ext/Algorithms.hpp"
+#include "MTL/Vectors/Vec3.hpp"
 
 namespace Krys::MTL
 {
@@ -20,7 +20,7 @@ namespace Krys::MTL
   constexpr TComponent Dot(const vector_t<TComponent, L> &a, const vector_t<TComponent, L> &b) noexcept
   {
     static_assert(L <= 4, "Unsupported number of components");
-    
+
     if constexpr (L == 1)
       return a.x * b.x;
     else if constexpr (L == 2)
@@ -83,7 +83,8 @@ namespace Krys::MTL
   /// @param b The second vector.
   /// @return The squared distance between `a` and `b`.
   template <IsFloatingPointT TComponent, vec_length_t L>
-  constexpr TComponent DistanceSquared(const vector_t<TComponent, L> &a, const vector_t<TComponent, L> &b) noexcept
+  constexpr TComponent DistanceSquared(const vector_t<TComponent, L> &a,
+                                       const vector_t<TComponent, L> &b) noexcept
   {
     return MTL::LengthSquared(a - b);
   }
@@ -151,5 +152,14 @@ namespace Krys::MTL
                              const vector_t<TComponent, L> &nRef) noexcept
   {
     return MTL::Dot(nRef, i) < static_cast<TComponent>(0) ? n : -n;
+  }
+
+  /// @brief Compute the normal of a triangle.
+  template <IsFloatingPointT TComponent>
+  NO_DISCARD constexpr vec3_t<TComponent> TriangleNormal(const vec3_t<TComponent> &p1,
+                                                         const vec3_t<TComponent> &p2,
+                                                         const vec3_t<TComponent> &p3) noexcept
+  {
+    return MTL::Normalize(MTL::Cross(p1 - p2, p1 - p3));
   }
 }
