@@ -8,6 +8,8 @@
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Power/Pow.hpp"
 #include "MTL/Power/Sqrt.hpp"
+#include "MTL/Trigonometric/Cos.hpp"
+#include "MTL/Trigonometric/Sin.hpp"
 
 namespace Krys::MTL
 {
