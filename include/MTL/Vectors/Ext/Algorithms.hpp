@@ -19,16 +19,9 @@ namespace Krys::MTL
   template <IsArithmeticT TComponent, vec_length_t L, IsRegularCallableT<TComponent> TFunc>
   constexpr void ForEach(const vector_t<TComponent, L> &v, TFunc func) noexcept
   {
-    if constexpr (L > 0)
-      func(v.x);
-    if constexpr (L > 1)
-      func(v.y);
-    if constexpr (L > 2)
-      func(v.z);
-    if constexpr (L > 3)
-      func(v.w);
-
     static_assert(L <= 4, "Unsupported number of components.");
+    for (vec_length_t i = 0; i < v.GetLength(); i++)
+      func(v[i]);
   }
 
   /// @brief Creates a new vector by applying a function to each component of the input vector.
@@ -44,15 +37,10 @@ namespace Krys::MTL
   {
     static_assert(L <= 4, "Unsupported number of components");
 
-    using TReturn = decltype(func(declval<TComponent>()));
-    if constexpr (L == 1)
-      return vector_t<TReturn, 1>(func(v.x));
-    else if constexpr (L == 2)
-      return vector_t<TReturn, 2>(func(v.x), func(v.y));
-    else if constexpr (L == 3)
-      return vector_t<TReturn, 3>(func(v.x), func(v.y), func(v.z));
-    else if constexpr (L == 4)
-      return vector_t<TReturn, 4>(func(v.x), func(v.y), func(v.z), func(v.w));
+    vector_t<decltype(func(declval<TComponent>())), L> vec;
+    for (vec_length_t i = 0; i < v.GetLength(); i++)
+      vec[i] = func(v[i]);
+    return vec;
   }
 
   /// @brief Creates a new vector from two input vectors by applying a function to each component pair of
@@ -175,14 +163,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr auto MinOf(const vector_t<TComponent, L> &v) noexcept -> TComponent
   {
     TComponent min = std::numeric_limits<TComponent>::max();
-    ForEach(v,
-            [&min](TComponent val)
-            {
-              if (val < min)
-              {
-                min = val;
-              }
-            });
+    ForEach(v, [&min](TComponent val) { min = (val < min) ? val : min; });
     return min;
   }
 
@@ -190,14 +171,7 @@ namespace Krys::MTL
   NO_DISCARD constexpr auto MaxOf(const vector_t<TComponent, L> &v) noexcept -> TComponent
   {
     TComponent max = std::numeric_limits<TComponent>::lowest();
-    ForEach(v,
-            [&max](TComponent val)
-            {
-              if (val > max)
-              {
-                max = val;
-              }
-            });
+    ForEach(v, [&max](TComponent val) { max = (val > max) ? val : max; });
     return max;
   }
 }
