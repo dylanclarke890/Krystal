@@ -13,7 +13,7 @@ namespace Krys::MTL
   /// @param x The input value (must be non-negative).
   /// @returns The square root of `x`.
   template <IsFloatingPointT TFloat>
-  constexpr TFloat Sqrt(TFloat x) noexcept
+  NO_DISCARD constexpr TFloat Sqrt(TFloat x) noexcept
   {
     KRYS_IF_COMPILE_CONTEXT
     {
@@ -36,5 +36,22 @@ namespace Krys::MTL
     }
     else
       return std::sqrt(x);
+  }
+
+  NO_DISCARD constexpr int Sqrt(int x) noexcept
+  {
+    if (x <= 1)
+      return x;
+
+    int nextGuess = x >> 1;
+    int answer;
+
+    do
+    {
+      answer = nextGuess;
+      nextGuess = (nextGuess + x / nextGuess) >> 1;
+    } while (nextGuess < answer);
+
+    return answer;
   }
 }
