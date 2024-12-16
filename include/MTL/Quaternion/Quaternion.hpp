@@ -2,6 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
+#include "Core/Debug/Macros.hpp"
 
 namespace Krys::MTL
 {
@@ -140,13 +141,13 @@ namespace Krys::MTL
 
     NO_DISCARD constexpr quat_t operator/(const component_t scalar) const noexcept
     {
-      // TODO: assert not zero
+      KRYS_ASSERT(scalar != 0, "Division by zero.");
       return quat_t(w / scalar, x / scalar, y / scalar, z / scalar);
     }
 
     constexpr quat_t &operator/=(const component_t scalar) noexcept
     {
-      // TODO: assert not zero
+      KRYS_ASSERT(scalar != 0, "Division by zero.");
       *this = *this / scalar;
       return *this;
     }
