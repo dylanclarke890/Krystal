@@ -3,7 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
-#include "Core/IO/IO.hpp"
+#include "IO/IO.hpp"
 #include "Utils/Bytes.hpp"
 
 #include <fstream>
@@ -15,14 +15,10 @@ namespace Krys::IO
             Endian::Type DestinationEndianness = Endian::Type::System>
   class BinaryFileReader
   {
-  private:
-    stringview _path;
-    std::ifstream _stream;
-
   public:
-    BinaryFileReader(const stringview &path) noexcept : _path(path)
+    BinaryFileReader(const string &path) noexcept : _path(path)
     {
-      KRYS_ASSERT(PathExists(_path), "File '%s' does not exist", _path.data());
+      KRYS_ASSERT(IO::PathExists(_path), "File '%s' does not exist", _path.c_str());
     }
 
     ~BinaryFileReader() noexcept
@@ -38,9 +34,9 @@ namespace Krys::IO
     void OpenStream() noexcept
     {
       if (!_stream.is_open())
-        _stream.open(_path.data(), std::ios::binary);
+        _stream.open(_path.c_str(), std::ios::binary);
 
-      KRYS_ASSERT(_stream.is_open(), "Unable to open %s.", _path.data());
+      KRYS_ASSERT(_stream.is_open(), "Unable to open %s.", _path.c_str());
     }
 
     void CloseStream() noexcept
@@ -61,16 +57,14 @@ namespace Krys::IO
       return buffer;
     }
 
-    template <typename T>
-    REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+    template <IsArithmeticT T>
     NO_DISCARD T Read() noexcept
     {
       auto bytes = ReadBytes(sizeof(T));
       return Bytes::AsNumeric<T, SourceEndianness, DestinationEndianness>(bytes);
     }
 
-    template <typename T>
-    REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+    template <IsArithmeticT T>
     NO_DISCARD List<T> Read(size_t count) noexcept
     {
       auto bytes = ReadBytes(sizeof(T) * count);
@@ -82,5 +76,9 @@ namespace Krys::IO
       auto bytes = ReadBytes(length);
       return Bytes::AsString(bytes, length);
     }
+
+  private:
+    string _path;
+    std::ifstream _stream;
   };
 }
