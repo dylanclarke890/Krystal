@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
-#include "Base/Macros.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Core/Events/EventDispatcher.hpp"
@@ -25,12 +24,12 @@ namespace Krys
     void ProcessEvents() noexcept;
 
     template <typename TEvent>
-    REQUIRES((std::is_base_of_v<Event, TEvent>))
     /// @brief Register an event handler for `TEvent`. The event handler must return true or false depending
     /// on whether the event should propagate to other handlers.
     /// @attention Be careful with adding event handlers that themselves dispatch events.
     void RegisterHandler(Func<bool(const TEvent &)> handler) noexcept
     {
+      static_assert(std::is_base_of_v<Event, TEvent>, "Must be derived from Krys::Event");
       const auto lambda = [handler](const Event &event) -> bool
       {
         return handler(static_cast<const TEvent &>(event));

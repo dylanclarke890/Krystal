@@ -4,6 +4,7 @@
 #include <type_traits>
 
 #include "Base/Attributes.hpp"
+#include "Base/Concepts.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
 
@@ -26,8 +27,7 @@ namespace Krys::Endian
     return std::endian::native == std::endian::little;
   }
 
-  template <typename T>
-  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  template <IsArithmeticT T>
   NO_DISCARD constexpr T SwapEndian(T value)
   {
     if constexpr (std::is_integral_v<T>)
@@ -44,8 +44,7 @@ namespace Krys::Endian
 
   /// @brief Converts a value to big endian. If the underlying system is big endian,
   /// the value is assumed to already be represented as big endian and is returned unchanged.
-  template <typename T>
-  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  template <IsArithmeticT T>
   NO_DISCARD constexpr T ToBigEndian(T value) noexcept
   {
     if constexpr (IsBigEndian())
@@ -56,8 +55,7 @@ namespace Krys::Endian
 
   /// @brief Converts a value to little endian. If the underlying system is little endian,
   /// the value is assumed to already be represented as little endian and is returned unchanged.
-  template <typename T>
-  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  template <IsArithmeticT T>
   NO_DISCARD constexpr T ToLittleEndian(T value) noexcept
   {
     if constexpr (IsLittleEndian())
@@ -71,8 +69,7 @@ namespace Krys::Endian
   /// @param value The value to convert.
   /// @param from The endian type the value is currently in (either Little or Big).
   /// @return The value converted to the system's native endianness.
-  template <typename T, Endian::Type SourceEndianness>
-  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  template <IsArithmeticT T, Endian::Type SourceEndianness>
   NO_DISCARD constexpr T ToSystemEndian(T value) noexcept
   {
     if constexpr (SourceEndianness == Type::Little)
@@ -83,9 +80,8 @@ namespace Krys::Endian
       return value;
   }
 
-  /// Convert a value from one endian representation to another.
-  template <typename T, Endian::Type SourceEndianness, Endian::Type DestinationEndianness>
-  REQUIRES(std::is_integral_v<T> || std::is_floating_point_v<T>)
+  /// @brief Convert a value from one endian representation to another.
+  template <IsArithmeticT T, Endian::Type SourceEndianness, Endian::Type DestinationEndianness>
   NO_DISCARD constexpr T Convert(T value) noexcept
   {
     if constexpr (SourceEndianness == DestinationEndianness)

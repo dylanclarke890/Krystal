@@ -26,7 +26,6 @@ namespace Krys
     virtual void Update(float dt) noexcept = 0;
 
     template <typename TApplication>
-    REQUIRES((std::is_base_of_v<Application, TApplication>))
     /// @brief Create a new `Application`.
     /// @tparam TApplication The derived `Application` type.
     /// @param argc Command line argument count.
@@ -35,6 +34,7 @@ namespace Krys
     /// @param height The desired height of the application.
     static Unique<Application> Create(int argc, char **argv, uint32 width, uint32 height) noexcept
     {
+      static_assert(std::is_base_of_v<Application, TApplication>, "Must be derived from Krys::Application");
       auto appContext = CreateApplicationContext(argc, argv);
       return CreateUnique<TApplication>(std::move(appContext), width, height);
     }

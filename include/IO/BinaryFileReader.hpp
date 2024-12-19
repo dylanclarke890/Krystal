@@ -3,6 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
+#include "Core/Debug/Macros.hpp"
 #include "IO/IO.hpp"
 #include "Utils/Bytes.hpp"
 
@@ -11,11 +12,14 @@
 
 namespace Krys::IO
 {
-  template <Endian::Type SourceEndianness = Endian::Type::System,
-            Endian::Type DestinationEndianness = Endian::Type::System>
+  template <Endian::Type SourceEndianness, Endian::Type DestinationEndianness>
   class BinaryFileReader
   {
   public:
+    BinaryFileReader() noexcept
+    {
+    }
+
     BinaryFileReader(const string &path) noexcept : _path(path)
     {
       KRYS_ASSERT(IO::PathExists(_path), "File '%s' does not exist", _path.c_str());
@@ -29,6 +33,13 @@ namespace Krys::IO
     NO_DISCARD bool IsEOF() const noexcept
     {
       return _stream.eof();
+    }
+
+    void SetFilepath(const string &path) noexcept
+    {
+      CloseStream();
+      _path = path;
+      KRYS_ASSERT(IO::PathExists(_path), "File '%s' does not exist", _path.c_str());
     }
 
     void OpenStream() noexcept
@@ -47,11 +58,18 @@ namespace Krys::IO
 
     NO_DISCARD List<byte> ReadBytes(size_t numBytes) noexcept
     {
-      if (!_stream.is_open() || _stream.eof())
+      KRYS_ASSERT(_stream.is_open(), "Stream was not opened before reading");
+      if (_stream.eof())
         return {};
+
+      auto readPos = _stream.tellg();
+      KRYS_LOG("BinaryFileReader: Offset before 'ReadBytes': %lld", static_cast<long long>(readPos));
 
       List<byte> buffer(numBytes);
       _stream.read(reinterpret_cast<char *>(buffer.data()), numBytes);
+
+      readPos = _stream.tellg();
+      KRYS_LOG("BinaryFileReader: Offset after 'ReadBytes': %lld", static_cast<long long>(readPos));
 
       buffer.resize(_stream.gcount()); // Adjust the buffer size if we read fewer than numBytes
       return buffer;
@@ -69,6 +87,11 @@ namespace Krys::IO
     {
       auto bytes = ReadBytes(sizeof(T) * count);
       return Bytes::AsNumericArray<T, SourceEndianness, DestinationEndianness>(bytes);
+    }
+
+    void SkipBytes(size_t length) noexcept
+    {
+      _stream.seekg(length, std::ios::cur);
     }
 
     NO_DISCARD string ReadJson(size_t length)

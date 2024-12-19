@@ -32,7 +32,7 @@ namespace Krys
 
     /// @brief Constructs a `StringId` with the given string to hash.
     /// @param hash The string to hash.
-    explicit constexpr StringId(string text) noexcept : _hash(fnv1a_32(text.c_str(), text.size()))
+    explicit constexpr StringId(const string& text) noexcept : _hash(fnv1a_32(text.c_str(), text.size()))
     {
     }
 
