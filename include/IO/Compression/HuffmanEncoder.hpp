@@ -11,20 +11,19 @@ namespace Krys::IO
     using freq_map_t = Map<uchar, uint>;
 
   public:
-    /// @brief Encode a text string into a binary string.
-    NO_DISCARD string Encode(const string &text) noexcept;
-
     /// @brief Encode a list of binary data into a binary string.
     NO_DISCARD string Encode(const List<uchar> &data) noexcept;
 
+    /// @brief Encode a text string into a binary string.
+    NO_DISCARD string Encode(const string &text) noexcept;
+
+    /// @brief Gets the frequencies used for the latest encoding run. Will be null if no encoding has been
+    /// done yet.
     NO_DISCARD const freq_map_t &GetFrequencies() const noexcept;
 
   private:
-    /// @brief Generates a frequency map from a list of binary data.
+    /// @brief Returns a map of symbols to the frequencies they are used within the list of data.
     freq_map_t GenerateFrequencies(const List<uchar> &data) const noexcept;
-
-    /// @brief Generates a frequency map from a text string.
-    freq_map_t GenerateFrequencies(const string &data) const noexcept;
 
   private:
     HuffmanTree _tree;

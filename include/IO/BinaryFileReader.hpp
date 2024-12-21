@@ -44,6 +44,8 @@ namespace Krys::IO
 
     void OpenStream() noexcept
     {
+      KRYS_ASSERT(!_path.empty(), "No path has been provided.", 0);
+
       if (!_stream.is_open())
         _stream.open(_path.c_str(), std::ios::binary);
 

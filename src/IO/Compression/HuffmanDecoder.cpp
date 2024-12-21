@@ -9,37 +9,18 @@ namespace Krys::IO
 
   NO_DISCARD string HuffmanDecoder::Decode(const string &input) const noexcept
   {
-    auto root = _tree.GetRoot();
-    KRYS_ASSERT(root, "Tree was not initialised", 0);
-    auto current = root;
-
-    string decoded;
-    for (char bit : input)
-    {
-      if (bit == '0')
-        current = current->Left;
-      else if (bit == '1')
-        current = current->Right;
-
-      // If a leaf node is reached
-      if (!current->Left && !current->Right)
-      {
-        decoded += static_cast<char>(current->Symbol);
-        current = root; // Reset to the root for the next symbol
-      }
-    }
-
-    return decoded;
+    List<uchar> data(input.begin(), input.end());
+    return Decode(data);
   }
 
-  NO_DISCARD string HuffmanDecoder::Decode(const List<uchar> &input) const noexcept
+  NO_DISCARD string HuffmanDecoder::Decode(const List<uchar> &data) const noexcept
   {
     auto root = _tree.GetRoot();
     KRYS_ASSERT(root, "Tree was not initialised", 0);
     auto current = root;
 
     string decoded;
-    for (uchar bit : input)
+    for (uchar bit : data)
     {
       if (bit == '0')
         current = current->Left;

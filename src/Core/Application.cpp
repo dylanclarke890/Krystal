@@ -14,7 +14,7 @@ namespace Krys
 
   void Application::Run() noexcept
   {
-    while (true)
+    while (_running)
     {
       KRYS_SCOPED_PROFILER("Frame");
 

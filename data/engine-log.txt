@@ -1,0 +1,19 @@
+[INFO_]: Creating window with dimensions: 1280 x 800
+[INFO_]: Adjusted window dimensions: 1296 x 839
+[INFO_]: Timer precision range - min: 1ms, max: 1000000ms
+[INFO_]: PathExists took 0.233 ms.
+[INFO_]: ReadFileText took 1.202 ms.
+[INFO_]: PathExists took 0.187 ms.
+[INFO_]: WriteFileText took 0.911 ms.
+[INFO_]: PathExists took 0.136 ms.
+[INFO_]: WriteFileText took 0.743 ms.
+[INFO_]: PathExists took 0.158 ms.
+[INFO_]: PathExists took 0.110 ms.
+[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 0
+[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 6
+[INFO_]: Read back 8
+[INFO_]: Read back 12
+[INFO_]: Read back 42
+[INFO_]: Read back 42
+[INFO_]: Read back 69
+[INFO_]: Read back 42
