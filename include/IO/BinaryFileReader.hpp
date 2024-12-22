@@ -47,7 +47,7 @@ namespace Krys::IO
       KRYS_ASSERT(!_path.empty(), "No path has been provided.", 0);
 
       if (!_stream.is_open())
-        _stream.open(_path.c_str(), std::ios::binary);
+        _stream.open(_path.c_str(), std::ios::in | std::ios::binary);
 
       KRYS_ASSERT(_stream.is_open(), "Unable to open %s.", _path.c_str());
     }
