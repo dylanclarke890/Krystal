@@ -7,6 +7,7 @@
 #include "IO/IO.hpp"
 #include "Utils/Bytes.hpp"
 
+#include <bit>
 #include <fstream>
 #include <iostream>
 
@@ -58,7 +59,8 @@ namespace Krys::IO
     {
       KRYS_ASSERT(_stream.is_open(), "Stream was not opened before writing", 0);
       value = Endian::Convert<T, SourceEndianness, DestinationEndianness>(value);
-      _stream.write(reinterpret_cast<const char *>(&value), sizeof(T));
+      auto bytes = std::bit_cast<Array<char, sizeof(T)>>(value);
+      _stream.write(bytes.data(), bytes.size());
     }
 
     template <IsArithmeticT T>

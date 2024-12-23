@@ -55,4 +55,6 @@ namespace Krys::IO
   /// @param path The path to check.
   /// @return True if the write was successful.
   bool WriteFileText(const stringview &path, const stringview &content) noexcept;
+
+  NO_DISCARD uintmax_t GetFileSize(const stringview &path) noexcept;
 }

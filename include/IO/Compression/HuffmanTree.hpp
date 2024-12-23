@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Concepts.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
@@ -10,20 +11,29 @@ namespace Krys::IO
   struct HuffmanTreeNode
   {
     uchar Symbol;
-    int Frequency;
+    uint Frequency;
     Ref<HuffmanTreeNode> Left, Right;
 
-    HuffmanTreeNode(uchar symbol, int freq) noexcept
+    HuffmanTreeNode(uchar symbol, uint freq) noexcept
         : Symbol(symbol), Frequency(freq), Left(nullptr), Right(nullptr)
     {
     }
   };
 
+  template <IsIntegralT TCode>
   class HuffmanTree
   {
+  public:
+    struct HuffmanCode
+    {
+      TCode Code;
+      uint16 Length;
+    };
+
   private:
     using node_t = Ref<HuffmanTreeNode>;
-    using huffman_codes_t = Map<uchar, string>;
+    using code_t = HuffmanCode;
+    using huffman_codes_t = Map<uchar, code_t>;
     using freq_map_t = Map<uchar, uint>;
 
     struct Compare
@@ -40,14 +50,15 @@ namespace Krys::IO
     {
     }
 
-    HuffmanTree(const HuffmanTree &other) noexcept : _root(other._root), _huffmanCodes(other._huffmanCodes)
+    HuffmanTree(const HuffmanTree<TCode> &other) noexcept
+        : _root(other._root), _huffmanCodes(other._huffmanCodes)
     {
     }
 
     void Init(const freq_map_t &frequencies) noexcept
     {
       InitTree(frequencies);
-      GenerateCodes(_root, "");
+      GenerateCodes(_root, 0, 0);
     }
 
     NO_DISCARD node_t GetRoot() const noexcept
@@ -55,7 +66,7 @@ namespace Krys::IO
       return _root;
     }
 
-    NO_DISCARD string GetCode(uchar symbol) const noexcept
+    NO_DISCARD code_t GetCode(uchar symbol) const noexcept
     {
       KRYS_ASSERT(!_huffmanCodes.empty(), "Tree was not initialised", 0);
       return _huffmanCodes.at(symbol);
@@ -85,7 +96,7 @@ namespace Krys::IO
     }
 
     /// @brief Generates Huffman codes for the current tree.
-    void GenerateCodes(const Ref<HuffmanTreeNode> &node, const string &currentCode) noexcept
+    void GenerateCodes(const Ref<HuffmanTreeNode> &node, const TCode &code, const uint16 codeLength) noexcept
     {
       if (!node)
         return;
@@ -93,12 +104,12 @@ namespace Krys::IO
       // If it's a leaf node, add the symbol and its code to the map
       if (!node->Left && !node->Right)
       {
-        _huffmanCodes[node->Symbol] = currentCode;
+        _huffmanCodes[node->Symbol] = code_t {code, codeLength};
         return;
       }
 
-      GenerateCodes(node->Left, currentCode + "0");
-      GenerateCodes(node->Right, currentCode + "1");
+      GenerateCodes(node->Left, code << 1, codeLength + 1);
+      GenerateCodes(node->Right, code << 1 | 1, codeLength + 1);
     }
 
   private:

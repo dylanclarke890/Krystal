@@ -17,6 +17,8 @@ namespace Krys::IO
   template <IsIntegralT T, Endian::Type TDestination>
   class BitWriter
   {
+    using binary_writer_t = BinaryFileWriter<Endian::Type::System, TDestination>;
+
   public:
     BitWriter(const string &filepath) noexcept : _buffer(0), _bufferIndex(0), _writer(filepath)
     {
@@ -25,8 +27,7 @@ namespace Krys::IO
 
     ~BitWriter() noexcept
     {
-      if (_bufferIndex > 0)
-        Flush();
+      Flush();
 
       _writer.CloseStream();
     }
@@ -42,9 +43,17 @@ namespace Krys::IO
 
     void Flush() noexcept
     {
+      if (_bufferIndex == 0)
+        return;
+
       _writer.Write(static_cast<T>(_buffer.to_ullong()));
       _buffer.reset();
       _bufferIndex = 0;
+    }
+
+    binary_writer_t &GetBinaryWriter() noexcept
+    {
+      return _writer;
     }
 
   private:
@@ -52,6 +61,6 @@ namespace Krys::IO
 
     std::bitset<BufferSize> _buffer;
     size_t _bufferIndex;
-    BinaryFileWriter<Endian::Type::System, TDestination> _writer;
+    binary_writer_t _writer;
   };
 }

@@ -1,51 +1,84 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Concepts.hpp"
+#include "Base/Endian.hpp"
 #include "Base/Types.hpp"
+#include "IO/BinaryFileReader.hpp"
+#include "IO/BinaryFileWriter.hpp"
 #include "IO/Compression/HuffmanTree.hpp"
 
 namespace Krys::IO
 {
+  template <IsIntegralT TCode, Endian::Type TSource>
   class HuffmanDecoder
   {
+    using binary_reader_t = BinaryFileReader<Endian::Type::System, Endian::Type::System>;
+    using binary_writer_t = BinaryFileWriter<Endian::Type::System, Endian::Type::System>;
+
   public:
-    HuffmanDecoder(const HuffmanTree &tree) noexcept : _tree(tree)
+    HuffmanDecoder(const string &fileIn, const string &fileOut, const HuffmanTree<TCode> &tree) noexcept
+        : _fileIn(fileIn), _fileOut(fileOut), _tree(tree)
     {
     }
 
-    /// @brief Decode a binary string into the original text or data.
-    NO_DISCARD string Decode(const string &input) const noexcept
+    NO_DISCARD void Decode() const noexcept
     {
-      List<uchar> data(input.begin(), input.end());
-      return Decode(data);
-    }
+      binary_reader_t reader(_fileIn);
+      reader.OpenStream();
+      auto sizeInBits = reader.Read<uint32>();
+      auto data = reader.ReadAllBytes();
+      reader.CloseStream();
 
-    /// @brief Decode a list of binary data into the original text or data.
-    NO_DISCARD string Decode(const List<uchar> &data) const noexcept
-    {
+      if (!sizeInBits && data.empty())
+        return;
+
+      KRYS_ASSERT(sizeInBits && !data.empty(), "Invalid format", 0);
+
       auto root = _tree.GetRoot();
       KRYS_ASSERT(root, "Tree was not initialised", 0);
       auto current = root;
+      List<uchar> decoded;
 
-      string decoded;
-      for (uchar bit : data)
+      if (sizeInBits == 1)
       {
-        if (bit == '0')
-          current = current->Left;
-        else if (bit == '1')
-          current = current->Right;
+        decoded.emplace_back(static_cast<uchar>(root->Symbol));
+        binary_writer_t writer(_fileOut);
+        writer.OpenStream();
+        writer.Write(decoded);
+        writer.CloseStream();
+        return;
+      }
 
-        // If a leaf node is reached
-        if (!current->Left && !current->Right)
+      size_t i = 0;
+      while (i < sizeInBits)
+      {
+        uchar character = static_cast<uchar>(data[i / 8]);
+        for (uint j = 0; j < 8; j++)
         {
-          decoded += static_cast<char>(current->Symbol);
-          current = root; // Reset to the root for the next symbol
+          if (i >= sizeInBits)
+            break;
+
+          bool bit = (character >> j) & 1;
+          current = bit ? current->Right : current->Left;
+
+          if (!current->Left && !current->Right) // Leaf node reached
+          {
+            decoded.emplace_back(static_cast<uchar>(current->Symbol));
+            current = root; // Reset to the root for the next symbol
+          }
+          i++;
         }
       }
-      return decoded;
+
+      binary_writer_t writer(_fileOut);
+      writer.OpenStream();
+      writer.Write(decoded);
+      writer.CloseStream();
     }
 
   private:
-    HuffmanTree _tree;
+    string _fileIn, _fileOut;
+    HuffmanTree<TCode> _tree;
   };
 }

@@ -11,7 +11,8 @@ namespace Krys::IO
 {
   namespace fs = std::filesystem;
 
-  List<FileInfo> ListFiles(const stringview &directory, List<stringview> extensions, bool recursive) noexcept
+  NO_DISCARD List<FileInfo> ListFiles(const stringview &directory, List<stringview> extensions,
+                                      bool recursive) noexcept
   {
     KRYS_SCOPED_PROFILER("ListFiles");
     KRYS_ASSERT(PathExists(directory), "Directory '%s' does not exist", directory.data());
@@ -54,7 +55,7 @@ namespace Krys::IO
     return entries;
   }
 
-  FileInfo GetPathInfo(const stringview &filepath) noexcept
+  NO_DISCARD FileInfo GetPathInfo(const stringview &filepath) noexcept
   {
     KRYS_ASSERT(PathExists(filepath), "Path '%s' does not exist", filepath.data());
     KRYS_SCOPED_PROFILER("GetPathInfo");
@@ -66,13 +67,13 @@ namespace Krys::IO
     return fileInfo;
   }
 
-  const string GetExtension(const stringview &filepath) noexcept
+  NO_DISCARD const string GetExtension(const stringview &filepath) noexcept
   {
     KRYS_ASSERT(PathExists(filepath), "Path '%s' does not exist", filepath.data());
     return fs::path(filepath).extension().string();
   }
 
-  bool PathExists(const stringview &path) noexcept
+  NO_DISCARD bool PathExists(const stringview &path) noexcept
   {
     KRYS_SCOPED_PROFILER("PathExists");
 
@@ -80,7 +81,7 @@ namespace Krys::IO
     return fs::exists(path, error);
   }
 
-  bool IsDirectory(const stringview &path) noexcept
+  NO_DISCARD bool IsDirectory(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
     KRYS_SCOPED_PROFILER("IsDirectory");
@@ -89,7 +90,7 @@ namespace Krys::IO
     return fs::directory_entry(path, error).is_directory(error);
   }
 
-  bool IsFile(const stringview &path) noexcept
+  NO_DISCARD bool IsFile(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
     KRYS_SCOPED_PROFILER("IsFile");
@@ -98,7 +99,7 @@ namespace Krys::IO
     return fs::directory_entry(path, error).is_regular_file(error);
   }
 
-  string ReadFileText(const stringview &path) noexcept
+  NO_DISCARD string ReadFileText(const stringview &path) noexcept
   {
     KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.data());
     KRYS_SCOPED_PROFILER("ReadFileText");
@@ -131,5 +132,10 @@ namespace Krys::IO
 
     fileStream << content;
     return true;
+  }
+
+  NO_DISCARD uintmax_t GetFileSize(const stringview &path) noexcept
+  {
+    return fs::file_size(path);
   }
 }

@@ -77,6 +77,19 @@ namespace Krys::IO
       return buffer;
     }
 
+    NO_DISCARD List<byte> ReadAllBytes() noexcept
+    {
+      List<byte> buffer;
+
+      while (!_stream.eof())
+      {
+        auto bytes = ReadBytes(1'024);
+        buffer.insert(buffer.end(), bytes.begin(), bytes.end());
+      }
+
+      return buffer;
+    }
+
     template <IsArithmeticT T>
     NO_DISCARD T Read() noexcept
     {

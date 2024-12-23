@@ -1,55 +1,79 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Concepts.hpp"
+#include "Base/Endian.hpp"
 #include "Base/Types.hpp"
+#include "IO/BinaryFileReader.hpp"
+#include "IO/BitWriter.hpp"
 #include "IO/Compression/HuffmanTree.hpp"
+
+#include <algorithm>
+#include <numeric>
 
 namespace Krys::IO
 {
+  template <IsIntegralT TCode, Endian::Type TDestination>
   class HuffmanEncoder
   {
     using freq_map_t = Map<uchar, uint>;
+    using tree_t = HuffmanTree<TCode>;
+    using code_t = HuffmanTree<TCode>::HuffmanCode;
+    using bit_writer_t = BitWriter<TCode, TDestination>;
+    using binary_reader_t = BinaryFileReader<Endian::Type::System, Endian::Type::System>;
 
   public:
-    /// @brief Encode a list of binary data into a binary string.
-    NO_DISCARD string Encode(const List<uchar> &data) noexcept
+    HuffmanEncoder(const string &fileIn, const string &fileOut) noexcept : _fileIn(fileIn), _fileOut(fileOut)
     {
-      _frequencies = GenerateFrequencies(data);
-      _tree.Init(_frequencies);
-
-      string encoded;
-      for (uchar c : data)
-        encoded += _tree.GetCode(c);
-      return encoded;
     }
 
-    /// @brief Encode a text string into a binary string.
-    NO_DISCARD string Encode(const string &text) noexcept
+    NO_DISCARD void Encode() noexcept
     {
-      List<uchar> data(text.begin(), text.end());
-      return Encode(data);
-    }
+      binary_reader_t reader(_fileIn);
+      reader.OpenStream();
+      auto data = reader.ReadAllBytes();
+      reader.CloseStream();
 
-    /// @brief Gets the frequencies used for the latest encoding run. Will be null if no encoding has been
-    /// done yet.
-    NO_DISCARD const freq_map_t &GetFrequencies() const noexcept
-    {
-      return _frequencies;
-    }
-
-  private:
-    /// @brief Returns a map of symbols to the frequencies they are used within the list of data.
-    freq_map_t GenerateFrequencies(const List<uchar> &data) const noexcept
-    {
       freq_map_t frequencies;
-      for (uchar c : data)
-        frequencies[c]++;
+      for (const auto &symbol : data)
+        frequencies[static_cast<uchar>(symbol)]++;
+      _tree.Init(frequencies);
+      _frequencies = frequencies;
 
-      return frequencies;
+      List<code_t> codes;
+      codes.reserve(data.size());
+      uint32 sizeInBits = 0;
+
+      for (const auto &symbol : data)
+      {
+        const auto code = _tree.GetCode(static_cast<uchar>(symbol));
+        codes.emplace_back(code);
+        sizeInBits += code.Length;
+      }
+
+      bit_writer_t writer(_fileOut);
+
+      const auto WriteHuffmanCode = [&](const code_t &huffmanCode)
+      {
+        for (auto i = huffmanCode.Length - 1; i >= 0; i--)
+        {
+          bool bit = ((huffmanCode.Code >> i) & 1) != 0;
+          writer.Write(bit);
+        }
+      };
+
+      writer.GetBinaryWriter().Write<uint32>(sizeInBits);
+      std::for_each(codes.begin(), codes.end(), WriteHuffmanCode);
+    }
+
+    const tree_t &GetTree() const noexcept
+    {
+      return _tree;
     }
 
   private:
-    HuffmanTree _tree;
+    string _fileIn, _fileOut;
     freq_map_t _frequencies;
+    tree_t _tree;
   };
 }
