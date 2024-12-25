@@ -84,6 +84,9 @@ namespace Krys
   concept SupportsArithmeticOperations =
     IsAddableT<TA, TB> && IsSubtractableT<TA, TB> && IsDivisibleT<TA, TB> && IsMultipliableT<TA, TB>;
 
+  template <typename T, typename U>
+  concept Same = std::same_as<T, U>;
+
 /// @brief Determines if the current code is being evaluated in a compile-time context.
 /// @returns `true` if the current context is a compile-time evaluation; otherwise `false`.
 /// @example
@@ -93,7 +96,7 @@ namespace Krys
 ///   }
 ///   return 0; // Runtime fallback
 /// }
-#define KRYS_IF_COMPILE_CONTEXT if constexpr(std::is_constant_evaluated())
+#define KRYS_IF_COMPILE_CONTEXT if constexpr (std::is_constant_evaluated())
 
 /// @brief Determines if the current code will be evaluated at runtime.
 /// @returns `true` if the current context is a runtime evaluation; otherwise `false`.
@@ -104,5 +107,5 @@ namespace Krys
 ///   }
 ///   return 0; // Compile-time fallback
 /// }
-#define KRYS_IF_RUNTIME_CONTEXT if constexpr(!std::is_constant_evaluated())
+#define KRYS_IF_RUNTIME_CONTEXT if constexpr (!std::is_constant_evaluated())
 }

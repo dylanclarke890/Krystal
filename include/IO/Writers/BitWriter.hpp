@@ -4,7 +4,7 @@
 #include "Base/Concepts.hpp"
 #include "Base/Endian.hpp"
 #include "Base/Types.hpp"
-#include "IO/BinaryFileWriter.hpp"
+#include "IO/Writers/BinaryFileWriter.hpp"
 
 #include <bitset>
 
@@ -22,14 +22,14 @@ namespace Krys::IO
   public:
     BitWriter(const string &filepath) noexcept : _buffer(0), _bufferIndex(0), _writer(filepath)
     {
-      _writer.OpenStream();
+      _writer.Open();
     }
 
     ~BitWriter() noexcept
     {
       Flush();
 
-      _writer.CloseStream();
+      _writer.Close();
     }
 
     void Write(bool bit) noexcept

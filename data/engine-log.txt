@@ -1,29 +1,6 @@
 [INFO_]: Creating window with dimensions: 1280 x 800
 [INFO_]: Adjusted window dimensions: 1296 x 839
 [INFO_]: Timer precision range - min: 1ms, max: 1000000ms
-[INFO_]: PathExists took 0.150 ms.
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 0
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 1024
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 1024
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 2048
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 2048
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 3072
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 3072
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 4096
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 4096
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 5120
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 5120
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 6144
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 6144
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 7168
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 7168
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': -1
-[INFO_]: PathExists took 0.087 ms.
-[INFO_]: PathExists took 0.133 ms.
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 0
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 4
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 4
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': 1028
-[INFO_]: BinaryFileReader: Offset before 'ReadBytes': 1028
-[INFO_]: BinaryFileReader: Offset after 'ReadBytes': -1
-[INFO_]: PathExists took 0.080 ms.
+[INFO_]: PathExists took 0.196 ms.
+[INFO_]: FileDataSource: Offset before 'ReadBytes': 0
+[INFO_]: FileDataSource: Offset after 'ReadBytes': -1

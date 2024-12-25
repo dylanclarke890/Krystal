@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
-#include "IO/BinaryFileReader.hpp"
+#include "IO/Readers/BinaryFileReader.hpp"
 
 namespace Krys::IO
 {
@@ -76,15 +76,15 @@ namespace Krys::IO
   public:
     void Parse() noexcept
     {
-      _reader.SetFilepath("./textures/crate-specular.png");
-      _reader.OpenStream();
+      // _reader.SetFilepath("./textures/crate-specular.png"); TODO: remember this doesn't work
+      _reader.Open();
 
       ValidateFileHeader();
       if (!_result.Success())
         return;
 
       constexpr auto IHDRChunkType = PNGChunkType('I', 'H', 'D', 'R');
-      
+
       uchar tc[3] = {0};
       uint16 tc16[3] = {0};
 
@@ -308,7 +308,7 @@ namespace Krys::IO
           case PNGChunkType('C', 'g', 'B', 'I'):
           {
             _result.IsIphone = true;
-            _reader.SkipBytes(chunk.Length);
+            _reader.Skip<uint8>(chunk.Length);
             break;
           }
 
@@ -333,18 +333,18 @@ namespace Krys::IO
             }
 
             // Non-critical chunk; we can safely proceed.
-            _reader.SkipBytes(chunk.Length);
+            _reader.Skip<uint8>(chunk.Length);
             break;
           }
         }
 
         // Skip CRC (cyclic redundancy check) byte at the end of each chunk.
-        _reader.SkipBytes(4);
+        _reader.Skip<uint8>(4);
       }
     }
 
   private:
-      NO_DISCARD PNGChunk GetPNGChunk() noexcept
+    NO_DISCARD PNGChunk GetPNGChunk() noexcept
     {
       PNGChunk chunk;
       chunk.Length = _reader.Read<uint32>();
@@ -362,6 +362,7 @@ namespace Krys::IO
           break;
         }
     }
+
   private:
     PNGDecodeResult _result;
     BinaryFileReader<Endian::Type::Big, Endian::Type::System> _reader;

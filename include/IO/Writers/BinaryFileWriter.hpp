@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Concepts.hpp"
+#include "Base/Endian.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
 #include "IO/IO.hpp"
-#include "Utils/Bytes.hpp"
 
 #include <bit>
 #include <fstream>
@@ -13,32 +14,20 @@
 
 namespace Krys::IO
 {
-  template <Endian::Type SourceEndianness, Endian::Type DestinationEndianness>
+  template <Endian::Type TSource, Endian::Type TDestination>
   class BinaryFileWriter
   {
   public:
-    BinaryFileWriter() noexcept
+    explicit BinaryFileWriter(const string &path) noexcept : _path(path)
     {
-    }
-
-    BinaryFileWriter(const string &path) noexcept : _path(path)
-    {
-      KRYS_ASSERT(IO::PathExists(_path), "File '%s' does not exist", _path.c_str());
     }
 
     ~BinaryFileWriter() noexcept
     {
-      CloseStream();
+      Close();
     }
 
-    void SetFilepath(const string &path) noexcept
-    {
-      CloseStream();
-      _path = path;
-      KRYS_ASSERT(IO::PathExists(_path), "File '%s' does not exist", _path.c_str());
-    }
-
-    void OpenStream() noexcept
+    void Open() noexcept
     {
       KRYS_ASSERT(!_path.empty(), "No path has been provided.", 0);
 
@@ -48,26 +37,40 @@ namespace Krys::IO
       KRYS_ASSERT(_stream.is_open(), "Unable to open %s.", _path.c_str());
     }
 
-    void CloseStream() noexcept
+    void Close() noexcept
     {
       if (_stream.is_open())
         _stream.close();
     }
 
     template <IsArithmeticT T>
-    NO_DISCARD void Write(T value) noexcept
+    void Write(T value) noexcept
     {
       KRYS_ASSERT(_stream.is_open(), "Stream was not opened before writing", 0);
-      value = Endian::Convert<T, SourceEndianness, DestinationEndianness>(value);
+      value = Endian::Convert<T, TSource, TDestination>(value);
       auto bytes = std::bit_cast<Array<char, sizeof(T)>>(value);
       _stream.write(bytes.data(), bytes.size());
     }
 
-    template <IsArithmeticT T>
-    NO_DISCARD void Write(const List<T> &array) noexcept
+    template <typename T>
+    void Write(const List<T> &values) noexcept
     {
-      for (const T &value : array)
-        Write(value);
+      KRYS_ASSERT(_stream.is_open(), "Stream was not opened before writing", 0);
+      if constexpr (std::is_same_v<T, byte>)
+      {
+        WriteBytes(values);
+      }
+      else if constexpr (IsArithmeticT<T>)
+      {
+        for (const auto &value : values)
+          Write(value);
+      }
+    }
+
+    void WriteBytes(const List<byte> &bytes) noexcept
+    {
+      KRYS_ASSERT(_stream.is_open(), "Stream was not opened before writing", 0);
+      _stream.write(reinterpret_cast<const char *>(bytes.data()), bytes.size());
     }
 
   private:
