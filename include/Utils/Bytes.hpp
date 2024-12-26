@@ -45,4 +45,13 @@ namespace Krys::Bytes
   {
     return string(reinterpret_cast<const char *>(bytes.data()), length);
   }
+
+  template <IsArithmeticT T, Endianness TSource = SystemEndian, Endianness TDestination = SystemEndian>
+  NO_DISCARD constexpr List<byte> From(T value) noexcept
+  {
+    value = Endian::Convert<T, TSource, TDestination>(value);
+    List<byte> bytes(sizeof(T));
+    std::memcpy(bytes.data(), &value, sizeof(T));
+    return bytes;
+  }
 }

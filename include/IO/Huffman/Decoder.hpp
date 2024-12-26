@@ -4,18 +4,12 @@
 #include "Base/Concepts.hpp"
 #include "Base/Endian.hpp"
 #include "Base/Types.hpp"
-#include "IO/BinaryFileReader.hpp"
-#include "IO/BinaryFileWriter.hpp"
-#include "IO/Compression/HuffmanTree.hpp"
 
 namespace Krys::IO
 {
-  template <IsIntegralT TCode, Endian::Type TSource>
+  template <IsIntegralT TCode>
   class HuffmanDecoder
   {
-    using binary_reader_t = BinaryFileReader<Endian::Type::System, Endian::Type::System>;
-    using binary_writer_t = BinaryFileWriter<Endian::Type::System, Endian::Type::System>;
-
   public:
     HuffmanDecoder(const string &fileIn, const string &fileOut, const HuffmanTree<TCode> &tree) noexcept
         : _fileIn(fileIn), _fileOut(fileOut), _tree(tree)

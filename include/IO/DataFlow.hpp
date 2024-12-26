@@ -81,10 +81,11 @@ namespace Krys::IO
       _source->Open();
       _sink->Open();
 
+      KRYS_ASSERT(_source->GetSize() != 0, "Source is empty.", 0);
       while (!_source->IsEOS())
       {
         auto bytes = _source->ReadBytes(_chunkSize);
-        KRYS_ASSERT(!bytes.empty(), "No data was read from the source.", 0); // should never happen
+        KRYS_ASSERT(!bytes.empty(), "No data was read from the source.", 0);
 
         auto data = ProcessStages(bytes);
         _sink->Write(data);

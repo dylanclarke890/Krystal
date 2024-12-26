@@ -5,7 +5,7 @@
 
 namespace Krys::IO
 {
-  struct FileInfo
+  struct NO_DISCARD FileInfo
   {
     string Name;
     string Extension;

@@ -18,7 +18,7 @@ namespace Krys::IO
   class BinaryFileReader
   {
   public:
-    explicit BinaryFileReader(const string &path) noexcept : _path(path)
+    explicit constexpr BinaryFileReader(const string &path) noexcept : _path(path)
     {
     }
 

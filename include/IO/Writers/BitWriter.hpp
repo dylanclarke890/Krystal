@@ -4,63 +4,78 @@
 #include "Base/Concepts.hpp"
 #include "Base/Endian.hpp"
 #include "Base/Types.hpp"
-#include "IO/Writers/BinaryFileWriter.hpp"
+#include "Core/Debug/Macros.hpp"
 
 #include <bitset>
 
 namespace Krys::IO
 {
-  // TODO: customize for different padding requirements for partial buffer writes
+  // TODO: customize for different padding requirements for partial bitset writes
   // Do we pad them to the left or right?
   // Do we pad them with 1s or 0s?
-  // Right now, we're just going to cast the buffer as-is.
-  template <IsIntegralT T, Endian::Type TDestination>
+  // Right now, we're just going to cast the bitset as-is.
   class BitWriter
   {
-    using binary_writer_t = BinaryFileWriter<Endian::Type::System, TDestination>;
+    static constexpr size_t BitsetSize = 8 * sizeof(byte);
 
   public:
-    BitWriter(const string &filepath) noexcept : _buffer(0), _bufferIndex(0), _writer(filepath)
+    BitWriter(List<byte> *buffer) noexcept : _bitset(0), _bitIndex(0), _buffer(buffer)
     {
-      _writer.Open();
+      KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.", 0);
     }
 
     ~BitWriter() noexcept
     {
       Flush();
-
-      _writer.Close();
     }
 
     void Write(bool bit) noexcept
     {
-      _buffer.set(_bufferIndex, bit);
-      _bufferIndex++;
+      _bitset.set(_bitIndex, bit);
+      _bitIndex++;
 
-      if (_bufferIndex == BufferSize)
+      if (_bitIndex == BitsetSize)
         Flush();
+    }
+
+    void Write(IsIntegralT auto value, uint length) noexcept
+    {
+      KRYS_ASSERT(length <= BitsetSize, "Length must be less than or equal to %zu.", BitsetSize);
+      KRYS_ASSERT(length > 0, "Length must be greater than 0.", 0);
+
+      for (int i = length - 1; i >= 0; i--)
+      {
+        bool bit = ((value >> i) & 1) != 0;
+        Write(bit);
+      }
+    }
+
+    void Write(byte value) noexcept
+    {
+      Write(static_cast<uint8>(value), 8);
     }
 
     void Flush() noexcept
     {
-      if (_bufferIndex == 0)
+      if (_bitIndex == 0)
         return;
 
-      _writer.Write(static_cast<T>(_buffer.to_ullong()));
-      _buffer.reset();
-      _bufferIndex = 0;
+      KRYS_ASSERT(_buffer != nullptr, "Buffer cannot be null.", 0);
+      _buffer->push_back(static_cast<byte>(_bitset.to_ullong()));
+
+      _bitset.reset();
+      _bitIndex = 0;
     }
 
-    binary_writer_t &GetBinaryWriter() noexcept
+    void SetBuffer(List<byte> *buffer) noexcept
     {
-      return _writer;
+      KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.", 0);
+      _buffer = buffer;
     }
 
   private:
-    static constexpr size_t BufferSize = 8 * sizeof(T);
-
-    std::bitset<BufferSize> _buffer;
-    size_t _bufferIndex;
-    binary_writer_t _writer;
+    std::bitset<BitsetSize> _bitset;
+    size_t _bitIndex;
+    List<byte> *_buffer;
   };
 }
