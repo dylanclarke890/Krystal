@@ -12,8 +12,6 @@
 #include <algorithm>
 #include <numeric>
 
-// TODO: debug the encoder -> you should be getting 24 bytes but instead its 27.
-
 namespace Krys::IO
 {
   struct HuffmanTreeNode
