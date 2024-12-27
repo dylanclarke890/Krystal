@@ -5,11 +5,14 @@
 #include "Base/Endian.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
+#include "IO/Readers/BitReader.hpp"
 #include "IO/Writers/BitWriter.hpp"
 #include "Utils/Bytes.hpp"
 
 #include <algorithm>
 #include <numeric>
+
+// TODO: debug the encoder -> you should be getting 24 bytes but instead its 27.
 
 namespace Krys::IO
 {
@@ -45,7 +48,23 @@ namespace Krys::IO
     {
       bool operator()(const node_t &a, const node_t &b) const noexcept
       {
-        return a->Frequency > b->Frequency; // lowest frequency has highest priority
+        // Rule 1: Compare frequencies (lower frequency has higher priority)
+        if (a->Frequency != b->Frequency)
+          return a->Frequency > b->Frequency;
+
+        // Rule 2: If frequencies are equal, prioritize leaf nodes
+        bool aIsLeaf = !a->Left && !a->Right;
+        bool bIsLeaf = !b->Left && !b->Right;
+
+        if (aIsLeaf != bIsLeaf)
+          return bIsLeaf; // Leaf nodes have higher priority
+
+        // Rule 3: If both are leaf nodes, order by ASCII value
+        if (aIsLeaf && bIsLeaf)
+          return a->Symbol > b->Symbol;
+
+        // Rule 4: For non-leaf nodes, order by creation time (arbitrary fallback)
+        return false;
       }
     };
     using min_heap_t = std::priority_queue<node_t, List<node_t>, Compare>;
@@ -64,6 +83,11 @@ namespace Krys::IO
     {
       InitTree(frequencies);
       GenerateCodes(_root, 0, 0);
+    }
+
+    void SetRoot(const node_t &root) noexcept
+    {
+      _root = root;
     }
 
     NO_DISCARD node_t GetRoot() const noexcept
@@ -166,6 +190,7 @@ namespace Krys::IO::Stage
       bit_writer_t writer(&treeData);
       WriteTree(tree.GetRoot(), writer, treeLengthBits);
       writer.Write(false); // End of tree
+      treeLengthBits++;
       writer.Flush();
 
       List<code_t> encodedData {};
@@ -204,36 +229,98 @@ namespace Krys::IO::Stage
       if (!node)
         return;
 
+      treeLengthBits++;
       if (!node->Left && !node->Right)
       {
         writer.Write(true);
         writer.Write(node->Symbol);
-        treeLengthBits += 9;
       }
       else
       {
-        writer.Write(false);
-        treeLengthBits++;
         WriteTree(node->Left, writer, treeLengthBits);
         WriteTree(node->Right, writer, treeLengthBits);
+        writer.Write(false);
       }
     }
   };
 
-  template <typename TInput, typename TOutput>
+  template <IsIntegralT TCode, Endian::Type TSource, Endian::Type TDestination>
   struct HuffmanDecoder
   {
   public:
-    using input_t = TInput;
-    using output_t = TOutput;
+    using input_t = List<byte>;
+    using output_t = List<byte>;
+    using freq_map_t = Map<byte, uint>;
+    using tree_t = HuffmanTree<TCode>;
+    using code_t = HuffmanTree<TCode>::HuffmanCode;
+    using bit_reader_t = BitReader<TSource, TDestination>;
 
     constexpr static void Setup() noexcept
     {
     }
 
-    constexpr static TOutput Execute(TInput data) noexcept
+    constexpr static output_t Execute(input_t data) noexcept
     {
-      return data;
+      bit_reader_t reader(&data);
+      const uint32 encodedDataLength = reader.template Read<uint32>();
+      const uint32 treeLengthBits = reader.template Read<uint32>();
+      const uint32 originalDataLength = reader.template Read<uint32>();
+
+      tree_t tree = ReadTree(reader, treeLengthBits);
+      auto root = tree.GetRoot();
+
+      List<byte> output {};
+      output.reserve(originalDataLength);
+
+      Ref<HuffmanTreeNode> current = root;
+      for (uint32 i = 0; i < encodedDataLength; i++)
+      {
+        if (static_cast<uint>(reader.ReadBit()) == uint {1})
+          current = current->Right;
+        else
+          current = current->Left;
+
+        if (!current->Left && !current->Right)
+        {
+          output.push_back(current->Symbol);
+          current = root;
+        }
+      }
+
+      KRYS_ASSERT(output.size() == originalDataLength, "Output size mismatch", 0);
+      return output;
+    }
+
+    constexpr static tree_t ReadTree(bit_reader_t &reader, const uint32 treeLengthBits) noexcept
+    {
+      List<Ref<HuffmanTreeNode>> nodes {};
+
+      for (uint32 i = 0; i < treeLengthBits - 1; i++)
+      {
+        if (static_cast<uint>(reader.ReadBit()) == uint {1})
+        {
+          nodes.push_back(CreateRef<HuffmanTreeNode>(reader.ReadBits(8), 0));
+        }
+        else
+        {
+          auto internalNode = CreateRef<HuffmanTreeNode>(byte {0}, 0);
+          internalNode->Right = nodes.back();
+          nodes.pop_back();
+          internalNode->Left = nodes.back();
+          nodes.pop_back();
+          nodes.push_back(internalNode);
+        }
+      }
+
+      KRYS_ASSERT(nodes.size() == 1, "One node was not left in the list by the end of the tree construction.",
+                  0);
+      KRYS_ASSERT_ALWAYS_EVAL(reader.ReadBit() == 0, "Tree did not end in a zero.", 0);
+      reader.NextByte(); // skip padding bits and align to byte boundary.
+
+      tree_t tree {};
+      tree.SetRoot(nodes.back());
+
+      return tree;
     }
 
     constexpr static void Teardown() noexcept

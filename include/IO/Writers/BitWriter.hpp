@@ -10,16 +10,13 @@
 
 namespace Krys::IO
 {
-  // TODO: customize for different padding requirements for partial bitset writes
-  // Do we pad them to the left or right?
-  // Do we pad them with 1s or 0s?
-  // Right now, we're just going to cast the bitset as-is.
   class BitWriter
   {
     static constexpr size_t BitsetSize = 8 * sizeof(byte);
 
   public:
-    BitWriter(List<byte> *buffer) noexcept : _bitset(0), _bitIndex(0), _buffer(buffer)
+    BitWriter(List<byte> *buffer) noexcept
+        : _bitset(0), _bitIndex(static_cast<int>(BitsetSize) - 1), _buffer(buffer)
     {
       KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.", 0);
     }
@@ -32,9 +29,7 @@ namespace Krys::IO
     void Write(bool bit) noexcept
     {
       _bitset.set(_bitIndex, bit);
-      _bitIndex++;
-
-      if (_bitIndex == BitsetSize)
+      if (--_bitIndex < 0)
         Flush();
     }
 
@@ -42,6 +37,8 @@ namespace Krys::IO
     {
       KRYS_ASSERT(length <= BitsetSize, "Length must be less than or equal to %zu.", BitsetSize);
       KRYS_ASSERT(length > 0, "Length must be greater than 0.", 0);
+      KRYS_ASSERT(length <= sizeof(value) * 8, "Length must be less than or equal to %zu.",
+                  sizeof(value) * 8);
 
       for (int i = length - 1; i >= 0; i--)
       {
@@ -57,14 +54,14 @@ namespace Krys::IO
 
     void Flush() noexcept
     {
-      if (_bitIndex == 0)
+      if (_bitIndex == static_cast<int>(BitsetSize) - 1)
         return;
 
       KRYS_ASSERT(_buffer != nullptr, "Buffer cannot be null.", 0);
       _buffer->push_back(static_cast<byte>(_bitset.to_ullong()));
 
       _bitset.reset();
-      _bitIndex = 0;
+      _bitIndex = static_cast<int>(BitsetSize) - 1;
     }
 
     void SetBuffer(List<byte> *buffer) noexcept
@@ -75,7 +72,7 @@ namespace Krys::IO
 
   private:
     std::bitset<BitsetSize> _bitset;
-    size_t _bitIndex;
+    int _bitIndex;
     List<byte> *_buffer;
   };
 }
