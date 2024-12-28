@@ -9,11 +9,11 @@ namespace Krys::IO::Stage
     using input_t = List<byte>;
     using output_t = List<byte>;
 
-    static constexpr void Setup() noexcept
+    constexpr void Setup() noexcept
     {
     }
 
-    static constexpr List<byte> Execute(const List<byte> &data) noexcept
+    constexpr List<byte> Execute(const List<byte> &data) noexcept
     {
       List<byte> output {};
       output.reserve(data.size());
@@ -41,7 +41,7 @@ namespace Krys::IO::Stage
       return output;
     }
 
-    static constexpr void Teardown() noexcept
+    constexpr void Teardown() noexcept
     {
     }
   };

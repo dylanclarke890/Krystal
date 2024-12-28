@@ -163,11 +163,11 @@ namespace Krys::IO::Stage
     using code_t = HuffmanTree<TCode>::HuffmanCode;
     using bit_writer_t = BitWriter;
 
-    constexpr static void Setup() noexcept
+    constexpr void Setup() noexcept
     {
     }
 
-    constexpr static output_t Execute(const input_t &data) noexcept
+    constexpr output_t Execute(const input_t &data) noexcept
     {
       // The output format is as follows:
       // 4 bytes - The length of the compressed data (in bits).
@@ -217,12 +217,12 @@ namespace Krys::IO::Stage
       return output;
     }
 
-    constexpr static void Teardown() noexcept
+    constexpr void Teardown() noexcept
     {
     }
 
-    constexpr static void WriteTree(const Ref<HuffmanTreeNode> &node, bit_writer_t &writer,
-                                    uint32 &treeLengthBits) noexcept
+    constexpr void WriteTree(const Ref<HuffmanTreeNode> &node, bit_writer_t &writer,
+                             uint32 &treeLengthBits) noexcept
     {
       if (!node)
         return;
@@ -253,11 +253,11 @@ namespace Krys::IO::Stage
     using code_t = HuffmanTree<TCode>::HuffmanCode;
     using bit_reader_t = BitReader<TSource, TDestination>;
 
-    constexpr static void Setup() noexcept
+    constexpr void Setup() noexcept
     {
     }
 
-    constexpr static output_t Execute(input_t data) noexcept
+    constexpr output_t Execute(input_t data) noexcept
     {
       bit_reader_t reader(&data);
       const uint32 encodedDataLength = reader.template Read<uint32>();
@@ -289,7 +289,7 @@ namespace Krys::IO::Stage
       return output;
     }
 
-    constexpr static tree_t ReadTree(bit_reader_t &reader, const uint32 treeLengthBits) noexcept
+    constexpr tree_t ReadTree(bit_reader_t &reader, const uint32 treeLengthBits) noexcept
     {
       List<Ref<HuffmanTreeNode>> nodes {};
 
@@ -321,7 +321,7 @@ namespace Krys::IO::Stage
       return tree;
     }
 
-    constexpr static void Teardown() noexcept
+    constexpr void Teardown() noexcept
     {
     }
   };

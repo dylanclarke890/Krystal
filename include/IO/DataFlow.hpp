@@ -7,6 +7,8 @@
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
 
+#include <tuple>
+
 namespace Krys::IO
 {
 #pragma region Concepts
@@ -38,26 +40,31 @@ namespace Krys::IO
   };
 
   template <typename T>
-  concept IsDataFlowStageT = requires {
+  concept IsDataFlowStageT = requires(T stage) {
     typename T::input_t;
     typename T::output_t;
-
-    { T::Setup() } -> Same<void>;
-    { T::Teardown() } -> Same<void>;
-
-    // Stage must have an Execute method with the correct signature
-    requires std::invocable<decltype(&T::Execute), typename T::input_t>;
+    { stage.Setup() } -> Same<void>;
+    { stage.Execute(std::declval<typename T::input_t>()) } -> Same<typename T::output_t>;
+    { stage.Teardown() } -> Same<void>;
   };
+
 #pragma endregion Concepts
 
   template <IsDataSourceT TSource, IsDataSinkT TSink, IsDataFlowStageT... TStages>
   class DataFlow
   {
-    using data_flow_t = DataFlow<TSource, TSink, TStages...>;
+    using stages_t = std::tuple<TStages...>;
 
   public:
-    explicit constexpr DataFlow(TSource *source, TSink *sink, uint chunkSize = 1'024) noexcept
-        : _source(source), _sink(sink), _chunkSize(chunkSize)
+    explicit constexpr DataFlow(TSource *source, TSink *sink, uint chunkSize = 1'024,
+                                TStages... stages) noexcept
+        : _source(source), _sink(sink), _chunkSize(chunkSize), _stages(std::move(stages)...)
+    {
+    }
+
+    template <typename... UStages>
+    constexpr DataFlow(TSource *source, TSink *sink, uint chunkSize, std::tuple<UStages...> st) noexcept
+        : _source(source), _sink(sink), _chunkSize(chunkSize), _stages(std::move(st))
     {
     }
 
@@ -68,18 +75,22 @@ namespace Krys::IO
 
     /// @brief Append a stage to the pipeline.
     template <IsDataFlowStageT TStage>
-    constexpr auto operator|(TStage) const noexcept
+    constexpr auto operator|(TStage stage) const noexcept
     {
-      return DataFlow<TSource, TSink, TStages..., TStage>(_source, _sink, _chunkSize);
+      return DataFlow<TSource, TSink, TStages..., TStage>(_source, _sink, _chunkSize,
+                                                          std::tuple_cat(_stages, std::make_tuple(stage)));
     }
 
     void Execute() noexcept
     {
+      KRYS_SCOPED_PROFILER("DataFlow::Execute");
       KRYS_ASSERT(_source, "No source has been set.", 0);
       KRYS_ASSERT(_sink, "No sink has been set.", 0);
 
       _source->Open();
       _sink->Open();
+
+      ApplyToStages([](auto &stage) { stage.Setup(); });
 
       KRYS_ASSERT(_source->GetSize() != 0, "Source is empty.", 0);
       while (!_source->IsEOS())
@@ -91,24 +102,27 @@ namespace Krys::IO
         _sink->Write(data);
       }
 
+      ApplyToStages([](auto &stage) { stage.Teardown(); });
+
       _source->Close();
       _sink->Close();
     }
 
   private:
     template <typename TInput>
-    auto ProcessStages(const TInput &data) const noexcept
+    auto ProcessStages(const TInput &data) noexcept
     {
       return ApplyStages<0>(data);
     }
 
     template <size_t Index, typename TInput>
-    auto ApplyStages(const TInput &data) const noexcept
+    auto ApplyStages(const TInput &data) noexcept
     {
       if constexpr (Index < sizeof...(TStages))
       {
-        using currentStage = std::tuple_element_t<Index, std::tuple<TStages...>>;
-        auto transformedData = currentStage::Execute(data);
+        using currentStage = std::tuple_element_t<Index, stages_t>;
+        auto &stage = std::get<Index>(_stages);
+        auto transformedData = stage.Execute(data);
         return ApplyStages<Index + 1>(transformedData);
       }
       else
@@ -117,10 +131,17 @@ namespace Krys::IO
       }
     }
 
+    template <typename Func>
+    void ApplyToStages(Func func) noexcept
+    {
+      std::apply([&](auto &...stages) { (func(stages), ...); }, _stages);
+    }
+
   private:
     TSource *_source;
     TSink *_sink;
     uint _chunkSize;
+    stages_t _stages;
   };
 }
 
@@ -133,16 +154,16 @@ namespace Krys::IO::Stage
     using input_t = TInput;
     using output_t = TOutput;
 
-    constexpr static void Setup() noexcept
+    constexpr void Setup() noexcept
     {
     }
 
-    constexpr static TOutput Execute(TInput data) noexcept
+    constexpr TOutput Execute(TInput data) noexcept
     {
       return data;
     }
 
-    constexpr static void Teardown() noexcept
+    constexpr void Teardown() noexcept
     {
     }
   };
