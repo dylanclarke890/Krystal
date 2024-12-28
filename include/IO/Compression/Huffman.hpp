@@ -167,7 +167,7 @@ namespace Krys::IO::Stage
     {
     }
 
-    constexpr output_t Execute(const input_t &data) noexcept
+    constexpr output_t ProcessChunk(const input_t &data) noexcept
     {
       // The output format is as follows:
       // 4 bytes - The length of the compressed data (in bits).
@@ -257,7 +257,7 @@ namespace Krys::IO::Stage
     {
     }
 
-    constexpr output_t Execute(input_t data) noexcept
+    constexpr output_t ProcessChunk(input_t data) noexcept
     {
       bit_reader_t reader(&data);
       const uint32 encodedDataLength = reader.template Read<uint32>();

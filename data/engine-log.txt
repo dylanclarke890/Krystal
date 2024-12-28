@@ -1,7 +1,5 @@
 [INFO_]: Creating window with dimensions: 1280 x 800
 [INFO_]: Adjusted window dimensions: 1296 x 839
 [INFO_]: Timer precision range - min: 1ms, max: 1000000ms
-[INFO_]: PathExists took 0.262 ms.
-[INFO_]: FileDataSource: Offset before 'ReadBytes': 0
-[INFO_]: FileDataSource: Offset after 'ReadBytes': -1
-[INFO_]: DataFlow::Execute took 2.668 ms.
+[INFO_]: PathExists took 0.214 ms.
+[INFO_]: DataFlow::Execute took 17267.110 ms.

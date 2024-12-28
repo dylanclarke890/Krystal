@@ -2,10 +2,21 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
-#include "IO/Compression/LZ77Common.hpp"
 
 namespace Krys::IO
 {
+  struct LZ77Token
+  {
+    size_t offset; // Offset from the start of the window
+    size_t length; // Match length
+    char nextChar; // Next character after the match
+
+    LZ77Token(size_t offset, size_t length, char nextChar)
+        : offset(offset), length(length), nextChar(nextChar)
+    {
+    }
+  };
+
   class LZ77Encoder
   {
   public:
@@ -48,6 +59,30 @@ namespace Krys::IO
       }
 
       return tokens;
+    }
+  };
+
+  class LZ77Decoder
+  {
+  public:
+    NO_DISCARD string Decode(const List<LZ77Token> &tokens) noexcept
+    {
+      string decompressedText;
+      for (const LZ77Token &token : tokens)
+      {
+        if (token.length > 0)
+        {
+          // Copy the matching string from the window
+          size_t startPos = decompressedText.size() - token.offset;
+          for (size_t i = 0; i < token.length; ++i)
+          {
+            decompressedText += decompressedText[startPos + i];
+          }
+        }
+        // Append the next character
+        decompressedText += token.nextChar;
+      }
+      return decompressedText;
     }
   };
 }

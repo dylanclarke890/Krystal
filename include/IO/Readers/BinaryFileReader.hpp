@@ -12,6 +12,12 @@
 #include <fstream>
 #include <iostream>
 
+#ifdef KRYS_ENABLE_FILE_OFFSET_LOGGING
+  #define KRYS_LOG_FILE_OFFSET(message, offset) KRYS_LOG(message, offset)
+#else
+  #define KRYS_LOG_FILE_OFFSET(message, offset)
+#endif
+
 namespace Krys::IO
 {
   template <Endian::Type TSource, Endian::Type TDestination>
@@ -92,13 +98,15 @@ namespace Krys::IO
         return {};
 
       auto readPos = _stream.tellg();
-      KRYS_LOG("FileDataSource: Offset before 'ReadBytes': %lld", static_cast<long long>(readPos));
+      KRYS_LOG_FILE_OFFSET("BinaryFileReader: Offset before 'ReadBytes': %lld",
+                           static_cast<long long>(readPos));
 
       List<byte> buffer(count);
       _stream.read(reinterpret_cast<char *>(buffer.data()), count);
 
       readPos = _stream.tellg();
-      KRYS_LOG("FileDataSource: Offset after 'ReadBytes': %lld", static_cast<long long>(readPos));
+      KRYS_LOG_FILE_OFFSET("BinaryFileReader: Offset after 'ReadBytes': %lld",
+                           static_cast<long long>(readPos));
 
       buffer.resize(_stream.gcount()); // Adjust the buffer size if we read fewer than count
       return buffer;

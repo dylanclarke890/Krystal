@@ -12,6 +12,7 @@
 namespace Krys::IO
 {
 #pragma region Concepts
+
   template <typename T>
   concept IsDataSourceT = requires(T source) {
     { source.Open() } -> Same<void>;
@@ -44,7 +45,7 @@ namespace Krys::IO
     typename T::input_t;
     typename T::output_t;
     { stage.Setup() } -> Same<void>;
-    { stage.Execute(std::declval<typename T::input_t>()) } -> Same<typename T::output_t>;
+    { stage.ProcessChunk(std::declval<typename T::input_t>()) } -> Same<typename T::output_t>;
     { stage.Teardown() } -> Same<void>;
   };
 
@@ -56,8 +57,7 @@ namespace Krys::IO
     using stages_t = std::tuple<TStages...>;
 
   public:
-    explicit constexpr DataFlow(TSource *source, TSink *sink, uint chunkSize = 1'024,
-                                TStages... stages) noexcept
+    constexpr DataFlow(TSource *source, TSink *sink, uint chunkSize = 1'024 * 32, TStages... stages) noexcept
         : _source(source), _sink(sink), _chunkSize(chunkSize), _stages(std::move(stages)...)
     {
     }
@@ -69,7 +69,6 @@ namespace Krys::IO
     }
 
     ~DataFlow() noexcept = default;
-
     constexpr DataFlow(const DataFlow &) = delete;
     constexpr DataFlow &operator=(const DataFlow &) = delete;
 
@@ -110,19 +109,19 @@ namespace Krys::IO
 
   private:
     template <typename TInput>
-    auto ProcessStages(const TInput &data) noexcept
+    constexpr auto ProcessStages(const TInput &data) noexcept
     {
       return ApplyStages<0>(data);
     }
 
     template <size_t Index, typename TInput>
-    auto ApplyStages(const TInput &data) noexcept
+    constexpr auto ApplyStages(const TInput &data) noexcept
     {
       if constexpr (Index < sizeof...(TStages))
       {
         using currentStage = std::tuple_element_t<Index, stages_t>;
         auto &stage = std::get<Index>(_stages);
-        auto transformedData = stage.Execute(data);
+        auto transformedData = stage.ProcessChunk(data);
         return ApplyStages<Index + 1>(transformedData);
       }
       else
@@ -132,7 +131,7 @@ namespace Krys::IO
     }
 
     template <typename Func>
-    void ApplyToStages(Func func) noexcept
+    constexpr void ApplyToStages(Func func) noexcept
     {
       std::apply([&](auto &...stages) { (func(stages), ...); }, _stages);
     }
@@ -147,18 +146,18 @@ namespace Krys::IO
 
 namespace Krys::IO::Stage
 {
-  template <typename TInput, typename TOutput>
+  template <typename T>
   struct Identity
   {
   public:
-    using input_t = TInput;
-    using output_t = TOutput;
+    using input_t = T;
+    using output_t = T;
 
     constexpr void Setup() noexcept
     {
     }
 
-    constexpr TOutput Execute(TInput data) noexcept
+    constexpr output_t ProcessChunk(input_t data) noexcept
     {
       return data;
     }
