@@ -5,6 +5,7 @@
 
 namespace Krys::IO
 {
+  // TODO: revisit this.
   struct LZ77Token
   {
     size_t offset; // Offset from the start of the window

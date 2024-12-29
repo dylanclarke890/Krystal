@@ -6,13 +6,12 @@
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
+#include "IO/DataFlowStage.hpp"
 
 #include <tuple>
 
 namespace Krys::IO
 {
-#pragma region Concepts
-
   template <typename T>
   concept IsDataSourceT = requires(T source) {
     { source.Open() } -> Same<void>;
@@ -39,17 +38,6 @@ namespace Krys::IO
       { sink.template Write<int>(List<int>()) } -> Same<void>;
     };
   };
-
-  template <typename T>
-  concept IsDataFlowStageT = requires(T stage) {
-    typename T::input_t;
-    typename T::output_t;
-    { stage.Setup() } -> Same<void>;
-    { stage.ProcessChunk(std::declval<typename T::input_t>()) } -> Same<typename T::output_t>;
-    { stage.Teardown() } -> Same<void>;
-  };
-
-#pragma endregion Concepts
 
   template <IsDataSourceT TSource, IsDataSinkT TSink, IsDataFlowStageT... TStages>
   class DataFlow
@@ -91,14 +79,23 @@ namespace Krys::IO
 
       ApplyToStages([](auto &stage) { stage.Setup(); });
 
-      KRYS_ASSERT(_source->GetSize() != 0, "Source is empty.", 0);
-      while (!_source->IsEOS())
+      _bytesProcessed = 0;
+      _totalBytesToProcess = static_cast<uint>(_source->GetSize());
+      KRYS_ASSERT(_totalBytesToProcess != 0, "Source is empty.", 0);
+
+      while (true)
       {
         auto bytes = _source->ReadBytes(_chunkSize);
-        KRYS_ASSERT(!bytes.empty(), "No data was read from the source.", 0);
+        if (bytes.empty() && _source->IsEOS())
+          break;
+
+        _isLastChunk = _bytesProcessed + static_cast<uint>(bytes.size()) == _totalBytesToProcess;
 
         auto data = ProcessStages(bytes);
+        _bytesProcessed += static_cast<uint>(bytes.size());
         _sink->Write(data);
+
+        _isFirstChunk = false;
       }
 
       ApplyToStages([](auto &stage) { stage.Teardown(); });
@@ -119,9 +116,17 @@ namespace Krys::IO
     {
       if constexpr (Index < sizeof...(TStages))
       {
-        using currentStage = std::tuple_element_t<Index, stages_t>;
+        using current_stage_t = std::tuple_element_t<Index, stages_t>;
         auto &stage = std::get<Index>(_stages);
-        auto transformedData = stage.ProcessChunk(data);
+
+        DataFlowStageContext<TInput, typename current_stage_t::output_t> context {};
+        context.Input = data;
+        context.IsFirstChunk = _isFirstChunk;
+        context.IsLastChunk = _isLastChunk;
+        context.TotalBytesToProcess = _totalBytesToProcess;
+        context.BytesProcessed = _bytesProcessed;
+
+        auto transformedData = stage.ProcessChunk(context);
         return ApplyStages<Index + 1>(transformedData);
       }
       else
@@ -139,8 +144,9 @@ namespace Krys::IO
   private:
     TSource *_source;
     TSink *_sink;
-    uint _chunkSize;
     stages_t _stages;
+    uint _chunkSize, _totalBytesToProcess, _bytesProcessed;
+    bool _isFirstChunk = true, _isLastChunk = false;
   };
 }
 
@@ -157,9 +163,9 @@ namespace Krys::IO::Stage
     {
     }
 
-    constexpr output_t ProcessChunk(input_t data) noexcept
+    constexpr output_t ProcessChunk(DataFlowStageContext<input_t, output_t> &context) noexcept
     {
-      return data;
+      return context.Input;
     }
 
     constexpr void Teardown() noexcept
