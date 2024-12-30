@@ -11,12 +11,13 @@
 
 namespace Krys::Lang
 {
+  constexpr uchar Newline = '\r';
+
   template <IO::IsDataSourceT TSource, IO::IsDataSinkT TSink>
   class Parser
   {
   public:
-    explicit constexpr Parser(TSource &source, TSink &sink) noexcept
-        : _source(source), _sink(sink), _lookAhead(0)
+    explicit constexpr Parser(TSource &source, TSink &sink) noexcept : _source(source), _sink(sink), _next(0)
     {
     }
 
@@ -29,46 +30,54 @@ namespace Krys::Lang
       _source.Open();
       _sink.Open();
 
-      NextChar();
-      Expression();
+      LoadNextChar();
+      Assignment();
+      if (_next != Newline)
+        Expected("Newline");
 
       _source.Close();
       _sink.Close();
     }
 
   private:
-#pragma region Helpers
-    constexpr void Expected(const string &msg) noexcept
+    constexpr void LoadNextChar() noexcept
     {
-      KRYS_ASSERT(false, "Parsing failed - %s expected", msg.c_str());
-    }
-
-    constexpr void Expected(const uchar c) noexcept
-    {
-      KRYS_ASSERT(false, "Parsing failed - '%c' expected", c);
-    }
-
-    constexpr void NextChar() noexcept
-    {
-      _lookAhead = _source.template Read<uchar>();
+      _next = _source.template Read<uchar>();
     }
 
     constexpr void Match(const uchar c) noexcept
     {
-      if (_lookAhead == c)
-        NextChar();
+      if (_next == c)
+        LoadNextChar();
       else
         Expected(c);
     }
 
-    NO_DISCARD constexpr bool IsAlpha() const noexcept
+#pragma region Helpers
+
+    constexpr void Expected(const string &msg) const noexcept
     {
-      return (_lookAhead >= 'a' && _lookAhead <= 'z') || (_lookAhead >= 'A' && _lookAhead <= 'Z');
+      KRYS_ASSERT(false, "Parsing failed - %s expected", msg.c_str());
     }
 
-    NO_DISCARD constexpr bool IsDigit() const noexcept
+    constexpr void Expected(const uchar c) const noexcept
     {
-      return _lookAhead >= '0' && _lookAhead <= '9';
+      KRYS_ASSERT(false, "Parsing failed - '%c' expected", c);
+    }
+
+    NO_DISCARD constexpr bool IsAlpha(uchar c) const noexcept
+    {
+      return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    }
+
+    NO_DISCARD constexpr bool IsDigit(uchar c) const noexcept
+    {
+      return c >= '0' && c <= '9';
+    }
+
+    NO_DISCARD constexpr bool IsAlphaNumeric(uchar c) const noexcept
+    {
+      return IsAlpha(c) || IsDigit(c);
     }
 
     NO_DISCARD constexpr bool IsAddop(const uchar c) const noexcept
@@ -88,29 +97,30 @@ namespace Krys::Lang
 
     NO_DISCARD constexpr uchar GetName() noexcept
     {
-      if (!IsAlpha())
+      if (!IsAlpha(_next))
         Expected("Name");
 
-      auto c = ToUpper(_lookAhead);
-      NextChar();
+      uchar c = ToUpper(_next);
+      LoadNextChar();
 
       return c;
     }
 
     NO_DISCARD constexpr uchar GetNum() noexcept
     {
-      if (!IsDigit())
+      if (!IsDigit(_next))
         Expected("Integer");
 
-      auto c = _lookAhead;
-      NextChar();
+      uchar c = _next;
+      LoadNextChar();
 
       return c;
     }
 
 #pragma endregion Helpers
 
-#pragma region Expressions
+#pragma region Operations
+
     void Add() noexcept
     {
       Match('+');
@@ -141,55 +151,77 @@ namespace Krys::Lang
       EmitLn("DIVS D1, D0");
     }
 
+#pragma endregion Operations
+
+#pragma region Expressions
+
+    void Identifier() noexcept
+    {
+      auto name = GetName();
+      if (_next == '(')
+      {
+        Match('(');
+        Match(')');
+        EmitLn(Format("BSR {:c}", name));
+      }
+      else
+        EmitLn(Format("MOVE {:c}(PC), D0", name));
+    }
+
     void Factor() noexcept
     {
-      if (_lookAhead == '(')
+      if (_next == '(')
       {
         Match('(');
         Expression();
         Match(')');
       }
-      else if (IsAlpha())
-      {
-        EmitLn(Format("MOVE {:c}(PC), D0", GetName()));
-      }
+      else if (IsAlpha(_next))
+        Identifier();
       else
-      {
         EmitLn(Format("MOVE #{:c}, D0", GetNum()));
-      }
     }
 
     void Term() noexcept
     {
       Factor();
-      while (_lookAhead == '*' || _lookAhead == '/')
+      while (IsMulop(_next))
       {
         EmitLn("MOVE D0, D1");
-        switch (_lookAhead)
+        switch (_next)
         {
           case '*': Multiply(); break;
           case '/': Divide(); break;
-          default:  Expected("mulop"); break;
+          default:  Expected("mulop"); break; // can't be reached
         }
       }
     }
 
     void Expression() noexcept
     {
-      if (IsAddop(_lookAhead))
+      if (IsAddop(_next))
         EmitLn("CLR D0");
       else
         Term();
       EmitLn("MOVE D0, -(SP)");
-      while (IsAddop(_lookAhead))
+      while (IsAddop(_next))
       {
-        switch (_lookAhead)
+        switch (_next)
         {
           case '+': Add(); break;
           case '-': Subtract(); break;
-          default:  Expected("addop"); break;
+          default:  Expected("addop"); break; // can't be reached
         }
       }
+    }
+
+    void Assignment() noexcept
+    {
+      uchar name = GetName();
+      Match('=');
+      Expression();
+      EmitLn(Format("LEA {:c}(PC), A0", name));
+      EmitLn("MOVE D0, (A0)");
     }
 
 #pragma endregion Expressions
@@ -229,6 +261,8 @@ namespace Krys::Lang
   private:
     TSource &_source;
     TSink &_sink;
-    uchar _lookAhead;
+
+    /// @brief Lookahead character.
+    uchar _next;
   };
 }

@@ -1,7 +1,4 @@
-CLR D0
+BSR X
 MOVE D0, -(SP)
-MOVE #1, D0
-SUB D1, (SP)+
-NEG D0
-MOVE A(PC), D0
-ADD D1, (SP)+
+LEA A(PC), A0
+MOVE D0, (A0)
