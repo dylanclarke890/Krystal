@@ -31,8 +31,6 @@ namespace Krys::Lang
       _sink.Open();
 
       LoadNextChar();
-      SkipWhiteSpace();
-
       Assignment();
       if (_next != Newline)
         Expected("Newline");
@@ -50,53 +48,9 @@ namespace Krys::Lang
     constexpr void Match(const uchar c) noexcept
     {
       if (_next == c)
-      {
         LoadNextChar();
-        SkipWhiteSpace();
-      }
       else
         Expected(c);
-    }
-
-    NO_DISCARD constexpr string GetName() noexcept
-    {
-      string token;
-      if (!IsAlpha(_next))
-        Expected("Name");
-
-      while (IsAlphaNumeric(_next))
-      {
-        token += ToUpper(_next);
-        LoadNextChar();
-      }
-
-      SkipWhiteSpace();
-
-      return token;
-    }
-
-    NO_DISCARD constexpr string GetNum() noexcept
-    {
-      string value;
-
-      if (!IsDigit(_next))
-        Expected("Integer");
-
-      while (IsDigit(_next))
-      {
-        value = Format("{}{:c}", value, _next);
-        LoadNextChar();
-      }
-
-      SkipWhiteSpace();
-
-      return value;
-    }
-
-    void SkipWhiteSpace() noexcept
-    {
-      while (IsWhiteSpace(_next))
-        LoadNextChar();
     }
 
 #pragma region Helpers
@@ -126,20 +80,6 @@ namespace Krys::Lang
       return IsAlpha(c) || IsDigit(c);
     }
 
-    NO_DISCARD constexpr bool IsWhiteSpace(const uchar c) const noexcept
-    {
-      return c == ' ' || c == '\t';
-    }
-
-    NO_DISCARD constexpr uchar ToUpper(const uchar c) const noexcept
-    {
-      return c >= 'a' && c <= 'z' ? c - 32 : c;
-    }
-
-#pragma endregion Helpers
-
-#pragma region Operations
-
     NO_DISCARD constexpr bool IsAddop(const uchar c) const noexcept
     {
       return c == '+' || c == '-';
@@ -149,6 +89,37 @@ namespace Krys::Lang
     {
       return c == '*' || c == '/';
     }
+
+    NO_DISCARD constexpr uchar ToUpper(const uchar c) const noexcept
+    {
+      return c >= 'a' && c <= 'z' ? c - 32 : c;
+    }
+
+    NO_DISCARD constexpr uchar GetName() noexcept
+    {
+      if (!IsAlpha(_next))
+        Expected("Name");
+
+      uchar c = ToUpper(_next);
+      LoadNextChar();
+
+      return c;
+    }
+
+    NO_DISCARD constexpr uchar GetNum() noexcept
+    {
+      if (!IsDigit(_next))
+        Expected("Integer");
+
+      uchar c = _next;
+      LoadNextChar();
+
+      return c;
+    }
+
+#pragma endregion Helpers
+
+#pragma region Operations
 
     void Add() noexcept
     {
@@ -191,10 +162,10 @@ namespace Krys::Lang
       {
         Match('(');
         Match(')');
-        EmitLn(Format("BSR {}", name));
+        EmitLn(Format("BSR {:c}", name));
       }
       else
-        EmitLn(Format("MOVE {}(PC), D0", name));
+        EmitLn(Format("MOVE {:c}(PC), D0", name));
     }
 
     void Factor() noexcept
@@ -208,7 +179,7 @@ namespace Krys::Lang
       else if (IsAlpha(_next))
         Identifier();
       else
-        EmitLn(Format("MOVE #{}, D0", GetNum()));
+        EmitLn(Format("MOVE #{:c}, D0", GetNum()));
     }
 
     void Term() noexcept
@@ -246,10 +217,10 @@ namespace Krys::Lang
 
     void Assignment() noexcept
     {
-      auto name = GetName();
+      uchar name = GetName();
       Match('=');
       Expression();
-      EmitLn(Format("LEA {}(PC), A0", name));
+      EmitLn(Format("LEA {:c}(PC), A0", name));
       EmitLn("MOVE D0, (A0)");
     }
 

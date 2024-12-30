@@ -1,4 +1,0 @@
-BSR X
-MOVE D0, -(SP)
-LEA A(PC), A0
-MOVE D0, (A0)
