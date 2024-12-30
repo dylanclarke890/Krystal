@@ -68,7 +68,7 @@ namespace Krys::IO
                                                           std::tuple_cat(_stages, std::make_tuple(stage)));
     }
 
-    void Execute() noexcept
+    constexpr void Execute() noexcept
     {
       KRYS_SCOPED_PROFILER("DataFlow::Execute");
       KRYS_ASSERT(_source, "No source has been set.", 0);
