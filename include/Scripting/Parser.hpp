@@ -149,6 +149,10 @@ namespace Krys::Lang
         Expression();
         Match(')');
       }
+      else if (IsAlpha())
+      {
+        EmitLn(Format("MOVE {:c}(PC), D0", GetName()));
+      }
       else
       {
         EmitLn(Format("MOVE #{:c}, D0", GetNum()));
