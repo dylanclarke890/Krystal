@@ -77,8 +77,6 @@ namespace Krys::IO
       _source->Open();
       _sink->Open();
 
-      ApplyToStages([](auto &stage) { stage.Setup(); });
-
       _bytesProcessed = 0;
       _totalBytesToProcess = static_cast<uint>(_source->GetSize());
       KRYS_ASSERT(_totalBytesToProcess != 0, "Source is empty.", 0);
@@ -97,8 +95,6 @@ namespace Krys::IO
 
         _isFirstChunk = false;
       }
-
-      ApplyToStages([](auto &stage) { stage.Teardown(); });
 
       _source->Close();
       _sink->Close();
@@ -135,12 +131,6 @@ namespace Krys::IO
       }
     }
 
-    template <typename Func>
-    constexpr void ApplyToStages(Func func) noexcept
-    {
-      std::apply([&](auto &...stages) { (func(stages), ...); }, _stages);
-    }
-
   private:
     TSource *_source;
     TSink *_sink;
@@ -159,17 +149,9 @@ namespace Krys::IO::Stage
     using input_t = T;
     using output_t = T;
 
-    constexpr void Setup() noexcept
-    {
-    }
-
     constexpr output_t ProcessChunk(DataFlowStageContext<input_t, output_t> &context) noexcept
     {
       return context.Input;
-    }
-
-    constexpr void Teardown() noexcept
-    {
     }
   };
 }

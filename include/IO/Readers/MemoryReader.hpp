@@ -18,6 +18,13 @@ namespace Krys::IO
     {
     }
 
+    explicit constexpr MemoryReader(const string &data) noexcept : _readIndex(0)
+    {
+      _buffer.reserve(data.size());
+      for (auto c : data)
+        _buffer.push_back(static_cast<byte>(c));
+    }
+
     ~MemoryReader() noexcept = default;
     constexpr MemoryReader(const MemoryReader &) = delete;
     constexpr MemoryReader &operator=(const MemoryReader &) = delete;
@@ -96,7 +103,7 @@ namespace Krys::IO
     }
 
   private:
-    const List<byte> &_buffer;
+    List<byte> _buffer;
     size_t _readIndex;
   };
 }

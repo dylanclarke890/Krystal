@@ -18,10 +18,8 @@ namespace Krys::IO
   concept IsDataFlowStageT = requires(T stage) {
     typename T::input_t;
     typename T::output_t;
-    { stage.Setup() } -> Same<void>;
     // {
     //   stage.ProcessChunk(std::declval<DataFlowStageContext<typename T::input_t, typename T::output_t>>())
     // } -> Same<typename T::output_t>;
-    { stage.Teardown() } -> Same<void>;
   };
 }

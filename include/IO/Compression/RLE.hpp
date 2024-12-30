@@ -11,10 +11,6 @@ namespace Krys::IO::Stage
     using input_t = List<byte>;
     using output_t = List<byte>;
 
-    constexpr void Setup() noexcept
-    {
-    }
-
     constexpr output_t ProcessChunk(DataFlowStageContext<input_t, output_t> &context) noexcept
     {
       const auto &data = context.Input;
@@ -60,10 +56,6 @@ namespace Krys::IO::Stage
       return output;
     }
 
-    constexpr void Teardown() noexcept
-    {
-    }
-
   private:
     byte _last {};
     int _count {};
@@ -73,12 +65,6 @@ namespace Krys::IO::Stage
   {
     using input_t = List<byte>;
     using output_t = List<byte>;
-
-    constexpr void Setup() noexcept
-    {
-      // Make sure we start empty
-      _carry.clear();
-    }
 
     constexpr output_t ProcessChunk(DataFlowStageContext<input_t, output_t> &context) noexcept
     {
@@ -130,13 +116,6 @@ namespace Krys::IO::Stage
       }
 
       return output;
-    }
-
-    constexpr void Teardown() noexcept
-    {
-      // If you'd like to handle any final checks for leftover data
-      // that was never properly formed, do so here.
-      _carry.clear();
     }
 
   private:

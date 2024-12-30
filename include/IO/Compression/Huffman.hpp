@@ -163,10 +163,6 @@ namespace Krys::IO::Stage
     using code_t = HuffmanTree<TCode>::HuffmanCode;
     using bit_writer_t = BitWriter;
 
-    constexpr void Setup() noexcept
-    {
-    }
-
     constexpr output_t ProcessChunk(const input_t &data) noexcept
     {
       // The output format is as follows:
@@ -217,10 +213,6 @@ namespace Krys::IO::Stage
       return output;
     }
 
-    constexpr void Teardown() noexcept
-    {
-    }
-
     constexpr void WriteTree(const Ref<HuffmanTreeNode> &node, bit_writer_t &writer,
                              uint32 &treeLengthBits) noexcept
     {
@@ -252,10 +244,6 @@ namespace Krys::IO::Stage
     using tree_t = HuffmanTree<TCode>;
     using code_t = HuffmanTree<TCode>::HuffmanCode;
     using bit_reader_t = BitReader<TSource, TDestination>;
-
-    constexpr void Setup() noexcept
-    {
-    }
 
     constexpr output_t ProcessChunk(input_t data) noexcept
     {
@@ -319,10 +307,6 @@ namespace Krys::IO::Stage
       tree.SetRoot(nodes.back());
 
       return tree;
-    }
-
-    constexpr void Teardown() noexcept
-    {
     }
   };
 }
