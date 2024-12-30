@@ -10,5 +10,8 @@ if __name__ == '__main__':
     "KrystalEditor" in sys.argv[1] or "B:\\" in sys.argv[1]
     ) else get_engine_project()
   returncode = code.build()
+  if returncode == 0 and not (len(sys.argv) >= 2 and "KrystalEditor" in sys.argv[1]):
+    print("\n")
+    returncode = get_editor_project().build()
   end_timer()
   sys.exit(returncode)
