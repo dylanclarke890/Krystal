@@ -6,39 +6,13 @@
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
+#include "IO/Concepts.hpp"
 #include "IO/DataFlowStage.hpp"
 
 #include <tuple>
 
 namespace Krys::IO
 {
-  template <typename T>
-  concept IsDataSourceT = requires(T source) {
-    { source.Open() } -> Same<void>;
-    { source.Close() } -> Same<void>;
-    { source.IsEOS() } -> Same<bool>;
-    { source.ReadBytes(0) } -> Same<List<byte>>;
-    requires requires {
-      { source.template Read<int>() } -> Same<int>;
-    };
-    requires requires {
-      { source.template Read<int>(10) } -> Same<List<int>>;
-    };
-  };
-
-  template <typename T>
-  concept IsDataSinkT = requires(T sink) {
-    { sink.Open() } -> Same<void>;
-    { sink.Close() } -> Same<void>;
-    { sink.WriteBytes(List<byte>()) } -> Same<void>;
-    requires requires {
-      { sink.template Write<int>(0) } -> Same<void>;
-    };
-    requires requires {
-      { sink.template Write<int>(List<int>()) } -> Same<void>;
-    };
-  };
-
   template <IsDataSourceT TSource, IsDataSinkT TSink, IsDataFlowStageT... TStages>
   class DataFlow
   {

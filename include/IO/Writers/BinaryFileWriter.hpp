@@ -52,6 +52,12 @@ namespace Krys::IO
       _stream.write(bytes.data(), bytes.size());
     }
 
+    void Write(const string &value) noexcept
+    {
+      KRYS_ASSERT(_stream.is_open(), "Stream was not opened before writing", 0);
+      _stream.write(value.c_str(), value.size());
+    }
+
     template <typename T>
     void Write(const List<T> &values) noexcept
     {

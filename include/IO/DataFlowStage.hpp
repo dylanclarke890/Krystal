@@ -2,6 +2,7 @@
 
 #include "Base/Concepts.hpp"
 #include "Base/Types.hpp"
+#include "IO/Concepts.hpp"
 
 namespace Krys::IO
 {
@@ -12,14 +13,5 @@ namespace Krys::IO
     int32 TotalBytesToProcess {0}, BytesProcessed {0};
     TInput Input {};
     TOutput Output {};
-  };
-
-  template <typename T>
-  concept IsDataFlowStageT = requires(T stage) {
-    typename T::input_t;
-    typename T::output_t;
-    // {
-    //   stage.ProcessChunk(std::declval<DataFlowStageContext<typename T::input_t, typename T::output_t>>())
-    // } -> Same<typename T::output_t>;
   };
 }

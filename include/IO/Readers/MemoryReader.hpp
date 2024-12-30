@@ -25,6 +25,17 @@ namespace Krys::IO
         _buffer.push_back(static_cast<byte>(c));
     }
 
+    template <typename T>
+    explicit constexpr MemoryReader(const List<T> &data) noexcept : _readIndex(0)
+    {
+      _buffer.reserve(data.size() * sizeof(T));
+      for (auto &value : data)
+      {
+        auto bytes = Bytes::From<T, Endian::Type::System, Endian::Type::System>(value);
+        _buffer.insert(_buffer.end(), bytes.begin(), bytes.end());
+      }
+    }
+
     ~MemoryReader() noexcept = default;
     constexpr MemoryReader(const MemoryReader &) = delete;
     constexpr MemoryReader &operator=(const MemoryReader &) = delete;

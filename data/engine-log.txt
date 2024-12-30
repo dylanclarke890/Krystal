@@ -1,4 +1,4 @@
 [INFO_]: Creating window with dimensions: 1280 x 800
 [INFO_]: Adjusted window dimensions: 1296 x 839
 [INFO_]: Timer precision range - min: 1ms, max: 1000000ms
-[INFO_]: DataFlow::Execute took 0.995 ms.
+[INFO_]: PathExists took 0.167 ms.
