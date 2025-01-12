@@ -12,6 +12,7 @@
 #include <type_traits>
 #include <unordered_map>
 #include <vector>
+#include <expected>
 
 namespace Krys
 {
@@ -68,4 +69,10 @@ namespace Krys
 
   template <typename T>
   using Func = std::function<T>;
+
+  template <typename T, typename ErrorType = string>
+  using Expected = std::expected<T, ErrorType>;
+
+  template <typename T>
+  using Unexpected = std::unexpected<T>;
 }

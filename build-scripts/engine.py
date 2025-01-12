@@ -9,7 +9,11 @@ def get_engine_project():
   code.type = PROJECT_TYPE_LIBRARY
   code.src_root = "K:/src/"
   code.third_party_root = THIRD_PARTY_ROOT
-  code.include_dirs = ["K:/include/", f"{THIRD_PARTY_ROOT}Glad/include"]
+  code.include_dirs = [
+    "K:/include/",
+    f"{THIRD_PARTY_ROOT}Glad/include",
+    f"{THIRD_PARTY_ROOT}stb",
+  ]
   code.build_output_dir = "K:/build/"
   code.build_object_output_dir = code.build_output_dir + "obj/"
   code.disabled_warnings = disabled_warnings

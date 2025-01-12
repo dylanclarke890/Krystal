@@ -9,7 +9,12 @@ def get_editor_project():
   code.type = PROJECT_TYPE_EXE
   code.src_root = "B:/src/"
   code.third_party_root = THIRD_PARTY_ROOT
-  code.include_dirs = ["B:/include/", "K:/include/", f"{THIRD_PARTY_ROOT}Glad/include"]
+  code.include_dirs = [
+    "B:/include/",
+    "K:/include/",
+    f"{THIRD_PARTY_ROOT}Glad/include",
+    f"{THIRD_PARTY_ROOT}stb/"
+  ]
   code.build_output_dir = "B:/build/"
   code.build_object_output_dir = code.build_output_dir + "obj/"
   code.disabled_warnings = disabled_warnings
