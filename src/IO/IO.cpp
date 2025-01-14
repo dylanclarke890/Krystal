@@ -1,5 +1,6 @@
 #include "IO/IO.hpp"
 #include "Core/Debug/Macros.hpp"
+#include "Core/Logger.hpp"
 
 #include <algorithm>
 #include <filesystem>
@@ -43,7 +44,7 @@ namespace Krys::IO
       {
         string name {entry.path().stem().string()};
         entries.push_back({name, extension, path});
-        KRYS_LOG("N: %s, E: %s, P: %s", name.data(), extension.data(), path.data());
+        Logger::Info("Name: {0}, Extension: {1}, Path: {2}", name, extension, path);
       }
     };
 
@@ -107,7 +108,7 @@ namespace Krys::IO
     std::ifstream fileStream(path.data());
     if (!fileStream.is_open())
     {
-      KRYS_LOG("Unable to open %s. Are you in the right directory?", path.data());
+      Logger::Info("Unable to open {0}. Are you in the right directory?", path);
       return "";
     }
 
@@ -126,7 +127,7 @@ namespace Krys::IO
     std::ofstream fileStream(path.data());
     if (!fileStream.is_open())
     {
-      KRYS_LOG("Unable to open file: %s", path.data());
+      Logger::Info("Unable to open {0}. Are you in the right directory?", path);
       return false;
     }
 

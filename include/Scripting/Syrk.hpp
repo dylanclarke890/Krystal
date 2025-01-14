@@ -2,6 +2,7 @@
 
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
+#include "Core/Logger.hpp"
 #include "IO/IO.hpp"
 #include "Scripting/ErrorReporter.hpp"
 #include "Scripting/Scanner.hpp"
@@ -20,7 +21,7 @@ namespace Krys::Scripting
       auto tokens = scanner.ScanTokens();
       for (const auto &token : tokens)
       {
-        KRYS_LOG("Token: %s", token.GetLexeme().c_str());
+        Logger::Info("Token: {0}", token.GetLexeme());
       }
     }
 

@@ -1,5 +1,5 @@
 #include "Core/Debug/ScopedProfiler.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Core/Logger.hpp"
 #include "Utils/Lazy.hpp"
 
 #ifndef WIN32_LEAN_AND_MEAN
@@ -28,7 +28,8 @@ namespace Krys::Debug
     const uint64 difference = static_cast<uint64>(end.QuadPart) - _start;
     const uint64 frequency = PerformanceCounterFrequency.val();
     const double elapsedMs = static_cast<double>(difference) / static_cast<double>(frequency) * 1000.0f;
-    KRYS_LOG("%s took %.3f ms.", _name.c_str(), elapsedMs);
+
+    Logger::Info("{0} took {1} ms.", _name, elapsedMs);
 #endif
   }
 

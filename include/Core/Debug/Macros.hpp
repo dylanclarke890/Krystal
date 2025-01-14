@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Base/Macros.hpp"
 #include "Base/Detection.hpp"
+#include "Base/Macros.hpp"
+#include "Base/Types.hpp"
+#include "Core/Logger.hpp"
 
 #ifdef KRYS_ENABLE_DEBUG_BREAK
   #if defined(KRYS_PLATFORM_WINDOWS)
@@ -24,33 +26,13 @@
   #define KRYS_SCOPED_PROFILER(name)
 #endif
 
-#ifdef KRYS_ENABLE_LOGGING
-  #include "Core/Debug/Logger.hpp"
-  #define KRYS_LOG(message, ...)                                                                             \
-    Krys::Debug::Logger::Log(Krys::Debug::LogLevel::Info, message VA_ARGS(__VA_ARGS__))
-  #define KRYS_DEBUG(message, ...)                                                                           \
-    Krys::Debug::Logger::Log(Krys::Debug::LogLevel::Debug, message VA_ARGS(__VA_ARGS__))
-  #define KRYS_INFO(message, ...)                                                                            \
-    Krys::Debug::Logger::Log(Krys::Debug::LogLevel::Info, message VA_ARGS(__VA_ARGS__))
-  #define KRYS_ERROR(message, ...)                                                                           \
-    Krys::Debug::Logger::Log(Krys::Debug::LogLevel::Error, message VA_ARGS(__VA_ARGS__))
-  #define KRYS_FATAL(message, ...)                                                                           \
-    Krys::Debug::Logger::Log(Krys::Debug::LogLevel::Fatal, message VA_ARGS(__VA_ARGS__))
-#else
-  #define KRYS_LOG(message, ...)
-  #define KRYS_DEBUG(message, ...)
-  #define KRYS_INFO(message, ...)
-  #define KRYS_ERROR(message, ...)
-  #define KRYS_FATAL(message, ...)
-#endif
-
 #ifdef KRYS_ENABLE_ASSERTS
   #define KRYS_ASSERT(condition, format, ...)                                                                \
     do                                                                                                       \
     {                                                                                                        \
       if (!(condition))                                                                                      \
       {                                                                                                      \
-        KRYS_ERROR(format VA_ARGS(__VA_ARGS__));                                                             \
+        Krys::Logger::Error(format VA_ARGS(__VA_ARGS__));                                                             \
         KRYS_DEBUG_BREAK();                                                                                  \
       }                                                                                                      \
     } while (false)
@@ -59,11 +41,10 @@
     {                                                                                                        \
       if (!(condition))                                                                                      \
       {                                                                                                      \
-        KRYS_ERROR(format VA_ARGS(__VA_ARGS__));                                                             \
+        Krys::Logger::Error(format VA_ARGS(__VA_ARGS__));                                                             \
         KRYS_DEBUG_BREAK();                                                                                  \
       }                                                                                                      \
     } while (false)
-
 #else
   #define KRYS_ASSERT(condition, format, ...)
   #define KRYS_ASSERT_ALWAYS_EVAL(condition, format, ...) (condition)

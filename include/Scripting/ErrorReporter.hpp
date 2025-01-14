@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Base/Types.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Core/Logger.hpp"
 
 namespace Krys::Scripting
 {
@@ -15,7 +15,7 @@ namespace Krys::Scripting
 
     void Report(uint32 line, const string &where, const string &message) const noexcept
     {
-      KRYS_LOG("[line %d] Error %s: %s", line, where.c_str(), message.c_str());
+      Logger::Info("[line {0}] Error {1}: {2}", line, where, message);
       // KRYS_ASSERT(false, "Error while running file", 0);
       _hadError = true;
     }

@@ -30,6 +30,9 @@ namespace Krys::IO
     static constexpr bool FlipImageVerticallyOnLoad = true;
   };
 
+  /// @brief Loads an image into memory and frees it when the object is destroyed.
+  /// Useful for loading textures into the GPU.
+  /// @tparam Policy 
   template <ImageLoadPolicy Policy = DefaultImageLoadPolicy>
   class ImageLoader
   {

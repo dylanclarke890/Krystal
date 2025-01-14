@@ -2,6 +2,8 @@
 
 #include "Base/Types.hpp"
 
+#include <format>
+
 namespace Krys
 {
   /// @brief The state of a key during an interaction.
@@ -130,3 +132,31 @@ namespace Krys
     UP_ARROW,
   };
 }
+
+template <>
+struct std::formatter<Krys::Key>
+{
+  constexpr auto parse(std::format_parse_context &ctx)
+  {
+    return ctx.begin();
+  }
+
+  auto format(const Krys::Key &key, std::format_context &ctx) const
+  {
+    return std::format_to(ctx.out(), "{}", static_cast<Krys::uint32>(key));
+  }
+};
+
+template <>
+struct std::formatter<Krys::KeyState>
+{
+  constexpr auto parse(std::format_parse_context &ctx)
+  {
+    return ctx.begin();
+  }
+
+  auto format(const Krys::KeyState &state, std::format_context &ctx) const
+  {
+    return std::format_to(ctx.out(), "{}", static_cast<Krys::uint32>(state));
+  }
+};
