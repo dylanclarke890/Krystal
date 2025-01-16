@@ -23,10 +23,10 @@ namespace Krys
     /// @brief Processes all queued events.
     void ProcessEvents() noexcept;
 
-    template <typename TEvent>
     /// @brief Register an event handler for `TEvent`. The event handler must return true or false depending
     /// on whether the event should propagate to other handlers.
     /// @attention Be careful with adding event handlers that themselves dispatch events.
+    template <typename TEvent>
     void RegisterHandler(Func<bool(const TEvent &)> handler) noexcept
     {
       static_assert(std::is_base_of_v<Event, TEvent>, "Must be derived from Krys::Event");

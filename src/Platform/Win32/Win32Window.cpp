@@ -1,13 +1,14 @@
 #include "Platform/Win32/Win32Window.hpp"
+#include "Core/Debug/Macros.hpp"
 #include "Core/Events/EventManager.hpp"
 #include "Core/Events/QuitEvent.hpp"
 #include "Platform/Win32/Input/Win32InputManager.hpp"
 
 namespace Krys::Platform
 {
-  Win32Window::Win32Window(uint32 width, uint32 height, Ptr<EventManager> eventManager,
+  Win32Window::Win32Window(uint32 width, uint32 height, float fps, Ptr<EventManager> eventManager,
                            Ptr<InputManager> inputManager) noexcept
-      : Window(width, height, eventManager, inputManager), _deviceContext(NULL), _windowHandle(NULL)
+      : Window(width, height, fps, eventManager, inputManager), _deviceContext(NULL), _windowHandle(NULL)
   {
   }
 
@@ -68,6 +69,23 @@ namespace Krys::Platform
     return result;
   }
 
+  string Win32Window::GetLastErrorAsString() noexcept
+  {
+    DWORD errorMessageID = ::GetLastError();
+    if (errorMessageID == 0)
+      return string();
+
+    LPSTR messageBuffer = nullptr;
+    size_t size = ::FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM
+                                     | FORMAT_MESSAGE_IGNORE_INSERTS,
+                                   NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                                   reinterpret_cast<LPSTR>(&messageBuffer), 0, NULL);
+
+    string message(messageBuffer, size);
+    ::LocalFree(messageBuffer);
+    return message;
+  }
+
   void Win32Window::Poll() noexcept
   {
     MSG message = {0};
@@ -76,5 +94,11 @@ namespace Krys::Platform
       ::TranslateMessage(&message);
       ::DispatchMessageA(&message);
     }
+  }
+
+  void Win32Window::SwapBuffers() noexcept
+  {
+    KRYS_ASSERT_ALWAYS_EVAL(::SwapBuffers(_deviceContext), "Failed to swap buffers: {0}",
+                            GetLastErrorAsString());
   }
 }

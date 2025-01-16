@@ -29,7 +29,7 @@ namespace Krys::Debug
     const uint64 frequency = PerformanceCounterFrequency.val();
     const double elapsedMs = static_cast<double>(difference) / static_cast<double>(frequency) * 1000.0f;
 
-    Logger::Info("{0} took {1} ms.", _name, elapsedMs);
+    Logger::Info("{} took {:.3f} ms.", _name, elapsedMs);
 #endif
   }
 

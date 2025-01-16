@@ -9,6 +9,6 @@ namespace Krys::Platform
   public:
     Win32WindowManager(Ptr<EventManager> eventManager, Ptr<InputManager> inputManager) noexcept;
 
-    Ptr<Window> Create(uint32 width, uint32 height) noexcept override;
+    Ptr<Window> Create(uint32 width, uint32 height, float fps) noexcept override;
   };
 }

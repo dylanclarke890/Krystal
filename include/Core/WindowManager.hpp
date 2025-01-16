@@ -26,7 +26,7 @@ namespace Krys
     /// @brief Create a new `Window` with the desired properties.
     /// @param width The desired window width.
     /// @param height The desired window height.
-    virtual Ptr<Window> Create(uint32 width, uint32 height) noexcept = 0;
+    virtual Ptr<Window> Create(uint32 width, uint32 height, float fps) noexcept = 0;
 
   protected:
     Ptr<EventManager> _eventManager;

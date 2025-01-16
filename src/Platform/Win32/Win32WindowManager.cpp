@@ -11,10 +11,10 @@ namespace Krys::Platform
   {
   }
 
-  Ptr<Window> Win32WindowManager::Create(uint32 width, uint32 height) noexcept
+  Ptr<Window> Win32WindowManager::Create(uint32 width, uint32 height, float fps) noexcept
   {
     KRYS_ASSERT(!_currentWindow, "Already created a window", 0);
-    _currentWindow = CreateUnique<Win32OpenGLWindow>(width, height, _eventManager, _inputManager);
+    _currentWindow = CreateUnique<Win32OpenGLWindow>(width, height, fps, _eventManager, _inputManager);
     return _currentWindow.get();
   }
 }

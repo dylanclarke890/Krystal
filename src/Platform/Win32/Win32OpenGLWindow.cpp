@@ -7,9 +7,9 @@
 
 namespace Krys::Platform
 {
-  Win32OpenGLWindow::Win32OpenGLWindow(uint32 width, uint32 height, Ptr<EventManager> eventManager,
+  Win32OpenGLWindow::Win32OpenGLWindow(uint32 width, uint32 height, float fps, Ptr<EventManager> eventManager,
                                        Ptr<InputManager> inputManager) noexcept
-      : Win32Window(width, height, eventManager, inputManager)
+      : Win32Window(width, height, fps, eventManager, inputManager)
   {
     const auto instance = ::GetModuleHandleA(NULL);
 
@@ -68,6 +68,24 @@ namespace Krys::Platform
 
     _deviceContext = ::GetDC(_windowHandle);
 
+    PIXELFORMATDESCRIPTOR pfd = {0};
+    pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+    pfd.nVersion = 1;
+    pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+    pfd.iPixelType = PFD_TYPE_RGBA;
+    pfd.cColorBits = 32;
+    pfd.cAlphaBits = 8;
+
+    int pfdID = ::ChoosePixelFormat(_deviceContext, &pfd);
+    KRYS_ASSERT(pfdID != 0, "ChoosePixelFormat() failed.");
+
+    KRYS_ASSERT_ALWAYS_EVAL(::SetPixelFormat(_deviceContext, pfdID, &pfd), "Failed to set the pixel format");
+
+    HGLRC renderContext = ::wglCreateContext(_deviceContext);
+    KRYS_ASSERT(renderContext, "Failed to create OpenGL context");
+    KRYS_ASSERT_ALWAYS_EVAL(::wglMakeCurrent(_deviceContext, renderContext),
+                            "Failed to make OpenGL context current");
+
     // register for raw mouse events
     RAWINPUTDEVICE rid;
     rid.usUsagePage = HID_USAGE_PAGE_GENERIC;
@@ -87,6 +105,13 @@ namespace Krys::Platform
 
     ::ShowWindow(_windowHandle, SW_SHOW);
     ::UpdateWindow(_windowHandle);
+  }
+
+  void Win32OpenGLWindow::SetVSync(bool enabled) noexcept
+  {
+    wglSwapIntervalEXT(enabled ? 1 : 0);
+    _vsyncEnabled = enabled;
+    Logger::Info("VSync is {0}", enabled ? "enabled" : "disabled");
   }
 
   void Win32OpenGLWindow::InitOpenGLExtensions(HINSTANCE instance) const noexcept

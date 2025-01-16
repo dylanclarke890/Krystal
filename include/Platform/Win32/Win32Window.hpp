@@ -14,11 +14,17 @@ namespace Krys::Platform
   class Win32Window : public Window
   {
   public:
-    Win32Window(uint32 width, uint32 height, Ptr<EventManager> eventManager,
+    Win32Window(uint32 width, uint32 height, float fps, Ptr<EventManager> eventManager,
                 Ptr<InputManager> inputManager) noexcept;
     virtual ~Win32Window() noexcept override = default;
 
     void Poll() noexcept override;
+
+    virtual void SetVSync(bool) noexcept override
+    {
+    }
+
+    void SwapBuffers() noexcept override;
 
     NO_DISCARD HDC GetDeviceContext() const noexcept;
     NO_DISCARD HWND GetWindowHandle() const noexcept;
@@ -27,6 +33,8 @@ namespace Krys::Platform
     static LRESULT CALLBACK StaticWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept;
 
     LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept;
+
+    static string GetLastErrorAsString() noexcept;
 
   protected:
     HDC _deviceContext;

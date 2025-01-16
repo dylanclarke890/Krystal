@@ -22,9 +22,7 @@ namespace Krys
     /// @brief Returns a const reference to the lazily initialized value.
     const T &val()
     {
-      if (!_value)
-        _value = _func();
-
+      Init();
       return *_value;
     }
 
