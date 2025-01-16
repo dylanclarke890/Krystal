@@ -12,6 +12,6 @@ namespace Krys
     bool Resizable {false};
     bool VSync {true};
     float RenderFrameRate {60.0f};
-    float PhysicsFrameRate {60.0f};
+    float PhysicsFrameRate {30.0f};
   };
 }

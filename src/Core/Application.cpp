@@ -49,12 +49,12 @@ namespace Krys
         const auto physicsStepMs = 1'000.0f / _context->GetSettings().PhysicsFrameRate;
         while (accumulatedMs >= physicsStepMs)
         {
-          FixedUpdate(physicsStepMs);
+          FixedUpdate(physicsStepMs / 1'000.0f);
           accumulatedMs -= physicsStepMs;
         }
 
         // Per-frame update and render.
-        Update(static_cast<float>(elapsedMs));
+        Update(static_cast<float>(elapsedMs) / 1'000.0f);
         Render();
 
         // Swap buffers to display the rendered frame.
