@@ -48,10 +48,11 @@ namespace Krys
       int64 endCounter = Platform::GetTicks();
       elapsedMs = Platform::TicksToMilliseconds(endCounter - startCounter);
 
-      // Cap the frame rate, if vsync is disabled
+      // Cap the frame rate if vsync is disabled
       if (_context->GetWindowManager()->GetCurrentWindow()->VSync())
         continue;
 
+      // CPU friendly way to cap the frame rate
       const float targetFrameTimeMs = 1'000.0f / _context->GetWindowManager()->GetCurrentWindow()->Fps();
       while (elapsedMs < targetFrameTimeMs - 2)
       {
