@@ -4,8 +4,8 @@ namespace Krys
 {
   Window::Window(const ApplicationSettings &settings, Ptr<EventManager> eventManager,
                  Ptr<InputManager> inputManager) noexcept
-      : _width(settings.Width), _height(settings.Height), _renderFrameRate(settings.RenderFrameRate),
-        _eventManager(eventManager), _inputManager(inputManager)
+      : _width(settings.Width), _height(settings.Height), _vsyncEnabled(settings.VSync),
+        _renderFrameRate(settings.RenderFrameRate), _eventManager(eventManager), _inputManager(inputManager)
   {
   }
 
