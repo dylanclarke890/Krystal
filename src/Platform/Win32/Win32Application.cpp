@@ -6,9 +6,10 @@
 
 namespace Krys
 {
-  Unique<ApplicationContext> Application::CreateApplicationContext(int argc, char **argv) noexcept
+  Unique<ApplicationContext>
+    Application::CreateApplicationContext(int argc, char **argv, const ApplicationSettings &settings) noexcept
   {
-    auto ctx = CreateUnique<ApplicationContext>(argc, argv);
+    auto ctx = CreateUnique<ApplicationContext>(argc, argv, settings);
 
     ctx->_eventManager = CreateUnique<EventManager>();
     ctx->_inputManager = CreateUnique<Win32InputManager>(ctx->_eventManager.get());

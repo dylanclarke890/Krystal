@@ -6,9 +6,10 @@
 
 namespace Krys::Platform
 {
-  Win32Window::Win32Window(uint32 width, uint32 height, float fps, Ptr<EventManager> eventManager,
+  Win32Window::Win32Window(const ApplicationSettings &settings, Ptr<EventManager> eventManager,
                            Ptr<InputManager> inputManager) noexcept
-      : Window(width, height, fps, eventManager, inputManager), _deviceContext(NULL), _windowHandle(NULL)
+      : Window(std::forward<const ApplicationSettings &>(settings), eventManager, inputManager),
+        _deviceContext(NULL), _windowHandle(NULL)
   {
   }
 

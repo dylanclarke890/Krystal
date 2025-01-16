@@ -4,6 +4,7 @@
 #include "Base/Macros.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
+#include "Core/ApplicationSettings.hpp"
 
 namespace Krys
 {
@@ -32,9 +33,13 @@ namespace Krys
     /// @param enabled Whether to enable or disable vertical synchronization.
     virtual void SetVSync(bool enabled) noexcept = 0;
 
-    NO_DISCARD float Fps() const noexcept;
+    /// @brief Get the render frame rate of the window.
+    /// This will be zero if the window is set to use vertical synchronization.
+    NO_DISCARD float GetRenderFrameRate() const noexcept;
 
-    void SetFps(float fps) noexcept;
+    /// @brief Set the render frame rate of the window. Has no effect if vertical synchronization is enabled.
+    /// @param newFrameRate The desired frames per second.
+    void SetRenderFrameRate(float newFrameRate) noexcept;
 
     /// @brief Polls the native window. Usually involves processing various OS events, some of which will
     /// result in an application event being raised.
@@ -50,12 +55,13 @@ namespace Krys
     /// @param fps The desired frames per second.
     /// @param eventManager A pointer to the current `EventManager`.
     /// @param inputManager A pointer to the current `InputManager`.
-    Window(uint32 width, uint32 height, float fps, Ptr<EventManager> eventManager, Ptr<InputManager> inputManager) noexcept;
+    Window(const ApplicationSettings &settings, Ptr<EventManager> eventManager,
+           Ptr<InputManager> inputManager) noexcept;
 
   protected:
     uint32 _width{0}, _height{0};
     bool _vsyncEnabled{false};
-    float _fps{0.0f};
+    float _renderFrameRate {0.0f};
     Ptr<EventManager> _eventManager{nullptr};
     Ptr<InputManager> _inputManager{nullptr};
   };

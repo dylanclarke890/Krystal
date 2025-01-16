@@ -7,9 +7,9 @@
 
 namespace Krys::Platform
 {
-  Win32OpenGLWindow::Win32OpenGLWindow(uint32 width, uint32 height, float fps, Ptr<EventManager> eventManager,
+  Win32OpenGLWindow::Win32OpenGLWindow(const ApplicationSettings &settings, Ptr<EventManager> eventManager,
                                        Ptr<InputManager> inputManager) noexcept
-      : Win32Window(width, height, fps, eventManager, inputManager)
+      : Win32Window(std::forward<const ApplicationSettings &>(settings), eventManager, inputManager)
   {
     const auto instance = ::GetModuleHandleA(NULL);
 
@@ -23,7 +23,7 @@ namespace Krys::Platform
     if (!::RegisterClassA(&windowClass))
       Logger::Fatal("Unable to register class: {0}", ::GetLastError());
 
-    RECT windowDimensions = {0, 0, static_cast<LONG>(width), static_cast<LONG>(height)};
+    RECT windowDimensions = {0, 0, static_cast<LONG>(_width), static_cast<LONG>(_height)};
     int windowStyles = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
     // TODO: account for dpi?
@@ -34,7 +34,7 @@ namespace Krys::Platform
     // Calculate the total width and height of the window
     int totalWidth = windowDimensions.right - windowDimensions.left;
     int totalHeight = windowDimensions.bottom - windowDimensions.top;
-    Logger::Info("Creating window with dimensions: {0} x {1}", width, height);
+    Logger::Info("Creating window with dimensions: {0} x {1}", _width, _height);
     Logger::Info("Adjusted window dimensions: {0} x {1}", totalWidth, totalHeight);
 
     InitOpenGLExtensions(instance);

@@ -8,13 +8,14 @@
 #include "Base/Pointers.hpp"
 #include "Core/Input/Keys.hpp"
 #include "Core/Window.hpp"
+#include "Core/ApplicationSettings.hpp"
 
 namespace Krys::Platform
 {
   class Win32Window : public Window
   {
   public:
-    Win32Window(uint32 width, uint32 height, float fps, Ptr<EventManager> eventManager,
+    Win32Window(const ApplicationSettings& settings, Ptr<EventManager> eventManager,
                 Ptr<InputManager> inputManager) noexcept;
     virtual ~Win32Window() noexcept override = default;
 

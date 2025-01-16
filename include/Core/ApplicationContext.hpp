@@ -7,6 +7,7 @@
 #include "Core/Events/EventManager.hpp"
 #include "Core/Input/InputManager.hpp"
 #include "Core/WindowManager.hpp"
+#include "Core/ApplicationSettings.hpp"
 
 namespace Krys
 {
@@ -22,7 +23,7 @@ namespace Krys
     /// @brief Construct an `ApplicationContext`.
     /// @param argc Command line argument count.
     /// @param argv Command line arguments.
-    ApplicationContext(int argc, char **argv) noexcept;
+    ApplicationContext(int argc, char **argv, const ApplicationSettings &settings) noexcept;
 
     /// @brief Get the current `EventManager`.
     Ptr<EventManager> GetEventManager() const noexcept;
@@ -36,10 +37,14 @@ namespace Krys
     /// @brief Get the command line arguments.
     const List<string> &GetCLIArgs() const noexcept;
 
+    /// @brief Get the application settings.
+    const ApplicationSettings &GetSettings() const noexcept;
+
   private:
     Unique<EventManager> _eventManager;
     Unique<WindowManager> _windowManager;
     Unique<InputManager> _inputManager;
+    ApplicationSettings _settings;
 
     /// @brief Program arguments.
     List<string> _args;

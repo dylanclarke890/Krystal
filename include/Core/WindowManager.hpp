@@ -2,6 +2,7 @@
 
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
+#include "Core/ApplicationSettings.hpp"
 #include "Core/Window.hpp"
 
 namespace Krys
@@ -24,9 +25,8 @@ namespace Krys
     Ptr<Window> GetCurrentWindow() const noexcept;
 
     /// @brief Create a new `Window` with the desired properties.
-    /// @param width The desired window width.
-    /// @param height The desired window height.
-    virtual Ptr<Window> Create(uint32 width, uint32 height, float fps) noexcept = 0;
+    /// @param settings The settings to use when creating the window.
+    virtual Ptr<Window> Create(const ApplicationSettings &settings) noexcept = 0;
 
   protected:
     Ptr<EventManager> _eventManager;

@@ -2,9 +2,10 @@
 
 namespace Krys
 {
-  Window::Window(uint32 width, uint32 height, float fps, Ptr<EventManager> eventManager,
+  Window::Window(const ApplicationSettings &settings, Ptr<EventManager> eventManager,
                  Ptr<InputManager> inputManager) noexcept
-      : _width(width), _height(height), _fps(fps), _eventManager(eventManager), _inputManager(inputManager)
+      : _width(settings.Width), _height(settings.Height), _renderFrameRate(settings.RenderFrameRate),
+        _eventManager(eventManager), _inputManager(inputManager)
   {
   }
 
@@ -23,13 +24,13 @@ namespace Krys
     return _vsyncEnabled;
   }
 
-  NO_DISCARD float Window::Fps() const noexcept
+  NO_DISCARD float Window::GetRenderFrameRate() const noexcept
   {
-    return _fps;
+    return _renderFrameRate;
   }
 
-  void Window::SetFps(float fps) noexcept
+  void Window::SetRenderFrameRate(float newFrameRate) noexcept
   {
-    _fps = fps;
+    _renderFrameRate = newFrameRate;
   }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/WindowManager.hpp"
+#include "Core/ApplicationSettings.hpp"
 
 namespace Krys::Platform
 {
@@ -9,6 +10,6 @@ namespace Krys::Platform
   public:
     Win32WindowManager(Ptr<EventManager> eventManager, Ptr<InputManager> inputManager) noexcept;
 
-    Ptr<Window> Create(uint32 width, uint32 height, float fps) noexcept override;
+    Ptr<Window> Create(const ApplicationSettings& settings) noexcept override;
   };
 }

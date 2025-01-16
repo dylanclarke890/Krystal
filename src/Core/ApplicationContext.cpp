@@ -2,7 +2,8 @@
 
 namespace Krys
 {
-  ApplicationContext::ApplicationContext(int argc, char **argv) noexcept : _args(argc)
+  ApplicationContext::ApplicationContext(int argc, char **argv, const ApplicationSettings &settings) noexcept
+      : _settings(settings), _args(argc)
   {
     std::transform(argv, argv + argc, std::begin(_args), [](const char *arg) -> string { return arg; });
   }
@@ -20,6 +21,11 @@ namespace Krys
   Ptr<InputManager> ApplicationContext::GetInputManager() const noexcept
   {
     return _inputManager.get();
+  }
+
+  const ApplicationSettings &ApplicationContext::GetSettings() const noexcept
+  {
+    return _settings;
   }
 
   const List<string> &ApplicationContext::GetCLIArgs() const noexcept
