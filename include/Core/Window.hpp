@@ -21,13 +21,16 @@ namespace Krys
     virtual ~Window() noexcept = default;
 
     /// @brief Get the width of the window.
-    NO_DISCARD uint32 Width() const noexcept;
+    NO_DISCARD uint32 GetWidth() const noexcept;
 
     /// @brief Get the height of the window.
-    NO_DISCARD uint32 Height() const noexcept;
+    NO_DISCARD uint32 GetHeight() const noexcept;
+
+    /// @brief Get the title of the window.
+    NO_DISCARD const string &GetTitle() const noexcept;
 
     /// @brief Get the vertical synchronization of the window.
-    NO_DISCARD bool VSync() const noexcept;
+    NO_DISCARD bool IsVSyncEnabled() const noexcept;
 
     /// @brief Sets the vertical synchronization of the window.
     /// @param enabled Whether to enable or disable vertical synchronization.
@@ -62,6 +65,7 @@ namespace Krys
     uint32 _width{0}, _height{0};
     bool _vsyncEnabled{false};
     float _renderFrameRate {0.0f};
+    string _title;
     Ptr<EventManager> _eventManager{nullptr};
     Ptr<InputManager> _inputManager{nullptr};
   };

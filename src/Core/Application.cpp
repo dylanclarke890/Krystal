@@ -61,8 +61,8 @@ namespace Krys
         window->SwapBuffers();
       }
 
-      // Cap the frame rate if vsync is disabled.
-      if (window->VSync())
+      // We'll manually cap the frame rate if vsync is disabled.
+      if (window->IsVSyncEnabled())
         continue;
 
       // CPU friendly way to cap the frame rate that we render at.

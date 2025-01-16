@@ -41,7 +41,7 @@ namespace Krys::Platform
 
     _windowHandle = ::CreateWindowExA(0,                         // optional window styles
                                       windowClass.lpszClassName, // window class
-                                      "Krystal",                 // window name
+                                      _title.c_str(),            // window name
                                       windowStyles,              // window style
                                       CW_USEDEFAULT,             // initial x position
                                       CW_USEDEFAULT,             // initial y position
