@@ -1,6 +1,6 @@
 #include "Graphics/Shader.hpp"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   Shader::Shader(const ShaderDescription &description) noexcept
       : _stage(description.Stage), _handle(ShaderHandle::InvalidHandle)

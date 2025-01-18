@@ -7,7 +7,7 @@
 
 #include <glad/gl.h>
 
-namespace Krys::Graphics::OpenGL
+namespace Krys::Gfx::OpenGL
 {
   constexpr GLuint PrimitiveTypeToOpenGL(PrimitiveType type) noexcept
   {

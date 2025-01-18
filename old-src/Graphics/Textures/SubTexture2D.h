@@ -4,7 +4,7 @@
 #include "Maths/Vector.h"
 #include "Graphics/Textures/Texture2D.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   using namespace Krys::Maths;
 

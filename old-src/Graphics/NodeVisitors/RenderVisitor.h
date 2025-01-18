@@ -3,7 +3,7 @@
 #include "Graphics/NodeVisitors/NodeVisitor.h"
 #include "Graphics/Renderer.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class RenderVisitor : public NodeVisitor
   {

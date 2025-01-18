@@ -5,7 +5,7 @@
 #include "Graphics/Material.h"
 #include "Graphics/Nodes/Node.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class GeometryNode : public Node
   {

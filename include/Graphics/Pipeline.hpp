@@ -4,7 +4,7 @@
 #include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class Pipeline
   {

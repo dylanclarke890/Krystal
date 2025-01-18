@@ -4,7 +4,7 @@
 #include "Graphics/Enums.h"
 #include "Graphics/Vertex.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   struct Mesh
   {

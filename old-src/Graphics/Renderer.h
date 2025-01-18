@@ -6,7 +6,7 @@
 #include "Graphics/Nodes/GeometryNode.h"
 #include "Graphics/GraphicsContext.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   constexpr uint32 MAX_VERTICES_PER_BATCH = 50000;
   constexpr uint32 MAX_INDICES_PER_BATCH = 200000;

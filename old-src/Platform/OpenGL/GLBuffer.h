@@ -8,7 +8,7 @@
 
 namespace Krys::OpenGL
 {
-  using namespace Krys::Graphics;
+  using namespace Krys::Gfx;
   using namespace Krys::Maths;
 
   class GLIndexBuffer : public IndexBuffer

@@ -1,7 +1,7 @@
 #include "Core/Debug/Macros.hpp"
 #include "Graphics/Renderer.hpp"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   GraphicsContext::~GraphicsContext() noexcept
   {

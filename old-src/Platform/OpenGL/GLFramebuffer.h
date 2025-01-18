@@ -7,7 +7,7 @@
 
 namespace Krys::OpenGL
 {
-  using namespace Krys::Graphics;
+  using namespace Krys::Gfx;
 
   static auto ToGLFramebufferBindType = [](FramebufferBindType bindType) -> int
   {

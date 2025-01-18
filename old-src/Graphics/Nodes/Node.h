@@ -3,7 +3,7 @@
 #include "Types.h"
 #include "Maths/Transform.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class NodeVisitor;
 

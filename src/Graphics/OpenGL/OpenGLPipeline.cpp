@@ -1,7 +1,7 @@
 #include "Graphics/OpenGL/OpenGLPipeline.hpp"
 #include "Core/Debug/Macros.hpp"
 
-namespace Krys::Graphics::OpenGL
+namespace Krys::Gfx::OpenGL
 {
   OpenGLPipeline::OpenGLPipeline() noexcept : Pipeline(), _program(glCreateProgram())
   {

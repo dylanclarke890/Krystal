@@ -10,7 +10,7 @@
 
 namespace Krys::OpenGL
 {
-  using namespace Krys::Graphics;
+  using namespace Krys::Gfx;
 
   class GLGraphicsContext : public GraphicsContext
   {

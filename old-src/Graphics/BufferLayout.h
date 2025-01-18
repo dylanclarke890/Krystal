@@ -3,7 +3,7 @@
 #include "Core.h"
 #include <initializer_list>
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   enum class ShaderDataType
   {

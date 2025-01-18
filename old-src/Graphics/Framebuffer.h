@@ -9,7 +9,7 @@
 
 #include <functional>
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class Framebuffer
   {

@@ -2,7 +2,7 @@
 
 #include "Graphics/Renderer.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   struct NodeVisitorContext
   {

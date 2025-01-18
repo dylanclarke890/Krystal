@@ -7,7 +7,7 @@
 
 namespace Krys::OpenGL
 {
-  using namespace Krys::Graphics;
+  using namespace Krys::Gfx;
 
   class GLVertexArray : public VertexArray
   {

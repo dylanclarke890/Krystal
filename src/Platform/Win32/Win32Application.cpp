@@ -21,7 +21,7 @@ namespace Krys
         CreateUnique<Win32WindowManager>(ctx->_eventManager.get(), ctx->_inputManager.get());
     }
     {
-      using namespace Graphics::OpenGL;
+      using namespace Gfx::OpenGL;
       ctx->_graphicsContext = CreateUnique<OpenGLGraphicsContext>();
       ctx->_renderer = CreateUnique<OpenGLRenderer>(ctx->_graphicsContext.get());
     }

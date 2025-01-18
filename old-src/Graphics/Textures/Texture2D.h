@@ -4,7 +4,7 @@
 
 #include "Maths/Vector.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class Texture2D : public Texture
   {

@@ -8,7 +8,7 @@
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   enum class PrimitiveType
   {

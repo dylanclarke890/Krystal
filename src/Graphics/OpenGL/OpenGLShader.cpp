@@ -4,7 +4,7 @@
 
 #include <glad/gl.h>
 
-namespace Krys::Graphics::OpenGL
+namespace Krys::Gfx::OpenGL
 {
   constexpr GLenum ShaderStageToOpenGL(ShaderStage stage) noexcept
   {

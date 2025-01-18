@@ -1,7 +1,7 @@
 #include "Graphics/Scene/SceneManager.h"
 #include "SceneManager.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   SceneManager::SceneManager(Ref<Renderer> renderer) noexcept
       : _renderer(renderer), _currentScene(CreateUnique<Scene>()) {}

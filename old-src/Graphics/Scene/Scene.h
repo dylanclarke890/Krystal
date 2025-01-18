@@ -4,7 +4,7 @@
 #include "Graphics/Nodes/Node.h"
 #include "Graphics/Scene/SceneGraph.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class Scene
   {

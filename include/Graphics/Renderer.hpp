@@ -3,7 +3,7 @@
 #include "Base/Pointers.hpp"
 #include "Graphics/GraphicsContext.hpp"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class Renderer
   {

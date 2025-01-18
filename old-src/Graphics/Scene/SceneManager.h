@@ -5,7 +5,7 @@
 #include "Graphics/Scene/Scene.h"
 #include "Graphics/NodeVisitors/NodeVisitor.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class SceneManager
   {

@@ -1,6 +1,6 @@
 #include "Graphics/Pipeline.hpp"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   Pipeline::Pipeline() noexcept : _handle(PipelineHandle::InvalidHandle)
   {

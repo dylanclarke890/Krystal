@@ -23,12 +23,12 @@ namespace Krys
     return _inputManager.get();
   }
 
-  Ptr<Graphics::Renderer> ApplicationContext::GetRenderer() const noexcept
+  Ptr<Gfx::Renderer> ApplicationContext::GetRenderer() const noexcept
   {
     return _renderer.get();
   }
 
-  Ptr<Graphics::GraphicsContext> ApplicationContext::GetGraphicsContext() const noexcept
+  Ptr<Gfx::GraphicsContext> ApplicationContext::GetGraphicsContext() const noexcept
   {
     return _graphicsContext.get();
   }

@@ -3,7 +3,7 @@
 #include "Maths/Vector.h"
 #include "Events/Events.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   using namespace Krys::Maths;
 

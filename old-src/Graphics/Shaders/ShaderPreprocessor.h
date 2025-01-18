@@ -7,7 +7,7 @@
 #include <sstream>
 #include <regex>
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   struct ShaderPreprocessorTemplateKeys
   {

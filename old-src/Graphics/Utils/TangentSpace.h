@@ -5,7 +5,7 @@
 #include "Graphics/Graphics.h"
 #include "Graphics/Vertex.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   using namespace Krys::Maths;
 

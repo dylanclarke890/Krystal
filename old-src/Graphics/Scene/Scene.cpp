@@ -1,6 +1,6 @@
 #include "Graphics/Scene/Scene.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   Scene::Scene() noexcept
       : Graph() {}

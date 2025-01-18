@@ -37,10 +37,10 @@ namespace Krys
     Ptr<InputManager> GetInputManager() const noexcept;
 
     /// @brief Get the current `Renderer`.
-    Ptr<Graphics::Renderer> GetRenderer() const noexcept;
+    Ptr<Gfx::Renderer> GetRenderer() const noexcept;
 
     /// @brief Get the current `GraphicsContext`.
-    Ptr<Graphics::GraphicsContext> GetGraphicsContext() const noexcept;
+    Ptr<Gfx::GraphicsContext> GetGraphicsContext() const noexcept;
 
     /// @brief Get the command line arguments.
     const List<string> &GetCLIArgs() const noexcept;
@@ -52,8 +52,8 @@ namespace Krys
     Unique<EventManager> _eventManager;
     Unique<WindowManager> _windowManager;
     Unique<InputManager> _inputManager;
-    Unique<Graphics::Renderer> _renderer;
-    Unique<Graphics::GraphicsContext> _graphicsContext;
+    Unique<Gfx::Renderer> _renderer;
+    Unique<Gfx::GraphicsContext> _graphicsContext;
     ApplicationSettings _settings;
 
     /// @brief Program arguments.

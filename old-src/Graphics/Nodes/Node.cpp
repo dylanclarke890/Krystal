@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   void Node::Accept(NodeVisitor &visitor) noexcept
   {

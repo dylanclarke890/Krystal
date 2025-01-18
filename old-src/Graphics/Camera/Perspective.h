@@ -7,7 +7,7 @@
 #include "Maths/Vector.h"
 #include "Maths/Algorithms.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   using namespace Krys::Maths;
 

@@ -7,7 +7,7 @@
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
 
-namespace Krys::Graphics::OpenGL
+namespace Krys::Gfx::OpenGL
 {
   class OpenGLGraphicsContext : public GraphicsContext
   {

@@ -6,7 +6,7 @@
 
 namespace Krys::OpenGL
 {
-  using namespace Krys::Graphics;
+  using namespace Krys::Gfx;
   using namespace Krys::Maths;
 
   class GLTexture2D : public Texture2D

@@ -3,7 +3,7 @@
 #include "Types.h"
 #include "Graphics/NodeVisitors/NodeVisitorContext.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class NodeVisitorFactory
   {

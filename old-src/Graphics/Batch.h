@@ -3,7 +3,7 @@
 #include "Types.h"
 #include "Graphics/Enums.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   struct BatchKey
   {

@@ -2,7 +2,7 @@
 
 #include "Types.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   enum class CullMode : ushort
   {

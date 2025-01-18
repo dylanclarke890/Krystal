@@ -3,7 +3,7 @@
 #include "Types.h"
 #include "Graphics/Buffer.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   class VertexArray
   {

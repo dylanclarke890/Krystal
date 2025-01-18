@@ -1,6 +1,6 @@
 #include "Graphics/Scene/SceneGraph.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   SceneGraph::SceneGraph() noexcept
       : _root(CreateRef<Node>()) {}

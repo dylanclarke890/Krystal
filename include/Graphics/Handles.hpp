@@ -138,7 +138,7 @@ namespace Krys::Impl
   };
 }
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   template <typename Tag>
   using Handle = Krys::Impl::Handle<Tag>;

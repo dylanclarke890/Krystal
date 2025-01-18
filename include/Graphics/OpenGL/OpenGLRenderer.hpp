@@ -4,7 +4,7 @@
 #include "Graphics/GraphicsContext.hpp"
 #include "Graphics/Renderer.hpp"
 
-namespace Krys::Graphics::OpenGL
+namespace Krys::Gfx::OpenGL
 {
   class OpenGLRenderer : public Renderer
   {

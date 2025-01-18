@@ -4,7 +4,7 @@
 #include "Maths/Vector.h"
 #include "Graphics/BufferLayout.h"
 
-namespace Krys::Graphics
+namespace Krys::Gfx
 {
   using namespace Krys::Maths;
 
