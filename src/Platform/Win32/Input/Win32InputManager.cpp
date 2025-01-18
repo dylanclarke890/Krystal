@@ -4,7 +4,7 @@
 #include "Core/Events/Input/MouseMoveEvent.hpp"
 #include "Core/Events/Input/ScrollWheelEvent.hpp"
 
-namespace Krys
+namespace Krys::Platform
 {
   Win32InputManager::Win32InputManager(Ptr<EventManager> eventManager) noexcept
       : InputManager(std::move(eventManager))

@@ -8,7 +8,7 @@
 #include "Core/Input/InputManager.hpp"
 #include "Core/Input/Keys.hpp"
 
-namespace Krys
+namespace Krys::Platform
 {
   class Win32InputManager : public InputManager
   {

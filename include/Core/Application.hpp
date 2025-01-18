@@ -12,7 +12,7 @@ namespace Krys
   {
   public:
     /// @brief Constructs an `Application`.
-    /// @param context Contains the various services provided by the application by default.
+    /// @param context Contains the various services provided to the application by default.
     /// @param width The width of the window.
     /// @param height The height of the window.
     Application(Unique<ApplicationContext> context) noexcept;

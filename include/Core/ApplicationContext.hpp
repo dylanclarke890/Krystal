@@ -4,10 +4,12 @@
 #include "Base/Macros.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
+#include "Core/ApplicationSettings.hpp"
 #include "Core/Events/EventManager.hpp"
 #include "Core/Input/InputManager.hpp"
 #include "Core/WindowManager.hpp"
-#include "Core/ApplicationSettings.hpp"
+#include "Graphics/GraphicsContext.hpp"
+#include "Graphics/Renderer.hpp"
 
 namespace Krys
 {
@@ -34,6 +36,12 @@ namespace Krys
     /// @brief Get the current `InputManager`.
     Ptr<InputManager> GetInputManager() const noexcept;
 
+    /// @brief Get the current `Renderer`.
+    Ptr<Graphics::Renderer> GetRenderer() const noexcept;
+
+    /// @brief Get the current `GraphicsContext`.
+    Ptr<Graphics::GraphicsContext> GetGraphicsContext() const noexcept;
+
     /// @brief Get the command line arguments.
     const List<string> &GetCLIArgs() const noexcept;
 
@@ -44,6 +52,8 @@ namespace Krys
     Unique<EventManager> _eventManager;
     Unique<WindowManager> _windowManager;
     Unique<InputManager> _inputManager;
+    Unique<Graphics::Renderer> _renderer;
+    Unique<Graphics::GraphicsContext> _graphicsContext;
     ApplicationSettings _settings;
 
     /// @brief Program arguments.

@@ -1,3 +1,4 @@
+#include <glad/gl.h>
 #include <glad/wgl.h>
 #include <hidusage.h>
 
@@ -85,6 +86,7 @@ namespace Krys::Platform
     KRYS_ASSERT(renderContext, "Failed to create OpenGL context");
     KRYS_ASSERT_ALWAYS_EVAL(::wglMakeCurrent(_deviceContext, renderContext),
                             "Failed to make OpenGL context current");
+    KRYS_ASSERT_ALWAYS_EVAL(::gladLoaderLoadGL(), "Failed to load OpenGL functions");
 
     // register for raw mouse events
     RAWINPUTDEVICE rid;
@@ -144,9 +146,14 @@ namespace Krys::Platform
 
     // specify an arbitrary PFD with OpenGL capabilities
     PIXELFORMATDESCRIPTOR fakePFD = {0};
-    fakePFD.nSize = sizeof(PIXELFORMATDESCRIPTOR); // size of structure
-    fakePFD.nVersion = 1;                          // default version
-    fakePFD.dwFlags = PFD_SUPPORT_OPENGL;          // OpenGL support
+    fakePFD.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+    fakePFD.nVersion = 1;
+    fakePFD.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+    fakePFD.iPixelType = PFD_TYPE_RGBA;
+    fakePFD.cColorBits = 32;
+    fakePFD.cAlphaBits = 8;
+    fakePFD.cDepthBits = 24;
+    fakePFD.cStencilBits = 8;
 
     int fakePFDID = ::ChoosePixelFormat(fakeDC, &fakePFD);
     KRYS_ASSERT(fakePFDID != 0, "ChoosePixelFormat() failed.");

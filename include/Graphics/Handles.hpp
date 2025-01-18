@@ -15,7 +15,19 @@ namespace Krys::Impl
   public:
     constexpr static handle_t InvalidHandle = std::numeric_limits<handle_t>::max();
 
+    struct Hash
+    {
+      size_t operator()(const Handle &handle) const noexcept
+      {
+        return std::hash<handle_t>()(handle._id);
+      }
+    };
+
 #pragma region Constructors
+
+    Handle() noexcept : _id(InvalidHandle)
+    {
+    }
 
     explicit Handle(const handle_t &id) noexcept : _id(id)
     {

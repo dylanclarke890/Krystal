@@ -69,5 +69,4 @@ namespace Krys::IO
     bool _loaded {false};
     uchar *_data {nullptr};
   };
-
 }
