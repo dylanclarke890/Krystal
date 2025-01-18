@@ -14,10 +14,13 @@ namespace Krys
     KRYS_ASSERT(_context->GetWindowManager(), "Window manager is null");
     KRYS_ASSERT(_context->GetInputManager(), "Input manager is null");
     KRYS_ASSERT(_context->GetEventManager(), "Event manager is null");
+    KRYS_ASSERT(_context->GetGraphicsContext(), "Graphics context is null");
+    KRYS_ASSERT(_context->GetRenderer(), "Renderer is null");
 
     const ApplicationSettings &settings = _context->GetSettings();
     KRYS_ASSERT(settings.VSync || settings.RenderFrameRate > 0,
                 "FPS must be greater than 0 if VSync is disabled");
+    KRYS_ASSERT(settings.PhysicsFrameRate > 0, "Physics FPS must be greater than 0");
 
     _context->GetWindowManager()->Create(settings);
     _context->GetGraphicsContext()->Init();
@@ -63,7 +66,7 @@ namespace Krys
         window->SwapBuffers();
       }
 
-      // We'll manually cap the frame rate if vsync is disabled.
+      // We'll only manually cap the frame rate if vsync is disabled.
       if (window->IsVSyncEnabled())
         continue;
 
