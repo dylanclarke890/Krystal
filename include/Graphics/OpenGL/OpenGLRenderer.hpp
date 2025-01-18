@@ -9,10 +9,7 @@ namespace Krys::Graphics::OpenGL
   class OpenGLRenderer : public Renderer
   {
   public:
-    explicit OpenGLRenderer(Ptr<GraphicsContext> context) noexcept : Renderer(std::move(context))
-    {
-    }
-
+    explicit OpenGLRenderer(Ptr<GraphicsContext> context) noexcept;
     ~OpenGLRenderer() noexcept override = default;
   };
 }

@@ -9,10 +9,10 @@ namespace Krys::Impl
   template <typename Tag>
   class Handle
   {
+  public:
     using handle_t = uint16;
     using tag_t = Tag;
 
-  public:
     constexpr static handle_t InvalidHandle = std::numeric_limits<handle_t>::max();
 
     struct Hash
@@ -113,7 +113,7 @@ namespace Krys::Impl
   {
   };
 
-  struct ProgramHandle
+  struct PipelineHandle
   {
   };
 
@@ -143,7 +143,7 @@ namespace Krys::Graphics
   template <typename Tag>
   using Handle = Krys::Impl::Handle<Tag>;
 
-  using ProgramHandle = Handle<Impl::ProgramHandle>;
+  using PipelineHandle = Handle<Impl::PipelineHandle>;
   using ShaderHandle = Handle<Impl::ShaderHandle>;
   using TextureHandle = Handle<Impl::TextureHandle>;
   using UniformHandle = Handle<Impl::UniformHandle>;

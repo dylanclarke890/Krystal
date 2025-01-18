@@ -12,9 +12,7 @@ namespace Krys::Graphics
     virtual ~Renderer() noexcept = default;
 
   protected:
-    explicit Renderer(Ptr<GraphicsContext> context) noexcept : _context(context)
-    {
-    }
+    explicit Renderer(Ptr<GraphicsContext> context) noexcept;
 
     Ptr<GraphicsContext> _context {nullptr};
   };

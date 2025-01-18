@@ -28,7 +28,7 @@ namespace Krys::Graphics::OpenGL
     {
       glCreateBuffers(1, &_glHandle);
       glNamedBufferData(_glHandle, this->_capacity, nullptr, BufferUsageHintToOpenGL(this->_usageHint));
-      this->_handle = THandle(static_cast<uint16>(_glHandle));
+      this->_handle = THandle(static_cast<THandle::handle_t>(_glHandle));
     }
 
     ~OpenGLBuffer() override

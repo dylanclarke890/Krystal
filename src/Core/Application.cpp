@@ -18,7 +18,9 @@ namespace Krys
     const ApplicationSettings &settings = _context->GetSettings();
     KRYS_ASSERT(settings.VSync || settings.RenderFrameRate > 0,
                 "FPS must be greater than 0 if VSync is disabled");
+
     _context->GetWindowManager()->Create(settings);
+    _context->GetGraphicsContext()->Init();
   }
 
   void Application::Run() noexcept
