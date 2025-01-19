@@ -33,6 +33,11 @@ namespace Krys
     return _graphicsContext.get();
   }
 
+  Ptr<Gfx::MeshManager> ApplicationContext::GetMeshManager() const noexcept
+  {
+    return _meshManager.get();
+  }
+
   const ApplicationSettings &ApplicationContext::GetSettings() const noexcept
   {
     return _settings;

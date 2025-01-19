@@ -2,7 +2,8 @@
 #include "Core/ApplicationContext.hpp"
 #include "Core/Events/EventManager.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
-#include "Graphics/OpenGL/OpenGLRenderer.hpp"
+#include "Graphics/OpenGL/OpenGLMeshManager.hpp"
+#include "Graphics/Renderer.hpp"
 #include "Platform/Win32/Input/Win32InputManager.hpp"
 #include "Platform/Win32/Win32WindowManager.hpp"
 
@@ -23,7 +24,8 @@ namespace Krys
     {
       using namespace Gfx::OpenGL;
       ctx->_graphicsContext = CreateUnique<OpenGLGraphicsContext>();
-      ctx->_renderer = CreateUnique<OpenGLRenderer>(ctx->_graphicsContext.get());
+      ctx->_renderer = CreateUnique<Gfx::Renderer>();
+      ctx->_meshManager = CreateUnique<OpenGLMeshManager>(ctx->_graphicsContext.get());
     }
     return ctx;
   }

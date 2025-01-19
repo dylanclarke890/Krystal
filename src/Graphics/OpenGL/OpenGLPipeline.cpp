@@ -3,26 +3,26 @@
 
 namespace Krys::Gfx::OpenGL
 {
-  OpenGLPipeline::OpenGLPipeline() noexcept : Pipeline(), _program(glCreateProgram())
+  OpenGLPipeline::OpenGLPipeline() noexcept : Pipeline(), _program(::glCreateProgram())
   {
     _handle = PipelineHandle(static_cast<PipelineHandle::handle_t>(_program));
   }
 
   OpenGLPipeline::~OpenGLPipeline() noexcept
   {
-    glDeleteProgram(_program);
+    ::glDeleteProgram(_program);
   }
 
   void OpenGLPipeline::Bind() noexcept
   {
     KRYS_ASSERT(_linked && _isValid, "Pipeline must be valid and linked before binding");
-    glUseProgram(_program);
+    ::glUseProgram(_program);
   }
 
   void OpenGLPipeline::Unbind() noexcept
   {
     KRYS_ASSERT(_linked && _isValid, "Pipeline must be valid and linked before unbinding");
-    glUseProgram(0);
+    ::glUseProgram(0);
   }
 
   void OpenGLPipeline::Link() noexcept
@@ -31,25 +31,25 @@ namespace Krys::Gfx::OpenGL
 
     for (auto shader : _shaders)
     {
-      glAttachShader(_program, shader.Id());
+      ::glAttachShader(_program, shader.Id());
     }
 
-    glLinkProgram(_program);
+    ::glLinkProgram(_program);
     _linked = true;
 
     int success;
-    glGetProgramiv(_program, GL_LINK_STATUS, &success);
+    ::glGetProgramiv(_program, GL_LINK_STATUS, &success);
     if (!success)
     {
       char infoLog[512];
-      glGetProgramInfoLog(_program, 512, nullptr, infoLog);
+      ::glGetProgramInfoLog(_program, 512, nullptr, infoLog);
       KRYS_ASSERT(false, "Program linking failed: {0}", infoLog);
     }
     _isValid = true;
 
     for (auto shader : _shaders)
     {
-      glDeleteShader(shader.Id());
+      ::glDeleteShader(shader.Id());
     }
   }
 

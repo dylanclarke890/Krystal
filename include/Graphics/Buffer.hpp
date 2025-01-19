@@ -35,24 +35,19 @@ namespace Krys::Gfx
       return _capacity;
     }
 
-    NO_DISCARD uint32 GetSize() const noexcept
-    {
-      return _size;
-    }
-
     NO_DISCARD BufferUsageHint GetUsageHint() const noexcept
     {
       return _usageHint;
     }
 
-    virtual void SetData(const void *data, uint32 size) noexcept = 0;
+    virtual void Write(const void *data, size_t size, size_t offset) noexcept = 0;
 
     virtual void Bind() noexcept = 0;
     virtual void Unbind() noexcept = 0;
 
   protected:
     handle_t _handle;
-    uint32 _capacity {0}, _size {0};
+    uint32 _capacity {0};
     BufferUsageHint _usageHint;
   };
 

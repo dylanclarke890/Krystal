@@ -9,6 +9,7 @@
 #include "Core/Input/InputManager.hpp"
 #include "Core/WindowManager.hpp"
 #include "Graphics/GraphicsContext.hpp"
+#include "Graphics/MeshManager.hpp"
 #include "Graphics/Renderer.hpp"
 
 namespace Krys
@@ -42,6 +43,9 @@ namespace Krys
     /// @brief Get the current `GraphicsContext`.
     Ptr<Gfx::GraphicsContext> GetGraphicsContext() const noexcept;
 
+    /// @brief Get the current `MeshManager`.
+    Ptr<Gfx::MeshManager> GetMeshManager() const noexcept;
+
     /// @brief Get the command line arguments.
     const List<string> &GetCLIArgs() const noexcept;
 
@@ -54,6 +58,7 @@ namespace Krys
     Unique<InputManager> _inputManager;
     Unique<Gfx::Renderer> _renderer;
     Unique<Gfx::GraphicsContext> _graphicsContext;
+    Unique<Gfx::MeshManager> _meshManager;
     ApplicationSettings _settings;
 
     /// @brief Program arguments.

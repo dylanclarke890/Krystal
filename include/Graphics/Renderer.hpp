@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Pointers.hpp"
+#include "Graphics/RenderCommand.hpp"
 #include "Graphics/GraphicsContext.hpp"
 
 namespace Krys::Gfx
@@ -8,12 +9,13 @@ namespace Krys::Gfx
   class Renderer
   {
   public:
-    Renderer() = delete;
-    virtual ~Renderer() noexcept = default;
+    Renderer() = default;
+    ~Renderer() noexcept = default;
 
-  protected:
-    explicit Renderer(Ptr<GraphicsContext> context) noexcept;
+    void Submit(const RenderCommand &command) noexcept;
+    void Execute(Ptr<GraphicsContext> context) noexcept;
 
-    Ptr<GraphicsContext> _context {nullptr};
+  private:
+    List<RenderCommand> _commands {};
   };
 }

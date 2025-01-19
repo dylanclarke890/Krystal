@@ -111,7 +111,7 @@ namespace Krys::Platform
 
   void Win32OpenGLWindow::SetVSync(bool enabled) noexcept
   {
-    wglSwapIntervalEXT(enabled ? 1 : 0);
+    ::wglSwapIntervalEXT(enabled ? 1 : 0);
     _vsyncEnabled = enabled;
     Logger::Info("VSync is {0}", enabled ? "enabled" : "disabled");
   }

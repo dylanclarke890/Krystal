@@ -59,43 +59,36 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLGraphicsContext::Init() noexcept
   {
-    glEnable(GL_DEBUG_OUTPUT);
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-    glDebugMessageCallback(OpenGLMessageCallback, nullptr);
-
-    GLuint vao;
-    glCreateVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    ::glEnable(GL_DEBUG_OUTPUT);
+    ::glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    ::glDebugMessageCallback(OpenGLMessageCallback, nullptr);
   }
 
-  void OpenGLGraphicsContext::DrawArrays(const PipelineHandle &pipelineHandle,
-                                         const VertexBufferHandle &vertexBufferHandle, PrimitiveType type,
-                                         uint32 first, uint32 count) noexcept
+  void OpenGLGraphicsContext::DrawArrays(PrimitiveType type, uint32 count) noexcept
   {
-    auto &pipeline = GetPipeline(pipelineHandle);
-    auto &vertexBuffer = GetVertexBuffer(vertexBufferHandle);
+    ::glDrawArrays(PrimitiveTypeToOpenGL(type), 0, count);
+  }
 
-    pipeline.Bind();
-    vertexBuffer.Bind();
-
-    glDrawArrays(PrimitiveTypeToOpenGL(type), first, count);
+  void OpenGLGraphicsContext::DrawElements(PrimitiveType type, uint32 count) noexcept
+  {
+    ::glDrawElements(PrimitiveTypeToOpenGL(type), count, GL_UNSIGNED_INT, nullptr);
   }
 
   void OpenGLGraphicsContext::SetClearColor(const Vec3 &rgb) noexcept
   {
-    glClearColor(rgb.x, rgb.y, rgb.z, 1.0f);
+    ::glClearColor(rgb.x, rgb.y, rgb.z, 1.0f);
     _clearColor = Vec4(rgb.x, rgb.y, rgb.z, 1.0f);
   }
 
   void OpenGLGraphicsContext::SetClearColor(const Vec4 &rgba) noexcept
   {
-    glClearColor(rgba.x, rgba.y, rgba.z, rgba.w);
+    ::glClearColor(rgba.x, rgba.y, rgba.z, rgba.w);
     _clearColor = rgba;
   }
 
   void OpenGLGraphicsContext::Clear() noexcept
   {
-    glClear(GL_COLOR_BUFFER_BIT);
+    ::glClear(GL_COLOR_BUFFER_BIT);
   }
 
   VertexBufferHandle OpenGLGraphicsContext::CreateVertexBuffer(uint32 size) noexcept
@@ -104,10 +97,16 @@ namespace Krys::Gfx::OpenGL
     auto handle = buffer->GetHandle();
 
     buffer->Bind();
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), static_cast<void *>(0));
-
     _vertexBuffers[handle] = std::move(buffer);
+    return handle;
+  }
+
+  IndexBufferHandle OpenGLGraphicsContext::CreateIndexBuffer(uint32 size) noexcept
+  {
+    auto buffer = CreateUnique<OpenGLIndexBuffer>(size);
+    auto handle = buffer->GetHandle();
+
+    _indexBuffers[handle] = std::move(buffer);
     return handle;
   }
 

@@ -18,6 +18,13 @@ namespace Krys::Gfx
     _vertexBuffers.erase(handle);
   }
 
+  void GraphicsContext::DestroyIndexBuffer(IndexBufferHandle handle) noexcept
+  {
+    KRYS_ASSERT(handle.Id() != IndexBufferHandle::InvalidHandle && _indexBuffers.contains(handle),
+                "Invalid index buffer handle");
+    _indexBuffers.erase(handle);
+  }
+
   void GraphicsContext::DestroyShader(ShaderHandle handle) noexcept
   {
     KRYS_ASSERT(handle.Id() != ShaderHandle::InvalidHandle && _shaders.contains(handle),

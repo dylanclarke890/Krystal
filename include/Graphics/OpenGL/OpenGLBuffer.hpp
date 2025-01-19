@@ -8,7 +8,7 @@
 
 namespace Krys::Gfx::OpenGL
 {
-  constexpr uint32 BufferUsageHintToOpenGL(BufferUsageHint hint) noexcept
+  constexpr GLuint BufferUsageHintToOpenGL(BufferUsageHint hint) noexcept
   {
     switch (hint)
     {
@@ -26,31 +26,30 @@ namespace Krys::Gfx::OpenGL
     OpenGLBuffer(uint32 capacity, BufferUsageHint usageHint = BufferUsageHint::Static) noexcept
         : Buffer<THandle>(capacity, usageHint), _glHandle(0)
     {
-      glCreateBuffers(1, &_glHandle);
-      glNamedBufferData(_glHandle, this->_capacity, nullptr, BufferUsageHintToOpenGL(this->_usageHint));
+      ::glCreateBuffers(1, &_glHandle);
+      ::glNamedBufferData(_glHandle, this->_capacity, nullptr, BufferUsageHintToOpenGL(this->_usageHint));
       this->_handle = THandle(static_cast<THandle::handle_t>(_glHandle));
     }
 
     ~OpenGLBuffer() override
     {
-      glDeleteBuffers(1, &_glHandle);
+      ::glDeleteBuffers(1, &_glHandle);
     }
 
-    void SetData(const void *data, uint32 size) noexcept override
+    void Write(const void *data, size_t size, size_t offset) noexcept override
     {
-      KRYS_ASSERT(size <= this->_capacity, "Data size exceeds buffer capacity");
-      glNamedBufferSubData(_glHandle, 0, size, data);
-      this->_size = size;
+      KRYS_ASSERT(offset + size <= this->_capacity, "Data size exceeds buffer capacity");
+      ::glNamedBufferSubData(_glHandle, offset, size, data);
     }
 
     void Bind() noexcept override
     {
-      glBindBuffer(Target, _glHandle);
+      ::glBindBuffer(Target, _glHandle);
     }
 
     void Unbind() noexcept override
     {
-      glBindBuffer(Target, 0);
+      ::glBindBuffer(Target, 0);
     }
 
   private:
