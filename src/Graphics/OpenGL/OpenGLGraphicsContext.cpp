@@ -24,29 +24,44 @@ namespace Krys::Gfx::OpenGL
     }
   }
 
-  constexpr void OpenGLMessageCallback(uint source, uint type, uint id, uint severity, int length,
-                                       const char *message, const void *)
+  void OpenGLMessageCallback(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei,
+                             const char *msg, const void *)
   {
     switch (severity)
     {
-      case GL_DEBUG_SEVERITY_HIGH:
-        Logger::Fatal(message);
-        KRYS_ASSERT(false, "OPENGL: Error (HIGH) - Id: {0}, Source: {1}, Type: {2}, Length {3}", id, source,
-                    type, length);
-        break;
-      case GL_DEBUG_SEVERITY_MEDIUM:
-        Logger::Error(message);
-        KRYS_ASSERT(false, "OPENGL: Error (MEDIUM) - Id: {0}, Source: {1}, Type: {2}, Length {3}", id, source,
-                    type, length);
-        break;
-      case GL_DEBUG_SEVERITY_LOW:
-        Logger::Error(message);
-        KRYS_ASSERT(false, "OPENGL: Error (LOW) - Id: {0}, Source: {1}, Type: {2}, Length {3}", id, source,
-                    type, length);
-        break;
-      case GL_DEBUG_SEVERITY_NOTIFICATION: Logger::Info(message); break;
-      default:                             KRYS_ASSERT(false, "Unknown severity level!", 0); break;
+      case GL_DEBUG_SEVERITY_HIGH:         Logger::Fatal("OPENGL: {0}", msg); break;
+      case GL_DEBUG_SEVERITY_MEDIUM:       Logger::Error("OPENGL: {0}", msg); break;
+      case GL_DEBUG_SEVERITY_LOW:          Logger::Error("OPENGL: {0}", msg); break;
+      case GL_DEBUG_SEVERITY_NOTIFICATION: Logger::Info("OPENGL: {0}", msg); break;
+      default:                             KRYS_ASSERT(false, "Unknown enum value: OpenGL severity level"); break;
     }
+
+    Logger::Write(" - Id: {0}", id);
+    Logger::Write(", Source: ");
+    switch (source)
+    {
+      case GL_DEBUG_SOURCE_API:             Logger::Write("API"); break;
+      case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   Logger::Write("Window System"); break;
+      case GL_DEBUG_SOURCE_SHADER_COMPILER: Logger::Write("Shader Compiler"); break;
+      case GL_DEBUG_SOURCE_THIRD_PARTY:     Logger::Write("Third Party"); break;
+      case GL_DEBUG_SOURCE_APPLICATION:     Logger::Write("Application"); break;
+      case GL_DEBUG_SOURCE_OTHER:           Logger::Write("Other"); break;
+    }
+
+    Logger::Write(", Type: ");
+    switch (type)
+    {
+      case GL_DEBUG_TYPE_ERROR:               Logger::Write("Error"); break;
+      case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: Logger::Write("Deprecated Behavior"); break;
+      case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  Logger::Write("Undefined Behavior"); break;
+      case GL_DEBUG_TYPE_PORTABILITY:         Logger::Write("Portability"); break;
+      case GL_DEBUG_TYPE_PERFORMANCE:         Logger::Write("Performance"); break;
+      case GL_DEBUG_TYPE_MARKER:              Logger::Write("Marker"); break;
+      case GL_DEBUG_TYPE_PUSH_GROUP:          Logger::Write("Push Group"); break;
+      case GL_DEBUG_TYPE_POP_GROUP:           Logger::Write("Pop Group"); break;
+      case GL_DEBUG_TYPE_OTHER:               Logger::Write("Other"); break;
+    }
+    Logger::NewLine();
   }
 
   OpenGLGraphicsContext::OpenGLGraphicsContext() noexcept

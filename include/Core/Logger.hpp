@@ -17,6 +17,7 @@ namespace Krys
     Debug,
     Info,
     Error,
+    Warn,
     Fatal
   };
 
@@ -26,6 +27,7 @@ namespace Krys
     {
       case LogLevel::Debug: return "[DEBUG]";
       case LogLevel::Info:  return "[INFO ]";
+      case LogLevel::Warn:  return "[WARN ]";
       case LogLevel::Error: return "[ERROR]";
       case LogLevel::Fatal: return "[FATAL]";
       default:              return "[UNDEF]";
@@ -50,6 +52,12 @@ namespace Krys
     }
 
     template <typename... Args>
+    static void Warn(const string &message, Args &&...args) noexcept
+    {
+      Log<LogLevel::Warn>(message, std::forward<Args>(args)...);
+    }
+
+    template <typename... Args>
     static void Error(const string &message, Args &&...args) noexcept
     {
       Log<LogLevel::Error>(message, std::forward<Args>(args)...);
@@ -59,6 +67,26 @@ namespace Krys
     static void Fatal(const string &message, Args &&...args) noexcept
     {
       Log<LogLevel::Fatal>(message, std::forward<Args>(args)...);
+    }
+
+    template <typename... Args>
+    static void Write(const string &message, Args &&...args) noexcept
+    {
+      std::lock_guard<std::mutex> lock(_mu);
+      Output(std::vformat(message, std::make_format_args(args...)));
+    }
+
+    template <typename... Args>
+    static void WriteLine(const string &message, Args &&...args) noexcept
+    {
+      std::lock_guard<std::mutex> lock(_mu);
+      Output(std::vformat(message, std::make_format_args(args...)) + '\n');
+    }
+
+    static void NewLine() noexcept
+    {
+      std::lock_guard<std::mutex> lock(_mu);
+      Output("\n");
     }
 
   private:
