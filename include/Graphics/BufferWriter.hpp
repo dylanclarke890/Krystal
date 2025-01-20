@@ -4,10 +4,12 @@
 
 namespace Krys::Gfx
 {
+  /// @brief A writer for a buffer.
   template <typename T>
   class BufferWriter
   {
   public:
+    /// @brief Construct a buffer writer with the specified buffer and offset.
     BufferWriter(T &buffer, size_t offset = 0u) noexcept : _buffer(buffer), _offset(offset)
     {
     }
@@ -32,6 +34,7 @@ namespace Krys::Gfx
       _offset += data.size() * sizeof(S);
     }
 
+    /// @brief Advance the offset into the buffer by the specified amount.
     void Advance(size_t offset) noexcept
     {
       _offset += offset;

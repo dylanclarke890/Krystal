@@ -29,15 +29,14 @@ namespace Krys::Gfx::OpenGL
   {
     switch (severity)
     {
-      case GL_DEBUG_SEVERITY_HIGH:         Logger::Fatal("OPENGL: {0}", msg); break;
-      case GL_DEBUG_SEVERITY_MEDIUM:       Logger::Error("OPENGL: {0}", msg); break;
-      case GL_DEBUG_SEVERITY_LOW:          Logger::Error("OPENGL: {0}", msg); break;
-      case GL_DEBUG_SEVERITY_NOTIFICATION: Logger::Info("OPENGL: {0}", msg); break;
+      case GL_DEBUG_SEVERITY_HIGH:         Logger::Fatal("OPENGL ({0}): {1}", id, msg); break;
+      case GL_DEBUG_SEVERITY_MEDIUM:       Logger::Error("OPENGL ({0}): {1}", id, msg); break;
+      case GL_DEBUG_SEVERITY_LOW:          Logger::Error("OPENGL ({0}): {1}", id, msg); break;
+      case GL_DEBUG_SEVERITY_NOTIFICATION: Logger::Info("OPENGL ({0}): {1}", id, msg); break;
       default:                             KRYS_ASSERT(false, "Unknown enum value: OpenGL severity level"); break;
     }
 
-    Logger::Write(" - Id: {0}", id);
-    Logger::Write(", Source: ");
+    Logger::Write(" - Source: ");
     switch (source)
     {
       case GL_DEBUG_SOURCE_API:             Logger::Write("API"); break;
@@ -46,9 +45,11 @@ namespace Krys::Gfx::OpenGL
       case GL_DEBUG_SOURCE_THIRD_PARTY:     Logger::Write("Third Party"); break;
       case GL_DEBUG_SOURCE_APPLICATION:     Logger::Write("Application"); break;
       case GL_DEBUG_SOURCE_OTHER:           Logger::Write("Other"); break;
+      default:                              KRYS_ASSERT(false, "Unknown enum value: OpenGL source type"); break;
     }
+    Logger::NewLine();
 
-    Logger::Write(", Type: ");
+    Logger::Write("- Type: ");
     switch (type)
     {
       case GL_DEBUG_TYPE_ERROR:               Logger::Write("Error"); break;
@@ -60,6 +61,7 @@ namespace Krys::Gfx::OpenGL
       case GL_DEBUG_TYPE_PUSH_GROUP:          Logger::Write("Push Group"); break;
       case GL_DEBUG_TYPE_POP_GROUP:           Logger::Write("Pop Group"); break;
       case GL_DEBUG_TYPE_OTHER:               Logger::Write("Other"); break;
+      default:                                KRYS_ASSERT(false, "Unknown enum value: OpenGL message type"); break;
     }
     Logger::NewLine();
   }
@@ -91,12 +93,14 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLGraphicsContext::SetClearColor(const Vec3 &rgb) noexcept
   {
-    ::glClearColor(rgb.x, rgb.y, rgb.z, 1.0f);
-    _clearColor = Vec4(rgb.x, rgb.y, rgb.z, 1.0f);
+    SetClearColor(Vec4(rgb.x, rgb.y, rgb.z, 1.0f));
   }
 
   void OpenGLGraphicsContext::SetClearColor(const Vec4 &rgba) noexcept
   {
+    if (_clearColor == rgba)
+      return;
+
     ::glClearColor(rgba.x, rgba.y, rgba.z, rgba.w);
     _clearColor = rgba;
   }

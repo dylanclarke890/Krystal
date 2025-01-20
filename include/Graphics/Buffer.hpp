@@ -12,37 +12,52 @@ namespace Krys::Gfx
     Stream
   };
 
+  /// @brief Represents a buffer object.
+  /// @tparam THandle The handle type of the buffer.
   template <typename THandle>
   class Buffer
   {
     using handle_t = THandle;
 
   public:
-    Buffer(uint32 capacity, BufferUsageHint usageHint = BufferUsageHint::Static) noexcept
+    /// @brief Construct a buffer with the specified capacity and usage hint.
+    /// @param capacity The initial capacity of the buffer.
+    /// @param usageHint The usage hint of the buffer.
+    explicit Buffer(uint32 capacity, BufferUsageHint usageHint = BufferUsageHint::Static) noexcept
         : _capacity(capacity), _usageHint(usageHint)
     {
     }
 
     virtual ~Buffer() = default;
 
+    /// @brief Get the handle of the buffer.
     NO_DISCARD const handle_t &GetHandle() const noexcept
     {
       return _handle;
     }
 
+    /// @brief Get the capacity of the buffer.
     NO_DISCARD uint32 GetCapacity() const noexcept
     {
       return _capacity;
     }
 
+    /// @brief Get the usage hint of the buffer, specified at creation.
     NO_DISCARD BufferUsageHint GetUsageHint() const noexcept
     {
       return _usageHint;
     }
 
+    /// @brief Write data to the buffer at the specified offset.
+    /// @param data The data to write.
+    /// @param size The size of the data.
+    /// @param offset The offset to write the data to.
     virtual void Write(const void *data, size_t size, size_t offset) noexcept = 0;
 
+    /// @brief Bind the buffer.
     virtual void Bind() noexcept = 0;
+
+    /// @brief Unbind the buffer.
     virtual void Unbind() noexcept = 0;
 
   protected:

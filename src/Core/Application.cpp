@@ -16,6 +16,7 @@ namespace Krys
     KRYS_ASSERT(_context->GetEventManager(), "Event manager is null");
     KRYS_ASSERT(_context->GetGraphicsContext(), "Graphics context is null");
     KRYS_ASSERT(_context->GetRenderer(), "Renderer is null");
+    KRYS_ASSERT(_context->GetMeshManager(), "Mesh manager is null");
 
     const ApplicationSettings &settings = _context->GetSettings();
     KRYS_ASSERT(settings.VSync || settings.RenderFrameRate > 0,
