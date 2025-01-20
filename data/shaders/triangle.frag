@@ -1,11 +1,11 @@
 #version 330 core
-out vec4 FragColor;
 
-uniform float u_Time;
+in vec4 v_Colour;
+
+out vec4 o_Colour;
+
 
 void main()
 {
-  float greenValue = (sin(u_Time) / 2.0f) + 0.5f;
-
-  FragColor = vec4(0.0f, greenValue, 0.0f, 1.0f);
+  o_Colour = v_Colour;
 }

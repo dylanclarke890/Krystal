@@ -49,7 +49,7 @@ namespace Krys::Gfx
 
   VertexLayout VertexLayout::Default() noexcept
   {
-    return VertexLayout({VertexAttributeType::FLOAT_3});
+    return VertexLayout({VertexAttributeType::FLOAT_4, VertexAttributeType::FLOAT_4});
   }
 
   VertexLayout::const_iterator VertexLayout::begin() const noexcept
