@@ -2,6 +2,7 @@
 
 #include "Base/Pointers.hpp"
 #include "Graphics/Buffer.hpp"
+#include "Graphics/Colour.hpp"
 #include "Graphics/Handles.hpp"
 #include "Graphics/Pipeline.hpp"
 #include "Graphics/PrimitiveType.hpp"
@@ -21,8 +22,7 @@ namespace Krys::Gfx
     virtual void DrawArrays(PrimitiveType type, uint32 count) noexcept = 0;
     virtual void DrawElements(PrimitiveType type, uint32 count) noexcept = 0;
 
-    virtual void SetClearColor(const Vec4 &rgba) noexcept = 0;
-    virtual void SetClearColor(const Vec3 &rgb) noexcept = 0;
+    virtual void SetClearColour(const Colour &colour) noexcept = 0;
     virtual void Clear() noexcept = 0;
 
     virtual VertexBufferHandle CreateVertexBuffer(uint32 size) noexcept = 0;
@@ -44,7 +44,7 @@ namespace Krys::Gfx
     Pipeline &GetPipeline(PipelineHandle handle) noexcept;
 
   protected:
-    Vec4 _clearColor {0.0f, 0.0f, 0.0f, 1.0f};
+    Colour _clearColour {0.0f, 0.0f, 0.0f, 1.0f};
     Map<ShaderHandle, Unique<Shader>, ShaderHandle::Hash> _shaders {};
     Map<PipelineHandle, Unique<Pipeline>, PipelineHandle::Hash> _pipelines {};
     Map<VertexBufferHandle, Unique<VertexBuffer>, VertexBufferHandle::Hash> _vertexBuffers {};

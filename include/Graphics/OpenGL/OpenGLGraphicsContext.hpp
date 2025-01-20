@@ -21,8 +21,7 @@ namespace Krys::Gfx::OpenGL
     void DrawArrays(PrimitiveType type, uint32 count) noexcept override;
     void DrawElements(PrimitiveType type, uint32 count) noexcept override;
 
-    void SetClearColor(const Vec3 &rgb) noexcept override;
-    void SetClearColor(const Vec4 &rgba) noexcept override;
+    void SetClearColour(const Colour &colour) noexcept override;
 
     VertexBufferHandle CreateVertexBuffer(uint32 size) noexcept override;
     IndexBufferHandle CreateIndexBuffer(uint32 size) noexcept override;

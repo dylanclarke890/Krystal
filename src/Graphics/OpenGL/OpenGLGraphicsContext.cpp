@@ -91,18 +91,13 @@ namespace Krys::Gfx::OpenGL
     ::glDrawElements(PrimitiveTypeToOpenGL(type), count, GL_UNSIGNED_INT, nullptr);
   }
 
-  void OpenGLGraphicsContext::SetClearColor(const Vec3 &rgb) noexcept
+  void OpenGLGraphicsContext::SetClearColour(const Colour &colour) noexcept
   {
-    SetClearColor(Vec4(rgb.x, rgb.y, rgb.z, 1.0f));
-  }
-
-  void OpenGLGraphicsContext::SetClearColor(const Vec4 &rgba) noexcept
-  {
-    if (_clearColor == rgba)
+    if (_clearColour == colour)
       return;
 
-    ::glClearColor(rgba.x, rgba.y, rgba.z, rgba.w);
-    _clearColor = rgba;
+    ::glClearColor(colour.r, colour.g, colour.b, colour.a);
+    _clearColour = colour;
   }
 
   void OpenGLGraphicsContext::Clear() noexcept
