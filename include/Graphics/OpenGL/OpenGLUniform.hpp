@@ -29,7 +29,7 @@ namespace Krys::Gfx::OpenGL
     OpenGLUniform(PipelineHandle program, const string &name) noexcept
         : _program(program), _location(-1), _value()
     {
-      _location = glGetUniformLocation(static_cast<GLuint>(_program.Id()), name.c_str());
+      _location = glGetProgramResourceLocation(static_cast<GLuint>(_program.Id()), GL_UNIFORM, name.c_str());
       if (_location == -1)
         Logger::Warn("Uniform '{0}' does not exist. (Program {1})", name, _program.Id());
     }
@@ -63,39 +63,39 @@ namespace Krys::Gfx::OpenGL
     void UploadValue() const noexcept
     {
       if constexpr (std::is_same_v<uniform_t, bool>)
-        glUniform1i(_location, _value);
+        glProgramUniform1i(_program.Id(), _location, _value);
       else if constexpr (std::is_same_v<uniform_t, int32>)
-        glUniform1i(_location, _value);
+        glProgramUniform1i(_program.Id(), _location, _value);
       else if constexpr (std::is_same_v<uniform_t, List<int32>>)
-        glUniform1iv(_location, _value.size(), _value.data());
+        glProgramUniform1iv(_program.Id(), _location, _value.size(), _value.data());
       else if constexpr (std::is_same_v<uniform_t, float32>)
-        glUniform1f(_location, _value);
+        glProgramUniform1f(_program.Id(), _location, _value);
       else if constexpr (std::is_same_v<uniform_t, List<float32>>)
-        glUniform1fv(_location, _value.size(), _value.data());
+        glProgramUniform1fv(_program.Id(), _location, _value.size(), _value.data());
       else if constexpr (std::is_same_v<uniform_t, Vec2>)
-        glUniform2f(_location, _value.x, _value.y);
+        glProgramUniform2f(_program.Id(), _location, _value.x, _value.y);
       else if constexpr (std::is_same_v<uniform_t, List<Vec2>>)
-        glUniform2fv(_location, _value.size(), &_value[0].x);
+        glProgramUniform2fv(_program.Id(), _location, _value.size(), &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, Vec3>)
-        glUniform3f(_location, _value.x, _value.y, _value.z);
+        glProgramUniform3f(_program.Id(), _location, _value.x, _value.y, _value.z);
       else if constexpr (std::is_same_v<uniform_t, List<Vec3>>)
-        glUniform3fv(_location, _value.size(), &_value[0].x);
+        glProgramUniform3fv(_program.Id(), _location, _value.size(), &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, Vec4>)
-        glUniform4f(_location, _value.x, _value.y, _value.z, _value.w);
+        glProgramUniform4f(_program.Id(), _location, _value.x, _value.y, _value.z, _value.w);
       else if constexpr (std::is_same_v<uniform_t, List<Vec4>>)
-        glUniform4fv(_location, _value.size(), &_value[0].x);
+        glProgramUniform4fv(_program.Id(), _location, _value.size(), &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, Mat2>)
-        glUniformMatrix2fv(_location, 1, GL_FALSE, &_value[0][0]);
+        glProgramUniformMatrix2fv(_program.Id(), _location, 1, GL_FALSE, &_value[0][0]);
       else if constexpr (std::is_same_v<uniform_t, List<Mat2>>)
-        glUniformMatrix2fv(_location, _value.size(), GL_FALSE, &_value[0][0][0]);
+        glProgramUniformMatrix2fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0][0]);
       else if constexpr (std::is_same_v<uniform_t, Mat3>)
-        glUniformMatrix3fv(_location, 1, GL_FALSE, &_value[0][0]);
+        glProgramUniformMatrix3fv(_program.Id(), _location, 1, GL_FALSE, &_value[0][0]);
       else if constexpr (std::is_same_v<uniform_t, List<Mat3>>)
-        glUniformMatrix3fv(_location, _value.size(), GL_FALSE, &_value[0][0][0]);
+        glProgramUniformMatrix3fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0][0]);
       else if constexpr (std::is_same_v<uniform_t, Mat4>)
-        glUniformMatrix4fv(_location, 1, GL_FALSE, &_value[0][0]);
+        glProgramUniformMatrix4fv(_program.Id(), _location, 1, GL_FALSE, &_value[0][0]);
       else if constexpr (std::is_same_v<uniform_t, List<Mat4>>)
-        glUniformMatrix4fv(_location, _value.size(), GL_FALSE, &_value[0][0][0]);
+        glProgramUniformMatrix4fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0][0]);
       else
         KRYS_ASSERT(false, "Unsupported uniform type.");
     }
