@@ -24,8 +24,8 @@ namespace Krys
     {
       using namespace Gfx::OpenGL;
       ctx->_graphicsContext = CreateUnique<OpenGLGraphicsContext>();
-      ctx->_renderer = CreateUnique<Gfx::Renderer>();
       ctx->_meshManager = CreateUnique<OpenGLMeshManager>(ctx->_graphicsContext.get());
+      ctx->_renderer = CreateUnique<Gfx::Renderer>(ctx->_meshManager.get());
     }
     return ctx;
   }

@@ -1,7 +1,12 @@
 #include "Graphics/Renderer.hpp"
+#include "Graphics/MeshManager.hpp"
 
 namespace Krys::Gfx
 {
+  Renderer::Renderer(Ptr<MeshManager> meshManager) noexcept : _meshManager(meshManager)
+  {
+  }
+
   void Renderer::Submit(const RenderCommand &command) noexcept
   {
     _commands.push_back(command);
@@ -16,16 +21,17 @@ namespace Krys::Gfx
 
       if (!command.VBO.IsValid())
       {
-        auto mesh = command.Mesh;
-        KRYS_ASSERT(mesh != nullptr, "Mesh must be provided if VBO is not");
-        mesh->Bind();
-        if (mesh->IsIndexed())
+        KRYS_ASSERT(command.Mesh.IsValid(), "Mesh must be provided if VBO is not");
+        auto &mesh = _meshManager->GetMesh(command.Mesh);
+
+        mesh.Bind();
+        if (mesh.IsIndexed())
         {
-          context->DrawElements(command.Type, static_cast<uint32>(mesh->GetCount()));
+          context->DrawElements(command.Type, static_cast<uint32>(mesh.GetCount()));
         }
         else
         {
-          context->DrawArrays(command.Type, static_cast<uint32>(mesh->GetCount()));
+          context->DrawArrays(command.Type, static_cast<uint32>(mesh.GetCount()));
         }
       }
       else

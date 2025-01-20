@@ -11,9 +11,11 @@
 namespace Krys::Gfx::OpenGL
 {
   class OpenGLGraphicsContext;
+  class OpenGLMeshManager;
 
   class OpenGLMesh : public Mesh
   {
+    friend OpenGLMeshManager;
   public:
     using vertex_t = Mesh::vertex_t;
     using index_t = Mesh::index_t;

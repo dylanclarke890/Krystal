@@ -9,10 +9,18 @@ namespace Krys::Gfx::OpenGL
   {
   }
 
-  Unique<Mesh> OpenGLMeshManager::CreateMesh(const List<VertexData> &vertices, const List<uint32> &indices,
-                                             const VertexLayout &layout) noexcept
+  MeshHandle OpenGLMeshManager::CreateMesh(const List<VertexData> &vertices, const List<uint32> &indices,
+                                           const VertexLayout &layout) noexcept
   {
-    return CreateUnique<OpenGLMesh>(vertices, indices, layout,
-                                    static_cast<Ptr<OpenGLGraphicsContext>>(_context));
+    auto handle = _nextHandle;
+    _nextHandle = MeshHandle(_nextHandle.Id() + 1);
+
+    auto mesh =
+      CreateUnique<OpenGLMesh>(vertices, indices, layout, static_cast<Ptr<OpenGLGraphicsContext>>(_context));
+    mesh->_handle = handle;
+
+    _meshes[handle] = std::move(mesh);
+
+    return handle;
   }
 }

@@ -89,15 +89,7 @@ namespace Krys::Impl
     handle_t _id;
   };
 
-  struct DynamicIndexBufferHandle
-  {
-  };
-
-  struct DynamicVertexBufferHandle
-  {
-  };
-
-  struct FrameBufferHandle
+  struct VertexBufferHandle
   {
   };
 
@@ -105,11 +97,7 @@ namespace Krys::Impl
   {
   };
 
-  struct IndirectBufferHandle
-  {
-  };
-
-  struct OcclusionQueryHandle
+  struct VertexLayoutHandle
   {
   };
 
@@ -121,19 +109,11 @@ namespace Krys::Impl
   {
   };
 
-  struct TextureHandle
-  {
-  };
-
   struct UniformHandle
   {
   };
 
-  struct VertexBufferHandle
-  {
-  };
-
-  struct VertexLayoutHandle
+  struct MeshHandle
   {
   };
 }
@@ -145,14 +125,9 @@ namespace Krys::Gfx
 
   using PipelineHandle = Handle<Impl::PipelineHandle>;
   using ShaderHandle = Handle<Impl::ShaderHandle>;
-  using TextureHandle = Handle<Impl::TextureHandle>;
-  using UniformHandle = Handle<Impl::UniformHandle>;
-  using VertexLayoutHandle = Handle<Impl::VertexLayoutHandle>;
   using IndexBufferHandle = Handle<Impl::IndexBufferHandle>;
+  using VertexLayoutHandle = Handle<Impl::VertexLayoutHandle>;
   using VertexBufferHandle = Handle<Impl::VertexBufferHandle>;
-  using DynamicIndexBufferHandle = Handle<Impl::DynamicIndexBufferHandle>;
-  using DynamicVertexBufferHandle = Handle<Impl::DynamicVertexBufferHandle>;
-  using FrameBufferHandle = Handle<Impl::FrameBufferHandle>;
-  using IndirectBufferHandle = Handle<Impl::IndirectBufferHandle>;
-  using OcclusionQueryHandle = Handle<Impl::OcclusionQueryHandle>;
+  using UniformHandle = Handle<Impl::UniformHandle>;
+  using MeshHandle = Handle<Impl::MeshHandle>;
 }

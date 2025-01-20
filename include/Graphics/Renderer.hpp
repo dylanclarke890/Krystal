@@ -6,10 +6,11 @@
 
 namespace Krys::Gfx
 {
+  class MeshManager;
   class Renderer
   {
   public:
-    Renderer() = default;
+    Renderer(Ptr<MeshManager> meshManager) noexcept;
     ~Renderer() noexcept = default;
 
     void Submit(const RenderCommand &command) noexcept;
@@ -17,5 +18,6 @@ namespace Krys::Gfx
 
   private:
     List<RenderCommand> _commands {};
+    Ptr<MeshManager> _meshManager{nullptr};
   };
 }
