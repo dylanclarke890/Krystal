@@ -9,6 +9,13 @@
 
 namespace Krys::Platform
 {
+  static int64 START_TICKS = 0;
+
+  void Initialize() noexcept
+  {
+    START_TICKS = GetTicks();
+  }
+
   void Sleep(uint32 milliseconds) noexcept
   {
     ::Sleep(milliseconds);
@@ -43,5 +50,11 @@ namespace Krys::Platform
   {
     float ms = static_cast<float>(ticks) * 1000.0f / static_cast<float>(GetTickFrequency());
     return ms <= 0.0f ? 1.0f : ms;
+  }
+
+  float GetTime() noexcept
+  {
+    int64 currentTicks = GetTicks();
+    return static_cast<float>(currentTicks - START_TICKS) / static_cast<float>(GetTickFrequency());
   }
 }

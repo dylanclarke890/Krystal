@@ -1,6 +1,7 @@
 #include "Core/Application.hpp"
 #include "Core/ApplicationContext.hpp"
 #include "Core/Events/EventManager.hpp"
+#include "Core/Platform.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
 #include "Graphics/OpenGL/OpenGLMeshManager.hpp"
 #include "Graphics/Renderer.hpp"
@@ -12,8 +13,9 @@ namespace Krys
   Unique<ApplicationContext>
     Application::CreateApplicationContext(int argc, char **argv, const ApplicationSettings &settings) noexcept
   {
-    auto ctx = CreateUnique<ApplicationContext>(argc, argv, settings);
+    Platform::Initialize();
 
+    auto ctx = CreateUnique<ApplicationContext>(argc, argv, settings);
     ctx->_eventManager = CreateUnique<EventManager>();
     {
       using namespace Platform;
