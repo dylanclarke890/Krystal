@@ -28,7 +28,7 @@ namespace Krys::Gfx
     virtual VertexBufferHandle CreateVertexBuffer(uint32 size) noexcept = 0;
     virtual IndexBufferHandle CreateIndexBuffer(uint32 size) noexcept = 0;
     // virtual UniformBufferHandle CreateUniformBuffer(uint32 size) noexcept = 0;
-    virtual ShaderHandle CreateShader(const ShaderDescription &description) noexcept = 0;
+    virtual ShaderHandle CreateShader(const ShaderDescriptor &description) noexcept = 0;
     virtual PipelineHandle CreatePipeline() noexcept = 0;
 
     void DestroyVertexBuffer(VertexBufferHandle handle) noexcept;

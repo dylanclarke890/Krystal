@@ -16,7 +16,7 @@ namespace Krys::Gfx::OpenGL
     }
   }
 
-  OpenGLShader::OpenGLShader(const ShaderDescription &description) noexcept : Shader(description), _id(0u)
+  OpenGLShader::OpenGLShader(const ShaderDescriptor &description) noexcept : Shader(description), _id(0u)
   {
     GLenum stage = ShaderStageToOpenGL(description.Stage);
     _id = ::glCreateShader(stage);

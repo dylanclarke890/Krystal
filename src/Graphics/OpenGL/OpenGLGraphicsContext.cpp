@@ -124,7 +124,7 @@ namespace Krys::Gfx::OpenGL
     return handle;
   }
 
-  ShaderHandle OpenGLGraphicsContext::CreateShader(const ShaderDescription &description) noexcept
+  ShaderHandle OpenGLGraphicsContext::CreateShader(const ShaderDescriptor &description) noexcept
   {
     auto shader = CreateUnique<OpenGLShader>(description);
     auto handle = shader->GetHandle();

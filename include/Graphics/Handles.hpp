@@ -116,6 +116,14 @@ namespace Krys::Impl
   struct MeshHandle
   {
   };
+
+  struct TextureHandle
+  {
+  };
+
+  struct SamplerHandle
+  {
+  };
 }
 
 namespace Krys::Gfx
@@ -130,4 +138,6 @@ namespace Krys::Gfx
   using VertexBufferHandle = Handle<Impl::VertexBufferHandle>;
   using UniformHandle = Handle<Impl::UniformHandle>;
   using MeshHandle = Handle<Impl::MeshHandle>;
+  using TextureHandle = Handle<Impl::TextureHandle>;
+  using SamplerHandle = Handle<Impl::SamplerHandle>;
 }

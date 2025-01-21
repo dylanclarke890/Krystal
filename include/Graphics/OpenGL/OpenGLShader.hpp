@@ -12,7 +12,7 @@ namespace Krys::Gfx::OpenGL
   class OpenGLShader : public Shader
   {
   public:
-    OpenGLShader(const ShaderDescription &description) noexcept;
+    OpenGLShader(const ShaderDescriptor &description) noexcept;
     ~OpenGLShader() noexcept override;
 
     NO_DISCARD GLuint GetNativeHandle() const noexcept;

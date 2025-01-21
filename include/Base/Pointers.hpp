@@ -7,8 +7,8 @@ namespace Krys
 {
   /// @brief Owns the memory it points to.
   /// @tparam T The underlying type of the data being pointed to.
-  template <typename T>
-  using Unique = std::unique_ptr<T>;
+  template <typename T, typename TDeleter = std::default_delete<T>>
+  using Unique = std::unique_ptr<T, TDeleter>;
 
   /// @brief Shares the memory it points to via reference counting.
   /// @tparam T The underlying type of the data being pointed to.

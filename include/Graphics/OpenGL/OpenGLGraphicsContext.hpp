@@ -26,7 +26,7 @@ namespace Krys::Gfx::OpenGL
     VertexBufferHandle CreateVertexBuffer(uint32 size) noexcept override;
     IndexBufferHandle CreateIndexBuffer(uint32 size) noexcept override;
 
-    ShaderHandle CreateShader(const ShaderDescription &description) noexcept override;
+    ShaderHandle CreateShader(const ShaderDescriptor &description) noexcept override;
     PipelineHandle CreatePipeline() noexcept override;
 
     void Clear() noexcept override;

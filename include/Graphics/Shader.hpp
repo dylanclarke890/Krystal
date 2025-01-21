@@ -11,7 +11,7 @@ namespace Krys::Gfx
     Fragment
   };
 
-  struct ShaderDescription
+  struct ShaderDescriptor
   {
     ShaderStage Stage;
     string Source;
@@ -27,7 +27,7 @@ namespace Krys::Gfx
     ShaderHandle GetHandle() const noexcept;
 
   protected:
-    explicit Shader(const ShaderDescription &description) noexcept;
+    explicit Shader(const ShaderDescriptor &description) noexcept;
 
     ShaderStage _stage;
     ShaderHandle _handle;
