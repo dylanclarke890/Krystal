@@ -21,8 +21,7 @@ namespace Krys::Gfx::OpenGL
     using uniform_t = UniformT;
 
   public:
-    OpenGLUniform() noexcept
-        : _location(-1), _value()
+    OpenGLUniform() noexcept : _location(-1), _value()
     {
     }
 
@@ -44,6 +43,9 @@ namespace Krys::Gfx::OpenGL
         Logger::Warn("Tried setting a value for an invalid uniform location. (Program {0})", _program.Id());
         return;
       }
+
+      Logger::Info("Setting uniform value at location {0} (Program {1}): {2}", _location, _program.Id(),
+                   value);
 
       // if 'uniform_t' supports 'operator==' then we can compare the values
       if constexpr (requires { _value == value; })
@@ -69,6 +71,12 @@ namespace Krys::Gfx::OpenGL
         ::glProgramUniform1i(_program.Id(), _location, _value);
       else if constexpr (std::is_same_v<uniform_t, List<int32>>)
         ::glProgramUniform1iv(_program.Id(), _location, _value.size(), _value.data());
+      else if constexpr (std::is_same_v<uniform_t, uint32>)
+        ::glProgramUniform1ui(_program.Id(), _location, _value);
+      else if constexpr (std::is_same_v<uniform_t, List<uint32>>)
+        ::glProgramUniform1uiv(_program.Id(), _location, _value.size(), _value.data());
+      else if constexpr (std::is_same_v<uniform_t, uint64>)
+        ::glProgramUniformHandleui64ARB(_program.Id(), _location, _value);
       else if constexpr (std::is_same_v<uniform_t, float32>)
         ::glProgramUniform1f(_program.Id(), _location, _value);
       else if constexpr (std::is_same_v<uniform_t, List<float32>>)

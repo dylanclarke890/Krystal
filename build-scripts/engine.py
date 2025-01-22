@@ -32,6 +32,7 @@ def get_engine_project():
   }
   code.third_party_source_files = {
     "Glad": ["Glad/src/*.c"],
+    "stb": ["stb/stb.cpp"],
   }
 
   return code

@@ -9,7 +9,7 @@
 
 namespace Krys::Gfx::OpenGL
 {
-  constexpr GLuint PrimitiveTypeToOpenGL(PrimitiveType type) noexcept
+  constexpr GLuint ToOpenGLEnum(PrimitiveType type) noexcept
   {
     switch (type)
     {
@@ -36,20 +36,7 @@ namespace Krys::Gfx::OpenGL
       default:                             KRYS_ASSERT(false, "Unknown enum value: OpenGL severity level"); break;
     }
 
-    Logger::Write(" - Source: ");
-    switch (source)
-    {
-      case GL_DEBUG_SOURCE_API:             Logger::Write("API"); break;
-      case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   Logger::Write("Window System"); break;
-      case GL_DEBUG_SOURCE_SHADER_COMPILER: Logger::Write("Shader Compiler"); break;
-      case GL_DEBUG_SOURCE_THIRD_PARTY:     Logger::Write("Third Party"); break;
-      case GL_DEBUG_SOURCE_APPLICATION:     Logger::Write("Application"); break;
-      case GL_DEBUG_SOURCE_OTHER:           Logger::Write("Other"); break;
-      default:                              KRYS_ASSERT(false, "Unknown enum value: OpenGL source type"); break;
-    }
-    Logger::NewLine();
-
-    Logger::Write("- Type: ");
+    Logger::Write(" - Type: ");
     switch (type)
     {
       case GL_DEBUG_TYPE_ERROR:               Logger::Write("Error"); break;
@@ -64,6 +51,22 @@ namespace Krys::Gfx::OpenGL
       default:                                KRYS_ASSERT(false, "Unknown enum value: OpenGL message type"); break;
     }
     Logger::NewLine();
+
+    Logger::Write(" - Source: ");
+    switch (source)
+    {
+      case GL_DEBUG_SOURCE_API:             Logger::Write("API"); break;
+      case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   Logger::Write("Window System"); break;
+      case GL_DEBUG_SOURCE_SHADER_COMPILER: Logger::Write("Shader Compiler"); break;
+      case GL_DEBUG_SOURCE_THIRD_PARTY:     Logger::Write("Third Party"); break;
+      case GL_DEBUG_SOURCE_APPLICATION:     Logger::Write("Application"); break;
+      case GL_DEBUG_SOURCE_OTHER:           Logger::Write("Other"); break;
+      default:                              KRYS_ASSERT(false, "Unknown enum value: OpenGL source type"); break;
+    }
+    Logger::NewLine();
+
+    if (severity != GL_DEBUG_SEVERITY_NOTIFICATION)
+      KRYS_ASSERT(false, "OpenGL error");
   }
 
   OpenGLGraphicsContext::OpenGLGraphicsContext() noexcept
@@ -83,12 +86,12 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLGraphicsContext::DrawArrays(PrimitiveType type, uint32 count) noexcept
   {
-    ::glDrawArrays(PrimitiveTypeToOpenGL(type), 0, count);
+    ::glDrawArrays(ToOpenGLEnum(type), 0, count);
   }
 
   void OpenGLGraphicsContext::DrawElements(PrimitiveType type, uint32 count) noexcept
   {
-    ::glDrawElements(PrimitiveTypeToOpenGL(type), count, GL_UNSIGNED_INT, nullptr);
+    ::glDrawElements(ToOpenGLEnum(type), count, GL_UNSIGNED_INT, nullptr);
   }
 
   void OpenGLGraphicsContext::SetClearColour(const Colour &colour) noexcept

@@ -3,6 +3,7 @@
 #include "Base/Types.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
+#include "Utils/Hash.hpp"
 
 namespace Krys::Gfx
 {
@@ -176,5 +177,17 @@ namespace Krys::Gfx
 
     /// @brief Alpha component.
     float a;
+  };
+}
+
+namespace std
+{
+  template <>
+  struct hash<Krys::Gfx::Colour>
+  {
+    size_t operator()(const Krys::Gfx::Colour &colour) const
+    {
+      return Krys::HashCombine(colour.r, colour.g, colour.b, colour.a);
+    }
   };
 }

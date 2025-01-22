@@ -2,20 +2,22 @@
 
 #include "Base/Types.hpp"
 #include "Graphics/Colour.hpp"
+#include "MTL/Vectors/Vec2.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 
 namespace Krys::Gfx
 {
   struct VertexData
   {
-    explicit VertexData(const Vec3 &position, const Colour &colour) noexcept
-        : Position(position), Colour(colour)
+    explicit VertexData(const Vec3 &position, const Colour &colour, const Vec2 &textureCoords) noexcept
+        : Position(position), Colour(colour), TextureCoords(textureCoords)
     {
     }
 
     Vec3 Position;
     float PositionPadding;
     Colour Colour;
+    Vec2 TextureCoords;
   };
 
   enum class VertexAttributeType : uint8

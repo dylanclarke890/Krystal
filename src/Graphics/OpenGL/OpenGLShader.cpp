@@ -6,7 +6,7 @@
 
 namespace Krys::Gfx::OpenGL
 {
-  constexpr GLenum ShaderStageToOpenGL(ShaderStage stage) noexcept
+  constexpr GLenum ToOpenGLEnum(ShaderStage stage) noexcept
   {
     switch (stage)
     {
@@ -16,11 +16,9 @@ namespace Krys::Gfx::OpenGL
     }
   }
 
-  OpenGLShader::OpenGLShader(const ShaderDescriptor &description) noexcept : Shader(description), _id(0u)
+  OpenGLShader::OpenGLShader(const ShaderDescriptor &description) noexcept
+      : Shader(description), _id(::glCreateShader(ToOpenGLEnum(description.Stage)))
   {
-    GLenum stage = ShaderStageToOpenGL(description.Stage);
-    _id = ::glCreateShader(stage);
-
     KRYS_ASSERT(_id != 0, "Failed to create shader");
     _handle = ShaderHandle(static_cast<ShaderHandle::handle_t>(_id));
 

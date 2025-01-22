@@ -25,7 +25,9 @@ ignore_includes = [
   "stddef.h", "stdio.h", "stdint.h", "stdlib.h",
   "winapifamily.h", "hidusage.h", "windows.h",
   "signal.h", "TargetConditionals.h", "dlfcn.h",
-  "string.h", "inttypes.h"
+  "string.h", "inttypes.h", "limits.h", "stdarg.h", 
+  "math.h", "assert.h", "emmintrin.h", "intrin.h",
+  "arm_neon.h"
 ]
 
 # ----------- COMPILER FLAGS ------------

@@ -38,6 +38,11 @@ namespace Krys
     return _meshManager.get();
   }
 
+  Ptr<Gfx::TextureManager> ApplicationContext::GetTextureManager() const noexcept
+  {
+    return _textureManager.get();
+  }
+
   const ApplicationSettings &ApplicationContext::GetSettings() const noexcept
   {
     return _settings;

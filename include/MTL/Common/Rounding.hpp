@@ -37,7 +37,7 @@ namespace Krys::MTL
       if (static_cast<long long>(x) == x)
         return x;
       else
-        return static_cast<long long>(x) - ((x < TFloat(0)) ? 1LL : 0LL);
+        return static_cast<TFloat>(static_cast<long long>(x) - ((x < TFloat(0)) ? 1LL : 0LL));
     }
     else
       return std::floor(x);
