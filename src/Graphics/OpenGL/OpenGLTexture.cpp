@@ -15,8 +15,8 @@ namespace Krys::Gfx::OpenGL
     ::glTextureStorage2D(texture, levels, internalFormat, img.Width, img.Height);
     ::glTextureSubImage2D(texture, 0, 0, 0, img.Width, img.Height, format, GL_UNSIGNED_BYTE, img.Data.data());
 
-    // if (sampler.UseMipmaps)
-    ::glGenerateTextureMipmap(texture);
+    if (sampler.UseMipmaps)
+      ::glGenerateTextureMipmap(texture);
   }
 
   /// @brief Creates a data texture using RGB color space.
