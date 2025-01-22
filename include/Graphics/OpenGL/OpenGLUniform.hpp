@@ -44,8 +44,7 @@ namespace Krys::Gfx::OpenGL
         return;
       }
 
-      Logger::Info("Setting uniform value at location {0} (Program {1}): {2}", _location, _program.Id(),
-                   value);
+      Logger::Info("Setting uniform value at location {0} (Program {1})", _location, _program.Id());
 
       // if 'uniform_t' supports 'operator==' then we can compare the values
       if constexpr (requires { _value == value; })
@@ -94,17 +93,17 @@ namespace Krys::Gfx::OpenGL
       else if constexpr (std::is_same_v<uniform_t, List<Vec4>>)
         ::glProgramUniform4fv(_program.Id(), _location, _value.size(), &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, Mat2>)
-        ::glProgramUniformMatrix2fv(_program.Id(), _location, 1, GL_FALSE, &_value[0][0]);
+        ::glProgramUniformMatrix2fv(_program.Id(), _location, 1, GL_FALSE, &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, List<Mat2>>)
-        ::glProgramUniformMatrix2fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0][0]);
+        ::glProgramUniformMatrix2fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0].x);
       else if constexpr (std::is_same_v<uniform_t, Mat3>)
-        ::glProgramUniformMatrix3fv(_program.Id(), _location, 1, GL_FALSE, &_value[0][0]);
+        ::glProgramUniformMatrix3fv(_program.Id(), _location, 1, GL_FALSE, &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, List<Mat3>>)
-        ::glProgramUniformMatrix3fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0][0]);
+        ::glProgramUniformMatrix3fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0].x);
       else if constexpr (std::is_same_v<uniform_t, Mat4>)
-        ::glProgramUniformMatrix4fv(_program.Id(), _location, 1, GL_FALSE, &_value[0][0]);
+        ::glProgramUniformMatrix4fv(_program.Id(), _location, 1, GL_FALSE, &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, List<Mat4>>)
-        ::glProgramUniformMatrix4fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0][0]);
+        ::glProgramUniformMatrix4fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0].x);
       else
         KRYS_ASSERT(false, "Unsupported uniform type.");
     }

@@ -7,108 +7,277 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: PathExists took 0.165 ms.
-[INFO ]: ReadFileText took 0.317 ms.
-[INFO ]: PathExists took 0.118 ms.
-[INFO ]: ReadFileText took 0.239 ms.
-[INFO ]: PathExists took 0.129 ms.
-[INFO ]: IO::LoadImage took 22.604 ms.
+[INFO ]: PathExists took 0.240 ms.
+[INFO ]: ReadFileText took 0.358 ms.
+[INFO ]: PathExists took 0.119 ms.
+[INFO ]: ReadFileText took 0.224 ms.
+[INFO ]: PathExists took 0.119 ms.
+[INFO ]: IO::LoadImage took 23.096 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'textures/wood-wall.jpg' into memory (512x512).
-[INFO ]: Setting uniform value at location 0 (Program 3): 4294969856
+[INFO ]: Setting uniform value at location 0 (Program 3)
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.674 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.670 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.670 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.682 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.677 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.670 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.671 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.693 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.692 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.670 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.670 ms.
-[INFO ]: Application::Tick took 16.670 ms.
-[INFO ]: Application::Tick took 16.670 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.697 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.863 ms.
-[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.669 ms.
-[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.673 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.890 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.670 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.686 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.671 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.984 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.898 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.668 ms.
-[INFO ]: Application::Tick took 16.990 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.670 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 22.568 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.670 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
 [INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.667 ms.
-[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.669 ms.
 [INFO ]: Key pressed: 70
-[INFO ]: Application::Tick took 16.667 ms.
+[INFO ]: Setting uniform value at location 1 (Program 3)
+[INFO ]: Application::Tick took 16.668 ms.
