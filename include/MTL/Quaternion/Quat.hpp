@@ -79,11 +79,21 @@ namespace Krys::MTL
     constexpr Quaternion(const quat_t &other) noexcept = default;
     constexpr quat_t &operator=(const quat_t &other) noexcept = default;
 
-    constexpr Quaternion(const quat_t &&other) noexcept = default;
-    constexpr quat_t &operator=(const quat_t &&other) noexcept = default;
-
     constexpr bool operator==(const quat_t &other) const noexcept = default;
     constexpr bool operator!=(const quat_t &other) const noexcept = default;
+
+    constexpr Quaternion(const quat_t &&other) noexcept : w(other.w), x(other.x), y(other.y), z(other.z)
+    {
+    }
+
+    constexpr quat_t &operator=(const quat_t &&other) noexcept
+    {
+      w = other.w;
+      x = other.x;
+      y = other.y;
+      z = other.z;
+      return *this;
+    }
 
     /// @brief Adds a quaternion to another quaternion.
     /// @param other the other quaternion.

@@ -149,6 +149,19 @@ namespace Krys::MTL
 #endif
   }
 
+  template <IsArithmeticT TComponent>
+  NO_DISCARD constexpr mat4x4_t<TComponent> Ortho(TComponent width, TComponent height, TComponent depth)
+  {
+    const auto right = width;
+    const auto left = -right;
+    const auto top = height;
+    const auto bottom = -top;
+    const auto farPlane = depth;
+    const auto nearPlane = -farPlane;
+
+    return Ortho(left, right, bottom, top, nearPlane, farPlane);
+  }
+
 #pragma endregion Ortho
 
 #pragma region Frustum
@@ -403,6 +416,13 @@ namespace Krys::MTL
 #endif
   }
 
+  template <typename TComponent>
+  NO_DISCARD constexpr mat4x4_t<TComponent> Perspective(TComponent fovy, TComponent width, TComponent height,
+                                                        TComponent zNear, TComponent zFar)
+  {
+    return Perspective(fovy, width / height, zNear, zFar);
+  }
+
 #pragma endregion Perspective
 
 #pragma region PerspectiveFov
@@ -564,7 +584,7 @@ namespace Krys::MTL
 
   template <typename TComponent>
   NO_DISCARD constexpr mat4x4_t<TComponent> InfinitePerspective_RH_NO(TComponent fovy, TComponent aspect,
-                                                                     TComponent zNear)
+                                                                      TComponent zNear)
   {
     const TComponent range = Tan(fovy / TComponent(2)) * zNear;
     const TComponent left = -range * aspect;
@@ -579,13 +599,13 @@ namespace Krys::MTL
     result[2][2] = -TComponent(1);
     result[2][3] = -TComponent(1);
     result[3][2] = -TComponent(2) * zNear;
-    
+
     return result;
   }
 
   template <typename TComponent>
   NO_DISCARD constexpr mat4x4_t<TComponent> InfinitePerspective_RH_ZO(TComponent fovy, TComponent aspect,
-                                                                     TComponent zNear)
+                                                                      TComponent zNear)
   {
     const TComponent range = Tan(fovy / TComponent(2)) * zNear;
     const TComponent left = -range * aspect;
@@ -600,13 +620,13 @@ namespace Krys::MTL
     result[2][2] = -TComponent(1);
     result[2][3] = -TComponent(1);
     result[3][2] = -zNear;
-    
+
     return result;
   }
 
   template <typename TComponent>
   NO_DISCARD constexpr mat4x4_t<TComponent> InfinitePerspective_LH_NO(TComponent fovy, TComponent aspect,
-                                                                     TComponent zNear)
+                                                                      TComponent zNear)
   {
     const TComponent range = Tan(fovy / TComponent(2)) * zNear;
     const TComponent left = -range * aspect;
@@ -621,13 +641,13 @@ namespace Krys::MTL
     result[2][2] = TComponent(1);
     result[2][3] = TComponent(1);
     result[3][2] = -TComponent(2) * zNear;
-    
+
     return result;
   }
 
   template <typename TComponent>
   NO_DISCARD constexpr mat4x4_t<TComponent> InfinitePerspective_LH_ZO(TComponent fovy, TComponent aspect,
-                                                                     TComponent zNear)
+                                                                      TComponent zNear)
   {
     const TComponent range = Tan(fovy / TComponent(2)) * zNear;
     const TComponent left = -range * aspect;
@@ -642,7 +662,7 @@ namespace Krys::MTL
     result[2][2] = TComponent(1);
     result[2][3] = TComponent(1);
     result[3][2] = -zNear;
-    
+
     return result;
   }
 

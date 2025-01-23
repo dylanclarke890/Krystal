@@ -84,6 +84,11 @@ namespace Krys::Gfx::OpenGL
     ::glDebugMessageCallback(OpenGLMessageCallback, nullptr);
   }
 
+  void OpenGLGraphicsContext::SetViewport(const Vec4ui &viewport) noexcept
+  {
+    ::glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+  }
+
   void OpenGLGraphicsContext::DrawArrays(PrimitiveType type, uint32 count) noexcept
   {
     ::glDrawArrays(ToOpenGLEnum(type), 0, count);

@@ -10,6 +10,11 @@
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
 
+namespace Krys
+{
+  class Window;
+}
+
 namespace Krys::Gfx
 {
   class GraphicsContext
@@ -18,6 +23,11 @@ namespace Krys::Gfx
     virtual ~GraphicsContext() noexcept;
 
     virtual void Init() noexcept = 0;
+
+    void SetViewport(uint32 width, uint32 height) noexcept;
+    void SetViewport(uint32 x, uint32 y, uint32 width, uint32 height) noexcept;
+    void SetViewport(const Window &window) noexcept;
+    virtual void SetViewport(const Vec4ui &viewport) noexcept = 0;
 
     virtual void DrawArrays(PrimitiveType type, uint32 count) noexcept = 0;
     virtual void DrawElements(PrimitiveType type, uint32 count) noexcept = 0;

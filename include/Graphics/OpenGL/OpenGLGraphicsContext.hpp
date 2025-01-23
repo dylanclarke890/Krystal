@@ -18,6 +18,8 @@ namespace Krys::Gfx::OpenGL
 
     void Init() noexcept override;
 
+    void SetViewport(const Vec4ui &viewport) noexcept override;
+
     void DrawArrays(PrimitiveType type, uint32 count) noexcept override;
     void DrawElements(PrimitiveType type, uint32 count) noexcept override;
 

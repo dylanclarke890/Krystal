@@ -1,4 +1,5 @@
 #include "Core/Debug/Macros.hpp"
+#include "Core/Window.hpp"
 #include "Graphics/Renderer.hpp"
 
 namespace Krys::Gfx
@@ -9,6 +10,21 @@ namespace Krys::Gfx
     _indexBuffers.clear();
     _uniformBuffers.clear();
     _shaders.clear();
+  }
+
+  void GraphicsContext::SetViewport(uint32 width, uint32 height) noexcept
+  {
+    SetViewport({0u, 0u, width, height});
+  }
+
+  void GraphicsContext::SetViewport(uint32 x, uint32 y, uint32 width, uint32 height) noexcept
+  {
+    SetViewport({x, y, width, height});
+  }
+
+  void GraphicsContext::SetViewport(const Window &window) noexcept
+  {
+    SetViewport({0u, 0u, window.GetWidth(), window.GetHeight()});
   }
 
   void GraphicsContext::DestroyVertexBuffer(VertexBufferHandle handle) noexcept
