@@ -148,7 +148,6 @@ namespace Krys::Gfx
 
     if (refCount == 0)
     {
-
       OnDestroy(handle);
 
       _loadedSamplers.erase(descriptor);

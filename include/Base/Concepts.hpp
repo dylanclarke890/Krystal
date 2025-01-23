@@ -96,7 +96,7 @@ namespace Krys
 ///   }
 ///   return 0; // Runtime fallback
 /// }
-#define KRYS_IF_COMPILE_CONTEXT if constexpr (std::is_constant_evaluated())
+#define KRYS_IF_COMPILE_CONTEXT if (std::is_constant_evaluated())
 
 /// @brief Determines if the current code will be evaluated at runtime.
 /// @returns `true` if the current context is a runtime evaluation; otherwise `false`.
@@ -107,5 +107,5 @@ namespace Krys
 ///   }
 ///   return 0; // Compile-time fallback
 /// }
-#define KRYS_IF_RUNTIME_CONTEXT if constexpr (!std::is_constant_evaluated())
+#define KRYS_IF_RUNTIME_CONTEXT if (!std::is_constant_evaluated())
 }

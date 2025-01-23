@@ -11,6 +11,7 @@ namespace Krys::Gfx
     Fragment
   };
 
+  // TODO: consider getting rid of this struct
   struct ShaderDescriptor
   {
     ShaderStage Stage;
@@ -20,13 +21,17 @@ namespace Krys::Gfx
   class Shader
   {
   public:
-    Shader() = delete;
     virtual ~Shader() noexcept = default;
 
+    /// @brief Gets the stage this shader is for.
     ShaderStage GetStage() const noexcept;
+
+    /// @brief Gets the handle of the shader.
     ShaderHandle GetHandle() const noexcept;
 
   protected:
+    /// @brief Constructs a shader.
+    /// @param description The description of the shader.
     explicit Shader(const ShaderDescriptor &description) noexcept;
 
     ShaderStage _stage;

@@ -4,9 +4,11 @@
 #include "Base/Types.hpp"
 #include "Core/Logger.hpp"
 #include "Graphics/Handles.hpp"
+#include "MTL/Matrices/Ext/Format.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
+#include "MTL/Vectors/Ext/Format.hpp"
 #include "MTL/Vectors/Vec2.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
@@ -44,7 +46,8 @@ namespace Krys::Gfx::OpenGL
         return;
       }
 
-      Logger::Info("Setting uniform value at location {0} (Program {1})", _location, _program.Id());
+      Logger::Info("Setting uniform value at location {0} (Program {1}):", _location, _program.Id());
+      Logger::WriteLine("{0}", value);
 
       // if 'uniform_t' supports 'operator==' then we can compare the values
       if constexpr (requires { _value == value; })
