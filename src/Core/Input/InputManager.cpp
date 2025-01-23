@@ -99,6 +99,8 @@ namespace Krys
   {
     _mouse._deltaX = 0.0f;
     _mouse._deltaY = 0.0f;
+    _mouse._held |= _mouse._pressed;
+    _mouse._held &= ~_mouse._released;
     _mouse._pressed = MouseButton::None;
     _mouse._released = MouseButton::None;
   }

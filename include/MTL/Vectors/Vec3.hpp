@@ -43,6 +43,10 @@ namespace Krys
       {
       }
 
+      explicit constexpr Vector(const vector_t<component_t, 4>& other) noexcept : x(other.x), y(other.y), z(other.z)
+      {
+      }
+
       constexpr Vector(initializer_list<component_t> il) noexcept
       {
         auto it = il.begin();

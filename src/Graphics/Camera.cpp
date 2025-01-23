@@ -3,6 +3,7 @@
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Matrices/Ext/ClipSpace.hpp"
 #include "MTL/Matrices/Ext/Transformations.hpp"
+#include "MTL/Trigonometric/Atan2.hpp"
 #include "MTL/Trigonometric/Cos.hpp"
 #include "MTL/Trigonometric/Sin.hpp"
 
@@ -85,9 +86,22 @@ namespace Krys::Gfx
     return _direction;
   }
 
+  void Camera::SetDirection(const Vec3 &direction) noexcept
+  {
+    _direction = MTL::Normalize(direction);
+    _pitch = MTL::Asin(_direction.y);
+    _yaw = MTL::Atan2(_direction.z, _direction.x);
+    _view = MTL::LookAt(_position, _position + _direction, _up);
+  }
+
   Vec3 Camera::GetRight() const noexcept
   {
     return MTL::Normalize(MTL::Cross(_direction, _up));
+  }
+
+  Vec3 Camera::GetUp() const noexcept
+  {
+    return _up;
   }
 
   float Camera::GetYaw() const noexcept
@@ -127,5 +141,13 @@ namespace Krys::Gfx
   CameraType Camera::GetType() const noexcept
   {
     return _type;
+  }
+
+  void Camera::LookAt(const Vec3 &target) noexcept
+  {
+    _direction = MTL::Normalize(target - _position);
+    _pitch = MTL::Asin(_direction.y);
+    _yaw = MTL::Atan2(_direction.z, _direction.x);
+    _view = MTL::LookAt(_position, _position + _direction, _up);
   }
 }

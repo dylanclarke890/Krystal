@@ -11,6 +11,8 @@ namespace Krys
   template <IsArithmeticT TComponent>
   using vec2_t = MTL::Vector<TComponent, 2>;
   using Vec2 = vec2_t<float>;
+  using Vec2i = vec2_t<int32>;
+  using Vec2ui = vec2_t<uint32>;
 
   namespace MTL
   {

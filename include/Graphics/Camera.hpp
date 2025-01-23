@@ -52,8 +52,15 @@ namespace Krys::Gfx
     /// @brief Get the direction the camera is facing.
     NO_DISCARD const Vec3 &GetDirection() const noexcept;
 
+    /// @brief Set the direction the camera is facing.
+    /// @param direction the new direction.
+    void SetDirection(const Vec3 &direction) noexcept;
+
     /// @brief Calculates the right vector of the camera.
     NO_DISCARD Vec3 GetRight() const noexcept;
+
+    /// @brief Gets the up vector of the camera.
+    NO_DISCARD Vec3 GetUp() const noexcept;
 
     /// @brief Get the yaw of the camera.
     NO_DISCARD float GetYaw() const noexcept;
@@ -79,6 +86,10 @@ namespace Krys::Gfx
 
     /// @brief Get the type of the camera.
     NO_DISCARD CameraType GetType() const noexcept;
+
+    /// @brief Look at a target.
+    /// @param target the target to look at.
+    void LookAt(const Vec3 &target) noexcept;
 
   private:
     /// @brief Camera position in world space.

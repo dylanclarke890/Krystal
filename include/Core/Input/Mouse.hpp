@@ -32,6 +32,11 @@ namespace Krys
     /// @returns `true` if the button is in the state `MouseButtonState::Pressed`.
     NO_DISCARD bool IsButtonPressed(MouseButton button) const noexcept;
 
+    /// @brief Checks if a button is currently held down.
+    /// @param button The button to check.
+    /// @returns `true` if the button is in the state `MouseButtonState::Held`.
+    NO_DISCARD bool IsButtonHeld(MouseButton button) const noexcept;
+
     /// @brief Checks if a button was released this frame.
     /// @param button The button to check.
     /// @returns `true` if the button is in the state `MouseButtonState::Pressed`.
@@ -39,6 +44,6 @@ namespace Krys
 
   private:
     float _deltaX, _deltaY;
-    MouseButton _pressed, _released;
+    MouseButton _pressed, _released, _held;   
   };
 }

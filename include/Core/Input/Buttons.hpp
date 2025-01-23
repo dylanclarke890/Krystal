@@ -9,6 +9,7 @@ namespace Krys
   enum class MouseButtonState : uint8
   {
     Pressed,
+    Held,
     Released
   };
 

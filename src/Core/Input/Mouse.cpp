@@ -17,6 +17,11 @@ namespace Krys
     return (_pressed & button) == button;
   }
 
+  NO_DISCARD bool Mouse::IsButtonHeld(MouseButton button) const noexcept
+  {
+    return (_held & button) == button;
+  }
+
   NO_DISCARD bool Mouse::WasButtonReleased(MouseButton button) const noexcept
   {
     return (_released & button) == button;

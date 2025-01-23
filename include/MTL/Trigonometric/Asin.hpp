@@ -21,7 +21,7 @@ namespace Krys::Impl
 
     TNumber numerator = MTL::Factorial(2 * n) * power;
     TNumber denominator = MTL::Pow(TNumber(4), static_cast<int>(n))
-                          * MTL::Pow(MTL::Factorial(n), static_cast<size_t>(2)) * (2 * n + 1);
+                          * MTL::Pow(MTL::Factorial(n), static_cast<int>(2)) * (2 * n + 1);
     TNumber currentTerm = numerator / denominator;
     return currentTerm + ComputeAsin(x, n + 1, power * x * x, factorial);
   }
