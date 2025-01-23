@@ -155,12 +155,12 @@ namespace Krys::MTL
       component_t y2 = other.y;
       component_t z2 = other.z;
 
-      w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2;
-      x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2;
-      y = w1 * y2 + y1 * w2 + z1 * x2 - x1 * z2;
-      z = w1 * z2 + z1 * w2 + x1 * y2 - y1 * x2;
+      auto w3 = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2;
+      auto x3 = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2;
+      auto y3 = w1 * y2 + y1 * w2 + z1 * x2 - x1 * z2;
+      auto z3 = w1 * z2 + z1 * w2 + x1 * y2 - y1 * x2;
 
-      return *this;
+      return quat_t {w3, x3, y3, z3};
     }
 
     /// @brief Multiplies this quaternion by another quaternion, composing the rotations.
@@ -196,7 +196,7 @@ namespace Krys::MTL
     }
 
     /// @brief Normalize the quaternion.
-    constexpr void Normalize() noexcept
+    constexpr quat_t& Normalize() noexcept
     {
       const auto magnitude = Pow(w, 2.0f) + Pow(x, 2.0f) + Pow(y, 2.0f) + Pow(z, 2.0f);
       if (magnitude == 0.0f)
@@ -263,7 +263,6 @@ namespace Krys::MTL
       return q1 * s0 + q2 * s1;
     }
 
-  private:
     component_t w, x, y, z;
   };
 }

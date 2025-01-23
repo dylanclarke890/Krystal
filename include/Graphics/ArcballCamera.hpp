@@ -20,5 +20,7 @@ namespace Krys::Gfx
     Camera _camera;
     Vec2ui _viewport;
     Vec3 _target;
+    float _yaw;
+    float _pitch;
   };
 }
