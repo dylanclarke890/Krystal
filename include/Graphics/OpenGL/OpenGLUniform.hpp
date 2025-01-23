@@ -46,8 +46,8 @@ namespace Krys::Gfx::OpenGL
         return;
       }
 
-      Logger::Info("Setting uniform value at location {0} (Program {1}):", _location, _program.Id());
-      Logger::WriteLine("{0}", value);
+      // Logger::Info("Setting uniform value at location {0} (Program {1}):", _location, _program.Id());
+      // Logger::WriteLine("{0}", value);
 
       // if 'uniform_t' supports 'operator==' then we can compare the values
       if constexpr (requires { _value == value; })

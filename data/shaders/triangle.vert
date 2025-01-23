@@ -7,11 +7,12 @@ out vec2 v_TexCoord;
 out vec4 v_Colour;
 
 uniform mat4 u_Transform;
+uniform mat4 u_View;
+uniform mat4 u_Projection;
 
 void main()
 {
-  gl_Position = u_Transform * vec4(i_Position.xyz, 1.0);
-  // gl_Position = vec4(i_Position.xyz, 1.0);
+  gl_Position = u_Projection * u_View * u_Transform * vec4(i_Position.xyz, 1.0);
   v_Colour = i_Colour;
   v_TexCoord = i_TexCoord;
 }

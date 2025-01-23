@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
 #include "MTL/Quaternion/Quat.hpp"
@@ -22,62 +23,62 @@ namespace Krys::Gfx
     /// @param width the width of the window.
     /// @param height the height of the window.
     /// @param depth the depth of the projection.
-    Camera(CameraType type, uint32 width, uint32 height, uint32 depth = 1'000u);
+    Camera(CameraType type, uint32 width, uint32 height, uint32 depth = 1'000u) noexcept;
 
     /// @brief Translate the camera.
     /// @param translation the translation vector.
     void Translate(const Vec3 &translation) noexcept;
 
     /// @brief Get the projection matrix of the camera.
-    Mat4 GetProjection() const;
+    NO_DISCARD const Mat4 &GetProjection() const noexcept;
 
     /// @brief Get the view matrix of the camera.
-    Mat4 GetView() const;
+    NO_DISCARD const Mat4 &GetView() const noexcept;
 
     /// @brief Set the view matrix of the camera.
     /// @param view the new view matrix.
     void SetView(const Mat4 &view) noexcept;
 
     /// @brief Get position of camera
-    Vec3 GetPosition() const noexcept;
+    NO_DISCARD const Vec3 &GetPosition() const noexcept;
 
     /// @brief Set the position of the camera.
     /// @param position the new position.
     void SetPosition(const Vec3 &position) noexcept;
 
-    /// @brief Get the orientation of the camera.
-    MTL::Quat GetOrientation() const;
+    /// @brief Calculates the orientation of the camera.
+    NO_DISCARD MTL::Quat GetOrientation() const noexcept;
 
     /// @brief Get the direction the camera is facing.
-    Vec3 GetDirection() const;
+    NO_DISCARD const Vec3 &GetDirection() const noexcept;
 
-    /// @brief Get the right vector of the camera.
-    Vec3 GetRight() const;
+    /// @brief Calculates the right vector of the camera.
+    NO_DISCARD Vec3 GetRight() const noexcept;
 
     /// @brief Get the yaw of the camera.
-    float GetYaw() const;
+    NO_DISCARD float GetYaw() const noexcept;
 
     /// @brief Set the yaw of the camera.
     /// @param yaw the new yaw.
-    void SetYaw(float yaw);
+    void SetYaw(float yaw) noexcept;
 
     /// @brief Adjust the yaw of the camera.
     /// @param by the amount to adjust the yaw by.
-    void AdjustYaw(float by);
+    void AdjustYaw(float by) noexcept;
 
     /// @brief Get the pitch of the camera.
-    float GetPitch() const;
+    NO_DISCARD float GetPitch() const noexcept;
 
     /// @brief Set the pitch of the camera.
     /// @param pitch the new pitch.
-    void SetPitch(float pitch);
+    void SetPitch(float pitch) noexcept;
 
     /// @brief Adjust the pitch of the camera.
     /// @param by the amount to adjust the pitch by.
-    void AdjustPitch(float by);
+    void AdjustPitch(float by) noexcept;
 
     /// @brief Get the type of the camera.
-    CameraType GetType() const;
+    NO_DISCARD CameraType GetType() const noexcept;
 
   private:
     /// @brief Camera position in world space.
