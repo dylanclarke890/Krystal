@@ -11,6 +11,8 @@ namespace Krys
   template <IsArithmeticT TComponent>
   using vec4_t = MTL::Vector<TComponent, 4>;
   using Vec4 = vec4_t<float>;
+  using Vec4i = vec4_t<int32>;
+  using Vec4ui = vec4_t<uint32>;
 
   namespace MTL
   {
@@ -177,13 +179,13 @@ namespace Krys
         return vec_t(x + scalar, y + scalar, z + scalar, w + scalar);
       }
 
-      NO_DISCARD constexpr vec_t &operator+=(const vec_t &other) noexcept
+      constexpr vec_t &operator+=(const vec_t &other) noexcept
       {
         *this = *this + other;
         return *this;
       }
 
-      NO_DISCARD constexpr vec_t &operator+=(component_t scalar) noexcept
+      constexpr vec_t &operator+=(component_t scalar) noexcept
       {
         *this = *this + scalar;
         return *this;
@@ -203,13 +205,13 @@ namespace Krys
         return vec_t(x - scalar, y - scalar, z - scalar, w - scalar);
       }
 
-      NO_DISCARD constexpr vec_t &operator-=(const vec_t &other) noexcept
+      constexpr vec_t &operator-=(const vec_t &other) noexcept
       {
         *this = *this - other;
         return *this;
       }
 
-      NO_DISCARD constexpr vec_t &operator-=(component_t scalar) noexcept
+      constexpr vec_t &operator-=(component_t scalar) noexcept
       {
         *this = *this - scalar;
         return *this;
@@ -231,13 +233,13 @@ namespace Krys
         return vec_t(x / scalar, y / scalar, z / scalar, w / scalar);
       }
 
-      NO_DISCARD constexpr vec_t &operator/=(const vec_t &other) noexcept
+      constexpr vec_t &operator/=(const vec_t &other) noexcept
       {
         *this = *this / other;
         return *this;
       }
 
-      NO_DISCARD constexpr vec_t &operator/=(component_t scalar) noexcept
+      constexpr vec_t &operator/=(component_t scalar) noexcept
       {
         *this = *this / scalar;
         return *this;
@@ -257,13 +259,13 @@ namespace Krys
         return vec_t(x * scalar, y * scalar, z * scalar, w * scalar);
       }
 
-      NO_DISCARD constexpr vec_t &operator*=(const vec_t &other) noexcept
+      constexpr vec_t &operator*=(const vec_t &other) noexcept
       {
         *this = *this * other;
         return *this;
       }
 
-      NO_DISCARD constexpr vec_t &operator*=(component_t scalar) noexcept
+      constexpr vec_t &operator*=(component_t scalar) noexcept
       {
         *this = *this * scalar;
         return *this;

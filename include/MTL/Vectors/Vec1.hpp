@@ -133,13 +133,13 @@ namespace Krys
         return vec_t(x + scalar);
       }
 
-      NO_DISCARD constexpr vec_t &operator+=(const vec_t &other) noexcept
+      constexpr vec_t &operator+=(const vec_t &other) noexcept
       {
         *this = *this + other;
         return *this;
       }
 
-      NO_DISCARD constexpr vec_t &operator+=(component_t scalar) noexcept
+      constexpr vec_t &operator+=(component_t scalar) noexcept
       {
         *this = *this + scalar;
         return *this;
@@ -159,13 +159,13 @@ namespace Krys
         return vec_t(x - scalar);
       }
 
-      NO_DISCARD constexpr vec_t &operator-=(const vec_t &other) noexcept
+      constexpr vec_t &operator-=(const vec_t &other) noexcept
       {
         *this = *this - other;
         return *this;
       }
 
-      NO_DISCARD constexpr vec_t &operator-=(component_t scalar) noexcept
+      constexpr vec_t &operator-=(component_t scalar) noexcept
       {
         *this = *this - scalar;
         return *this;
@@ -187,13 +187,13 @@ namespace Krys
         return vec_t(x / scalar);
       }
 
-      NO_DISCARD constexpr vec_t &operator/=(const vec_t &other) noexcept
+      constexpr vec_t &operator/=(const vec_t &other) noexcept
       {
         *this = *this / other;
         return *this;
       }
 
-      NO_DISCARD constexpr vec_t &operator/=(component_t scalar) noexcept
+      constexpr vec_t &operator/=(component_t scalar) noexcept
       {
         *this = *this / scalar;
         return *this;
@@ -213,13 +213,13 @@ namespace Krys
         return vec_t(x * scalar);
       }
 
-      NO_DISCARD constexpr vec_t &operator*=(const vec_t &other) noexcept
+      constexpr vec_t &operator*=(const vec_t &other) noexcept
       {
         *this = *this * other;
         return *this;
       }
 
-      NO_DISCARD constexpr vec_t &operator*=(component_t scalar) noexcept
+      constexpr vec_t &operator*=(component_t scalar) noexcept
       {
         *this = *this * scalar;
         return *this;
