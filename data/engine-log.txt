@@ -8,692 +8,990 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: PathExists took 0.214 ms.
-[INFO ]: ReadFileText took 0.289 ms.
-[INFO ]: PathExists took 0.107 ms.
-[INFO ]: ReadFileText took 0.216 ms.
-[INFO ]: PathExists took 0.115 ms.
-[INFO ]: IO::LoadImage took 21.071 ms.
+[INFO ]: PathExists took 0.268 ms.
+[INFO ]: ReadFileText took 0.450 ms.
+[INFO ]: PathExists took 0.089 ms.
+[INFO ]: ReadFileText took 0.316 ms.
+[INFO ]: PathExists took 0.139 ms.
+[INFO ]: IO::LoadImage took 26.727 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'textures/wood-wall.jpg' into memory (512x512).
-[INFO ]: Mouse delta: (13, -6)
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 1)
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.70ms
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (4, -2)
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (4, -2)
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (4, -2)
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.68ms
-[INFO ]: Mouse delta: (3, -3)
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.68ms
-[INFO ]: Mouse delta: (2, -1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, -1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, 0)
-[INFO ]: Frame time: 19.12ms
 [INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, -1)
-[INFO ]: Frame time: 16.85ms
-[INFO ]: Mouse delta: (-2, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, 0)
-[INFO ]: Frame time: 16.80ms
-[INFO ]: Mouse delta: (-1, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, 1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-9, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-8, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, -1)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -2)
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 18.40ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.69ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.78ms
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -1)
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 17.03ms
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -1)
-[INFO ]: Frame time: 16.80ms
-[INFO ]: Mouse delta: (-3, 0)
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.68ms
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.73ms
-[INFO ]: Mouse delta: (-6, 1)
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.72ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, 16)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, 21)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 23)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 21)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 20)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 20)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 20)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (11, 29)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 20)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 20)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 22)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 21)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 21)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 18)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (7, 17)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (11, 21)
+[INFO ]: Frame time: 16.76ms
+[INFO ]: Mouse delta: (12, 14)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (15, 9)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (15, 5)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (18, 2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (18, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (18, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (20, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (23, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (27, -1)
+[INFO ]: Frame time: 18.16ms
+[INFO ]: Mouse delta: (36, -10)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (19, -11)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (10, -13)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-2, -15)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-5, -8)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, -1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-2, 2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (8, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (21, 3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (34, 4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (44, 7)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (93, 5)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (65, 3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (53, 6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (40, 7)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (28, 5)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (12, 3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (2, 1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (-3, 1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-10, 1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-18, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-26, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-32, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-45, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-12, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-31, -6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-17, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-13, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-11, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-13, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-11, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-17, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-18, -4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-25, -7)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-10, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-8, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-4, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-5, -1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-3, -1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-6, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-6, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (-3, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, 1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, 1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, -2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, -3)
+[INFO ]: Mouse delta: (-1, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.68ms
-[INFO ]: Mouse delta: (1, -1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (-1, 1)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, 4)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-12, 7)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-11, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-10, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-14, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-15, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-12, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-9, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-9, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-7, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-11, 1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-9, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-9, 1)
-[INFO ]: Frame time: 18.58ms
-[INFO ]: Mouse delta: (-6, 1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-14, -1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-11, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-16, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-16, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-16, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-13, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-9, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-8, 5)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-9, 8)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-12, 17)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-6, 14)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, 11)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, 6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 8)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 10)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 12)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (6, 13)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (6, 16)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (12, 25)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (7, 15)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (8, 13)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (7, 12)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 9)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 5)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 4)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 7)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 5)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (11, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, -4)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-10, -2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, -1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, -4)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, -2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, -1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (6, 1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (4, 1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (7, 2)
+[INFO ]: Mouse delta: (0, 1)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (7, 4)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (12, 4)
+[INFO ]: Mouse delta: (9, 2)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (15, 7)
+[INFO ]: Mouse delta: (11, 2)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (8, 5)
+[INFO ]: Mouse delta: (16, 3)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (8, 5)
+[INFO ]: Mouse delta: (22, 2)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (8, 5)
+[INFO ]: Mouse delta: (30, 1)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 4)
+[INFO ]: Mouse delta: (41, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 4)
+[INFO ]: Mouse delta: (42, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 5)
+[INFO ]: Mouse delta: (38, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 5)
+[INFO ]: Mouse delta: (29, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (4, 5)
+[INFO ]: Mouse delta: (28, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 7)
+[INFO ]: Mouse delta: (11, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (6, 10)
+[INFO ]: Mouse delta: (5, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 8)
+[INFO ]: Mouse delta: (1, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 9)
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 10)
+[INFO ]: Mouse delta: (2, 1)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 11)
+[INFO ]: Mouse delta: (-1, 5)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 14)
+[INFO ]: Mouse delta: (-1, 9)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (6, 17)
+[INFO ]: Mouse delta: (-5, 16)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 21)
+[INFO ]: Mouse delta: (-18, 31)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (4, 21)
+[INFO ]: Mouse delta: (-12, 23)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (4, 29)
+[INFO ]: Mouse delta: (-14, 24)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 16)
+[INFO ]: Mouse delta: (-13, 23)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (4, 14)
+[INFO ]: Mouse delta: (-14, 23)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 14)
+[INFO ]: Mouse delta: (-11, 23)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 12)
-[INFO ]: Frame time: 18.61ms
-[INFO ]: Mouse delta: (1, 10)
+[INFO ]: Mouse delta: (-10, 18)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 9)
+[INFO ]: Mouse delta: (-11, 16)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (5, 6)
+[INFO ]: Mouse delta: (-10, 11)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (4, 5)
+[INFO ]: Mouse delta: (-9, 8)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 5)
+[INFO ]: Mouse delta: (-11, 5)
+[INFO ]: Frame time: 16.70ms
+[INFO ]: Mouse delta: (-8, 2)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 4)
+[INFO ]: Mouse delta: (-8, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 5)
+[INFO ]: Mouse delta: (-10, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 6)
+[INFO ]: Mouse delta: (-11, -2)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 9)
+[INFO ]: Mouse delta: (-14, -3)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 10)
+[INFO ]: Mouse delta: (-17, -3)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 9)
+[INFO ]: Mouse delta: (-19, -4)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 10)
+[INFO ]: Mouse delta: (-19, -4)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 12)
+[INFO ]: Mouse delta: (-17, -3)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 18)
+[INFO ]: Mouse delta: (-24, -5)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 12)
+[INFO ]: Mouse delta: (-18, -3)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 11)
+[INFO ]: Mouse delta: (-18, -4)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 10)
+[INFO ]: Mouse delta: (-17, -6)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 9)
+[INFO ]: Mouse delta: (-17, -4)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 5)
+[INFO ]: Mouse delta: (-16, -4)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 4)
+[INFO ]: Mouse delta: (-14, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-12, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-20, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-17, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-16, -4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-17, -4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-16, -3)
+[INFO ]: Frame time: 16.88ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-29, -6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-20, -4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-20, -4)
+[INFO ]: Frame time: 16.68ms
+[INFO ]: Mouse delta: (-17, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-16, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-15, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-15, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-16, -6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-22, -8)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-15, -6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-16, -6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-15, -7)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-17, -6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-25, -10)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-8, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-21, -7)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-13, -5)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-11, -5)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-13, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-13, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-15, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-27, -5)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-17, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-15, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-15, 0)
+[INFO ]: Frame time: 16.70ms
+[INFO ]: Mouse delta: (-17, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-13, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-8, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-6, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-5, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-6, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-9, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-5, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-3, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-2, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-4, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-4, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-6, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-11, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-14, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-12, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-3, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-2, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 1)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 1)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 5)
+[INFO ]: Mouse delta: (0, 1)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 4)
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 3)
+[INFO ]: Mouse delta: (-1, 1)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 3)
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 3)
+[INFO ]: Mouse delta: (-1, 1)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 5)
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 6)
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (8, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (11, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (29, 2)
+[INFO ]: Frame time: 16.69ms
+[INFO ]: Mouse delta: (26, 1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (33, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (37, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (39, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (39, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (39, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (43, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (44, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (66, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (20, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (52, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (30, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (27, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (23, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (20, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (17, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (16, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (17, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (21, -4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (13, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (11, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (8, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (8, -5)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (8, -9)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (11, -13)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (9, -19)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (16, -34)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (10, -25)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (10, -24)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (8, -24)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, -22)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, -23)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, -18)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, -17)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, -14)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (2, -18)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, -9)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, -10)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, -9)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, -7)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, -3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 6)
 [INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 23)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (2, 19)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 19)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 22)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 22)
+[INFO ]: Frame time: 16.68ms
+[INFO ]: Mouse delta: (4, 22)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 23)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 23)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 26)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 28)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (8, 43)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 25)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 20)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 18)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 17)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 18)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 17)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 15)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 15)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, 20)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 11)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 13)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (2, 12)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 13)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, 13)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 16)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (7, 22)
+[INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (3, 8)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 7)
+[INFO ]: Mouse delta: (11, 21)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 8)
+[INFO ]: Mouse delta: (8, 12)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 4)
+[INFO ]: Mouse delta: (8, 11)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 9)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, 9)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, 8)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 9)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 8)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, 6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 0)
+[INFO ]: Frame time: 18.02ms
+[INFO ]: Mouse delta: (2, 0)
+[INFO ]: Frame time: 16.68ms
+[INFO ]: Mouse delta: (5, 1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (9, 2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (13, 5)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (21, 6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (26, 6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (31, 9)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (16, 4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (15, 3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (11, 2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (5, 3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-5, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-4, -2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.69ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-3, 2)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-2, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 1)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 3)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, 4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (4, 10)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 17)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (6, 33)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (2, 24)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 25)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (2, 26)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, 28)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (2, 29)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 29)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 28)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 26)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 23)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 20)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (1, 25)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 16)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 13)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-2, 10)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 8)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 7)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-2, 6)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-2, 5)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 2)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 1)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 1)
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (-1, 1)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 0)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, 0)
+[INFO ]: Frame time: 18.15ms
+[INFO ]: Mouse delta: (0, -2)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Mouse delta: (1, -2)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Mouse delta: (0, -1)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, 5)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, 5)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-6, 6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-8, 5)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-10, 7)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-10, 6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-7, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-12, 5)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-13, 6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-15, 6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-7, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, 2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, 4)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, 5)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, 10)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, 8)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, 8)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, 9)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, 9)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, 10)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, 10)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 13)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 11)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 11)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 4)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 4)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 9)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 9)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 8)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 7)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 7)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 13)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 11)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (6, 15)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (9, 19)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (8, 19)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (7, 12)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-12, -4)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-15, -4)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, -1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, -2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-6, -3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-10, -6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, -6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, -11)
+[INFO ]: Mouse delta: (0, -2)
 [INFO ]: Frame time: 16.68ms
-[INFO ]: Mouse delta: (0, -9)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, -12)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -14)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -18)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -19)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, -23)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-6, -12)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-6, -12)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, -15)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, -19)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, -20)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, -23)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-6, -28)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-8, -31)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-11, -53)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-6, -40)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, -39)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, -37)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -34)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -31)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, -31)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-6, -29)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-11, -26)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-12, -23)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-13, -19)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-17, -24)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-10, -16)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-10, -16)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-15, -15)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-23, -15)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-28, -12)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-27, -7)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-25, -8)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-25, -10)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-44, -18)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-31, -15)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-26, -17)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-24, -17)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-24, -19)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-26, -20)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-26, -20)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-35, -25)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-10, -6)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-18, -10)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-5, -2)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-8, 7)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-13, 20)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-18, 33)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-18, 43)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-12, 43)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-7, 38)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, 32)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 40)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (3, 24)
-[INFO ]: Frame time: 19.36ms
-[INFO ]: Mouse delta: (4, 23)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, 18)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, 8)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, 0)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, -27)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-7, -36)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-9, -48)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-11, -52)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, -46)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -39)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -33)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, -28)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -24)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -36)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (1, -25)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -24)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -28)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -28)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, -32)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (2, -34)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -33)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -30)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -37)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-2, -18)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, -15)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, -10)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-3, -8)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -3)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -1)
-[INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -3)
+[INFO ]: Mouse delta: (0, -3)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Mouse delta: (0, -4)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-4, -10)
+[INFO ]: Mouse delta: (-3, -6)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (-1, -4)
+[INFO ]: Mouse delta: (-3, -6)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -3)
+[INFO ]: Mouse delta: (1, -11)
 [INFO ]: Frame time: 16.67ms
-[INFO ]: Mouse delta: (0, -1)
+[INFO ]: Mouse delta: (3, -16)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (9, -29)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (10, -28)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (13, -32)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (15, -33)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (17, -29)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (18, -24)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (18, -21)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (18, -16)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (18, -12)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (27, -16)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (14, -7)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (9, -4)
+[INFO ]: Frame time: 16.67ms
+[INFO ]: Mouse delta: (3, -3)
 [INFO ]: Frame time: 16.67ms
 [INFO ]: Key pressed: 70
-[INFO ]: Mouse delta: (0, 0)
+[INFO ]: Mouse delta: (2, -1)
 [INFO ]: Frame time: 16.67ms

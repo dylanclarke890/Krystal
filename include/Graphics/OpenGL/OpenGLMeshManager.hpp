@@ -13,7 +13,7 @@ namespace Krys::Gfx::OpenGL
   public:
     OpenGLMeshManager(Ptr<GraphicsContext> context) noexcept;
 
-    MeshHandle CreateMesh(const List<VertexData> &vertices, const List<uint32> &indices,
-                          const VertexLayout &layout) noexcept override;
+    NO_DISCARD MeshHandle CreateMesh(const List<VertexData> &vertices, const List<uint32> &indices,
+                                     const VertexLayout &layout) noexcept override;
   };
 }

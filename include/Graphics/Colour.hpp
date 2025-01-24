@@ -5,6 +5,8 @@
 #include "MTL/Vectors/Vec4.hpp"
 #include "Utils/Hash.hpp"
 
+#include <format>
+
 namespace Krys::Gfx
 {
   /// @brief A colour class with red, green, blue and alpha components.
@@ -188,6 +190,22 @@ namespace std
     size_t operator()(const Krys::Gfx::Colour &colour) const
     {
       return Krys::HashCombine(colour.r, colour.g, colour.b, colour.a);
+    }
+  };
+
+  template <>
+  struct formatter<Krys::Gfx::Colour>
+  {
+    constexpr auto parse(format_parse_context &ctx)
+    {
+      return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const Krys::Gfx::Colour &colour, FormatContext &ctx)
+    {
+      return format_to(ctx.out(), "Colour(r: {}, g: {}, b: {}, a: {})", colour.r, colour.g, colour.b,
+                       colour.a);
     }
   };
 }

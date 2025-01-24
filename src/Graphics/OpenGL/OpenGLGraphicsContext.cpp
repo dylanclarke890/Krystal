@@ -82,6 +82,8 @@ namespace Krys::Gfx::OpenGL
     ::glEnable(GL_DEBUG_OUTPUT);
     ::glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     ::glDebugMessageCallback(OpenGLMessageCallback, nullptr);
+
+    ::glEnable(GL_DEPTH_TEST);
   }
 
   void OpenGLGraphicsContext::SetViewport(const Vec4ui &viewport) noexcept
@@ -110,7 +112,7 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLGraphicsContext::Clear() noexcept
   {
-    ::glClear(GL_COLOR_BUFFER_BIT);
+    ::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
 
   VertexBufferHandle OpenGLGraphicsContext::CreateVertexBuffer(uint32 size) noexcept
