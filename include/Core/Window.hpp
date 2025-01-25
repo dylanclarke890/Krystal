@@ -51,6 +51,22 @@ namespace Krys
     /// @brief Swaps the front and back buffers of the window.
     virtual void SwapBuffers() noexcept = 0;
 
+    /// @brief Show/hide the window.
+    /// @param show Whether to show the window.
+    virtual void Show(bool show) noexcept = 0;
+
+    /// @brief Show/hide the cursor.
+    /// @param show Whether to show the cursor.
+    virtual void ShowCursor(bool show) noexcept = 0;
+
+    /// @brief Locks the cursor to the dimensions of the window.
+    /// @param lock Whether to lock the cursor.
+    virtual void LockCursor(bool lock) noexcept = 0;
+
+    /// @brief Set the window title.
+    /// @param title The new title.
+    virtual void SetTitle(const string &title) noexcept = 0;
+
   protected:
     /// @brief Constructs a `Window`.
     /// @param width The desired window width.

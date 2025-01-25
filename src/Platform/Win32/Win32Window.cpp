@@ -13,6 +13,41 @@ namespace Krys::Platform
   {
   }
 
+  void Win32Window::Show(bool show) noexcept
+  {
+    KRYS_ASSERT_ALWAYS_EVAL(::ShowWindow(_windowHandle, show ? SW_SHOW : SW_HIDE),
+                            "Failed to show window: {0}", GetLastErrorAsString());
+  }
+
+  void Win32Window::ShowCursor(bool show) noexcept
+  {
+    if (show)
+      ::ShowCursor(true);
+    else
+      while (::ShowCursor(false) >= 0)
+        ;
+  }
+
+  void Win32Window::LockCursor(bool lock) noexcept
+  {
+    if (lock)
+    {
+      RECT rect;
+      ::GetWindowRect(_windowHandle, &rect);
+      KRYS_ASSERT_ALWAYS_EVAL(::ClipCursor(&rect), "Failed to clip cursor: {0}", GetLastErrorAsString());
+    }
+    else
+    {
+      KRYS_ASSERT_ALWAYS_EVAL(::ClipCursor(nullptr), "Failed to clip cursor: {0}", GetLastErrorAsString());
+    }
+  }
+
+  void Win32Window::SetTitle(const string &title) noexcept
+  {
+    KRYS_ASSERT_ALWAYS_EVAL(::SetWindowTextA(_windowHandle, title.c_str()), "Failed to set window title: {0}",
+                            GetLastErrorAsString());
+  }
+
   HDC Win32Window::GetDeviceContext() const noexcept
   {
     return _deviceContext;
@@ -56,6 +91,19 @@ namespace Krys::Platform
       case WM_SIZE:
       case WM_MOVE:
       case WM_QUIT:      result = ::DefWindowProcA(hWnd, message, wParam, lParam); break;
+      case WM_SETCURSOR:
+      {
+        // Check if mouse is in our client area
+        if (LOWORD(lParam) == HTCLIENT)
+        {
+          // We want the normal arrow, or our custom cursor
+          ::SetCursor(::LoadCursor(NULL, IDC_ARROW));
+          return TRUE; // Indicate we've handled the message
+        }
+        else
+          // Let Windows handle resizing edges etc.
+          return ::DefWindowProc(hWnd, message, wParam, lParam);
+      }
       default:
       {
         bool handled =

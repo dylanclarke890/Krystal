@@ -21,11 +21,17 @@ namespace Krys::Platform
 
     void Poll() noexcept override;
 
-    virtual void SetVSync(bool) noexcept override
-    {
-    }
+    virtual void SetVSync(bool show) noexcept override = 0;
 
     void SwapBuffers() noexcept override;
+
+    void Show(bool show) noexcept override;
+
+    void ShowCursor(bool show) noexcept override;
+
+    void LockCursor(bool lock) noexcept override;
+
+    void SetTitle(const string &title) noexcept override;
 
     NO_DISCARD HDC GetDeviceContext() const noexcept;
     NO_DISCARD HWND GetWindowHandle() const noexcept;
