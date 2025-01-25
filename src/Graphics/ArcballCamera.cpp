@@ -10,6 +10,7 @@ namespace Krys::Gfx
       : Camera(type, width, height, depth), _distance(distance), _target(target), _rotationX(0.0f),
         _rotationY(0.0f)
   {
+    UpdateOrbit();
   }
 
   void ArcballCamera::OnMouseDrag(float deltaX, float deltaY) noexcept
