@@ -178,7 +178,7 @@ class Project:
     files: list[str] = self.get_files()
     # When triggered by the on save task, the file saved is passed as an 
     # argument. We can skip checking files in that case and just recompile the one that changed.
-    if (len(sys.argv) >= 3):
+    if (len(sys.argv) >= 3 and "tests" not in sys.argv[2]):
       file_path: str = sys.argv[2]
       file_name: str = file_path.split("\\")[-1]
       if next((file for file in files if file.endswith(file_name)), None) is not None:

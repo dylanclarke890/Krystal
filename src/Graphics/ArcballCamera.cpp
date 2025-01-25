@@ -1,51 +1,74 @@
 #include "Graphics/ArcballCamera.hpp"
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Matrices/Ext/Transformations.hpp"
-#include "MTL/Quaternion/Ext/Transformations.hpp"
+#include "MTL/Quaternion/Ext/Transform.hpp"
 
 namespace Krys::Gfx
 {
-  ArcballCamera::ArcballCamera(const Vec3 &position, const Vec3 &target, const Vec2ui &viewport) noexcept
-      : _camera(CameraType::Perspective, viewport.x, viewport.y, 100), _viewport(viewport), _target(target)
+  ArcballCamera::ArcballCamera(CameraType type, uint32 width, uint32 height, uint32 depth, const Vec3 &target,
+                               float distance) noexcept
+      : Camera(type, width, height, depth), _distance(distance), _target(target), _rotationX(0.0f),
+        _rotationY(0.0f)
   {
-    _camera.SetPosition(position);
-    _camera.LookAt(target);
   }
 
-  void ArcballCamera::Update(float dx, float dy) noexcept
+  void ArcballCamera::OnMouseDrag(float deltaX, float deltaY) noexcept
   {
-    // Step 1: Calculate rotation angles based on mouse movement
-    float deltaAngleX = MTL::TwoPi<float>() / _viewport.x; // Full rotation for viewport width
-    float deltaAngleY = MTL::Pi<float>() / _viewport.y;    // Half rotation for viewport height
+    // Sensitivity factors
+    const float rotationSpeed = 0.01f;
 
-    float yawAngle = dx * deltaAngleX;   // Horizontal rotation
-    float pitchAngle = dy * deltaAngleY; // Vertical rotation
+    // Adjust angles
+    _rotationY += deltaX * rotationSpeed; // yaw
+    _rotationX += deltaY * rotationSpeed; // pitch
 
-    // Step 2: Create quaternions for the yaw and pitch rotations
-    Vec3 up = Vec3(0.0f, 1.0f, 0.0f); // Fixed world up for yaw
-    Vec3 direction = MTL::Normalize(_camera.GetPosition() - _target);
-    Vec3 right = MTL::Normalize(MTL::Cross(up, direction)); // Right vector for pitch
+    // Clamp the pitch angle if you like (to avoid flipping)
+    // e.g. _rotationX = std::clamp(_rotationX, -MTL::HalfPi<float>(), MTL::HalfPi<float>());
 
-    // Quaternion for yaw (around world up)
-    MTL::Quat yawRotation = MTL::Quat(up, yawAngle);
-
-    // Quaternion for pitch (around local right vector)
-    MTL::Quat pitchRotation = MTL::Quat(right, pitchAngle);
-
-    // Step 3: Combine the rotations
-    MTL::Quat totalRotation = pitchRotation * yawRotation;
-
-    // Step 4: Rotate the camera position using the combined quaternion
-    Vec3 position = _camera.GetPosition() - _target; // Relative to target
-    position = MTL::Rotate(totalRotation, position) + _target;
-
-    // Step 5: Update the camera
-    _camera.SetPosition(position);
-    _camera.SetDirection(MTL::Normalize(_target - position)); // Look at the target
+    UpdateOrbit();
   }
 
-  Camera &ArcballCamera::GetCamera() noexcept
+  void ArcballCamera::Zoom(float delta) noexcept
   {
-    return _camera;
+    _distance += delta;
+    if (_distance < 1.0f)
+      _distance = 1.0f; // prevent going through target
+
+    UpdateOrbit();
+  }
+
+  void ArcballCamera::SetTarget(const Vec3 &target) noexcept
+  {
+    _target = target;
+    UpdateOrbit();
+  }
+
+  const Vec3 &ArcballCamera::GetTarget() const noexcept
+  {
+    return _target;
+  }
+
+  void ArcballCamera::UpdateOrbit() noexcept
+  {
+    // 1. Compute orientation from angles
+    //    Let's define yaw = _rotationY, pitch = _rotationX
+    Quat yawRotation = MTL::RotateY(_rotationY);
+    Quat pitchRotation = MTL::RotateX(_rotationX);
+
+    // The final orientation is pitch * yaw (apply yaw first, then pitch)
+    Quat orbitRotation = pitchRotation * yawRotation;
+    orbitRotation.Normalize();
+
+    // 2. Compute camera position
+    //    By default, the camera looks down -Z, so place it at (0, 0, _distance)
+    Vec3 offset(0.f, 0.f, -_distance);
+
+    // Rotate offset by orientation
+    Vec3 finalPos = Krys::MTL::Rotate(orbitRotation, offset);
+
+    // 3. The actual camera world position is target + the offset
+    SetPosition(_target + finalPos);
+
+    // 4. Set orientation
+    SetOrientation(orbitRotation);
   }
 }

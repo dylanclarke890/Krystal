@@ -3,51 +3,55 @@
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Matrices/Ext/ClipSpace.hpp"
 #include "MTL/Matrices/Ext/Transformations.hpp"
+#include "MTL/Matrices/Mat3x3.hpp"
+#include "MTL/Quaternion/Ext/Transform.hpp"
 #include "MTL/Trigonometric/Atan2.hpp"
 #include "MTL/Trigonometric/Cos.hpp"
 #include "MTL/Trigonometric/Sin.hpp"
 
 namespace Krys::Gfx
 {
-  static Vec3 CreateDirection(float pitch, float yaw) noexcept
-  {
-    Vec3 direction;
-
-    direction.x = MTL::Cos(yaw) * MTL::Cos(pitch);
-    direction.y = MTL::Sin(pitch);
-    direction.z = MTL::Sin(yaw) * MTL::Cos(pitch);
-
-    return MTL::Normalize(direction);
-  }
-
   Camera::Camera(CameraType type, uint32 width, uint32 height, uint32 depth) noexcept
-      : _position(0.0f, 0.0f, 100.0f), _direction(0.0f, 0.0f, -1.0f), _up(0.0f, 1.0f, 0.0f), _view(),
-        _projection(), _pitch(0.0f), _yaw(-MTL::HalfPi<float>()), _type(type)
+      : _position(0.0f, 0.0f, 100.0f), _orientation(), _view(), _projection(), _type(type)
   {
-    const auto widthF = static_cast<float>(width);
-    const auto heightF = static_cast<float>(height);
-    const auto depthF = static_cast<float>(depth);
-    const auto fovy = 0.785398f;
+    const float widthF = static_cast<float>(width);
+    const float heightF = static_cast<float>(height);
+    const float depthF = static_cast<float>(depth);
+    const float fovy = 0.785398f; // 45 degrees in radians
 
     switch (_type)
     {
       case CameraType::Orthographic: _projection = MTL::Ortho(widthF, heightF, depthF); break;
       case CameraType::Perspective:
-        _projection = MTL::Perspective(fovy, widthF, heightF, 0.1f, depthF);
+        _projection = MTL::Perspective(fovy, widthF / heightF, 0.1f, depthF);
         break;
       default: KRYS_ASSERT(false, "Unknown enum value: camera type"); break;
     }
 
-    _direction = CreateDirection(_pitch, _yaw);
-    _view = MTL::LookAt(_position, _position + _direction, _up);
-
+    UpdateViewMatrix();
     Logger::Info("Camera created.");
   }
 
-  void Camera::Translate(const Vec3 &translation) noexcept
+  const Vec3 &Camera::GetPosition() const noexcept
   {
-    _position += translation;
-    _view = MTL::LookAt(_position, _position + _direction, _up);
+    return _position;
+  }
+
+  void Camera::SetPosition(const Vec3 &position) noexcept
+  {
+    _position = position;
+    UpdateViewMatrix();
+  }
+
+  const Quat &Camera::GetOrientation() const noexcept
+  {
+    return _orientation;
+  }
+
+  void Camera::SetOrientation(const Quat &orientation) noexcept
+  {
+    _orientation = orientation;
+    UpdateViewMatrix();
   }
 
   const Mat4 &Camera::GetProjection() const noexcept
@@ -60,94 +64,99 @@ namespace Krys::Gfx
     return _view;
   }
 
-  void Camera::SetView(const Mat4 &view) noexcept
-  {
-    _view = view;
-  }
-
-  const Vec3 &Camera::GetPosition() const noexcept
-  {
-    return _position;
-  }
-
-  void Camera::SetPosition(const Vec3 &position) noexcept
-  {
-    _position = position;
-    _view = MTL::LookAt(_position, _position + _direction, _up);
-  }
-
-  MTL::Quat Camera::GetOrientation() const noexcept
-  {
-    return {_yaw, _pitch, 0.0f};
-  }
-
-  const Vec3 &Camera::GetDirection() const noexcept
-  {
-    return _direction;
-  }
-
-  void Camera::SetDirection(const Vec3 &direction) noexcept
-  {
-    _direction = MTL::Normalize(direction);
-    _pitch = MTL::Asin(_direction.y);
-    _yaw = MTL::Atan2(_direction.z, _direction.x);
-    _view = MTL::LookAt(_position, _position + _direction, _up);
-  }
-
-  Vec3 Camera::GetRight() const noexcept
-  {
-    return MTL::Normalize(MTL::Cross(_direction, _up));
-  }
-
-  Vec3 Camera::GetUp() const noexcept
-  {
-    return _up;
-  }
-
-  float Camera::GetYaw() const noexcept
-  {
-    return _yaw;
-  }
-
-  void Camera::SetYaw(float yaw) noexcept
-  {
-    _yaw = yaw;
-    _direction = CreateDirection(_pitch, _yaw);
-    _view = MTL::LookAt(_position, _position + _direction, _up);
-  }
-
-  void Camera::AdjustYaw(float by) noexcept
-  {
-    SetYaw(_yaw + by);
-  }
-
-  float Camera::GetPitch() const noexcept
-  {
-    return _pitch;
-  }
-
-  void Camera::SetPitch(float pitch) noexcept
-  {
-    _pitch = pitch;
-    _direction = CreateDirection(_pitch, _yaw);
-    _view = MTL::LookAt(_position, _position + _direction, _up);
-  }
-
-  void Camera::AdjustPitch(float by) noexcept
-  {
-    SetPitch(_pitch + by);
-  }
-
   CameraType Camera::GetType() const noexcept
   {
     return _type;
   }
 
+  Vec3 Camera::GetForward() const noexcept
+  {
+    return MTL::Rotate(_orientation, Vec3(0.0f, 0.0f, -1.0f));
+  }
+
+  void Camera::SetDirection(const Vec3 &dir) noexcept
+  {
+    // Normalize the input direction
+    Vec3 direction = MTL::Normalize(dir);
+
+    // Define the default forward vector (camera's initial view direction)
+    Vec3 forward = Vec3(0.0f, 0.0f, -1.0f);
+
+    // Calculate the dot product between forward and the new direction
+    float dot = MTL::Dot(forward, direction);
+
+    // Handle edge cases
+    if (dot > 0.9999f)
+    {
+      // New direction is the same as the forward vector
+      _orientation = Quat(); // Identity quaternion
+    }
+    else if (dot < -0.9999f)
+    {
+      // New direction is directly opposite to the forward vector
+      Vec3 up = Vec3(0.0f, 1.0f, 0.0f); // Choose an arbitrary orthogonal axis
+      _orientation = Quat(up, MTL::Pi<float>());
+    }
+    else
+    {
+      // General case: Calculate rotation axis and angle
+      Vec3 axis = MTL::Normalize(MTL::Cross(forward, direction));
+      float angle = MTL::Acos(dot);
+
+      // Create the quaternion representing the rotation
+      _orientation = Quat(axis, angle);
+    }
+
+    // Update the view matrix
+    UpdateViewMatrix();
+  }
+
+  Vec3 Camera::GetRight() const noexcept
+  {
+    return MTL::Rotate(_orientation, Vec3(1.0f, 0.0f, 0.0f));
+  }
+
+  Vec3 Camera::GetUp() const noexcept
+  {
+    return MTL::Rotate(_orientation, Vec3(0.0f, 1.0f, 0.0f));
+  }
+
+  void Camera::Translate(const Vec3 &translation) noexcept
+  {
+    _position += translation;
+    UpdateViewMatrix();
+  }
+
+  void Camera::Rotate(const Quat &rotation) noexcept
+  {
+    // Compose the rotations using quaternion multiplication.
+    _orientation = (rotation * _orientation).Normalize();
+    UpdateViewMatrix();
+  }
+
   void Camera::LookAt(const Vec3 &target) noexcept
   {
-    _direction = MTL::Normalize(target - _position);
-    _pitch = MTL::Asin(_direction.y);
-    _yaw = MTL::Atan2(_direction.z, _direction.x);
-    _view = MTL::LookAt(_position, _position + _direction, _up);
+    // Compute the forward, right, and up vectors
+    Vec3 forward = Normalize(target - _position);
+    Vec3 right = MTL::Normalize(MTL::Cross(Vec3(0.0f, 1.0f, 0.0f), forward));
+    Vec3 up = MTL::Cross(forward, right);
+
+    // Compute the rotation matrix from the vectors
+    Mat3 rotationMatrix(right, up, -forward);
+    _orientation = Quat(rotationMatrix);
+
+    UpdateViewMatrix();
+  }
+
+  void Camera::UpdateViewMatrix() noexcept
+  {
+    // Compute the rotation matrix from the quaternion
+    Mat4 rotation = _orientation.Normalize().ToMat4x4();
+
+    // Compute the translation matrix
+    Mat4 translation = MTL::Translate(Mat4(1.0f), -_position);
+
+    // View matrix is the inverse of the camera's world transformation.
+    _view = rotation * translation;
   }
 }
