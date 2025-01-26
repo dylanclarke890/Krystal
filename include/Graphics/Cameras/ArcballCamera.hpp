@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics/Camera.hpp"
+#include "Graphics/Cameras/Camera.hpp"
 #include "MTL/Vectors/Vec2.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 

@@ -1,4 +1,4 @@
-#include "Graphics/Camera.hpp"
+#include "Graphics/Cameras/Camera.hpp"
 
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Common/Convert.hpp"

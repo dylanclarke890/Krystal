@@ -1,4 +1,4 @@
-#include "Graphics/ArcballCamera.hpp"
+#include "Graphics/Cameras/ArcballCamera.hpp"
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Matrices/Ext/Transformations.hpp"
 #include "MTL/Quaternion/Ext/Transform.hpp"
