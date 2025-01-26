@@ -1,6 +1,7 @@
 #include "Graphics/Camera.hpp"
 
 #include "MTL/Common/Constants.hpp"
+#include "MTL/Common/Convert.hpp"
 #include "MTL/Matrices/Ext/ClipSpace.hpp"
 #include "MTL/Matrices/Ext/Transformations.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
@@ -12,18 +13,18 @@
 namespace Krys::Gfx
 {
   Camera::Camera(CameraType type, uint32 width, uint32 height, uint32 depth) noexcept
-      : _position(0.0f, 0.0f, 100.0f), _orientation(), _view(), _projection(), _type(type)
+      : _width(static_cast<float>(width)), _height(static_cast<float>(height)), _position(0.0f, 0.0f, 100.0f),
+        _orientation(), _view(), _projection(), _type(type)
   {
-    const float widthF = static_cast<float>(width);
-    const float heightF = static_cast<float>(height);
     const float depthF = static_cast<float>(depth);
-    const float fovy = 0.785398f; // 45 degrees in radians
+    // TODO make this configurable
+    constexpr float fovy = MTL::Radians(45.0f);
 
     switch (_type)
     {
-      case CameraType::Orthographic: _projection = MTL::Ortho(widthF, heightF, depthF); break;
+      case CameraType::Orthographic: _projection = MTL::Ortho(_width, _height, depthF); break;
       case CameraType::Perspective:
-        _projection = MTL::Perspective(fovy, widthF / heightF, 0.1f, depthF);
+        _projection = MTL::Perspective(fovy, _width / _height, 0.1f, depthF);
         break;
       default: KRYS_ASSERT(false, "Unknown enum value: camera type"); break;
     }

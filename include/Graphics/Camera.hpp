@@ -73,7 +73,13 @@ namespace Krys::Gfx
     /// @param target the target to look at.
     void LookAt(const Vec3 &target) noexcept;
 
-  private:
+  protected:
+    /// @brief Width of the camera viewport.
+    float _width;
+
+    /// @brief Height of the camera viewport.
+    float _height;
+
     /// @brief Camera position in world space.
     Vec3 _position;
 

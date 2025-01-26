@@ -17,8 +17,8 @@ namespace Krys::Gfx
     ArcballCamera(CameraType type, uint32 width, uint32 height, uint32 depth, const Vec3 &target = Vec3(0.0f),
                   float distance = 100.f) noexcept;
 
-    /// @brief Update orbit angles in response to mouse drag
-    void OnMouseDrag(float deltaX, float deltaY) noexcept;
+    void OnMouseDragStart(const Vec2 &position) noexcept;
+    void OnMouseDrag(const Vec2 &position) noexcept;
 
     /// @brief Zoom in/out (change orbit distance)
     void Zoom(float delta) noexcept;
@@ -34,16 +34,19 @@ namespace Krys::Gfx
     void UpdateOrbit() noexcept;
 
   private:
+    /// @brief Convert 2D mouse position to a 3D vector on the virtual sphere
+    Vec3 MapToSphere(const Vec2 &mousePos) noexcept;
+
+  private:
     /// @brief The fixed distance from the target.
     float _distance;
 
     // @brief The target point to look at.
     Vec3 _target;
 
-    // @brief The current rotation around X.
-    float _rotationX;
+    Vec2 _lastMousePosition{};
 
-    // @brief The current rotation around Y.
-    float _rotationY;
+    /// @brief The last mouse position.
+    Vec3 _lastSpherePosition;
   };
 }
