@@ -11,7 +11,7 @@ namespace Krys::Gfx
   // consider splitting this into two separate commands
   struct RenderCommand
   {
-    PipelineHandle Pipeline;
+    ProgramHandle Program;
     MeshHandle Mesh;
     PrimitiveType Type {PrimitiveType::Triangles};
   };

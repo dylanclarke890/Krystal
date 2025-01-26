@@ -2,7 +2,7 @@
 #include "Core/Debug/Macros.hpp"
 #include "Core/Logger.hpp"
 #include "Graphics/OpenGL/OpenGLBuffer.hpp"
-#include "Graphics/OpenGL/OpenGLPipeline.hpp"
+#include "Graphics/OpenGL/OpenGLProgram.hpp"
 #include "Graphics/OpenGL/OpenGLShader.hpp"
 
 #include <glad/gl.h>
@@ -143,12 +143,12 @@ namespace Krys::Gfx::OpenGL
     return handle;
   }
 
-  PipelineHandle OpenGLGraphicsContext::CreatePipeline() noexcept
+  ProgramHandle OpenGLGraphicsContext::CreateProgram() noexcept
   {
-    auto pipeline = CreateUnique<OpenGLPipeline>();
-    auto handle = pipeline->GetHandle();
+    auto program = CreateUnique<OpenGLProgram>();
+    auto handle = program->GetHandle();
 
-    _pipelines[handle] = std::move(pipeline);
+    _programs[handle] = std::move(program);
     return handle;
   }
 }

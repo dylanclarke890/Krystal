@@ -29,7 +29,7 @@ namespace Krys::Gfx::OpenGL
     IndexBufferHandle CreateIndexBuffer(uint32 size) noexcept override;
 
     ShaderHandle CreateShader(const ShaderDescriptor &description) noexcept override;
-    PipelineHandle CreatePipeline() noexcept override;
+    ProgramHandle CreateProgram() noexcept override;
 
     void Clear() noexcept override;
   };

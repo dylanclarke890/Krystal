@@ -16,8 +16,8 @@ namespace Krys::Gfx
   {
     for (const auto &command : _commands)
     {
-      auto &pipeline = context->GetPipeline(command.Pipeline);
-      pipeline.Bind();
+      auto &program = context->GetProgram(command.Program);
+      program.Bind();
 
       KRYS_ASSERT(command.Mesh.IsValid(), "Mesh was not provided.");
       auto &mesh = _meshManager->GetMesh(command.Mesh);

@@ -27,9 +27,10 @@ namespace Krys::Gfx::OpenGL
     {
     }
 
-    OpenGLUniform(PipelineHandle program, const string &name) noexcept
+    OpenGLUniform(ProgramHandle program, const string &name) noexcept
         : _program(program), _location(-1), _value()
     {
+      KRYS_ASSERT(_program.IsValid(), "Invalid program handle.");
       _location =
         ::glGetProgramResourceLocation(static_cast<GLuint>(_program.Id()), GL_UNIFORM, name.c_str());
       if (_location == -1)
@@ -112,7 +113,7 @@ namespace Krys::Gfx::OpenGL
     }
 
   private:
-    PipelineHandle _program;
+    ProgramHandle _program;
 
     GLint _location;
     uniform_t _value;

@@ -101,7 +101,7 @@ namespace Krys::Impl
   {
   };
 
-  struct PipelineHandle
+  struct ProgramHandle
   {
   };
 
@@ -131,7 +131,7 @@ namespace Krys::Gfx
   template <typename Tag>
   using Handle = Krys::Impl::Handle<Tag>;
 
-  using PipelineHandle = Handle<Impl::PipelineHandle>;
+  using ProgramHandle = Handle<Impl::ProgramHandle>;
   using ShaderHandle = Handle<Impl::ShaderHandle>;
   using IndexBufferHandle = Handle<Impl::IndexBufferHandle>;
   using VertexLayoutHandle = Handle<Impl::VertexLayoutHandle>;

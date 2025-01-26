@@ -1,31 +1,31 @@
-#include "Graphics/OpenGL/OpenGLPipeline.hpp"
+#include "Graphics/OpenGL/OpenGLProgram.hpp"
 #include "Core/Debug/Macros.hpp"
 
 namespace Krys::Gfx::OpenGL
 {
-  OpenGLPipeline::OpenGLPipeline() noexcept : Pipeline(), _program(::glCreateProgram())
+  OpenGLProgram::OpenGLProgram() noexcept : Program(), _program(::glCreateProgram())
   {
-    _handle = PipelineHandle(static_cast<PipelineHandle::handle_t>(_program));
+    _handle = ProgramHandle(static_cast<ProgramHandle::handle_t>(_program));
   }
 
-  OpenGLPipeline::~OpenGLPipeline() noexcept
+  OpenGLProgram::~OpenGLProgram() noexcept
   {
     ::glDeleteProgram(_program);
   }
 
-  void OpenGLPipeline::Bind() noexcept
+  void OpenGLProgram::Bind() noexcept
   {
     KRYS_ASSERT(_linked && _isValid, "Pipeline must be valid and linked before binding");
     ::glUseProgram(_program);
   }
 
-  void OpenGLPipeline::Unbind() noexcept
+  void OpenGLProgram::Unbind() noexcept
   {
     KRYS_ASSERT(_linked && _isValid, "Pipeline must be valid and linked before unbinding");
     ::glUseProgram(0);
   }
 
-  void OpenGLPipeline::Link() noexcept
+  void OpenGLProgram::Link() noexcept
   {
     KRYS_ASSERT(!_linked, "Pipeline is already linked");
 
@@ -53,7 +53,7 @@ namespace Krys::Gfx::OpenGL
     }
   }
 
-  void OpenGLPipeline::AddShader(ShaderHandle handle) noexcept
+  void OpenGLProgram::AddShader(ShaderHandle handle) noexcept
   {
     _shaders.push_back(handle);
   }

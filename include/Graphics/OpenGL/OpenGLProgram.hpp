@@ -1,17 +1,17 @@
 #pragma once
 
 #include "Graphics/Handles.hpp"
-#include "Graphics/Pipeline.hpp"
+#include "Graphics/Program.hpp"
 
 #include <glad/gl.h>
 
 namespace Krys::Gfx::OpenGL
 {
-  class OpenGLPipeline : public Pipeline
+  class OpenGLProgram : public Program
   {
   public:
-    OpenGLPipeline() noexcept;
-    ~OpenGLPipeline() noexcept override;
+    OpenGLProgram() noexcept;
+    ~OpenGLProgram() noexcept override;
 
     void Bind() noexcept override;
     void Unbind() noexcept override;
