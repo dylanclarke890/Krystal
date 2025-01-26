@@ -106,8 +106,8 @@ namespace Krys::Platform
       }
       default:
       {
-        bool handled =
-          static_cast<Win32InputManager *>(_inputManager)->HandleWindowsMessage(message, wParam, lParam);
+        bool handled = static_cast<Win32InputManager *>(_inputManager)
+                         ->HandleWindowsMessage(message, wParam, lParam, hWnd);
 
         if (!handled)
           result = ::DefWindowProcA(hWnd, message, wParam, lParam);

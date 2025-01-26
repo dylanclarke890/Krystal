@@ -30,6 +30,8 @@ namespace Krys
           auto mouseMoveEvent = static_cast<MouseMoveEvent *>(event.get());
           _mouse._deltaX += mouseMoveEvent->DeltaX();
           _mouse._deltaY += mouseMoveEvent->DeltaY();
+          _mouse._clientX = mouseMoveEvent->GetClientX();
+          _mouse._clientY = mouseMoveEvent->GetClientY();
         }
         break;
 

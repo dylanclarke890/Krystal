@@ -37,7 +37,7 @@ namespace Krys
       float accumulatedMs = 0;
       while (_running)
       {
-        // KRYS_SCOPED_PROFILER("Application::Tick");
+        // KRYS_SCOPED_PROFILER("Frame");
 
         const int64 startCounter = Platform::GetTicks();
         auto window = _context->GetWindowManager()->GetCurrentWindow();
@@ -86,7 +86,6 @@ namespace Krys
 
         // Calculate the elapsed time since the last frame.
         elapsedMs = Platform::TicksToMilliseconds(Platform::GetTicks() - startCounter);
-        Logger::Info("Frame time: {:.2f}ms", elapsedMs);
         accumulatedMs += elapsedMs;
       }
     }

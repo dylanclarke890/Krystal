@@ -15,7 +15,7 @@ namespace Krys::Platform
   public:
     Win32InputManager(Ptr<EventManager> eventManager) noexcept;
     
-    bool HandleWindowsMessage(UINT message, WPARAM wParam, LPARAM lParam) noexcept;
+    bool HandleWindowsMessage(UINT message, WPARAM wParam, LPARAM lParam, HWND windowHandle) noexcept;
 
     Key KeyCodeToEngineKey(const WPARAM keyCode) const noexcept;
   };

@@ -1,4 +1,5 @@
 #include "Platform/Win32/Input/Win32InputManager.hpp"
+#include "Core/Debug/Macros.hpp"
 #include "Core/Events/Input/KeyboardEvent.hpp"
 #include "Core/Events/Input/MouseButtonEvent.hpp"
 #include "Core/Events/Input/MouseMoveEvent.hpp"
@@ -11,7 +12,8 @@ namespace Krys::Platform
   {
   }
 
-  bool Win32InputManager::HandleWindowsMessage(UINT message, WPARAM wParam, LPARAM lParam) noexcept
+  bool Win32InputManager::HandleWindowsMessage(UINT message, WPARAM wParam, LPARAM lParam,
+                                               HWND windowHandle) noexcept
   {
     static Set<WPARAM> pressed {};
 
@@ -81,9 +83,21 @@ namespace Krys::Platform
         if (raw.header.dwType == RIM_TYPEMOUSE)
         {
           // get mouse delta from raw input data
-          int x = raw.data.mouse.lLastX;
-          int y = raw.data.mouse.lLastY;
-          _events.emplace(CreateUnique<MouseMoveEvent>(static_cast<float>(x), static_cast<float>(y)));
+          float x = static_cast<float>(raw.data.mouse.lLastX);
+          float y = static_cast<float>(raw.data.mouse.lLastY);
+          float clientX = 0;
+          float clientY = 0;
+
+          // get mouse position in client space
+          POINT point;
+          if (GetCursorPos(&point))
+          {
+            ::ScreenToClient(windowHandle, &point);
+            clientX = static_cast<float>(point.x);
+            clientY = static_cast<float>(point.y);
+          }
+
+          _events.emplace(CreateUnique<MouseMoveEvent>(x, y, clientX, clientY));
         }
         else if ((raw.data.mouse.usButtonFlags & RI_MOUSE_WHEEL) == RI_MOUSE_WHEEL)
         {

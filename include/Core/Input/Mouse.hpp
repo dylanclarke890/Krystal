@@ -15,11 +15,19 @@ namespace Krys
   /// state is updated each frame by the `InputManager`, allowing for accurate per-frame input handling.
   class Mouse
   {
-    friend class InputManager;
+    friend class InputManager; // To allow the `InputManager` to directly update the state of the mouse.
 
   public:
     /// @brief Constructs a `Mouse`.
     Mouse() noexcept = default;
+
+    /// @brief Gets the x-coordinate of the cursor in client space.
+    /// @note The origin is the top-left corner of the window, minus the title bar.
+    NO_DISCARD float GetClientX() const noexcept;
+
+    /// @brief Gets the y-coordinate of the cursor in client space.
+    /// @note The origin is the top-left corner of the window, minus the title bar.
+    NO_DISCARD float GetClientY() const noexcept;
 
     /// @brief Gets the amount the cursor has moved along the x-axis since the last frame.
     NO_DISCARD float DeltaX() const noexcept;
@@ -43,7 +51,8 @@ namespace Krys
     NO_DISCARD bool WasButtonReleased(MouseButton button) const noexcept;
 
   private:
-    float _deltaX, _deltaY;
-    MouseButton _pressed, _released, _held;   
+    float _clientX {0}, _clientY {0};
+    float _deltaX {0}, _deltaY {0};
+    MouseButton _pressed {MouseButton::None}, _released {MouseButton::None}, _held {MouseButton::None};
   };
 }

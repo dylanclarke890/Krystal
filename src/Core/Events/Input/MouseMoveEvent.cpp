@@ -2,8 +2,9 @@
 
 namespace Krys
 {
-  MouseMoveEvent::MouseMoveEvent(const float deltaX, const float deltaY) noexcept
-      : Event(), _deltaX(deltaX), _deltaY(deltaY)
+  MouseMoveEvent::MouseMoveEvent(const float deltaX, const float deltaY, const float clientX,
+                                 const float clientY) noexcept
+      : Event(), _deltaX(deltaX), _deltaY(deltaY), _clientX(clientX), _clientY(clientY)
   {
   }
 
@@ -15,5 +16,15 @@ namespace Krys
   NO_DISCARD float MouseMoveEvent::DeltaY() const noexcept
   {
     return _deltaY;
+  }
+
+  NO_DISCARD float MouseMoveEvent::GetClientX() const noexcept
+  {
+    return _clientX;
+  }
+
+  NO_DISCARD float MouseMoveEvent::GetClientY() const noexcept
+  {
+    return _clientY;
   }
 }

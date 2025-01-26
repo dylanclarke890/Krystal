@@ -2,6 +2,16 @@
 
 namespace Krys
 {
+  NO_DISCARD float Mouse::GetClientX() const noexcept
+  {
+    return _clientX;
+  }
+
+  NO_DISCARD float Mouse::GetClientY() const noexcept
+  {
+    return _clientY;
+  }
+
   NO_DISCARD float Mouse::DeltaX() const noexcept
   {
     return _deltaX;
