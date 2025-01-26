@@ -65,6 +65,11 @@ namespace Krys::Gfx
     return _view;
   }
 
+  void Camera::SetView(const Mat4 &view) noexcept
+  {
+    _view = view;
+  }
+
   CameraType Camera::GetType() const noexcept
   {
     return _type;

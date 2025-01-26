@@ -42,6 +42,10 @@ namespace Krys::Gfx
     /// @brief Get the view matrix of the camera.
     NO_DISCARD const Mat4 &GetView() const noexcept;
 
+    /// @brief Set the view matrix of the camera.
+    /// @param view the new view matrix.
+    void SetView(const Mat4 &view) noexcept;
+
     /// @brief Get the projection matrix of the camera.
     NO_DISCARD const Mat4 &GetProjection() const noexcept;
 
