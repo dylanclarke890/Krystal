@@ -19,37 +19,14 @@ namespace Krys::Gfx
       auto &pipeline = context->GetPipeline(command.Pipeline);
       pipeline.Bind();
 
-      if (!command.VBO.IsValid())
-      {
-        KRYS_ASSERT(command.Mesh.IsValid(), "Mesh must be provided if VBO is not");
-        auto &mesh = _meshManager->GetMesh(command.Mesh);
+      KRYS_ASSERT(command.Mesh.IsValid(), "Mesh was not provided.");
+      auto &mesh = _meshManager->GetMesh(command.Mesh);
 
-        mesh.Bind();
-        if (mesh.IsIndexed())
-        {
-          context->DrawElements(command.Type, static_cast<uint32>(mesh.GetCount()));
-        }
-        else
-        {
-          context->DrawArrays(command.Type, static_cast<uint32>(mesh.GetCount()));
-        }
-      }
+      mesh.Bind();
+      if (mesh.IsIndexed())
+        context->DrawElements(command.Type, static_cast<uint32>(mesh.GetCount()));
       else
-      {
-        auto &vertexBuffer = context->GetVertexBuffer(command.VBO);
-        vertexBuffer.Bind();
-
-        if (command.EBO.IsValid())
-        {
-          auto &indexBuffer = context->GetIndexBuffer(command.EBO);
-          indexBuffer.Bind();
-          context->DrawElements(command.Type, command.Count);
-        }
-        else
-        {
-          context->DrawArrays(command.Type, command.Count);
-        }
-      }
+        context->DrawArrays(command.Type, static_cast<uint32>(mesh.GetCount()));
     }
 
     _commands.clear();

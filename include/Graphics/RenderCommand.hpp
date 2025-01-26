@@ -13,9 +13,6 @@ namespace Krys::Gfx
   {
     PipelineHandle Pipeline;
     MeshHandle Mesh;
-    VertexBufferHandle VBO;
-    IndexBufferHandle EBO;
-    PrimitiveType Type{PrimitiveType::Triangles};
-    uint32 Count;
+    PrimitiveType Type {PrimitiveType::Triangles};
   };
 }
