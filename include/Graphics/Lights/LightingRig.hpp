@@ -12,7 +12,7 @@ namespace Krys::Gfx
   struct LightingRig
   {
     /// @brief Ambient lighting.
-    Unique<AmbientLight> Ambient;
+    Unique<AmbientLight> AmbientLight;
 
     /// @brief Collection of directional lights.
     List<Unique<DirectionalLight>> DirectionalLights;

@@ -11,7 +11,7 @@ namespace Krys
   class EventManager
   {
   public:
-    NO_COPY_AND_ASSIGN(EventManager)
+    NO_COPY(EventManager)
 
     /// @brief Constructs an `EventManager`.
     EventManager() noexcept = default;

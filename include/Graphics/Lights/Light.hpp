@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Types.hpp"
+#include "Graphics/Handles.hpp"
 #include "Graphics/Lights/LightType.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
@@ -24,5 +25,13 @@ namespace Krys::Gfx
 
     /// @brief Gets the raw data for the lights world space property e.g. position or direction.
     NO_DISCARD virtual Vec4 GetWorldSpaceData() const noexcept = 0;
+
+    /// @brief Get the handle of the light.
+    NO_DISCARD LightHandle GetHandle() const noexcept;
+
+  protected:
+    explicit Light(LightHandle handle) noexcept;
+
+    LightHandle _handle;
   };
 }

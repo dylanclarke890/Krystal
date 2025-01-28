@@ -29,9 +29,9 @@ namespace Krys::Gfx::OpenGL
     }
   }
 
-  OpenGLMesh::OpenGLMesh(const List<vertex_t> &vertices, const List<index_t> &indices,
+  OpenGLMesh::OpenGLMesh(MeshHandle handle, const List<vertex_t> &vertices, const List<index_t> &indices,
                          const VertexLayout &layout, Ptr<OpenGLGraphicsContext> ctx) noexcept
-      : Mesh(vertices, indices, layout), _ctx(ctx)
+      : Mesh(handle, vertices, indices, layout), _ctx(ctx)
   {
     ::glCreateVertexArrays(1, &_vao);
     ::glBindVertexArray(_vao);

@@ -2,9 +2,9 @@
 
 namespace Krys::Gfx
 {
-  Mesh::Mesh(const List<vertex_t> &vertices, const List<index_t> &indices,
+  Mesh::Mesh(MeshHandle handle, const List<vertex_t> &vertices, const List<index_t> &indices,
              const VertexLayout &layout) noexcept
-      : _vertices(vertices), _indices(indices), _layout(layout),
+      : _handle(handle), _vertices(vertices), _indices(indices), _layout(layout),
         _count(indices.empty() ? vertices.size() : indices.size())
   {
   }

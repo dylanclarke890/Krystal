@@ -16,7 +16,7 @@ namespace Krys
   class Window
   {
   public:
-    NO_COPY_AND_ASSIGN(Window)
+    NO_COPY(Window)
 
     virtual ~Window() noexcept = default;
 

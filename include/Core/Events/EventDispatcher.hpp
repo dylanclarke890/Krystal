@@ -14,7 +14,7 @@ namespace Krys
     friend class EventManager;
 
   public:
-    NO_COPY_AND_ASSIGN(EventDispatcher)
+    NO_COPY(EventDispatcher)
 
     /// @brief Constructs an `EventDispatcher`.
     EventDispatcher() noexcept = default;

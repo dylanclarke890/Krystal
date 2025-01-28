@@ -12,13 +12,15 @@ namespace Krys::Gfx
   {
   public:
     /// @brief Construct a point light.
+    /// @param handle The handle of the light.
     /// @param position The position of the light.
-    PointLight(const Vec3 &position) noexcept;
+    PointLight(LightHandle handle, const Vec3 &position) noexcept;
 
     /// @brief Construct a point light.
+    /// @param handle The handle of the light.
     /// @param position The position of the light.
     /// @param colour The colour of the light.
-    PointLight(const Vec3 &position, const Colour &colour) noexcept;
+    PointLight(LightHandle handle, const Vec3 &position, const Colour &colour) noexcept;
 
     /// @brief Get the type of light.
     NO_DISCARD LightType GetType() const noexcept override;

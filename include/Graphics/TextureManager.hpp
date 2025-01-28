@@ -39,11 +39,13 @@ namespace Krys::Gfx
 
     /// @brief Gets a sampler by its handle.
     /// @param handle The handle of the sampler.
-    NO_DISCARD Sampler &GetSampler(SamplerHandle handle) const noexcept;
+    /// @return The sampler or nullptr if the handle is invalid.
+    NO_DISCARD Sampler *GetSampler(SamplerHandle handle) const noexcept;
 
     /// @brief Gets a texture by its handle.
     /// @param handle The handle of the texture.
-    NO_DISCARD Texture &GetTexture(TextureHandle handle) const noexcept;
+    /// @return The texture or nullptr if the handle is invalid.
+    NO_DISCARD Texture *GetTexture(TextureHandle handle) const noexcept;
 
     /// @brief Loads a texture from a file. The loaded texture will use the default sampler.
     /// @param path The path to the file.
@@ -57,20 +59,20 @@ namespace Krys::Gfx
     NO_DISCARD TextureHandle LoadTexture(const string &path, SamplerHandle sampler,
                                          TextureUsageHint hint = TextureUsageHint::Image) noexcept;
 
-    /// @brief Unloads a sampler. Will only fully unload the sampler if its' reference count is 0.
-    void Unload(SamplerHandle handle) noexcept;
+    /// @brief Unloads a sampler.
+    /// @param handle The handle of the sampler.
+    /// @return True if the sampler was found, false otherwise.
+    /// @note Will only fully unload the sampler if its' reference count is 0.
+    bool Unload(SamplerHandle handle) noexcept;
 
-    /// @brief Unloads a texture. Will only fully unload the texture if its' reference count is 0.
-    void Unload(TextureHandle handle) noexcept;
+    /// @brief Unloads a texture.
+    /// @param handle The handle of the texture.
+    /// @return True if the texture was found, false otherwise.
+    /// @note Will only fully unload the texture if its' reference count is 0.
+    bool Unload(TextureHandle handle) noexcept;
 
   protected:
     TextureManager() noexcept = default;
-
-    /// @brief Gets the next available sampler handle or recycles one that was unloaded.
-    NO_DISCARD SamplerHandle NextSamplerHandle() noexcept;
-
-    /// @brief Gets the next available texture handle or recycles one that was unloaded.
-    NO_DISCARD TextureHandle NextTextureHandle() noexcept;
 
     /// @brief Optional hook for implementation. Called when a sampler is destroyed.
     virtual void OnDestroy(SamplerHandle handle) noexcept;
@@ -99,15 +101,13 @@ namespace Krys::Gfx
       Unique<T> Resource;
     };
 
-    SamplerHandle _nextSamplerHandle {0};
     Map<SamplerDescriptor, LoadedResource<Sampler>> _loadedSamplers;
     Map<SamplerHandle, Sampler *, SamplerHandle::Hash> _samplers;
-    List<SamplerHandle> _recycledSamplerHandles;
+    HandleManager<SamplerHandle> _samplerHandles;
 
-    TextureHandle _nextTextureHandle {0};
     Map<string, LoadedResource<Texture>> _loadedTextures;
     Map<TextureHandle, Texture *, TextureHandle::Hash> _textures;
-    List<TextureHandle> _recycledTextureHandles;
+    HandleManager<TextureHandle> _textureHandles;
 
   private:
     TextureManager(const TextureManager &) = delete;

@@ -23,22 +23,48 @@ namespace Krys::Gfx::OpenGL
     using uniform_t = UniformT;
 
   public:
-    OpenGLUniform() noexcept : _location(-1), _value()
-    {
-    }
-
-    OpenGLUniform(ProgramHandle program, const string &name) noexcept
-        : _program(program), _location(-1), _value()
-    {
-      KRYS_ASSERT(_program.IsValid(), "Invalid program handle.");
-      _location =
-        ::glGetProgramResourceLocation(static_cast<GLuint>(_program.Id()), GL_UNIFORM, name.c_str());
-      if (_location == -1)
-        Logger::Warn("Uniform '{0}' does not exist. (Program {1})", name, _program.Id());
-    }
-
     ~OpenGLUniform() noexcept = default;
 
+    /// @brief Constructs an invalid uniform. You must set the program and name before using it.
+    OpenGLUniform() noexcept : _name(), _program(), _location(-1), _value()
+    {
+    }
+
+    /// @brief Constructs a uniform with a program and name.
+    /// @param program The program handle.
+    /// @param name The name of the uniform.
+    /// @note The program and name must both be valid as the location will be cached immediately.
+    OpenGLUniform(ProgramHandle program, const string &name) noexcept
+        : _name(name), _program(program), _location(-1), _value()
+    {
+      CacheLocation();
+    }
+
+    /// @brief Set the program handle.
+    /// @param program The program handle.
+    /// @note The location will automatically be cached if the name has also been set.
+    void SetProgram(ProgramHandle program) noexcept
+    {
+      _program = program;
+      if (!_name.empty())
+        CacheLocation();
+    }
+
+    /// @brief Set the name of the uniform.
+    /// @param name The name of the uniform.
+    /// @note The location will automatically be cached if the program has also been set.
+    void SetName(const string &name) noexcept
+    {
+      _name = name;
+      if (_program.IsValid())
+        CacheLocation();
+    }
+
+    /// @brief Set the value of the uniform.
+    /// @param value The value to set.
+    /// @note - The value will only be uploaded if the location is valid.
+    /// @note - Also, the underlying type supports 'operator==' then the value will only be uploaded if it has
+    /// changed.
     void SetValue(const uniform_t &value) noexcept
     {
       if (_location == -1)
@@ -60,9 +86,28 @@ namespace Krys::Gfx::OpenGL
       UploadValue();
     }
 
+    /// @brief Get the current value of the uniform.
     NO_DISCARD const uniform_t &GetValue() const noexcept
     {
       return _value;
+    }
+
+    /// @brief Get the name of the uniform.
+    NO_DISCARD const string &GetName() const noexcept
+    {
+      return _name;
+    }
+
+    /// @brief Get the program handle.
+    NO_DISCARD ProgramHandle GetProgram() const noexcept
+    {
+      return _program;
+    }
+
+    /// @brief Get the location of the uniform.
+    NO_DISCARD GLint GetLocation() const noexcept
+    {
+      return _location;
     }
 
   private:
@@ -112,9 +157,19 @@ namespace Krys::Gfx::OpenGL
         KRYS_ASSERT(false, "Unsupported uniform type.");
     }
 
-  private:
-    ProgramHandle _program;
+    void CacheLocation() noexcept
+    {
+      KRYS_ASSERT(_program.IsValid(), "Invalid program handle.");
+      KRYS_ASSERT(!_name.empty(), "Name was not provided.");
+      _location =
+        ::glGetProgramResourceLocation(static_cast<GLuint>(_program.Id()), GL_UNIFORM, _name.c_str());
+      if (_location == -1)
+        Logger::Warn("Uniform '{0}' does not exist. (Program {1})", _name, _program.Id());
+    }
 
+  private:
+    string _name;
+    ProgramHandle _program;
     GLint _location;
     uniform_t _value;
   };

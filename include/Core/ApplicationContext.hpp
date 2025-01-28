@@ -22,7 +22,7 @@ namespace Krys
     friend class Application;
 
   public:
-    NO_COPY_AND_ASSIGN(ApplicationContext)
+    NO_COPY(ApplicationContext)
 
     /// @brief Construct an `ApplicationContext`.
     /// @param argc Command line argument count.

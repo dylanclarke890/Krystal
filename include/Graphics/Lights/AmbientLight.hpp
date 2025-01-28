@@ -11,8 +11,9 @@ namespace Krys::Gfx
   {
   public:
     /// @brief Construct an ambient light.
+    /// @param handle The handle of the light.
     /// @param colour The colour of the light.
-    AmbientLight(const Colour &colour) noexcept;
+    AmbientLight(LightHandle handle, const Colour &colour) noexcept;
 
     /// @brief Get the type of light.
     NO_DISCARD LightType GetType() const noexcept override;

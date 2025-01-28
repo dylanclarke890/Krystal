@@ -4,16 +4,17 @@
 
 namespace Krys::Gfx
 {
-  DirectionalLight::DirectionalLight(const Colour &colour, const Vec3 &direction, bool castsShadows) noexcept
-      : _colour(colour), _direction(Vec4(direction, 0.0f)),
+  DirectionalLight::DirectionalLight(LightHandle handle, const Colour &colour, const Vec3 &direction,
+                                     bool castsShadows) noexcept
+      : Light(handle), _colour(colour), _direction(Vec4(direction, 0.0f)),
         _shadowCamera(CameraType::Orthographic, 100u, 100u, 1'000u), _castsShadows(castsShadows)
   {
     auto lookAt = MTL::LookAt(Vec3(0.0f), -direction, Vec3(0.0f, 1.0f, 0.0f));
     _shadowCamera.SetView(lookAt);
   }
 
-  DirectionalLight::DirectionalLight(const Vec3 &direction, bool castsShadows) noexcept
-      : DirectionalLight(Colours::White, direction, castsShadows)
+  DirectionalLight::DirectionalLight(LightHandle handle, const Vec3 &direction, bool castsShadows) noexcept
+      : DirectionalLight(handle, Colours::White, direction, castsShadows)
   {
   }
 

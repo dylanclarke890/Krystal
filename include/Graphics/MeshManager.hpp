@@ -16,25 +16,40 @@ namespace Krys::Gfx
   public:
     virtual ~MeshManager() = default;
 
-    NO_DISCARD virtual MeshHandle
-      CreateMesh(const List<VertexData> &vertices, const List<uint32> &indices,
-                 const VertexLayout &layout = VertexLayout::Default()) noexcept = 0;
+    /// @brief Create a cube mesh. If a cube mesh with the same colour has already been created, it will be
+    /// returned, unless 'forceUnique' is set to true, in which case a new cube mesh will be created each
+    /// time.
+    /// @param colour The colour of the cube.
+    /// @param forceUnique If true, will create a new cube mesh each time.
+    /// @return A handle to the cube mesh.
+    NO_DISCARD MeshHandle CreateCube(const Colour &colour, bool forceUnique = false) noexcept;
 
-    NO_DISCARD MeshHandle CreateCube(const Colour &colour) noexcept;
+    /// @brief Get a mesh by handle.
+    /// @param handle The handle of the mesh.
+    /// @return A pointer to the mesh if it exists, nullptr otherwise.
+    NO_DISCARD Mesh *GetMesh(MeshHandle handle) noexcept;
 
-    NO_DISCARD MeshHandle UniqueCube(const Colour &colour) noexcept;
-
-    NO_DISCARD Mesh &GetMesh(MeshHandle handle) noexcept;
-
-    void DestroyMesh(MeshHandle handle) noexcept;
+    /// @brief Destroy a mesh by handle.
+    /// @param handle The handle of the mesh.
+    /// @return True if the mesh was found and destroyed, false otherwise.
+    bool DestroyMesh(MeshHandle handle) noexcept;
 
   protected:
     MeshManager(Ptr<GraphicsContext> context) noexcept;
 
-    Ptr<GraphicsContext> _context {nullptr};
-    Map<MeshHandle, Unique<Mesh>, MeshHandle::Hash> _meshes;
-    Map<string, MeshHandle> _loadedMeshes;
+    struct LoadedMesh
+    {
+      Unique<Mesh> Mesh;
+      string Id;
+    };
 
-    MeshHandle _nextHandle {0};
+    NO_DISCARD virtual Unique<Mesh>
+      CreateMeshImpl(MeshHandle handle, const List<VertexData> &vertices, const List<uint32> &indices,
+                     const VertexLayout &layout = VertexLayout::Default()) noexcept = 0;
+
+    Ptr<GraphicsContext> _context {nullptr};
+    Map<MeshHandle, LoadedMesh, MeshHandle::Hash> _meshes {};
+    Map<string, MeshHandle> _loadedMeshes {};
+    HandleManager<MeshHandle> _meshHandles {};
   };
 }

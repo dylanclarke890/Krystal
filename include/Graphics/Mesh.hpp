@@ -32,7 +32,7 @@ namespace Krys::Gfx
     virtual void SetIndices(const List<index_t> &indices) noexcept = 0;
 
   protected:
-    Mesh(const List<vertex_t> &vertices, const List<index_t> &indices, const VertexLayout &layout) noexcept;
+    Mesh(MeshHandle handle, const List<vertex_t> &vertices, const List<index_t> &indices, const VertexLayout &layout) noexcept;
 
     MeshHandle _handle;
     List<vertex_t> _vertices;

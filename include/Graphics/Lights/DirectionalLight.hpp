@@ -14,15 +14,16 @@ namespace Krys::Gfx
   {
   public:
     /// @brief Construct a directional light.
+    /// @param handle The handle of the light.
     /// @param colour The colour of the light.
     /// @param direction The direction of the light.
     /// @param castsShadows Whether this light casts shadows.
-    DirectionalLight(const Colour &colour, const Vec3 &direction, bool castsShadows = false) noexcept;
+    DirectionalLight(LightHandle handle, const Colour &colour, const Vec3 &direction, bool castsShadows = false) noexcept;
 
     /// @brief Construct a directional light.
     /// @param direction The direction of the light.
     /// @param castsShadows Whether this light casts shadows.
-    DirectionalLight(const Vec3 &direction, bool castsShadows = false) noexcept;
+    DirectionalLight(LightHandle handle, const Vec3 &direction, bool castsShadows = false) noexcept;
 
     /// @brief Get the type of light.
     NO_DISCARD LightType GetType() const noexcept override;

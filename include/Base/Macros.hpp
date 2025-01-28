@@ -57,13 +57,22 @@ namespace Krys
   #define KRYS_DISABLE_WARNING(msvcWarningCode, gccWarningName)
 #endif
 
-/// @brief Deletes copy and assign constructors for the given class.
-#define NO_COPY_AND_ASSIGN(Class)                                                                            \
+/// @brief Disables copying for the given class.
+#define NO_COPY(Class)                                                                                       \
   Class(const Class &) = delete;                                                                             \
   Class &operator=(const Class &) = delete;
 
+/// @brief Disables moving for the given class.
+#define NO_MOVE(Class)                                                                                       \
+  Class(Class &&) = delete;                                                                                  \
+  Class &operator=(Class &&) = delete;
+
+#define NO_COPY_MOVE(Class)                                                                                  \
+  NO_COPY(Class)                                                                                             \
+  NO_MOVE(Class)
+
 #define STATIC_CLASS(Class)                                                                                  \
-  NO_COPY_AND_ASSIGN(Class)                                                                                  \
+  NO_COPY_MOVE(Class)                                                                                        \
   Class() = delete;
 
 /// @brief Defines bitwise operators for an enum class.

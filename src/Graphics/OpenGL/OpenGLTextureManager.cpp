@@ -14,8 +14,8 @@ namespace Krys::Gfx::OpenGL
                                                           SamplerHandle samplerHandle, const IO::Image &data,
                                                           TextureUsageHint hint) noexcept
   {
-    auto &sampler = GetSampler(samplerHandle);
-    return CreateUnique<OpenGLTexture>(name, handle, static_cast<OpenGLSampler &>(sampler), hint, data);
+    auto *sampler = GetSampler(samplerHandle);
+    return CreateUnique<OpenGLTexture>(name, handle, static_cast<OpenGLSampler &>(*sampler), hint, data);
   }
 
 }

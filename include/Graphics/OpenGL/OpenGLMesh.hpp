@@ -15,12 +15,11 @@ namespace Krys::Gfx::OpenGL
 
   class OpenGLMesh : public Mesh
   {
-    friend OpenGLMeshManager;
   public:
     using vertex_t = Mesh::vertex_t;
     using index_t = Mesh::index_t;
 
-    OpenGLMesh(const List<vertex_t> &vertices, const List<index_t> &indices, const VertexLayout &layout,
+    OpenGLMesh(MeshHandle handle, const List<vertex_t> &vertices, const List<index_t> &indices, const VertexLayout &layout,
                Ptr<OpenGLGraphicsContext> ctx) noexcept;
 
     ~OpenGLMesh() noexcept override;

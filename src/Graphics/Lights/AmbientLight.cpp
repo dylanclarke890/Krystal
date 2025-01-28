@@ -2,7 +2,8 @@
 
 namespace Krys::Gfx
 {
-  AmbientLight::AmbientLight(const Colour &colour) noexcept : _colour(colour)
+  AmbientLight::AmbientLight(LightHandle handle, const Colour &colour) noexcept
+      : Light(handle), _colour(colour)
   {
   }
 

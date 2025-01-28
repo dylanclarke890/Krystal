@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
+#include "Core/Debug/Macros.hpp"
 
 #include <limits>
 
@@ -47,6 +49,8 @@ namespace Krys::Impl
 
 #pragma endregion Constructors
 
+#pragma region Assignment
+
     Handle &operator=(const Handle &other) noexcept
     {
       _id = other._id;
@@ -74,6 +78,8 @@ namespace Krys::Impl
     {
       return !(_id == other._id);
     }
+
+#pragma endregion Assignment
 
     const handle_t &Id() const noexcept
     {
@@ -124,13 +130,28 @@ namespace Krys::Impl
   struct SamplerHandle
   {
   };
+
+  struct RenderEntityHandle
+  {
+  };
+
+  struct LightHandle
+  {
+  };
+
+  struct SceneHandle
+  {
+  };
+
+  struct MaterialHandle
+  {
+  };
 }
 
 namespace Krys::Gfx
 {
   template <typename Tag>
   using Handle = Krys::Impl::Handle<Tag>;
-
   using ProgramHandle = Handle<Impl::ProgramHandle>;
   using ShaderHandle = Handle<Impl::ShaderHandle>;
   using IndexBufferHandle = Handle<Impl::IndexBufferHandle>;
@@ -140,4 +161,43 @@ namespace Krys::Gfx
   using MeshHandle = Handle<Impl::MeshHandle>;
   using TextureHandle = Handle<Impl::TextureHandle>;
   using SamplerHandle = Handle<Impl::SamplerHandle>;
+  using RenderEntityHandle = Handle<Impl::RenderEntityHandle>;
+  using LightHandle = Handle<Impl::LightHandle>;
+  using SceneHandle = Handle<Impl::SceneHandle>;
+  using MaterialHandle = Handle<Impl::MaterialHandle>;
+
+  template <typename THandle>
+  class HandleManager
+  {
+    using handle_t = THandle;
+    using tag_t = typename handle_t::tag_t;
+    using value_t = typename THandle::handle_t;
+
+  public:
+    HandleManager() noexcept = default;
+    ~HandleManager() noexcept = default;
+
+    NO_DISCARD handle_t Next() noexcept
+    {
+      if (!recycled.empty())
+      {
+        auto handle = recycled.back();
+        recycled.pop_back();
+        return handle;
+      }
+
+      return handle_t(_nextId++);
+    }
+
+    void Recycle(handle_t handle) noexcept
+    {
+      KRYS_ASSERT(handle.IsValid(), "Tried to recycle an invalid handle.");
+      if (handle.IsValid())
+        recycled.push_back(handle);
+    }
+
+  private:
+    List<handle_t> recycled;
+    value_t _nextId {0};
+  };
 }

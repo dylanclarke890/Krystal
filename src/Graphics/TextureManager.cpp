@@ -21,7 +21,7 @@ namespace Krys::Gfx
       return loaded.Resource->GetHandle();
     }
 
-    auto handle = NextSamplerHandle();
+    auto handle = _samplerHandles.Next();
     auto sampler = CreateSamplerImpl(handle, descriptor);
 
     _loadedSamplers[descriptor] = {1u, std::move(sampler)};
@@ -49,7 +49,7 @@ namespace Krys::Gfx
     const auto resourceName = strm.str();
     Logger::Info("TextureManager: Created '{0}' ({1}x{2}).", resourceName, image.Width, image.Height);
 
-    auto handle = NextTextureHandle();
+    auto handle = _textureHandles.Next();
     auto texture = CreateTextureImpl(resourceName, handle,
                                      sampler.IsValid() ? sampler : DefaultTextureSampler(), image, hint);
 
@@ -82,7 +82,7 @@ namespace Krys::Gfx
     auto loadedImage = IO::LoadImage(path);
     KRYS_ASSERT(loadedImage, "TextureManager: Failed to load '{0}': {1}", path, loadedImage.error());
 
-    auto handle = NextTextureHandle();
+    auto handle = _textureHandles.Next();
     auto texture = CreateTextureImpl(path, handle, sampler.IsValid() ? sampler : DefaultTextureSampler(),
                                      loadedImage.value(), hint);
 
@@ -95,30 +95,35 @@ namespace Krys::Gfx
     return handle;
   }
 
-  Sampler &TextureManager::GetSampler(SamplerHandle handle) const noexcept
+  Sampler *TextureManager::GetSampler(SamplerHandle handle) const noexcept
   {
+    KRYS_ASSERT(handle.IsValid(), "TextureManager: Invalid sampler handle.");
+
     auto it = _samplers.find(handle);
-    KRYS_ASSERT(it != _samplers.end(), "TextureManager: Sampler not found");
-    return *it->second;
+    return it == _samplers.end() ? nullptr : it->second;
   }
 
-  Texture &TextureManager::GetTexture(TextureHandle handle) const noexcept
+  Texture *TextureManager::GetTexture(TextureHandle handle) const noexcept
   {
+    KRYS_ASSERT(handle.IsValid(), "TextureManager: Invalid texture handle.");
+
     auto it = _textures.find(handle);
-    KRYS_ASSERT(it != _textures.end(), "TextureManager: Texture not found");
-    return *it->second;
+    return it == _textures.end() ? nullptr : it->second;
   }
 
-  void TextureManager::Unload(TextureHandle handle) noexcept
+  bool TextureManager::Unload(TextureHandle handle) noexcept
   {
+    KRYS_ASSERT(handle.IsValid(), "TextureManager: Invalid texture handle.");
+
     auto it = _textures.find(handle);
-    KRYS_ASSERT(it != _textures.end(), "TextureManager: Tried to unload a texture that wasn't loaded.");
+    if (it == _textures.end())
+      return false;
 
     const auto &resourceName = it->second->GetName();
     auto &loaded = _loadedTextures.find(resourceName)->second;
 
     auto refCount = --loaded.ReferenceCount;
-    Logger::Info("TextureManager: Unloaded '{0}' ({1} references).", resourceName, refCount);
+    Logger::Info("TextureManager: Unloaded '{0}' ({1} references remaining).", resourceName, refCount);
 
     if (refCount == 0)
     {
@@ -126,25 +131,31 @@ namespace Krys::Gfx
 
       _loadedTextures.erase(resourceName);
       _textures.erase(it);
-      _recycledTextureHandles.push_back(handle);
+      _textureHandles.Recycle(handle);
       Logger::Info("TextureManager: Recycled handle for '{0}'.", resourceName);
     }
+
+    return true;
   }
 
-  void TextureManager::Unload(SamplerHandle handle) noexcept
+  bool TextureManager::Unload(SamplerHandle handle) noexcept
   {
     // TODO: remember to add the check for the default cube map sampler when we add that.
     if (handle == DefaultTextureSampler())
-      return;
+    {
+      Logger::Warn("TextureManager: Cannot unload a default texture sampler.");
+      return false;
+    }
 
     auto it = _samplers.find(handle);
-    KRYS_ASSERT(it != _samplers.end(), "TextureManager: Tried to unload a sampler that wasn't loaded.");
+    if (it == _samplers.end())
+      return false;
 
     const auto &descriptor = it->second->GetDescriptor();
     auto &loaded = _loadedSamplers.find(descriptor)->second;
 
     auto refCount = --loaded.ReferenceCount;
-    Logger::Info("TextureManager: Unloaded sampler ({0} references).", refCount);
+    Logger::Info("TextureManager: Unloaded sampler ({0} references remaining).", refCount);
 
     if (refCount == 0)
     {
@@ -152,33 +163,11 @@ namespace Krys::Gfx
 
       _loadedSamplers.erase(descriptor);
       _samplers.erase(it);
-      _recycledSamplerHandles.push_back(handle);
+      _samplerHandles.Recycle(handle);
       Logger::Info("TextureManager: Recycled handle for sampler.");
     }
-  }
 
-  SamplerHandle TextureManager::NextSamplerHandle() noexcept
-  {
-    if (!_recycledSamplerHandles.empty())
-    {
-      auto handle = _recycledSamplerHandles.back();
-      _recycledSamplerHandles.pop_back();
-      return handle;
-    }
-
-    return SamplerHandle(_nextSamplerHandle.Id() + 1);
-  }
-
-  TextureHandle TextureManager::NextTextureHandle() noexcept
-  {
-    if (!_recycledTextureHandles.empty())
-    {
-      auto handle = _recycledTextureHandles.back();
-      _recycledTextureHandles.pop_back();
-      return handle;
-    }
-
-    return TextureHandle(_nextTextureHandle.Id() + 1);
+    return true;
   }
 
   void TextureManager::OnDestroy(SamplerHandle) noexcept

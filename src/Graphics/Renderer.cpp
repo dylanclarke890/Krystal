@@ -20,7 +20,7 @@ namespace Krys::Gfx
       program.Bind();
 
       KRYS_ASSERT(command.Mesh.IsValid(), "Mesh was not provided.");
-      auto &mesh = _meshManager->GetMesh(command.Mesh);
+      auto &mesh = *_meshManager->GetMesh(command.Mesh);
 
       mesh.Bind();
       if (mesh.IsIndexed())

@@ -15,7 +15,7 @@ namespace Krys
   class InputManager
   {
   public:
-    NO_COPY_AND_ASSIGN(InputManager)
+    NO_COPY(InputManager)
 
     /// @brief Constructs an `InputManager`.
     /// @param eventManager The `EventManager` to dispatch events to.

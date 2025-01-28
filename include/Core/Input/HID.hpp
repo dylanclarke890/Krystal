@@ -16,7 +16,7 @@ namespace Krys
   class HID
   {
   public:
-    NO_COPY_AND_ASSIGN(HID)
+    NO_COPY(HID)
 
     virtual ~HID() noexcept = default;
 
