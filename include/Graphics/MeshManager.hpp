@@ -48,8 +48,8 @@ namespace Krys::Gfx
                      const VertexLayout &layout = VertexLayout::Default()) noexcept = 0;
 
     Ptr<GraphicsContext> _context {nullptr};
-    Map<MeshHandle, LoadedMesh, MeshHandle::Hash> _meshes {};
+    MeshHandleMap<LoadedMesh> _meshes {};
+    MeshHandleManager _meshHandles {};
     Map<string, MeshHandle> _loadedMeshes {};
-    HandleManager<MeshHandle> _meshHandles {};
   };
 }

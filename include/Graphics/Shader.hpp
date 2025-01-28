@@ -11,13 +11,6 @@ namespace Krys::Gfx
     Fragment
   };
 
-  // TODO: consider getting rid of this struct
-  struct ShaderDescriptor
-  {
-    ShaderStage Stage;
-    string Source;
-  };
-
   class Shader
   {
   public:
@@ -31,10 +24,10 @@ namespace Krys::Gfx
 
   protected:
     /// @brief Constructs a shader.
-    /// @param description The description of the shader.
-    explicit Shader(const ShaderDescriptor &description) noexcept;
+    /// @param stage The stage of the shader.
+    explicit Shader(ShaderHandle handle, ShaderStage stage) noexcept;
 
-    ShaderStage _stage;
     ShaderHandle _handle;
+    ShaderStage _stage;
   };
 }

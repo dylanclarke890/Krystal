@@ -1,11 +1,15 @@
 #include "Graphics/OpenGL/OpenGLProgram.hpp"
 #include "Core/Debug/Macros.hpp"
+#include "Graphics/OpenGL/OpenGLShader.hpp"
 
 namespace Krys::Gfx::OpenGL
 {
-  OpenGLProgram::OpenGLProgram() noexcept : Program(), _program(::glCreateProgram())
+  OpenGLProgram::OpenGLProgram(ProgramHandle handle, OpenGLShader &vertexShader,
+                               OpenGLShader &fragmentShader) noexcept
+      : Program(handle), _program(::glCreateProgram()), _vertexShader(vertexShader),
+        _fragmentShader(fragmentShader)
   {
-    _handle = ProgramHandle(static_cast<ProgramHandle::handle_t>(_program));
+    Link();
   }
 
   OpenGLProgram::~OpenGLProgram() noexcept
@@ -15,24 +19,26 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLProgram::Bind() noexcept
   {
-    KRYS_ASSERT(_linked && _isValid, "Pipeline must be valid and linked before binding");
+    KRYS_ASSERT(_handle.IsValid() && _linked && _isValid, "Program must be valid and linked before binding");
     ::glUseProgram(_program);
   }
 
   void OpenGLProgram::Unbind() noexcept
   {
-    KRYS_ASSERT(_linked && _isValid, "Pipeline must be valid and linked before unbinding");
+    KRYS_ASSERT(_handle.IsValid() && _linked && _isValid,
+                "Program must be valid and linked before unbinding");
     ::glUseProgram(0);
   }
 
   void OpenGLProgram::Link() noexcept
   {
-    KRYS_ASSERT(!_linked, "Pipeline is already linked");
+    KRYS_ASSERT(_handle.IsValid(), "Program must be valid before linking");
+    KRYS_ASSERT(!_linked, "Program is already linked");
+    KRYS_ASSERT(_vertexShader.GetHandle().IsValid(), "Vertex shader must be valid");
+    KRYS_ASSERT(_fragmentShader.GetHandle().IsValid(), "Fragment shader must be valid");
 
-    for (auto shader : _shaders)
-    {
-      ::glAttachShader(_program, shader.Id());
-    }
+    ::glAttachShader(_program, _vertexShader.GetNativeHandle());
+    ::glAttachShader(_program, _fragmentShader.GetNativeHandle());
 
     ::glLinkProgram(_program);
     _linked = true;
@@ -47,14 +53,12 @@ namespace Krys::Gfx::OpenGL
     }
     _isValid = true;
 
-    for (auto shader : _shaders)
-    {
-      ::glDeleteShader(shader.Id());
-    }
+    ::glDeleteShader(_vertexShader.GetNativeHandle());
+    ::glDeleteShader(_fragmentShader.GetNativeHandle());
   }
 
-  void OpenGLProgram::AddShader(ShaderHandle handle) noexcept
+  GLuint OpenGLProgram::GetNativeHandle() const noexcept
   {
-    _shaders.push_back(handle);
+    return _program;
   }
 }

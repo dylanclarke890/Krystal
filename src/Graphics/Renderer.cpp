@@ -16,7 +16,7 @@ namespace Krys::Gfx
   {
     for (const auto &command : _commands)
     {
-      auto &program = context->GetProgram(command.Program);
+      auto &program = *context->GetProgram(command.Program);
       program.Bind();
 
       KRYS_ASSERT(command.Mesh.IsValid(), "Mesh was not provided.");

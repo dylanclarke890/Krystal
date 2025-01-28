@@ -23,8 +23,9 @@ namespace Krys::Gfx
     /// @brief Construct a buffer with the specified capacity and usage hint.
     /// @param capacity The initial capacity of the buffer.
     /// @param usageHint The usage hint of the buffer.
-    explicit Buffer(uint32 capacity, BufferUsageHint usageHint = BufferUsageHint::Static) noexcept
-        : _capacity(capacity), _usageHint(usageHint)
+    explicit Buffer(handle_t handle, uint32 capacity,
+                    BufferUsageHint usageHint = BufferUsageHint::Static) noexcept
+        : _handle(handle), _capacity(capacity), _usageHint(usageHint)
     {
     }
 

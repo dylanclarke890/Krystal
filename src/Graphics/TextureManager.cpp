@@ -32,6 +32,46 @@ namespace Krys::Gfx
     return handle;
   }
 
+  Sampler *TextureManager::GetSampler(SamplerHandle handle) const noexcept
+  {
+    KRYS_ASSERT(handle.IsValid(), "TextureManager: Invalid sampler handle.");
+
+    auto it = _samplers.find(handle);
+    return it == _samplers.end() ? nullptr : it->second;
+  }
+
+  bool TextureManager::Unload(SamplerHandle handle) noexcept
+  {
+    // TODO: remember to add the check for the default cube map sampler when we add that.
+    if (handle == DefaultTextureSampler())
+    {
+      Logger::Warn("TextureManager: Cannot unload a default texture sampler.");
+      return false;
+    }
+
+    auto it = _samplers.find(handle);
+    if (it == _samplers.end())
+      return false;
+
+    const auto &descriptor = it->second->GetDescriptor();
+    auto &loaded = _loadedSamplers.find(descriptor)->second;
+
+    auto refCount = --loaded.ReferenceCount;
+    Logger::Info("TextureManager: Unloaded sampler ({0} references remaining).", refCount);
+
+    if (refCount == 0)
+    {
+      OnDestroy(handle);
+
+      _loadedSamplers.erase(descriptor);
+      _samplers.erase(it);
+      _samplerHandles.Recycle(handle);
+      Logger::Info("TextureManager: Recycled handle for sampler.");
+    }
+
+    return true;
+  }
+
   TextureHandle TextureManager::CreateTexture(const IO::Image &image, TextureUsageHint hint) noexcept
   {
     return CreateTexture(image, {}, hint);
@@ -95,14 +135,6 @@ namespace Krys::Gfx
     return handle;
   }
 
-  Sampler *TextureManager::GetSampler(SamplerHandle handle) const noexcept
-  {
-    KRYS_ASSERT(handle.IsValid(), "TextureManager: Invalid sampler handle.");
-
-    auto it = _samplers.find(handle);
-    return it == _samplers.end() ? nullptr : it->second;
-  }
-
   Texture *TextureManager::GetTexture(TextureHandle handle) const noexcept
   {
     KRYS_ASSERT(handle.IsValid(), "TextureManager: Invalid texture handle.");
@@ -133,38 +165,6 @@ namespace Krys::Gfx
       _textures.erase(it);
       _textureHandles.Recycle(handle);
       Logger::Info("TextureManager: Recycled handle for '{0}'.", resourceName);
-    }
-
-    return true;
-  }
-
-  bool TextureManager::Unload(SamplerHandle handle) noexcept
-  {
-    // TODO: remember to add the check for the default cube map sampler when we add that.
-    if (handle == DefaultTextureSampler())
-    {
-      Logger::Warn("TextureManager: Cannot unload a default texture sampler.");
-      return false;
-    }
-
-    auto it = _samplers.find(handle);
-    if (it == _samplers.end())
-      return false;
-
-    const auto &descriptor = it->second->GetDescriptor();
-    auto &loaded = _loadedSamplers.find(descriptor)->second;
-
-    auto refCount = --loaded.ReferenceCount;
-    Logger::Info("TextureManager: Unloaded sampler ({0} references remaining).", refCount);
-
-    if (refCount == 0)
-    {
-      OnDestroy(handle);
-
-      _loadedSamplers.erase(descriptor);
-      _samplers.erase(it);
-      _samplerHandles.Recycle(handle);
-      Logger::Info("TextureManager: Recycled handle for sampler.");
     }
 
     return true;

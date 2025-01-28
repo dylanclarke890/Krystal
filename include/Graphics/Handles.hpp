@@ -95,76 +95,30 @@ namespace Krys::Impl
     handle_t _id;
   };
 
-  struct VertexBufferHandle
-  {
-  };
+#define HANDLE_IMPL(Tag)                                                                                     \
+  struct Tag##Handle                                                                                         \
+  {                                                                                                          \
+  }
 
-  struct IndexBufferHandle
-  {
-  };
+  HANDLE_IMPL(VertexBuffer);
+  HANDLE_IMPL(IndexBuffer);
+  HANDLE_IMPL(VertexLayout);
+  HANDLE_IMPL(Program);
+  HANDLE_IMPL(Shader);
+  HANDLE_IMPL(Uniform);
+  HANDLE_IMPL(Mesh);
+  HANDLE_IMPL(Texture);
+  HANDLE_IMPL(Sampler);
+  HANDLE_IMPL(RenderEntity);
+  HANDLE_IMPL(Light);
+  HANDLE_IMPL(Scene);
+  HANDLE_IMPL(Material);
 
-  struct VertexLayoutHandle
-  {
-  };
-
-  struct ProgramHandle
-  {
-  };
-
-  struct ShaderHandle
-  {
-  };
-
-  struct UniformHandle
-  {
-  };
-
-  struct MeshHandle
-  {
-  };
-
-  struct TextureHandle
-  {
-  };
-
-  struct SamplerHandle
-  {
-  };
-
-  struct RenderEntityHandle
-  {
-  };
-
-  struct LightHandle
-  {
-  };
-
-  struct SceneHandle
-  {
-  };
-
-  struct MaterialHandle
-  {
-  };
+#undef HANDLE_IMPL
 }
 
 namespace Krys::Gfx
 {
-  template <typename Tag>
-  using Handle = Krys::Impl::Handle<Tag>;
-  using ProgramHandle = Handle<Impl::ProgramHandle>;
-  using ShaderHandle = Handle<Impl::ShaderHandle>;
-  using IndexBufferHandle = Handle<Impl::IndexBufferHandle>;
-  using VertexLayoutHandle = Handle<Impl::VertexLayoutHandle>;
-  using VertexBufferHandle = Handle<Impl::VertexBufferHandle>;
-  using UniformHandle = Handle<Impl::UniformHandle>;
-  using MeshHandle = Handle<Impl::MeshHandle>;
-  using TextureHandle = Handle<Impl::TextureHandle>;
-  using SamplerHandle = Handle<Impl::SamplerHandle>;
-  using RenderEntityHandle = Handle<Impl::RenderEntityHandle>;
-  using LightHandle = Handle<Impl::LightHandle>;
-  using SceneHandle = Handle<Impl::SceneHandle>;
-  using MaterialHandle = Handle<Impl::MaterialHandle>;
 
   template <typename THandle>
   class HandleManager
@@ -200,4 +154,26 @@ namespace Krys::Gfx
     List<handle_t> recycled;
     value_t _nextId {0};
   };
+
+#define DECLARE_HANDLE(Tag)                                                                                  \
+  using Tag##Handle = Impl::Handle<Impl::Tag##Handle>;                                                       \
+  template <typename T>                                                                                      \
+  using Tag##HandleMap = Map<Tag##Handle, T, Tag##Handle::Hash>;                                             \
+  using Tag##HandleManager = HandleManager<Tag##Handle>
+
+  DECLARE_HANDLE(Program);
+  DECLARE_HANDLE(Shader);
+  DECLARE_HANDLE(IndexBuffer);
+  DECLARE_HANDLE(VertexLayout);
+  DECLARE_HANDLE(VertexBuffer);
+  DECLARE_HANDLE(Uniform);
+  DECLARE_HANDLE(Mesh);
+  DECLARE_HANDLE(Texture);
+  DECLARE_HANDLE(Sampler);
+  DECLARE_HANDLE(RenderEntity);
+  DECLARE_HANDLE(Light);
+  DECLARE_HANDLE(Scene);
+  DECLARE_HANDLE(Material);
+
+#undef DECLARE_HANDLE
 }

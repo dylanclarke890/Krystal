@@ -26,26 +26,30 @@ namespace Krys::Gfx::OpenGL
     ~OpenGLUniform() noexcept = default;
 
     /// @brief Constructs an invalid uniform. You must set the program and name before using it.
-    OpenGLUniform() noexcept : _name(), _program(), _location(-1), _value()
+    OpenGLUniform() noexcept : _name(), _program(), _nativeHandle(0u), _location(-1), _value()
     {
     }
 
     /// @brief Constructs a uniform with a program and name.
-    /// @param program The program handle.
     /// @param name The name of the uniform.
+    /// @param program The program handle.
+    /// @param openGLHandle The native OpenGL handle to the program.
     /// @note The program and name must both be valid as the location will be cached immediately.
-    OpenGLUniform(ProgramHandle program, const string &name) noexcept
-        : _name(name), _program(program), _location(-1), _value()
+    OpenGLUniform(const string &name, ProgramHandle program, GLuint openGLHandle) noexcept
+        : _name(name), _program(program), _nativeHandle(openGLHandle), _location(-1), _value()
     {
       CacheLocation();
     }
 
     /// @brief Set the program handle.
     /// @param program The program handle.
+    /// @param openGLHandle The native OpenGL handle to the program.
     /// @note The location will automatically be cached if the name has also been set.
-    void SetProgram(ProgramHandle program) noexcept
+    void SetProgram(ProgramHandle program, GLuint openGLHandle) noexcept
     {
       _program = program;
+      _nativeHandle = openGLHandle;
+
       if (!_name.empty())
         CacheLocation();
     }
@@ -114,45 +118,45 @@ namespace Krys::Gfx::OpenGL
     void UploadValue() const noexcept
     {
       if constexpr (std::is_same_v<uniform_t, bool>)
-        ::glProgramUniform1i(_program.Id(), _location, _value);
+        ::glProgramUniform1i(_nativeHandle, _location, _value);
       else if constexpr (std::is_same_v<uniform_t, int32>)
-        ::glProgramUniform1i(_program.Id(), _location, _value);
+        ::glProgramUniform1i(_nativeHandle, _location, _value);
       else if constexpr (std::is_same_v<uniform_t, List<int32>>)
-        ::glProgramUniform1iv(_program.Id(), _location, _value.size(), _value.data());
+        ::glProgramUniform1iv(_nativeHandle, _location, _value.size(), _value.data());
       else if constexpr (std::is_same_v<uniform_t, uint32>)
-        ::glProgramUniform1ui(_program.Id(), _location, _value);
+        ::glProgramUniform1ui(_nativeHandle, _location, _value);
       else if constexpr (std::is_same_v<uniform_t, List<uint32>>)
-        ::glProgramUniform1uiv(_program.Id(), _location, _value.size(), _value.data());
+        ::glProgramUniform1uiv(_nativeHandle, _location, _value.size(), _value.data());
       else if constexpr (std::is_same_v<uniform_t, uint64>)
-        ::glProgramUniformHandleui64ARB(_program.Id(), _location, _value);
+        ::glProgramUniformHandleui64ARB(_nativeHandle, _location, _value);
       else if constexpr (std::is_same_v<uniform_t, float32>)
-        ::glProgramUniform1f(_program.Id(), _location, _value);
+        ::glProgramUniform1f(_nativeHandle, _location, _value);
       else if constexpr (std::is_same_v<uniform_t, List<float32>>)
-        ::glProgramUniform1fv(_program.Id(), _location, _value.size(), _value.data());
+        ::glProgramUniform1fv(_nativeHandle, _location, _value.size(), _value.data());
       else if constexpr (std::is_same_v<uniform_t, Vec2>)
-        ::glProgramUniform2f(_program.Id(), _location, _value.x, _value.y);
+        ::glProgramUniform2f(_nativeHandle, _location, _value.x, _value.y);
       else if constexpr (std::is_same_v<uniform_t, List<Vec2>>)
-        ::glProgramUniform2fv(_program.Id(), _location, _value.size(), &_value[0].x);
+        ::glProgramUniform2fv(_nativeHandle, _location, _value.size(), &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, Vec3>)
-        ::glProgramUniform3f(_program.Id(), _location, _value.x, _value.y, _value.z);
+        ::glProgramUniform3f(_nativeHandle, _location, _value.x, _value.y, _value.z);
       else if constexpr (std::is_same_v<uniform_t, List<Vec3>>)
-        ::glProgramUniform3fv(_program.Id(), _location, _value.size(), &_value[0].x);
+        ::glProgramUniform3fv(_nativeHandle, _location, _value.size(), &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, Vec4>)
-        ::glProgramUniform4f(_program.Id(), _location, _value.x, _value.y, _value.z, _value.w);
+        ::glProgramUniform4f(_nativeHandle, _location, _value.x, _value.y, _value.z, _value.w);
       else if constexpr (std::is_same_v<uniform_t, List<Vec4>>)
-        ::glProgramUniform4fv(_program.Id(), _location, _value.size(), &_value[0].x);
+        ::glProgramUniform4fv(_nativeHandle, _location, _value.size(), &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, Mat2>)
-        ::glProgramUniformMatrix2fv(_program.Id(), _location, 1, GL_FALSE, &_value[0].x);
+        ::glProgramUniformMatrix2fv(_nativeHandle, _location, 1, GL_FALSE, &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, List<Mat2>>)
-        ::glProgramUniformMatrix2fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0].x);
+        ::glProgramUniformMatrix2fv(_nativeHandle, _location, _value.size(), GL_FALSE, &_value[0][0].x);
       else if constexpr (std::is_same_v<uniform_t, Mat3>)
-        ::glProgramUniformMatrix3fv(_program.Id(), _location, 1, GL_FALSE, &_value[0].x);
+        ::glProgramUniformMatrix3fv(_nativeHandle, _location, 1, GL_FALSE, &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, List<Mat3>>)
-        ::glProgramUniformMatrix3fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0].x);
+        ::glProgramUniformMatrix3fv(_nativeHandle, _location, _value.size(), GL_FALSE, &_value[0][0].x);
       else if constexpr (std::is_same_v<uniform_t, Mat4>)
-        ::glProgramUniformMatrix4fv(_program.Id(), _location, 1, GL_FALSE, &_value[0].x);
+        ::glProgramUniformMatrix4fv(_nativeHandle, _location, 1, GL_FALSE, &_value[0].x);
       else if constexpr (std::is_same_v<uniform_t, List<Mat4>>)
-        ::glProgramUniformMatrix4fv(_program.Id(), _location, _value.size(), GL_FALSE, &_value[0][0].x);
+        ::glProgramUniformMatrix4fv(_nativeHandle, _location, _value.size(), GL_FALSE, &_value[0][0].x);
       else
         KRYS_ASSERT(false, "Unsupported uniform type.");
     }
@@ -161,8 +165,7 @@ namespace Krys::Gfx::OpenGL
     {
       KRYS_ASSERT(_program.IsValid(), "Invalid program handle.");
       KRYS_ASSERT(!_name.empty(), "Name was not provided.");
-      _location =
-        ::glGetProgramResourceLocation(static_cast<GLuint>(_program.Id()), GL_UNIFORM, _name.c_str());
+      _location = ::glGetProgramResourceLocation(_nativeHandle, GL_UNIFORM, _name.c_str());
       if (_location == -1)
         Logger::Warn("Uniform '{0}' does not exist. (Program {1})", _name, _program.Id());
     }
@@ -170,6 +173,7 @@ namespace Krys::Gfx::OpenGL
   private:
     string _name;
     ProgramHandle _program;
+    GLuint _nativeHandle;
     GLint _location;
     uniform_t _value;
   };

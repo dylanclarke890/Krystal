@@ -23,14 +23,17 @@ namespace Krys::Gfx::OpenGL
     void DrawArrays(PrimitiveType type, uint32 count) noexcept override;
     void DrawElements(PrimitiveType type, uint32 count) noexcept override;
 
+    void Clear(ClearBuffer flags) noexcept override;
     void SetClearColour(const Colour &colour) noexcept override;
 
-    VertexBufferHandle CreateVertexBuffer(uint32 size) noexcept override;
-    IndexBufferHandle CreateIndexBuffer(uint32 size) noexcept override;
+  protected:
+    Unique<Program> CreateProgramImpl(ProgramHandle handle, ShaderHandle vertexShader, ShaderHandle fragmentShader) noexcept override;
 
-    ShaderHandle CreateShader(const ShaderDescriptor &description) noexcept override;
-    ProgramHandle CreateProgram() noexcept override;
+    Unique<Shader> CreateShaderImpl(ShaderHandle handle, ShaderStage stage,
+                                    const string &source) noexcept override;
 
-    void Clear() noexcept override;
+    Unique<VertexBuffer> CreateVertexBufferImpl(VertexBufferHandle handle, uint32 size) noexcept override;
+
+    Unique<IndexBuffer> CreateIndexBufferImpl(IndexBufferHandle handle, uint32 size) noexcept override;
   };
 }

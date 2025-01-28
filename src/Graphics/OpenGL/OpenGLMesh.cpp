@@ -38,14 +38,14 @@ namespace Krys::Gfx::OpenGL
 
     {
       _vbo = _ctx->CreateVertexBuffer(static_cast<uint32>(vertices.size() * sizeof(vertex_t)));
-      BufferWriter<VertexBuffer> writer(_ctx->GetVertexBuffer(_vbo));
+      BufferWriter<VertexBuffer> writer(*_ctx->GetVertexBuffer(_vbo));
       writer.Write(_vertices);
     }
 
     if (!indices.empty())
     {
       _ebo = _ctx->CreateIndexBuffer(static_cast<uint32>(indices.size() * sizeof(index_t)));
-      BufferWriter<IndexBuffer> writer(_ctx->GetIndexBuffer(_ebo));
+      BufferWriter<IndexBuffer> writer(*_ctx->GetIndexBuffer(_ebo));
       writer.Write(_indices);
     }
 
@@ -73,24 +73,24 @@ namespace Krys::Gfx::OpenGL
   void OpenGLMesh::SetVertices(const List<vertex_t> &vertices) noexcept
   {
     _vertices = vertices;
-    BufferWriter<VertexBuffer> writer(_ctx->GetVertexBuffer(_vbo));
+    BufferWriter<VertexBuffer> writer(*_ctx->GetVertexBuffer(_vbo));
     writer.Write(_vertices);
   }
 
   void OpenGLMesh::SetIndices(const List<index_t> &indices) noexcept
   {
     _indices = indices;
-    BufferWriter<IndexBuffer> writer(_ctx->GetIndexBuffer(_ebo));
+    BufferWriter<IndexBuffer> writer(*_ctx->GetIndexBuffer(_ebo));
     writer.Write(_indices);
   }
 
   void OpenGLMesh::SetupVAO() noexcept
   {
     KRYS_ASSERT(_vbo.IsValid(), "Invalid vertex buffer handle");
-    _ctx->GetVertexBuffer(_vbo).Bind();
+    _ctx->GetVertexBuffer(_vbo)->Bind();
 
     if (_ebo.IsValid())
-      _ctx->GetIndexBuffer(_ebo).Bind();
+      _ctx->GetIndexBuffer(_ebo)->Bind();
 
     auto index = 0u;
     for (auto &attr : _layout)

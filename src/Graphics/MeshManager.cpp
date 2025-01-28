@@ -59,9 +59,8 @@ namespace Krys::Gfx
 
     auto handle = _meshHandles.Next();
     auto [vertices, indices] = Impl::GetCubeData(colour);
-    auto mesh = CreateMeshImpl(handle, vertices, indices);
 
-    _meshes[handle] = {.Mesh = std::move(mesh), .Id = meshId};
+    _meshes[handle] = {.Mesh = CreateMeshImpl(handle, vertices, indices), .Id = meshId};
     _loadedMeshes[meshId] = handle;
 
     return handle;
@@ -69,20 +68,21 @@ namespace Krys::Gfx
 
   Mesh *MeshManager::GetMesh(MeshHandle handle) noexcept
   {
-    auto it = _meshes.find(handle);
-    return it != _meshes.end() ? it->second.Mesh.get() : nullptr;
+    if (auto it = _meshes.find(handle); it != _meshes.end())
+      return it->second.Mesh.get();
+    return nullptr;
   }
 
   bool MeshManager::DestroyMesh(MeshHandle handle) noexcept
   {
-    auto it = _meshes.find(handle);
-    if (it == _meshes.end())
-      return false;
+    if (auto it = _meshes.find(handle); it != _meshes.end())
+    {
+      _loadedMeshes.erase(it->second.Id);
+      _meshes.erase(it);
+      _meshHandles.Recycle(handle);
+      return true;
+    }
 
-    _loadedMeshes.erase(it->second.Id);
-    _meshes.erase(it);
-    _meshHandles.Recycle(handle);
-
-    return true;
+    return false;
   }
 }

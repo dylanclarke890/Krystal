@@ -23,28 +23,28 @@ namespace Krys::Gfx::OpenGL
   class OpenGLBuffer : public Buffer<THandle>
   {
   public:
-    OpenGLBuffer(uint32 capacity, BufferUsageHint usageHint = BufferUsageHint::Static) noexcept
-        : Buffer<THandle>(capacity, usageHint), _glHandle(0)
+    OpenGLBuffer(THandle handle, uint32 capacity,
+                 BufferUsageHint usageHint = BufferUsageHint::Static) noexcept
+        : Buffer<THandle>(handle, capacity, usageHint), _id(0)
     {
-      ::glCreateBuffers(1, &_glHandle);
-      ::glNamedBufferData(_glHandle, this->_capacity, nullptr, BufferUsageHintToOpenGL(this->_usageHint));
-      this->_handle = THandle(static_cast<THandle::handle_t>(_glHandle));
+      ::glCreateBuffers(1, &_id);
+      ::glNamedBufferData(_id, this->_capacity, nullptr, BufferUsageHintToOpenGL(this->_usageHint));
     }
 
     ~OpenGLBuffer() override
     {
-      ::glDeleteBuffers(1, &_glHandle);
+      ::glDeleteBuffers(1, &_id);
     }
 
     void Write(const void *data, size_t size, size_t offset) noexcept override
     {
       KRYS_ASSERT(offset + size <= this->_capacity, "Data size exceeds buffer capacity");
-      ::glNamedBufferSubData(_glHandle, offset, size, data);
+      ::glNamedBufferSubData(_id, offset, size, data);
     }
 
     void Bind() noexcept override
     {
-      ::glBindBuffer(Target, _glHandle);
+      ::glBindBuffer(Target, _id);
     }
 
     void Unbind() noexcept override
@@ -52,8 +52,13 @@ namespace Krys::Gfx::OpenGL
       ::glBindBuffer(Target, 0);
     }
 
+    NO_DISCARD GLuint GetNativeHandle() const noexcept
+    {
+      return _id;
+    }
+
   private:
-    GLuint _glHandle;
+    GLuint _id;
   };
 
   using OpenGLVertexBuffer = OpenGLBuffer<VertexBufferHandle, GL_ARRAY_BUFFER>;

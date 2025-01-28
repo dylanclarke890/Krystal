@@ -2,7 +2,7 @@
 
 namespace Krys::Gfx
 {
-  Program::Program() noexcept : _handle()
+  Program::Program(ProgramHandle handle) noexcept : _handle(handle)
   {
   }
 

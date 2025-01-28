@@ -110,45 +110,45 @@ namespace Krys::Gfx::OpenGL
     _clearColour = colour;
   }
 
-  void OpenGLGraphicsContext::Clear() noexcept
+  void OpenGLGraphicsContext::Clear(ClearBuffer flags) noexcept
   {
-    ::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    GLint mask = 0;
+
+    if ((flags & ClearBuffer::Colour) == ClearBuffer::Colour)
+      mask |= GL_COLOR_BUFFER_BIT;
+
+    if ((flags & ClearBuffer::Depth) == ClearBuffer::Depth)
+      mask |= GL_DEPTH_BUFFER_BIT;
+
+    if ((flags & ClearBuffer::Stencil) == ClearBuffer::Stencil)
+      mask |= GL_STENCIL_BUFFER_BIT;
+
+    ::glClear(mask);
   }
 
-  VertexBufferHandle OpenGLGraphicsContext::CreateVertexBuffer(uint32 size) noexcept
+  Unique<Program> OpenGLGraphicsContext::CreateProgramImpl(ProgramHandle handle, ShaderHandle vertexShader,
+                                                           ShaderHandle fragmentShader) noexcept
   {
-    auto buffer = CreateUnique<OpenGLVertexBuffer>(size);
-    auto handle = buffer->GetHandle();
-
-    buffer->Bind();
-    _vertexBuffers[handle] = std::move(buffer);
-    return handle;
+    auto &vertex = *static_cast<OpenGLShader *>(GetShader(vertexShader));
+    auto &fragment = *static_cast<OpenGLShader *>(GetShader(fragmentShader));
+    return CreateUnique<OpenGLProgram>(handle, vertex, fragment);
   }
 
-  IndexBufferHandle OpenGLGraphicsContext::CreateIndexBuffer(uint32 size) noexcept
+  Unique<Shader> OpenGLGraphicsContext::CreateShaderImpl(ShaderHandle handle, ShaderStage stage,
+                                                         const string &source) noexcept
   {
-    auto buffer = CreateUnique<OpenGLIndexBuffer>(size);
-    auto handle = buffer->GetHandle();
-
-    _indexBuffers[handle] = std::move(buffer);
-    return handle;
+    return CreateUnique<OpenGLShader>(handle, stage, source);
   }
 
-  ShaderHandle OpenGLGraphicsContext::CreateShader(const ShaderDescriptor &description) noexcept
+  Unique<VertexBuffer> OpenGLGraphicsContext::CreateVertexBufferImpl(VertexBufferHandle handle,
+                                                                     uint32 size) noexcept
   {
-    auto shader = CreateUnique<OpenGLShader>(description);
-    auto handle = shader->GetHandle();
-
-    _shaders[handle] = std::move(shader);
-    return handle;
+    return CreateUnique<OpenGLVertexBuffer>(handle, size);
   }
 
-  ProgramHandle OpenGLGraphicsContext::CreateProgram() noexcept
+  Unique<IndexBuffer> OpenGLGraphicsContext::CreateIndexBufferImpl(IndexBufferHandle handle,
+                                                                   uint32 size) noexcept
   {
-    auto program = CreateUnique<OpenGLProgram>();
-    auto handle = program->GetHandle();
-
-    _programs[handle] = std::move(program);
-    return handle;
+    return CreateUnique<OpenGLIndexBuffer>(handle, size);
   }
 }

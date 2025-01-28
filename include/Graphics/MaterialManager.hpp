@@ -14,22 +14,33 @@ namespace Krys::Gfx
   public:
     virtual ~MaterialManager() noexcept = default;
 
-    NO_DISCARD virtual MaterialHandle CreateMaterial(ProgramHandle program) noexcept = 0;
+    /// @brief Creates a material.
+    /// @param program The program to use with the material.
+    /// @return The handle of the created material.
+    NO_DISCARD MaterialHandle CreateMaterial(ProgramHandle program) noexcept;
 
-    NO_DISCARD virtual Material &GetMaterial(MaterialHandle handle) noexcept = 0;
+    /// @brief Gets a material by its handle.
+    /// @param handle The handle of the material.
+    /// @return A pointer to the material if it was found, nullptr otherwise.
+    NO_DISCARD Material *GetMaterial(MaterialHandle handle) noexcept;
 
-    NO_DISCARD virtual const Material &GetMaterial(MaterialHandle handle) const noexcept = 0;
-
-    NO_DISCARD virtual bool DestroyMaterial(MaterialHandle handle) noexcept = 0;
+    /// @brief Destroys a material.
+    /// @param handle The handle of the material.
+    /// @return True if the material was found, false otherwise.
+    NO_DISCARD  bool DestroyMaterial(MaterialHandle handle) noexcept;
 
   protected:
     MaterialManager() noexcept = default;
 
+    /// @brief Implementation-specific material creation.
+    /// @param handle The handle of the material.
+    /// @param program The program to use with the material.
+    /// @return The created material.
     NO_DISCARD virtual Unique<Material> CreateMaterialImpl(MaterialHandle handle,
                                                            ProgramHandle program) noexcept = 0;
 
   protected:
-    HandleManager<MaterialHandle> _materialHandles {};
-    Map<MaterialHandle, Unique<Material>> _materials;
+    MaterialHandleMap<Unique<Material>> _materials;
+    MaterialHandleManager _materialHandles {};
   };
 }

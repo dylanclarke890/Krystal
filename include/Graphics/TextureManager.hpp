@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Macros.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
@@ -24,6 +25,17 @@ namespace Krys::Gfx
     /// @param descriptor The descriptor of the sampler.
     NO_DISCARD SamplerHandle CreateSampler(const SamplerDescriptor &descriptor) noexcept;
 
+    /// @brief Gets a sampler by its handle.
+    /// @param handle The handle of the sampler.
+    /// @return The sampler or nullptr if the handle is invalid.
+    NO_DISCARD Sampler *GetSampler(SamplerHandle handle) const noexcept;
+
+    /// @brief Unloads a sampler.
+    /// @param handle The handle of the sampler.
+    /// @return True if the sampler was found, false otherwise.
+    /// @note Will only destroy the sampler if its' reference count is 0.
+    bool Unload(SamplerHandle handle) noexcept;
+
     /// @brief Creates a texture with the default sampler.
     /// @param image Image settings to create the texture.
     /// @param hint Texture usage hint.
@@ -36,11 +48,6 @@ namespace Krys::Gfx
     /// @param hint Texture usage hint.
     NO_DISCARD TextureHandle CreateTexture(const IO::Image &image, SamplerHandle sampler,
                                            TextureUsageHint hint = TextureUsageHint::Image) noexcept;
-
-    /// @brief Gets a sampler by its handle.
-    /// @param handle The handle of the sampler.
-    /// @return The sampler or nullptr if the handle is invalid.
-    NO_DISCARD Sampler *GetSampler(SamplerHandle handle) const noexcept;
 
     /// @brief Gets a texture by its handle.
     /// @param handle The handle of the texture.
@@ -59,26 +66,14 @@ namespace Krys::Gfx
     NO_DISCARD TextureHandle LoadTexture(const string &path, SamplerHandle sampler,
                                          TextureUsageHint hint = TextureUsageHint::Image) noexcept;
 
-    /// @brief Unloads a sampler.
-    /// @param handle The handle of the sampler.
-    /// @return True if the sampler was found, false otherwise.
-    /// @note Will only fully unload the sampler if its' reference count is 0.
-    bool Unload(SamplerHandle handle) noexcept;
-
     /// @brief Unloads a texture.
     /// @param handle The handle of the texture.
     /// @return True if the texture was found, false otherwise.
-    /// @note Will only fully unload the texture if its' reference count is 0.
+    /// @note Will only destroy the texture if its' reference count is 0.
     bool Unload(TextureHandle handle) noexcept;
 
   protected:
     TextureManager() noexcept = default;
-
-    /// @brief Optional hook for implementation. Called when a sampler is destroyed.
-    virtual void OnDestroy(SamplerHandle handle) noexcept;
-
-    /// @brief Optional hook for implementation. Called when a texture is destroyed.
-    virtual void OnDestroy(TextureHandle handle) noexcept;
 
     /// @brief Implementation-specific creation of a sampler.
     /// @param handle The handle of the sampler.
@@ -93,7 +88,15 @@ namespace Krys::Gfx
       CreateTextureImpl(const string &resourceName, TextureHandle handle, SamplerHandle sampler,
                         const IO::Image &data, TextureUsageHint hint = TextureUsageHint::Image) noexcept = 0;
 
+    /// @brief Optional hook for implementation. Called when a sampler is destroyed (ref count hits zero).
+    virtual void OnDestroy(SamplerHandle handle) noexcept;
+
+    /// @brief Optional hook for implementation. Called when a texture is destroyed (ref count hits zero).
+    virtual void OnDestroy(TextureHandle handle) noexcept;
+
   protected:
+    NO_COPY_MOVE(TextureManager);
+
     template <class T>
     struct LoadedResource
     {
@@ -101,18 +104,12 @@ namespace Krys::Gfx
       Unique<T> Resource;
     };
 
+    SamplerHandleMap<Sampler *> _samplers;
+    SamplerHandleManager _samplerHandles;
     Map<SamplerDescriptor, LoadedResource<Sampler>> _loadedSamplers;
-    Map<SamplerHandle, Sampler *, SamplerHandle::Hash> _samplers;
-    HandleManager<SamplerHandle> _samplerHandles;
 
+    TextureHandleMap<Texture *> _textures;
+    TextureHandleManager _textureHandles;
     Map<string, LoadedResource<Texture>> _loadedTextures;
-    Map<TextureHandle, Texture *, TextureHandle::Hash> _textures;
-    HandleManager<TextureHandle> _textureHandles;
-
-  private:
-    TextureManager(const TextureManager &) = delete;
-    TextureManager(TextureManager &&) = delete;
-    TextureManager &operator=(const TextureManager &) = delete;
-    TextureManager &operator=(TextureManager &&) = delete;
   };
 }

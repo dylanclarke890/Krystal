@@ -2,8 +2,7 @@
 
 namespace Krys::Gfx
 {
-  Shader::Shader(const ShaderDescriptor &description) noexcept
-      : _stage(description.Stage), _handle(ShaderHandle::InvalidHandle)
+  Shader::Shader(ShaderHandle handle, ShaderStage stage) noexcept : _handle(handle), _stage(stage)
   {
   }
 
