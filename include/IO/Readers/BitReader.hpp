@@ -20,7 +20,7 @@ namespace Krys::IO
     BitReader(const List<byte> *buffer) noexcept
         : _buffer(buffer), _bitIndex(0), _byteIndex(0), _currentByte(0)
     {
-      KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.", 0);
+      KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.");
     }
 
     ~BitReader() noexcept = default;
@@ -40,7 +40,7 @@ namespace Krys::IO
     NO_DISCARD byte ReadBits(uint length) noexcept
     {
       KRYS_ASSERT(length <= BitsetSize, "Length must be less than or equal to %zu.", BitsetSize);
-      KRYS_ASSERT(length > 0, "Length must be greater than 0.", 0);
+      KRYS_ASSERT(length > 0, "Length must be greater than 0.");
 
       byte value {};
       for (uint i = 0; i < length; i++)

@@ -29,7 +29,7 @@ namespace Krys::Scripting
     {
       string source = IO::ReadFileText(path);
       Run(source);
-      KRYS_ASSERT(_errorReporter.Success(), "Error while running file", 0);
+      KRYS_ASSERT(_errorReporter.Success(), "Error while running file");
     }
 
   private:

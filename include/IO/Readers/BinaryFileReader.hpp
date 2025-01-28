@@ -53,9 +53,9 @@ namespace Krys::IO
 
     void Open() noexcept
     {
-      KRYS_ASSERT(IO::PathExists(_path), "File '%s' does not exist", _path.c_str());
+      KRYS_ASSERT(IO::PathExists(_path), "IO: File '{0}' does not exist", _path);
       _stream.open(_path.c_str(), std::ios::in | std::ios::binary);
-      KRYS_ASSERT(_stream.is_open(), "Unable to open %s.", _path.c_str());
+      KRYS_ASSERT(_stream.is_open(), "IO: Unable to open '{0}'.", _path);
     }
 
     void Close() noexcept

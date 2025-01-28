@@ -294,7 +294,7 @@ namespace Krys::MTL
                                                               TComponent zNear, TComponent zFar)
   {
     KRYS_ASSERT(MTL::Abs(aspect - std::numeric_limits<TComponent>::epsilon()) > TComponent(0),
-                "Aspect is invalid", 0);
+                "Aspect is invalid");
 
     const TComponent tanHalfFovy = Tan(fovy / TComponent(2));
 
@@ -312,7 +312,7 @@ namespace Krys::MTL
                                                               TComponent zNear, TComponent zFar)
   {
     KRYS_ASSERT(MTL::Abs(aspect - std::numeric_limits<TComponent>::epsilon()) > TComponent(0),
-                "Aspect is invalid", 0);
+                "Aspect is invalid");
 
     const TComponent tanHalfFovy = Tan(fovy / TComponent(2));
 
@@ -330,7 +330,7 @@ namespace Krys::MTL
                                                               TComponent zNear, TComponent zFar)
   {
     KRYS_ASSERT(MTL::Abs(aspect - std::numeric_limits<TComponent>::epsilon()) > TComponent(0),
-                "Aspect is invalid", 0);
+                "Aspect is invalid");
 
     const TComponent tanHalfFovy = Tan(fovy / TComponent(2));
 
@@ -348,7 +348,7 @@ namespace Krys::MTL
                                                               TComponent zNear, TComponent zFar)
   {
     KRYS_ASSERT(MTL::Abs(aspect - std::numeric_limits<TComponent>::epsilon()) > TComponent(0),
-                "Aspect is invalid", 0);
+                "Aspect is invalid");
 
     const TComponent tanHalfFovy = Tan(fovy / TComponent(2));
 
@@ -432,9 +432,9 @@ namespace Krys::MTL
                                                                  TComponent height, TComponent zNear,
                                                                  TComponent zFar)
   {
-    KRYS_ASSERT(width > TComponent(0), "Invalid width", width);
-    KRYS_ASSERT(height > TComponent(0), "Invalid height", height);
-    KRYS_ASSERT(fov > TComponent(0), "Invalid fov", fov);
+    KRYS_ASSERT(width > TComponent(0), "Invalid width {0}", width);
+    KRYS_ASSERT(height > TComponent(0), "Invalid height {0}", height);
+    KRYS_ASSERT(fov > TComponent(0), "Invalid fov {0}", fov);
 
     const TComponent rad = fov;
     const TComponent h = Cos(TComponent(0.5) * rad) / Sin(TComponent(0.5) * rad);
@@ -456,9 +456,9 @@ namespace Krys::MTL
                                                                  TComponent height, TComponent zNear,
                                                                  TComponent zFar)
   {
-    KRYS_ASSERT(width > TComponent(0), "Invalid width", width);
-    KRYS_ASSERT(height > TComponent(0), "Invalid height", height);
-    KRYS_ASSERT(fov > TComponent(0), "Invalid fov", fov);
+    KRYS_ASSERT(width > TComponent(0), "Invalid width {0}", width);
+    KRYS_ASSERT(height > TComponent(0), "Invalid height {0}", height);
+    KRYS_ASSERT(fov > TComponent(0), "Invalid fov {0}", fov);
 
     const TComponent rad = fov;
     const TComponent h = Cos(TComponent(0.5) * rad) / Sin(TComponent(0.5) * rad);
@@ -480,9 +480,9 @@ namespace Krys::MTL
                                                                  TComponent height, TComponent zNear,
                                                                  TComponent zFar)
   {
-    KRYS_ASSERT(width > TComponent(0), "Invalid width", width);
-    KRYS_ASSERT(height > TComponent(0), "Invalid height", height);
-    KRYS_ASSERT(fov > TComponent(0), "Invalid fov", fov);
+    KRYS_ASSERT(width > TComponent(0), "Invalid width {0}", width);
+    KRYS_ASSERT(height > TComponent(0), "Invalid height {0}", height);
+    KRYS_ASSERT(fov > TComponent(0), "Invalid fov {0}", fov);
 
     const TComponent rad = fov;
     const TComponent h = Cos(TComponent(0.5) * rad) / Sin(TComponent(0.5) * rad);
@@ -504,9 +504,9 @@ namespace Krys::MTL
                                                                  TComponent height, TComponent zNear,
                                                                  TComponent zFar)
   {
-    KRYS_ASSERT(width > TComponent(0), "Invalid width", width);
-    KRYS_ASSERT(height > TComponent(0), "Invalid height", height);
-    KRYS_ASSERT(fov > TComponent(0), "Invalid fov", fov);
+    KRYS_ASSERT(width > TComponent(0), "Invalid width {0}", width);
+    KRYS_ASSERT(height > TComponent(0), "Invalid height {0}", height);
+    KRYS_ASSERT(fov > TComponent(0), "Invalid fov {0}", fov);
 
     const TComponent rad = fov;
     const TComponent h = Cos(TComponent(0.5) * rad) / Sin(TComponent(0.5) * rad);

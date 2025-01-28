@@ -29,7 +29,7 @@ namespace Krys::Bytes
   NO_DISCARD constexpr List<T> AsNumericArray(const List<byte> &bytes) noexcept
   {
     KRYS_ASSERT(bytes.size() % sizeof(T) == 0,
-                "Unable to convert all bytes to the specified type. Unexpected number of bytes. ", 0);
+                "Unable to convert all bytes to the specified type. Unexpected number of bytes. ");
     size_t elementCount = bytes.size() / sizeof(T);
 
     List<T> elements;

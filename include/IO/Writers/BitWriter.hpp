@@ -18,7 +18,7 @@ namespace Krys::IO
     BitWriter(List<byte> *buffer) noexcept
         : _bitset(0), _bitIndex(static_cast<int>(BitsetSize) - 1), _buffer(buffer)
     {
-      KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.", 0);
+      KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.");
     }
 
     ~BitWriter() noexcept
@@ -35,9 +35,9 @@ namespace Krys::IO
 
     void Write(IsIntegralT auto value, uint length) noexcept
     {
-      KRYS_ASSERT(length <= BitsetSize, "Length must be less than or equal to %zu.", BitsetSize);
-      KRYS_ASSERT(length > 0, "Length must be greater than 0.", 0);
-      KRYS_ASSERT(length <= sizeof(value) * 8, "Length must be less than or equal to %zu.",
+      KRYS_ASSERT(length <= BitsetSize, "Length must be less than or equal to {0}.", BitsetSize);
+      KRYS_ASSERT(length > 0, "Length must be greater than 0.");
+      KRYS_ASSERT(length <= sizeof(value) * 8, "Length must be less than or equal to {0}.",
                   sizeof(value) * 8);
 
       for (int i = length - 1; i >= 0; i--)
@@ -57,7 +57,7 @@ namespace Krys::IO
       if (_bitIndex == static_cast<int>(BitsetSize) - 1)
         return;
 
-      KRYS_ASSERT(_buffer != nullptr, "Buffer cannot be null.", 0);
+      KRYS_ASSERT(_buffer != nullptr, "Buffer cannot be null.");
       _buffer->push_back(static_cast<byte>(_bitset.to_ullong()));
 
       _bitset.reset();
@@ -66,7 +66,7 @@ namespace Krys::IO
 
     void SetBuffer(List<byte> *buffer) noexcept
     {
-      KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.", 0);
+      KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.");
       _buffer = buffer;
     }
 

@@ -44,13 +44,13 @@ private:                                                                        
                                                                                                              \
   NO_DISCARD constexpr const column_t &operator[](vec_length_t col) const noexcept                           \
   {                                                                                                          \
-    KRYS_ASSERT(col < ColLength, "Index out of bounds", 0);                                                  \
+    KRYS_ASSERT(col < ColLength, "Index out of bounds");                                                     \
     return _values[col];                                                                                     \
   }                                                                                                          \
                                                                                                              \
   NO_DISCARD constexpr column_t &operator[](vec_length_t col) noexcept                                       \
   {                                                                                                          \
-    KRYS_ASSERT(col < ColLength, "Index out of bounds", 0);                                                  \
+    KRYS_ASSERT(col < ColLength, "Index out of bounds");                                                     \
     return _values[col];                                                                                     \
   }
 
@@ -152,7 +152,7 @@ private:                                                                        
 #define KRYS_MATRIX_TWO_COLUMNS_DIVISION()                                                                   \
   NO_DISCARD constexpr mat_t operator/(component_t scalar) const noexcept                                    \
   {                                                                                                          \
-    KRYS_ASSERT(scalar != 0, "Division by zero", 0);                                                         \
+    KRYS_ASSERT(scalar != 0, "Division by zero");                                                            \
     return mat_t(_values[0] / scalar, _values[1] / scalar);                                                  \
   }                                                                                                          \
                                                                                                              \
@@ -411,7 +411,7 @@ private:                                                                        
 #define KRYS_MATRIX_THREE_COLUMNS_DIVISION()                                                                 \
   NO_DISCARD constexpr mat_t operator/(component_t scalar) const noexcept                                    \
   {                                                                                                          \
-    KRYS_ASSERT(scalar != 0, "Division by zero", 0);                                                         \
+    KRYS_ASSERT(scalar != 0, "Division by zero");                                                            \
     return mat_t(_values[0] / scalar, _values[1] / scalar, _values[2] / scalar);                             \
   }                                                                                                          \
                                                                                                              \
@@ -678,7 +678,7 @@ private:                                                                        
 #define KRYS_MATRIX_FOUR_COLUMNS_DIVISION()                                                                  \
   NO_DISCARD constexpr mat_t operator/(component_t scalar) const noexcept                                    \
   {                                                                                                          \
-    KRYS_ASSERT(scalar != 0, "Division by zero", 0);                                                         \
+    KRYS_ASSERT(scalar != 0, "Division by zero");                                                            \
     return mat_t(_values[0] / scalar, _values[1] / scalar, _values[2] / scalar, _values[3] / scalar);        \
   }                                                                                                          \
                                                                                                              \

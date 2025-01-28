@@ -67,7 +67,7 @@ namespace Krys::Concurrency
 
     size_t tid = hasher(std::this_thread::get_id());
     size_t actual = _state.load(std::memory_order_relaxed);
-    KRYS_ASSERT(actual == tid, "expected actual to be the current thread", 0);
+    KRYS_ASSERT(actual == tid, "expected actual to be the current thread");
 
     _refCount--;
     if (_refCount == 0)

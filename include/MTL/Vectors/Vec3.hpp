@@ -53,7 +53,7 @@ namespace Krys
         x = (it != il.end()) ? *it++ : TComponent(0);
         y = (it != il.end()) ? *it++ : TComponent(0);
         z = (it != il.end()) ? *it++ : TComponent(0);
-        KRYS_ASSERT(it == il.end(), "Too many initializer list values", 0);
+        KRYS_ASSERT(it == il.end(), "Too many initializer list values");
       }
 
       constexpr Vector(const vec_t &other) noexcept : x(other.x), y(other.y), z(other.z)
@@ -134,7 +134,7 @@ namespace Krys
 
       NO_DISCARD constexpr component_t operator[](vec_length_t index) const noexcept
       {
-        KRYS_ASSERT(index < Length, "Index out of bounds", 0);
+        KRYS_ASSERT(index < Length, "Index out of bounds");
         switch (index)
         {
           case 0:  return x;
@@ -146,7 +146,7 @@ namespace Krys
 
       NO_DISCARD constexpr component_t& operator[](vec_length_t index)  noexcept
       {
-        KRYS_ASSERT(index < Length, "Index out of bounds", 0);
+        KRYS_ASSERT(index < Length, "Index out of bounds");
         switch (index)
         {
           case 0:  return x;
@@ -214,13 +214,13 @@ namespace Krys
 
       NO_DISCARD constexpr vec_t operator/(const vec_t &other) const noexcept
       {
-        KRYS_ASSERT(other.x != 0 && other.y != 0 && other.z != 0, "Division by zero", 0);
+        KRYS_ASSERT(other.x != 0 && other.y != 0 && other.z != 0, "Division by zero");
         return vec_t(x / other.x, y / other.y, z / other.z);
       }
 
       NO_DISCARD constexpr vec_t operator/(component_t scalar) const noexcept
       {
-        KRYS_ASSERT(scalar != 0, "Division by zero", 0);
+        KRYS_ASSERT(scalar != 0, "Division by zero");
         return vec_t(x / scalar, y / scalar, z / scalar);
       }
 

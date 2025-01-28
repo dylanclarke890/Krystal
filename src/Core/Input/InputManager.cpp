@@ -42,7 +42,7 @@ namespace Krys
           {
             case MouseButtonState::Pressed:  _mouse._pressed |= mouseButtonEvent->GetButton(); break;
             case MouseButtonState::Released: _mouse._released |= mouseButtonEvent->GetButton(); break;
-            default:                         KRYS_ASSERT(false, "Unknown mouse button state", 0); break;
+            default:                         KRYS_ASSERT(false, "Unknown mouse button state"); break;
           }
         }
         break;
@@ -55,7 +55,7 @@ namespace Krys
             case KeyState::Pressed:  _keyboard._pressed.emplace(keyboardEvent->GetKey()); break;
             case KeyState::Held:     _keyboard._held.emplace(keyboardEvent->GetKey()); break;
             case KeyState::Released: _keyboard._released.emplace(keyboardEvent->GetKey()); break;
-            default:                 KRYS_ASSERT(false, "Unknown key state", 0); break;
+            default:                 KRYS_ASSERT(false, "Unknown key state"); break;
           }
         }
         break;
@@ -73,7 +73,7 @@ namespace Krys
 
   void InputManager::RegisterHID(const DeviceId id, Unique<HID> device) noexcept
   {
-    KRYS_ASSERT(_customInputDevices.find(id) == _customInputDevices.end(), "Device already registered", 0);
+    KRYS_ASSERT(_customInputDevices.find(id) == _customInputDevices.end(), "Device already registered");
     _customInputDevices.emplace(id, std::move(device));
   }
 

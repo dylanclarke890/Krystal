@@ -22,7 +22,7 @@ namespace Krys::Platform
     windowClass.lpszClassName = "KrystalOpenGLWindowClass";
 
     if (!::RegisterClassA(&windowClass))
-      Logger::Fatal("Unable to register class: {0}", ::GetLastError());
+      Logger::Fatal("Unable to register class: {0}", GetLastErrorAsString());
 
     RECT windowDimensions = {0, 0, static_cast<LONG>(_width), static_cast<LONG>(_height)};
     int windowStyles = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
@@ -30,7 +30,7 @@ namespace Krys::Platform
     // TODO: account for dpi?
 
     if (!::AdjustWindowRect(&windowDimensions, windowStyles, 0))
-      KRYS_ASSERT(false, "Error adjusting window rect {0}", ::GetLastError());
+      KRYS_ASSERT(false, "Error adjusting window rect {0}", GetLastErrorAsString());
 
     // Calculate the total width and height of the window
     int totalWidth = windowDimensions.right - windowDimensions.left;
@@ -54,7 +54,7 @@ namespace Krys::Platform
                                       0);                        // additional application data;
 
     if (!_windowHandle)
-      Logger::Fatal("Unable to create window: {0}", ::GetLastError());
+      Logger::Fatal("Unable to create window: {0}", GetLastErrorAsString());
 
     ::SetWindowLongPtrA(_windowHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
@@ -78,7 +78,7 @@ namespace Krys::Platform
     pfd.cAlphaBits = 8;
 
     int pfdID = ::ChoosePixelFormat(_deviceContext, &pfd);
-    KRYS_ASSERT(pfdID != 0, "ChoosePixelFormat() failed.");
+    KRYS_ASSERT(pfdID != 0, "ChoosePixelFormat() failed: {0}", GetLastErrorAsString());
 
     KRYS_ASSERT_ALWAYS_EVAL(::SetPixelFormat(_deviceContext, pfdID, &pfd), "Failed to set the pixel format");
 
@@ -132,7 +132,8 @@ namespace Krys::Platform
     wc.hInstance = instance;
     wc.lpszClassName = "wgl_extension_loader_class";
 
-    KRYS_ASSERT(::RegisterClassA(&wc), "unable to register temporary window class", 0);
+    KRYS_ASSERT(::RegisterClassA(&wc), "unable to register temporary window class {0}",
+                GetLastErrorAsString());
 
     HWND fakeWND = ::CreateWindowA(wc.lpszClassName, "Fake Window",   // window class, title
                                    WS_CLIPSIBLINGS | WS_CLIPCHILDREN, // style
@@ -142,7 +143,7 @@ namespace Krys::Platform
                                    instance, NULL);                   // instance, param
 
     HDC fakeDC = ::GetDC(fakeWND);
-    KRYS_ASSERT(fakeDC, "Device context was not valid", 0);
+    KRYS_ASSERT(fakeDC, "Device context was not valid: {0}", GetLastErrorAsString());
 
     // specify an arbitrary PFD with OpenGL capabilities
     PIXELFORMATDESCRIPTOR fakePFD = {0};
@@ -156,7 +157,7 @@ namespace Krys::Platform
     fakePFD.cStencilBits = 8;
 
     int fakePFDID = ::ChoosePixelFormat(fakeDC, &fakePFD);
-    KRYS_ASSERT(fakePFDID != 0, "ChoosePixelFormat() failed.");
+    KRYS_ASSERT(fakePFDID != 0, "ChoosePixelFormat() failed: {0}", GetLastErrorAsString());
 
     KRYS_ASSERT_ALWAYS_EVAL(::SetPixelFormat(fakeDC, fakePFDID, &fakePFD), "Failed to set the pixel format",
                             0);

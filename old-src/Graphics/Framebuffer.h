@@ -68,7 +68,7 @@ namespace Krys::Gfx
 
     NO_DISCARD Ref<Texture2D> GetColorAttachment(uint index = 0)
     {
-      KRYS_ASSERT(index < _colorAttachments.size(), "Index out of bounds", 0);
+      KRYS_ASSERT(index < _colorAttachments.size(), "Index out of bounds");
       return _colorAttachments[index];
     }
 

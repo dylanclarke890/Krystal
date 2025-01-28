@@ -16,7 +16,7 @@ namespace Krys::IO
                                       bool recursive) noexcept
   {
     KRYS_SCOPED_PROFILER("ListFiles");
-    KRYS_ASSERT(PathExists(directory), "Directory '%s' does not exist", directory.data());
+    KRYS_ASSERT(PathExists(directory), "IO: Directory '{0}' does not exist", directory);
 
     std::error_code error {};
     List<FileInfo> entries {};
@@ -33,11 +33,7 @@ namespace Krys::IO
     const auto ProcessEntry = [&](const fs::directory_entry &entry) -> void
     {
       string path {entry.path().string()};
-      if (error)
-      {
-        KRYS_ASSERT(false, "Error iterating through directory '%s': %s", path.data(),
-                    error.message().c_str());
-      }
+      KRYS_ASSERT(!error, "IO: Error iterating through directory '{0}': {1}", path, error.message());
 
       string extension {entry.path().extension().string()};
       if (entry.is_regular_file(error) && HasValidExtension(extension))
@@ -58,7 +54,7 @@ namespace Krys::IO
 
   NO_DISCARD FileInfo GetPathInfo(const stringview &filepath) noexcept
   {
-    KRYS_ASSERT(PathExists(filepath), "Path '%s' does not exist", filepath.data());
+    KRYS_ASSERT(PathExists(filepath), "IO: Path '{0}' does not exist", filepath);
     KRYS_SCOPED_PROFILER("GetPathInfo");
 
     auto fsPath = fs::path(filepath);
@@ -70,7 +66,7 @@ namespace Krys::IO
 
   NO_DISCARD const string GetExtension(const stringview &filepath) noexcept
   {
-    KRYS_ASSERT(PathExists(filepath), "Path '%s' does not exist", filepath.data());
+    KRYS_ASSERT(PathExists(filepath), "IO: Path '{0}' does not exist", filepath);
     return fs::path(filepath).extension().string();
   }
 
@@ -84,7 +80,7 @@ namespace Krys::IO
 
   NO_DISCARD bool IsDirectory(const stringview &path) noexcept
   {
-    KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
+    KRYS_ASSERT(PathExists(path), "IO: Path '{0}' does not exist", path);
     KRYS_SCOPED_PROFILER("IsDirectory");
 
     std::error_code error {};
@@ -93,7 +89,7 @@ namespace Krys::IO
 
   NO_DISCARD bool IsFile(const stringview &path) noexcept
   {
-    KRYS_ASSERT(PathExists(path), "Directory '%s' does not exist", path.data());
+    KRYS_ASSERT(PathExists(path), "IO: Path '{0}' does not exist", path);
     KRYS_SCOPED_PROFILER("IsFile");
 
     std::error_code error {};
@@ -102,7 +98,7 @@ namespace Krys::IO
 
   NO_DISCARD string ReadFileText(const stringview &path) noexcept
   {
-    KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.data());
+    KRYS_ASSERT(PathExists(path), "IO: File '{0}' does not exist", path);
     KRYS_SCOPED_PROFILER("ReadFileText");
 
     std::ifstream fileStream(path.data());
@@ -121,7 +117,7 @@ namespace Krys::IO
 
   bool WriteFileText(const stringview &path, const stringview &content) noexcept
   {
-    KRYS_ASSERT(PathExists(path), "File '%s' does not exist", path.data());
+    KRYS_ASSERT(PathExists(path), "File '{0}' does not exist", path);
     KRYS_SCOPED_PROFILER("WriteFileText");
 
     std::ofstream fileStream(path.data());
