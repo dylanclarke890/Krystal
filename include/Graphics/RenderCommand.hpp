@@ -11,6 +11,7 @@ namespace Krys::Gfx
   {
     ProgramHandle Program;
     MeshHandle Mesh;
+    MaterialHandle Material;
     PrimitiveType Type {PrimitiveType::Triangles};
   };
 }
