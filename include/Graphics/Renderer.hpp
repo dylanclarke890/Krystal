@@ -1,23 +1,24 @@
 #pragma once
 
 #include "Base/Pointers.hpp"
-#include "Graphics/RenderCommand.hpp"
 #include "Graphics/GraphicsContext.hpp"
+#include "Graphics/RenderCommand.hpp"
+#include "Graphics/RenderContext.hpp"
 
 namespace Krys::Gfx
 {
-  class MeshManager;
   class Renderer
   {
   public:
-    Renderer(Ptr<MeshManager> meshManager) noexcept;
-    ~Renderer() noexcept = default;
+    virtual ~Renderer() noexcept = default;
 
     void Submit(const RenderCommand &command) noexcept;
-    void Execute(Ptr<GraphicsContext> context) noexcept;
+    virtual void Execute() noexcept = 0;
 
-  private:
+  protected:
+    Renderer(RenderContext ctx) noexcept;
+
+    RenderContext _ctx;
     List<RenderCommand> _commands {};
-    Ptr<MeshManager> _meshManager{nullptr};
   };
 }

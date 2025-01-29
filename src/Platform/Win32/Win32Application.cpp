@@ -4,7 +4,9 @@
 #include "Core/Platform.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
 #include "Graphics/OpenGL/OpenGLMeshManager.hpp"
+#include "Graphics/OpenGL/OpenGLRenderer.hpp"
 #include "Graphics/OpenGL/OpenGLTextureManager.hpp"
+#include "Graphics/RenderContext.hpp"
 #include "Graphics/Renderer.hpp"
 #include "Platform/Win32/Input/Win32InputManager.hpp"
 #include "Platform/Win32/Win32WindowManager.hpp"
@@ -28,10 +30,13 @@ namespace Krys
       using namespace Gfx::OpenGL;
       ctx->_graphicsContext = CreateUnique<OpenGLGraphicsContext>();
       ctx->_meshManager = CreateUnique<OpenGLMeshManager>(ctx->_graphicsContext.get());
-      ctx->_renderer = CreateUnique<Gfx::Renderer>(ctx->_meshManager.get());
       ctx->_textureManager = CreateUnique<OpenGLTextureManager>();
       ctx->_sceneManager = CreateUnique<Gfx::SceneManager>();
       ctx->_materialManager = CreateUnique<Gfx::MaterialManager>();
+
+      Gfx::RenderContext renderContext {ctx->_graphicsContext.get(), ctx->_meshManager.get(),
+                                        ctx->_textureManager.get(), ctx->_materialManager.get()};
+      ctx->_renderer = CreateUnique<OpenGLRenderer>(renderContext);
     }
     return ctx;
   }
