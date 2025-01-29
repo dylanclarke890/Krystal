@@ -30,6 +30,8 @@ namespace Krys
       ctx->_meshManager = CreateUnique<OpenGLMeshManager>(ctx->_graphicsContext.get());
       ctx->_renderer = CreateUnique<Gfx::Renderer>(ctx->_meshManager.get());
       ctx->_textureManager = CreateUnique<OpenGLTextureManager>();
+      ctx->_sceneManager = CreateUnique<Gfx::SceneManager>();
+      ctx->_materialManager = CreateUnique<Gfx::MaterialManager>();
     }
     return ctx;
   }

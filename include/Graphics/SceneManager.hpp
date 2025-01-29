@@ -12,6 +12,7 @@ namespace Krys::Gfx
   class SceneManager
   {
   public:
+    SceneManager() noexcept = default;
     ~SceneManager() = default;
 
     NO_COPY_MOVE(SceneManager);

@@ -43,6 +43,16 @@ namespace Krys
     return _textureManager.get();
   }
 
+  Ptr<Gfx::MaterialManager> ApplicationContext::GetMaterialManager() const noexcept
+  {
+    return _materialManager.get();
+  }
+
+  Ptr<Gfx::SceneManager> ApplicationContext::GetSceneManager() const noexcept
+  {
+    return _sceneManager.get();
+  }
+
   const ApplicationSettings &ApplicationContext::GetSettings() const noexcept
   {
     return _settings;

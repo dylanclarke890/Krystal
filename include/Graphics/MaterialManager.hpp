@@ -12,6 +12,7 @@ namespace Krys::Gfx
   class MaterialManager
   {
   public:
+    MaterialManager() noexcept = default;
     virtual ~MaterialManager() noexcept = default;
 
     /// @brief Creates a material.
@@ -36,9 +37,6 @@ namespace Krys::Gfx
     /// @param handle The handle of the material.
     /// @return True if the material was found, false otherwise.
     NO_DISCARD bool DestroyMaterial(MaterialHandle handle) noexcept;
-
-  protected:
-    MaterialManager() noexcept = default;
 
   protected:
     MaterialHandleMap<Unique<Material>> _materials;
