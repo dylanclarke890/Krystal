@@ -12,4 +12,29 @@ namespace Krys::Gfx
   {
     return _handle;
   }
+
+  RenderTargetHandle Framebuffer::GetDepthAttachment() const noexcept
+  {
+    return _depthAttachment;
+  }
+
+  RenderTargetHandle Framebuffer::GetColorAttachment(uint32 index) const noexcept
+  {
+    return _colorAttachments[index];
+  }
+
+  const List<RenderTargetHandle> &Framebuffer::GetColorAttachments() const noexcept
+  {
+    return _colorAttachments;
+  }
+
+  bool Framebuffer::HasColorAttachments() const noexcept
+  {
+    return !_colorAttachments.empty();
+  }
+
+  bool Framebuffer::HasDepthAttachment() const noexcept
+  {
+    return _depthAttachment.IsValid();
+  }
 }

@@ -6,10 +6,11 @@
 
 namespace Krys::Gfx::OpenGL
 {
-  class OpenGLFramebuffer
+  class OpenGLFramebuffer : public Framebuffer
   {
   public:
-    OpenGLFramebuffer(FramebufferHandle handle, uint32 width, uint32 height) noexcept;
+    OpenGLFramebuffer(FramebufferHandle handle, RenderTargetHandle colorAttachment,
+                      RenderTargetHandle depthAttachment) noexcept;
     ~OpenGLFramebuffer() noexcept override;
 
     NO_COPY_MOVE(OpenGLFramebuffer);
