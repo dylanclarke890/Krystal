@@ -18,8 +18,6 @@ namespace Krys::Gfx
   /// It owns all the entities and lights that are added to it.
   class Scene
   {
-    using render_entity_map_t = Map<RenderEntityHandle, Unique<RenderEntity>, RenderEntityHandle::Hash>;
-
   public:
     Scene() = delete;
     ~Scene() = default;
@@ -57,7 +55,10 @@ namespace Krys::Gfx
     template <typename... Args>
     LightHandle SetAmbientLight(Args &&...args) noexcept
     {
-      auto handle = NextLightHandle();
+      if (_lightingRig.AmbientLight)
+        RemoveLight(_lightingRig.AmbientLight->GetHandle());
+
+      auto handle = _lightHandles.Next();
       _lightingRig.AmbientLight = CreateUnique<AmbientLight>(handle, std::forward<Args>(args)...);
       return handle;
     }
@@ -69,7 +70,7 @@ namespace Krys::Gfx
     template <typename... Args>
     NO_DISCARD LightHandle AddDirectionalLight(Args &&...args) noexcept
     {
-      auto handle = NextLightHandle();
+      auto handle = _lightHandles.Next();
       auto light = CreateUnique<DirectionalLight>(handle, std::forward<Args>(args)...);
       _lightingRig.DirectionalLights.emplace_back(std::move(light));
       return handle;
@@ -82,36 +83,41 @@ namespace Krys::Gfx
     template <typename... Args>
     NO_DISCARD LightHandle AddPointLight(Args &&...args) noexcept
     {
-      auto handle = NextLightHandle();
+      auto handle = _lightHandles.Next();
       auto light = CreateUnique<PointLight>(handle, std::forward<Args>(args)...);
       _lightingRig.PointLights.emplace_back(std::move(light));
       return handle;
     }
 
-    /// @brief Add a single entity to the scene.
+    /// @brief Add an entity to the scene.
+    /// @tparam T The entity type.
     /// @tparam Args The types of the arguments to pass to the constructor of the entity.
     /// @param args The arguments to forward to the constructor of the entity.
     /// @return A handle to the entity.
-    template <typename... Args>
-    NO_DISCARD RenderEntityHandle AddSingleEntity(Args &&...args) noexcept
+    template <typename T, typename... Args>
+    requires std::derived_from<T, RenderEntity>
+    NO_DISCARD RenderEntityHandle AddEntity(Args &&...args) noexcept
     {
-      auto handle = NextRenderEntityHandle();
-      auto entity = CreateUnique<SingleRenderEntity>(handle, std::forward<Args>(args)...);
+      auto handle = _renderEntityHandles.Next();
+      auto entity = CreateUnique<T>(handle, std::forward<Args>(args)...);
       _renderEntities.emplace(handle, std::move(entity));
       return handle;
     }
 
-    /// @brief Add an instanced entity to the scene.
-    /// @tparam Args The types of the arguments to pass to the constructor of the entity.
-    /// @param args The arguments to forward to the constructor of the entity.
-    /// @return A handle to the entity.
-    template <typename... Args>
-    NO_DISCARD RenderEntityHandle AddInstancedEntity(Args &&...args) noexcept
+    /// @brief Get an entity by its handle.
+    /// @tparam T The type of the entity to get. Can be omitted to get the base class, useful if the type is
+    /// unknown.
+    /// @param handle The handle of the entity.
+    /// @return A pointer to the entity if it was found, nullptr otherwise.
+    /// @note The type is static_cast to T, so it must be a valid cast. Use the default type if unsure then
+    /// get the derived type via `entity.GetType()` and cast it that way.
+    template <typename T = RenderEntity>
+    requires std::derived_from<T, RenderEntity>
+    NO_DISCARD T *GetEntity(RenderEntityHandle handle) noexcept
     {
-      auto handle = NextRenderEntityHandle();
-      auto entity = CreateUnique<InstancedRenderEntity>(handle, std::forward<Args>(args)...);
-      _renderEntities.emplace(handle, std::move(entity));
-      return handle;
+      if (const auto it = _renderEntities.find(handle); it != _renderEntities.end())
+        return static_cast<T *>(it->second.get());
+      return nullptr;
     }
 
   protected:
@@ -122,11 +128,9 @@ namespace Krys::Gfx
     string _name;
     SceneHandle _handle;
     LightingRig _lightingRig;
-    render_entity_map_t _renderEntities;
-    LightHandle _nextLightHandle {1};
-    RenderEntityHandle _nextRenderEntityHandle {1};
+    LightHandleManager _lightHandles {};
 
-    NO_DISCARD LightHandle NextLightHandle() noexcept;
-    NO_DISCARD RenderEntityHandle NextRenderEntityHandle() noexcept;
+    RenderEntityHandleMap<Unique<RenderEntity>> _renderEntities;
+    RenderEntityHandleManager _renderEntityHandles {};
   };
 }

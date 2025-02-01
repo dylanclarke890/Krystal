@@ -2,15 +2,14 @@
 
 namespace Krys::Gfx
 {
-  Texture::Texture(const string &name, TextureHandle handle, SamplerHandle sampler,
-                   TextureUsageHint usageHint) noexcept
-      : _resourceName(name), _handle(handle), _sampler(sampler), _usageHint(usageHint)
+  Texture::Texture(TextureHandle handle, const TextureDescriptor& descriptor) noexcept
+      : _descriptor(descriptor), _handle(handle)
   {
   }
 
   const string &Texture::GetName() const noexcept
   {
-    return _resourceName;
+    return _descriptor.Name;
   }
 
   const TextureHandle &Texture::GetHandle() const noexcept
@@ -20,26 +19,26 @@ namespace Krys::Gfx
 
   const SamplerHandle &Texture::GetSampler() const noexcept
   {
-    return _sampler;
+    return _descriptor.Sampler;
   }
 
-  TextureUsageHint Texture::GetUsageHint() const noexcept
+  TextureType Texture::GetType() const noexcept
   {
-    return _usageHint;
+    return _descriptor.Type;
   }
 
   uint32 Texture::GetWidth() const noexcept
   {
-    return _width;
+    return _descriptor.Width;
   }
 
   uint32 Texture::GetHeight() const noexcept
   {
-    return _height;
+    return _descriptor.Height;
   }
 
   uint32 Texture::GetChannels() const noexcept
   {
-    return _channels;
+    return _descriptor.Channels;
   }
 }

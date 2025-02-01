@@ -113,6 +113,8 @@ namespace Krys::Impl
   HANDLE_IMPL(Light);
   HANDLE_IMPL(Scene);
   HANDLE_IMPL(Material);
+  HANDLE_IMPL(Framebuffer);
+  HANDLE_IMPL(RenderTarget);
 
 #undef HANDLE_IMPL
 }
@@ -174,6 +176,8 @@ namespace Krys::Gfx
   DECLARE_HANDLE(Light);
   DECLARE_HANDLE(Scene);
   DECLARE_HANDLE(Material);
+  DECLARE_HANDLE(Framebuffer);
+  DECLARE_HANDLE(RenderTarget);
 
 #undef DECLARE_HANDLE
 }

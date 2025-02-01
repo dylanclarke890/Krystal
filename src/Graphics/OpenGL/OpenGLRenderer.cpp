@@ -34,7 +34,7 @@ namespace Krys::Gfx::OpenGL
             static_cast<OpenGLTexture &>(*_ctx.TextureManager->GetTexture(phong.GetAmbientTexture()));
 
           SetMaterialProperty(program.GetNativeHandle(), "u_Texture", texture.GetNativeBindlessHandle());
-
+          SetMaterialProperty(program.GetNativeHandle(), "u_AmbientColour", phong.GetAmbientColour());
           break;
         }
         default: KRYS_ASSERT(false, "Unknown material type."); break;

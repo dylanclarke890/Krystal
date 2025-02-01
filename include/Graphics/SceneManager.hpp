@@ -61,7 +61,7 @@ namespace Krys::Gfx
     NO_DISCARD Scene *GetScene(SceneHandle handle) noexcept;
 
     /// @brief Get the active scene.
-    /// @return A pointer to the active scene. Undefined behaviour if there is no active scene.
+    /// @return A pointer to the active scene.
     NO_DISCARD Scene *GetActiveScene() const noexcept;
 
     void SetActiveScene(const string &name) noexcept;

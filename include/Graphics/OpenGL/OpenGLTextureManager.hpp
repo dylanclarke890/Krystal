@@ -18,9 +18,8 @@ namespace Krys::Gfx::OpenGL
     NO_DISCARD virtual Unique<Sampler>
       CreateSamplerImpl(SamplerHandle handle, const SamplerDescriptor &descriptor) noexcept override;
 
-    NO_DISCARD virtual Unique<Texture>
-      CreateTextureImpl(const string &resourceName, TextureHandle handle, SamplerHandle sampler,
-                        const IO::Image &data,
-                        TextureUsageHint hint = TextureUsageHint::Image) noexcept override;
+    NO_DISCARD virtual Unique<Texture> CreateTextureImpl(TextureHandle handle,
+                                                         const TextureDescriptor &descriptor,
+                                                         const List<byte> &data = {}) noexcept override;
   };
 }

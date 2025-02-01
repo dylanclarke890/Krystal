@@ -5,6 +5,8 @@
 
 namespace Krys::Gfx
 {
+#pragma region Samplers
+
   SamplerHandle TextureManager::DefaultTextureSampler() noexcept
   {
     return CreateSampler(SamplerDescriptor {});
@@ -72,42 +74,41 @@ namespace Krys::Gfx
     return true;
   }
 
-  TextureHandle TextureManager::CreateTexture(const IO::Image &image, TextureUsageHint hint) noexcept
+#pragma endregion Samplers
+
+  TextureHandle TextureManager::CreateTexture(const TextureDescriptor &descriptor,
+                                              const List<byte> &data) noexcept
   {
-    return CreateTexture(image, {}, hint);
-  }
+    auto desc = descriptor; // Copy to modify
+    if (desc.Name.empty())
+    {
+      static uint32 counter = 0;
+      std::stringstream strm;
+      strm << "T" << counter;
+      counter++;
+      desc.Name = strm.str();
+    }
 
-  TextureHandle TextureManager::CreateTexture(const IO::Image &image, SamplerHandle sampler,
-                                              TextureUsageHint hint) noexcept
-  {
-    static uint32 counter = 0;
+    if (!desc.Sampler.IsValid())
+      desc.Sampler = DefaultTextureSampler();
 
-    std::stringstream strm;
-    strm << "T" << counter;
-    counter++;
-
-    const auto resourceName = strm.str();
-    Logger::Info("TextureManager: Created '{0}' ({1}x{2}).", resourceName, image.Width, image.Height);
+    KRYS_ASSERT(GetSampler(desc.Sampler) != nullptr, "TextureManager: Invalid sampler handle.");
 
     auto handle = _textureHandles.Next();
-    auto texture = CreateTextureImpl(resourceName, handle,
-                                     sampler.IsValid() ? sampler : DefaultTextureSampler(), image, hint);
+    auto texture = CreateTextureImpl(handle, desc, data);
 
-    _loadedTextures[resourceName] = {1u, std::move(texture)};
-    _textures[handle] = _loadedTextures[resourceName].Resource.get();
+    Logger::Info("TextureManager: Created '{0}' ({1}x{2}).", desc.Name, desc.Width, desc.Height);
+
+    _loadedTextures[desc.Name] = {1u, std::move(texture)};
+    _textures[handle] = _loadedTextures[desc.Name].Resource.get();
 
     return handle;
   }
 
-  TextureHandle TextureManager::LoadTexture(const string &path, TextureUsageHint hint) noexcept
+  TextureHandle TextureManager::LoadTexture(const string &path, const TextureDescriptor &descriptor) noexcept
   {
-    return LoadTexture(path, {}, hint);
-  }
-
-  TextureHandle TextureManager::LoadTexture(const string &path, SamplerHandle sampler,
-                                            TextureUsageHint hint) noexcept
-  {
-    KRYS_ASSERT(hint == TextureUsageHint::Image || hint == TextureUsageHint::Data,
+    auto desc = descriptor; // Copy to modify
+    KRYS_ASSERT(desc.Type == TextureType::Image || desc.Type == TextureType::Data,
                 "TextureManager: Can only load image or data textures from file.");
 
     if (_loadedTextures.contains(path))
@@ -120,17 +121,27 @@ namespace Krys::Gfx
     }
 
     auto loadedImage = IO::LoadImage(path);
-    KRYS_ASSERT(loadedImage, "TextureManager: Failed to load '{0}': {1}", path, loadedImage.error());
+    // TODO: handle this more gracefully
+    KRYS_ASSERT(loadedImage.has_value(), "TextureManager: Failed to load '{0}': {1}", path,
+                loadedImage.error());
+    auto &image = loadedImage.value();
+    desc.Width = image.Width;
+    desc.Height = image.Height;
+    desc.Channels = image.Channels;
 
     auto handle = _textureHandles.Next();
-    auto texture = CreateTextureImpl(path, handle, sampler.IsValid() ? sampler : DefaultTextureSampler(),
-                                     loadedImage.value(), hint);
+    if (desc.Name.empty())
+      desc.Name = path;
+
+    if (!desc.Sampler.IsValid())
+      desc.Sampler = DefaultTextureSampler();
+
+    auto texture = CreateTextureImpl(handle, desc, image.Data);
 
     _loadedTextures[path] = {1u, std::move(texture)};
     _textures[handle] = _loadedTextures[path].Resource.get();
 
-    Logger::Info("TextureManager: Loaded '{0}' into memory ({1}x{2}).", path, loadedImage.value().Width,
-                 loadedImage.value().Height);
+    Logger::Info("TextureManager: Loaded '{0}' into memory ({1}x{2}).", path, desc.Width, desc.Height);
 
     return handle;
   }

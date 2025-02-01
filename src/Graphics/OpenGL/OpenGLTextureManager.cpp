@@ -7,15 +7,21 @@ namespace Krys::Gfx::OpenGL
   Unique<Sampler> OpenGLTextureManager::CreateSamplerImpl(SamplerHandle handle,
                                                           const SamplerDescriptor &descriptor) noexcept
   {
+    KRYS_ASSERT(handle.IsValid(), "Sampler handle is not valid");
     return CreateUnique<OpenGLSampler>(handle, descriptor);
   }
 
-  Unique<Texture> OpenGLTextureManager::CreateTextureImpl(const string &name, TextureHandle handle,
-                                                          SamplerHandle samplerHandle, const IO::Image &data,
-                                                          TextureUsageHint hint) noexcept
+  Unique<Texture> OpenGLTextureManager::CreateTextureImpl(TextureHandle handle,
+                                                          const TextureDescriptor &descriptor,
+                                                          const List<byte> &data) noexcept
   {
-    auto *sampler = GetSampler(samplerHandle);
-    return CreateUnique<OpenGLTexture>(name, handle, static_cast<OpenGLSampler &>(*sampler), hint, data);
+    KRYS_ASSERT(handle.IsValid(), "Texture handle is not valid");
+    KRYS_ASSERT(descriptor.Sampler.IsValid(), "Sampler handle is not valid");
+
+    auto *sampler = GetSampler(descriptor.Sampler);
+    KRYS_ASSERT(sampler != nullptr, "Sampler not found");
+
+    return CreateUnique<OpenGLTexture>(handle, descriptor, static_cast<OpenGLSampler &>(*sampler), data);
   }
 
 }

@@ -34,6 +34,10 @@ namespace Krys::Gfx
 
   bool Scene::RemoveLight(LightHandle handle) noexcept
   {
+    KRYS_ASSERT(handle.IsValid(), "Invalid light handle.");
+    if (!handle.IsValid())
+      return false;
+
     auto Remove = [&handle](auto &lights) -> bool
     {
       auto it = std::find_if(lights.begin(), lights.end(),
@@ -50,33 +54,21 @@ namespace Krys::Gfx
     if (!wasFound)
       wasFound = Remove(_lightingRig.DirectionalLights);
 
+    if (wasFound)
+      _lightHandles.Recycle(handle);
+
     return wasFound;
   }
 
   bool Scene::RemoveEntity(RenderEntityHandle handle) noexcept
   {
-    auto it = _renderEntities.find(handle);
-    bool wasFound = it != _renderEntities.end();
-
-    if (wasFound)
+    if (const auto &it = _renderEntities.find(handle); it != _renderEntities.end())
+    {
       _renderEntities.erase(it);
+      _renderEntityHandles.Recycle(handle);
+      return true;
+    }
 
-    return wasFound;
-  }
-
-  LightHandle Scene::NextLightHandle() noexcept
-  {
-    auto handle = LightHandle(_nextLightHandle.Id());
-    _nextLightHandle = LightHandle(_nextLightHandle.Id() + 1);
-
-    return handle;
-  }
-
-  RenderEntityHandle Scene::NextRenderEntityHandle() noexcept
-  {
-    auto handle = RenderEntityHandle(_nextRenderEntityHandle.Id());
-    _nextRenderEntityHandle = RenderEntityHandle(_nextRenderEntityHandle.Id() + 1);
-
-    return handle;
+    return false;
   }
 }

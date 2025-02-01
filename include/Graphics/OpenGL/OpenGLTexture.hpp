@@ -11,8 +11,8 @@ namespace Krys::Gfx::OpenGL
   class OpenGLTexture : public Texture
   {
   public:
-    OpenGLTexture(const string &resourceName, TextureHandle handle, OpenGLSampler &sampler,
-                  TextureUsageHint hint, const IO::Image &data) noexcept;
+    OpenGLTexture(TextureHandle handle, const TextureDescriptor &descriptor, OpenGLSampler &sampler,
+                  const List<byte> &data) noexcept;
 
     ~OpenGLTexture() noexcept override;
 
@@ -23,7 +23,7 @@ namespace Krys::Gfx::OpenGL
     NO_DISCARD GLuint64 GetNativeBindlessHandle() const noexcept;
 
   private:
-    GLuint _texture {0};
+    GLuint _id {0};
     GLuint64 _bindlessHandle {0};
   };
 }

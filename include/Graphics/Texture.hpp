@@ -1,18 +1,51 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
+#include "Base/Macros.hpp"
 #include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
 #include "Graphics/Sampler.hpp"
 
 namespace Krys::Gfx
 {
-  enum class TextureUsageHint
+  enum class TextureType : uint32
   {
+    /// @brief A texture that stores arbitrary data.
+    /// @note This type is suitable for storing data that isn't directly sampled, such as lookup tables,
+    /// noise textures, or other data that you manipulate in your shaders.
     Data,
+
+    /// @brief A standard image texture that’s typically loaded from a file. This type is meant for textures
+    /// that you sample in your shaders, like diffuse, albedo, or normal maps.
     Image,
-    RenderTarget,
-    Depth
+
+    /// @brief A render target that stores colour data.
+    /// @note This type is used for off-screen rendering, post-processing, and other advanced rendering
+    /// techniques. It is not meant for textures that you sample in your shaders.
+    RenderTargetColour,
+
+    /// @brief A render target that stores depth data.
+    /// @note This type is used for off-screen rendering, post-processing, and other advanced rendering
+    /// techniques. It is not meant for textures that you sample in your shaders.
+    RenderTargetDepth,
+
+    /// @brief A render target that stores stencil data.
+    /// @note This type is used for off-screen rendering, post-processing, and other advanced rendering
+    /// techniques. It is not meant for textures that you sample in your shaders.
+    RenderTargetStencil,
+
+    /// @brief A render target that stores both depth and stencil data.
+    /// @note This type is used for off-screen rendering, post-processing, and other advanced rendering
+    /// techniques. It is not meant for textures that you sample in your shaders.
+    RenderTargetDepthStencil
+  };
+
+  struct TextureDescriptor
+  {
+    string Name;
+    TextureType Type {TextureType::Image};
+    uint32 Width {0}, Height {0}, Channels {0};
+    SamplerHandle Sampler;
   };
 
   /// @brief Represents a GPU texture.
@@ -30,8 +63,8 @@ namespace Krys::Gfx
     /// @brief Gets the handle of the sampler.
     NO_DISCARD const SamplerHandle &GetSampler() const noexcept;
 
-    /// @brief Gets the usage hint of the texture.
-    NO_DISCARD TextureUsageHint GetUsageHint() const noexcept;
+    /// @brief Gets the type of texture.
+    NO_DISCARD TextureType GetType() const noexcept;
 
     /// @brief Gets the width of the texture.
     NO_DISCARD uint32 GetWidth() const noexcept;
@@ -44,15 +77,11 @@ namespace Krys::Gfx
 
   protected:
     /// @brief Constructs a texture.
-    /// @param resourceName The name of the resource.
     /// @param handle The handle of the texture.
-    /// @param hint The usage hint of the texture.
-    Texture(const string &name, TextureHandle handle, SamplerHandle sampler, TextureUsageHint hint) noexcept;
+    /// @param descriptor The descriptor of the texture.
+    Texture(TextureHandle handle, const TextureDescriptor &descriptor) noexcept;
 
-    string _resourceName;
     TextureHandle _handle;
-    SamplerHandle _sampler;
-    TextureUsageHint _usageHint;
-    uint32 _width {0}, _height {0}, _channels {0};
+    TextureDescriptor _descriptor;
   };
 }
