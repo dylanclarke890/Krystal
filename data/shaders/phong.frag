@@ -20,6 +20,64 @@ struct Material
   int SpecularTexture;
 };
 
+struct BaseLight 
+{
+  vec3 Ambient;
+  float Padding1;
+  vec3 Diffuse;
+  float Padding2;
+  vec3 Specular;
+  float Padding3;
+};
+
+struct DirectionalLight
+{
+  BaseLight Base;
+
+  vec3 Direction;
+  float Padding1;
+
+  int ShadowMap;
+  int Padding2;
+  int Padding3;
+  int Padding4;
+};
+
+struct PointLight
+{
+  BaseLight Base;
+
+  vec3 Position;
+  float Padding1;
+
+  float Constant;
+  float Linear;
+  float Quadratic;
+  float Padding2;
+
+  int ShadowMaps[6];
+  int Padding3;
+  int Padding4;
+};
+
+struct SpotLight
+{
+  PointLight Base;
+
+  vec3 Direction;
+  float Padding1;
+
+  float CutOff;
+  float OuterCutOff;
+  float Padding2;
+  float Padding3;
+
+  int ShadowMap;
+  int Padding4;
+  int Padding5;
+  int Padding6;
+};
+
 uniform int u_MaterialIndex;
 
 layout(std430, binding = 0) buffer MaterialBuffer
@@ -30,6 +88,13 @@ layout(std430, binding = 0) buffer MaterialBuffer
 layout(std430, binding = 1) buffer TextureTable
 {
   sampler2D Textures[];
+};
+
+layout(std430, binding = 2) buffer LightBuffer
+{
+  DirectionalLight DirectionalLights[1];
+  PointLight PointLights[1];
+  SpotLight SpotLights[1];
 };
 
 vec4 GetTextureSample(int textureIndex, vec4 textureCoords)

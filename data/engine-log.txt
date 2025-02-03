@@ -9,12 +9,12 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 4 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: PathExists took 0.277 ms.
-[INFO ]: ReadFileText took 0.368 ms.
-[INFO ]: PathExists took 0.096 ms.
-[INFO ]: ReadFileText took 0.449 ms.
-[INFO ]: PathExists took 0.136 ms.
-[INFO ]: IO::LoadImage took 23.152 ms.
+[INFO ]: PathExists took 0.208 ms.
+[INFO ]: ReadFileText took 11.160 ms.
+[INFO ]: PathExists took 0.131 ms.
+[INFO ]: ReadFileText took 13.529 ms.
+[INFO ]: PathExists took 0.155 ms.
+[INFO ]: IO::LoadImage took 33.845 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'textures/wood-wall.jpg' into memory (512x512).
 [INFO ]: TextureManager: Loaded sampler from cache (2 references).
@@ -37,44 +37,34 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: Axis: (0.93822235, 0.3451061, 0.02530895)
-[INFO ]: FinalPos: (-0.5853883, 1.5809684, -9.856869)
-[INFO ]: Axis: (0.9163735, 0.40032148, -0.0015003503)
-[INFO ]: FinalPos: (-1.4887526, 3.6139567, -9.204506)
-[INFO ]: Axis: (0.91393256, 0.40585384, -0.0031697035)
-[INFO ]: FinalPos: (-2.4354844, 5.6918936, -7.853073)
-[INFO ]: Axis: (0.9156505, 0.4019658, -0.00277779)
-[INFO ]: FinalPos: (-3.1559918, 7.2810445, -6.08491)
-[INFO ]: Axis: (0.88864344, 0.4585948, 0.0018823784)
-[INFO ]: FinalPos: (-3.6902509, 8.155823, -4.45697)
-[INFO ]: Axis: (0.8726109, 0.48833627, 0.008819631)
-[INFO ]: FinalPos: (-3.9953594, 8.535325, -3.344448)
-[INFO ]: Axis: (0.83740693, 0.54584074, 0.028419089)
-[INFO ]: FinalPos: (-4.20512, 8.686461, -2.6196072)
-[INFO ]: Axis: (0.84734976, 0.5305749, 0.022105148)
-[INFO ]: FinalPos: (-4.326657, 8.7642765, -2.1136477)
-[INFO ]: Axis: (0.79476434, 0.6042419, 0.056933448)
-[INFO ]: FinalPos: (-4.459331, 8.792362, -1.6759355)
-[INFO ]: Axis: (0.85867786, 0.5124209, 0.009851044)
-[INFO ]: FinalPos: (-4.545121, 8.827793, -1.1882596)
-[INFO ]: Axis: (0.8518637, 0.5235231, 0.015869597)
-[INFO ]: FinalPos: (-4.5992894, 8.837172, -0.86657166)
-[INFO ]: Axis: (0.949457, -0.3138319, -0.0064038243)
-[INFO ]: FinalPos: (-4.386588, 8.96699, -0.5924094)
-[INFO ]: Axis: (0.9709564, -0.23705745, -0.032365542)
-[INFO ]: FinalPos: (-3.7996278, 9.246529, 0.25402212)
-[INFO ]: Axis: (0.97011316, -0.24060461, -0.03146349)
-[INFO ]: FinalPos: (-2.5193098, 9.492653, 1.8821852)
-[INFO ]: Axis: (0.9680926, -0.24871784, -0.030595653)
-[INFO ]: FinalPos: (0.07081962, 8.917609, 4.524519)
-[INFO ]: Axis: (0.9440853, -0.32693252, -0.042639494)
-[INFO ]: FinalPos: (1.4439714, 8.240237, 5.4784546)
-[INFO ]: Axis: (0.9251334, -0.37538692, -0.05668301)
-[INFO ]: FinalPos: (2.254449, 7.748291, 5.9060545)
-[INFO ]: Axis: (0.9407356, -0.33650458, -0.042203635)
-[INFO ]: FinalPos: (2.534588, 7.543235, 6.0560303)
-[INFO ]: Axis: (0.9966936, -0.028532427, 0.076076895)
-[INFO ]: FinalPos: (2.6239128, 7.4290023, 6.1583295)
-[INFO ]: Axis: (0.9966937, -0.029363332, 0.07575974)
-[INFO ]: FinalPos: (2.6979787, 7.3315997, 6.242481)
+[INFO ]: Axis: (0.95657706, 0.26379934, 0.12397666)
+[INFO ]: FinalPos: (-0.21905816, 0.77892864, -9.967211)
+[INFO ]: Axis: (0.9558268, 0.26764113, 0.12150437)
+[INFO ]: FinalPos: (-0.59677696, 2.0380392, -9.771911)
+[INFO ]: Axis: (0.9388187, 0.3334772, 0.0860954)
+[INFO ]: FinalPos: (-1.3781818, 3.9834743, -9.068215)
+[INFO ]: Axis: (0.9414643, 0.32510775, 0.08916248)
+[INFO ]: FinalPos: (-2.183615, 5.88168, -7.787019)
+[INFO ]: Axis: (0.9448218, 0.31466883, 0.09107885)
+[INFO ]: FinalPos: (-2.8597608, 7.370984, -6.12294)
+[INFO ]: Axis: (0.9438371, 0.31762508, 0.09102669)
+[INFO ]: FinalPos: (-3.4470625, 8.460297, -4.0670834)
+[INFO ]: Axis: (0.9453754, 0.31321275, 0.09035058)
+[INFO ]: FinalPos: (-3.9830327, 9.123919, -0.94317293)
+[INFO ]: Axis: (0.94253653, 0.32078326, 0.09339644)
+[INFO ]: FinalPos: (-4.136133, 9.084676, 0.6009016)
+[INFO ]: Axis: (0.9526536, 0.2936505, 0.0788699)
+[INFO ]: FinalPos: (-4.1660366, 8.949695, 1.5959721)
+[INFO ]: Axis: (0.9579965, 0.27829343, 0.0692499)
+[INFO ]: FinalPos: (-4.160137, 8.847548, 2.1009924)
+[INFO ]: Axis: (0.97360986, 0.22568065, 0.033942066)
+[INFO ]: FinalPos: (-4.1307397, 8.765848, 2.4691896)
+[INFO ]: Axis: (0.99498713, 0.056490134, -0.08251932)
+[INFO ]: FinalPos: (-4.0734854, 8.726481, 2.6935587)
+[INFO ]: Axis: (0.99498725, 0.057605598, -0.08174326)
+[INFO ]: FinalPos: (-4.030717, 8.695141, 2.8544405)
+[INFO ]: Axis: (0.0730009, 0.81619173, 0.5731508)
+[INFO ]: FinalPos: (-4.095064, 8.657869, 2.8760672)
+[INFO ]: Axis: (0.99433917, 0.06223506, -0.08611714)
+[INFO ]: FinalPos: (-4.0519943, 8.622915, 3.0375452)
 [INFO ]: Key pressed: 70
