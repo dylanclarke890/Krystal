@@ -24,8 +24,8 @@ namespace Krys::Gfx::OpenGL
     }
   }
 
-  void OpenGLMessageCallback(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei,
-                             const char *msg, const void *)
+  static void OpenGLMessageCallback(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei,
+                                    const char *msg, const void *)
   {
     switch (severity)
     {
@@ -69,6 +69,11 @@ namespace Krys::Gfx::OpenGL
       KRYS_ASSERT(false, "OpenGL error");
   }
 
+  static void LoadDeviceCapabilities(DeviceCapabilities &deviceCapabilities) noexcept
+  {
+    ::glGetIntegerv(GL_MAX_SHADER_STORAGE_BLOCK_SIZE, &deviceCapabilities.MaxShaderStorageBlockSize);
+  }
+
   OpenGLGraphicsContext::OpenGLGraphicsContext() noexcept
   {
   }
@@ -82,6 +87,8 @@ namespace Krys::Gfx::OpenGL
     ::glEnable(GL_DEBUG_OUTPUT);
     ::glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     ::glDebugMessageCallback(OpenGLMessageCallback, nullptr);
+
+    LoadDeviceCapabilities(_deviceCapabilities);
 
     ::glEnable(GL_DEPTH_TEST);
   }
@@ -150,5 +157,18 @@ namespace Krys::Gfx::OpenGL
                                                                    uint32 size) noexcept
   {
     return CreateUnique<OpenGLIndexBuffer>(handle, size);
+  }
+
+  Unique<UniformBuffer> OpenGLGraphicsContext::CreateUniformBufferImpl(UniformBufferHandle handle,
+                                                                       uint32 size) noexcept
+  {
+    return CreateUnique<OpenGLUniformBuffer>(handle, size);
+  }
+
+  Unique<ShaderStorageBuffer>
+    OpenGLGraphicsContext::CreateShaderStorageBufferImpl(ShaderStorageBufferHandle handle,
+                                                         uint32 size) noexcept
+  {
+    return CreateUnique<OpenGLShaderStorageBuffer>(handle, size);
   }
 }

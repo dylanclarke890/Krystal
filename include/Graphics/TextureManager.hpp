@@ -61,6 +61,10 @@ namespace Krys::Gfx
     /// @note Will only destroy the texture if its' reference count is 0.
     bool Unload(TextureHandle handle) noexcept;
 
+    NO_DISCARD TextureHandleMap<Texture *> &GetTextures() noexcept;
+
+    NO_DISCARD TextureHandle GetBlankTexture() noexcept;
+
   protected:
     TextureManager() noexcept = default;
 

@@ -1,16 +1,19 @@
 #pragma once
 
 #include "Base/Macros.hpp"
+#include "Base/Pointers.hpp"
+#include "Core/Logger.hpp"
+#include "Graphics/Handles.hpp"
+#include "Graphics/Materials/PhongMaterial.hpp"
 #include "Graphics/RenderCommand.hpp"
 #include "Graphics/RenderContext.hpp"
 #include "Graphics/Renderer.hpp"
-#include "Core/Logger.hpp"
-#include "MTL/Vectors/Vec2.hpp"
-#include "MTL/Vectors/Vec3.hpp"
-#include "MTL/Vectors/Vec4.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
+#include "MTL/Vectors/Vec2.hpp"
+#include "MTL/Vectors/Vec3.hpp"
+#include "MTL/Vectors/Vec4.hpp"
 
 #include <glad/gl.h>
 
@@ -24,11 +27,16 @@ namespace Krys::Gfx::OpenGL
     ~OpenGLRenderer() noexcept override = default;
     NO_COPY_MOVE(OpenGLRenderer);
 
+    void Init() noexcept override;
+
     void Execute() noexcept override;
 
   private:
+    ShaderStorageBufferHandle _phongMaterialBufferHandle {}, _textureTableHandle {};
+    Ptr<ShaderStorageBuffer> _phongMaterialBuffer {nullptr}, _textureTable {nullptr};
+
     template <typename T>
-    void SetMaterialProperty(GLuint program, const string &name, const T &value) noexcept
+    void SetUniform(GLuint program, const string &name, const T &value) noexcept
     {
       auto location = ::glGetUniformLocation(program, name.c_str());
       if (location == -1)
@@ -80,5 +88,11 @@ namespace Krys::Gfx::OpenGL
       else
         KRYS_ASSERT(false, "Unsupported uniform type.");
     }
+
+    void UpdateMaterialBuffers() noexcept;
+
+    void UpdateTextureTable() noexcept;
+
+    PhongMaterialData GetBufferDataFromPhongMaterial(const PhongMaterial &mat, int blankTextureIndex) noexcept;
   };
 }

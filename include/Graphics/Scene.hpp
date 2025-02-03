@@ -3,6 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
+#include "Graphics/Cameras/Camera.hpp"
 #include "Graphics/Colour.hpp"
 #include "Graphics/Entities/InstancedRenderEntity.hpp"
 #include "Graphics/Entities/RenderEntity.hpp"
@@ -120,6 +121,10 @@ namespace Krys::Gfx
       return nullptr;
     }
 
+    /// @brief Set the camera for the scene.
+    /// @param camera The camera to set.
+    void SetCamera(Camera *camera) noexcept;
+
   protected:
     friend class SceneManager;
 
@@ -129,6 +134,7 @@ namespace Krys::Gfx
     SceneHandle _handle;
     LightingRig _lightingRig;
     LightHandleManager _lightHandles {};
+    Camera *_camera {nullptr};
 
     RenderEntityHandleMap<Unique<RenderEntity>> _renderEntities;
     RenderEntityHandleManager _renderEntityHandles {};

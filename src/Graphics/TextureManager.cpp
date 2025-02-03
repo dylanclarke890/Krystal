@@ -188,4 +188,27 @@ namespace Krys::Gfx
   void TextureManager::OnDestroy(TextureHandle) noexcept
   {
   }
+
+  TextureHandleMap<Texture *> &TextureManager::GetTextures() noexcept
+  {
+    return _textures;
+  }
+
+  TextureHandle TextureManager::GetBlankTexture() noexcept
+  {
+    static TextureHandle handle {};
+
+    if (!handle.IsValid())
+    {
+      handle = CreateTexture(TextureDescriptor {.Name = "Internal_BlankTexture",
+                                                .Type = TextureType::Image,
+                                                .Width = 1,
+                                                .Height = 1,
+                                                .Channels = 4,
+                                                .Sampler = DefaultTextureSampler()},
+                             {byte {0xff}, byte {0xff}, byte {0xff}, byte {0xff}});
+    }
+
+    return handle;
+  }
 }

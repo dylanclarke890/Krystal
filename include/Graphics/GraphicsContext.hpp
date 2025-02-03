@@ -4,6 +4,7 @@
 #include "Base/Pointers.hpp"
 #include "Graphics/Buffer.hpp"
 #include "Graphics/Colour.hpp"
+#include "Graphics/DeviceCapabilities.hpp"
 #include "Graphics/Handles.hpp"
 #include "Graphics/PrimitiveType.hpp"
 #include "Graphics/Program.hpp"
@@ -34,6 +35,8 @@ namespace Krys::Gfx
 
     virtual void Init() noexcept = 0;
 
+#pragma region Shaders
+
     /// @brief Create a new shader.
     /// @param stage The stage of the shader.
     /// @param source The source code of the shader.
@@ -49,6 +52,10 @@ namespace Krys::Gfx
     /// @param handle The handle of the shader to destroy.
     /// @return True if the shader was found, false otherwise.
     bool DestroyShader(ShaderHandle handle) noexcept;
+
+#pragma endregion Shaders
+
+#pragma region Programs
 
     /// @brief Create a new program.
     /// @param vertexShader The vertex shader to use.
@@ -67,6 +74,10 @@ namespace Krys::Gfx
     /// @return True if the program was found, false otherwise.
     bool DestroyProgram(ProgramHandle handle) noexcept;
 
+#pragma endregion Programs
+
+#pragma region Vertex Buffers
+
     /// @brief Create a new vertex buffer.
     /// @param size The size of the buffer.
     /// @return A handle to the buffer.
@@ -81,6 +92,10 @@ namespace Krys::Gfx
     /// @param handle The handle of the buffer to destroy.
     /// @return True if the buffer was found, false otherwise.
     bool DestroyVertexBuffer(VertexBufferHandle handle) noexcept;
+
+#pragma endregion Vertex Buffers
+
+#pragma region Index Buffers
 
     /// @brief Create a new index buffer.
     /// @param size The size of the buffer.
@@ -97,14 +112,47 @@ namespace Krys::Gfx
     /// @return True if the buffer was found, false otherwise.
     bool DestroyIndexBuffer(IndexBufferHandle handle) noexcept;
 
-    // UniformBufferHandle CreateUniformBuffer(uint32 size) noexcept;
+#pragma endregion Index Buffers
+
+#pragma region Uniform Buffers
 
     /// @brief Create a new uniform buffer.
+    /// @param size The size of the buffer.
+    /// @return A handle to the buffer.
+    UniformBufferHandle CreateUniformBuffer(uint32 size) noexcept;
+
+    /// @brief Get a uniform buffer from a handle.
     /// @param handle The handle of the buffer.
     /// @return The created uniform buffer.
-    UniformBuffer *GetUniformBuffer(UniformHandle handle) noexcept;
+    UniformBuffer *GetUniformBuffer(UniformBufferHandle handle) noexcept;
 
-    // bool DestroyUniformBuffer(UniformHandle handle) noexcept;
+    /// @brief Destroy a uniform buffer.
+    /// @param handle The handle of the buffer to destroy.
+    /// @return True if the buffer was found, false otherwise.
+    bool DestroyUniformBuffer(UniformBufferHandle handle) noexcept;
+
+#pragma endregion Uniform Buffers
+
+#pragma region Shader Storage Buffers
+
+    /// @brief Create a new shader storage buffer.
+    /// @param size The size of the buffer.
+    /// @return A handle to the buffer.
+    ShaderStorageBufferHandle CreateShaderStorageBuffer(uint32 size) noexcept;
+
+    /// @brief Get a shader storage buffer from a handle.
+    /// @param handle The handle of the buffer.
+    /// @return The buffer if found, nullptr otherwise.
+    ShaderStorageBuffer *GetShaderStorageBuffer(ShaderStorageBufferHandle handle) noexcept;
+
+    /// @brief Destroy a shader storage buffer.
+    /// @param handle The handle of the buffer to destroy.
+    /// @return True if the buffer was found, false otherwise.
+    bool DestroyShaderStorageBuffer(ShaderStorageBufferHandle handle) noexcept;
+
+#pragma endregion Shader Storage Buffers
+
+#pragma region Viewport
 
     /// @brief Set the viewport of the graphics context.
     /// @param width Width of the viewport.
@@ -126,6 +174,8 @@ namespace Krys::Gfx
     /// @param viewport The viewport to set.
     virtual void SetViewport(const Vec4ui &viewport) noexcept = 0;
 
+#pragma endregion Viewport
+
     /// @brief Draw the currently bound vertex buffer.
     /// @param type The type of primitive to draw.
     /// @param count The number of vertices to draw.
@@ -144,8 +194,11 @@ namespace Krys::Gfx
     /// @param flags The buffers to clear.
     virtual void Clear(ClearBuffer flags) noexcept = 0;
 
+    /// @brief Get the device capabilities.
+    NO_DISCARD const DeviceCapabilities &GetDeviceCapabilities() const noexcept;
+
   protected:
-    /// @brief Create a new shader.
+    /// @brief Implementation-specific shader creation.
     /// @param handle The handle of the shader.
     /// @param stage The stage of the shader.
     /// @param source The source code of the shader.
@@ -153,7 +206,7 @@ namespace Krys::Gfx
     virtual Unique<Shader> CreateShaderImpl(ShaderHandle handle, ShaderStage stage,
                                             const string &source) noexcept = 0;
 
-    /// @brief Create a new program with the given shaders.
+    /// @brief Implementation-specific program creation.
     /// @param handle The handle of the program.
     /// @param vertexShader The vertex shader to use.
     /// @param fragmentShader The fragment shader to use.
@@ -161,17 +214,31 @@ namespace Krys::Gfx
     virtual Unique<Program> CreateProgramImpl(ProgramHandle handle, ShaderHandle vertexShader,
                                               ShaderHandle fragmentShader) noexcept = 0;
 
-    /// @brief Create a new vertex buffer.
+    /// @brief Implementation-specific vertex buffer creation.
     /// @param handle The handle of the buffer.
     /// @param size The size of the buffer.
     /// @return The created vertex buffer.
     virtual Unique<VertexBuffer> CreateVertexBufferImpl(VertexBufferHandle handle, uint32 size) noexcept = 0;
 
-    /// @brief Create a new index buffer.
+    /// @brief Implementation-specific index buffer creation.
     /// @param handle The handle of the buffer.
     /// @param size The size of the buffer.
     /// @return The created index buffer.
     virtual Unique<IndexBuffer> CreateIndexBufferImpl(IndexBufferHandle handle, uint32 size) noexcept = 0;
+
+    /// @brief Implementation-specific uniform buffer creation.
+    /// @param handle The handle of the buffer.
+    /// @param size The size of the buffer.
+    /// @return The created uniform buffer.
+    virtual Unique<UniformBuffer> CreateUniformBufferImpl(UniformBufferHandle handle,
+                                                          uint32 size) noexcept = 0;
+
+    /// @brief Implementation-specific shader storage buffer creation.
+    /// @param handle The handle of the buffer.
+    /// @param size The size of the buffer.
+    /// @return The created shader storage buffer.
+    virtual Unique<ShaderStorageBuffer> CreateShaderStorageBufferImpl(ShaderStorageBufferHandle handle,
+                                                                      uint32 size) noexcept = 0;
 
   protected:
     ShaderHandleMap<Unique<Shader>> _shaders {};
@@ -186,9 +253,13 @@ namespace Krys::Gfx
     IndexBufferHandleMap<Unique<IndexBuffer>> _indexBuffers {};
     IndexBufferHandleManager _indexBufferHandles {};
 
-    UniformHandleMap<Unique<UniformBuffer>> _uniformBuffers {};
-    UniformHandleManager _uniformBufferHandles {};
+    UniformBufferHandleMap<Unique<UniformBuffer>> _uniformBuffers {};
+    UniformBufferHandleManager _uniformBufferHandles {};
 
+    ShaderStorageBufferHandleMap<Unique<ShaderStorageBuffer>> _shaderStorageBuffers {};
+    ShaderStorageBufferHandleManager _shaderStorageBufferHandles {};
+
+    DeviceCapabilities _deviceCapabilities {};
     Colour _clearColour {0.0f, 0.0f, 0.0f, 1.0f};
   };
 }

@@ -25,6 +25,7 @@ namespace Krys
 
     _context->GetWindowManager()->Create(settings);
     _context->GetGraphicsContext()->Init();
+    _context->GetRenderer()->Init();
   }
 
   void Application::Run() noexcept

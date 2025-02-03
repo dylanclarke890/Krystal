@@ -23,7 +23,7 @@ namespace Krys
   /// @brief Non-owning pointer to a resource.
   /// @tparam T The underlying type of the data being pointed to.
   template <typename T>
-  using Ptr = T *const;
+  using Ptr = T *;
 
   template <typename T, typename... Args>
   constexpr Unique<T> CreateUnique(Args &&...args)

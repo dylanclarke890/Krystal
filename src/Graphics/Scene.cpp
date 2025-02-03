@@ -49,7 +49,7 @@ namespace Krys::Gfx
       return it != lights.end();
     };
 
-    // Probably more likely to be a point light.
+    // More likely to be a point light.
     auto wasFound = Remove(_lightingRig.PointLights);
     if (!wasFound)
       wasFound = Remove(_lightingRig.DirectionalLights);
@@ -70,5 +70,10 @@ namespace Krys::Gfx
     }
 
     return false;
+  }
+
+  void Scene::SetCamera(Camera *camera) noexcept
+  {
+    _camera = camera;
   }
 }

@@ -9,6 +9,21 @@
 
 namespace Krys::Gfx
 {
+  struct PhongMaterialData
+  {
+    Vec3 AmbientColour;
+    float Padding0{0};
+    Vec3 DiffuseColour;
+    float Padding1{0};
+    Vec3 SpecularColour;
+    float Shininess{32};
+
+    int AmbientTexture;
+    int DiffuseTexture;
+    int SpecularTexture;
+    int Padding2{0};
+  };
+
   class PhongMaterial : public Material
   {
   public:
@@ -52,6 +67,8 @@ namespace Krys::Gfx
     void SetShininess(float shininess) noexcept;
 
     NO_DISCARD float GetShininess() const noexcept;
+
+    NO_DISCARD PhongMaterialData GetBufferData() const noexcept;
 
   protected:
     TextureHandle _ambientTexture, _diffuseTexture, _specularTexture;

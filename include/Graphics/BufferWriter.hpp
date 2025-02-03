@@ -40,6 +40,12 @@ namespace Krys::Gfx
       _offset += offset;
     }
 
+    /// @brief Seek to the specified offset in the buffer.
+    void Seek(size_t offset) noexcept
+    {
+      _offset = offset;
+    }
+
   private:
     T &_buffer;
     size_t _offset;
