@@ -3,7 +3,7 @@
 #include "Base/Attributes.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
-#include "Core/Events/EventDispatcher.hpp"
+#include "Events/EventDispatcher.hpp"
 
 namespace Krys
 {

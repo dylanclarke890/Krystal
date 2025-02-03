@@ -1,7 +1,7 @@
 #include "Core/Application.hpp"
 #include "Core/ApplicationContext.hpp"
-#include "Core/Events/EventManager.hpp"
 #include "Core/Platform.hpp"
+#include "Events/EventManager.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
 #include "Graphics/OpenGL/OpenGLMeshManager.hpp"
 #include "Graphics/OpenGL/OpenGLRenderer.hpp"

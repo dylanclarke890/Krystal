@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Base/Attributes.hpp"
-#include "Core/Events/Event.hpp"
 #include "Core/Input/Keys.hpp"
+#include "Events/Event.hpp"
 
 namespace Krys
 {

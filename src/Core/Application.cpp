@@ -1,10 +1,10 @@
 #include "Core/Application.hpp"
 #include "Base/Pointers.hpp"
 #include "Core/Debug/Macros.hpp"
-#include "Core/Events/EventManager.hpp"
 #include "Core/Platform.hpp"
 #include "Core/Window.hpp"
 #include "Core/WindowManager.hpp"
+#include "Events/EventManager.hpp"
 
 namespace Krys
 {

@@ -26,6 +26,7 @@ def get_engine_project():
   code.custom_source_files = {
     "Core": ["Core/**/*.cpp"],
     "Graphics": ["Graphics/**/*.cpp"],
+    "Events": ["Events/**/*.cpp"],
     "IO": ["IO/**/*.cpp"],
     "MTL": ["MTL/**/*.cpp"],
     "Win32Platform": ["Platform/Win32/**/*.cpp"],

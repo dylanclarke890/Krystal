@@ -1,9 +1,9 @@
 #include "Platform/Win32/Input/Win32InputManager.hpp"
 #include "Core/Debug/Macros.hpp"
-#include "Core/Events/Input/KeyboardEvent.hpp"
-#include "Core/Events/Input/MouseButtonEvent.hpp"
-#include "Core/Events/Input/MouseMoveEvent.hpp"
-#include "Core/Events/Input/ScrollWheelEvent.hpp"
+#include "Events/Input/KeyboardEvent.hpp"
+#include "Events/Input/MouseButtonEvent.hpp"
+#include "Events/Input/MouseMoveEvent.hpp"
+#include "Events/Input/ScrollWheelEvent.hpp"
 
 namespace Krys::Platform
 {

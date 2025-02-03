@@ -1,4 +1,4 @@
-#include "Core/Events/Input/ScrollWheelEvent.hpp"
+#include "Events/Input/ScrollWheelEvent.hpp"
 
 namespace Krys
 {

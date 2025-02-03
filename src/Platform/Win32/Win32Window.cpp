@@ -1,7 +1,7 @@
 #include "Platform/Win32/Win32Window.hpp"
 #include "Core/Debug/Macros.hpp"
-#include "Core/Events/EventManager.hpp"
-#include "Core/Events/QuitEvent.hpp"
+#include "Events/EventManager.hpp"
+#include "Events/QuitEvent.hpp"
 #include "Platform/Win32/Input/Win32InputManager.hpp"
 
 namespace Krys::Platform

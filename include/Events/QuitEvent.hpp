@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Events/Event.hpp"
+#include "Events/Event.hpp"
 
 namespace Krys
 {

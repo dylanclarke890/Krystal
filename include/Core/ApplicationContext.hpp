@@ -5,15 +5,15 @@
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Core/ApplicationSettings.hpp"
-#include "Core/Events/EventManager.hpp"
 #include "Core/Input/InputManager.hpp"
 #include "Core/WindowManager.hpp"
+#include "Events/EventManager.hpp"
 #include "Graphics/GraphicsContext.hpp"
+#include "Graphics/MaterialManager.hpp"
 #include "Graphics/MeshManager.hpp"
 #include "Graphics/Renderer.hpp"
-#include "Graphics/TextureManager.hpp"
-#include "Graphics/MaterialManager.hpp"
 #include "Graphics/SceneManager.hpp"
+#include "Graphics/TextureManager.hpp"
 
 namespace Krys
 {

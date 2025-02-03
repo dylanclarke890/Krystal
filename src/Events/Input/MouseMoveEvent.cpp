@@ -1,4 +1,4 @@
-#include "Core/Events/Input/MouseMoveEvent.hpp"
+#include "Events/Input/MouseMoveEvent.hpp"
 
 namespace Krys
 {

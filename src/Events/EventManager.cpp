@@ -1,4 +1,4 @@
-#include "Core/Events/EventManager.hpp"
+#include "Events/EventManager.hpp"
 
 namespace Krys
 {
