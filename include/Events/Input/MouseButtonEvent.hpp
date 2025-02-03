@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Input/Buttons.hpp"
 #include "Events/Event.hpp"
+#include "IO/Input/Buttons.hpp"
 
 namespace Krys
 {

@@ -1,4 +1,4 @@
-#include "Core/Input/Mouse.hpp"
+#include "IO/Input/Mouse.hpp"
 
 namespace Krys
 {

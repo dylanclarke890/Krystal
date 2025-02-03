@@ -5,8 +5,8 @@
 #endif
 #include <windows.h>
 
-#include "Core/Input/InputManager.hpp"
-#include "Core/Input/Keys.hpp"
+#include "IO/Input/InputManager.hpp"
+#include "IO/Input/Keys.hpp"
 
 namespace Krys::Platform
 {

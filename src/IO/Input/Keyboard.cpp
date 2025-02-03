@@ -1,4 +1,4 @@
-#include "Core/Input/Keyboard.hpp"
+#include "IO/Input/Keyboard.hpp"
 
 namespace Krys
 {

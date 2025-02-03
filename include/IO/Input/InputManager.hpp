@@ -4,9 +4,9 @@
 #include "Base/Macros.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
-#include "Core/Input/HID.hpp"
-#include "Core/Input/Keyboard.hpp"
-#include "Core/Input/Mouse.hpp"
+#include "IO/Input/HID.hpp"
+#include "IO/Input/Keyboard.hpp"
+#include "IO/Input/Mouse.hpp"
 #include "Events/EventManager.hpp"
 
 namespace Krys

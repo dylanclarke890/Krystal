@@ -6,9 +6,9 @@
 #include <windows.h>
 
 #include "Base/Pointers.hpp"
-#include "Core/Input/Keys.hpp"
-#include "Core/Window.hpp"
 #include "Core/ApplicationSettings.hpp"
+#include "Core/Window.hpp"
+#include "IO/Input/Keys.hpp"
 
 namespace Krys::Platform
 {

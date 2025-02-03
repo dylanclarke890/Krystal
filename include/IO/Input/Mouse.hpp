@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
-#include "Core/Input/Buttons.hpp"
+#include "IO/Input/Buttons.hpp"
 
 namespace Krys
 {
