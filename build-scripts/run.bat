@@ -1,6 +1,10 @@
 @echo off
 cls
 
-devenv B:\build\KrystalEditor.exe -run B:\build\KrystalEditor.sln
+pushd K:\data
+
+devenv /debugexe "B:\build\KrystalEditor.exe"
+
+popd
 
 exit /b %ERRORLEVEL%
