@@ -3,7 +3,7 @@
 #include <hidusage.h>
 
 #include "Core/Debug/Macros.hpp"
-#include "Core/Logger.hpp"
+#include "IO/Logger.hpp"
 #include "Platform/Win32/Win32OpenGLWindow.hpp"
 
 namespace Krys::Platform

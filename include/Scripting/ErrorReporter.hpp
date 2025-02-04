@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Base/Types.hpp"
-#include "Core/Logger.hpp"
+#include "IO/Logger.hpp"
 
 namespace Krys::Scripting
 {

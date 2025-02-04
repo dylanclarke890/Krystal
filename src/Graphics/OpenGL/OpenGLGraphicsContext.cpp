@@ -1,9 +1,9 @@
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
 #include "Core/Debug/Macros.hpp"
-#include "Core/Logger.hpp"
 #include "Graphics/OpenGL/OpenGLBuffer.hpp"
 #include "Graphics/OpenGL/OpenGLProgram.hpp"
 #include "Graphics/OpenGL/OpenGLShader.hpp"
+#include "IO/Logger.hpp"
 
 #include <glad/gl.h>
 

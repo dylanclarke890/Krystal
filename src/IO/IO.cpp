@@ -1,6 +1,6 @@
 #include "IO/IO.hpp"
 #include "Core/Debug/Macros.hpp"
-#include "Core/Logger.hpp"
+#include "IO/Logger.hpp"
 
 #include <algorithm>
 #include <filesystem>

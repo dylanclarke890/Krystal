@@ -2,8 +2,8 @@
 
 #include "Base/Types.hpp"
 #include "Core/Debug/Macros.hpp"
-#include "Core/Logger.hpp"
 #include "IO/IO.hpp"
+#include "IO/Logger.hpp"
 #include "Scripting/ErrorReporter.hpp"
 #include "Scripting/Scanner.hpp"
 

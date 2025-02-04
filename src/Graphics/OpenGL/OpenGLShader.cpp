@@ -1,6 +1,6 @@
 #include "Graphics/OpenGL/OpenGLShader.hpp"
 #include "Core/Debug/Macros.hpp"
-#include "Core/Logger.hpp"
+#include "IO/Logger.hpp"
 
 #include <glad/gl.h>
 

@@ -2,8 +2,8 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
-#include "Core/Logger.hpp"
 #include "Graphics/Handles.hpp"
+#include "IO/Logger.hpp"
 #include "MTL/Matrices/Ext/Format.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"

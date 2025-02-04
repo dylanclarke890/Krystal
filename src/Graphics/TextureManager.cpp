@@ -1,5 +1,5 @@
 #include "Graphics/TextureManager.hpp"
-#include "Core/Logger.hpp"
+#include "IO/Logger.hpp"
 
 #include <sstream>
 

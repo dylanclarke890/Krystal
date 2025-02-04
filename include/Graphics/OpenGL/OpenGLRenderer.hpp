@@ -2,12 +2,12 @@
 
 #include "Base/Macros.hpp"
 #include "Base/Pointers.hpp"
-#include "Core/Logger.hpp"
 #include "Graphics/Handles.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
 #include "Graphics/RenderCommand.hpp"
 #include "Graphics/RenderContext.hpp"
 #include "Graphics/Renderer.hpp"
+#include "IO/Logger.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"

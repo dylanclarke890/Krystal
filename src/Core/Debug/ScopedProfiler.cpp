@@ -1,6 +1,6 @@
 #include "Core/Debug/ScopedProfiler.hpp"
-#include "Core/Logger.hpp"
 #include "Core/Platform.hpp"
+#include "IO/Logger.hpp"
 #include "Utils/Lazy.hpp"
 
 namespace Krys::Debug

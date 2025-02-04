@@ -3,7 +3,7 @@
 #include "Base/Detection.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
-#include "Core/Logger.hpp"
+#include "IO/Logger.hpp"
 
 #ifdef KRYS_ENABLE_DEBUG_BREAK
   #if defined(KRYS_PLATFORM_WINDOWS)
