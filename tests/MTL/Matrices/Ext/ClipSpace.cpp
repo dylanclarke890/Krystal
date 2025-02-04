@@ -1,9 +1,9 @@
 #include "MTL/Matrices/Ext/ClipSpace.hpp"
-#include "Core/Debug/Expect.hpp"
 #include "MTL/Common/Convert.hpp"
 #include "MTL/Trigonometric/Cos.hpp"
 #include "MTL/Trigonometric/Sin.hpp"
 #include "MTL/Trigonometric/Tan.hpp"
+#include "tests/__utils__/Expect.hpp"
 
 namespace Krys::Tests
 {

@@ -1,5 +1,4 @@
 #include "MTL/Matrices/Ext/OuterProduct.hpp"
-#include "Core/Debug/Expect.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
 #include "MTL/Matrices/Mat2x3.hpp"
 #include "MTL/Matrices/Mat2x4.hpp"
@@ -12,6 +11,7 @@
 #include "MTL/Vectors/Vec2.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
+#include "tests/__utils__/Expect.hpp"
 
 namespace Krys::Tests
 {

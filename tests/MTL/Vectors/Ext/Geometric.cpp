@@ -1,5 +1,4 @@
 #include "MTL/Vectors/Ext/Geometric.hpp"
-#include "Core/Debug/Expect.hpp"
 #include "MTL/Trigonometric/Cos.hpp"
 #include "MTL/Trigonometric/Sin.hpp"
 #include "MTL/Vectors/Ext/Abs.hpp"
@@ -9,6 +8,7 @@
 #include "MTL/Vectors/Vec2.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
+#include "tests/__utils__/Expect.hpp"
 
 namespace Krys::Tests
 {

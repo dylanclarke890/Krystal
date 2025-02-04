@@ -1,8 +1,8 @@
 #include "MTL/Matrices/Ext/Determinant.hpp"
-#include "Core/Debug/Expect.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
+#include "tests/__utils__/Expect.hpp"
 
 namespace Krys::Tests
 {

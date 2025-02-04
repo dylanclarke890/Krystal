@@ -1,6 +1,6 @@
 #include "MTL/Exponential/Exp.hpp"
-#include "Core/Debug/Expect.hpp"
 #include "MTL/Common/Constants.hpp"
+#include "tests/__utils__/Expect.hpp"
 
 namespace Krys::Tests
 {

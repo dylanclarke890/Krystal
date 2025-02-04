@@ -1,9 +1,9 @@
 #include "MTL/Packing.hpp"
 #include "Base/Types.hpp"
-#include "Core/Debug/Expect.hpp"
 #include "MTL/Vectors/Vec2.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
+#include "tests/__utils__/Expect.hpp"
 
 namespace Krys::Tests
 {

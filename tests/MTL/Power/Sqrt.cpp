@@ -1,5 +1,5 @@
 #include "MTL/Power/Sqrt.hpp"
-#include "Core/Debug/Expect.hpp"
+#include "tests/__utils__/Expect.hpp"
 
 namespace Krys::Tests
 {

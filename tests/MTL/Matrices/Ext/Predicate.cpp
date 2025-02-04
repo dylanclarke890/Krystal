@@ -1,5 +1,4 @@
 #include "MTL/Matrices/Ext/Predicate.hpp"
-#include "Core/Debug/Expect.hpp"
 #include "MTL/Matrices/Mat2x2.hpp"
 #include "MTL/Matrices/Mat2x3.hpp"
 #include "MTL/Matrices/Mat2x4.hpp"
@@ -9,6 +8,7 @@
 #include "MTL/Matrices/Mat4x2.hpp"
 #include "MTL/Matrices/Mat4x3.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
+#include "tests/__utils__/Expect.hpp"
 
 namespace Krys::Tests
 {
