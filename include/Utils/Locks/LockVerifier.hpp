@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Concurrency/ScopedLock.hpp"
+#include "Utils/Locks/ScopedLock.hpp"
 
 namespace Krys::Concurrency
 {

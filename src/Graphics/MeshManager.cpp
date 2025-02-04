@@ -1,5 +1,5 @@
 #include "Graphics/MeshManager.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "Graphics/Mesh.hpp"
 
 #include <format>

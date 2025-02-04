@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Base/Types.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "IO/IO.hpp"
 #include "IO/Logger.hpp"
 #include "Scripting/ErrorReporter.hpp"

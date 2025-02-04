@@ -1,5 +1,5 @@
 #include "Platform/Win32/Input/Win32InputManager.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "Events/Input/KeyboardEvent.hpp"
 #include "Events/Input/MouseButtonEvent.hpp"
 #include "Events/Input/MouseMoveEvent.hpp"

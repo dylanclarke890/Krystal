@@ -2,7 +2,7 @@
 #include <glad/wgl.h>
 #include <hidusage.h>
 
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "IO/Logger.hpp"
 #include "Platform/Win32/Win32OpenGLWindow.hpp"
 

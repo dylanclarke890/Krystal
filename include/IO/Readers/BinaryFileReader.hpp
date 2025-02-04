@@ -5,7 +5,7 @@
 #include "Base/Endian.hpp"
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "IO/IO.hpp"
 #include "Utils/Bytes.hpp"
 

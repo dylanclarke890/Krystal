@@ -1,5 +1,5 @@
 #include "Graphics/OpenGL/OpenGLShader.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "IO/Logger.hpp"
 
 #include <glad/gl.h>

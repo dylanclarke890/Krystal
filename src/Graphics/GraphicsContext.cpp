@@ -1,5 +1,5 @@
-#include "Core/Debug/Macros.hpp"
 #include "Core/Window.hpp"
+#include "Debug/Macros.hpp"
 #include "Graphics/Renderer.hpp"
 
 namespace Krys::Gfx

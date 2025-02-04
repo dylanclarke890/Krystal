@@ -1,4 +1,4 @@
-#include "Core/Concurrency/SpinLock.hpp"
+#include "Utils/Locks/SpinLock.hpp"
 #include "Base/Types.hpp"
 #include <thread>
 

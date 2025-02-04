@@ -1,5 +1,5 @@
 #include "Graphics/OpenGL/OpenGLMesh.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "Graphics/BufferWriter.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
 

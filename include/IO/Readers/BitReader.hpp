@@ -4,7 +4,7 @@
 #include "Base/Concepts.hpp"
 #include "Base/Endian.hpp"
 #include "Base/Types.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "Utils/Bytes.hpp"
 
 #include <bitset>

@@ -1,5 +1,5 @@
-#include "Core/Concurrency/ReentrantLock.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Utils/Locks/ReentrantLock.hpp"
+#include "Debug/Macros.hpp"
 
 #include <thread>
 

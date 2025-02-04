@@ -1,4 +1,4 @@
-#include "Core/Concurrency/ReadersWriterLock.hpp"
+#include "Utils/Locks/ReadersWriterLock.hpp"
 
 #include <thread>
 

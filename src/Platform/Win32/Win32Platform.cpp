@@ -1,5 +1,5 @@
-#include "Core/Debug/Macros.hpp"
 #include "Core/Platform.hpp"
+#include "Debug/Macros.hpp"
 #include "Utils/Lazy.hpp"
 
 #ifndef WIN32_LEAN_AND_MEAN

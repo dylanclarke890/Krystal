@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "Graphics/Buffer.hpp"
 #include "Graphics/Handles.hpp"
 

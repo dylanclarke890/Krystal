@@ -1,5 +1,5 @@
 #include "Graphics/OpenGL/OpenGLSampler.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 
 namespace Krys::Gfx::OpenGL
 {

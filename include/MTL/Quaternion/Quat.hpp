@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "MTL/Common/Clamp.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
 #include "MTL/Matrices/Mat3x4.hpp"

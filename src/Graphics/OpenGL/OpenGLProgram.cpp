@@ -1,5 +1,5 @@
 #include "Graphics/OpenGL/OpenGLProgram.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "Graphics/OpenGL/OpenGLShader.hpp"
 
 namespace Krys::Gfx::OpenGL

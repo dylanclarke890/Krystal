@@ -4,7 +4,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Concepts.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "MTL/Common/Constants.hpp"
 #include "MTL/Power/Pow.hpp"
 #include "MTL/Power/Sqrt.hpp"

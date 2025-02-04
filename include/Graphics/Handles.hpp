@@ -2,7 +2,7 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 
 #include <limits>
 

@@ -1,4 +1,4 @@
-#include "Core/Debug/ScopedProfiler.hpp"
+#include "Debug/ScopedProfiler.hpp"
 #include "Core/Platform.hpp"
 #include "IO/Logger.hpp"
 #include "Utils/Lazy.hpp"

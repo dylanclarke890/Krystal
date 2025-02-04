@@ -5,7 +5,7 @@
 #include "Base/Macros.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "IO/Concepts.hpp"
 #include "IO/DataFlowStage.hpp"
 

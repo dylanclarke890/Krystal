@@ -1,5 +1,5 @@
 #include "Platform/Win32/Win32WindowManager.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 #include "Events/EventManager.hpp"
 #include "Platform/Win32/Win32OpenGLWindow.hpp"
 

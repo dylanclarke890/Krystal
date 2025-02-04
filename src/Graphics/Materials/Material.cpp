@@ -1,5 +1,5 @@
 #include "Graphics/Materials/Material.hpp"
-#include "Core/Debug/Macros.hpp"
+#include "Debug/Macros.hpp"
 
 namespace Krys::Gfx
 {
