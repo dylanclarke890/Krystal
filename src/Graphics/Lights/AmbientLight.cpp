@@ -3,13 +3,8 @@
 namespace Krys::Gfx
 {
   AmbientLight::AmbientLight(LightHandle handle, const Colour &colour) noexcept
-      : Light(handle), _colour(colour)
+      : Light(handle, LightType::Ambient), _colour(colour)
   {
-  }
-
-  LightType AmbientLight::GetType() const noexcept
-  {
-    return LightType::Ambient;
   }
 
   Vec4 AmbientLight::GetColourData() const noexcept

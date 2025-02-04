@@ -6,7 +6,7 @@ namespace Krys::Gfx
   Scene::Scene(SceneHandle handle, const string &name) noexcept : _handle(handle), _name(name), _lightingRig()
   {
     // Default ambient light.
-    SetAmbientLight(Colours::Black);
+    SetAmbientLight(Colour {0.1f, 0.1f, 0.15f});
   }
 
   const string& Scene::GetName() const noexcept

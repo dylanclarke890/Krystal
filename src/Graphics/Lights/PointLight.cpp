@@ -4,7 +4,8 @@
 namespace Krys::Gfx
 {
   PointLight::PointLight(LightHandle handle, const Vec3 &position, const Colour &colour) noexcept
-      : Light(handle), _position(Vec4(position, 1.0f)), _colour(colour), _attenuation({0.0f, 0.0f, 0.0f}),
+      : Light(handle, LightType::Point), _position(Vec4(position, 1.0f)), _colour(colour),
+        _attenuation({0.0f, 0.0f, 0.0f}),
         _shadowCameras(Array<Camera, 6>({Camera(CameraType::Perspective, 90u, 90u, 1'000u),
                                          Camera(CameraType::Perspective, 90u, 90u, 1'000u),
                                          Camera(CameraType::Perspective, 90u, 90u, 1'000u),
@@ -17,11 +18,6 @@ namespace Krys::Gfx
   PointLight::PointLight(LightHandle handle, const Vec3 &position) noexcept
       : PointLight(handle, position, Colours::White)
   {
-  }
-
-  LightType PointLight::GetType() const noexcept
-  {
-    return LightType::Point;
   }
 
   Vec4 PointLight::GetColourData() const noexcept

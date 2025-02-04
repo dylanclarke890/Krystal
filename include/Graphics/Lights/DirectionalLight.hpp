@@ -25,9 +25,6 @@ namespace Krys::Gfx
     /// @param castsShadows Whether this light casts shadows.
     DirectionalLight(LightHandle handle, const Vec3 &direction, bool castsShadows = false) noexcept;
 
-    /// @brief Get the type of light.
-    NO_DISCARD LightType GetType() const noexcept override;
-
     /// @brief Get the colour data of the light.
     NO_DISCARD Vec4 GetColourData() const noexcept override;
 

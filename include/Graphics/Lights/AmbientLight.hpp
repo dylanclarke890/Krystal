@@ -5,6 +5,12 @@
 
 namespace Krys::Gfx
 {
+  struct AmbientLightData
+  {
+    Vec3 Colour;
+    float Padding0;
+  };
+
   /// @brief An ambient light. This is a light that is present everywhere in the scene.
   /// @note This light does not have a position or direction.
   class AmbientLight : public Light
@@ -14,9 +20,6 @@ namespace Krys::Gfx
     /// @param handle The handle of the light.
     /// @param colour The colour of the light.
     AmbientLight(LightHandle handle, const Colour &colour) noexcept;
-
-    /// @brief Get the type of light.
-    NO_DISCARD LightType GetType() const noexcept override;
 
     /// @brief Get the colour data of the light.
     NO_DISCARD Vec4 GetColourData() const noexcept override;

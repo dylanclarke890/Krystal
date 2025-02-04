@@ -22,9 +22,6 @@ namespace Krys::Gfx
     /// @param colour The colour of the light.
     PointLight(LightHandle handle, const Vec3 &position, const Colour &colour) noexcept;
 
-    /// @brief Get the type of light.
-    NO_DISCARD LightType GetType() const noexcept override;
-
     /// @brief Get the colour data of the light.
     NO_DISCARD Vec4 GetColourData() const noexcept override;
 

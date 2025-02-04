@@ -15,7 +15,7 @@ namespace Krys::Gfx
     virtual ~Light() = default;
 
     /// @brief Gets the type of light.
-    NO_DISCARD virtual LightType GetType() const noexcept = 0;
+    NO_DISCARD LightType GetType() const noexcept;
 
     /// @brief Get the colour data of the light.
     NO_DISCARD virtual Vec4 GetColourData() const noexcept = 0;
@@ -30,8 +30,9 @@ namespace Krys::Gfx
     NO_DISCARD LightHandle GetHandle() const noexcept;
 
   protected:
-    explicit Light(LightHandle handle) noexcept;
+    explicit Light(LightHandle handle, LightType type) noexcept;
 
     LightHandle _handle;
+    LightType _type;
   };
 }

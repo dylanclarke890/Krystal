@@ -20,6 +20,12 @@ struct Material
   int SpecularTexture;
 };
 
+struct AmbientLight
+{
+  vec3 Colour;
+  float Padding1;
+};
+
 struct BaseLight 
 {
   vec3 Ambient;
@@ -92,9 +98,7 @@ layout(std430, binding = 1) buffer TextureTable
 
 layout(std430, binding = 2) buffer LightBuffer
 {
-  DirectionalLight DirectionalLights[1];
-  PointLight PointLights[1];
-  SpotLight SpotLights[1];
+  AmbientLight AmbientLighting;
 };
 
 vec4 GetTextureSample(int textureIndex, vec4 textureCoords)

@@ -23,8 +23,9 @@ namespace Krys::Gfx
     /// @param name The name of the scene.
     /// @param ...args The arguments to forward to the constructor of the scene.
     /// @return A handle to the scene.
-    /// @note The scene will be owned by the scene manager. Unlike other managers, you are not required to
-    /// keep track of the handle of the scene, you can use the name if you prefer.
+    /// @note Like other managers, the created scene will be owned by the scene manager. Unlike other
+    /// managers, you are not required to keep track of the handle of the scene, you can use the name if you
+    /// prefer.
     template <typename... Args>
     SceneHandle CreateScene(const string &name, Args &&...args) noexcept
     {
@@ -40,12 +41,12 @@ namespace Krys::Gfx
       return handle;
     }
 
-    /// @brief Remove a scene from the scene manager.
+    /// @brief Remove a scene from the scene manager using it's handle.
     /// @param handle The handle of the scene to remove.
     /// @return True if the scene was found and removed, false otherwise.
     bool RemoveScene(SceneHandle handle) noexcept;
 
-    /// @brief Remove a scene from the scene manager.
+    /// @brief Remove a scene from the scene manager using it's name.
     /// @param name The name of the scene to remove.
     /// @return True if the scene was found and removed, false otherwise.
     bool RemoveScene(const string &name) noexcept;
@@ -64,7 +65,12 @@ namespace Krys::Gfx
     /// @return A pointer to the active scene.
     NO_DISCARD Scene *GetActiveScene() const noexcept;
 
+    /// @brief Set the active scene by name.
+    /// @param name The name of the scene to set as active.
     void SetActiveScene(const string &name) noexcept;
+
+    /// @brief Set the active scene by handle.
+    /// @param handle The handle of the scene to set as active.
     void SetActiveScene(SceneHandle handle) noexcept;
 
   private:
