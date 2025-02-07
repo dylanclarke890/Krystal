@@ -5,17 +5,17 @@
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
-#include "Graphics/Scene.hpp"
+#include "Graphics/Scene/SceneGraph.hpp"
 
 namespace Krys::Gfx
 {
-  class SceneManager
+  class SceneGraphManager
   {
   public:
-    SceneManager() noexcept = default;
-    ~SceneManager() = default;
+    SceneGraphManager() noexcept = default;
+    ~SceneGraphManager() = default;
 
-    NO_COPY_MOVE(SceneManager);
+    NO_COPY_MOVE(SceneGraphManager);
 
     /// @brief Create a new scene with the given name. If this is the first scene created, it will
     /// automatically be set as the active scene.
@@ -27,10 +27,10 @@ namespace Krys::Gfx
     /// managers, you are not required to keep track of the handle of the scene, you can use the name if you
     /// prefer.
     template <typename... Args>
-    SceneHandle CreateScene(const string &name, Args &&...args) noexcept
+    SceneGraphHandle CreateScene(const string &name, Args &&...args) noexcept
     {
-      auto handle = _sceneHandles.Next();
-      auto scene = CreateUnique<Scene>(handle, name, std::forward<Args>(args)...);
+      auto handle = _sceneGraphHandles.Next();
+      auto scene = Unique<SceneGraph>(new SceneGraph(handle, name, std::forward<Args>(args)...));
 
       _scenes.emplace(handle, std::move(scene));
       _sceneNames.emplace(name, handle);
@@ -44,7 +44,7 @@ namespace Krys::Gfx
     /// @brief Remove a scene from the scene manager using it's handle.
     /// @param handle The handle of the scene to remove.
     /// @return True if the scene was found and removed, false otherwise.
-    bool RemoveScene(SceneHandle handle) noexcept;
+    bool RemoveScene(SceneGraphHandle handle) noexcept;
 
     /// @brief Remove a scene from the scene manager using it's name.
     /// @param name The name of the scene to remove.
@@ -54,16 +54,16 @@ namespace Krys::Gfx
     /// @brief Get a scene by name.
     /// @param name The name of the scene.
     /// @return A pointer to the scene if it exists, nullptr otherwise.
-    NO_DISCARD Scene *GetScene(const string &name) noexcept;
+    NO_DISCARD SceneGraph *GetScene(const string &name) noexcept;
 
     /// @brief Get a scene by handle.
     /// @param handle The handle of the scene.
     /// @return A pointer to the scene if it exists, nullptr otherwise.
-    NO_DISCARD Scene *GetScene(SceneHandle handle) noexcept;
+    NO_DISCARD SceneGraph *GetScene(SceneGraphHandle handle) noexcept;
 
     /// @brief Get the active scene.
     /// @return A pointer to the active scene.
-    NO_DISCARD Scene *GetActiveScene() const noexcept;
+    NO_DISCARD SceneGraph *GetActiveScene() const noexcept;
 
     /// @brief Set the active scene by name.
     /// @param name The name of the scene to set as active.
@@ -71,12 +71,12 @@ namespace Krys::Gfx
 
     /// @brief Set the active scene by handle.
     /// @param handle The handle of the scene to set as active.
-    void SetActiveScene(SceneHandle handle) noexcept;
+    void SetActiveScene(SceneGraphHandle handle) noexcept;
 
   private:
-    SceneHandleMap<Unique<Scene>> _scenes;
-    SceneHandleManager _sceneHandles {};
-    Map<string, SceneHandle> _sceneNames;
-    SceneHandle _activeScene {};
+    SceneGraphHandleMap<Unique<SceneGraph>> _scenes;
+    SceneGraphHandleManager _sceneGraphHandles {};
+    Map<string, SceneGraphHandle> _sceneNames;
+    SceneGraphHandle _activeScene {};
   };
 }

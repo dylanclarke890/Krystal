@@ -1,55 +1,55 @@
-#include "Graphics/SceneManager.hpp"
+#include "Graphics/Scene/SceneGraphManager.hpp"
 
 namespace Krys::Gfx
 {
-  bool SceneManager::RemoveScene(SceneHandle handle) noexcept
+  bool SceneGraphManager::RemoveScene(SceneGraphHandle handle) noexcept
   {
     if (auto it = _scenes.find(handle); it != _scenes.end())
     {
       if (_activeScene == handle)
-        _activeScene = SceneHandle::InvalidHandle;
+        _activeScene = SceneGraphHandle::InvalidHandle;
 
       _sceneNames.erase(it->second->GetName());
       _scenes.erase(it);
-      _sceneHandles.Recycle(handle);
+      _sceneGraphHandles.Recycle(handle);
       return true;
     }
 
     return false;
   }
 
-  bool SceneManager::RemoveScene(const string &name) noexcept
+  bool SceneGraphManager::RemoveScene(const string &name) noexcept
   {
     if (auto it = _sceneNames.find(name); it != _sceneNames.end())
     {
       auto handle = it->second;
       if (_activeScene == handle)
-        _activeScene = SceneHandle::InvalidHandle;
+        _activeScene = SceneGraphHandle::InvalidHandle;
 
       _scenes.erase(handle);
       _sceneNames.erase(it);
-      _sceneHandles.Recycle(handle);
+      _sceneGraphHandles.Recycle(handle);
       return true;
     }
 
     return false;
   }
 
-  Scene *SceneManager::GetScene(const string &name) noexcept
+  SceneGraph *SceneGraphManager::GetScene(const string &name) noexcept
   {
     if (auto it = _sceneNames.find(name); it != _sceneNames.end())
       return _scenes[it->second].get();
     return nullptr;
   }
 
-  Scene *SceneManager::GetScene(SceneHandle handle) noexcept
+  SceneGraph *SceneGraphManager::GetScene(SceneGraphHandle handle) noexcept
   {
     if (auto it = _scenes.find(handle); it != _scenes.end())
       return it->second.get();
     return nullptr;
   }
 
-  void SceneManager::SetActiveScene(const string &name) noexcept
+  void SceneGraphManager::SetActiveScene(const string &name) noexcept
   {
     auto it = _sceneNames.find(name);
 
@@ -60,7 +60,7 @@ namespace Krys::Gfx
       _activeScene = it->second;
   }
 
-  void SceneManager::SetActiveScene(SceneHandle handle) noexcept
+  void SceneGraphManager::SetActiveScene(SceneGraphHandle handle) noexcept
   {
     auto it = _scenes.find(handle);
 
@@ -71,7 +71,7 @@ namespace Krys::Gfx
       _activeScene = handle;
   }
 
-  Scene *SceneManager::GetActiveScene() const noexcept
+  SceneGraph *SceneGraphManager::GetActiveScene() const noexcept
   {
     KRYS_ASSERT(_activeScene.IsValid(), "No active scene has been set.");
     if (auto it = _scenes.find(_activeScene); it != _scenes.end())

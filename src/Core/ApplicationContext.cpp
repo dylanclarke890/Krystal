@@ -48,9 +48,9 @@ namespace Krys
     return _materialManager.get();
   }
 
-  Ptr<Gfx::SceneManager> ApplicationContext::GetSceneManager() const noexcept
+  Ptr<Gfx::SceneGraphManager> ApplicationContext::GetSceneGraphManager() const noexcept
   {
-    return _sceneManager.get();
+    return _sceneGraphManager.get();
   }
 
   const ApplicationSettings &ApplicationContext::GetSettings() const noexcept

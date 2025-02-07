@@ -46,6 +46,7 @@ namespace Krys::Gfx::OpenGL
 
       // TODO: we need to get the index differently once we add PBR materials.
       SetUniform(program.GetNativeHandle(), "u_MaterialIndex", static_cast<int>(material.GetHandle().Id()));
+      SetUniform(program.GetNativeHandle(), "u_Transform", Mat4(1.0f));
 
       mesh.Bind();
       if (mesh.IsIndexed())

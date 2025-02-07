@@ -12,7 +12,7 @@
 #include "Graphics/MaterialManager.hpp"
 #include "Graphics/MeshManager.hpp"
 #include "Graphics/Renderer.hpp"
-#include "Graphics/SceneManager.hpp"
+#include "Graphics/Scene/SceneGraphManager.hpp"
 #include "Graphics/TextureManager.hpp"
 #include "IO/Input/InputManager.hpp"
 
@@ -56,8 +56,8 @@ namespace Krys
     /// @brief Get the current `MaterialManager`.
     Ptr<Gfx::MaterialManager> GetMaterialManager() const noexcept;
 
-    /// @brief Get the current `SceneManager`.
-    Ptr<Gfx::SceneManager> GetSceneManager() const noexcept;
+    /// @brief Get the current `SceneGraphManager`.
+    Ptr<Gfx::SceneGraphManager> GetSceneGraphManager() const noexcept;
 
     /// @brief Get the command line arguments.
     const List<string> &GetCLIArgs() const noexcept;
@@ -74,7 +74,7 @@ namespace Krys
     Unique<Gfx::MeshManager> _meshManager;
     Unique<Gfx::TextureManager> _textureManager;
     Unique<Gfx::MaterialManager> _materialManager;
-    Unique<Gfx::SceneManager> _sceneManager;
+    Unique<Gfx::SceneGraphManager> _sceneGraphManager;
     ApplicationSettings _settings;
 
     /// @brief Program arguments.

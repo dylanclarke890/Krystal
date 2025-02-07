@@ -9,12 +9,12 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 4 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: PathExists took 0.172 ms.
-[INFO ]: ReadFileText took 9.792 ms.
-[INFO ]: PathExists took 0.064 ms.
-[INFO ]: ReadFileText took 11.523 ms.
-[INFO ]: PathExists took 0.102 ms.
-[INFO ]: IO::LoadImage took 23.746 ms.
+[INFO ]: PathExists took 0.192 ms.
+[INFO ]: ReadFileText took 13.030 ms.
+[INFO ]: PathExists took 0.121 ms.
+[INFO ]: ReadFileText took 15.650 ms.
+[INFO ]: PathExists took 0.120 ms.
+[INFO ]: IO::LoadImage took 33.156 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'textures/wood-wall.jpg' into memory (512x512).
 [INFO ]: TextureManager: Loaded sampler from cache (2 references).
@@ -37,4 +37,3 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: Key pressed: 70

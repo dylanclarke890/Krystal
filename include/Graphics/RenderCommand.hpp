@@ -4,6 +4,7 @@
 #include "Base/Pointers.hpp"
 #include "Graphics/Handles.hpp"
 #include "Graphics/PrimitiveType.hpp"
+#include "Graphics/Transform.hpp"
 
 namespace Krys::Gfx
 {

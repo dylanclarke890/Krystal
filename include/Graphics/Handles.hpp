@@ -110,9 +110,8 @@ namespace Krys::Impl
   HANDLE_IMPL(Mesh);
   HANDLE_IMPL(Texture);
   HANDLE_IMPL(Sampler);
-  HANDLE_IMPL(RenderEntity);
   HANDLE_IMPL(Light);
-  HANDLE_IMPL(Scene);
+  HANDLE_IMPL(SceneGraph);
   HANDLE_IMPL(Material);
   HANDLE_IMPL(Framebuffer);
   HANDLE_IMPL(RenderTarget);
@@ -176,9 +175,8 @@ namespace Krys::Gfx
   DECLARE_HANDLE(Mesh);
   DECLARE_HANDLE(Texture);
   DECLARE_HANDLE(Sampler);
-  DECLARE_HANDLE(RenderEntity);
   DECLARE_HANDLE(Light);
-  DECLARE_HANDLE(Scene);
+  DECLARE_HANDLE(SceneGraph);
   DECLARE_HANDLE(Material);
   DECLARE_HANDLE(Framebuffer);
   DECLARE_HANDLE(RenderTarget);

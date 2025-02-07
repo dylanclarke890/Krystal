@@ -62,6 +62,9 @@ namespace Krys
   using List = std::vector<T>;
 
   template <typename T>
+  using LinkedList = std::list<T>;
+
+  template <typename T>
   using Queue = std::queue<T>;
 
   template <typename T>
