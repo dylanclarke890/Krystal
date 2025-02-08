@@ -14,6 +14,8 @@ namespace Krys::Gfx
     {
     }
 
+    KRYS_NODE_CLASS_TYPE("directional-light")
+
     virtual ~DirectionalLightNode() noexcept = default;
 
     DirectionalLight &GetLight() noexcept

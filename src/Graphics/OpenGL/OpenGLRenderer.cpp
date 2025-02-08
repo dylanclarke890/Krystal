@@ -1,4 +1,5 @@
 #include "Graphics/OpenGL/OpenGLRenderer.hpp"
+#include "Debug/Macros.hpp"
 #include "Graphics/BufferWriter.hpp"
 #include "Graphics/Cameras/Camera.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
@@ -40,38 +41,50 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLRenderer::Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept
   {
-    if (node->IsLeaf())
-    {
-      auto *materialNode = static_cast<MaterialNode *>(node);
-      auto *meshNode = static_cast<MeshNode *>(materialNode->GetParent());
-
-      auto &mesh = *_ctx.MeshManager->GetMesh(meshNode->GetMesh());
-      auto &material = *_ctx.MaterialManager->GetMaterial(materialNode->GetMaterial());
-
-      auto transform = parentTransform * node->GetLocalTransform();
-      auto view = camera.GetView();
-      auto projection = camera.GetProjection();
-
-      auto &program = static_cast<OpenGLProgram &>(*_ctx.GraphicsContext->GetProgram(material.GetProgram()));
-      program.Bind();
-
-      // TODO: we need to get the index differently once we add PBR materials.
-      SetUniform<int>(program.GetNativeHandle(), "u_MaterialIndex", material.GetHandle().Id());
-      SetUniform(program.GetNativeHandle(), "u_Transform", transform.GetMatrix());
-      SetUniform(program.GetNativeHandle(), "u_View", view);
-      SetUniform(program.GetNativeHandle(), "u_Projection", projection);
-
-      mesh.Bind();
-      if (mesh.IsIndexed())
-        _ctx.GraphicsContext->DrawElements(meshNode->GetType(), static_cast<uint32>(mesh.GetCount()));
-      else
-        _ctx.GraphicsContext->DrawArrays(meshNode->GetType(), static_cast<uint32>(mesh.GetCount()));
-    }
-
     if (!node->IsLeaf())
     {
       for (auto &child : node->GetChildren())
         Render(child.get(), parentTransform * node->GetLocalTransform(), camera);
+    }
+
+    static MaterialHandle activeMaterial {};
+
+    switch (node->GetNodeType())
+    {
+      case SID("material"):
+      {
+        activeMaterial = static_cast<MaterialNode *>(node)->GetMaterial();
+        break;
+      }
+      case SID("mesh"):
+      {
+        auto *meshNode = static_cast<MeshNode *>(node);
+        auto &mesh = *_ctx.MeshManager->GetMesh(meshNode->GetMesh());
+
+        KRYS_ASSERT(activeMaterial.IsValid(), "active material is not valid");
+        auto &material = *_ctx.MaterialManager->GetMaterial(activeMaterial);
+        activeMaterial = MaterialHandle {};
+
+        auto &program =
+          static_cast<OpenGLProgram &>(*_ctx.GraphicsContext->GetProgram(material.GetProgram()));
+        program.Bind();
+
+        // TODO: we need to get the index differently once we add PBR materials.
+        SetUniform<int>(program.GetNativeHandle(), "u_MaterialIndex", material.GetHandle().Id());
+
+        auto transform = parentTransform * node->GetLocalTransform();
+        SetUniform(program.GetNativeHandle(), "u_Transform", transform.GetMatrix());
+
+        SetUniform(program.GetNativeHandle(), "u_View", camera.GetView());
+        SetUniform(program.GetNativeHandle(), "u_Projection", camera.GetProjection());
+
+        mesh.Bind();
+        if (mesh.IsIndexed())
+          _ctx.GraphicsContext->DrawElements(meshNode->GetType(), static_cast<uint32>(mesh.GetCount()));
+        else
+          _ctx.GraphicsContext->DrawArrays(meshNode->GetType(), static_cast<uint32>(mesh.GetCount()));
+      }
+      default: break;
     }
   }
 

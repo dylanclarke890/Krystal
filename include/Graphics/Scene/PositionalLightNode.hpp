@@ -13,6 +13,8 @@ namespace Krys::Gfx
     {
     }
 
+    KRYS_NODE_CLASS_TYPE("positional-light")
+
     virtual ~PositionalLightNode() noexcept = default;
 
     PositionalLightType GetType() const noexcept

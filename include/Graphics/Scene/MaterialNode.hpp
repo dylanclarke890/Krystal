@@ -12,6 +12,8 @@ namespace Krys::Gfx
     {
     }
 
+    KRYS_NODE_CLASS_TYPE("material")
+
     virtual ~MaterialNode() noexcept = default;
 
     MaterialHandle GetMaterial() const noexcept

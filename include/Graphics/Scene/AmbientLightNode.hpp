@@ -13,6 +13,8 @@ namespace Krys::Gfx
     {
     }
 
+    KRYS_NODE_CLASS_TYPE("ambient-light")
+
     virtual ~AmbientLightNode() noexcept = default;
 
     AmbientLight &GetLight() noexcept

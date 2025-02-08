@@ -15,6 +15,8 @@ namespace Krys::Gfx
     {
     }
 
+    KRYS_NODE_CLASS_TYPE("mesh")
+
     MeshHandle GetMesh() const noexcept
     {
       return _mesh;

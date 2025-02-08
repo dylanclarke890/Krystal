@@ -14,6 +14,8 @@ namespace Krys::Gfx
     {
     }
 
+    KRYS_NODE_CLASS_TYPE("point-light")
+
     virtual ~PointLightNode() noexcept = default;
 
     PointLight &GetLight() noexcept

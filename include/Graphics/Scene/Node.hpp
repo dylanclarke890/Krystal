@@ -1,12 +1,29 @@
 #pragma once
 
+#include "Base/Attributes.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Debug/Macros.hpp"
 #include "Graphics/Transform.hpp"
+#include "Utils/StringId.hpp"
 
 namespace Krys::Gfx
 {
+  typedef StringId NodeType;
+  typedef StringIdHasher NodeTypeHasher;
+
+/// @brief Convenience macro for setting up the node type for a derived `Node`.
+/// @param nodeTypeName Must be a string literal. Must be unique across nodes.
+#define KRYS_NODE_CLASS_TYPE(nodeTypeName)                                                                   \
+  NO_DISCARD static NodeType GetStaticType() noexcept                                                        \
+  {                                                                                                          \
+    return SID(nodeTypeName);                                                                                \
+  }                                                                                                          \
+  NO_DISCARD virtual NodeType GetNodeType() const noexcept override                                          \
+  {                                                                                                          \
+    return GetStaticType();                                                                                  \
+  }
+
   class Node
   {
     using parent_t = Node *;
@@ -64,6 +81,16 @@ namespace Krys::Gfx
     NO_DISCARD bool IsLeaf() const noexcept
     {
       return _children.empty();
+    }
+
+    NO_DISCARD static NodeType GetStaticType() noexcept
+    {
+      return SID("node");
+    }
+
+    NO_DISCARD virtual NodeType GetNodeType() const noexcept
+    {
+      return GetStaticType();
     }
 
   protected:

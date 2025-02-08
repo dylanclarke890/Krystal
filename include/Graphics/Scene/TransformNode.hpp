@@ -13,6 +13,8 @@ namespace Krys::Gfx
     {
     }
 
+    KRYS_NODE_CLASS_TYPE("transform")
+
     virtual ~TransformNode() noexcept = default;
 
     const Transform &GetLocalTransform() const noexcept override

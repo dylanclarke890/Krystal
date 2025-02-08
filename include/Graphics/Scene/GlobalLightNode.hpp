@@ -12,6 +12,8 @@ namespace Krys::Gfx
     {
     }
 
+    KRYS_NODE_CLASS_TYPE("global-light")
+
     virtual ~GlobalLightNode() noexcept = default;
 
     virtual bool IsLeafOnly() const noexcept override
