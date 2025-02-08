@@ -1,8 +1,7 @@
 #include "Graphics/Materials/MaterialManager.hpp"
 #include "Graphics/BufferWriter.hpp"
-#include "Graphics/GraphicsContext.hpp"
+#include "Graphics/Colours.hpp"
 #include "Graphics/Materials/Material.hpp"
-#include "Graphics/TextureManager.hpp"
 
 namespace Krys::Gfx
 {

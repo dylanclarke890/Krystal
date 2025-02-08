@@ -1,4 +1,5 @@
 #include "Graphics/TextureManager.hpp"
+#include "Graphics/Colours.hpp"
 #include "IO/Logger.hpp"
 
 #include <sstream>
@@ -194,20 +195,23 @@ namespace Krys::Gfx
     return _textures;
   }
 
+  TextureHandle TextureManager::CreateFlatColourTexture(const Colour &colour, const string &name) noexcept
+  {
+    return CreateTexture(TextureDescriptor {.Name = name,
+                                            .Type = TextureType::Image,
+                                            .Width = 1,
+                                            .Height = 1,
+                                            .Channels = 4,
+                                            .Sampler = DefaultTextureSampler()},
+                         {Colour::AsBytes(colour)});
+  }
+
   TextureHandle TextureManager::GetBlankTexture() noexcept
   {
     static TextureHandle handle {};
 
     if (!handle.IsValid())
-    {
-      handle = CreateTexture(TextureDescriptor {.Name = "Internal_BlankTexture",
-                                                .Type = TextureType::Image,
-                                                .Width = 1,
-                                                .Height = 1,
-                                                .Channels = 4,
-                                                .Sampler = DefaultTextureSampler()},
-                             {byte {0xff}, byte {0xff}, byte {0xff}, byte {0xff}});
-    }
+      handle = CreateFlatColourTexture(Colours::White, "Internal_BlankTexture");
 
     return handle;
   }

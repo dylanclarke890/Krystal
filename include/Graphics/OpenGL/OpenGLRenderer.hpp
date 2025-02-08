@@ -36,6 +36,7 @@ namespace Krys::Gfx::OpenGL
   private:
     ShaderStorageBufferHandle _phongMaterialBufferHandle {}, _textureTableHandle {};
     Ptr<ShaderStorageBuffer> _phongMaterialBuffer {nullptr}, _textureTable {nullptr};
+    ProgramHandle _phongProgram;
 
     template <typename T>
     void SetUniform(GLuint program, const string &name, const T &value) noexcept

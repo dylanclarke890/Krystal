@@ -4,15 +4,16 @@
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Graphics/Buffer.hpp"
+#include "Graphics/Colours.hpp"
+#include "Graphics/GraphicsContext.hpp"
 #include "Graphics/Handles.hpp"
 #include "Graphics/Materials/Material.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
+#include "Graphics/TextureManager.hpp"
+#include "IO/IO.hpp"
 
 namespace Krys::Gfx
 {
-  class GraphicsContext;
-  class TextureManager;
-
   class MaterialManager
   {
   public:
@@ -21,17 +22,17 @@ namespace Krys::Gfx
     // TODO: free buffers on destruction/shutdown
     virtual ~MaterialManager() noexcept = default;
 
-    /// @brief Creates a material.
+    /// @brief Creates a phong material.
     /// @tparam Args The types of the arguments to pass to the material's constructor.
-    /// @param program The program to use with the material.
     /// @param args The arguments to pass to the material's constructor.
     /// @return The handle of the created material.
-    template <typename T, typename... Args>
-    requires std::derived_from<T, Material>
-    NO_DISCARD MaterialHandle CreateMaterial(ProgramHandle program, Args... args) noexcept
+    template <typename... Args>
+    NO_DISCARD MaterialHandle CreatePhongMaterial(Args &&...args) noexcept
     {
       auto handle = _materialHandles.Next();
-      _materials[handle] = CreateUnique<T>(handle, program, std::forward<Args>(args)...);
+      auto program = GetDefaultPhongProgram();
+
+      _materials[handle] = CreateUnique<PhongMaterial>(handle, program, std::forward<Args>(args)...);
       return handle;
     }
 
@@ -58,6 +59,36 @@ namespace Krys::Gfx
 
     /// @brief Gets the materials.
     NO_DISCARD MaterialHandleMap<Unique<Material>> &GetMaterials() noexcept;
+
+    NO_DISCARD MaterialHandle GetDefaultPhongMaterial() noexcept
+    {
+      static MaterialHandle handle {};
+
+      if (!handle.IsValid())
+      {
+        auto pinkTexture = _textureManager->CreateFlatColourTexture(Colours::Lime);
+        handle = CreatePhongMaterial(pinkTexture);
+      }
+
+      return handle;
+    }
+
+    NO_DISCARD ProgramHandle GetDefaultPhongProgram() noexcept
+    {
+      static ProgramHandle handle {};
+
+      if (!handle.IsValid())
+      {
+        auto vertexShader =
+          _ctx->CreateShader(ShaderStage::Vertex, IO::ReadFileText("shaders/phong.vert"));
+        auto fragmentShader =
+          _ctx->CreateShader(ShaderStage::Fragment, IO::ReadFileText("shaders/phong.frag"));
+
+        handle = _ctx->CreateProgram(vertexShader, fragmentShader);
+      }
+
+      return handle;
+    }
 
   protected:
     MaterialHandleMap<Unique<Material>> _materials;

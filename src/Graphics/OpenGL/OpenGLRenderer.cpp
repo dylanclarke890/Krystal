@@ -47,7 +47,7 @@ namespace Krys::Gfx::OpenGL
         Render(child.get(), parentTransform * node->GetLocalTransform(), camera);
     }
 
-    static MaterialHandle activeMaterial {};
+    static MaterialHandle activeMaterial = _ctx.MaterialManager->GetDefaultPhongMaterial();
 
     switch (node->GetNodeType())
     {
@@ -61,9 +61,8 @@ namespace Krys::Gfx::OpenGL
         auto *meshNode = static_cast<MeshNode *>(node);
         auto &mesh = *_ctx.MeshManager->GetMesh(meshNode->GetMesh());
 
-        KRYS_ASSERT(activeMaterial.IsValid(), "active material is not valid");
         auto &material = *_ctx.MaterialManager->GetMaterial(activeMaterial);
-        activeMaterial = MaterialHandle {};
+        activeMaterial = _ctx.MaterialManager->GetDefaultPhongMaterial();
 
         auto &program =
           static_cast<OpenGLProgram &>(*_ctx.GraphicsContext->GetProgram(material.GetProgram()));

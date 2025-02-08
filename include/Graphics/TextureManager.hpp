@@ -42,6 +42,11 @@ namespace Krys::Gfx
     NO_DISCARD TextureHandle CreateTexture(const TextureDescriptor &descriptor,
                                            const List<byte> &data = {}) noexcept;
 
+    /// @brief Create a texture from a flat colour.
+    /// @param name The descriptor of the texture.
+    /// @param colour The colour to use for the texture
+    NO_DISCARD TextureHandle CreateFlatColourTexture(const Colour &colour, const string &name = {}) noexcept;
+
     /// @brief Loads a texture from a file.
     /// @param path The path to the file.
     /// @param descriptor The descriptor of the texture. Can be left empty to use defaults.
