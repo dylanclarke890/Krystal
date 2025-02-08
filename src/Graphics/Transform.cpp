@@ -13,17 +13,17 @@ namespace Krys::Impl
   {
     const auto &[x, y, z, w] = matrix[3];
     const Vec3 translation {x, y, z};
-    const Vec3 scale = {MTL::Length(matrix[0u]), MTL::Length(matrix[1u]), MTL::Length(matrix[2u])};
+    const Vec3 scale {MTL::Length(matrix[0u]), MTL::Length(matrix[1u]), MTL::Length(matrix[2u])};
 
     // convert upper left 3x3 matrix to rotation matrix
     const auto &[c00, c01, c02, c03] = matrix[0];
     const auto &[c10, c11, c12, c13] = matrix[1];
     const auto &[c20, c21, c22, c23] = matrix[2];
 
-    Mat4 rotationMatrix = Mat4 {{c00 / scale.x, c01 / scale.y, c02 / scale.z, 0.0f},
-                                {c10 / scale.x, c11 / scale.y, c12 / scale.z, 0.0f},
-                                {c20 / scale.x, c21 / scale.y, c22 / scale.z, 0.0f},
-                                {0.0f, 0.0f, 0.0f, 1.0f}};
+    Mat4 rotationMatrix {{c00 / scale.x, c01 / scale.y, c02 / scale.z, 0.0f},
+                         {c10 / scale.x, c11 / scale.y, c12 / scale.z, 0.0f},
+                         {c20 / scale.x, c21 / scale.y, c22 / scale.z, 0.0f},
+                         {0.0f, 0.0f, 0.0f, 1.0f}};
 
     // extract rotation
     Quat rotation {rotationMatrix};
@@ -34,11 +34,11 @@ namespace Krys::Impl
 
 namespace Krys::Gfx
 {
-  Transform::Transform() noexcept : Transform(Vec3 {}, Quat {}, {1.0f})
+  Transform::Transform() noexcept : Transform(Vec3 {}, Quat {}, Vec3 {1.0f})
   {
   }
 
-  Transform::Transform(const Mat4 &matrix) noexcept : Transform(Vec3 {0.0f}, Quat {}, {0.0f})
+  Transform::Transform(const Mat4 &matrix) noexcept : Transform(Vec3 {0.0f}, Quat {}, Vec3 {0.0f})
   {
     const auto [translation, rotation, scale] = Impl::Decompose(matrix);
 

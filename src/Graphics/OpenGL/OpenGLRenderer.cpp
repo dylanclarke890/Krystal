@@ -1,5 +1,6 @@
 #include "Graphics/OpenGL/OpenGLRenderer.hpp"
 #include "Graphics/BufferWriter.hpp"
+#include "Graphics/Cameras/Camera.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
 #include "Graphics/OpenGL/OpenGLBuffer.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
@@ -8,6 +9,9 @@
 #include "Graphics/OpenGL/OpenGLProgram.hpp"
 #include "Graphics/OpenGL/OpenGLTexture.hpp"
 #include "Graphics/OpenGL/OpenGLTextureManager.hpp"
+#include "Graphics/Scene/MaterialNode.hpp"
+#include "Graphics/Scene/MeshNode.hpp"
+#include "Graphics/Scene/Node.hpp"
 
 namespace Krys::Gfx::OpenGL
 {
@@ -25,37 +29,50 @@ namespace Krys::Gfx::OpenGL
     _textureTable = _ctx.GraphicsContext->GetShaderStorageBuffer(_textureTableHandle);
   }
 
-  void OpenGLRenderer::Execute() noexcept
+  void OpenGLRenderer::BeforeRender() noexcept
   {
     UpdateMaterialBuffers();
     UpdateTextureTable();
 
     static_cast<OpenGLShaderStorageBuffer &>(*_phongMaterialBuffer).Bind(0);
     static_cast<OpenGLShaderStorageBuffer &>(*_textureTable).Bind(1);
+  }
 
-    for (const auto &command : _commands)
+  void OpenGLRenderer::Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept
+  {
+    if (node->IsLeaf())
     {
-      auto &program = static_cast<OpenGLProgram &>(*_ctx.GraphicsContext->GetProgram(command.Program));
+      auto *materialNode = static_cast<MaterialNode *>(node);
+      auto *meshNode = static_cast<MeshNode *>(materialNode->GetParent());
+
+      auto &mesh = *_ctx.MeshManager->GetMesh(meshNode->GetMesh());
+      auto &material = *_ctx.MaterialManager->GetMaterial(materialNode->GetMaterial());
+
+      auto transform = parentTransform * node->GetLocalTransform();
+      auto view = camera.GetView();
+      auto projection = camera.GetProjection();
+
+      auto &program = static_cast<OpenGLProgram &>(*_ctx.GraphicsContext->GetProgram(material.GetProgram()));
       program.Bind();
 
-      KRYS_ASSERT(command.Mesh.IsValid(), "Mesh was not provided.");
-      KRYS_ASSERT(command.Material.IsValid(), "Material was not provided.");
-
-      auto &mesh = *_ctx.MeshManager->GetMesh(command.Mesh);
-      auto &material = *_ctx.MaterialManager->GetMaterial(command.Material);
-
       // TODO: we need to get the index differently once we add PBR materials.
-      SetUniform(program.GetNativeHandle(), "u_MaterialIndex", static_cast<int>(material.GetHandle().Id()));
-      SetUniform(program.GetNativeHandle(), "u_Transform", Mat4(1.0f));
+      SetUniform<int>(program.GetNativeHandle(), "u_MaterialIndex", material.GetHandle().Id());
+      SetUniform(program.GetNativeHandle(), "u_Transform", transform.GetMatrix());
+      SetUniform(program.GetNativeHandle(), "u_View", view);
+      SetUniform(program.GetNativeHandle(), "u_Projection", projection);
 
       mesh.Bind();
       if (mesh.IsIndexed())
-        _ctx.GraphicsContext->DrawElements(command.Type, static_cast<uint32>(mesh.GetCount()));
+        _ctx.GraphicsContext->DrawElements(meshNode->GetType(), static_cast<uint32>(mesh.GetCount()));
       else
-        _ctx.GraphicsContext->DrawArrays(command.Type, static_cast<uint32>(mesh.GetCount()));
+        _ctx.GraphicsContext->DrawArrays(meshNode->GetType(), static_cast<uint32>(mesh.GetCount()));
     }
 
-    _commands.clear();
+    if (!node->IsLeaf())
+    {
+      for (auto &child : node->GetChildren())
+        Render(child.get(), parentTransform * node->GetLocalTransform(), camera);
+    }
   }
 
   void OpenGLRenderer::UpdateMaterialBuffers() noexcept

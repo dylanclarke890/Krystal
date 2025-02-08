@@ -7,9 +7,9 @@
 
 namespace Krys::Gfx
 {
-  class Node : public std::enable_shared_from_this<Node>
+  class Node
   {
-    using parent_t = WeakRef<Node>;
+    using parent_t = Node *;
     using child_t = Ref<Node>;
     using children_t = List<child_t>;
 
@@ -25,7 +25,7 @@ namespace Krys::Gfx
       KRYS_ASSERT(!IsLeafOnly(), "Cannot add a child to a leaf node.");
       KRYS_ASSERT(child, "Cannot add a null child to a node.");
 
-      child->_parent = parent_t(shared_from_this());
+      child->_parent = parent_t(this);
       _children.push_back(child);
     }
 
@@ -46,28 +46,24 @@ namespace Krys::Gfx
       return _children;
     }
 
-    // TODO: I don't like the current implementation of transforms
-
-    /// @brief Update the world transforms of this node and its children.
-    void UpdateTransforms(const Transform &parentWorldTransform = {})
+    /// @brief Returns the local transform of this node.
+    virtual const Transform &GetLocalTransform() const noexcept
     {
-      Transform worldTransform = ComputeWorldTransform(parentWorldTransform);
-      for (auto &child : _children)
-        child->UpdateTransforms(worldTransform);
-    }
-
-    /// @brief Compute the world transform of this node.
-    /// @param parentWorldTransform The world transform of the parent node.
-    /// @return The world transform of this node.
-    virtual Transform ComputeWorldTransform(const Transform &parentWorldTransform) noexcept
-    {
-      return parentWorldTransform;
+      // Identity transform for non-transform nodes.
+      static Transform localTransform;
+      return localTransform;
     }
 
     /// @brief Returns true if this node type can only be a leaf node.
     virtual bool IsLeafOnly() const noexcept
     {
       return false;
+    }
+
+    /// @brief Returns true if this node is currently a leaf node.
+    NO_DISCARD bool IsLeaf() const noexcept
+    {
+      return _children.empty();
     }
 
   protected:

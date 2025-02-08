@@ -1,7 +1,10 @@
 #include "Graphics/Renderer.hpp"
+#include "Graphics/Cameras/Camera.hpp"
 #include "Graphics/MaterialManager.hpp"
 #include "Graphics/MeshManager.hpp"
+#include "Graphics/Scene/SceneGraph.hpp"
 #include "Graphics/TextureManager.hpp"
+#include "Graphics/Transform.hpp"
 
 namespace Krys::Gfx
 {
@@ -9,8 +12,14 @@ namespace Krys::Gfx
   {
   }
 
-  void Renderer::Submit(const RenderCommand &command) noexcept
+  void Renderer::BeforeRender() noexcept
   {
-    _commands.push_back(command);
+  }
+
+  void Renderer::Render(SceneGraph *scene, Camera &camera) noexcept
+  {
+    BeforeRender();
+    auto *root = scene->GetRoot();
+    Render(root, {}, camera);
   }
 }

@@ -2,11 +2,15 @@
 
 #include "Base/Pointers.hpp"
 #include "Graphics/GraphicsContext.hpp"
-#include "Graphics/RenderCommand.hpp"
 #include "Graphics/RenderContext.hpp"
 
 namespace Krys::Gfx
 {
+  class SceneGraph;
+  class Camera;
+  class Node;
+  class Transform;
+
   class Renderer
   {
   public:
@@ -14,13 +18,15 @@ namespace Krys::Gfx
 
     virtual void Init() noexcept = 0;
 
-    void Submit(const RenderCommand &command) noexcept;
-    virtual void Execute() noexcept = 0;
+    void Render(SceneGraph *scene, Camera &camera) noexcept;
 
   protected:
+    virtual void BeforeRender() noexcept;
+
+    virtual void Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept = 0;
+
     Renderer(RenderContext ctx) noexcept;
 
     RenderContext _ctx;
-    List<RenderCommand> _commands {};
   };
 }

@@ -29,7 +29,9 @@ namespace Krys::Gfx::OpenGL
 
     void Init() noexcept override;
 
-    void Execute() noexcept override;
+  protected:
+    void BeforeRender() noexcept override;
+    void Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept override;
 
   private:
     ShaderStorageBufferHandle _phongMaterialBufferHandle {}, _textureTableHandle {};
@@ -93,6 +95,7 @@ namespace Krys::Gfx::OpenGL
 
     void UpdateTextureTable() noexcept;
 
-    PhongMaterialData GetBufferDataFromPhongMaterial(const PhongMaterial &mat, int blankTextureIndex) noexcept;
+    PhongMaterialData GetBufferDataFromPhongMaterial(const PhongMaterial &mat,
+                                                     int blankTextureIndex) noexcept;
   };
 }
