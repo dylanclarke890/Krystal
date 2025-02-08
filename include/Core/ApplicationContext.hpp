@@ -9,7 +9,7 @@
 #include "Core/WindowManager.hpp"
 #include "Events/EventManager.hpp"
 #include "Graphics/GraphicsContext.hpp"
-#include "Graphics/MaterialManager.hpp"
+#include "Graphics/Materials/MaterialManager.hpp"
 #include "Graphics/MeshManager.hpp"
 #include "Graphics/Renderer.hpp"
 #include "Graphics/Scene/SceneGraphManager.hpp"

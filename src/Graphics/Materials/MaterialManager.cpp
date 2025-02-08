@@ -1,4 +1,4 @@
-#include "Graphics/MaterialManager.hpp"
+#include "Graphics/Materials/MaterialManager.hpp"
 #include "Graphics/BufferWriter.hpp"
 #include "Graphics/GraphicsContext.hpp"
 #include "Graphics/Materials/Material.hpp"

@@ -9,6 +9,11 @@ namespace Krys::Gfx
   {
   }
 
+  MeshHandle Mesh::GetHandle() const noexcept
+  {
+    return _handle;
+  }
+
   const List<Mesh::vertex_t> &Mesh::GetVertices() const noexcept
   {
     return _vertices;

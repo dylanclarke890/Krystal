@@ -1,6 +1,6 @@
 #include "Graphics/Renderer.hpp"
 #include "Graphics/Cameras/Camera.hpp"
-#include "Graphics/MaterialManager.hpp"
+#include "Graphics/Materials/MaterialManager.hpp"
 #include "Graphics/MeshManager.hpp"
 #include "Graphics/Scene/SceneGraph.hpp"
 #include "Graphics/TextureManager.hpp"
