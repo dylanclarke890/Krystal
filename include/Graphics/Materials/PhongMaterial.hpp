@@ -11,17 +11,10 @@ namespace Krys::Gfx
 {
   struct PhongMaterialData
   {
-    Vec3 AmbientColour;
-    float Padding0{0};
-    Vec3 DiffuseColour;
-    float Padding1{0};
-    Vec3 SpecularColour;
-    float Shininess{32};
-
     int AmbientTexture;
     int DiffuseTexture;
     int SpecularTexture;
-    int Padding2{0};
+    float Shininess{32};
   };
 
   class PhongMaterial : public Material

@@ -4,15 +4,10 @@
 
 struct Material
 {
-  vec3 Ambient;
-  float Padding1;
-  vec3 Diffuse;
-  float Padding2;
-  vec3 Specular;
-  float Shininess;
   int AmbientTexture;
   int DiffuseTexture;
   int SpecularTexture;
+  float Shininess;
 };
 
 struct PointLight
@@ -61,7 +56,7 @@ void main()
   vec3 normal = normalize((u_Normal * v_Normal.xyz));
 
   vec4 ambient = GetTextureSample(material.AmbientTexture, v_TextureCoords);
-  ambient += v_Colour * vec4(material.Ambient, 1);
+  ambient *= v_Colour;
   
   o_Colour = ambient * vec4(light.Intensity, 1) * 0.1;
 }

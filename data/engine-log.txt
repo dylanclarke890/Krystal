@@ -9,14 +9,14 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 5 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: PathExists took 0.270 ms.
-[INFO ]: IO::LoadImage took 16.315 ms.
+[INFO ]: PathExists took 0.156 ms.
+[INFO ]: IO::LoadImage took 15.748 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'textures/wood-wall.jpg' into memory (512x512).
-[INFO ]: PathExists took 0.119 ms.
-[INFO ]: ReadFileText took 0.188 ms.
-[INFO ]: PathExists took 0.076 ms.
-[INFO ]: ReadFileText took 0.258 ms.
+[INFO ]: PathExists took 0.138 ms.
+[INFO ]: ReadFileText took 0.263 ms.
+[INFO ]: PathExists took 0.120 ms.
+[INFO ]: ReadFileText took 14.277 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (2 references).
 [INFO ]: TextureManager: Created 'Internal_BlankTexture' (1x1).
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
@@ -114,248 +114,614 @@
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.039124805, -0.99056584, 0.13133365)
+[INFO ]: FinalPos: (0.08078712, 0.0032342195, -9.999674)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.7198712, -0.6847581, -0.11354151)
+[INFO ]: FinalPos: (0.3991013, 0.33692104, -9.986351)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.6690541, -0.73731613, -0.09344226)
+[INFO ]: FinalPos: (0.8602362, 0.74959576, -9.934693)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.6939105, -0.71286154, -0.101570845)
+[INFO ]: FinalPos: (1.3150337, 1.1812222, -9.842532)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.74023604, -0.66259515, -0.11409767)
+[INFO ]: FinalPos: (1.683532, 1.5786952, -9.730027)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.74177516, -0.6608141, -0.114430055)
+[INFO ]: FinalPos: (1.998899, 1.9169383, -9.608838)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.74254763, -0.6599239, -0.11455809)
+[INFO ]: FinalPos: (2.2630196, 2.1983132, -9.489267)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.7331253, -0.67057455, -0.11338913)
+[INFO ]: FinalPos: (2.5080957, 2.4495046, -9.365328)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.68807685, -0.717347, -0.10937833)
+[INFO ]: FinalPos: (2.8398178, 2.7419689, -9.187876)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.706739, -0.6988356, -0.110221684)
+[INFO ]: FinalPos: (3.0475764, 2.9339821, -9.061127)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.683655, -0.72149193, -0.10984191)
+[INFO ]: FinalPos: (3.2673683, 3.1212509, -8.920878)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.799236, -0.60100603, -0.0036783395)
-[INFO ]: FinalPos: (0.13238433, 0.17603385, -9.997575)
+[INFO ]: Axis: (0.7046151, -0.7010799, -0.10956427)
+[INFO ]: FinalPos: (3.4981365, 3.3293452, -8.756626)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.8155348, -0.57856286, -0.012969949)
-[INFO ]: FinalPos: (0.29759407, 0.40878758, -9.987208)
+[INFO ]: Axis: (0.7427878, -0.66084373, -0.107480295)
+[INFO ]: FinalPos: (3.72437, 3.559071, -8.571003)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.8556768, -0.51624537, -0.036166865)
-[INFO ]: FinalPos: (0.6606519, 1.0085775, -9.927051)
+[INFO ]: Axis: (0.555353, -0.8228746, -0.12025184)
+[INFO ]: FinalPos: (3.949479, 3.6810284, -8.417344)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.85422325, -0.5186981, -0.035423163)
-[INFO ]: FinalPos: (0.9523093, 1.485114, -9.843148)
+[INFO ]: Axis: (0.6087369, -0.78480643, -0.11626777)
+[INFO ]: FinalPos: (4.14332, 3.8041527, -8.268091)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.8043927, -0.5938998, -0.015343914)
-[INFO ]: FinalPos: (1.4249141, 2.1159112, -9.669156)
+[INFO ]: Axis: (0.7333117, -0.6723896, -0.100727774)
+[INFO ]: FinalPos: (4.2786474, 3.9340365, -8.137354)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.82308656, -0.5675367, -0.020754157)
-[INFO ]: FinalPos: (2.0189605, 2.961897, -9.335468)
+[INFO ]: Axis: (0.6118882, -0.7820288, -0.11842266)
+[INFO ]: FinalPos: (4.467452, 4.051891, -7.9764676)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.80378103, -0.5946638, -0.017634364)
-[INFO ]: FinalPos: (2.6310596, 3.7645001, -8.882909)
+[INFO ]: Axis: (0.5985734, -0.79197556, -0.120352335)
+[INFO ]: FinalPos: (4.6933017, 4.183748, -7.7761927)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.73646915, -0.6762953, -0.015427158)
-[INFO ]: FinalPos: (3.317312, 4.46015, -8.312791)
+[INFO ]: Axis: (0.52076083, -0.84334093, -0.13260587)
+[INFO ]: FinalPos: (4.9295883, 4.283315, -7.573135)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.7333055, -0.67971843, -0.0156778)
-[INFO ]: FinalPos: (3.8232417, 4.9556513, -7.798996)
+[INFO ]: Axis: (0.6027352, -0.7892456, -0.117480114)
+[INFO ]: FinalPos: (5.147175, 4.405977, -7.35486)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.7394497, -0.6730523, -0.014657244)
-[INFO ]: FinalPos: (4.3143444, 5.436558, -7.1993256)
+[INFO ]: Axis: (0.6133194, -0.7814094, -0.11505903)
+[INFO ]: FinalPos: (5.3846884, 4.541772, -7.0977073)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.7520402, -0.65901935, -0.01135999)
-[INFO ]: FinalPos: (4.7373276, 5.8627934, -6.57156)
+[INFO ]: Axis: (0.021732174, -0.97624516, -0.21557617)
+[INFO ]: FinalPos: (5.487259, 4.5155354, -7.03562)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.72112066, -0.69245803, -0.022064542)
-[INFO ]: FinalPos: (5.1603303, 6.2220807, -5.8869963)
+[INFO ]: Axis: (0.8735113, -0.48651618, -0.016727958)
+[INFO ]: FinalPos: (5.544808, 4.619404, -6.9221535)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.6429422, -0.7640507, -0.05340167)
-[INFO ]: FinalPos: (5.5402956, 6.429441, -5.2884245)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.64076555, -0.7658088, -0.05437235)
-[INFO ]: FinalPos: (5.857925, 6.5822725, -4.728468)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.5265899, -0.84319544, -0.10827956)
-[INFO ]: FinalPos: (6.2759047, 6.6430306, -4.059949)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.47363847, -0.8704024, -0.13441099)
-[INFO ]: FinalPos: (6.4649563, 6.639126, -3.7585063)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.10519361, -0.9509724, -0.2908366)
-[INFO ]: FinalPos: (6.6718082, 6.5428495, -3.5606327)
+[INFO ]: Axis: (0.025491104, -0.9741442, -0.22448418)
+[INFO ]: FinalPos: (5.607992, 4.6024957, -6.8824034)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.5625392, -0.82332987, -0.075349756)
-[INFO ]: FinalPos: (6.826416, 6.547754, -3.2445292)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.121195585, -0.9472889, -0.29657295)
-[INFO ]: FinalPos: (6.9717665, 6.4682665, -3.0912795)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.12630454, -0.94728845, -0.29443467)
-[INFO ]: FinalPos: (7.1249084, 6.3784018, -2.9243226)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.13123359, -0.9472895, -0.2922675)
-[INFO ]: FinalPos: (7.2553616, 6.296525, -2.7773187)
+[INFO ]: Axis: (0.90478754, -0.42582414, 0.0057706684)
+[INFO ]: FinalPos: (5.6627893, 4.728802, -6.750649)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.13563843, -0.9472896, -0.2902494)
-[INFO ]: FinalPos: (7.373832, 6.2175984, -2.6397095)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.13951032, -0.9472907, -0.28840467)
-[INFO ]: FinalPos: (7.4710755, 6.1493354, -2.5236285)
+[INFO ]: Axis: (0.029864753, -0.9715001, -0.23515064)
+[INFO ]: FinalPos: (5.7749863, 4.6973763, -6.6771417)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.1430353, -0.9472904, -0.2866735)
-[INFO ]: FinalPos: (7.56697, 6.078745, -2.406211)
+[INFO ]: Axis: (0.84772885, -0.5301033, -0.018607434)
+[INFO ]: FinalPos: (5.8741417, 4.853832, -6.4757085)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.14655608, -0.9472909, -0.28488818)
-[INFO ]: FinalPos: (7.661525, 6.0057435, -2.2873788)
+[INFO ]: Axis: (0.64812046, -0.7541348, -0.10592723)
+[INFO ]: FinalPos: (5.9994974, 4.930203, -6.3007255)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.1502566, -0.94729036, -0.28295583)
-[INFO ]: FinalPos: (7.763815, 5.9227047, -2.155163)
+[INFO ]: Axis: (0.04226875, -0.9653063, -0.25767642)
+[INFO ]: FinalPos: (6.191155, 4.869231, -6.1611853)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.15466438, -0.94728863, -0.2805765)
-[INFO ]: FinalPos: (7.891361, 5.8127513, -1.9845253)
+[INFO ]: Axis: (0.59665954, -0.79424214, -0.11478988)
+[INFO ]: FinalPos: (6.445868, 4.981202, -5.7998624)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.15871212, -0.9472911, -0.2782985)
-[INFO ]: FinalPos: (7.9717817, 5.739448, -1.8733529)
+[INFO ]: Axis: (0.40262792, -0.8967117, -0.18384445)
+[INFO ]: FinalPos: (6.7523727, 4.993845, -5.4283504)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.16187966, -0.9472905, -0.27647024)
-[INFO ]: FinalPos: (8.050854, 5.6641216, -1.7611136)
+[INFO ]: Axis: (0.07027055, -0.9573521, -0.28024817)
+[INFO ]: FinalPos: (7.0688086, 4.8580565, -5.141133)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.16434516, -0.947292, -0.27500638)
-[INFO ]: FinalPos: (8.094144, 5.6214256, -1.6983494)
+[INFO ]: Axis: (0.07827939, -0.9573564, -0.27810258)
+[INFO ]: FinalPos: (7.3014584, 4.74669, -4.915045)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.16610369, -0.9472921, -0.2739478)
-[INFO ]: FinalPos: (8.137127, 5.577966, -1.6350706)
+[INFO ]: Axis: (0.084562235, -0.9573585, -0.27624992)
+[INFO ]: FinalPos: (7.486846, 4.650132, -4.724768)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.16786501, -0.9472922, -0.2728714)
-[INFO ]: FinalPos: (8.179647, 5.5338783, -1.5714836)
+[INFO ]: Axis: (0.08943293, -0.9573604, -0.27470517)
+[INFO ]: FinalPos: (7.617897, 4.577292, -4.5843225)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.0930435, -0.9573613, -0.27349997)
+[INFO ]: FinalPos: (7.717024, 4.5194826, -4.474576)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.096344724, -0.95736116, -0.2723551)
+[INFO ]: FinalPos: (7.82434, 4.45408, -4.3521113)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.10233785, -0.95735276, -0.2701901)
+[INFO ]: FinalPos: (8.079709, 4.2854915, -4.043868)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.41584626, -0.8035479, -0.42589045)
+[INFO ]: FinalPos: (8.236118, 4.0576262, -3.9625807)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.3421752, -0.84622335, -0.4084389)
+[INFO ]: FinalPos: (8.41261, 3.8033352, -3.8422163)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.39697355, -0.8144466, -0.4231887)
+[INFO ]: FinalPos: (8.55551, 3.5651565, -3.754056)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.424163, -0.7966111, -0.43069312)
+[INFO ]: FinalPos: (8.659916, 3.372123, -3.6925168)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.10893424, -0.9691934, -0.22090165)
+[INFO ]: FinalPos: (8.75101, 3.2818651, -3.5565672)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.9007286, 0.11610089, -0.41857928)
+[INFO ]: FinalPos: (8.741812, 3.1766565, -3.6728117)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.16681549, 0.94729, 0.27352172)
-[INFO ]: FinalPos: (8.08562, 5.6299176, -1.7107873)
+[INFO ]: Axis: (0.106116734, -0.97195005, -0.20988686)
+[INFO ]: FinalPos: (8.807208, 3.1083865, -3.573661)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.16050504, 0.9472801, 0.27730587)
-[INFO ]: FinalPos: (7.8644, 5.8366137, -2.0211806)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.14790332, 0.94725114, 0.28432363)
-[INFO ]: FinalPos: (7.4227962, 6.1835723, -2.5817707)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.12772949, 0.94721144, 0.29406753)
-[INFO ]: FinalPos: (6.7321134, 6.596251, -3.3418746)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.10149505, 0.94718504, 0.30420277)
-[INFO ]: FinalPos: (5.842329, 6.961495, -4.1719027)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.07306474, 0.947193, 0.31222913)
-[INFO ]: FinalPos: (4.904091, 7.1976266, -4.9136624)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.046743076, 0.9472208, 0.3171559)
-[INFO ]: FinalPos: (4.0548844, 7.307295, -5.491937)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.024682881, 0.9472459, 0.31955573)
-[INFO ]: FinalPos: (3.3421452, 7.3343663, -5.9192195)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.007401672, 0.9472664, 0.32036158)
-[INFO ]: FinalPos: (2.7952728, 7.31881, -6.214617)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.009166992, 0.9472526, 0.3203569)
-[INFO ]: FinalPos: (2.1050146, 7.2571836, -6.549977)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.369321, 0.87354004, 0.3170644)
-[INFO ]: FinalPos: (1.7711377, 7.058934, -6.858172)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.30876023, 0.896101, 0.3188576)
-[INFO ]: FinalPos: (1.4224921, 6.862598, -7.1331115)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.3091208, 0.8959746, 0.3188633)
-[INFO ]: FinalPos: (1.1418189, 6.688259, -7.3459806)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.35880065, 0.8766301, 0.32059613)
-[INFO ]: FinalPos: (0.91577065, 6.5170183, -7.529266)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.56421655, 0.76001644, 0.3225441)
-[INFO ]: FinalPos: (0.7724766, 6.3132825, -7.716589)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.5581818, 0.76443404, 0.32260457)
-[INFO ]: FinalPos: (0.629221, 6.1031327, -7.896572)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.05381122, 0.967765, 0.246039)
-[INFO ]: FinalPos: (0.501596, 6.063298, -7.9362974)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (-0.97738653, -0.05348788, 0.20458417)
-[INFO ]: FinalPos: (0.57189506, 5.9638824, -8.006563)
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
-[INFO ]: Axis: (0.053659737, 0.97012794, 0.23658484)
-[INFO ]: FinalPos: (0.48667353, 5.936235, -8.032701)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.89666325, 0.11383371, -0.42782822)
+[INFO ]: FinalPos: (8.797854, 3.0215917, -3.6698463)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.3938108, 0.9183975, 0.038198773)
+[INFO ]: FinalPos: (8.602092, 3.1233637, -4.0309587)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.40142864, 0.9152664, 0.03380087)
+[INFO ]: FinalPos: (8.275205, 3.261688, -4.569726)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.34250343, 0.93734175, 0.0638897)
+[INFO ]: FinalPos: (7.303823, 3.628254, -5.7870502)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.37076575, 0.927194, 0.05332989)
+[INFO ]: FinalPos: (6.4419723, 3.8031554, -6.6360393)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.3388853, 0.93876755, 0.06222739)
+[INFO ]: FinalPos: (5.484216, 3.9506173, -7.36994)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.32527956, 0.94339824, 0.06475258)
+[INFO ]: FinalPos: (4.506849, 4.043318, -7.9586353)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.36486548, 0.9290863, 0.060595054)
+[INFO ]: FinalPos: (3.6835647, 4.038499, -8.37388)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.3013319, 0.9514336, 0.06303426)
+[INFO ]: FinalPos: (2.996563, 4.051957, -8.6372595)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.32287645, 0.944318, 0.06335778)
+[INFO ]: FinalPos: (2.511293, 4.0359163, -8.798001)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.0033835117, 0.99901175, 0.044317897)
+[INFO ]: FinalPos: (2.2113822, 4.1144595, -8.842005)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.6326052, 0.769308, 0.08930847)
+[INFO ]: FinalPos: (1.9540722, 3.9991713, -8.954789)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.0034121785, 0.9995043, 0.031296637)
+[INFO ]: FinalPos: (1.7714889, 4.0421286, -8.973463)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.5338264, 0.8409745, 0.08826816)
+[INFO ]: FinalPos: (1.3993657, 3.919659, -9.092747)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.4753545, 0.8760816, 0.080740824)
+[INFO ]: FinalPos: (1.1302454, 3.8463163, -9.161244)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.52372885, 0.8473201, 0.08807334)
+[INFO ]: FinalPos: (0.8907547, 3.763614, -9.221809)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.68710357, 0.7171929, 0.1162885)
+[INFO ]: FinalPos: (0.728353, 3.6642098, -9.27594)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.0020198494, 0.99993825, -0.010926052)
+[INFO ]: FinalPos: (0.618784, 3.6831272, -9.276404)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.89003885, 0.4256959, 0.16313714)
+[INFO ]: FinalPos: (0.3443691, 3.3136764, -9.42873)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.75808185, 0.63958955, 0.12742476)
+[INFO ]: FinalPos: (-0.22258584, 2.8405871, -9.585485)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.78188396, 0.60849214, 0.13562757)
+[INFO ]: FinalPos: (-0.99652, 2.0935779, -9.727481)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.7808979, 0.6098632, 0.1351489)
+[INFO ]: FinalPos: (-1.8322905, 1.2217058, -9.754496)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.7915486, 0.5943475, 0.14213306)
+[INFO ]: FinalPos: (-2.3411722, 0.6302499, -9.701635)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.779222, 0.61255246, 0.13263665)
+[INFO ]: FinalPos: (-2.6498847, 0.27088588, -9.638711)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.7930655, 0.5917821, 0.14436395)
+[INFO ]: FinalPos: (-2.8055859, 0.07507062, -9.598077)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.9295259, 0.112405285, 0.35120744)
+[INFO ]: FinalPos: (-2.8309107, -0.086651646, -9.59054)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.112057894, 0.9573627, -0.26627)
+[INFO ]: FinalPos: (-2.9089482, -0.09292269, -9.567101)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.9274438, 0.11835284, 0.35474023)
+[INFO ]: FinalPos: (-2.9298453, -0.22791302, -9.558456)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.9683507, -0.22717935, -0.103374906)
+[INFO ]: FinalPos: (-2.7271972, 0.5231498, -9.606704)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.9788325, -0.16169176, -0.1254696)
+[INFO ]: FinalPos: (-2.5208564, 1.3963573, -9.575777)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.98173654, -0.13704345, -0.13195635)
+[INFO ]: FinalPos: (-2.2734323, 2.3785458, -9.443203)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.9850683, -0.10237877, -0.13841611)
+[INFO ]: FinalPos: (-2.041678, 3.2727427, -9.2260895)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.9888374, -0.012141507, -0.14850304)
+[INFO ]: FinalPos: (-1.9140239, 3.91161, -9.001989)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.9888388, -0.0055819643, -0.14888471)
+[INFO ]: FinalPos: (-1.7926843, 4.4568944, -8.77054)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.9756793, -0.16508321, -0.14421335)
+[INFO ]: FinalPos: (-1.6173538, 4.8581495, -8.589678)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.9896114, 0.004439697, -0.14369926)
+[INFO ]: FinalPos: (-1.5133674, 5.257808, -8.370495)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.98961174, 0.008879041, -0.1434914)
+[INFO ]: FinalPos: (-1.4114292, 5.6238956, -8.147373)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.98961174, 0.013183387, -0.14316013)
+[INFO ]: FinalPos: (-1.3056344, 5.9797745, -7.908071)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.989612, 0.01735436, -0.14271276)
+[INFO ]: FinalPos: (-1.2030147, 6.3037558, -7.6691236)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.989613, 0.0208488, -0.14223774)
+[INFO ]: FinalPos: (-1.1256945, 6.535127, -7.4849815)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.98961294, 0.023809241, -0.14177246)
+[INFO ]: FinalPos: (-1.0466497, 6.7610736, -7.293313)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.91814727, -0.34384218, -0.19692151)
+[INFO ]: FinalPos: (-0.9218712, 6.889224, -7.18949)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.9903564, 0.026813159, -0.13592379)
+[INFO ]: FinalPos: (-0.88458604, 6.98845, -7.0978203)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.02721767, -0.98054445, -0.19440119)
+[INFO ]: FinalPos: (-0.811583, 6.975048, -7.1196957)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.99107087, 0.02728101, -0.13051535)
+[INFO ]: FinalPos: (-0.75828624, 7.112137, -6.988744)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.02764191, -0.9778598, -0.20742753)
+[INFO ]: FinalPos: (-0.64201224, 7.089548, -7.0232577)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.025636548, -0.9778596, -0.20768592)
+[INFO ]: FinalPos: (-0.49678892, 7.0597463, -7.064925)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.02385004, -0.97786, -0.20789672)
+[INFO ]: FinalPos: (-0.4097079, 7.041032, -7.0891476)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.02240527, -0.9778599, -0.20805793)
+[INFO ]: FinalPos: (-0.308084, 7.01839, -7.116691)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.020507617, -0.97785956, -0.20825481)
+[INFO ]: FinalPos: (-0.16316831, 6.984612, -7.1546206)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.018280692, -0.97785956, -0.20846212)
+[INFO ]: FinalPos: (-0.018428743, 6.9491234, -7.1909213)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.016048932, -0.97785956, -0.20864584)
+[INFO ]: FinalPos: (0.12610108, 6.9119406, -7.225593)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.01415419, -0.9778599, -0.20878144)
+[INFO ]: FinalPos: (0.22729656, 6.884867, -7.248929)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
 [ERROR]: Uniform 'u_Normal' not found in program.
