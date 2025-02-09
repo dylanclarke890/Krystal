@@ -56,6 +56,17 @@ namespace Krys::Gfx
     return _specularTexture;
   }
 
+  void PhongMaterial::SetEmissionTexture(TextureHandle texture) noexcept
+  {
+    _emissionTexture = texture;
+    _isDirty = true;
+  }
+
+  TextureHandle PhongMaterial::GetEmissionTexture() const noexcept
+  {
+    return _emissionTexture;
+  }
+
   void PhongMaterial::SetShininess(float shininess) noexcept
   {
     _shininess = shininess;

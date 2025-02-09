@@ -206,14 +206,4 @@ namespace Krys::Gfx
                                             .Sampler = DefaultTextureSampler()},
                          {Colour::AsBytes(colour)});
   }
-
-  TextureHandle TextureManager::GetBlankTexture() noexcept
-  {
-    static TextureHandle handle {};
-
-    if (!handle.IsValid())
-      handle = CreateFlatColourTexture(Colours::White);
-
-    return handle;
-  }
 }

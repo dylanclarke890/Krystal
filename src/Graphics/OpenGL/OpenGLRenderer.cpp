@@ -17,6 +17,35 @@
 #include "MTL/Matrices/Ext/Transpose.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
 
+namespace
+{
+  using namespace Krys::Gfx;
+
+  static TextureHandle GetWhiteTexture(TextureManager &tm) noexcept
+  {
+    static TextureHandle handle;
+
+    if (!handle.IsValid())
+    {
+      handle = tm.CreateFlatColourTexture(Colours::White);
+    }
+
+    return handle;
+  }
+
+  static TextureHandle GetBlackTexture(TextureManager &tm) noexcept
+  {
+    static TextureHandle handle;
+
+    if (!handle.IsValid())
+    {
+      handle = tm.CreateFlatColourTexture(Colours::Black);
+    }
+
+    return handle;
+  }
+}
+
 namespace Krys::Gfx::OpenGL
 {
   OpenGLRenderer::OpenGLRenderer(RenderContext context) noexcept : Renderer(context)
@@ -105,7 +134,6 @@ namespace Krys::Gfx::OpenGL
   {
     BufferWriter phongBufferWriter(*_phongMaterialBuffer);
 
-    auto blankTextureIndex = _ctx.TextureManager->GetBlankTexture().Id();
     for (auto &[handle, material] : _ctx.MaterialManager->GetMaterials())
     {
       if (!material->IsDirty())
@@ -118,7 +146,7 @@ namespace Krys::Gfx::OpenGL
         auto index = handle.Id();
 
         phongBufferWriter.Seek(index * sizeof(PhongMaterialData));
-        phongBufferWriter.Write(GetBufferDataFromPhongMaterial(phong, blankTextureIndex));
+        phongBufferWriter.Write(GetBufferDataFromPhongMaterial(phong));
       }
 
       material->ClearIsDirtyFlag();
@@ -144,13 +172,13 @@ namespace Krys::Gfx::OpenGL
               [](const TextureWithIndex a, const TextureWithIndex b) { return a.Index < b.Index; });
 
     auto maxIndex = textures.back().Index;
-    auto *blankTexture = _ctx.TextureManager->GetTexture(_ctx.TextureManager->GetBlankTexture());
+    auto *whiteTexture = _ctx.TextureManager->GetTexture(GetWhiteTexture(*_ctx.TextureManager));
     for (uint32 i = 0; i < maxIndex; ++i)
     {
       auto it = std::find_if(textures.begin(), textures.end(),
                              [i](const TextureWithIndex &tex) { return tex.Index == i; });
       if (it == textures.end())
-        textures.emplace_back(TextureWithIndex {blankTexture, i});
+        textures.emplace_back(TextureWithIndex {whiteTexture, i});
     }
 
     for (auto &textureWithIndex : textures)
@@ -176,21 +204,25 @@ namespace Krys::Gfx::OpenGL
     lightBufferWriter.Write(intensity);
   }
 
-  PhongMaterialData OpenGLRenderer::GetBufferDataFromPhongMaterial(const PhongMaterial &mat,
-                                                                   int blankTextureIndex) noexcept
+  PhongMaterialData OpenGLRenderer::GetBufferDataFromPhongMaterial(const PhongMaterial &mat) noexcept
   {
     // TODO: we need to get the index differently once we have cubemaps.
-    
     PhongMaterialData data;
 
     auto ambientTexture = mat.GetAmbientTexture();
     auto diffuseTexture = mat.GetDiffuseTexture();
     auto specularTexture = mat.GetSpecularTexture();
+    auto emissionTexture = mat.GetEmissionTexture();
 
     data.Shininess = mat.GetShininess();
-    data.AmbientTexture = ambientTexture.IsValid() ? ambientTexture.Id() : blankTextureIndex;
-    data.DiffuseTexture = diffuseTexture.IsValid() ? diffuseTexture.Id() : blankTextureIndex;
-    data.SpecularTexture = specularTexture.IsValid() ? specularTexture.Id() : blankTextureIndex;
+    data.AmbientTexture =
+      ambientTexture.IsValid() ? ambientTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
+    data.DiffuseTexture =
+      diffuseTexture.IsValid() ? diffuseTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
+    data.SpecularTexture =
+      specularTexture.IsValid() ? specularTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
+    data.EmissionTexture =
+      emissionTexture.IsValid() ? emissionTexture.Id() : GetBlackTexture(*_ctx.TextureManager).Id();
 
     return data;
   }

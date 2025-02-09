@@ -7,7 +7,9 @@ struct Material
   int AmbientTexture;
   int DiffuseTexture;
   int SpecularTexture;
+  int EmissiveTexture;
   float Shininess;
+  float Padding[3];
 };
 
 struct PointLight
@@ -74,6 +76,8 @@ void main()
   vec4 specularColour = specular * specularStrength * specularFactor;
 
   o_Colour = v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
+
+  o_Colour += GetTextureSample(material.EmissiveTexture, v_TextureCoords, vec4(0.0));
 }
 
 Material GetMaterial(int index)

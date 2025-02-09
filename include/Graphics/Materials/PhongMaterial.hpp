@@ -14,7 +14,9 @@ namespace Krys::Gfx
     int AmbientTexture;
     int DiffuseTexture;
     int SpecularTexture;
+    int EmissionTexture;
     float Shininess{32};
+    float Padding[3];
   };
 
   class PhongMaterial : public Material
@@ -41,12 +43,16 @@ namespace Krys::Gfx
 
     NO_DISCARD TextureHandle GetSpecularTexture() const noexcept;
 
+    void SetEmissionTexture(TextureHandle texture) noexcept;
+
+    NO_DISCARD TextureHandle GetEmissionTexture() const noexcept;
+
     void SetShininess(float shininess) noexcept;
 
     NO_DISCARD float GetShininess() const noexcept;
 
   protected:
-    TextureHandle _ambientTexture, _diffuseTexture, _specularTexture;
+    TextureHandle _ambientTexture, _diffuseTexture, _specularTexture, _emissionTexture;
     float _shininess;
   };
 }

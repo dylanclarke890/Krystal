@@ -97,7 +97,6 @@ namespace Krys::Gfx::OpenGL
 
     void UpdateLightBuffer() noexcept;
 
-    PhongMaterialData GetBufferDataFromPhongMaterial(const PhongMaterial &mat,
-                                                     int blankTextureIndex) noexcept;
+    PhongMaterialData GetBufferDataFromPhongMaterial(const PhongMaterial &mat) noexcept;
   };
 }

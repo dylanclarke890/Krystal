@@ -68,8 +68,6 @@ namespace Krys::Gfx
 
     NO_DISCARD TextureHandleMap<Texture *> &GetTextures() noexcept;
 
-    NO_DISCARD TextureHandle GetBlankTexture() noexcept;
-
   protected:
     TextureManager() noexcept = default;
 
