@@ -9,6 +9,7 @@
 #include "Graphics/Handles.hpp"
 #include "Graphics/Materials/Material.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
+#include "Graphics/Materials/PhongMaterialDescriptor.hpp"
 #include "Graphics/TextureManager.hpp"
 #include "IO/IO.hpp"
 
@@ -33,6 +34,20 @@ namespace Krys::Gfx
       auto program = GetDefaultPhongProgram();
 
       _materials[handle] = CreateUnique<PhongMaterial>(handle, program, std::forward<Args>(args)...);
+      return handle;
+    }
+
+    NO_DISCARD MaterialHandle CreatePhongMaterial(const PhongMaterialDescriptor &descriptor) noexcept
+    {
+      auto handle = _materialHandles.Next();
+      auto program = GetDefaultPhongProgram();
+
+      auto ambientTexture = _textureManager->CreateFlatColourTexture(descriptor.Ambient);
+      auto diffuseTexture = _textureManager->CreateFlatColourTexture(descriptor.Diffuse);
+      auto specularTexture = _textureManager->CreateFlatColourTexture(descriptor.Specular);
+
+      _materials[handle] = CreateUnique<PhongMaterial>(handle, program, ambientTexture, diffuseTexture,
+                                                       specularTexture, descriptor.Shininess);
       return handle;
     }
 

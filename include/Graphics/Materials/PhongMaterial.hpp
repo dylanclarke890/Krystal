@@ -24,6 +24,9 @@ namespace Krys::Gfx
 
     PhongMaterial(MaterialHandle handle, ProgramHandle program, TextureHandle ambientTexture) noexcept;
 
+    PhongMaterial(MaterialHandle handle, ProgramHandle program, TextureHandle ambientTexture,
+                  TextureHandle diffuseTexture, TextureHandle specularTexture, float shininess) noexcept;
+
     ~PhongMaterial() noexcept override = default;
 
     void SetAmbientTexture(TextureHandle texture) noexcept;

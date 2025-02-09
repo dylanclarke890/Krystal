@@ -195,8 +195,9 @@ namespace Krys::Gfx
     return _textures;
   }
 
-  TextureHandle TextureManager::CreateFlatColourTexture(const Colour &colour, const string &name) noexcept
+  TextureHandle TextureManager::CreateFlatColourTexture(const Colour &colour) noexcept
   {
+    auto name = std::format("FlatColour_{0}", colour);
     return CreateTexture(TextureDescriptor {.Name = name,
                                             .Type = TextureType::Image,
                                             .Width = 1,
@@ -211,7 +212,7 @@ namespace Krys::Gfx
     static TextureHandle handle {};
 
     if (!handle.IsValid())
-      handle = CreateFlatColourTexture(Colours::White, "Internal_BlankTexture");
+      handle = CreateFlatColourTexture(Colours::White);
 
     return handle;
   }
