@@ -89,6 +89,7 @@ namespace Krys::Gfx::OpenGL
 
         SetUniform(program.GetNativeHandle(), "u_View", camera.GetView());
         SetUniform(program.GetNativeHandle(), "u_Projection", camera.GetProjection());
+        SetUniform(program.GetNativeHandle(), "u_CameraPosition", camera.GetPosition());
 
         mesh.Bind();
         if (mesh.IsIndexed())
@@ -167,8 +168,8 @@ namespace Krys::Gfx::OpenGL
   void OpenGLRenderer::UpdateLightBuffer() noexcept
   {
     BufferWriter lightBufferWriter(*_lightBuffer);
-    Vec4 pos = {0.0f, 1.0f, 0.0f, 1.0f};
-    Vec4 intensity = {1.0f, 1.0f, 1.0f, 1.0f};
+    Vec4 pos {1.2f, 1.0f, -2.0f, 1.0f};
+    Vec4 intensity {1.0f};
 
     lightBufferWriter.Seek(0);
     lightBufferWriter.Write(pos);
@@ -178,14 +179,15 @@ namespace Krys::Gfx::OpenGL
   PhongMaterialData OpenGLRenderer::GetBufferDataFromPhongMaterial(const PhongMaterial &mat,
                                                                    int blankTextureIndex) noexcept
   {
+    // TODO: we need to get the index differently once we have cubemaps.
+    
     PhongMaterialData data;
-    data.Shininess = mat.GetShininess();
 
-    // TODO: if we don't have a texture use the blank one.
     auto ambientTexture = mat.GetAmbientTexture();
     auto diffuseTexture = mat.GetDiffuseTexture();
     auto specularTexture = mat.GetSpecularTexture();
-    // TODO: we need to get the index differently once we have cubemaps.
+
+    data.Shininess = mat.GetShininess();
     data.AmbientTexture = ambientTexture.IsValid() ? ambientTexture.Id() : blankTextureIndex;
     data.DiffuseTexture = diffuseTexture.IsValid() ? diffuseTexture.Id() : blankTextureIndex;
     data.SpecularTexture = specularTexture.IsValid() ? specularTexture.Id() : blankTextureIndex;

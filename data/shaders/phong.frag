@@ -32,6 +32,7 @@ out vec4 o_Colour;
 uniform int u_MaterialIndex;
 uniform mat4 u_Model;
 uniform mat3 u_Normal;
+uniform vec3 u_CameraPosition;
 
 layout(std430, binding = 0) buffer MaterialBuffer
 {
@@ -54,11 +55,25 @@ void main()
   PointLight light = u_PointLights[0];
 
   vec3 normal = normalize((u_Normal * v_Normal.xyz));
+  vec3 lightDirection = normalize(light.Position - v_FragmentPosition.xyz);
+  vec3 viewDirection = normalize(u_CameraPosition - v_FragmentPosition);
+  vec3 reflectDirection = reflect(-lightDirection, normal);
 
+  float ambientStrength = 0.1;
   vec4 ambient = GetTextureSample(material.AmbientTexture, v_TextureCoords);
-  ambient *= v_Colour;
+  vec4 ambientColour = ambient * ambientStrength;
+
+  // TODO: use diffuse texture
+  vec4 diffuse = GetTextureSample(material.AmbientTexture, v_TextureCoords);
+  float diffuseFactor = max(dot(normal, lightDirection), 0.0);
+  vec4 diffuseColour = diffuse * diffuseFactor;
   
-  o_Colour = ambient * vec4(light.Intensity, 1) * 0.1;
+  float specularStrength = 0.5;
+  vec4 specular = GetTextureSample(material.SpecularTexture, v_TextureCoords);
+  float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), 32);
+  vec4 specularColour = specular * specularStrength * specularFactor;
+
+  o_Colour = v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
 }
 
 Material GetMaterial(int index)
