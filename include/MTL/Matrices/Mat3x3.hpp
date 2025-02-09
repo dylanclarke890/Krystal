@@ -55,6 +55,12 @@ namespace Krys
       {
       }
 
+      explicit constexpr Matrix(const matrix_t<component_t, 4, 4> m) noexcept
+          : _values {column_t(m[0][0], m[0][1], m[0][2]), column_t(m[1][0], m[1][1], m[1][2]),
+                     column_t(m[2][0], m[2][1], m[2][2])}
+      {
+      }
+
 #pragma endregion Constructors
 
 #pragma region Multiplication

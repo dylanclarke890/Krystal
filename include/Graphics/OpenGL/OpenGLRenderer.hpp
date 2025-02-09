@@ -34,9 +34,8 @@ namespace Krys::Gfx::OpenGL
     void Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept override;
 
   private:
-    ShaderStorageBufferHandle _phongMaterialBufferHandle {}, _textureTableHandle {};
-    Ptr<ShaderStorageBuffer> _phongMaterialBuffer {nullptr}, _textureTable {nullptr};
-    ProgramHandle _phongProgram;
+    ShaderStorageBufferHandle _phongMaterialBufferHandle {}, _textureTableHandle {}, _lightBufferHandle {};
+    Ptr<ShaderStorageBuffer> _phongMaterialBuffer {nullptr}, _textureTable {nullptr}, _lightBuffer {nullptr};
 
     template <typename T>
     void SetUniform(GLuint program, const string &name, const T &value) noexcept
@@ -95,6 +94,8 @@ namespace Krys::Gfx::OpenGL
     void UpdateMaterialBuffers() noexcept;
 
     void UpdateTextureTable() noexcept;
+
+    void UpdateLightBuffer() noexcept;
 
     PhongMaterialData GetBufferDataFromPhongMaterial(const PhongMaterial &mat,
                                                      int blankTextureIndex) noexcept;

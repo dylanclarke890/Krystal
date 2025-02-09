@@ -66,8 +66,8 @@ namespace Krys::Gfx
 
       if (!handle.IsValid())
       {
-        auto pinkTexture = _textureManager->CreateFlatColourTexture(Colours::Lime);
-        handle = CreatePhongMaterial(pinkTexture);
+        auto limeTexture = _textureManager->CreateFlatColourTexture(Colours::Lime);
+        handle = CreatePhongMaterial(limeTexture);
       }
 
       return handle;

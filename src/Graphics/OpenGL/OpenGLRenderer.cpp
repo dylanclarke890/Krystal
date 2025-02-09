@@ -13,6 +13,9 @@
 #include "Graphics/Scene/MaterialNode.hpp"
 #include "Graphics/Scene/MeshNode.hpp"
 #include "Graphics/Scene/Node.hpp"
+#include "MTL/Matrices/Ext/Inverse.hpp"
+#include "MTL/Matrices/Ext/Transpose.hpp"
+#include "MTL/Matrices/Mat3x3.hpp"
 
 namespace Krys::Gfx::OpenGL
 {
@@ -28,15 +31,21 @@ namespace Krys::Gfx::OpenGL
       _ctx.GraphicsContext->GetDeviceCapabilities().MaxShaderStorageBlockSize);
     _phongMaterialBuffer = _ctx.GraphicsContext->GetShaderStorageBuffer(_phongMaterialBufferHandle);
     _textureTable = _ctx.GraphicsContext->GetShaderStorageBuffer(_textureTableHandle);
+
+    _lightBufferHandle = _ctx.GraphicsContext->CreateShaderStorageBuffer(
+      _ctx.GraphicsContext->GetDeviceCapabilities().MaxShaderStorageBlockSize);
+    _lightBuffer = _ctx.GraphicsContext->GetShaderStorageBuffer(_lightBufferHandle);
   }
 
   void OpenGLRenderer::BeforeRender() noexcept
   {
     UpdateMaterialBuffers();
     UpdateTextureTable();
+    UpdateLightBuffer();
 
     static_cast<OpenGLShaderStorageBuffer &>(*_phongMaterialBuffer).Bind(0);
     static_cast<OpenGLShaderStorageBuffer &>(*_textureTable).Bind(1);
+    static_cast<OpenGLShaderStorageBuffer &>(*_lightBuffer).Bind(2);
   }
 
   void OpenGLRenderer::Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept
@@ -72,7 +81,11 @@ namespace Krys::Gfx::OpenGL
         SetUniform<int>(program.GetNativeHandle(), "u_MaterialIndex", material.GetHandle().Id());
 
         auto transform = parentTransform * node->GetLocalTransform();
-        SetUniform(program.GetNativeHandle(), "u_Transform", transform.GetMatrix());
+        auto modelMatrix = transform.GetMatrix();
+        auto normalMatrix = MTL::Transpose(MTL::Inverse(Mat3(modelMatrix)));
+
+        SetUniform(program.GetNativeHandle(), "u_Model", modelMatrix);
+        SetUniform(program.GetNativeHandle(), "u_Normal", normalMatrix);
 
         SetUniform(program.GetNativeHandle(), "u_View", camera.GetView());
         SetUniform(program.GetNativeHandle(), "u_Projection", camera.GetProjection());
@@ -151,13 +164,21 @@ namespace Krys::Gfx::OpenGL
     }
   }
 
+  void OpenGLRenderer::UpdateLightBuffer() noexcept
+  {
+    BufferWriter lightBufferWriter(*_lightBuffer);
+    Vec4 pos = {0.0f, 1.0f, 0.0f, 1.0f};
+    Vec4 intensity = {1.0f, 1.0f, 1.0f, 1.0f};
+
+    lightBufferWriter.Seek(0);
+    lightBufferWriter.Write(pos);
+    lightBufferWriter.Write(intensity);
+  }
+
   PhongMaterialData OpenGLRenderer::GetBufferDataFromPhongMaterial(const PhongMaterial &mat,
                                                                    int blankTextureIndex) noexcept
   {
     PhongMaterialData data;
-    data.AmbientColour = mat.GetAmbientColour();
-    data.DiffuseColour = mat.GetDiffuseColour();
-    data.SpecularColour = mat.GetSpecularColour();
     data.Shininess = mat.GetShininess();
 
     // TODO: if we don't have a texture use the blank one.

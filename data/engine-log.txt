@@ -3,20 +3,20 @@
 [INFO ]: Timer precision range - min: 1ms, max: 1000000ms
 [INFO ]: Camera created.
 [INFO ]: FinalPos: (0, 0, -10)
-[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
- - Type: Other
- - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 4 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: PathExists took 0.156 ms.
-[INFO ]: IO::LoadImage took 13.572 ms.
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 5 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: PathExists took 0.270 ms.
+[INFO ]: IO::LoadImage took 16.315 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'textures/wood-wall.jpg' into memory (512x512).
-[INFO ]: PathExists took 0.141 ms.
-[INFO ]: ReadFileText took 0.253 ms.
-[INFO ]: PathExists took 0.062 ms.
-[INFO ]: ReadFileText took 0.295 ms.
+[INFO ]: PathExists took 0.119 ms.
+[INFO ]: ReadFileText took 0.188 ms.
+[INFO ]: PathExists took 0.076 ms.
+[INFO ]: ReadFileText took 0.258 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (2 references).
 [INFO ]: TextureManager: Created 'Internal_BlankTexture' (1x1).
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
@@ -25,277 +25,363 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to NONE, usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
 [INFO ]: TextureManager: Loaded sampler from cache (3 references).
 [INFO ]: TextureManager: Created 'T0' (1x1).
+[ERROR]: Uniform 'u_Normal' not found in program.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to GL_SHADER_STORAGE_BUFFER (0), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to GL_SHADER_STORAGE_BUFFER (0), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: Axis: (0.97647554, -0.08035495, -0.2000966)
-[INFO ]: FinalPos: (0.012236409, 0.14602353, -9.998926)
-[INFO ]: Axis: (0.8157347, -0.5773825, 0.034733415)
-[INFO ]: FinalPos: (0.23030385, 0.45246774, -9.987103)
-[INFO ]: Axis: (0.93947035, -0.33231375, -0.0834457)
-[INFO ]: FinalPos: (0.39839134, 0.922278, -9.949407)
-[INFO ]: Axis: (0.93318146, -0.3513239, -0.07578834)
-[INFO ]: FinalPos: (0.68665993, 1.6685095, -9.835882)
-[INFO ]: Axis: (0.9350228, -0.34599045, -0.07760862)
-[INFO ]: FinalPos: (1.0189136, 2.5266335, -9.621743)
-[INFO ]: Axis: (0.9507165, -0.29650626, -0.09067554)
-[INFO ]: FinalPos: (1.2936256, 3.3488374, -9.333371)
-[INFO ]: Axis: (0.9710125, -0.21423113, -0.106018685)
-[INFO ]: FinalPos: (1.496672, 4.1859612, -8.957549)
-[INFO ]: Axis: (0.9715183, -0.21178448, -0.10629928)
-[INFO ]: FinalPos: (1.657018, 4.838626, -8.593137)
-[INFO ]: Axis: (0.9778669, -0.1790377, -0.10826759)
-[INFO ]: FinalPos: (1.763914, 5.3493032, -8.262784)
-[INFO ]: Axis: (0.99399996, 0.0014262043, -0.10937039)
-[INFO ]: FinalPos: (1.7615038, 5.5791903, -8.109854)
-[INFO ]: Axis: (0.937339, -0.3304136, -0.110554695)
-[INFO ]: FinalPos: (1.8360753, 5.7523613, -7.971147)
-[INFO ]: Axis: (0.9945597, 0.00446118, -0.10407268)
-[INFO ]: FinalPos: (1.8336302, 5.886297, -7.8733296)
-[INFO ]: Axis: (0.99455976, 0.0055283364, -0.10402101)
-[INFO ]: FinalPos: (1.8312759, 5.996734, -7.7900977)
-[INFO ]: Axis: (0.99455965, 0.0066914344, -0.103953734)
-[INFO ]: FinalPos: (1.8274968, 6.1495028, -7.670976)
-[INFO ]: Axis: (0.994559, 0.008729547, -0.103809096)
-[INFO ]: FinalPos: (1.8182423, 6.4484725, -7.423692)
-[INFO ]: Axis: (0.9705458, -0.20755258, -0.12232213)
-[INFO ]: FinalPos: (1.8981489, 6.7476707, -7.1320395)
-[INFO ]: Axis: (0.9741655, -0.19094153, -0.12059378)
-[INFO ]: FinalPos: (1.974484, 7.0548773, -6.8066235)
-[INFO ]: Axis: (0.9812146, -0.15448311, -0.115554795)
-[INFO ]: FinalPos: (2.0326078, 7.350744, -6.468005)
-[INFO ]: Axis: (0.9962547, 0.017119104, -0.084755436)
-[INFO ]: FinalPos: (2.013249, 7.626338, -6.147017)
-[INFO ]: Axis: (0.9664109, -0.2196433, -0.13344215)
-[INFO ]: FinalPos: (2.0722687, 7.8091063, -5.892671)
-[INFO ]: Axis: (0.99669343, 0.019550998, -0.078865826)
-[INFO ]: FinalPos: (2.058302, 7.963226, -5.687745)
-[INFO ]: Axis: (0.9966937, 0.020682473, -0.07857495)
-[INFO ]: FinalPos: (2.04829, 8.063429, -5.5484824)
-[INFO ]: Axis: (-0.9966935, -0.020457031, 0.0786357)
-[INFO ]: FinalPos: (2.0630946, 7.9123907, -5.756538)
-[INFO ]: Axis: (-0.9717592, 0.19631484, 0.13093755)
-[INFO ]: FinalPos: (1.9609768, 7.5448627, -6.2633567)
-[INFO ]: Axis: (-0.98774505, 0.1067292, 0.11388048)
-[INFO ]: FinalPos: (1.8931742, 6.969245, -6.917045)
-[INFO ]: Axis: (-0.9862368, 0.118368216, 0.115437895)
-[INFO ]: FinalPos: (1.7766752, 6.091653, -7.728855)
-[INFO ]: Axis: (-0.97077245, 0.208073, 0.11961017)
-[INFO ]: FinalPos: (1.6355693, 5.5250826, -8.173026)
-[INFO ]: Axis: (-0.9706685, 0.20855926, 0.119605914)
-[INFO ]: FinalPos: (1.5028273, 4.974686, -8.5436535)
-[INFO ]: Axis: (-0.96558994, 0.23160383, 0.11830388)
-[INFO ]: FinalPos: (1.3645794, 4.4490533, -8.851207)
-[INFO ]: Axis: (-0.9729049, 0.19655122, 0.12175238)
-[INFO ]: FinalPos: (1.2533443, 3.927664, -9.110578)
-[INFO ]: Axis: (-0.9634631, 0.24168982, 0.1154335)
-[INFO ]: FinalPos: (1.1397262, 3.4934533, -9.300365)
-[INFO ]: Axis: (-0.96065974, 0.2535606, 0.113313116)
-[INFO ]: FinalPos: (1.0405843, 3.1275167, -9.441176)
-[INFO ]: Axis: (-0.9873844, 0.028065775, 0.15583463)
-[INFO ]: FinalPos: (1.034938, 2.8351686, -9.533664)
-[INFO ]: Axis: (-0.9391838, 0.33139867, 0.09004753)
-[INFO ]: FinalPos: (0.9194103, 2.510255, -9.636043)
-[INFO ]: Axis: (-0.986187, 0.036704086, 0.16151786)
-[INFO ]: FinalPos: (0.91089344, 2.1827292, -9.716273)
-[INFO ]: Axis: (-0.9184034, 0.39024174, 0.06516601)
-[INFO ]: FinalPos: (0.74573815, 1.789349, -9.8103075)
-[INFO ]: Axis: (-0.98438215, 0.046698432, 0.16973828)
-[INFO ]: FinalPos: (0.73995984, 1.6216812, -9.8398485)
-[INFO ]: Axis: (-0.94001126, 0.33128846, 0.08140529)
-[INFO ]: FinalPos: (0.60321087, 1.2194502, -9.9070215)
-[INFO ]: Axis: (-0.9828546, 0.05645497, 0.17552647)
-[INFO ]: FinalPos: (0.5926666, 0.96271265, -9.935891)
-[INFO ]: Axis: (-0.9828555, 0.058884278, 0.17472173)
-[INFO ]: FinalPos: (0.586774, 0.8192094, -9.9491005)
-[INFO ]: Axis: (-0.98285556, 0.06062161, 0.1741264)
-[INFO ]: FinalPos: (0.5808549, 0.6750665, -9.960267)
-[INFO ]: Axis: (-0.9828553, 0.062533185, 0.17345026)
-[INFO ]: FinalPos: (0.5737062, 0.50100327, -9.970952)
-[INFO ]: Axis: (-0.06735127, 0.940826, -0.33212978)
-[INFO ]: FinalPos: (0.49893984, 0.49417904, -9.975311)
-[INFO ]: Axis: (-0.98186344, 0.06686883, 0.17740545)
-[INFO ]: FinalPos: (0.48829305, 0.26087812, -9.984665)
-[INFO ]: Axis: (-0.98186404, 0.069369644, 0.1764396)
-[INFO ]: FinalPos: (0.48029178, 0.08487154, -9.988099)
-[INFO ]: Axis: (-0.075304456, 0.93107945, -0.35695994)
-[INFO ]: FinalPos: (0.40630144, 0.077057414, -9.9914465)
-[INFO ]: Axis: (-0.9808442, 0.07337204, 0.18044698)
-[INFO ]: FinalPos: (0.39889655, -0.07021735, -9.991795)
-[INFO ]: Axis: (-0.98084384, 0.07539673, 0.17961304)
-[INFO ]: FinalPos: (0.39001298, -0.24785689, -9.989319)
-[INFO ]: Axis: (0.98083967, -0.073573455, -0.1803899)
-[INFO ]: FinalPos: (0.41371846, 0.22364977, -9.988935)
-[INFO ]: Axis: (0.9808339, -0.06623654, -0.18324208)
-[INFO ]: FinalPos: (0.4493636, 0.9183056, -9.947604)
-[INFO ]: Axis: (0.9707877, -0.19660997, -0.13753411)
-[INFO ]: FinalPos: (0.65138245, 1.9395772, -9.788449)
-[INFO ]: Axis: (0.97838235, -0.13795471, -0.15406632)
-[INFO ]: FinalPos: (0.80394006, 2.9700985, -9.514843)
-[INFO ]: Axis: (0.9769674, -0.15015875, -0.1516146)
-[INFO ]: FinalPos: (0.9440143, 3.773916, -9.212297)
-[INFO ]: Axis: (0.9785204, -0.13776036, -0.15336223)
-[INFO ]: FinalPos: (1.0419381, 4.347485, -8.94504)
-[INFO ]: Axis: (0.9863569, -0.008810563, -0.16438484)
-[INFO ]: FinalPos: (1.058908, 4.9049587, -8.649862)
-[INFO ]: Axis: (0.9598342, -0.23535937, -0.15272266)
-[INFO ]: FinalPos: (1.1969227, 5.34101, -8.369051)
-[INFO ]: Axis: (0.98771405, 0.00322333, -0.15623845)
-[INFO ]: FinalPos: (1.206777, 5.7499013, -8.092115)
-[INFO ]: Axis: (0.96491313, -0.20776792, -0.1605462)
-[INFO ]: FinalPos: (1.324651, 6.1340504, -7.785803)
-[INFO ]: Axis: (0.98884094, 0.012834662, -0.14842086)
-[INFO ]: FinalPos: (1.3305995, 6.4738574, -7.504576)
-[INFO ]: Axis: (0.9676904, -0.18993613, -0.16582988)
-[INFO ]: FinalPos: (1.4284167, 6.790336, -7.2007613)
-[INFO ]: Axis: (0.9897622, 0.020965219, -0.14117825)
-[INFO ]: FinalPos: (1.4317693, 7.125975, -6.8680816)
-[INFO ]: Axis: (0.9448423, -0.2717014, -0.18289737)
-[INFO ]: FinalPos: (1.5097797, 7.2867913, -6.680062)
-[INFO ]: Axis: (0.9905008, 0.026095713, -0.13500851)
-[INFO ]: FinalPos: (1.5106506, 7.4915223, -6.4494205)
-[INFO ]: Axis: (0.9542112, -0.23628633, -0.18343875)
-[INFO ]: FinalPos: (1.5870659, 7.6601496, -6.229233)
-[INFO ]: Axis: (0.99121064, 0.029535884, -0.12895378)
-[INFO ]: FinalPos: (1.5870605, 7.7485723, -6.118896)
-[INFO ]: Axis: (0.9912102, 0.03126709, -0.12854844)
-[INFO ]: FinalPos: (1.5864558, 7.9041743, -5.916687)
-[INFO ]: Axis: (0.99121064, 0.032996196, -0.12811235)
-[INFO ]: FinalPos: (1.5857878, 7.9886284, -5.8023376)
-[INFO ]: Axis: (-0.9139488, 0.34336802, 0.2163242)
-[INFO ]: FinalPos: (1.4966178, 7.867569, -5.988446)
-[INFO ]: Axis: (-0.9903537, -0.030836858, 0.13508697)
-[INFO ]: FinalPos: (1.4987772, 7.5492773, -6.3845177)
-[INFO ]: Axis: (-0.9903478, -0.024373796, 0.13644457)
-[INFO ]: FinalPos: (1.4959248, 6.9417834, -7.04087)
-[INFO ]: Axis: (-0.9788068, 0.13067894, 0.15767165)
-[INFO ]: FinalPos: (1.3113067, 6.0919557, -7.821032)
-[INFO ]: Axis: (-0.981684, 0.108489566, 0.15660952)
-[INFO ]: FinalPos: (1.1644175, 5.2034597, -8.459794)
-[INFO ]: Axis: (-0.98290277, 0.09636284, 0.15689597)
-[INFO ]: FinalPos: (1.0421915, 4.2960753, -8.969815)
-[INFO ]: Axis: (-0.9806432, 0.1201064, 0.15463966)
-[INFO ]: FinalPos: (0.9179578, 3.4639325, -9.335874)
-[INFO ]: Axis: (-0.9786835, 0.13845848, 0.1516835)
-[INFO ]: FinalPos: (0.813367, 2.8075714, -9.563262)
-[INFO ]: Axis: (-0.9748314, 0.16928096, 0.14507823)
-[INFO ]: FinalPos: (0.6490519, 1.9083505, -9.79474)
-[INFO ]: Axis: (-0.98284894, 0.049871165, 0.17754115)
-[INFO ]: FinalPos: (0.62096876, 1.3209344, -9.892902)
-[INFO ]: Axis: (-0.9552194, 0.2773345, 0.10315724)
-[INFO ]: FinalPos: (0.4735096, 0.7999155, -9.956701)
-[INFO ]: Axis: (-0.98125255, 0.06511174, 0.18139447)
-[INFO ]: FinalPos: (0.45172724, 0.3949728, -9.98198)
-[INFO ]: Axis: (-0.9486764, 0.3046802, 0.084753215)
-[INFO ]: FinalPos: (0.3609094, 0.09569259, -9.993028)
-[INFO ]: Axis: (-0.98021835, 0.07422316, 0.18347447)
-[INFO ]: FinalPos: (0.35243022, -0.05135107, -9.993655)
-[INFO ]: Axis: (0.9802176, -0.073665366, -0.18370315)
-[INFO ]: FinalPos: (0.36600178, 0.18358439, -9.991615)
-[INFO ]: Axis: (0.938772, -0.33701855, -0.07159309)
-[INFO ]: FinalPos: (0.5601413, 0.74967456, -9.956117)
-[INFO ]: Axis: (0.9651708, -0.23653811, -0.11178123)
-[INFO ]: FinalPos: (0.782796, 1.6976032, -9.823714)
-[INFO ]: Axis: (0.96111673, -0.25500393, -0.10596041)
-[INFO ]: FinalPos: (1.0954208, 2.8796551, -9.513551)
-[INFO ]: Axis: (0.97355175, -0.1949199, -0.11917691)
-[INFO ]: FinalPos: (1.362292, 4.169696, -8.986534)
-[INFO ]: Axis: (0.9692136, -0.21686824, -0.11658965)
-[INFO ]: FinalPos: (1.6086378, 5.1754737, -8.403972)
-[INFO ]: Axis: (0.98322964, -0.1380306, -0.11919338)
-[INFO ]: FinalPos: (1.7194585, 5.89611, -7.8917255)
-[INFO ]: Axis: (0.98613894, -0.116172045, -0.11846572)
-[INFO ]: FinalPos: (1.7932644, 6.469613, -7.4113646)
-[INFO ]: Axis: (0.99422556, 0.012594432, -0.10656868)
-[INFO ]: FinalPos: (1.7744596, 6.880182, -7.036646)
-[INFO ]: Axis: (0.975092, -0.17912968, -0.13079765)
-[INFO ]: FinalPos: (1.882884, 7.3485637, -6.5156245)
-[INFO ]: Axis: (0.99519396, 0.019043306, -0.096054465)
-[INFO ]: FinalPos: (1.8655119, 7.588736, -6.2394686)
-[INFO ]: Axis: (0.995194, 0.02122892, -0.09559316)
-[INFO ]: FinalPos: (1.8490947, 7.7849317, -5.997975)
-[INFO ]: Axis: (-0.022106448, -0.97414434, -0.22484249)
-[INFO ]: FinalPos: (1.9240853, 7.7739944, -5.9885674)
-[INFO ]: Axis: (0.9956932, 0.021467537, -0.09018964)
-[INFO ]: FinalPos: (1.9165092, 7.8610053, -5.8763604)
-[INFO ]: Axis: (0.023062665, 0.9719504, 0.2340526)
-[INFO ]: FinalPos: (1.8416753, 7.871984, -5.885586)
-[INFO ]: Axis: (-0.99519396, -0.021958454, 0.095430374)
-[INFO ]: FinalPos: (1.8618476, 7.6429963, -6.1739855)
-[INFO ]: Axis: (-0.9888291, 0.089715, 0.119030654)
-[INFO ]: FinalPos: (1.8196326, 7.187527, -6.7103205)
-[INFO ]: Axis: (-0.9896817, 0.08162391, 0.1177608)
-[INFO ]: FinalPos: (1.7096391, 5.8313193, -7.9418435)
-[INFO ]: Axis: (-0.987182, 0.1068473, 0.11855466)
-[INFO ]: FinalPos: (1.6010214, 4.867839, -8.587251)
-[INFO ]: Axis: (-0.98681873, 0.110333376, 0.11838596)
-[INFO ]: FinalPos: (1.5081127, 4.0603933, -9.013258)
-[INFO ]: Axis: (-0.9916179, 0.015688486, 0.12824862)
-[INFO ]: FinalPos: (1.5012765, 3.3925998, -9.286359)
-[INFO ]: Axis: (-0.96734357, 0.2359389, 0.09262403)
-[INFO ]: FinalPos: (1.3680589, 2.8660622, -9.482306)
-[INFO ]: Axis: (-0.9904987, 0.027644223, 0.13471507)
-[INFO ]: FinalPos: (1.3546784, 2.3517249, -9.624669)
-[INFO ]: Axis: (-0.9905001, 0.03188257, 0.13376506)
-[INFO ]: FinalPos: (1.3430465, 1.9655762, -9.712504)
-[INFO ]: Axis: (-0.9905007, 0.035094015, 0.13295425)
-[INFO ]: FinalPos: (1.3328354, 1.6580836, -9.771096)
-[INFO ]: Axis: (-0.95587033, 0.2879376, 0.058343012)
-[INFO ]: FinalPos: (1.2468679, 1.3738631, -9.8263855)
-[INFO ]: Axis: (-0.98976433, 0.041522373, 0.13653778)
-[INFO ]: FinalPos: (1.2386202, 1.1744996, -9.853242)
-[INFO ]: Axis: (-0.98976433, 0.043390907, 0.13595524)
-[INFO ]: FinalPos: (1.2300074, 0.97372633, -9.876181)
-[INFO ]: Axis: (-0.9897642, 0.045394138, 0.13530079)
-[INFO ]: FinalPos: (1.219713, 0.74260694, -9.897516)
-[INFO ]: Axis: (-0.98976445, 0.04726192, 0.1346575)
-[INFO ]: FinalPos: (1.2116754, 0.56815726, -9.910048)
-[INFO ]: Axis: (-0.9897646, 0.048729043, 0.13413268)
-[INFO ]: FinalPos: (1.2047696, 0.4221221, -9.918182)
-[INFO ]: Axis: (-0.05298751, 0.9394838, -0.3384709)
-[INFO ]: FinalPos: (1.1311682, 0.41828197, -9.927009)
-[INFO ]: Axis: (-0.6714742, 0.72203356, 0.16670309)
-[INFO ]: FinalPos: (0.9797608, 0.27732652, -9.948023)
-[INFO ]: Axis: (-0.85733145, 0.49977222, 0.12333106)
-[INFO ]: FinalPos: (0.7837057, -0.061591737, -9.969052)
-[INFO ]: Axis: (-0.90156823, 0.4185461, 0.109517)
-[INFO ]: FinalPos: (0.51346684, -0.65195006, -9.9655075)
-[INFO ]: Axis: (-0.9182005, 0.38195327, 0.10497475)
-[INFO ]: FinalPos: (0.14069249, -1.5689573, -9.875151)
-[INFO ]: Axis: (-0.9059765, 0.4097394, 0.10639626)
-[INFO ]: FinalPos: (-0.34826267, -2.6840227, -9.626773)
-[INFO ]: Axis: (-0.92355216, 0.36795124, 0.107996814)
-[INFO ]: FinalPos: (-0.73633444, -3.710821, -9.2567625)
-[INFO ]: Axis: (-0.9337824, 0.34011617, 0.111226596)
-[INFO ]: FinalPos: (-1.1062659, -4.8203626, -8.691392)
-[INFO ]: Axis: (-0.94438404, 0.306954, 0.11797434)
-[INFO ]: FinalPos: (-1.2221482, -5.232623, -8.433623)
-[INFO ]: Axis: (-0.95659643, 0.26157066, 0.12846786)
-[INFO ]: FinalPos: (-1.2934103, -5.5641685, -8.207749)
-[INFO ]: Axis: (-0.9608002, 0.24318483, 0.13313189)
-[INFO ]: FinalPos: (-1.3486965, -5.8656044, -7.985973)
-[INFO ]: Axis: (-0.98186296, 0.045414533, 0.18407226)
-[INFO ]: FinalPos: (-1.3310647, -6.0909004, -7.8185186)
-[INFO ]: Axis: (-0.9466591, 0.3025297, 0.110961616)
-[INFO ]: FinalPos: (-1.3988569, -6.3605185, -7.5886116)
-[INFO ]: Axis: (-0.98063534, 0.05510856, 0.18792908)
-[INFO ]: FinalPos: (-1.3787336, -6.577065, -7.4054923)
-[INFO ]: Axis: (-0.9050892, 0.42082348, 0.061000597)
-[INFO ]: FinalPos: (-1.4637868, -6.7739153, -7.2091217)
-[INFO ]: Axis: (-0.9791524, 0.06358124, 0.19291988)
-[INFO ]: FinalPos: (-1.4530371, -6.8786116, -7.111498)
-[INFO ]: Axis: (-0.97915226, 0.06550075, 0.19227716)
-[INFO ]: FinalPos: (-1.4418352, -6.9821663, -7.012165)
-[INFO ]: Axis: (0.94650745, -0.30621567, -0.10176277)
-[INFO ]: F
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (2), usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (2), usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.799236, -0.60100603, -0.0036783395)
+[INFO ]: FinalPos: (0.13238433, 0.17603385, -9.997575)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.8155348, -0.57856286, -0.012969949)
+[INFO ]: FinalPos: (0.29759407, 0.40878758, -9.987208)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.8556768, -0.51624537, -0.036166865)
+[INFO ]: FinalPos: (0.6606519, 1.0085775, -9.927051)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.85422325, -0.5186981, -0.035423163)
+[INFO ]: FinalPos: (0.9523093, 1.485114, -9.843148)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.8043927, -0.5938998, -0.015343914)
+[INFO ]: FinalPos: (1.4249141, 2.1159112, -9.669156)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.82308656, -0.5675367, -0.020754157)
+[INFO ]: FinalPos: (2.0189605, 2.961897, -9.335468)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.80378103, -0.5946638, -0.017634364)
+[INFO ]: FinalPos: (2.6310596, 3.7645001, -8.882909)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.73646915, -0.6762953, -0.015427158)
+[INFO ]: FinalPos: (3.317312, 4.46015, -8.312791)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.7333055, -0.67971843, -0.0156778)
+[INFO ]: FinalPos: (3.8232417, 4.9556513, -7.798996)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.7394497, -0.6730523, -0.014657244)
+[INFO ]: FinalPos: (4.3143444, 5.436558, -7.1993256)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.7520402, -0.65901935, -0.01135999)
+[INFO ]: FinalPos: (4.7373276, 5.8627934, -6.57156)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.72112066, -0.69245803, -0.022064542)
+[INFO ]: FinalPos: (5.1603303, 6.2220807, -5.8869963)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.6429422, -0.7640507, -0.05340167)
+[INFO ]: FinalPos: (5.5402956, 6.429441, -5.2884245)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.64076555, -0.7658088, -0.05437235)
+[INFO ]: FinalPos: (5.857925, 6.5822725, -4.728468)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.5265899, -0.84319544, -0.10827956)
+[INFO ]: FinalPos: (6.2759047, 6.6430306, -4.059949)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.47363847, -0.8704024, -0.13441099)
+[INFO ]: FinalPos: (6.4649563, 6.639126, -3.7585063)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.10519361, -0.9509724, -0.2908366)
+[INFO ]: FinalPos: (6.6718082, 6.5428495, -3.5606327)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.5625392, -0.82332987, -0.075349756)
+[INFO ]: FinalPos: (6.826416, 6.547754, -3.2445292)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.121195585, -0.9472889, -0.29657295)
+[INFO ]: FinalPos: (6.9717665, 6.4682665, -3.0912795)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.12630454, -0.94728845, -0.29443467)
+[INFO ]: FinalPos: (7.1249084, 6.3784018, -2.9243226)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.13123359, -0.9472895, -0.2922675)
+[INFO ]: FinalPos: (7.2553616, 6.296525, -2.7773187)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.13563843, -0.9472896, -0.2902494)
+[INFO ]: FinalPos: (7.373832, 6.2175984, -2.6397095)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.13951032, -0.9472907, -0.28840467)
+[INFO ]: FinalPos: (7.4710755, 6.1493354, -2.5236285)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.1430353, -0.9472904, -0.2866735)
+[INFO ]: FinalPos: (7.56697, 6.078745, -2.406211)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.14655608, -0.9472909, -0.28488818)
+[INFO ]: FinalPos: (7.661525, 6.0057435, -2.2873788)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.1502566, -0.94729036, -0.28295583)
+[INFO ]: FinalPos: (7.763815, 5.9227047, -2.155163)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.15466438, -0.94728863, -0.2805765)
+[INFO ]: FinalPos: (7.891361, 5.8127513, -1.9845253)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.15871212, -0.9472911, -0.2782985)
+[INFO ]: FinalPos: (7.9717817, 5.739448, -1.8733529)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.16187966, -0.9472905, -0.27647024)
+[INFO ]: FinalPos: (8.050854, 5.6641216, -1.7611136)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.16434516, -0.947292, -0.27500638)
+[INFO ]: FinalPos: (8.094144, 5.6214256, -1.6983494)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.16610369, -0.9472921, -0.2739478)
+[INFO ]: FinalPos: (8.137127, 5.577966, -1.6350706)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.16786501, -0.9472922, -0.2728714)
+[INFO ]: FinalPos: (8.179647, 5.5338783, -1.5714836)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.16681549, 0.94729, 0.27352172)
+[INFO ]: FinalPos: (8.08562, 5.6299176, -1.7107873)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.16050504, 0.9472801, 0.27730587)
+[INFO ]: FinalPos: (7.8644, 5.8366137, -2.0211806)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.14790332, 0.94725114, 0.28432363)
+[INFO ]: FinalPos: (7.4227962, 6.1835723, -2.5817707)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.12772949, 0.94721144, 0.29406753)
+[INFO ]: FinalPos: (6.7321134, 6.596251, -3.3418746)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.10149505, 0.94718504, 0.30420277)
+[INFO ]: FinalPos: (5.842329, 6.961495, -4.1719027)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.07306474, 0.947193, 0.31222913)
+[INFO ]: FinalPos: (4.904091, 7.1976266, -4.9136624)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.046743076, 0.9472208, 0.3171559)
+[INFO ]: FinalPos: (4.0548844, 7.307295, -5.491937)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.024682881, 0.9472459, 0.31955573)
+[INFO ]: FinalPos: (3.3421452, 7.3343663, -5.9192195)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.007401672, 0.9472664, 0.32036158)
+[INFO ]: FinalPos: (2.7952728, 7.31881, -6.214617)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.009166992, 0.9472526, 0.3203569)
+[INFO ]: FinalPos: (2.1050146, 7.2571836, -6.549977)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.369321, 0.87354004, 0.3170644)
+[INFO ]: FinalPos: (1.7711377, 7.058934, -6.858172)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.30876023, 0.896101, 0.3188576)
+[INFO ]: FinalPos: (1.4224921, 6.862598, -7.1331115)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.3091208, 0.8959746, 0.3188633)
+[INFO ]: FinalPos: (1.1418189, 6.688259, -7.3459806)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.35880065, 0.8766301, 0.32059613)
+[INFO ]: FinalPos: (0.91577065, 6.5170183, -7.529266)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.56421655, 0.76001644, 0.3225441)
+[INFO ]: FinalPos: (0.7724766, 6.3132825, -7.716589)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.5581818, 0.76443404, 0.32260457)
+[INFO ]: FinalPos: (0.629221, 6.1031327, -7.896572)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.05381122, 0.967765, 0.246039)
+[INFO ]: FinalPos: (0.501596, 6.063298, -7.9362974)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (-0.97738653, -0.05348788, 0.20458417)
+[INFO ]: FinalPos: (0.57189506, 5.9638824, -8.006563)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Axis: (0.053659737, 0.97012794, 0.23658484)
+[INFO ]: FinalPos: (0.48667353, 5.936235, -8.032701)
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
+[INFO ]: Key pressed: 70
+[ERROR]: Uniform 'u_Normal' not found in program.
+[ERROR]: Uniform 'u_Normal' not found in program.
