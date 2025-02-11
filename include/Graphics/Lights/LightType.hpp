@@ -5,10 +5,9 @@
 namespace Krys::Gfx
 {
   /// @brief Enumeration of possible light types.
-  enum class LightType : uint8
+  enum class LightType : int
   {
-    Ambient,
-    Directional,
-    Point
+    Point = 0,
+    Directional = 1
   };
 }

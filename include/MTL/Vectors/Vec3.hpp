@@ -31,7 +31,7 @@ namespace Krys
 
 #pragma region Construction
 
-      explicit constexpr Vector() noexcept : x(component_t(0)), y(component_t(0)), z(component_t(0))
+      constexpr Vector() noexcept : x(component_t(0)), y(component_t(0)), z(component_t(0))
       {
       }
 

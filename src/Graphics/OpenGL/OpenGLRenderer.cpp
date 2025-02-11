@@ -2,6 +2,7 @@
 #include "Debug/Macros.hpp"
 #include "Graphics/BufferWriter.hpp"
 #include "Graphics/Cameras/Camera.hpp"
+#include "Graphics/Lights/LightData.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
 #include "Graphics/OpenGL/OpenGLBuffer.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
@@ -96,10 +97,11 @@ namespace Krys::Gfx::OpenGL
       }
       case SID("mesh"):
       {
-        auto *meshNode = static_cast<MeshNode *>(node);
-        auto &mesh = *_ctx.MeshManager->GetMesh(meshNode->GetMesh());
-
+        auto &meshNode = *static_cast<MeshNode *>(node);
+        auto &mesh = *_ctx.MeshManager->GetMesh(meshNode.GetMesh());
         auto &material = *_ctx.MaterialManager->GetMaterial(activeMaterial);
+
+        // Resetting it back for the next mesh.
         activeMaterial = _ctx.MaterialManager->GetDefaultPhongMaterial();
 
         auto &program =
@@ -119,12 +121,14 @@ namespace Krys::Gfx::OpenGL
         SetUniform(program.GetNativeHandle(), "u_View", camera.GetView());
         SetUniform(program.GetNativeHandle(), "u_Projection", camera.GetProjection());
         SetUniform(program.GetNativeHandle(), "u_CameraPosition", camera.GetPosition());
+        SetUniform<int>(program.GetNativeHandle(), "u_LightCount",
+                        static_cast<int>(_ctx.LightManager->GetLights().size()));
 
         mesh.Bind();
         if (mesh.IsIndexed())
-          _ctx.GraphicsContext->DrawElements(meshNode->GetType(), static_cast<uint32>(mesh.GetCount()));
+          _ctx.GraphicsContext->DrawElements(meshNode.GetType(), static_cast<uint32>(mesh.GetCount()));
         else
-          _ctx.GraphicsContext->DrawArrays(meshNode->GetType(), static_cast<uint32>(mesh.GetCount()));
+          _ctx.GraphicsContext->DrawArrays(meshNode.GetType(), static_cast<uint32>(mesh.GetCount()));
       }
       default: break;
     }
@@ -141,12 +145,30 @@ namespace Krys::Gfx::OpenGL
 
       if (material->GetType() == MaterialType::Phong)
       {
-        auto &phong = static_cast<PhongMaterial &>(*material);
         // TODO: we need to get the index differently once we add PBR materials.
         auto index = handle.Id();
+        auto &phong = static_cast<PhongMaterial &>(*material);
 
         phongBufferWriter.Seek(index * sizeof(PhongMaterialData));
-        phongBufferWriter.Write(GetBufferDataFromPhongMaterial(phong));
+        PhongMaterialData data;
+
+        auto ambientTexture = phong.GetAmbientTexture();
+        auto diffuseTexture = phong.GetDiffuseTexture();
+        auto specularTexture = phong.GetSpecularTexture();
+        auto emissionTexture = phong.GetEmissionTexture();
+
+        data.Shininess = phong.GetShininess();
+        // TODO: we need to get the index differently once we have cubemaps.
+        data.AmbientTexture =
+          ambientTexture.IsValid() ? ambientTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
+        data.DiffuseTexture =
+          diffuseTexture.IsValid() ? diffuseTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
+        data.SpecularTexture =
+          specularTexture.IsValid() ? specularTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
+        data.EmissionTexture =
+          emissionTexture.IsValid() ? emissionTexture.Id() : GetBlackTexture(*_ctx.TextureManager).Id();
+
+        phongBufferWriter.Write(data);
       }
 
       material->ClearIsDirtyFlag();
@@ -196,34 +218,19 @@ namespace Krys::Gfx::OpenGL
   void OpenGLRenderer::UpdateLightBuffer() noexcept
   {
     BufferWriter lightBufferWriter(*_lightBuffer);
-    Vec4 pos {1.2f, 1.0f, -2.0f, 1.0f};
-    Vec4 intensity {1.0f};
 
-    lightBufferWriter.Seek(0);
-    lightBufferWriter.Write(pos);
-    lightBufferWriter.Write(intensity);
-  }
+    for (const auto &[handle, light] : _ctx.LightManager->GetLights())
+    {
+      if (!light->IsDirty())
+        continue;
 
-  PhongMaterialData OpenGLRenderer::GetBufferDataFromPhongMaterial(const PhongMaterial &mat) noexcept
-  {
-    // TODO: we need to get the index differently once we have cubemaps.
-    PhongMaterialData data;
+      auto index = handle.Id();
+      lightBufferWriter.Seek(index * sizeof(LightData));
 
-    auto ambientTexture = mat.GetAmbientTexture();
-    auto diffuseTexture = mat.GetDiffuseTexture();
-    auto specularTexture = mat.GetSpecularTexture();
-    auto emissionTexture = mat.GetEmissionTexture();
+      const auto &lightData = light.get()->GetData();
+      lightBufferWriter.Write(lightData);
 
-    data.Shininess = mat.GetShininess();
-    data.AmbientTexture =
-      ambientTexture.IsValid() ? ambientTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
-    data.DiffuseTexture =
-      diffuseTexture.IsValid() ? diffuseTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
-    data.SpecularTexture =
-      specularTexture.IsValid() ? specularTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
-    data.EmissionTexture =
-      emissionTexture.IsValid() ? emissionTexture.Id() : GetBlackTexture(*_ctx.TextureManager).Id();
-
-    return data;
+      light->ClearIsDirtyFlag();
+    }
   }
 }

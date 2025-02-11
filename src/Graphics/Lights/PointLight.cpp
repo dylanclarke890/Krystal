@@ -3,55 +3,35 @@
 
 namespace Krys::Gfx
 {
-  PointLight::PointLight(LightHandle handle, const Vec3 &position, const Colour &colour) noexcept
-      : Light(handle, LightType::Point), _position(Vec4(position, 1.0f)), _colour(colour),
-        _attenuation({0.0f, 0.0f, 0.0f}),
-        _shadowCameras(Array<Camera, 6>({Camera(CameraType::Perspective, 90u, 90u, 1'000u),
-                                         Camera(CameraType::Perspective, 90u, 90u, 1'000u),
-                                         Camera(CameraType::Perspective, 90u, 90u, 1'000u),
-                                         Camera(CameraType::Perspective, 90u, 90u, 1'000u),
-                                         Camera(CameraType::Perspective, 90u, 90u, 1'000u),
-                                         Camera(CameraType::Perspective, 90u, 90u, 1'000u)}))
+  PointLight::PointLight(LightHandle handle, const Colour &intensity, const Vec3 &position) noexcept
+      : Light(handle, LightType::Point, intensity), _position(position)
+
   {
   }
 
   PointLight::PointLight(LightHandle handle, const Vec3 &position) noexcept
-      : PointLight(handle, position, Colours::White)
+      : Light(handle, LightType::Point), _position(position)
   {
   }
 
-  Vec4 PointLight::GetColourData() const noexcept
-  {
-    return {_colour.r, _colour.g, _colour.b, _colour.a};
-  }
-
-  Vec3 PointLight::GetAttentuation() const noexcept
-  {
-    return _attenuation;
-  }
-
-  Vec4 PointLight::GetWorldSpaceData() const noexcept
+  const Vec3 &PointLight::GetPosition() const noexcept
   {
     return _position;
   }
 
-  Vec3 PointLight::GetPosition() const noexcept
-  {
-    return {_position.x, _position.y, _position.z};
-  }
-
   void PointLight::SetPosition(const Vec3 &position) noexcept
   {
-    _position = Vec4(position, 1.0f);
+    _position = position;
+    _dirty = true;
   }
 
-  const Colour &PointLight::GetColour() const noexcept
+  LightData PointLight::GetData() const noexcept
   {
-    return _colour;
-  }
-
-  void PointLight::SetColour(const Colour &colour) noexcept
-  {
-    _colour = colour;
+    LightData data;
+    data.Position = GetPosition();
+    data.Intensity = GetIntensityData();
+    data.Type = GetType();
+    data.Direction = Vec3 {0.0f}; // Point lights have no direction.
+    return data;
   }
 }

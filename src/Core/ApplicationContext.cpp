@@ -53,6 +53,11 @@ namespace Krys
     return _sceneGraphManager.get();
   }
 
+  Ptr<Gfx::LightManager> ApplicationContext::GetLightManager() const noexcept
+  {
+    return _lightManager.get();
+  }
+
   const ApplicationSettings &ApplicationContext::GetSettings() const noexcept
   {
     return _settings;
