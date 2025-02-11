@@ -15,7 +15,7 @@ namespace Krys::Gfx
     int DiffuseTexture;
     int SpecularTexture;
     int EmissionTexture;
-    float Shininess{32};
+    float Shininess;
     float Padding[3];
   };
 

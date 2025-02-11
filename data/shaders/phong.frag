@@ -85,7 +85,7 @@ void main()
   
       float specularStrength = 0.5;
       vec4 specular = GetTextureSample(material.SpecularTexture, v_TextureCoords);
-      float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), 32);
+      float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), material.Shininess);
       vec4 specularColour = specular * specularStrength * specularFactor;
 
       o_Colour += v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
@@ -107,7 +107,7 @@ void main()
 
       float specularStrength = 0.5;
       vec4 specular = GetTextureSample(material.SpecularTexture, v_TextureCoords);
-      float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), 32);
+      float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), material.Shininess);
       vec4 specularColour = specular * specularStrength * specularFactor;
 
       o_Colour += v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);

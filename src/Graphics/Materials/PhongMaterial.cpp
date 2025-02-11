@@ -4,14 +4,14 @@ namespace Krys::Gfx
 {
   PhongMaterial::PhongMaterial(MaterialHandle handle, ProgramHandle program) noexcept
       : Material(handle, program, MaterialType::Phong), _ambientTexture(), _diffuseTexture(),
-        _specularTexture(), _shininess(0.0f)
+        _specularTexture(), _shininess(32.0f)
   {
   }
 
   PhongMaterial::PhongMaterial(MaterialHandle handle, ProgramHandle program,
                                TextureHandle ambientTexture) noexcept
       : Material(handle, program, MaterialType::Phong), _ambientTexture(ambientTexture), _diffuseTexture(),
-        _specularTexture(), _shininess(0.0f)
+        _specularTexture(), _shininess(32.0f)
   {
   }
 
