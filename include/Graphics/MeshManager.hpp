@@ -6,6 +6,7 @@
 #include "Graphics/Handles.hpp"
 #include "Graphics/Mesh.hpp"
 #include "Graphics/VertexLayout.hpp"
+#include "Graphics/Colours.hpp"
 
 namespace Krys::Gfx
 {
@@ -22,7 +23,7 @@ namespace Krys::Gfx
     /// @param colour The colour of the cube.
     /// @param forceUnique If true, will create a new cube mesh each time.
     /// @return A handle to the cube mesh.
-    NO_DISCARD MeshHandle CreateCube(const Colour &colour, bool forceUnique = false) noexcept;
+    NO_DISCARD MeshHandle CreateCube(const Colour &colour = Colours::White, bool forceUnique = false) noexcept;
 
     /// @brief Get a mesh by handle.
     /// @param handle The handle of the mesh.

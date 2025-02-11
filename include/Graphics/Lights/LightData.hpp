@@ -13,7 +13,9 @@ namespace Krys::Gfx
     float Padding1 {0.0f};
     Vec3 Direction;
     float Padding2{0.0f};
+    Vec3 Attenuation;
+    float Padding3 {0.0f};
     LightType Type;
-    float Padding3[3]{0.0f};
+    float Padding4[3] {0.0f};
   };
 }

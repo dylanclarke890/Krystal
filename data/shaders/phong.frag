@@ -23,8 +23,10 @@ struct Light
   float Padding2;
   vec3 Direction;
   float Padding3;
+  vec3 Attenuation;
+  float Padding4;
   int Type;
-  float Padding[3];
+  float Padding5[3];
 };
 
 Material GetMaterial(int index);
@@ -74,20 +76,22 @@ void main()
       vec3 lightDirection = normalize(light.Position - v_FragmentPosition.xyz);
       vec3 viewDirection = normalize(u_CameraPosition - v_FragmentPosition);
       vec3 reflectDirection = reflect(-lightDirection, normal);
+      float distance = length(light.Position - v_FragmentPosition);
+      float attenuation = 1.0 / (1.0 + light.Attenuation.x * distance + light.Attenuation.y * distance + light.Attenuation.z * (distance * distance));
 
       float ambientStrength = 0.4;
       vec4 ambient = GetTextureSample(material.AmbientTexture, v_TextureCoords);
-      vec4 ambientColour = ambient * ambientStrength;
+      vec4 ambientColour = ambient * ambientStrength * attenuation;
 
       // TODO: use diffuse texture
       vec4 diffuse = GetTextureSample(material.AmbientTexture, v_TextureCoords);
       float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-      vec4 diffuseColour = diffuse * diffuseFactor;
+      vec4 diffuseColour = diffuse * diffuseFactor * attenuation;
   
       float specularStrength = 0.5;
       vec4 specular = GetTextureSample(material.SpecularTexture, v_TextureCoords);
       float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), material.Shininess);
-      vec4 specularColour = specular * specularStrength * specularFactor;
+      vec4 specularColour = specular * specularStrength * specularFactor * attenuation;
 
       o_Colour += v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
     }

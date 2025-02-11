@@ -10,7 +10,9 @@ namespace Krys::Gfx::Colours
   static constexpr Colour Red {1.0f, 0.0f, 0.0f, 1.0f};
   static constexpr Colour Green {0.0f, 1.0f, 0.0f, 1.0f};
   static constexpr Colour Blue {0.0f, 0.0f, 1.0f, 1.0f};
+  static constexpr Colour Gray25 {0.25f, 0.25f, 0.25f, 1.0f};
   static constexpr Colour Gray50 {0.5f, 0.5f, 0.5f, 1.0f};
+  static constexpr Colour Gray75 {0.75f, 0.75f, 0.75f, 1.0f};
   static constexpr Colour Coral {1.0f, 0.5f, 0.31f, 1.0f};
   static constexpr Colour Yellow {1.0f, 1.0f, 0.0f, 1.0f};
   static constexpr Colour Orange {1.0f, 0.647f, 0.0f, 1.0f};
