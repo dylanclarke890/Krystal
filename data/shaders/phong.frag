@@ -62,19 +62,20 @@ layout(std430, binding = 2) buffer LightBuffer
 void main()
 {
   Material material = GetMaterial(u_MaterialIndex);
-  o_Colour = vec4(0);
 
+  vec3 normal = normalize((u_Normal * v_Normal.xyz));
+
+  o_Colour = vec4(0);
   for (int i = 0; i < u_LightCount; i++)
   {
     Light light = u_Lights[i];
     if (light.Type == POINT_LIGHT_TYPE)
     {
-      vec3 normal = normalize((u_Normal * v_Normal.xyz));
       vec3 lightDirection = normalize(light.Position - v_FragmentPosition.xyz);
       vec3 viewDirection = normalize(u_CameraPosition - v_FragmentPosition);
-      vec3 reflectDirection = reflect(-lightDirection, normalize(v_Normal.xyz));
+      vec3 reflectDirection = reflect(-lightDirection, normal);
 
-      float ambientStrength = 0.5;
+      float ambientStrength = 0.4;
       vec4 ambient = GetTextureSample(material.AmbientTexture, v_TextureCoords);
       vec4 ambientColour = ambient * ambientStrength;
 
@@ -92,15 +93,15 @@ void main()
     }
     else if (light.Type == DIRECTIONAL_LIGHT_TYPE)
     {
-      vec3 normal = normalize((u_Normal * v_Normal.xyz));
       vec3 lightDirection = normalize(light.Direction);
       vec3 viewDirection = normalize(u_CameraPosition - v_FragmentPosition);
-      vec3 reflectDirection = reflect(-lightDirection, normalize(v_Normal.xyz));
+      vec3 reflectDirection = reflect(-lightDirection, normal);
 
-      float ambientStrength = 0.5;
+      float ambientStrength = 0.1;
       vec4 ambient = GetTextureSample(material.AmbientTexture, v_TextureCoords);
       vec4 ambientColour = ambient * ambientStrength;
     
+      // TODO: use diffuse texture
       vec4 diffuse = GetTextureSample(material.AmbientTexture, v_TextureCoords);
       float diffuseFactor = max(dot(normal, lightDirection), 0.0);
       vec4 diffuseColour = diffuse * diffuseFactor;

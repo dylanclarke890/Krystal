@@ -30,10 +30,10 @@ namespace Krys::Gfx
     /// get the derived type via `light.GetType()` and cast it that way.
     template <typename T = Light, typename... Args>
     requires std::same_as<T, Light> || std::derived_from<T, Light>
-    NO_DISCARD Light *GetLight(LightHandle handle) noexcept
+    NO_DISCARD T *GetLight(LightHandle handle) noexcept
     {
       auto it = _lights.find(handle);
-      return it != _lights.end() ? static_cast<T>(it->second.get()) : nullptr;
+      return it != _lights.end() ? static_cast<T*>(it->second.get()) : nullptr;
     }
 
     /// @brief Destroy a light by handle.
