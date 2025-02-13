@@ -44,7 +44,11 @@ namespace Krys::Gfx
     data.Intensity = GetIntensityData();
     data.Attenuation = GetAttenuation();
     data.Type = GetType();
-    data.Direction = Vec3 {0.0f}; // Point lights have no direction.
+
+    // Zero out the rest of the data
+    data.InnerCutoff = 0;
+    data.OuterCutoff = 0;
+    data.Direction = Vec3 {0.0f};
     return data;
   }
 }

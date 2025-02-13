@@ -8,6 +8,7 @@ namespace Krys::Gfx
   enum class LightType : int
   {
     Point = 0,
-    Directional = 1
+    Directional = 1,
+    Spot = 2
   };
 }

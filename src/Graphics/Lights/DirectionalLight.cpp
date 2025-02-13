@@ -43,6 +43,10 @@ namespace Krys::Gfx
     data.Direction = GetDirection();
     data.Attenuation = GetAttenuation();
     data.Type = GetType();
+
+    // Zero out the rest of the data
+    data.InnerCutoff = 0.0f;
+    data.OuterCutoff = 0.0f;
     data.Position = Vec3 {0.0f}; // Directional lights have no position.
     return data;
   }

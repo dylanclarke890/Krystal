@@ -28,7 +28,7 @@ namespace Krys::Gfx
 
     /// @brief Get the data of the light.
     /// @note Some lights may not have all the data, in which case the missing data will be zeroed out.
-    virtual LightData GetData() const noexcept = 0;
+    NO_DISCARD virtual LightData GetData() const noexcept = 0;
 
     NO_DISCARD bool IsDirty() const noexcept;
 

@@ -17,5 +17,8 @@ namespace Krys::Gfx
     float Padding3 {0.0f};
     LightType Type;
     float Padding4[3] {0.0f};
+    float InnerCutoff;
+    float OuterCutoff;
+    float Padding5[2] {0.0f};
   };
 }
