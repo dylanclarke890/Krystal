@@ -13,6 +13,7 @@ def get_engine_project():
     "K:/include/",
     f"{THIRD_PARTY_ROOT}Glad/include",
     f"{THIRD_PARTY_ROOT}stb",
+    f"{THIRD_PARTY_ROOT}rapidobj/"
   ]
   code.build_output_dir = "K:/build/"
   code.build_object_output_dir = code.build_output_dir + "obj/"
