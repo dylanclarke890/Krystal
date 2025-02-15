@@ -1,6 +1,7 @@
 #include "Graphics/MeshManager.hpp"
 #include "Debug/Macros.hpp"
 #include "Graphics/Mesh.hpp"
+#include "Graphics/Models/Loader.hpp"
 
 #include <format>
 #include <utility>
@@ -46,6 +47,20 @@ namespace Krys::Gfx
 {
   MeshManager::MeshManager(Ptr<GraphicsContext> context) noexcept : _context(context)
   {
+  }
+
+  MeshHandle MeshManager::LoadMesh(const string &path) noexcept
+  {
+    auto flags =
+      ModelLoaderFlags::Triangulate | ModelLoaderFlags::GenerateVertexNormals | ModelLoaderFlags::FlipUVs;
+    auto result = LoadModel(path, flags);
+    KRYS_ASSERT(result, "Failed to load model: {0}", result.error());
+
+    auto handle = _meshHandles.Next();
+    auto &model = result.value();
+    _meshes[handle] = {.Mesh = CreateMeshImpl(handle, model.Vertices, model.Indices), .Id = model.Name};
+
+    return handle;
   }
 
   MeshHandle MeshManager::CreateCube(const Colour &colour, bool forceUnique) noexcept

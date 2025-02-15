@@ -9,19 +9,19 @@ namespace Krys::Gfx
 {
   struct VertexData
   {
-    explicit VertexData(const Vec3 &position, const Vec3 &normal, const Colour &colour,
-                        const Vec3 &textureCoords) noexcept
+    VertexData(const Vec3 &position, const Vec3 &normal, const Colour &colour,
+               const Vec3 &textureCoords) noexcept
         : Position(position), Normal(normal), Colour(colour), TextureCoords(textureCoords)
     {
     }
 
     Vec3 Position;
-    float PositionPadding;
+    float PositionPadding{0.f};
     Vec3 Normal;
-    float NormalPadding;
+    float NormalPadding{0.f};
     Colour Colour;
     Vec3 TextureCoords;
-    float TextureCoordsPadding;
+    float TextureCoordsPadding{0.f};
   };
 
   enum class VertexAttributeType : uint8

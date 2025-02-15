@@ -17,6 +17,12 @@ namespace Krys::Gfx
   public:
     virtual ~MeshManager() = default;
 
+    /// @brief Load a mesh from a file.
+    /// @param path The path to the mesh file.
+    /// @return A handle to the loaded mesh.
+    /// @note Only OBJ files are supported currently.
+    NO_DISCARD MeshHandle LoadMesh(const string &path) noexcept;
+
     /// @brief Create a cube mesh. If a cube mesh with the same colour has already been created, it will be
     /// returned, unless 'forceUnique' is set to true, in which case a new cube mesh will be created each
     /// time.
