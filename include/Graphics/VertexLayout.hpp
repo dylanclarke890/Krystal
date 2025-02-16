@@ -2,6 +2,7 @@
 
 #include "Base/Types.hpp"
 #include "Graphics/Colour.hpp"
+#include "MTL/Vectors/Ext/Hash.hpp"
 #include "MTL/Vectors/Vec2.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 
@@ -22,6 +23,13 @@ namespace Krys::Gfx
     Colour Colour;
     Vec3 TextureCoords;
     float TextureCoordsPadding{0.f};
+
+    bool operator==(const VertexData &other) const noexcept
+    {
+      // TODO: add epsilon comparison
+      return Position == other.Position && Normal == other.Normal && Colour == other.Colour
+             && TextureCoords == other.TextureCoords;
+    }
   };
 
   enum class VertexAttributeType : uint8
@@ -63,5 +71,18 @@ namespace Krys::Gfx
   private:
     attributes_list_t _attributes {};
     size_t _stride;
+  };
+}
+
+namespace std
+{
+  template <>
+  struct hash<Krys::Gfx::VertexData>
+  {
+    size_t operator()(const Krys::Gfx::VertexData &vertex) const noexcept
+    {
+      return std::hash<Krys::Vec3>()(vertex.Position) ^ std::hash<Krys::Vec3>()(vertex.Normal)
+             ^ std::hash<Krys::Gfx::Colour>()(vertex.Colour) ^ std::hash<Krys::Vec3>()(vertex.TextureCoords);
+    }
   };
 }

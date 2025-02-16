@@ -126,9 +126,9 @@ namespace Krys::Gfx::OpenGL
 
         mesh.Bind();
         if (mesh.IsIndexed())
-          _ctx.GraphicsContext->DrawElements(meshNode.GetType(), static_cast<uint32>(mesh.GetCount()));
+          _ctx.GraphicsContext->DrawElements(mesh.GetPrimitiveType(), static_cast<uint32>(mesh.GetCount()));
         else
-          _ctx.GraphicsContext->DrawArrays(meshNode.GetType(), static_cast<uint32>(mesh.GetCount()));
+          _ctx.GraphicsContext->DrawArrays(mesh.GetPrimitiveType(), static_cast<uint32>(mesh.GetCount()));
       }
       default: break;
     }

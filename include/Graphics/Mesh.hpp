@@ -5,6 +5,7 @@
 #include "Base/Types.hpp"
 #include "Graphics/Buffer.hpp"
 #include "Graphics/VertexLayout.hpp"
+#include "Graphics/PrimitiveType.hpp"
 
 namespace Krys::Gfx
 {
@@ -27,6 +28,8 @@ namespace Krys::Gfx
     NO_DISCARD IndexBufferHandle GetIndexBuffer() const noexcept;
     NO_DISCARD size_t GetCount() const noexcept;
     NO_DISCARD bool IsIndexed() const noexcept;
+    NO_DISCARD PrimitiveType GetPrimitiveType() const noexcept;
+    void SetPrimitiveType(PrimitiveType type) noexcept;
 
     virtual void SetVertices(const List<vertex_t> &vertices) noexcept = 0;
     virtual void SetIndices(const List<index_t> &indices) noexcept = 0;
@@ -41,5 +44,6 @@ namespace Krys::Gfx
     VertexBufferHandle _vbo;
     IndexBufferHandle _ebo;
     size_t _count;
+    PrimitiveType _primitiveType{PrimitiveType::Triangles};
   };
 }

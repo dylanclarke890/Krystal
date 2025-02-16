@@ -17,12 +17,6 @@ namespace Krys::Gfx
   public:
     virtual ~MeshManager() = default;
 
-    /// @brief Load a mesh from a file.
-    /// @param path The path to the mesh file.
-    /// @return A handle to the loaded mesh.
-    /// @note Only OBJ files are supported currently.
-    NO_DISCARD MeshHandle LoadMesh(const string &path) noexcept;
-
     /// @brief Create a cube mesh. If a cube mesh with the same colour has already been created, it will be
     /// returned, unless 'forceUnique' is set to true, in which case a new cube mesh will be created each
     /// time.
@@ -30,6 +24,16 @@ namespace Krys::Gfx
     /// @param forceUnique If true, will create a new cube mesh each time.
     /// @return A handle to the cube mesh.
     NO_DISCARD MeshHandle CreateCube(const Colour &colour = Colours::White, bool forceUnique = false) noexcept;
+
+    /// @brief Create a mesh.
+    /// @param name The name of the mesh.
+    /// @param vertices The vertices of the mesh.
+    /// @param indices The indices of the mesh.
+    /// @param layout The layout of the vertices.
+    /// @return A handle to the mesh.
+    NO_DISCARD MeshHandle CreateMesh(const string &name, const List<VertexData> &vertices,
+                                     const List<uint32> &indices,
+                                     const VertexLayout &layout = VertexLayout::Default()) noexcept;
 
     /// @brief Get a mesh by handle.
     /// @param handle The handle of the mesh.

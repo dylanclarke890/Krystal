@@ -121,6 +121,8 @@ namespace Krys::Gfx
       y /= length;
       // z stays 0
     }
+    // TODO: this is a bit of a hack, but it works
+    x = -x;
 
     auto result = Vec3(x, y, z);
     return result;

@@ -48,4 +48,14 @@ namespace Krys::Gfx
   {
     return !_indices.empty() && _ebo.IsValid();
   }
+
+  PrimitiveType Mesh::GetPrimitiveType() const noexcept
+  {
+    return _primitiveType;
+  }
+
+  void Mesh::SetPrimitiveType(PrimitiveType type) noexcept
+  {
+    _primitiveType = type;
+  }
 }

@@ -9,9 +9,8 @@ namespace Krys::Gfx
   class MeshNode : public TransformNode
   {
   public:
-    MeshNode(MeshHandle mesh, const Transform &transform = {},
-             PrimitiveType type = PrimitiveType::Triangles) noexcept
-        : TransformNode(transform), _mesh(mesh), _type(type)
+    MeshNode(MeshHandle mesh, const Transform &transform = {}) noexcept
+        : TransformNode(transform), _mesh(mesh)
     {
     }
 
@@ -27,18 +26,7 @@ namespace Krys::Gfx
       _mesh = mesh;
     }
 
-    PrimitiveType GetType() const noexcept
-    {
-      return _type;
-    }
-
-    void SetType(PrimitiveType type) noexcept
-    {
-      _type = type;
-    }
-
   protected:
     MeshHandle _mesh;
-    PrimitiveType _type;
   };
 }

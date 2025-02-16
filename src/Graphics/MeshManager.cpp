@@ -1,7 +1,6 @@
 #include "Graphics/MeshManager.hpp"
 #include "Debug/Macros.hpp"
 #include "Graphics/Mesh.hpp"
-#include "Graphics/Models/Loader.hpp"
 
 #include <format>
 #include <utility>
@@ -49,20 +48,6 @@ namespace Krys::Gfx
   {
   }
 
-  MeshHandle MeshManager::LoadMesh(const string &path) noexcept
-  {
-    auto flags =
-      ModelLoaderFlags::Triangulate | ModelLoaderFlags::GenerateVertexNormals | ModelLoaderFlags::FlipUVs;
-    auto result = LoadModel(path, flags);
-    KRYS_ASSERT(result, "Failed to load model: {0}", result.error());
-
-    auto handle = _meshHandles.Next();
-    auto &model = result.value();
-    _meshes[handle] = {.Mesh = CreateMeshImpl(handle, model.Vertices, model.Indices), .Id = model.Name};
-
-    return handle;
-  }
-
   MeshHandle MeshManager::CreateCube(const Colour &colour, bool forceUnique) noexcept
   {
     auto meshId = std::format("cube_{0}", colour);
@@ -78,6 +63,14 @@ namespace Krys::Gfx
     _meshes[handle] = {.Mesh = CreateMeshImpl(handle, vertices, indices), .Id = meshId};
     _loadedMeshes[meshId] = handle;
 
+    return handle;
+  }
+
+  MeshHandle MeshManager::CreateMesh(const string &name, const List<VertexData> &vertices,
+                                     const List<uint32> &indices, const VertexLayout &layout) noexcept
+  {
+    auto handle = _meshHandles.Next();
+    _meshes[handle] = {.Mesh = CreateMeshImpl(handle, vertices, indices, layout), .Id = name};
     return handle;
   }
 

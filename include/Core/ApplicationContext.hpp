@@ -15,6 +15,7 @@
 #include "Graphics/Scene/SceneGraphManager.hpp"
 #include "Graphics/TextureManager.hpp"
 #include "Graphics/Lights/LightManager.hpp"
+#include "Graphics/Models/ModelManager.hpp"
 #include "IO/Input/InputManager.hpp"
 
 namespace Krys
@@ -63,6 +64,9 @@ namespace Krys
     /// @brief Get the current 'LightManager'.
     Ptr<Gfx::LightManager> GetLightManager() const noexcept;
 
+    /// @brief Get the current 'ModelManager'.
+    Ptr<Gfx::ModelManager> GetModelManager() const noexcept;
+
     /// @brief Get the command line arguments.
     const List<string> &GetCLIArgs() const noexcept;
 
@@ -80,6 +84,7 @@ namespace Krys
     Unique<Gfx::MaterialManager> _materialManager;
     Unique<Gfx::SceneGraphManager> _sceneGraphManager;
     Unique<Gfx::LightManager> _lightManager;
+    Unique<Gfx::ModelManager> _modelManager;
     ApplicationSettings _settings;
 
     /// @brief Program arguments.
