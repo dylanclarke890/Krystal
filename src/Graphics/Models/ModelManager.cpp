@@ -42,114 +42,141 @@ namespace Krys::Gfx
     Model model;
     model.Name = path;
 
-    const auto &attrs = result.attributes;
+    List<MaterialHandle> materials;
+    for (const auto &mat : result.materials)
+    {
+      PhongMaterialDescriptor descriptor;
+      descriptor.Ambient = Colour {mat.ambient[0], mat.ambient[1], mat.ambient[2]};
+      descriptor.Diffuse = Colour {mat.diffuse[0], mat.diffuse[1], mat.diffuse[2]};
+      descriptor.Specular = Colour {mat.specular[0], mat.specular[1], mat.specular[2]};
+      descriptor.Shininess = mat.shininess;
+
+      auto handle = _materialManager->CreatePhongMaterial(descriptor);
+      materials.push_back(handle);
+    }
+
+    KRYS_DEBUG_BREAK();
+    const auto &data = result.attributes;
     for (const auto &shape : result.shapes)
     {
-      List<VertexData> vertices;
-      List<uint32> indices;
-
-      for (const auto &[position_index, texcoord_index, normal_index] : shape.mesh.indices)
+      Map<int, List<rapidobj::Index>> indicesByMaterial;
+      for (size_t i = 0; i < shape.mesh.indices.size(); i++)
       {
-        Vec3 position = {attrs.positions[3 * position_index + 0], attrs.positions[3 * position_index + 1],
-                         attrs.positions[3 * position_index + 2]};
-
-        Vec2 textureCoord = {0.0f, 0.0f};
-        Vec3 normal = {0.0f, 0.0f, 0.0f};
-        Colour colour = Colours::White;
-
-        if (texcoord_index != -1)
-        {
-          if (!!(flags & ModelLoaderFlags::FlipUVs))
-            textureCoord = {attrs.texcoords[2 * texcoord_index + 0],
-                            1.0f - attrs.texcoords[2 * texcoord_index + 1]};
-          else
-            textureCoord = {attrs.texcoords[2 * texcoord_index + 0], attrs.texcoords[2 * texcoord_index + 1]};
-        }
-
-        if (normal_index != -1)
-          normal = {attrs.normals[3 * normal_index + 0], attrs.normals[3 * normal_index + 1],
-                    attrs.normals[3 * normal_index + 2]};
-
-        vertices.emplace_back(
-          VertexData {position, normal, colour, Vec3 {textureCoord.x, textureCoord.y, 0.0f}});
-        indices.push_back(static_cast<uint32>(indices.size()));
+        const auto materialId = shape.mesh.material_ids[i / 3];
+        indicesByMaterial[materialId].push_back(shape.mesh.indices[i]);
       }
 
-      if (!!(flags & ModelLoaderFlags::DeduplicateVertices))
+      for (const auto &[materialId, modelIndices] : indicesByMaterial)
       {
-        List<VertexData> uniqueVertices;
-        List<uint32> newIndices;
-        Map<VertexData, uint32> vertexToIndex;
+        auto material =
+          materialId != -1 ? materials[materialId] : _materialManager->GetDefaultPhongMaterial();
 
-        for (const auto &vertex : vertices)
+        List<VertexData> vertices;
+        List<uint32> indices;
+
+        for (const auto &[position_idx, texcoord_idx, normal_idx] : modelIndices)
         {
-          auto it = vertexToIndex.find(vertex);
-          if (it != vertexToIndex.end())
+          Vec3 position = {data.positions[3 * position_idx + 0], data.positions[3 * position_idx + 1],
+                           data.positions[3 * position_idx + 2]};
+
+          Vec2 textureCoord = {0.0f, 0.0f};
+          Vec3 normal = {0.0f, 0.0f, 0.0f};
+          Colour colour = Colours::White;
+
+          if (texcoord_idx != -1)
           {
-            newIndices.push_back(it->second);
+            if (!!(flags & ModelLoaderFlags::FlipUVs))
+              textureCoord = {data.texcoords[2 * texcoord_idx + 0],
+                              1.0f - data.texcoords[2 * texcoord_idx + 1]};
+            else
+              textureCoord = {data.texcoords[2 * texcoord_idx + 0], data.texcoords[2 * texcoord_idx + 1]};
           }
-          else
+
+          if (normal_idx != -1)
+            normal = {data.normals[3 * normal_idx + 0], data.normals[3 * normal_idx + 1],
+                      data.normals[3 * normal_idx + 2]};
+
+          vertices.push_back(
+            VertexData {position, normal, colour, Vec3 {textureCoord.x, textureCoord.y, 0.0f}});
+          indices.push_back(static_cast<uint32>(vertices.size() - 1));
+        }
+
+        if (!!(flags & ModelLoaderFlags::DeduplicateVertices))
+        {
+          List<VertexData> uniqueVertices;
+          List<uint32> newIndices;
+          Map<VertexData, uint32> vertexToIndex;
+
+          for (const auto &vertex : vertices)
           {
-            uint32 newIndex = static_cast<uint32>(uniqueVertices.size());
-            uniqueVertices.push_back(vertex);
-            vertexToIndex[vertex] = newIndex;
-            newIndices.push_back(newIndex);
+            auto it = vertexToIndex.find(vertex);
+            if (it != vertexToIndex.end())
+            {
+              newIndices.push_back(it->second);
+            }
+            else
+            {
+              uint32 newIndex = static_cast<uint32>(uniqueVertices.size());
+              uniqueVertices.push_back(vertex);
+              vertexToIndex[vertex] = newIndex;
+              newIndices.push_back(newIndex);
+            }
+          }
+
+          vertices = std::move(uniqueVertices);
+          indices = newIndices;
+        }
+
+        if (!!(flags & ModelLoaderFlags::GenerateFaceNormals))
+        {
+          for (size_t i = 0; i < indices.size(); i += 3)
+          {
+            auto &v0 = vertices[indices[i + 0]].Position;
+            auto &v1 = vertices[indices[i + 1]].Position;
+            auto &v2 = vertices[indices[i + 2]].Position;
+
+            auto normal = GenerateNormal(v0, v1, v2);
+
+            vertices[indices[i + 0]].Normal = normal;
+            vertices[indices[i + 1]].Normal = normal;
+            vertices[indices[i + 2]].Normal = normal;
           }
         }
 
-        vertices = std::move(uniqueVertices);
-        indices = newIndices;
-      }
-
-      if (!!(flags & ModelLoaderFlags::GenerateFaceNormals))
-      {
-        for (size_t i = 0; i < indices.size(); i += 3)
+        if (!!(flags & ModelLoaderFlags::GenerateVertexNormals))
         {
-          auto &v0 = vertices[indices[i + 0]].Position;
-          auto &v1 = vertices[indices[i + 1]].Position;
-          auto &v2 = vertices[indices[i + 2]].Position;
+          // Initialize all normals to zero
+          List<Vec3> normalSums(vertices.size(), Vec3(0.0f, 0.0f, 0.0f));
 
-          auto normal = GenerateNormal(v0, v1, v2);
+          // Accumulate face normals into vertex normals
+          for (size_t i = 0; i < indices.size(); i += 3)
+          {
+            uint32_t i0 = indices[i + 0];
+            uint32_t i1 = indices[i + 1];
+            uint32_t i2 = indices[i + 2];
 
-          vertices[indices[i + 0]].Normal = normal;
-          vertices[indices[i + 1]].Normal = normal;
-          vertices[indices[i + 2]].Normal = normal;
-        }
-      }
+            Vec3 &v0 = vertices[i0].Position;
+            Vec3 &v1 = vertices[i1].Position;
+            Vec3 &v2 = vertices[i2].Position;
 
-      if (!!(flags & ModelLoaderFlags::GenerateVertexNormals))
-      {
-        // Initialize all normals to zero
-        List<Vec3> normalSums(vertices.size(), Vec3(0.0f, 0.0f, 0.0f));
+            Vec3 normal = GenerateNormal(v0, v1, v2);
 
-        // Accumulate face normals into vertex normals
-        for (size_t i = 0; i < indices.size(); i += 3)
-        {
-          uint32_t i0 = indices[i + 0];
-          uint32_t i1 = indices[i + 1];
-          uint32_t i2 = indices[i + 2];
+            float area = Length(Cross(v1 - v0, v2 - v0)) * 0.5f; // Triangle area
+            normal *= area;                                      // Weight by area
 
-          Vec3 &v0 = vertices[i0].Position;
-          Vec3 &v1 = vertices[i1].Position;
-          Vec3 &v2 = vertices[i2].Position;
+            normalSums[i0] += normal;
+            normalSums[i1] += normal;
+            normalSums[i2] += normal;
+          }
 
-          Vec3 normal = GenerateNormal(v0, v1, v2);
-
-          float area = Length(Cross(v1 - v0, v2 - v0)) * 0.5f; // Triangle area
-          normal *= area;                                      // Weight by area
-
-          normalSums[i0] += normal;
-          normalSums[i1] += normal;
-          normalSums[i2] += normal;
+          // Normalize the accumulated normals
+          for (size_t i = 0; i < vertices.size(); ++i)
+            vertices[i].Normal = MTL::Normalize(normalSums[i]);
         }
 
-        // Normalize the accumulated normals
-        for (size_t i = 0; i < vertices.size(); ++i)
-          vertices[i].Normal = MTL::Normalize(normalSums[i]);
+        auto mesh = _meshManager->CreateMesh(shape.name, vertices, indices);
+        model.Renderables.push_back(Renderable {shape.name, mesh, material});
       }
-
-      auto mesh = _meshManager->CreateMesh(shape.name, vertices, indices);
-      model.Renderables.push_back(Renderable {shape.name, mesh, _materialManager->GetDefaultPhongMaterial()});
     }
 
     return Expected<Model>(model);
@@ -157,9 +184,6 @@ namespace Krys::Gfx
 
   Vec3 ModelManager::GenerateNormal(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2) const noexcept
   {
-    auto v0v1 = v1 - v0;
-    auto v0v2 = v2 - v0;
-
-    return MTL::Normalize(MTL::Cross(v0v1, v0v2));
+    return MTL::Normalize(MTL::Cross(v1 - v0, v2 - v0));
   }
 }

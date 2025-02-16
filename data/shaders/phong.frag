@@ -86,7 +86,7 @@ void main()
 
       float attenuation = CalculateAttenuation(light, v_FragmentPosition, lightDirection);
       vec4 ambientColour = CalculateAmbient(light, GetTextureSample(material.AmbientTexture, v_TextureCoords), attenuation);
-      vec4 diffuseColour = CalculateDiffuse(light, GetTextureSample(material.AmbientTexture, v_TextureCoords), lightDirection, normal, attenuation);
+      vec4 diffuseColour = CalculateDiffuse(light, GetTextureSample(material.DiffuseTexture, v_TextureCoords), lightDirection, normal, attenuation);
       vec4 specularColour = CalculateSpecular(light, GetTextureSample(material.SpecularTexture, v_TextureCoords), lightDirection, normal, attenuation, material.Shininess);
 
       o_Colour += v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
@@ -96,7 +96,7 @@ void main()
       vec3 lightDirection = normalize(light.Direction);
 
       vec4 ambientColour = CalculateAmbient(light, GetTextureSample(material.AmbientTexture, v_TextureCoords), 1.0);
-      vec4 diffuseColour = CalculateDiffuse(light, GetTextureSample(material.AmbientTexture, v_TextureCoords), lightDirection, normal, 1.0);
+      vec4 diffuseColour = CalculateDiffuse(light, GetTextureSample(material.DiffuseTexture, v_TextureCoords), lightDirection, normal, 1.0);
       vec4 specularColour = CalculateSpecular(light, GetTextureSample(material.SpecularTexture, v_TextureCoords), lightDirection, normal, 1.0, material.Shininess);
 
       o_Colour += v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
@@ -113,7 +113,7 @@ void main()
       attenuation *= spotAttenuation;
 
       vec4 ambientColour = CalculateAmbient(light, GetTextureSample(material.AmbientTexture, v_TextureCoords), attenuation);
-      vec4 diffuseColour = CalculateDiffuse(light, GetTextureSample(material.AmbientTexture, v_TextureCoords), lightDirection, normal, attenuation);
+      vec4 diffuseColour = CalculateDiffuse(light, GetTextureSample(material.DiffuseTexture, v_TextureCoords), lightDirection, normal, attenuation);
       vec4 specularColour = CalculateSpecular(light, GetTextureSample(material.SpecularTexture, v_TextureCoords), lightDirection, normal, attenuation, material.Shininess);
 
       o_Colour += v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
