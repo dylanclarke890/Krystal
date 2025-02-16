@@ -112,5 +112,9 @@ namespace Krys
   inline EnumClass &operator^=(EnumClass &a, EnumClass b)                                                    \
   {                                                                                                          \
     return a = a ^ b;                                                                                        \
+  }                                                                                                          \
+  inline bool operator!(EnumClass a)                                                                         \
+  {                                                                                                          \
+    return static_cast<type>(a) == 0;                                                                        \
   }
 }

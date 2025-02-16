@@ -27,7 +27,7 @@ ignore_includes = [
   "signal.h", "TargetConditionals.h", "dlfcn.h",
   "string.h", "inttypes.h", "limits.h", "stdarg.h", 
   "math.h", "assert.h", "emmintrin.h", "intrin.h",
-  "arm_neon.h"
+  "arm_neon.h", "fcntl.h", "sys/stat.h", "unistd.h",
 ]
 
 # ----------- COMPILER FLAGS ------------

@@ -28,7 +28,7 @@ namespace Krys::Gfx
                                             result.error.line_num));
     }
 
-    if ((flags & ModelLoaderFlags::Triangulate) == ModelLoaderFlags::Triangulate)
+    if (!!(flags & ModelLoaderFlags::Triangulate))
     {
       rapidobj::Triangulate(result);
       if (result.error)
@@ -37,11 +37,6 @@ namespace Krys::Gfx
           std::format("Failed to triangulate OBJ file: code: {0}, line: {1}, line_num {2}",
                       result.error.code.message(), result.error.line, result.error.line_num));
       }
-    }
-
-    if ((flags & ModelLoaderFlags::DeduplicateVertices) == ModelLoaderFlags::DeduplicateVertices)
-    {
-
     }
 
     Model model;
@@ -64,7 +59,7 @@ namespace Krys::Gfx
 
         if (texcoord_index != -1)
         {
-          if ((flags & ModelLoaderFlags::FlipUVs) == ModelLoaderFlags::FlipUVs)
+          if (!!(flags & ModelLoaderFlags::FlipUVs))
             textureCoord = {attrs.texcoords[2 * texcoord_index + 0],
                             1.0f - attrs.texcoords[2 * texcoord_index + 1]};
           else
@@ -80,7 +75,7 @@ namespace Krys::Gfx
         indices.push_back(static_cast<uint32>(indices.size()));
       }
 
-      if ((flags & ModelLoaderFlags::DeduplicateVertices) == ModelLoaderFlags::DeduplicateVertices)
+      if (!!(flags & ModelLoaderFlags::DeduplicateVertices))
       {
         List<VertexData> uniqueVertices;
         List<uint32> newIndices;
@@ -106,7 +101,7 @@ namespace Krys::Gfx
         indices = newIndices;
       }
 
-      if ((flags & ModelLoaderFlags::GenerateFaceNormals) == ModelLoaderFlags::GenerateFaceNormals)
+      if (!!(flags & ModelLoaderFlags::GenerateFaceNormals))
       {
         for (size_t i = 0; i < indices.size(); i += 3)
         {
@@ -122,10 +117,10 @@ namespace Krys::Gfx
         }
       }
 
-      if ((flags & ModelLoaderFlags::GenerateVertexNormals) == ModelLoaderFlags::GenerateVertexNormals)
+      if (!!(flags & ModelLoaderFlags::GenerateVertexNormals))
       {
         // Initialize all normals to zero
-        std::vector<Vec3> normalSums(vertices.size(), Vec3(0.0f, 0.0f, 0.0f));
+        List<Vec3> normalSums(vertices.size(), Vec3(0.0f, 0.0f, 0.0f));
 
         // Accumulate face normals into vertex normals
         for (size_t i = 0; i < indices.size(); i += 3)
