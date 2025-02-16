@@ -23,20 +23,6 @@ namespace Krys::Gfx
     // TODO: free buffers on destruction/shutdown
     virtual ~MaterialManager() noexcept = default;
 
-    /// @brief Creates a phong material.
-    /// @tparam Args The types of the arguments to pass to the material's constructor.
-    /// @param args The arguments to pass to the material's constructor.
-    /// @return The handle of the created material.
-    template <typename... Args>
-    NO_DISCARD MaterialHandle CreatePhongMaterial(Args &&...args) noexcept
-    {
-      auto handle = _materialHandles.Next();
-      auto program = GetDefaultPhongProgram();
-
-      _materials[handle] = CreateUnique<PhongMaterial>(handle, program, std::forward<Args>(args)...);
-      return handle;
-    }
-
     NO_DISCARD MaterialHandle CreatePhongMaterial(const PhongMaterialDescriptor &descriptor) noexcept
     {
       auto handle = _materialHandles.Next();
@@ -82,7 +68,7 @@ namespace Krys::Gfx
       if (!handle.IsValid())
       {
         auto limeTexture = _textureManager->CreateFlatColourTexture(Colours::Lime);
-        handle = CreatePhongMaterial(limeTexture);
+        handle = CreatePhongMaterialImpl(limeTexture);
       }
 
       return handle;
@@ -106,6 +92,20 @@ namespace Krys::Gfx
     }
 
   protected:
+    /// @brief Creates a phong material.
+    /// @tparam Args The types of the arguments to pass to the material's constructor.
+    /// @param args The arguments to pass to the material's constructor.
+    /// @return The handle of the created material.
+    template <typename... Args>
+    NO_DISCARD MaterialHandle CreatePhongMaterialImpl(Args &&...args) noexcept
+    {
+      auto handle = _materialHandles.Next();
+      auto program = GetDefaultPhongProgram();
+
+      _materials[handle] = CreateUnique<PhongMaterial>(handle, program, std::forward<Args>(args)...);
+      return handle;
+    }
+
     MaterialHandleMap<Unique<Material>> _materials;
     MaterialHandleManager _materialHandles {};
     Ptr<TextureManager> _textureManager {nullptr};
