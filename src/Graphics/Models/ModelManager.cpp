@@ -52,7 +52,6 @@ namespace Krys::Gfx
     model.Name = path;
 
     List<MaterialHandle> materials;
-    KRYS_DEBUG_BREAK();
     for (const auto &mat : result.materials)
     {
       PhongMaterialDescriptor descriptor;
@@ -263,6 +262,24 @@ namespace Krys::Gfx
 
           vertices = std::move(uniqueVertices);
           indices = newIndices;
+        }
+
+        if (!!(flags & ModelLoaderFlags::GenerateTangents))
+        {
+          Logger::Warn("Generating tangents is not yet implemented.");
+        }
+
+        if (!!(flags & ModelLoaderFlags::GenerateBitangents))
+        {
+          Logger::Warn("Generating bitangents is not yet implemented.");
+        }
+
+        if (!!(flags & ModelLoaderFlags::FlipWindingOrder))
+        {
+          for (size_t i = 0; i < indices.size(); i += 3)
+          {
+            std::swap(indices[i], indices[i + 2]);
+          }
         }
 
         auto mesh = _meshManager->CreateMesh(shape.name, vertices, indices);

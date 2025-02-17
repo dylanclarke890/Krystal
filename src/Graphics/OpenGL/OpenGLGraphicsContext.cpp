@@ -87,10 +87,10 @@ namespace Krys::Gfx::OpenGL
     ::glEnable(GL_DEBUG_OUTPUT);
     ::glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     ::glDebugMessageCallback(OpenGLMessageCallback, nullptr);
-
     LoadDeviceCapabilities(_deviceCapabilities);
 
     ::glEnable(GL_DEPTH_TEST);
+    ::glEnable(GL_CULL_FACE);
   }
 
   void OpenGLGraphicsContext::SetViewport(const Vec4ui &viewport) noexcept

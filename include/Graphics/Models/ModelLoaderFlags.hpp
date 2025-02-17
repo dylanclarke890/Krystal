@@ -14,6 +14,7 @@ namespace Krys::Gfx
     GenerateBitangents = 1 << 3,
     Triangulate = 1 << 4,
     RemoveDuplicateVertices = 1 << 5,
+    FlipWindingOrder = 1 << 6
   };
 
   ENUM_CLASS_BITWISE_OPERATORS(ModelLoaderFlags, uint8);
