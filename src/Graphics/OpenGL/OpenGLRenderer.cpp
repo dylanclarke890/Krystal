@@ -26,15 +26,14 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLRenderer::Init() noexcept
   {
-    _phongMaterialBufferHandle = _ctx.GraphicsContext->CreateShaderStorageBuffer(
-      _ctx.GraphicsContext->GetDeviceCapabilities().MaxShaderStorageBlockSize);
-    _textureTableHandle = _ctx.GraphicsContext->CreateShaderStorageBuffer(
-      _ctx.GraphicsContext->GetDeviceCapabilities().MaxShaderStorageBlockSize);
+    auto max_ssbo_size = _ctx.GraphicsContext->GetDeviceCapabilities().MaxShaderStorageBlockSize;
+
+    _phongMaterialBufferHandle = _ctx.GraphicsContext->CreateShaderStorageBuffer(max_ssbo_size);
+    _textureTableHandle = _ctx.GraphicsContext->CreateShaderStorageBuffer(max_ssbo_size);
+    _lightBufferHandle = _ctx.GraphicsContext->CreateShaderStorageBuffer(max_ssbo_size);
+
     _phongMaterialBuffer = _ctx.GraphicsContext->GetShaderStorageBuffer(_phongMaterialBufferHandle);
     _textureTable = _ctx.GraphicsContext->GetShaderStorageBuffer(_textureTableHandle);
-
-    _lightBufferHandle = _ctx.GraphicsContext->CreateShaderStorageBuffer(
-      _ctx.GraphicsContext->GetDeviceCapabilities().MaxShaderStorageBlockSize);
     _lightBuffer = _ctx.GraphicsContext->GetShaderStorageBuffer(_lightBufferHandle);
   }
 

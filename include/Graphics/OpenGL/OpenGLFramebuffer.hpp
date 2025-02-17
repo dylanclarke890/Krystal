@@ -1,17 +1,39 @@
 #pragma once
 
 #include "Base/Macros.hpp"
+#include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
-#include "Graphics/RenderTargets/Framebuffer.hpp"
+
+#include <glad/gl.h>
 
 namespace Krys::Gfx::OpenGL
 {
-  class OpenGLFramebuffer : public Framebuffer
+  struct OpenGLFramebufferDescriptor
+  {
+    List<GLuint> ColourAttachments {0};
+    GLuint DepthAttachment {0};
+    GLuint StencilAttachment {0};
+    GLuint DepthStencilAttachment {0};
+  };
+
+  class OpenGLFramebuffer
   {
   public:
-    OpenGLFramebuffer(FramebufferHandle handle, const FramebufferDescriptor& descriptor) noexcept;
-    ~OpenGLFramebuffer() noexcept override;
+    OpenGLFramebuffer(const OpenGLFramebufferDescriptor &descriptor) noexcept;
+    ~OpenGLFramebuffer() noexcept;
 
     NO_COPY_MOVE(OpenGLFramebuffer);
+
+    NO_DISCARD GLuint GetNativeHandle() const noexcept;
+
+    NO_DISCARD OpenGLFramebufferDescriptor GetDescriptor() const noexcept;
+
+    void Bind() const noexcept;
+
+    void Unbind() const noexcept;
+
+  protected:
+    GLuint _framebuffer {0};
+    OpenGLFramebufferDescriptor _descriptor;
   };
 }

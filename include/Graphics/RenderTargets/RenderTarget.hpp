@@ -10,9 +10,12 @@ namespace Krys::Gfx
   class RenderTarget
   {
   public:
-    virtual ~RenderTarget() noexcept = default;
+    NO_COPY_MOVE(RenderTarget);
 
-    RenderTarget(RenderTargetHandle handle, TextureHandle texture, const RenderTargetDescriptor& descriptor) noexcept;
+    RenderTarget(RenderTargetHandle handle, TextureHandle texture,
+                 const RenderTargetDescriptor &descriptor) noexcept;
+
+    virtual ~RenderTarget() noexcept = default;
 
     NO_DISCARD RenderTargetHandle GetHandle() const noexcept;
 
@@ -27,8 +30,6 @@ namespace Krys::Gfx
     NO_DISCARD bool IsMultisampled() const noexcept;
 
   protected:
-    NO_COPY_MOVE(RenderTarget);
-
     RenderTargetHandle _handle;
     TextureHandle _texture;
     RenderTargetDescriptor _descriptor;
