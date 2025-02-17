@@ -4,11 +4,20 @@
 #include "IO/IO.hpp"
 #include "IO/Logger.hpp"
 #include "MTL/Vectors/Ext/Geometric.hpp"
+#include "Utils/Hash.hpp"
 
 #include "rapidobj.hpp"
 
 namespace Krys::Gfx
 {
+  struct SizeTUint32Hash
+  {
+    size_t operator()(const std::pair<size_t, uint32> &pair) const
+    {
+      return HashCombine(pair.first, pair.second);
+    }
+  };
+
   ModelManager::ModelManager(Ptr<MaterialManager> materialManager, Ptr<MeshManager> meshManager) noexcept
       : _materialManager(materialManager), _meshManager(meshManager)
   {
@@ -64,6 +73,8 @@ namespace Krys::Gfx
     for (const auto &shape : result.shapes)
     {
       Map<int, List<rapidobj::Index>> indicesByMaterial;
+      indicesByMaterial.reserve(materials.size());
+
       for (size_t i = 0; i < shape.mesh.indices.size(); i++)
       {
         const auto materialId = shape.mesh.material_ids[i / 3];
@@ -76,7 +87,10 @@ namespace Krys::Gfx
           materialId != -1 ? materials[materialId] : _materialManager->GetDefaultPhongMaterial();
 
         List<VertexData> vertices;
+        // Reserve half the size of the indices list as a rough estimate
+        vertices.reserve(modelIndices.size() / 2);
         List<uint32> indices;
+        indices.reserve(modelIndices.size());
 
         for (const auto &[position_idx, texcoord_idx, normal_idx] : modelIndices)
         {
@@ -108,8 +122,13 @@ namespace Krys::Gfx
         if (!!(flags & ModelLoaderFlags::DeduplicateVertices))
         {
           List<VertexData> uniqueVertices;
+          // Reserve half the size of the vertices list as a rough estimate
+          uniqueVertices.reserve(vertices.size() / 2);
           List<uint32> newIndices;
+          newIndices.reserve(indices.size());
+
           Map<VertexData, uint32> vertexToIndex;
+          vertexToIndex.reserve(vertices.size());
 
           for (const auto &vertex : vertices)
           {
@@ -131,28 +150,17 @@ namespace Krys::Gfx
           indices = newIndices;
         }
 
-        if (!!(flags & ModelLoaderFlags::GenerateFaceNormals))
+        if (!!(flags & ModelLoaderFlags::GenerateNormals))
         {
-          for (size_t i = 0; i < indices.size(); i += 3)
-          {
-            auto &v0 = vertices[indices[i + 0]].Position;
-            auto &v1 = vertices[indices[i + 1]].Position;
-            auto &v2 = vertices[indices[i + 2]].Position;
+          // (vertex index, smoothing group) -> accumulated normal
+          Map<std::pair<size_t, int>, Vec3, SizeTUint32Hash> normalSums;
+          normalSums.reserve(vertices.size());
 
-            auto normal = GenerateNormal(v0, v1, v2);
+          // (vertex index, smoothing group) -> count
+          Map<std::pair<size_t, int>, uint32, SizeTUint32Hash> normalCount;
+          normalCount.reserve(vertices.size());
 
-            vertices[indices[i + 0]].Normal = normal;
-            vertices[indices[i + 1]].Normal = normal;
-            vertices[indices[i + 2]].Normal = normal;
-          }
-        }
-
-        if (!!(flags & ModelLoaderFlags::GenerateVertexNormals))
-        {
-          // Initialize all normals to zero
-          List<Vec3> normalSums(vertices.size(), Vec3(0.0f, 0.0f, 0.0f));
-
-          // Accumulate face normals into vertex normals
+          // Compute face normals and accumulate them per smoothing group
           for (size_t i = 0; i < indices.size(); i += 3)
           {
             uint32_t i0 = indices[i + 0];
@@ -168,14 +176,36 @@ namespace Krys::Gfx
             float area = Length(Cross(v1 - v0, v2 - v0)) * 0.5f; // Triangle area
             normal *= area;                                      // Weight by area
 
-            normalSums[i0] += normal;
-            normalSums[i1] += normal;
-            normalSums[i2] += normal;
+            // Get the smoothing group ID for this face
+            int smoothingGroup =
+              shape.mesh.smoothing_group_ids.empty() ? -1 : shape.mesh.smoothing_group_ids[i / 3];
+
+            // Accumulate normals for each vertex in the face, grouped by smoothing ID
+            std::pair<size_t, int> key0 = {i0, smoothingGroup};
+            std::pair<size_t, int> key1 = {i1, smoothingGroup};
+            std::pair<size_t, int> key2 = {i2, smoothingGroup};
+
+            normalSums[key0] += normal;
+            normalSums[key1] += normal;
+            normalSums[key2] += normal;
+
+            normalCount[key0]++;
+            normalCount[key1]++;
+            normalCount[key2]++;
           }
 
-          // Normalize the accumulated normals
+          // Normalize accumulated normals per smoothing group
           for (size_t i = 0; i < vertices.size(); ++i)
-            vertices[i].Normal = MTL::Normalize(normalSums[i]);
+          {
+            int smoothingGroup =
+              shape.mesh.smoothing_group_ids.empty() ? -1 : shape.mesh.smoothing_group_ids[i / 3];
+            std::pair<size_t, int> key = {i, smoothingGroup};
+
+            if (normalCount[key] > 0)
+            {
+              vertices[i].Normal = MTL::Normalize(normalSums[key] / static_cast<float>(normalCount[key]));
+            }
+          }
         }
 
         auto mesh = _meshManager->CreateMesh(shape.name, vertices, indices);

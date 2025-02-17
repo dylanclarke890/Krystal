@@ -9,12 +9,11 @@ namespace Krys::Gfx
   {
     None = 0,
     FlipUVs = 1 << 0,
-    GenerateFaceNormals = 1 << 1,
-    GenerateVertexNormals = 1 << 2,
-    GenerateTangents = 1 << 3,
-    GenerateBitangents = 1 << 4,
-    Triangulate = 1 << 5,
-    DeduplicateVertices = 1 << 6,
+    GenerateNormals = 1 << 1,
+    GenerateTangents = 1 << 2,
+    GenerateBitangents = 1 << 3,
+    Triangulate = 1 << 4,
+    DeduplicateVertices = 1 << 5,
   };
 
   ENUM_CLASS_BITWISE_OPERATORS(ModelLoaderFlags, uint8);

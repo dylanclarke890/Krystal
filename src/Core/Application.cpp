@@ -38,7 +38,7 @@ namespace Krys
       float accumulatedMs = 0;
       while (_running)
       {
-        KRYS_SCOPED_PROFILER("Frame");
+        // KRYS_SCOPED_PROFILER("Frame");
 
         const int64 startCounter = Platform::GetTicks();
         auto window = _context->GetWindowManager()->GetCurrentWindow();
