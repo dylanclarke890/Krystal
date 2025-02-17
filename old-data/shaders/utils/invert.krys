@@ -1,4 +1,0 @@
-vec4 Invert(vec4 color)
-{
-  return vec4(vec3(1 - color), 1.0);
-}

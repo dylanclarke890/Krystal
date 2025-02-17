@@ -1,9 +1,0 @@
-float Attenuation(
-  vec3 tangentLightPosition,
-  vec3 tangentFragmentPosition,
-  float linear, float quadratic, float constant
-)
-{
-  float distance = length(tangentLightPosition - tangentFragmentPosition);
-  return 1.0 / (constant + linear * distance + quadratic * (distance));  
-}
