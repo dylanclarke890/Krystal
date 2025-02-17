@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Base/Types.hpp"
 #include "Graphics/Colour.hpp"
+#include "Graphics/Handles.hpp"
 
 namespace Krys::Gfx
 {
@@ -15,8 +15,8 @@ namespace Krys::Gfx
     {
     }
 
-    constexpr PhongMaterialDescriptor(const string &ambientMap, const string &diffuseMap,
-                                      const string &specularMap, float shininess) noexcept
+    constexpr PhongMaterialDescriptor(TextureHandle ambientMap, TextureHandle diffuseMap,
+                                      TextureHandle specularMap, float shininess) noexcept
         : AmbientMap(ambientMap), DiffuseMap(diffuseMap), SpecularMap(specularMap), Shininess(shininess)
     {
     }
@@ -26,13 +26,13 @@ namespace Krys::Gfx
     Colour Specular;
     Colour Emissive;
 
-    string AmbientMap;
-    string DiffuseMap;
-    string SpecularMap;
-    string EmissiveMap;
+    TextureHandle AmbientMap;
+    TextureHandle DiffuseMap;
+    TextureHandle SpecularMap;
+    TextureHandle EmissiveMap;
 
     float Shininess {32};
 
-    string NormalMap;
+    TextureHandle NormalMap;
   };
 }

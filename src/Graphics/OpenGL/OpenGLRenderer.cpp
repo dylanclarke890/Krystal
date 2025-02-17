@@ -18,35 +18,6 @@
 #include "MTL/Matrices/Ext/Transpose.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
 
-namespace
-{
-  using namespace Krys::Gfx;
-
-  static TextureHandle GetWhiteTexture(TextureManager &tm) noexcept
-  {
-    static TextureHandle handle;
-
-    if (!handle.IsValid())
-    {
-      handle = tm.CreateFlatColourTexture(Colours::White);
-    }
-
-    return handle;
-  }
-
-  static TextureHandle GetBlackTexture(TextureManager &tm) noexcept
-  {
-    static TextureHandle handle;
-
-    if (!handle.IsValid())
-    {
-      handle = tm.CreateFlatColourTexture(Colours::Black);
-    }
-
-    return handle;
-  }
-}
-
 namespace Krys::Gfx::OpenGL
 {
   OpenGLRenderer::OpenGLRenderer(RenderContext context) noexcept : Renderer(context)
@@ -154,6 +125,11 @@ namespace Krys::Gfx::OpenGL
         PhongMaterialData data;
         memset(&data, 0, sizeof(PhongMaterialData));
 
+        KRYS_ASSERT(phong.GetAmbientMap().IsValid(), "Ambient map is invalid.");
+        KRYS_ASSERT(phong.GetDiffuseMap().IsValid(), "Diffuse map is invalid.");
+        KRYS_ASSERT(phong.GetSpecularMap().IsValid(), "Specular map is invalid.");
+        KRYS_ASSERT(phong.GetEmissionMap().IsValid(), "Emission map is invalid.");
+
         data.Ambient = Colour::ToVec3(phong.GetAmbient());
         data.Diffuse = Colour::ToVec3(phong.GetDiffuse());
         data.Specular = Colour::ToVec3(phong.GetSpecular());
@@ -163,18 +139,6 @@ namespace Krys::Gfx::OpenGL
         data.SpecularTexture = phong.GetSpecularMap().Id();
         data.EmissionTexture = phong.GetEmissionMap().Id();
         data.Shininess = phong.GetShininess();
-
-        if (!phong.GetAmbientMap().IsValid())
-          data.AmbientTexture = GetWhiteTexture(*_ctx.TextureManager).Id();
-
-        if (!phong.GetDiffuseMap().IsValid())
-          data.DiffuseTexture = GetWhiteTexture(*_ctx.TextureManager).Id();
-
-        if (!phong.GetSpecularMap().IsValid())
-          data.SpecularTexture = GetWhiteTexture(*_ctx.TextureManager).Id();
-
-        if (!phong.GetEmissionMap().IsValid())
-          data.EmissionTexture = GetBlackTexture(*_ctx.TextureManager).Id();
 
         phongBufferWriter.Write(data);
       }
@@ -191,6 +155,12 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLRenderer::UpdateTextureTable() noexcept
   {
+    // TODO: don't hack it like this
+    static bool firstTime = true;
+    if (!firstTime)
+      return;
+    firstTime = false;
+
     BufferWriter textureTableWriter(*_textureTable);
     List<TextureWithIndex> textures {};
 
@@ -202,7 +172,8 @@ namespace Krys::Gfx::OpenGL
               [](const TextureWithIndex a, const TextureWithIndex b) { return a.Index < b.Index; });
 
     auto maxIndex = textures.back().Index;
-    auto *whiteTexture = _ctx.TextureManager->GetTexture(GetWhiteTexture(*_ctx.TextureManager));
+    auto *whiteTexture =
+      _ctx.TextureManager->GetTexture(_ctx.TextureManager->CreateFlatColourTexture(Colours::White));
     for (uint32 i = 0; i < maxIndex; ++i)
     {
       auto it = std::find_if(textures.begin(), textures.end(),

@@ -27,23 +27,23 @@ namespace Krys::Impl
 
 #pragma region Constructors
 
-    Handle() noexcept : _id(InvalidHandle)
+    constexpr Handle() noexcept : _id(InvalidHandle)
     {
     }
 
-    explicit Handle(const handle_t &id) noexcept : _id(id)
+    explicit constexpr Handle(const handle_t &id) noexcept : _id(id)
     {
     }
 
-    explicit Handle(handle_t &&id) noexcept : _id(std::move(id))
+    explicit constexpr Handle(handle_t &&id) noexcept : _id(std::move(id))
     {
     }
 
-    Handle(const Handle &other) noexcept : _id(other._id)
+    constexpr Handle(const Handle &other) noexcept : _id(other._id)
     {
     }
 
-    Handle(Handle &&other) noexcept : _id(std::move(other._id))
+    constexpr Handle(Handle &&other) noexcept : _id(std::move(other._id))
     {
     }
 
@@ -51,42 +51,42 @@ namespace Krys::Impl
 
 #pragma region Assignment
 
-    Handle &operator=(const Handle &other) noexcept
+    constexpr Handle &operator=(const Handle &other) noexcept
     {
       _id = other._id;
       return *this;
     }
 
-    Handle &operator=(const handle_t &id) noexcept
+    constexpr Handle &operator=(const handle_t &id) noexcept
     {
       _id = id;
       return *this;
     }
 
-    Handle &operator=(Handle &&other) noexcept
+    constexpr Handle &operator=(Handle &&other) noexcept
     {
       _id = std::move(other._id);
       return *this;
     }
 
-    bool operator==(const Handle &other) const noexcept
+    constexpr bool operator==(const Handle &other) const noexcept
     {
       return _id == other._id;
     }
 
-    bool operator!=(const Handle &other) const noexcept
+    constexpr bool operator!=(const Handle &other) const noexcept
     {
       return !(_id == other._id);
     }
 
 #pragma endregion Assignment
 
-    const handle_t &Id() const noexcept
+    constexpr const handle_t &Id() const noexcept
     {
       return _id;
     }
 
-    bool IsValid() const noexcept
+    constexpr bool IsValid() const noexcept
     {
       return _id != InvalidHandle;
     }

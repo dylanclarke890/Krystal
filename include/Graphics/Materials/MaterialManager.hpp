@@ -10,6 +10,7 @@
 #include "Graphics/Materials/Material.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
 #include "Graphics/Materials/PhongMaterialDescriptor.hpp"
+#include "Graphics/TextureDescriptor.hpp"
 #include "Graphics/TextureManager.hpp"
 #include "IO/IO.hpp"
 
@@ -32,14 +33,28 @@ namespace Krys::Gfx
       material->SetAmbient(descriptor.Ambient);
       material->SetDiffuse(descriptor.Diffuse);
       material->SetSpecular(descriptor.Specular);
-
-      // material->SetAmbientMap(ambientTexture);
-      // material->SetDiffuseMap(diffuseTexture);
-      // material->SetSpecularMap(specularTexture);
-
-      // TODO: remember to handle emission map
       material->SetEmission(descriptor.Emissive);
       material->SetShininess(descriptor.Shininess);
+
+      if (descriptor.AmbientMap.IsValid())
+        material->SetAmbientMap(descriptor.AmbientMap);
+      else
+        material->SetAmbientMap(_textureManager->CreateFlatColourTexture(Colours::White));
+
+      if (descriptor.DiffuseMap.IsValid())
+        material->SetDiffuseMap(descriptor.DiffuseMap);
+      else
+        material->SetDiffuseMap(_textureManager->CreateFlatColourTexture(Colours::White));
+
+      if (descriptor.SpecularMap.IsValid())
+        material->SetSpecularMap(descriptor.SpecularMap);
+      else
+        material->SetSpecularMap(_textureManager->CreateFlatColourTexture(Colours::White));
+
+      if (descriptor.EmissiveMap.IsValid())
+        material->SetEmissionMap(descriptor.EmissiveMap);
+      else
+        material->SetEmissionMap(_textureManager->CreateFlatColourTexture(Colours::Black));
 
       _materials[handle] = std::move(material);
       return handle;

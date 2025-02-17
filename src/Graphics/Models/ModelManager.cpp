@@ -18,8 +18,9 @@ namespace Krys::Gfx
     }
   };
 
-  ModelManager::ModelManager(Ptr<MaterialManager> materialManager, Ptr<MeshManager> meshManager) noexcept
-      : _materialManager(materialManager), _meshManager(meshManager)
+  ModelManager::ModelManager(Ptr<MaterialManager> materialManager, Ptr<MeshManager> meshManager,
+                             Ptr<TextureManager> textureManager) noexcept
+      : _materialManager(materialManager), _meshManager(meshManager), _textureManager(textureManager)
   {
   }
 
@@ -51,6 +52,7 @@ namespace Krys::Gfx
     model.Name = path;
 
     List<MaterialHandle> materials;
+    KRYS_DEBUG_BREAK();
     for (const auto &mat : result.materials)
     {
       PhongMaterialDescriptor descriptor;
@@ -60,10 +62,17 @@ namespace Krys::Gfx
       descriptor.Emissive = Colour {mat.emission[0], mat.emission[1], mat.emission[2]};
 
       // TODO: texture parameters
-      descriptor.AmbientMap = mat.ambient_texname;
-      descriptor.DiffuseMap = mat.diffuse_texname;
-      descriptor.SpecularMap = mat.specular_texname;
-      descriptor.EmissiveMap = mat.emissive_texname;
+      if (!mat.ambient_texname.empty())
+        descriptor.AmbientMap = _textureManager->LoadTexture(mat.ambient_texname);
+
+      if (!mat.diffuse_texname.empty())
+        descriptor.DiffuseMap = _textureManager->LoadTexture(mat.diffuse_texname);
+
+      if (!mat.specular_texname.empty())
+        descriptor.SpecularMap = _textureManager->LoadTexture(mat.specular_texname);
+
+      if (!mat.emissive_texname.empty())
+        descriptor.EmissiveMap = _textureManager->LoadTexture(mat.emissive_texname);
       descriptor.Shininess = mat.shininess;
 
       auto handle = _materialManager->CreatePhongMaterial(descriptor);

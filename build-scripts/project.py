@@ -117,7 +117,7 @@ class Project:
     if os.path.getmtime(file_path) > obj_last_compiled:
       return True
 
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="utf8") as file:
       for line in file:
         match = self.include_pattern.search(line)
         if match:

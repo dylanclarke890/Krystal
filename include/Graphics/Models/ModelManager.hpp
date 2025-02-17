@@ -15,7 +15,8 @@ namespace Krys::Gfx {
   public:
     NO_COPY_MOVE(ModelManager)
 
-    ModelManager(Ptr<MaterialManager> materialManager, Ptr<MeshManager> meshManager) noexcept;
+    ModelManager(Ptr<MaterialManager> materialManager, Ptr<MeshManager> meshManager,
+                 Ptr<TextureManager> textureManager) noexcept;
     ~ModelManager() noexcept = default;
 
 
