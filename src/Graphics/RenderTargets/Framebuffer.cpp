@@ -2,9 +2,8 @@
 
 namespace Krys::Gfx
 {
-  Framebuffer::Framebuffer(FramebufferHandle handle, RenderTargetHandle colorAttachment,
-                           RenderTargetHandle depthAttachment) noexcept
-      : _handle(handle), _colorAttachments({colorAttachment}), _depthAttachment(depthAttachment)
+  Framebuffer::Framebuffer(FramebufferHandle handle, const FramebufferDescriptor &descriptor) noexcept
+      : _handle(handle), _descriptor(descriptor)
   {
   }
 
@@ -13,28 +12,38 @@ namespace Krys::Gfx
     return _handle;
   }
 
-  RenderTargetHandle Framebuffer::GetDepthAttachment() const noexcept
-  {
-    return _depthAttachment;
-  }
-
   RenderTargetHandle Framebuffer::GetColorAttachment(uint32 index) const noexcept
   {
-    return _colorAttachments[index];
+    return _descriptor.ColourAttachments[index];
   }
 
   const List<RenderTargetHandle> &Framebuffer::GetColorAttachments() const noexcept
   {
-    return _colorAttachments;
+    return _descriptor.ColourAttachments;
+  }
+
+  RenderTargetHandle Framebuffer::GetDepthAttachment() const noexcept
+  {
+    return _descriptor.DepthAttachment;
+  }
+
+  RenderTargetHandle Framebuffer::GetStencilAttachment() const noexcept
+  {
+    return _descriptor.StencilAttachment;
   }
 
   bool Framebuffer::HasColorAttachments() const noexcept
   {
-    return !_colorAttachments.empty();
+    return !_descriptor.ColourAttachments.empty();
   }
 
   bool Framebuffer::HasDepthAttachment() const noexcept
   {
-    return _depthAttachment.IsValid();
+    return _descriptor.DepthAttachment.IsValid();
+  }
+
+  bool Framebuffer::HasStencilAttachment() const noexcept
+  {
+    return _descriptor.StencilAttachment.IsValid();
   }
 }

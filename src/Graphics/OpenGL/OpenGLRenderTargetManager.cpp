@@ -3,15 +3,15 @@
 
 namespace Krys::Gfx::OpenGL
 {
-  OpenGLRenderTargetManager::OpenGLRenderTargetManager(WindowManager &windowManager,
-                                                       TextureManager &textureManager) noexcept
+  OpenGLRenderTargetManager::OpenGLRenderTargetManager(WindowManager *windowManager,
+                                                       TextureManager *textureManager) noexcept
       : RenderTargetManager(windowManager, textureManager)
   {
   }
 
   Unique<RenderTarget>
-    OpenGLRenderTargetManager::CreateImpl(RenderTargetHandle handle,
-                                          const RenderTargetDescriptor &descriptor) noexcept
+    OpenGLRenderTargetManager::CreateRenderTargetImpl(RenderTargetHandle handle,
+                                                      const RenderTargetDescriptor &descriptor) noexcept
   {
     switch (descriptor.Type)
     {
@@ -27,11 +27,11 @@ namespace Krys::Gfx::OpenGL
     OpenGLRenderTargetManager::CreateColourRenderTarget(RenderTargetHandle handle,
                                                         const RenderTargetDescriptor &descriptor) noexcept
   {
-    auto sampler = _textureManager.CreateSampler(SamplerDescriptor {.UseMipmaps = false});
-    auto texture = _textureManager.CreateTexture(TextureDescriptor {.Type = TextureType::RenderTargetColour,
-                                                                    .Width = descriptor.Width,
-                                                                    .Height = descriptor.Height,
-                                                                    .Sampler = sampler});
+    auto sampler = _textureManager->CreateSampler(SamplerDescriptor {.UseMipmaps = false});
+    auto texture = _textureManager->CreateTexture(TextureDescriptor {.Type = TextureType::RenderTargetColour,
+                                                                     .Width = descriptor.Width,
+                                                                     .Height = descriptor.Height,
+                                                                     .Sampler = sampler});
 
     return CreateUnique<RenderTarget>(handle, texture, descriptor);
   }
@@ -41,16 +41,16 @@ namespace Krys::Gfx::OpenGL
                                                        const RenderTargetDescriptor &descriptor) noexcept
   {
     auto sampler =
-      _textureManager.CreateSampler(SamplerDescriptor {.AddressModeS = SamplerAddressMode::ClampToBorder,
-                                                       .AddressModeT = SamplerAddressMode::ClampToBorder,
-                                                       .AddressModeR = SamplerAddressMode::ClampToBorder,
-                                                       .BorderColour = Colour {1.0f, 1.0f, 1.0f, 1.0f},
-                                                       .UseMipmaps = false});
+      _textureManager->CreateSampler(SamplerDescriptor {.AddressModeS = SamplerAddressMode::ClampToBorder,
+                                                        .AddressModeT = SamplerAddressMode::ClampToBorder,
+                                                        .AddressModeR = SamplerAddressMode::ClampToBorder,
+                                                        .BorderColour = Colour {1.0f, 1.0f, 1.0f, 1.0f},
+                                                        .UseMipmaps = false});
 
-    auto texture = _textureManager.CreateTexture(TextureDescriptor {.Type = TextureType::RenderTargetDepth,
-                                                                    .Width = descriptor.Width,
-                                                                    .Height = descriptor.Height,
-                                                                    .Sampler = sampler});
+    auto texture = _textureManager->CreateTexture(TextureDescriptor {.Type = TextureType::RenderTargetDepth,
+                                                                     .Width = descriptor.Width,
+                                                                     .Height = descriptor.Height,
+                                                                     .Sampler = sampler});
 
     return CreateUnique<RenderTarget>(handle, texture, descriptor);
   }
@@ -60,16 +60,16 @@ namespace Krys::Gfx::OpenGL
                                                          const RenderTargetDescriptor &descriptor) noexcept
   {
     auto sampler =
-      _textureManager.CreateSampler(SamplerDescriptor {.AddressModeS = SamplerAddressMode::ClampToBorder,
-                                                       .AddressModeT = SamplerAddressMode::ClampToBorder,
-                                                       .AddressModeR = SamplerAddressMode::ClampToBorder,
-                                                       .BorderColour = Colour {1.0f, 1.0f, 1.0f, 1.0f},
-                                                       .UseMipmaps = false});
+      _textureManager->CreateSampler(SamplerDescriptor {.AddressModeS = SamplerAddressMode::ClampToBorder,
+                                                        .AddressModeT = SamplerAddressMode::ClampToBorder,
+                                                        .AddressModeR = SamplerAddressMode::ClampToBorder,
+                                                        .BorderColour = Colour {1.0f, 1.0f, 1.0f, 1.0f},
+                                                        .UseMipmaps = false});
 
-    auto texture = _textureManager.CreateTexture(TextureDescriptor {.Type = TextureType::RenderTargetStencil,
-                                                                    .Width = descriptor.Width,
-                                                                    .Height = descriptor.Height,
-                                                                    .Sampler = sampler});
+    auto texture = _textureManager->CreateTexture(TextureDescriptor {.Type = TextureType::RenderTargetStencil,
+                                                                     .Width = descriptor.Width,
+                                                                     .Height = descriptor.Height,
+                                                                     .Sampler = sampler});
 
     return CreateUnique<RenderTarget>(handle, texture, descriptor);
   }
@@ -78,16 +78,16 @@ namespace Krys::Gfx::OpenGL
     RenderTargetHandle handle, const RenderTargetDescriptor &descriptor) noexcept
   {
     auto sampler =
-      _textureManager.CreateSampler(SamplerDescriptor {.AddressModeS = SamplerAddressMode::ClampToBorder,
-                                                       .AddressModeT = SamplerAddressMode::ClampToBorder,
-                                                       .AddressModeR = SamplerAddressMode::ClampToBorder,
-                                                       .BorderColour = Colour {1.0f, 1.0f, 1.0f, 1.0f},
-                                                       .UseMipmaps = false});
+      _textureManager->CreateSampler(SamplerDescriptor {.AddressModeS = SamplerAddressMode::ClampToBorder,
+                                                        .AddressModeT = SamplerAddressMode::ClampToBorder,
+                                                        .AddressModeR = SamplerAddressMode::ClampToBorder,
+                                                        .BorderColour = Colour {1.0f, 1.0f, 1.0f, 1.0f},
+                                                        .UseMipmaps = false});
     auto texture =
-      _textureManager.CreateTexture(TextureDescriptor {.Type = TextureType::RenderTargetDepthStencil,
-                                                       .Width = descriptor.Width,
-                                                       .Height = descriptor.Height,
-                                                       .Sampler = sampler});
+      _textureManager->CreateTexture(TextureDescriptor {.Type = TextureType::RenderTargetDepthStencil,
+                                                        .Width = descriptor.Width,
+                                                        .Height = descriptor.Height,
+                                                        .Sampler = sampler});
 
     return CreateUnique<RenderTarget>(handle, texture, descriptor);
   }

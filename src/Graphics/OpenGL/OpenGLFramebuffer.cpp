@@ -2,9 +2,9 @@
 
 namespace Krys::Gfx::OpenGL
 {
-  OpenGLFramebuffer::OpenGLFramebuffer(FramebufferHandle handle, RenderTargetHandle colorAttachment,
-                                       RenderTargetHandle depthAttachment) noexcept
-      : Framebuffer(handle, colorAttachment, depthAttachment)
+  OpenGLFramebuffer::OpenGLFramebuffer(FramebufferHandle handle,
+                                       const FramebufferDescriptor &descriptor) noexcept
+      : Framebuffer(handle, descriptor)
   {
   }
 

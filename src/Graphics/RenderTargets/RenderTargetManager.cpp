@@ -4,24 +4,25 @@
 
 namespace Krys::Gfx
 {
-  RenderTargetManager::RenderTargetManager(WindowManager &windowManager,
-                                           TextureManager &textureManager) noexcept
+  RenderTargetManager::RenderTargetManager(WindowManager *windowManager,
+                                           TextureManager *textureManager) noexcept
       : _windowManager(windowManager), _textureManager(textureManager)
   {
   }
 
-  RenderTargetHandle RenderTargetManager::Create(RenderTargetType type) noexcept
+  RenderTargetHandle RenderTargetManager::CreateRenderTarget(RenderTargetType type) noexcept
   {
     auto handle = _renderTargetHandles.Next();
-    auto *window = _windowManager.GetCurrentWindow();
-    _renderTargets[handle] = CreateImpl(handle, {window->GetWidth(), window->GetHeight(), type});
+    auto *window = _windowManager->GetCurrentWindow();
+    _renderTargets[handle] = CreateRenderTargetImpl(handle, {window->GetWidth(), window->GetHeight(), type});
     return handle;
   }
 
-  RenderTargetHandle RenderTargetManager::Create(const RenderTargetDescriptor &descriptor) noexcept
+  RenderTargetHandle
+    RenderTargetManager::CreateRenderTarget(const RenderTargetDescriptor &descriptor) noexcept
   {
     auto handle = _renderTargetHandles.Next();
-    _renderTargets[handle] = CreateImpl(handle, descriptor);
+    _renderTargets[handle] = CreateRenderTargetImpl(handle, descriptor);
     return handle;
   }
 

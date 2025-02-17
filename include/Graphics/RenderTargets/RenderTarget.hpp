@@ -2,18 +2,11 @@
 
 #include "Base/Macros.hpp"
 #include "Graphics/Handles.hpp"
+#include "Graphics/RenderTargets/RenderTargetDescriptor.hpp"
 #include "Graphics/RenderTargets/RenderTargetType.hpp"
 
 namespace Krys::Gfx
 {
-  struct RenderTargetDescriptor
-  {
-    uint32 Width;
-    uint32 Height;
-    RenderTargetType Type;
-    bool Multisampled;
-  };
-
   class RenderTarget
   {
   public:
