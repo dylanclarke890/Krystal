@@ -27,13 +27,21 @@ namespace Krys::Gfx
     {
       auto handle = _materialHandles.Next();
       auto program = GetDefaultPhongProgram();
+      auto material = CreateUnique<PhongMaterial>(handle, program);
 
-      auto ambientTexture = _textureManager->CreateFlatColourTexture(descriptor.Ambient);
-      auto diffuseTexture = _textureManager->CreateFlatColourTexture(descriptor.Diffuse);
-      auto specularTexture = _textureManager->CreateFlatColourTexture(descriptor.Specular);
+      material->SetAmbient(descriptor.Ambient);
+      material->SetDiffuse(descriptor.Diffuse);
+      material->SetSpecular(descriptor.Specular);
 
-      _materials[handle] = CreateUnique<PhongMaterial>(handle, program, ambientTexture, diffuseTexture,
-                                                       specularTexture, descriptor.Shininess);
+      // material->SetAmbientMap(ambientTexture);
+      // material->SetDiffuseMap(diffuseTexture);
+      // material->SetSpecularMap(specularTexture);
+
+      // TODO: remember to handle emission map
+      material->SetEmission(descriptor.Emissive);
+      material->SetShininess(descriptor.Shininess);
+
+      _materials[handle] = std::move(material);
       return handle;
     }
 
@@ -67,8 +75,8 @@ namespace Krys::Gfx
 
       if (!handle.IsValid())
       {
-        auto limeTexture = _textureManager->CreateFlatColourTexture(Colours::Lime);
-        handle = CreatePhongMaterialImpl(limeTexture);
+        auto descriptor = PhongMaterialDescriptor {Colours::Lime, Colours::Lime, Colours::White, 32.0f};
+        handle = CreatePhongMaterial(descriptor);
       }
 
       return handle;

@@ -179,6 +179,16 @@ namespace Krys::Gfx
               byte {AsByte(colour.a)}};
     }
 
+    NO_DISCARD constexpr static Vec3 ToVec3(const Colour &colour) noexcept
+    {
+      return Vec3 {colour.r, colour.g, colour.b};
+    }
+
+    NO_DISCARD constexpr static Vec4 ToVec4(const Colour &colour) noexcept
+    {
+      return Vec4 {colour.r, colour.g, colour.b, colour.a};
+    }
+
     /// @brief Red component.
     float r;
 

@@ -11,6 +11,14 @@ namespace Krys::Gfx
 {
   struct PhongMaterialData
   {
+    Vec3 Ambient;
+    float Padding0;
+    Vec3 Diffuse;
+    float Padding1;
+    Vec3 Specular;
+    float Padding2;
+    Vec3 Emission;
+    float Padding3;
     int AmbientTexture;
     int DiffuseTexture;
     int SpecularTexture;
@@ -24,35 +32,47 @@ namespace Krys::Gfx
   public:
     PhongMaterial(MaterialHandle handle, ProgramHandle program) noexcept;
 
-    PhongMaterial(MaterialHandle handle, ProgramHandle program, TextureHandle ambientTexture) noexcept;
-
-    PhongMaterial(MaterialHandle handle, ProgramHandle program, TextureHandle ambientTexture,
-                  TextureHandle diffuseTexture, TextureHandle specularTexture, float shininess) noexcept;
-
     ~PhongMaterial() noexcept override = default;
 
-    void SetAmbientTexture(TextureHandle texture) noexcept;
+    void SetAmbientMap(TextureHandle map) noexcept;
 
-    NO_DISCARD TextureHandle GetAmbientTexture() const noexcept;
+    NO_DISCARD TextureHandle GetAmbientMap() const noexcept;
 
-    void SetDiffuseTexture(TextureHandle texture) noexcept;
+    void SetAmbient(const Colour &ambient) noexcept;
 
-    NO_DISCARD TextureHandle GetDiffuseTexture() const noexcept;
+    NO_DISCARD Colour GetAmbient() const noexcept;
 
-    void SetSpecularTexture(TextureHandle texture) noexcept;
+    void SetDiffuseMap(TextureHandle map) noexcept;
 
-    NO_DISCARD TextureHandle GetSpecularTexture() const noexcept;
+    NO_DISCARD TextureHandle GetDiffuseMap() const noexcept;
 
-    void SetEmissionTexture(TextureHandle texture) noexcept;
+    void SetDiffuse(const Colour &diffuse) noexcept;
 
-    NO_DISCARD TextureHandle GetEmissionTexture() const noexcept;
+    NO_DISCARD Colour GetDiffuse() const noexcept;
+
+    void SetSpecularMap(TextureHandle map) noexcept;
+
+    NO_DISCARD TextureHandle GetSpecularMap() const noexcept;
+
+    void SetSpecular(const Colour &specular) noexcept;
+
+    NO_DISCARD Colour GetSpecular() const noexcept;
+
+    void SetEmissionMap(TextureHandle map) noexcept;
+
+    NO_DISCARD TextureHandle GetEmissionMap() const noexcept;
+
+    void SetEmission(const Colour &emission) noexcept;
+
+    NO_DISCARD Colour GetEmission() const noexcept;
 
     void SetShininess(float shininess) noexcept;
 
     NO_DISCARD float GetShininess() const noexcept;
 
   protected:
-    TextureHandle _ambientTexture, _diffuseTexture, _specularTexture, _emissionTexture;
+    TextureHandle _ambientMap, _diffuseMap, _specularMap, _emissionMap;
+    Colour _ambient, _diffuse, _specular, _emission;
     float _shininess;
   };
 }

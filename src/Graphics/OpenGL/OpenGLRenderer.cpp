@@ -145,28 +145,36 @@ namespace Krys::Gfx::OpenGL
 
       if (material->GetType() == MaterialType::Phong)
       {
+        // TODO: we need to get the index differently once we have cubemaps.
         // TODO: we need to get the index differently once we add PBR materials.
         auto index = handle.Id();
         auto &phong = static_cast<PhongMaterial &>(*material);
 
         phongBufferWriter.Seek(index * sizeof(PhongMaterialData));
         PhongMaterialData data;
+        memset(&data, 0, sizeof(PhongMaterialData));
 
-        auto ambientTexture = phong.GetAmbientTexture();
-        auto diffuseTexture = phong.GetDiffuseTexture();
-        auto specularTexture = phong.GetSpecularTexture();
-        auto emissionTexture = phong.GetEmissionTexture();
-
+        data.Ambient = Colour::ToVec3(phong.GetAmbient());
+        data.Diffuse = Colour::ToVec3(phong.GetDiffuse());
+        data.Specular = Colour::ToVec3(phong.GetSpecular());
+        data.Emission = Colour::ToVec3(phong.GetEmission());
+        data.AmbientTexture = phong.GetAmbientMap().Id();
+        data.DiffuseTexture = phong.GetDiffuseMap().Id();
+        data.SpecularTexture = phong.GetSpecularMap().Id();
+        data.EmissionTexture = phong.GetEmissionMap().Id();
         data.Shininess = phong.GetShininess();
-        // TODO: we need to get the index differently once we have cubemaps.
-        data.AmbientTexture =
-          ambientTexture.IsValid() ? ambientTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
-        data.DiffuseTexture =
-          diffuseTexture.IsValid() ? diffuseTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
-        data.SpecularTexture =
-          specularTexture.IsValid() ? specularTexture.Id() : GetWhiteTexture(*_ctx.TextureManager).Id();
-        data.EmissionTexture =
-          emissionTexture.IsValid() ? emissionTexture.Id() : GetBlackTexture(*_ctx.TextureManager).Id();
+
+        if (!phong.GetAmbientMap().IsValid())
+          data.AmbientTexture = GetWhiteTexture(*_ctx.TextureManager).Id();
+
+        if (!phong.GetDiffuseMap().IsValid())
+          data.DiffuseTexture = GetWhiteTexture(*_ctx.TextureManager).Id();
+
+        if (!phong.GetSpecularMap().IsValid())
+          data.SpecularTexture = GetWhiteTexture(*_ctx.TextureManager).Id();
+
+        if (!phong.GetEmissionMap().IsValid())
+          data.EmissionTexture = GetBlackTexture(*_ctx.TextureManager).Id();
 
         phongBufferWriter.Write(data);
       }

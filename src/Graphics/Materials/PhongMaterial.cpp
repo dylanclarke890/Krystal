@@ -1,70 +1,101 @@
 #include "Graphics/Materials/PhongMaterial.hpp"
+#include "Graphics/Colours.hpp"
 
 namespace Krys::Gfx
 {
   PhongMaterial::PhongMaterial(MaterialHandle handle, ProgramHandle program) noexcept
-      : Material(handle, program, MaterialType::Phong), _ambientTexture(), _diffuseTexture(),
-        _specularTexture(), _shininess(32.0f)
+      : Material(handle, program, MaterialType::Phong), _ambientMap(), _diffuseMap(), _specularMap(),
+        _shininess(32.0f), _ambient(Colours::White), _diffuse(Colours::White), _specular(Colours::White),
+        _emission(Colours::Black)
   {
   }
 
-  PhongMaterial::PhongMaterial(MaterialHandle handle, ProgramHandle program,
-                               TextureHandle ambientTexture) noexcept
-      : Material(handle, program, MaterialType::Phong), _ambientTexture(ambientTexture), _diffuseTexture(),
-        _specularTexture(), _shininess(32.0f)
+  void PhongMaterial::SetAmbientMap(TextureHandle map) noexcept
   {
-  }
-
-  PhongMaterial::PhongMaterial(MaterialHandle handle, ProgramHandle program, TextureHandle ambientTexture,
-                               TextureHandle diffuseTexture, TextureHandle specularTexture,
-                               float shininess) noexcept
-      : Material(handle, program, MaterialType::Phong), _ambientTexture(ambientTexture),
-        _diffuseTexture(diffuseTexture), _specularTexture(specularTexture), _shininess(shininess)
-  {
-  }
-
-  void PhongMaterial::SetAmbientTexture(TextureHandle texture) noexcept
-  {
-    _ambientTexture = texture;
+    _ambientMap = map;
     _isDirty = true;
   }
 
-  TextureHandle PhongMaterial::GetAmbientTexture() const noexcept
+  TextureHandle PhongMaterial::GetAmbientMap() const noexcept
   {
-    return _ambientTexture;
+    return _ambientMap;
   }
 
-  void PhongMaterial::SetDiffuseTexture(TextureHandle texture) noexcept
+  void PhongMaterial::SetAmbient(const Colour &ambient) noexcept
   {
-    _diffuseTexture = texture;
+    _ambient = ambient;
     _isDirty = true;
   }
 
-  TextureHandle PhongMaterial::GetDiffuseTexture() const noexcept
+  Colour PhongMaterial::GetAmbient() const noexcept
   {
-    return _diffuseTexture;
+    return _ambient;
   }
 
-  void PhongMaterial::SetSpecularTexture(TextureHandle texture) noexcept
+  void PhongMaterial::SetDiffuseMap(TextureHandle map) noexcept
   {
-    _specularTexture = texture;
+    _diffuseMap = map;
     _isDirty = true;
   }
 
-  TextureHandle PhongMaterial::GetSpecularTexture() const noexcept
+  TextureHandle PhongMaterial::GetDiffuseMap() const noexcept
   {
-    return _specularTexture;
+    return _diffuseMap;
   }
 
-  void PhongMaterial::SetEmissionTexture(TextureHandle texture) noexcept
+  void PhongMaterial::SetDiffuse(const Colour &diffuse) noexcept
   {
-    _emissionTexture = texture;
+    _diffuse = diffuse;
     _isDirty = true;
   }
 
-  TextureHandle PhongMaterial::GetEmissionTexture() const noexcept
+  Colour PhongMaterial::GetDiffuse() const noexcept
   {
-    return _emissionTexture;
+    return _diffuse;
+  }
+
+  void PhongMaterial::SetSpecularMap(TextureHandle map) noexcept
+  {
+    _specularMap = map;
+    _isDirty = true;
+  }
+
+  TextureHandle PhongMaterial::GetSpecularMap() const noexcept
+  {
+    return _specularMap;
+  }
+
+  void PhongMaterial::SetSpecular(const Colour &specular) noexcept
+  {
+    _specular = specular;
+    _isDirty = true;
+  }
+
+  Colour PhongMaterial::GetSpecular() const noexcept
+  {
+    return _specular;
+  }
+
+  void PhongMaterial::SetEmissionMap(TextureHandle map) noexcept
+  {
+    _emissionMap = map;
+    _isDirty = true;
+  }
+
+  TextureHandle PhongMaterial::GetEmissionMap() const noexcept
+  {
+    return _emissionMap;
+  }
+
+  void PhongMaterial::SetEmission(const Colour &emission) noexcept
+  {
+    _emission = emission;
+    _isDirty = true;
+  }
+
+  Colour PhongMaterial::GetEmission() const noexcept
+  {
+    return _emission;
   }
 
   void PhongMaterial::SetShininess(float shininess) noexcept

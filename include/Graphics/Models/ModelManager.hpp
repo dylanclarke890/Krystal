@@ -15,7 +15,7 @@ namespace Krys::Gfx {
   public:
     NO_COPY_MOVE(ModelManager)
 
-    ModelManager(Ptr<MaterialManager> materialManager, Ptr<MeshManager> meshManager, Ptr<TextureManager> textureManager) noexcept;
+    ModelManager(Ptr<MaterialManager> materialManager, Ptr<MeshManager> meshManager) noexcept;
     ~ModelManager() noexcept = default;
 
 
@@ -25,7 +25,6 @@ namespace Krys::Gfx {
                                          ModelLoaderFlags flags = ModelLoaderFlags::None) noexcept;
 
   protected:
-
       NO_DISCARD Vec3 GenerateNormal(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2) const noexcept;
 
     Ptr<MaterialManager> _materialManager;

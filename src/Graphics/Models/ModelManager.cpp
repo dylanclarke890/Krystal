@@ -9,9 +9,8 @@
 
 namespace Krys::Gfx
 {
-  ModelManager::ModelManager(Ptr<MaterialManager> materialManager, Ptr<MeshManager> meshManager,
-                             Ptr<TextureManager> textureManager) noexcept
-      : _materialManager(materialManager), _meshManager(meshManager), _textureManager(textureManager)
+  ModelManager::ModelManager(Ptr<MaterialManager> materialManager, Ptr<MeshManager> meshManager) noexcept
+      : _materialManager(materialManager), _meshManager(meshManager)
   {
   }
 
@@ -49,13 +48,18 @@ namespace Krys::Gfx
       descriptor.Ambient = Colour {mat.ambient[0], mat.ambient[1], mat.ambient[2]};
       descriptor.Diffuse = Colour {mat.diffuse[0], mat.diffuse[1], mat.diffuse[2]};
       descriptor.Specular = Colour {mat.specular[0], mat.specular[1], mat.specular[2]};
+      descriptor.Emissive = Colour {mat.emission[0], mat.emission[1], mat.emission[2]};
+      // TODO: texture parameters
+      descriptor.AmbientMap = mat.ambient_texname;
+      descriptor.DiffuseMap = mat.diffuse_texname;
+      descriptor.SpecularMap = mat.specular_texname;
+      descriptor.EmissiveMap = mat.emissive_texname;
       descriptor.Shininess = mat.shininess;
 
       auto handle = _materialManager->CreatePhongMaterial(descriptor);
       materials.push_back(handle);
     }
 
-    KRYS_DEBUG_BREAK();
     const auto &data = result.attributes;
     for (const auto &shape : result.shapes)
     {

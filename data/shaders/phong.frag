@@ -4,6 +4,14 @@
 
 struct Material
 {
+  vec3 Ambient;
+  float Padding1;
+  vec3 Diffuse;
+  float Padding2;
+  vec3 Specular;
+  float Padding3;
+  vec3 Emissive;
+  float Padding4;
   int AmbientTexture;
   int DiffuseTexture;
   int SpecularTexture;
@@ -36,6 +44,10 @@ struct Light
 Material GetMaterial(int index);
 vec4 GetTextureSample(int index, vec4 coords);
 vec4 GetTextureSample(int index, vec4 coords, vec4 defaultSample);
+vec4 GetAmbient(Material material, vec4 coords);
+vec4 GetDiffuse(Material material, vec4 coords);
+vec4 GetSpecular(Material material, vec4 coords);
+vec4 GetEmissive(Material material, vec4 coords);
 float CalculateAttenuation(Light light, vec3 fragmentPosition, vec3 lightDirection);
 vec4 CalculateAmbient(Light light, vec4 ambient, float attenuation);
 vec4 CalculateDiffuse(Light light, vec4 diffuse, vec3 lightDirection, vec3 normal, float attenuation);
@@ -85,9 +97,9 @@ void main()
       vec3 lightDirection = normalize(light.Position - v_FragmentPosition);
 
       float attenuation = CalculateAttenuation(light, v_FragmentPosition, lightDirection);
-      vec4 ambientColour = CalculateAmbient(light, GetTextureSample(material.AmbientTexture, v_TextureCoords), attenuation);
-      vec4 diffuseColour = CalculateDiffuse(light, GetTextureSample(material.DiffuseTexture, v_TextureCoords), lightDirection, normal, attenuation);
-      vec4 specularColour = CalculateSpecular(light, GetTextureSample(material.SpecularTexture, v_TextureCoords), lightDirection, normal, attenuation, material.Shininess);
+      vec4 ambientColour = CalculateAmbient(light, GetAmbient(material, v_TextureCoords), attenuation);
+      vec4 diffuseColour = CalculateDiffuse(light, GetDiffuse(material, v_TextureCoords), lightDirection, normal, attenuation);
+      vec4 specularColour = CalculateSpecular(light, GetSpecular(material, v_TextureCoords), lightDirection, normal, attenuation, material.Shininess);
 
       o_Colour += v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
     }
@@ -95,9 +107,9 @@ void main()
     {
       vec3 lightDirection = normalize(light.Direction);
 
-      vec4 ambientColour = CalculateAmbient(light, GetTextureSample(material.AmbientTexture, v_TextureCoords), 1.0);
-      vec4 diffuseColour = CalculateDiffuse(light, GetTextureSample(material.DiffuseTexture, v_TextureCoords), lightDirection, normal, 1.0);
-      vec4 specularColour = CalculateSpecular(light, GetTextureSample(material.SpecularTexture, v_TextureCoords), lightDirection, normal, 1.0, material.Shininess);
+      vec4 ambientColour = CalculateAmbient(light, GetAmbient(material, v_TextureCoords), 1.0);
+      vec4 diffuseColour = CalculateDiffuse(light, GetDiffuse(material, v_TextureCoords), lightDirection, normal, 1.0);
+      vec4 specularColour = CalculateSpecular(light, GetSpecular(material, v_TextureCoords), lightDirection, normal, 1.0, material.Shininess);
 
       o_Colour += v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
     }
@@ -112,14 +124,14 @@ void main()
       float spotAttenuation = smoothstep(light.OuterCutOff, light.InnerCutOff, spotFactor);
       attenuation *= spotAttenuation;
 
-      vec4 ambientColour = CalculateAmbient(light, GetTextureSample(material.AmbientTexture, v_TextureCoords), attenuation);
-      vec4 diffuseColour = CalculateDiffuse(light, GetTextureSample(material.DiffuseTexture, v_TextureCoords), lightDirection, normal, attenuation);
-      vec4 specularColour = CalculateSpecular(light, GetTextureSample(material.SpecularTexture, v_TextureCoords), lightDirection, normal, attenuation, material.Shininess);
+      vec4 ambientColour = CalculateAmbient(light, GetAmbient(material, v_TextureCoords), attenuation);
+      vec4 diffuseColour = CalculateDiffuse(light, GetDiffuse(material, v_TextureCoords), lightDirection, normal, attenuation);
+      vec4 specularColour = CalculateSpecular(light, GetSpecular(material, v_TextureCoords), lightDirection, normal, attenuation, material.Shininess);
 
       o_Colour += v_Colour * (ambientColour + diffuseColour + specularColour) * vec4(light.Intensity, 1);
     }
   }
-  o_Colour += GetTextureSample(material.EmissiveTexture, v_TextureCoords, vec4(0.0));
+  o_Colour += GetEmissive(material, v_TextureCoords);
 }
 
 Material GetMaterial(int index)
@@ -174,4 +186,24 @@ vec4 CalculateSpecular(Light light, vec4 specular, vec3 lightDirection, vec3 nor
   float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), shininess);
   vec4 specularColour = specular * specularStrength * specularFactor * attenuation;
   return specularColour;
+}
+
+vec4 GetAmbient(Material material, vec4 coords)
+{
+  return GetTextureSample(material.AmbientTexture, coords, vec4(1)) * vec4(material.Ambient, 1);
+}
+
+vec4 GetDiffuse(Material material, vec4 coords)
+{
+  return GetTextureSample(material.DiffuseTexture, coords, vec4(1)) * vec4(material.Diffuse, 1);
+}
+
+vec4 GetSpecular(Material material, vec4 coords)
+{
+  return GetTextureSample(material.SpecularTexture, coords, vec4(1)) * vec4(material.Specular, 1);
+}
+
+vec4 GetEmissive(Material material, vec4 coords)
+{
+  return GetTextureSample(material.EmissiveTexture, coords, vec4(0)) * vec4(material.Emissive, 1);
 }
