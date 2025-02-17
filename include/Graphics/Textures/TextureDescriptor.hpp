@@ -2,7 +2,7 @@
 
 #include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
-#include "Graphics/TextureType.hpp"
+#include "Graphics/Textures/TextureType.hpp"
 
 namespace Krys::Gfx
 {

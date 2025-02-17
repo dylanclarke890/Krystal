@@ -4,9 +4,9 @@
 #include "Base/Macros.hpp"
 #include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
-#include "Graphics/Sampler.hpp"
-#include "Graphics/TextureDescriptor.hpp"
-#include "Graphics/TextureType.hpp"
+#include "Graphics/Textures/Sampler.hpp"
+#include "Graphics/Textures/TextureDescriptor.hpp"
+#include "Graphics/Textures/TextureType.hpp"
 
 namespace Krys::Gfx
 {

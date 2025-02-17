@@ -9,13 +9,13 @@
 #include "Core/WindowManager.hpp"
 #include "Events/EventManager.hpp"
 #include "Graphics/GraphicsContext.hpp"
+#include "Graphics/Lights/LightManager.hpp"
 #include "Graphics/Materials/MaterialManager.hpp"
 #include "Graphics/MeshManager.hpp"
+#include "Graphics/Models/ModelManager.hpp"
 #include "Graphics/Renderer.hpp"
 #include "Graphics/Scene/SceneGraphManager.hpp"
-#include "Graphics/TextureManager.hpp"
-#include "Graphics/Lights/LightManager.hpp"
-#include "Graphics/Models/ModelManager.hpp"
+#include "Graphics/Textures/TextureManager.hpp"
 #include "IO/Input/InputManager.hpp"
 
 namespace Krys

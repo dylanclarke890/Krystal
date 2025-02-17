@@ -1,6 +1,6 @@
 #include "Graphics/RenderTargetManager.hpp"
 #include "Core/WindowManager.hpp"
-#include "Graphics/TextureManager.hpp"
+#include "Graphics/Textures/TextureManager.hpp"
 
 namespace Krys::Gfx
 {

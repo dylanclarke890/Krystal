@@ -3,7 +3,7 @@
 #include "Graphics/Materials/MaterialManager.hpp"
 #include "Graphics/MeshManager.hpp"
 #include "Graphics/Scene/SceneGraph.hpp"
-#include "Graphics/TextureManager.hpp"
+#include "Graphics/Textures/TextureManager.hpp"
 #include "Graphics/Transform.hpp"
 
 namespace Krys::Gfx

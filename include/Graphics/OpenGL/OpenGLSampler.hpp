@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics/Sampler.hpp"
+#include "Graphics/Textures/Sampler.hpp"
 
 #include <glad/gl.h>
 

@@ -5,8 +5,8 @@
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
-#include "Graphics/Sampler.hpp"
-#include "Graphics/Texture.hpp"
+#include "Graphics/Textures/Sampler.hpp"
+#include "Graphics/Textures/Texture.hpp"
 #include "IO/Images.hpp"
 
 namespace Krys::Gfx

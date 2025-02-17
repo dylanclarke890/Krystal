@@ -2,18 +2,18 @@
 [INFO ]: Adjusted window dimensions: 1936 x 1119
 [INFO ]: Timer precision range - min: 1ms, max: 1000000ms
 [INFO ]: Camera created.
-[INFO ]: PathExists took 0.148 ms.
-[INFO ]: IO::LoadImage took 900.398 ms.
+[INFO ]: PathExists took 0.139 ms.
+[INFO ]: IO::LoadImage took 777.724 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'models/backpack/diffuse.jpg' into memory (4096x4096).
 [INFO ]: PathExists took 0.146 ms.
-[INFO ]: IO::LoadImage took 864.175 ms.
+[INFO ]: IO::LoadImage took 952.122 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (2 references).
 [INFO ]: TextureManager: Loaded 'models/backpack/specular.jpg' into memory (4096x4096).
-[INFO ]: PathExists took 0.094 ms.
-[INFO ]: ReadFileText took 0.266 ms.
-[INFO ]: PathExists took 0.114 ms.
-[INFO ]: ReadFileText took 0.681 ms.
+[INFO ]: PathExists took 0.129 ms.
+[INFO ]: ReadFileText took 0.271 ms.
+[INFO ]: PathExists took 0.090 ms.
+[INFO ]: ReadFileText took 0.606 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (3 references).
 [INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
 [INFO ]: TextureManager: Loaded sampler from cache (4 references).
@@ -571,7 +571,7 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 161 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: ModelManager::LoadModel (models/backpack/backpack.obj) took 3598.212 ms.
+[INFO ]: ModelManager::LoadModel (models/backpack/backpack.obj) took 3010.461 ms.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
@@ -609,3 +609,4 @@
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (2), usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
  - Type: Other
  - Source: API
+[INFO ]: Key pressed: 70

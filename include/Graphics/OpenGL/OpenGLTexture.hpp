@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Graphics/OpenGL/OpenGLSampler.hpp"
-#include "Graphics/Texture.hpp"
+#include "Graphics/Textures/Texture.hpp"
 #include "IO/Images.hpp"
 
 #include <glad/gl.h>

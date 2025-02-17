@@ -10,8 +10,8 @@
 #include "Graphics/Materials/Material.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
 #include "Graphics/Materials/PhongMaterialDescriptor.hpp"
-#include "Graphics/TextureDescriptor.hpp"
-#include "Graphics/TextureManager.hpp"
+#include "Graphics/Textures/TextureDescriptor.hpp"
+#include "Graphics/Textures/TextureManager.hpp"
 #include "IO/IO.hpp"
 
 namespace Krys::Gfx

@@ -1,5 +1,5 @@
 #include "Graphics/OpenGL/OpenGLRenderTargetManager.hpp"
-#include "Graphics/TextureManager.hpp"
+#include "Graphics/Textures/TextureManager.hpp"
 
 namespace Krys::Gfx::OpenGL
 {

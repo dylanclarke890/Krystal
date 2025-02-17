@@ -2,9 +2,9 @@
 
 #include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
-#include "Graphics/Sampler.hpp"
-#include "Graphics/Texture.hpp"
-#include "Graphics/TextureManager.hpp"
+#include "Graphics/Textures/Sampler.hpp"
+#include "Graphics/Textures/Texture.hpp"
+#include "Graphics/Textures/TextureManager.hpp"
 
 namespace Krys::Gfx::OpenGL
 {

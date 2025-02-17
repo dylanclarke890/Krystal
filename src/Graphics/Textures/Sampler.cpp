@@ -1,4 +1,4 @@
-#include "Graphics/Sampler.hpp"
+#include "Graphics/Textures/Sampler.hpp"
 
 namespace Krys::Gfx
 {

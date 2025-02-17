@@ -1,4 +1,4 @@
-#include "Graphics/Texture.hpp"
+#include "Graphics/Textures/Texture.hpp"
 
 namespace Krys::Gfx
 {
