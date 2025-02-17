@@ -3,8 +3,8 @@
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
 #include "Graphics/Handles.hpp"
-#include "Graphics/RenderTarget.hpp"
-#include "Graphics/RenderTargetType.hpp"
+#include "Graphics/RenderTargets/RenderTarget.hpp"
+#include "Graphics/RenderTargets/RenderTargetType.hpp"
 
 namespace Krys
 {

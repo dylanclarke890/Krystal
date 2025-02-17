@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Base/Types.hpp"
-#include "Graphics/RenderTargetManager.hpp"
+#include "Graphics/RenderTargets/RenderTargetManager.hpp"
 
 namespace Krys::Gfx::OpenGL
 {

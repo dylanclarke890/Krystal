@@ -1,4 +1,4 @@
-#include "Graphics/RenderTarget.hpp"
+#include "Graphics/RenderTargets/RenderTarget.hpp"
 
 namespace Krys::Gfx
 {

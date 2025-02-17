@@ -1,4 +1,4 @@
-#include "Graphics/Framebuffer.hpp"
+#include "Graphics/RenderTargets/Framebuffer.hpp"
 
 namespace Krys::Gfx
 {

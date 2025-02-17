@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Base/Macros.hpp"
-#include "Graphics/Framebuffer.hpp"
 #include "Graphics/Handles.hpp"
+#include "Graphics/RenderTargets/Framebuffer.hpp"
 
 namespace Krys::Gfx::OpenGL
 {

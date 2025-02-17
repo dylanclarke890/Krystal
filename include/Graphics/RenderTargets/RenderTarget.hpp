@@ -2,7 +2,7 @@
 
 #include "Base/Macros.hpp"
 #include "Graphics/Handles.hpp"
-#include "Graphics/RenderTargetType.hpp"
+#include "Graphics/RenderTargets/RenderTargetType.hpp"
 
 namespace Krys::Gfx
 {
