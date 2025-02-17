@@ -9,10 +9,10 @@ namespace Krys::Tests
 {
   using namespace Krys::MTL;
 
-  constexpr Vec1 v1 = {1};
-  constexpr Vec2 v2 = {1, 2};
-  constexpr Vec3 v3 = {1, 2, 3};
-  constexpr Vec4 v4 = {1, 2, 3, 4};
+  constexpr Vec1 v1 = Vec1 {1};
+  constexpr Vec2 v2 = Vec2 {1, 2};
+  constexpr Vec3 v3 = Vec3 {1, 2, 3};
+  constexpr Vec4 v4 = Vec4 {1, 2, 3, 4};
 
 #pragma region Two Components
 

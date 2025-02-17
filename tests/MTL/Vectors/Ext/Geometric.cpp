@@ -23,9 +23,9 @@ namespace Krys::Tests
   static void Test_LengthSquared()
   {
     KRYS_EXPECT_EQUAL("Vec1 LengthSquared", MTL::LengthSquared(Vec1 {2.0f}), 4.0f);
-    KRYS_EXPECT_EQUAL("Vec2 LengthSquared", MTL::LengthSquared(Vec2 {2.0f}), 4.0f);
-    KRYS_EXPECT_EQUAL("Vec3 LengthSquared", MTL::LengthSquared(Vec3 {2.0f}), 4.0f);
-    KRYS_EXPECT_EQUAL("Vec4 LengthSquared", MTL::LengthSquared(Vec4 {2.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec2 LengthSquared", MTL::LengthSquared(Vec2 {2.0f}), 8.0f);
+    KRYS_EXPECT_EQUAL("Vec3 LengthSquared", MTL::LengthSquared(Vec3 {2.0f}), 12.0f);
+    KRYS_EXPECT_EQUAL("Vec4 LengthSquared", MTL::LengthSquared(Vec4 {2.0f}), 16.0f);
   }
 
   static void Test_Distance()
@@ -42,9 +42,9 @@ namespace Krys::Tests
   static void Test_DistanceSquared()
   {
     KRYS_EXPECT_EQUAL("Vec1 DistanceSquared", MTL::DistanceSquared(Vec1 {2.0f}, Vec1 {4.0f}), 4.0f);
-    KRYS_EXPECT_EQUAL("Vec2 DistanceSquared", MTL::DistanceSquared(Vec2 {2.0f}, Vec2 {4.0f}), 4.0f);
-    KRYS_EXPECT_EQUAL("Vec3 DistanceSquared", MTL::DistanceSquared(Vec3 {2.0f}, Vec3 {4.0f}), 4.0f);
-    KRYS_EXPECT_EQUAL("Vec4 DistanceSquared", MTL::DistanceSquared(Vec4 {2.0f}, Vec4 {4.0f}), 4.0f);
+    KRYS_EXPECT_EQUAL("Vec2 DistanceSquared", MTL::DistanceSquared(Vec2 {2.0f}, Vec2 {4.0f}), 8.0f);
+    KRYS_EXPECT_EQUAL("Vec3 DistanceSquared", MTL::DistanceSquared(Vec3 {2.0f}, Vec3 {4.0f}), 12.0f);
+    KRYS_EXPECT_EQUAL("Vec4 DistanceSquared", MTL::DistanceSquared(Vec4 {2.0f}, Vec4 {4.0f}), 16.0f);
   }
 
   static void Test_Dot()

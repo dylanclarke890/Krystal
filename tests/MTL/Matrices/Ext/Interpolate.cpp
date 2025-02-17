@@ -81,8 +81,9 @@ namespace Krys::Tests
     KRYS_EXPECT_EQUAL("Lerp Mat3x3 t=0.5", Lerp(x, y, 0.5f),
                       mat_t(5.5f, 6.5f, 7.5f, 8.5f, 9.5f, 10.5f, 11.5f, 12.5f, 13.5f));
 
-    constexpr mat_t t {{0.5f}, {0.5f}, {0.5f}};
-    KRYS_EXPECT_EQUAL("Lerp Mat3x3 VecT", Lerp(mat_t({0}, {0}, {0}), mat_t({1}, {1}, {1}), t), t);
+    constexpr mat_t t {Vec3 {0.5f}, Vec3 {0.5f}, Vec3 {0.5f}};
+    KRYS_EXPECT_EQUAL("Lerp Mat3x3 VecT",
+                      Lerp(mat_t(Vec3 {0}, Vec3 {0}, Vec3 {0}), mat_t(Vec3 {1}, Vec3 {1}, Vec3 {1}), t), t);
   }
 
   static void Test_Mat3x4_Lerp()
