@@ -11,6 +11,7 @@ namespace Krys::Gfx
     uint32 Width;
     uint32 Height;
     RenderTargetType Type;
+    bool Multisampled;
   };
 
   class RenderTarget
@@ -25,6 +26,12 @@ namespace Krys::Gfx
     NO_DISCARD TextureHandle GetTexture() const noexcept;
 
     NO_DISCARD RenderTargetType GetType() const noexcept;
+
+    NO_DISCARD uint32 GetWidth() const noexcept;
+
+    NO_DISCARD uint32 GetHeight() const noexcept;
+
+    NO_DISCARD bool IsMultisampled() const noexcept;
 
   protected:
     NO_COPY_MOVE(RenderTarget);

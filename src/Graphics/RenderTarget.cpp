@@ -22,4 +22,19 @@ namespace Krys::Gfx
   {
     return _descriptor.Type;
   }
+
+  uint32 RenderTarget::GetWidth() const noexcept
+  {
+    return _descriptor.Width;
+  }
+
+  uint32 RenderTarget::GetHeight() const noexcept
+  {
+    return _descriptor.Height;
+  }
+
+  bool RenderTarget::IsMultisampled() const noexcept
+  {
+    return _descriptor.Multisampled;
+  }
 }
