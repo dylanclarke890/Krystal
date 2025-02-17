@@ -166,7 +166,7 @@ float CalculateAttenuation(Light light, vec3 fragmentPosition, vec3 lightDirecti
 
 vec4 CalculateAmbient(Light light, vec4 ambient, float attenuation)
 {
-  float ambientStrength = 0.1;
+  float ambientStrength = 1.0;
   vec4 ambientColour = ambient * ambientStrength * attenuation;
   return ambientColour;
 }

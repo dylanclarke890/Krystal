@@ -13,7 +13,7 @@ namespace Krys::Gfx
     GenerateTangents = 1 << 2,
     GenerateBitangents = 1 << 3,
     Triangulate = 1 << 4,
-    DeduplicateVertices = 1 << 5,
+    RemoveDuplicateVertices = 1 << 5,
   };
 
   ENUM_CLASS_BITWISE_OPERATORS(ModelLoaderFlags, uint8);

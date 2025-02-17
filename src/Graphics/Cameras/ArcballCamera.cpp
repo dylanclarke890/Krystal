@@ -33,7 +33,6 @@ namespace Krys::Gfx
       if (axisLen > 1e-5f)
       {
         axis = axis / axisLen; // normalize
-        Logger::Info("Axis: {0}", axis);
 
         // Dot product for the angle
         float dot = MTL::Dot(_lastSpherePosition, currentSpherePos);
@@ -80,7 +79,6 @@ namespace Krys::Gfx
 
     // Rotate offset by our current orientation
     Vec3 finalPos = MTL::Rotate(_orientation, offset);
-    Logger::Info("FinalPos: {0}", finalPos);
 
     // The actual camera world position is target + the offset
     _position = _target + finalPos;

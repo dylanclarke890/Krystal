@@ -58,6 +58,7 @@ namespace Krys::Gfx
       descriptor.Diffuse = Colour {mat.diffuse[0], mat.diffuse[1], mat.diffuse[2]};
       descriptor.Specular = Colour {mat.specular[0], mat.specular[1], mat.specular[2]};
       descriptor.Emissive = Colour {mat.emission[0], mat.emission[1], mat.emission[2]};
+
       // TODO: texture parameters
       descriptor.AmbientMap = mat.ambient_texname;
       descriptor.DiffuseMap = mat.diffuse_texname;
@@ -86,43 +87,148 @@ namespace Krys::Gfx
         auto material =
           materialId != -1 ? materials[materialId] : _materialManager->GetDefaultPhongMaterial();
 
+        struct VertexRawInfo
+        {
+          rapidobj::Index index;
+          int smoothingGroup;
+        };
+
         List<VertexData> vertices;
-        // Reserve half the size of the indices list as a rough estimate
-        vertices.reserve(modelIndices.size() / 2);
+        vertices.reserve(modelIndices.size());
+
         List<uint32> indices;
         indices.reserve(modelIndices.size());
 
-        for (const auto &[position_idx, texcoord_idx, normal_idx] : modelIndices)
+        List<VertexRawInfo> vertexInfos;
+        vertexInfos.reserve(modelIndices.size());
+
+        // Build the raw vertex list. Note that we iterate by index so that we can compute
+        // the face index (i/3) and thus the smoothing group for that vertex.
+        for (size_t i = 0; i < modelIndices.size(); ++i)
         {
-          Vec3 position = {data.positions[3 * position_idx + 0], data.positions[3 * position_idx + 1],
-                           data.positions[3 * position_idx + 2]};
+          const auto &idx = modelIndices[i];
+          int faceIndex = static_cast<int>(i / 3);
+          // Determine the smoothing group for this face (or -1 if none)
+          int smoothingGroup =
+            shape.mesh.smoothing_group_ids.empty() ? -1 : shape.mesh.smoothing_group_ids[faceIndex];
+
+          Vec3 position = {data.positions[3 * idx.position_index + 0],
+                           data.positions[3 * idx.position_index + 1],
+                           data.positions[3 * idx.position_index + 2]};
 
           Vec2 textureCoord = {0.0f, 0.0f};
-          Vec3 normal = {0.0f, 0.0f, 0.0f};
-          Colour colour = Colours::White;
-
-          if (texcoord_idx != -1)
+          if (idx.texcoord_index != -1)
           {
             if (!!(flags & ModelLoaderFlags::FlipUVs))
-              textureCoord = {data.texcoords[2 * texcoord_idx + 0],
-                              1.0f - data.texcoords[2 * texcoord_idx + 1]};
+              textureCoord = {data.texcoords[2 * idx.texcoord_index + 0],
+                              1.0f - data.texcoords[2 * idx.texcoord_index + 1]};
             else
-              textureCoord = {data.texcoords[2 * texcoord_idx + 0], data.texcoords[2 * texcoord_idx + 1]};
+              textureCoord = {data.texcoords[2 * idx.texcoord_index + 0],
+                              data.texcoords[2 * idx.texcoord_index + 1]};
           }
 
-          if (normal_idx != -1)
-            normal = {data.normals[3 * normal_idx + 0], data.normals[3 * normal_idx + 1],
-                      data.normals[3 * normal_idx + 2]};
+          Vec3 normal = idx.normal_index != -1 ? Vec3 {data.normals[3 * idx.normal_index + 0],
+                                                       data.normals[3 * idx.normal_index + 1],
+                                                       data.normals[3 * idx.normal_index + 2]}
+                                               : Vec3 {0.0f, 0.0f, 0.0f};
+
+          Colour colour = Colours::White;
 
           vertices.push_back(
             VertexData {position, normal, colour, Vec3 {textureCoord.x, textureCoord.y, 0.0f}});
           indices.push_back(static_cast<uint32>(vertices.size() - 1));
+          vertexInfos.push_back(VertexRawInfo {idx, smoothingGroup});
         }
 
-        if (!!(flags & ModelLoaderFlags::DeduplicateVertices))
+        // Now compute and assign averaged normals on the raw vertex list.
+        if (!!(flags & ModelLoaderFlags::GenerateNormals))
+        {
+          if (!data.normals.empty())
+          {
+            Logger::Warn("Generating normals for a model that already has normals.");
+          }
+
+          // We want to average contributions for vertices that represent the same
+          // “logical vertex”. We key on the original OBJ indices (position and texcoord)
+          // plus the smoothing group.
+          struct VertexKey
+          {
+            int positionIdx;
+            int texcoordIdx;
+            int smoothingGroup;
+            bool operator==(const VertexKey &other) const
+            {
+              return positionIdx == other.positionIdx && texcoordIdx == other.texcoordIdx
+                     && smoothingGroup == other.smoothingGroup;
+            }
+          };
+          struct VertexKeyHash
+          {
+            size_t operator()(const VertexKey &key) const
+            {
+              size_t h1 = std::hash<int>()(key.positionIdx);
+              size_t h2 = std::hash<int>()(key.texcoordIdx);
+              size_t h3 = std::hash<int>()(key.smoothingGroup);
+              return HashCombine(h1, h2, h3);
+            }
+          };
+
+          Map<VertexKey, Vec3, VertexKeyHash> normalSums;
+          normalSums.reserve(vertices.size());
+          Map<VertexKey, uint32, VertexKeyHash> normalCounts;
+          normalCounts.reserve(vertices.size());
+
+          // Process each face (every three consecutive indices form a triangle)
+          for (size_t i = 0; i < indices.size(); i += 3)
+          {
+            uint32 i0 = indices[i + 0];
+            uint32 i1 = indices[i + 1];
+            uint32 i2 = indices[i + 2];
+
+            const Vec3 &p0 = vertices[i0].Position;
+            const Vec3 &p1 = vertices[i1].Position;
+            const Vec3 &p2 = vertices[i2].Position;
+
+            // Compute face normal (optionally weighted by area)
+            Vec3 faceNormal = GenerateNormal(p0, p1, p2);
+            float area = Length(Cross(p1 - p0, p2 - p0)) * 0.5f;
+            faceNormal *= area;
+
+            // Build keys for each vertex based on its original indices and smoothing group
+            VertexKey key0 {vertexInfos[i0].index.position_index, vertexInfos[i0].index.texcoord_index,
+                            vertexInfos[i0].smoothingGroup};
+            VertexKey key1 {vertexInfos[i1].index.position_index, vertexInfos[i1].index.texcoord_index,
+                            vertexInfos[i1].smoothingGroup};
+            VertexKey key2 {vertexInfos[i2].index.position_index, vertexInfos[i2].index.texcoord_index,
+                            vertexInfos[i2].smoothingGroup};
+
+            // Accumulate the weighted face normal for each vertex key
+            normalSums[key0] = normalSums[key0] + faceNormal;
+            normalSums[key1] = normalSums[key1] + faceNormal;
+            normalSums[key2] = normalSums[key2] + faceNormal;
+
+            normalCounts[key0] = normalCounts[key0] + 1;
+            normalCounts[key1] = normalCounts[key1] + 1;
+            normalCounts[key2] = normalCounts[key2] + 1;
+          }
+
+          // Now assign each raw vertex the averaged normal (normalized).
+          for (size_t i = 0; i < vertices.size(); ++i)
+          {
+            VertexKey key {vertexInfos[i].index.position_index, vertexInfos[i].index.texcoord_index,
+                           vertexInfos[i].smoothingGroup};
+            if (normalCounts[key] > 0)
+            {
+              vertices[i].Normal = MTL::Normalize(normalSums[key] / static_cast<float>(normalCounts[key]));
+            }
+          }
+        }
+
+        // Now deduplicate vertices using your existing logic.
+        if (!!(flags & ModelLoaderFlags::RemoveDuplicateVertices))
         {
           List<VertexData> uniqueVertices;
-          // Reserve half the size of the vertices list as a rough estimate
+          // Reserve roughly half the size of the vertices list as a guess.
           uniqueVertices.reserve(vertices.size() / 2);
           List<uint32> newIndices;
           newIndices.reserve(indices.size());
@@ -148,64 +254,6 @@ namespace Krys::Gfx
 
           vertices = std::move(uniqueVertices);
           indices = newIndices;
-        }
-
-        if (!!(flags & ModelLoaderFlags::GenerateNormals))
-        {
-          // (vertex index, smoothing group) -> accumulated normal
-          Map<std::pair<size_t, int>, Vec3, SizeTUint32Hash> normalSums;
-          normalSums.reserve(vertices.size());
-
-          // (vertex index, smoothing group) -> count
-          Map<std::pair<size_t, int>, uint32, SizeTUint32Hash> normalCount;
-          normalCount.reserve(vertices.size());
-
-          // Compute face normals and accumulate them per smoothing group
-          for (size_t i = 0; i < indices.size(); i += 3)
-          {
-            uint32_t i0 = indices[i + 0];
-            uint32_t i1 = indices[i + 1];
-            uint32_t i2 = indices[i + 2];
-
-            Vec3 &v0 = vertices[i0].Position;
-            Vec3 &v1 = vertices[i1].Position;
-            Vec3 &v2 = vertices[i2].Position;
-
-            Vec3 normal = GenerateNormal(v0, v1, v2);
-
-            float area = Length(Cross(v1 - v0, v2 - v0)) * 0.5f; // Triangle area
-            normal *= area;                                      // Weight by area
-
-            // Get the smoothing group ID for this face
-            int smoothingGroup =
-              shape.mesh.smoothing_group_ids.empty() ? -1 : shape.mesh.smoothing_group_ids[i / 3];
-
-            // Accumulate normals for each vertex in the face, grouped by smoothing ID
-            std::pair<size_t, int> key0 = {i0, smoothingGroup};
-            std::pair<size_t, int> key1 = {i1, smoothingGroup};
-            std::pair<size_t, int> key2 = {i2, smoothingGroup};
-
-            normalSums[key0] += normal;
-            normalSums[key1] += normal;
-            normalSums[key2] += normal;
-
-            normalCount[key0]++;
-            normalCount[key1]++;
-            normalCount[key2]++;
-          }
-
-          // Normalize accumulated normals per smoothing group
-          for (size_t i = 0; i < vertices.size(); ++i)
-          {
-            int smoothingGroup =
-              shape.mesh.smoothing_group_ids.empty() ? -1 : shape.mesh.smoothing_group_ids[i / 3];
-            std::pair<size_t, int> key = {i, smoothingGroup};
-
-            if (normalCount[key] > 0)
-            {
-              vertices[i].Normal = MTL::Normalize(normalSums[key] / static_cast<float>(normalCount[key]));
-            }
-          }
         }
 
         auto mesh = _meshManager->CreateMesh(shape.name, vertices, indices);
