@@ -2,75 +2,29 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
+#include "Graphics/Cameras/Camera.hpp"
 #include "Graphics/Handles.hpp"
 #include "Graphics/RenderTargets/RenderTargetAttachment.hpp"
+#include "MTL/Vectors/Vec4.hpp"
 
 namespace Krys::Gfx
 {
-  class RenderPass
+  struct ClearValues
   {
-  public:
-    RenderPass(RenderPassHandle handle, const string &name) noexcept : _handle(handle), _name(name)
-    {
-    }
+    Vec4 Color = Vec4(0.0f, 0.0f, 0.0f, 1.0f); // Default: Black
+    float Depth = 1.0f;                        // Default: Maximum depth (far plane)
+    uint32 Stencil = 0;                        // Default: Zero
+  };
 
-    NO_DISCARD const string &GetName() const noexcept
-    {
-      return _name;
-    }
-
-    NO_DISCARD RenderPassHandle GetHandle() const noexcept
-    {
-      return _handle;
-    }
-
-    NO_DISCARD const List<RenderTargetAttachment> &GetColorAttachments() const noexcept
-    {
-      return _colorAttachments;
-    }
-
-    NO_DISCARD const RenderTargetAttachment &GetDepthAttachment() const noexcept
-    {
-      return _depthAttachment;
-    }
-
-    NO_DISCARD const RenderTargetAttachment &GetStencilAttachment() const noexcept
-    {
-      return _stencilAttachment;
-    }
-
-    NO_DISCARD SceneGraphHandle GetSceneGraph() const noexcept
-    {
-      return _sceneGraph;
-    }
-
-    void SetSceneGraph(SceneGraphHandle sceneGraph) noexcept
-    {
-      _sceneGraph = sceneGraph;
-    }
-
-    void AddColorAttachment(const RenderTargetAttachment &attachment) noexcept
-    {
-      _colorAttachments.push_back(attachment);
-    }
-
-    void SetDepthAttachment(const RenderTargetAttachment &attachment) noexcept
-    {
-      _depthAttachment = attachment;
-    }
-
-    void SetStencilAttachment(const RenderTargetAttachment &attachment) noexcept
-    {
-      _stencilAttachment = attachment;
-    }
-
-  private:
-    RenderPassHandle _handle;
-    string _name;
-    List<RenderTargetAttachment> _colorAttachments;
-    RenderTargetAttachment _depthAttachment;
-    RenderTargetAttachment _stencilAttachment;
-
-    SceneGraphHandle _sceneGraph;
+  struct RenderPass
+  {
+    string Name;
+    List<RenderTargetAttachment> ColorAttachments;
+    RenderTargetAttachment DepthAttachment;
+    RenderTargetAttachment StencilAttachment;
+    SceneGraphHandle SceneGraph;
+    Camera *Camera;
+    ClearValues ClearValues;
+    ShaderHandle Shader;
   };
 }

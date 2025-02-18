@@ -2,18 +2,13 @@
 
 #include "Base/Attributes.hpp"
 #include "Base/Types.hpp"
+#include "Graphics/Cameras/CameraType.hpp"
 #include "MTL/Matrices/Mat4x4.hpp"
 #include "MTL/Quaternion/Quat.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 
 namespace Krys::Gfx
 {
-  enum class CameraType : uint8
-  {
-    Perspective,
-    Orthographic
-  };
-
   /// @brief Represents a camera through which a scene is viewed/rendered.
   class Camera
   {

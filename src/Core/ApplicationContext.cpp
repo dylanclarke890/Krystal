@@ -63,6 +63,11 @@ namespace Krys
     return _modelManager.get();
   }
 
+  Ptr<Gfx::RenderTargetManager> ApplicationContext::GetRenderTargetManager() const noexcept
+  {
+    return _renderTargetManager.get();
+  }
+
   const ApplicationSettings &ApplicationContext::GetSettings() const noexcept
   {
     return _settings;

@@ -37,6 +37,8 @@ namespace Krys
         CreateUnique<Gfx::MaterialManager>(ctx->_textureManager.get(), ctx->_graphicsContext.get());
       ctx->_modelManager = CreateUnique<Gfx::ModelManager>(
         ctx->_materialManager.get(), ctx->_meshManager.get(), ctx->_textureManager.get());
+      ctx->_renderTargetManager =
+        CreateUnique<Gfx::RenderTargetManager>(ctx->_windowManager.get(), ctx->_textureManager.get());
 
       Gfx::RenderContext renderContext {ctx->_graphicsContext.get(), ctx->_meshManager.get(),
                                         ctx->_textureManager.get(), ctx->_materialManager.get(),

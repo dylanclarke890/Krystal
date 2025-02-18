@@ -18,7 +18,9 @@ namespace Krys
     class RenderTargetManager
     {
     public:
-      virtual ~RenderTargetManager() noexcept = default;
+      RenderTargetManager(Ptr<WindowManager> windowManager, Ptr<TextureManager> textureManager) noexcept;
+      
+      ~RenderTargetManager() noexcept = default;
 
       RenderTargetHandle CreateRenderTarget(RenderTargetType type) noexcept;
 
@@ -29,7 +31,6 @@ namespace Krys
       bool DeleteRenderTarget(RenderTargetHandle handle) noexcept;
 
     protected:
-      RenderTargetManager(Ptr<WindowManager> windowManager, Ptr<TextureManager> textureManager) noexcept;
 
       Unique<RenderTarget> CreateRenderTargetImpl(RenderTargetHandle handle,
                                                   const RenderTargetDescriptor &descriptor) noexcept;
