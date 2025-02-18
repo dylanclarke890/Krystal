@@ -104,7 +104,6 @@ namespace Krys::Impl
   HANDLE_IMPL(IndexBuffer);
   HANDLE_IMPL(UniformBuffer);
   HANDLE_IMPL(ShaderStorageBuffer);
-  HANDLE_IMPL(VertexLayout);
   HANDLE_IMPL(Program);
   HANDLE_IMPL(Shader);
   HANDLE_IMPL(Mesh);
@@ -113,8 +112,8 @@ namespace Krys::Impl
   HANDLE_IMPL(Light);
   HANDLE_IMPL(SceneGraph);
   HANDLE_IMPL(Material);
-  HANDLE_IMPL(Framebuffer);
   HANDLE_IMPL(RenderTarget);
+  HANDLE_IMPL(RenderPass);
 
 #undef HANDLE_IMPL
 }
@@ -168,7 +167,6 @@ namespace Krys::Gfx
   DECLARE_HANDLE(Program);
   DECLARE_HANDLE(Shader);
   DECLARE_HANDLE(IndexBuffer);
-  DECLARE_HANDLE(VertexLayout);
   DECLARE_HANDLE(VertexBuffer);
   DECLARE_HANDLE(UniformBuffer);
   DECLARE_HANDLE(ShaderStorageBuffer);
@@ -178,8 +176,8 @@ namespace Krys::Gfx
   DECLARE_HANDLE(Light);
   DECLARE_HANDLE(SceneGraph);
   DECLARE_HANDLE(Material);
-  DECLARE_HANDLE(Framebuffer);
   DECLARE_HANDLE(RenderTarget);
+  DECLARE_HANDLE(RenderPass);
 
 #undef DECLARE_HANDLE
 }

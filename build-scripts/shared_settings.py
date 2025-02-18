@@ -28,6 +28,7 @@ ignore_includes = [
   "string.h", "inttypes.h", "limits.h", "stdarg.h", 
   "math.h", "assert.h", "emmintrin.h", "intrin.h",
   "arm_neon.h", "fcntl.h", "sys/stat.h", "unistd.h",
+  "machine/endian.h", "sys/byteorder.h", "endian.h"
 ]
 
 # ----------- COMPILER FLAGS ------------
