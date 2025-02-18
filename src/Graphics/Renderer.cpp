@@ -8,7 +8,7 @@
 
 namespace Krys::Gfx
 {
-  Renderer::Renderer(RenderContext ctx) noexcept : _ctx(ctx)
+  Renderer::Renderer(const RenderContext &ctx) noexcept : _ctx(ctx)
   {
   }
 
@@ -16,10 +16,25 @@ namespace Krys::Gfx
   {
   }
 
-  void Renderer::Render(SceneGraph *scene, Camera &camera) noexcept
+  void Renderer::AfterRender() noexcept
   {
-    BeforeRender();
-    auto *root = scene->GetRoot();
-    Render(root, {}, camera);
+  }
+
+  void Renderer::OnRenderPipelineChange() noexcept
+  {
+  }
+
+  void Renderer::SetRenderPipeline(RenderPipeline pipeline) noexcept
+  {
+    _pipeline = pipeline;
+    OnRenderPipelineChange();
+  }
+
+  void Renderer::BeforeRenderPass(const RenderPass &) noexcept
+  {
+  }
+
+  void Renderer::AfterRenderPass(const RenderPass &) noexcept
+  {
   }
 }

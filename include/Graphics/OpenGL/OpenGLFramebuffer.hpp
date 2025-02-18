@@ -14,6 +14,7 @@ namespace Krys::Gfx::OpenGL
     GLuint DepthAttachment {0};
     GLuint StencilAttachment {0};
     GLuint DepthStencilAttachment {0};
+    int Width {0}, Height {0};
   };
 
   class OpenGLFramebuffer

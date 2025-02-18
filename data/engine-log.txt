@@ -2,539 +2,532 @@
 [INFO ]: Adjusted window dimensions: 1936 x 1119
 [INFO ]: Timer precision range - min: 1ms, max: 1000000ms
 [INFO ]: Camera created.
-[INFO ]: PathExists took 0.179 ms.
-[INFO ]: IO::LoadImage took 1118.509 ms.
+[INFO ]: PathExists took 0.140 ms.
+[INFO ]: IO::LoadImage took 1074.505 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'models/backpack/diffuse.jpg' into memory (4096x4096).
-[INFO ]: PathExists took 0.185 ms.
-[INFO ]: IO::LoadImage took 1019.610 ms.
+[INFO ]: PathExists took 0.114 ms.
+[INFO ]: IO::LoadImage took 699.929 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (2 references).
 [INFO ]: TextureManager: Loaded 'models/backpack/specular.jpg' into memory (4096x4096).
-[INFO ]: PathExists took 0.114 ms.
-[INFO ]: ReadFileText took 11.623 ms.
-[INFO ]: PathExists took 0.117 ms.
-[INFO ]: ReadFileText took 13.189 ms.
+[INFO ]: PathExists took 0.142 ms.
+[INFO ]: ReadFileText took 0.264 ms.
+[INFO ]: PathExists took 0.072 ms.
+[INFO ]: ReadFileText took 0.500 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (3 references).
 [INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
 [INFO ]: TextureManager: Loaded sampler from cache (4 references).
 [INFO ]: TextureManager: Created 'FlatColour_Colour(r: 0, g: 0, b: 0, a: 1)' (1x1).
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 4 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 5 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 6 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 7 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 8 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 9 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 10 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 11 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 12 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 13 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 14 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 15 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 16 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 17 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 18 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 19 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 20 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 21 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 22 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 23 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 24 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 25 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 26 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 27 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 28 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 29 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 30 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 31 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 32 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 33 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 34 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 35 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 36 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 37 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 38 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 39 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 40 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 41 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 42 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 43 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 44 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 45 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 46 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 47 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 48 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 49 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 50 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 51 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 52 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 53 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 54 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 55 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 56 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 57 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 58 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 59 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 60 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 61 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 62 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 63 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 64 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 65 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 66 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 67 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 68 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 69 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 70 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 71 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 72 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 73 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 74 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 75 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 76 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 77 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 78 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 79 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 80 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 81 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 82 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 83 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 84 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 85 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 86 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 87 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 88 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 89 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 90 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 91 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 92 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 93 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 94 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 95 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 96 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 97 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 98 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 99 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 100 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 101 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 102 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 103 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 104 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 105 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 106 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 107 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 108 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 109 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 110 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 111 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 112 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 113 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 114 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 115 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 116 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 117 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 118 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 119 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 120 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 121 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 122 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 123 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 124 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 125 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 126 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 127 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 128 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 129 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 130 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 131 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 132 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 133 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 134 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 135 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 136 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 137 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 138 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 139 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 140 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 141 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 142 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 143 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 144 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 145 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 146 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 147 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 148 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 149 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 150 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 151 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[WARN ]: Generating normals for a model that already has normals.
-[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 152 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 152 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 153 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 154 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 155 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 156 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 157 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 158 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 159 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 160 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 161 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: ModelManager::LoadModel (models/backpack/backpack.obj) took 2709.432 ms.
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: TextureManager: Loaded sampler from cache (5 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to NONE, usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: TextureManager: Loaded sampler from cache (6 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded sampler from cache (7 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded sampler from cache (8 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded sampler from cache (9 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 0, g: 0, b: 0, a: 1)' (1x1).
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to GL_SHADER_STORAGE_BUFFER (0), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to GL_SHADER_STORAGE_BUFFER (0), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (2), usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (2), usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: Key pressed: 70

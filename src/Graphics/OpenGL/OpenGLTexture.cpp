@@ -37,7 +37,7 @@ namespace Krys::Gfx::OpenGL
   /// @brief Creates a depth texture.
   static void CreateRenderTargetDepthTexture(GLuint texture, const TextureDescriptor &desc) noexcept
   {
-    ::glTextureStorage2D(texture, 1, GL_DEPTH_COMPONENT, desc.Width, desc.Height);
+    ::glTextureStorage2D(texture, 1, GL_DEPTH_COMPONENT24, desc.Width, desc.Height);
   }
 
   /// @brief Creates a render target texture.

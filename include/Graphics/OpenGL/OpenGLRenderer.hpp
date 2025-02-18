@@ -19,23 +19,33 @@
 
 namespace Krys::Gfx::OpenGL
 {
+  class OpenGLFramebuffer;
+
   class OpenGLRenderer : public Renderer
   {
   public:
-    OpenGLRenderer(RenderContext context) noexcept;
+    OpenGLRenderer(const RenderContext& context) noexcept;
 
     ~OpenGLRenderer() noexcept override = default;
     NO_COPY_MOVE(OpenGLRenderer);
 
     void Init() noexcept override;
 
+    void Render() noexcept override;
+
+    void OnRenderPipelineChange() noexcept override;
+
   protected:
     void BeforeRender() noexcept override;
-    void Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept override;
+    void Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept;
+
+    void BeforeRenderPass(const RenderPass &pass) noexcept override;
 
   private:
     ShaderStorageBufferHandle _phongMaterialBufferHandle {}, _textureTableHandle {}, _lightBufferHandle {};
     Ptr<ShaderStorageBuffer> _phongMaterialBuffer {nullptr}, _textureTable {nullptr}, _lightBuffer {nullptr};
+
+    Map<string, Unique<OpenGLFramebuffer>> _framebuffers;
 
     template <typename T>
     void SetUniform(GLuint program, const string &name, const T &value) noexcept

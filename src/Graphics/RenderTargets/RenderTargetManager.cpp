@@ -1,5 +1,6 @@
 #include "Graphics/RenderTargets/RenderTargetManager.hpp"
 #include "Core/WindowManager.hpp"
+#include "Graphics/OpenGL/OpenGLFramebuffer.hpp"
 #include "Graphics/RenderTargets/RenderTarget.hpp"
 #include "Graphics/Textures/TextureManager.hpp"
 

@@ -19,6 +19,11 @@ namespace Krys::Gfx
       return _passes;
     }
 
+    NO_DISCARD List<RenderPass>& GetPasses() noexcept
+    {
+      return _passes;
+    }
+
   protected:
     List<RenderPass> _passes;
   };

@@ -3,6 +3,8 @@
 #include "Base/Pointers.hpp"
 #include "Graphics/GraphicsContext.hpp"
 #include "Graphics/RenderContext.hpp"
+#include "Graphics/RenderPass.hpp"
+#include "Graphics/RenderPipeline.hpp"
 
 namespace Krys::Gfx
 {
@@ -18,15 +20,24 @@ namespace Krys::Gfx
 
     virtual void Init() noexcept = 0;
 
-    void Render(SceneGraph *scene, Camera &camera) noexcept;
+    virtual void Render() noexcept = 0;
+
+    void SetRenderPipeline(RenderPipeline pipeline) noexcept;
 
   protected:
+    Renderer(const RenderContext &ctx) noexcept;
+
+    virtual void OnRenderPipelineChange() noexcept;
+
     virtual void BeforeRender() noexcept;
 
-    virtual void Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept = 0;
+    virtual void AfterRender() noexcept;
 
-    Renderer(RenderContext ctx) noexcept;
+    virtual void BeforeRenderPass(const RenderPass &pass) noexcept;
+
+    virtual void AfterRenderPass(const RenderPass &pass) noexcept;
 
     RenderContext _ctx;
+    RenderPipeline _pipeline;
   };
 }

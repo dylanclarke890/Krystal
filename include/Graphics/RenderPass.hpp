@@ -19,12 +19,17 @@ namespace Krys::Gfx
   struct RenderPass
   {
     string Name;
-    List<RenderTargetAttachment> ColorAttachments;
+    List<RenderTargetAttachment> ColourAttachments;
     RenderTargetAttachment DepthAttachment;
     RenderTargetAttachment StencilAttachment;
     SceneGraphHandle SceneGraph;
     Camera *Camera;
     ClearValues ClearValues;
-    ShaderHandle Shader;
+
+    NO_DISCARD bool HasNoAttachments() const noexcept
+    {
+      return ColourAttachments.empty() && !DepthAttachment.Target.IsValid()
+             && !StencilAttachment.Target.IsValid();
+    }
   };
 }

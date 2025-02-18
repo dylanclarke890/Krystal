@@ -5,22 +5,25 @@
 #include "Graphics/Lights/LightData.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
 #include "Graphics/OpenGL/OpenGLBuffer.hpp"
+#include "Graphics/OpenGL/OpenGLFramebuffer.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
 #include "Graphics/OpenGL/OpenGLMesh.hpp"
 #include "Graphics/OpenGL/OpenGLMeshManager.hpp"
 #include "Graphics/OpenGL/OpenGLProgram.hpp"
 #include "Graphics/OpenGL/OpenGLTexture.hpp"
 #include "Graphics/OpenGL/OpenGLTextureManager.hpp"
+#include "Graphics/RenderTargets/RenderTargetManager.hpp"
 #include "Graphics/Scene/MaterialNode.hpp"
 #include "Graphics/Scene/MeshNode.hpp"
 #include "Graphics/Scene/Node.hpp"
+#include "Graphics/Scene/SceneGraphManager.hpp"
 #include "MTL/Matrices/Ext/Inverse.hpp"
 #include "MTL/Matrices/Ext/Transpose.hpp"
 #include "MTL/Matrices/Mat3x3.hpp"
 
 namespace Krys::Gfx::OpenGL
 {
-  OpenGLRenderer::OpenGLRenderer(RenderContext context) noexcept : Renderer(context)
+  OpenGLRenderer::OpenGLRenderer(const RenderContext &context) noexcept : Renderer(context)
   {
   }
 
@@ -46,6 +49,99 @@ namespace Krys::Gfx::OpenGL
     static_cast<OpenGLShaderStorageBuffer &>(*_phongMaterialBuffer).Bind(0);
     static_cast<OpenGLShaderStorageBuffer &>(*_textureTable).Bind(1);
     static_cast<OpenGLShaderStorageBuffer &>(*_lightBuffer).Bind(2);
+  }
+
+  void OpenGLRenderer::OnRenderPipelineChange() noexcept
+  {
+    _framebuffers.clear();
+
+    auto GetTexture = [&](const auto &attachment) -> GLuint
+    {
+      auto *renderTarget = _ctx.RenderTargetManager->GetRenderTarget(attachment.Target);
+      auto *texture = _ctx.TextureManager->GetTexture(renderTarget->GetTexture());
+      return static_cast<OpenGLTexture *>(texture)->GetNativeHandle();
+    };
+
+    auto &passes = _pipeline.GetPasses();
+
+    for (size_t i = 0; i < passes.size(); i++)
+    {
+      auto &pass = passes[i];
+
+      if (pass.HasNoAttachments())
+        continue;
+
+      if (pass.Name.empty())
+        pass.Name = "Pass" + std::to_string(i);
+
+      OpenGLFramebufferDescriptor descriptor;
+      descriptor.ColourAttachments.resize(pass.ColourAttachments.size());
+      std::transform(pass.ColourAttachments.begin(), pass.ColourAttachments.end(),
+                     descriptor.ColourAttachments.begin(), GetTexture);
+
+      if (pass.DepthAttachment.Target.IsValid())
+        descriptor.DepthAttachment = GetTexture(pass.DepthAttachment);
+      if (pass.StencilAttachment.Target.IsValid())
+        descriptor.StencilAttachment = GetTexture(pass.StencilAttachment);
+
+      _framebuffers.emplace(pass.Name, CreateUnique<OpenGLFramebuffer>(descriptor));
+    }
+  }
+
+  void OpenGLRenderer::BeforeRenderPass(const RenderPass &pass) noexcept
+  {
+    ::glClearColor(pass.ClearValues.Color.x, pass.ClearValues.Color.y, pass.ClearValues.Color.z,
+                   pass.ClearValues.Color.w);
+    ::glClearDepth(pass.ClearValues.Depth);
+    ::glClearStencil(pass.ClearValues.Stencil);
+
+    if (pass.HasNoAttachments())
+    {
+      auto *window = _ctx.WindowManager->GetCurrentWindow();
+
+      ::glBindFramebuffer(GL_FRAMEBUFFER, 0);
+      ::glViewport(0, 0, window->GetWidth(), window->GetHeight());
+
+      ::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+      return;
+    }
+
+    auto *framebuffer = _framebuffers.at(pass.Name).get();
+    framebuffer->Bind();
+    ::glViewport(0, 0, framebuffer->GetDescriptor().Width, framebuffer->GetDescriptor().Height);
+
+    GLenum clearFlags = 0;
+    // TODO: not really sure what to do if there are multiple colour attachments with different clear
+    // operations.
+    if (!pass.ColourAttachments.empty() && pass.ColourAttachments[0].LoadOperation == AttachmentLoadOp::Clear)
+      clearFlags |= GL_COLOR_BUFFER_BIT;
+
+    if (pass.DepthAttachment.Target.IsValid()
+        && pass.DepthAttachment.LoadOperation == AttachmentLoadOp::Clear)
+      clearFlags |= GL_DEPTH_BUFFER_BIT;
+
+    if (pass.StencilAttachment.Target.IsValid()
+        && pass.StencilAttachment.LoadOperation == AttachmentLoadOp::Clear)
+      clearFlags |= GL_STENCIL_BUFFER_BIT;
+
+    ::glClear(clearFlags);
+  }
+
+  void OpenGLRenderer::Render() noexcept
+  {
+    BeforeRender();
+
+    for (auto &pass : _pipeline.GetPasses())
+    {
+      BeforeRenderPass(pass);
+
+      auto *sceneGraph = _ctx.SceneGraphManager->GetScene(pass.SceneGraph);
+      Render(sceneGraph->GetRoot(), Transform {}, *pass.Camera);
+
+      AfterRenderPass(pass);
+    }
+
+    AfterRender();
   }
 
   void OpenGLRenderer::Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept

@@ -40,9 +40,10 @@ namespace Krys
       ctx->_renderTargetManager =
         CreateUnique<Gfx::RenderTargetManager>(ctx->_windowManager.get(), ctx->_textureManager.get());
 
-      Gfx::RenderContext renderContext {ctx->_graphicsContext.get(), ctx->_meshManager.get(),
-                                        ctx->_textureManager.get(), ctx->_materialManager.get(),
-                                        ctx->_lightManager.get()};
+      Gfx::RenderContext renderContext {ctx->_graphicsContext.get(),     ctx->_meshManager.get(),
+                                        ctx->_textureManager.get(),      ctx->_materialManager.get(),
+                                        ctx->_lightManager.get(),        ctx->_sceneGraphManager.get(),
+                                        ctx->_renderTargetManager.get(), ctx->_windowManager.get()};
       ctx->_renderer = CreateUnique<OpenGLRenderer>(renderContext);
     }
     return ctx;
