@@ -42,13 +42,6 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLRenderer::BeforeRender() noexcept
   {
-    UpdateMaterialBuffers();
-    UpdateTextureTable();
-    UpdateLightBuffer();
-
-    static_cast<OpenGLShaderStorageBuffer &>(*_phongMaterialBuffer).Bind(0);
-    static_cast<OpenGLShaderStorageBuffer &>(*_textureTable).Bind(1);
-    static_cast<OpenGLShaderStorageBuffer &>(*_lightBuffer).Bind(2);
   }
 
   void OpenGLRenderer::OnRenderPipelineChange() noexcept
@@ -86,6 +79,14 @@ namespace Krys::Gfx::OpenGL
 
       _framebuffers.emplace(pass.Name, CreateUnique<OpenGLFramebuffer>(descriptor));
     }
+
+    UpdateMaterialBuffers();
+    UpdateTextureTable();
+    UpdateLightBuffer();
+
+    static_cast<OpenGLShaderStorageBuffer &>(*_phongMaterialBuffer).Bind(0);
+    static_cast<OpenGLShaderStorageBuffer &>(*_textureTable).Bind(1);
+    static_cast<OpenGLShaderStorageBuffer &>(*_lightBuffer).Bind(2);
   }
 
   void OpenGLRenderer::BeforeRenderPass(const RenderPass &pass) noexcept
@@ -125,6 +126,10 @@ namespace Krys::Gfx::OpenGL
       clearFlags |= GL_STENCIL_BUFFER_BIT;
 
     ::glClear(clearFlags);
+  }
+
+  void OpenGLRenderer::AfterRenderPass(const RenderPass &) noexcept
+  {
   }
 
   void OpenGLRenderer::Render() noexcept

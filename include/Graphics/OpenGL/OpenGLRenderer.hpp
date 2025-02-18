@@ -40,6 +40,7 @@ namespace Krys::Gfx::OpenGL
     void Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept;
 
     void BeforeRenderPass(const RenderPass &pass) noexcept override;
+    void AfterRenderPass(const RenderPass &pass) noexcept override;
 
   private:
     ShaderStorageBufferHandle _phongMaterialBufferHandle {}, _textureTableHandle {}, _lightBufferHandle {};

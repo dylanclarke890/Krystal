@@ -7,6 +7,8 @@ namespace Krys::Gfx::OpenGL
   {
     ::glCreateFramebuffers(1, &_framebuffer);
 
+    ::glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
+
     for (const auto &texture : _descriptor.ColourAttachments)
       ::glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
@@ -26,6 +28,8 @@ namespace Krys::Gfx::OpenGL
 
     KRYS_ASSERT(::glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
                 "Framebuffer is incomplete");
+
+    ::glBindFramebuffer(GL_FRAMEBUFFER, 0);
   }
 
   OpenGLFramebuffer::~OpenGLFramebuffer() noexcept

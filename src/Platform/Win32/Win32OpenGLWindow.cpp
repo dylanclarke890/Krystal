@@ -101,7 +101,7 @@ namespace Krys::Platform
     // ::ClipCursor(&GET_WINDOW_DIMENSIONS);
 
     // ensure mouse visibility reference count is 0 (mouse is hidden)
-    while (::ShowCursor(FALSE) >= 0)
+    while (::ShowCursor(FALSE) > 0)
     {
     }
 
