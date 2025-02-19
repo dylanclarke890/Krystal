@@ -2,22 +2,25 @@
 [INFO ]: Adjusted window dimensions: 1936 x 1119
 [INFO ]: Timer precision range - min: 1ms, max: 1000000ms
 [INFO ]: Camera created.
-[INFO ]: PathExists took 0.079 ms.
-[INFO ]: IO::LoadImage took 564.433 ms.
+[INFO ]: PathExists took 0.123 ms.
+[INFO ]: IO::LoadImage took 883.825 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'models/backpack/diffuse.jpg' into memory (4096x4096).
-[INFO ]: PathExists took 0.335 ms.
-[INFO ]: IO::LoadImage took 542.566 ms.
+[INFO ]: PathExists took 0.124 ms.
+[INFO ]: IO::LoadImage took 631.861 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (2 references).
 [INFO ]: TextureManager: Loaded 'models/backpack/specular.jpg' into memory (4096x4096).
-[INFO ]: PathExists took 0.184 ms.
-[INFO ]: ReadFileText took 0.167 ms.
-[INFO ]: PathExists took 0.058 ms.
-[INFO ]: ReadFileText took 0.325 ms.
+[INFO ]: PathExists took 0.117 ms.
+[INFO ]: ReadFileText took 0.185 ms.
+[INFO ]: PathExists took 0.066 ms.
+[INFO ]: ReadFileText took 0.549 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (3 references).
 [INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
 [INFO ]: TextureManager: Loaded sampler from cache (4 references).
 [INFO ]: TextureManager: Created 'FlatColour_Colour(r: 0, g: 0, b: 0, a: 1)' (1x1).
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 4 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 5 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
@@ -475,4 +478,56 @@
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 157 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
- - T
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 158 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 159 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 160 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 161 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: ModelManager::LoadModel (models/backpack/backpack.obj) took 2087.049 ms.
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: TextureManager: Loaded sampler from cache (5 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to NONE, usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: TextureManager: Loaded sampler from cache (6 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded sampler from cache (7 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded sampler from cache (8 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded sampler from cache (9 references).
+[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 0, g: 0, b: 0, a: 1)' (1x1).
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to GL_SHADER_STORAGE_BUFFER (0), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to GL_SHADER_STORAGE_BUFFER (0), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to GL_SHADER_STORAGE_BUFFER (1), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (2), usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 3 (bound to GL_SHADER_STORAGE_BUFFER, and GL_SHADER_STORAGE_BUFFER (2), usage hint is GL_STATIC_DRAW) will use SYSTEM HEAP memory as the source for buffer object operations.
+ - Type: Other
+ - Source: API
+[INFO ]: Key pressed: 70

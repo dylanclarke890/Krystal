@@ -5,16 +5,12 @@
 struct Material
 {
   vec3 Ambient;
-  float Padding1;
-  vec3 Diffuse;
-  float Padding2;
-  vec3 Specular;
-  float Padding3;
-  vec3 Emissive;
-  float Padding4;
   int AmbientTexture;
+  vec3 Diffuse;
   int DiffuseTexture;
+  vec3 Specular;
   int SpecularTexture;
+  vec3 Emissive;
   int EmissiveTexture;
   float Shininess;
   float Padding[3];
@@ -66,12 +62,12 @@ uniform mat3 u_Normal;
 uniform vec3 u_CameraPosition;
 uniform int u_LightCount;
 
-layout(std430, binding = 0) buffer MaterialBuffer
+layout(std140, binding = 0) readonly buffer MaterialBuffer
 {
   Material u_Materials[];
 };
 
-layout(std430, binding = 1) buffer TextureTable
+layout(std140, binding = 1) buffer TextureTable
 {
   sampler2D u_Textures[];
 };
