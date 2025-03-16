@@ -1,0 +1,5 @@
+P1
+# Test: 8x8 ascii .pbm file
+# Begins and ends with a single black pixel.
+8 8
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1

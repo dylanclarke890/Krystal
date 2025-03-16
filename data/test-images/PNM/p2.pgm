@@ -1,0 +1,5 @@
+P2
+# Test: 8x8 ascii .pgm file
+# Starts with a black pixel followed by a gray pixel, ends with a gray pixel followed by a black pixel.
+8 8 12
+12 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 12
