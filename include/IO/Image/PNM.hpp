@@ -16,7 +16,7 @@ namespace Krys::IO
     PGMA,
     PGMB,
     PPMA,
-    PPMB
+    PPMB,
   };
 
   struct PNMImage
@@ -45,7 +45,7 @@ namespace Krys::IO
     ///          - PGMB: Portable Graymap (Binary)
     ///          - PPMA: Portable Pixmap (ASCII)
     ///          - PPMB: Portable Pixmap (Binary)
-    Unique<PNMImage> Load(const string &path) noexcept
+    NO_DISCARD Unique<PNMImage> Load(const string &path) noexcept
     {
       FileReader reader(path);
       reader.Open(true);
@@ -146,7 +146,9 @@ namespace Krys::IO
         {
           return nullptr;
         }
-        result->Data.push_back(static_cast<byte>(value));
+
+        // In PBM, 1 is black and 0 is white
+        result->Data.push_back(value ? byte {0} : byte {255});
       }
 
       return result;
@@ -176,7 +178,8 @@ namespace Krys::IO
       BitReader<Endian::Type::Big, Endian::Type::System> bitReader(&data);
       for (uint32 i = 0; i < result->Width * result->Height; i++)
       {
-        result->Data.push_back(bitReader.ReadBit() ? byte {255} : byte {0});
+        // In PBM, 1 is black and 0 is white
+        result->Data.push_back(bitReader.ReadBit() ? byte {0} : byte {255});
       }
 
       return result;
