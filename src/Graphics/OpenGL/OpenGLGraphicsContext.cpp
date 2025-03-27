@@ -90,7 +90,7 @@ namespace Krys::Gfx::OpenGL
     LoadDeviceCapabilities(_deviceCapabilities);
 
     ::glEnable(GL_DEPTH_TEST);
-    ::glEnable(GL_CULL_FACE);
+    // ::glEnable(GL_CULL_FACE);
   }
 
   void OpenGLGraphicsContext::SetViewport(const Vec4ui &viewport) noexcept

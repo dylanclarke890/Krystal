@@ -11,7 +11,7 @@
 
 namespace Krys::IO
 {
-  template <Endian::Type TSource, Endian::Type TDestination>
+  template <Endian::Type TSource, Endian::Type TDestination = Endian::Type::System>
   class BitReader
   {
     static constexpr size_t BitsetSize = 8 * sizeof(byte);
@@ -24,6 +24,15 @@ namespace Krys::IO
     }
 
     ~BitReader() noexcept = default;
+
+    void SetBuffer(const List<byte> *buffer) noexcept
+    {
+      KRYS_ASSERT(buffer != nullptr, "Buffer cannot be null.");
+      _buffer = buffer;
+      _bitIndex = 0;
+      _byteIndex = 0;
+      _currentByte = 0;
+    }
 
     NO_DISCARD bool ReadBit() noexcept
     {

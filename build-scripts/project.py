@@ -85,14 +85,13 @@ class Project:
     self.ensure_build_dirs_exist()
 
     source_files: str = self.get_source_files()
-    if not source_files:
-      return 0
        
     setup_build_environment()
     env: dict[str, str] = os.environ.copy()
 
-    returncode: int = self.compile_translation_units(source_files, env)
-    print("Error occurred during compilation." if returncode else "Compiled successfully.")
+    if source_files:
+      returncode: int = self.compile_translation_units(source_files, env)
+      print("Error occurred during compilation." if returncode else "Compiled successfully.")
 
     returncode = self.link(env)
     print("Error occurred during linking." if returncode else "Linked successfully.")

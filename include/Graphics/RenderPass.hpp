@@ -11,9 +11,9 @@ namespace Krys::Gfx
 {
   struct ClearValues
   {
-    Vec4 Color = Vec4(0.0f, 0.0f, 0.0f, 1.0f); // Default: Black
-    float Depth = 1.0f;                        // Default: Maximum depth (far plane)
-    uint32 Stencil = 0;                        // Default: Zero
+    Vec4 Color = Vec4(0.f, 0.f, 0.f, 1.f);
+    float Depth = 1.0f;                      
+    uint32 Stencil = 0;                  
   };
 
   struct RenderPass

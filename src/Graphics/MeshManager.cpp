@@ -10,33 +10,55 @@ namespace Krys::Impl
   static std::pair<List<Gfx::VertexData>, List<uint32>> GetCubeData(const Gfx::Colour &colour) noexcept
   {
     List<Gfx::VertexData> vertices {
-      Gfx::VertexData {{1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, colour, {0.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, colour, {1.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, -1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, colour, {1.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, -1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, colour, {0.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, -1.0f, -1.0f}, {0.0f, -1.0f, 0.0f}, colour, {0.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, -1.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, colour, {1.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, -1.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, colour, {1.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, -1.0f, -1.0f}, {0.0f, -1.0f, 0.0f}, colour, {0.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, -1.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}, colour, {0.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, -1.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, colour, {1.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, 1.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, colour, {1.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, 1.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}, colour, {0.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, 1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, colour, {0.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, 1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, colour, {1.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, colour, {1.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, colour, {0.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, 1.0f, -1.0f}, {1.0f, 0.0f, 0.0f}, colour, {0.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, 1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, colour, {1.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, -1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, colour, {1.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, -1.0f, -1.0f}, {1.0f, 0.0f, 0.0f}, colour, {0.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, 1.0f, -1.0f}, {0.0f, 1.0f, 0.0f}, colour, {0.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{-1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, colour, {1.0f, 0.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, colour, {1.0f, 1.0f, 0.0f}},
-      Gfx::VertexData {{1.0f, 1.0f, -1.0f}, {0.0f, 1.0f, 0.0f}, colour, {0.0f, 1.0f, 0.0f}}};
+      // Front face
+      Gfx::VertexData {{1.0f, 1.0f, 1.0f}, {0.f, 0.f, 1.f}, colour, {1.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, 1.0f, 1.0f}, {0.f, 0.f, 1.f}, colour, {0.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, -1.0f, 1.0f}, {0.f, 0.f, 1.f}, colour, {0.0f, 0.0f, 0.f}},
+      Gfx::VertexData {{1.0f, -1.0f, 1.0f}, {0.f, 0.f, 1.f}, colour, {1.0f, 0.0f, 0.f}},
 
-    List<uint32> indices {0,  1,  2,  0,  2,  3,  4,  5,  6,  4,  6,  7,  8,  9,  10, 8,  10, 11,
-                          12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23};
+      // Back face
+      Gfx::VertexData {{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, colour, {1.0f, 0.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, colour, {0.0f, 0.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, 1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, colour, {0.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{1.0f, 1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, colour, {1.0f, 1.0f, 0.f}},
+
+      // Top face
+      Gfx::VertexData {{1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, colour, {1.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, colour, {0.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, 1.0f, -1.0f}, {0.0f, 1.0f, 0.0f}, colour, {0.0f, 0.0f, 0.f}},
+      Gfx::VertexData {{1.0f, 1.0f, -1.0f}, {0.0f, 1.0f, 0.0f}, colour, {1.0f, 0.0f, 0.f}},
+
+      // Bottom face
+      Gfx::VertexData {{1.0f, -1.0f, -1.0f}, {0.0f, -1.0f, 0.0f}, colour, {1.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, -1.0f, -1.0f}, {0.0f, -1.0f, 0.0f}, colour, {0.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, -1.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, colour, {0.0f, 0.0f, 0.f}},
+      Gfx::VertexData {{1.0f, -1.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, colour, {1.0f, 0.0f, 0.f}},
+
+      // Right face
+      Gfx::VertexData {{1.0f, 1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, colour, {1.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{1.0f, -1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, colour, {0.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{1.0f, -1.0f, -1.0f}, {1.0f, 0.0f, 0.0f}, colour, {0.0f, 0.0f, 0.f}},
+      Gfx::VertexData {{1.0f, 1.0f, -1.0f}, {1.0f, 0.0f, 0.0f}, colour, {1.0f, 0.0f, 0.f}},
+
+      // Left face
+      Gfx::VertexData {{-1.0f, 1.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, colour, {1.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, -1.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, colour, {0.0f, 1.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, -1.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}, colour, {0.0f, 0.0f, 0.f}},
+      Gfx::VertexData {{-1.0f, 1.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}, colour, {1.0f, 0.0f, 0.f}},
+    };
+
+    List<uint32> indices {// Front face
+                          0, 1, 2, 0, 2, 3,
+                          // Back face
+                          4, 5, 6, 4, 6, 7,
+                          // Top face
+                          8, 9, 10, 8, 10, 11,
+                          // Bottom face
+                          12, 13, 14, 12, 14, 15,
+                          // Right face
+                          16, 17, 18, 16, 18, 19,
+                          // Left face
+                          20, 21, 22, 20, 22, 23};
 
     return {vertices, indices};
   }
