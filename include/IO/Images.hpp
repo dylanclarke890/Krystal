@@ -87,20 +87,20 @@ namespace Krys::IO
     if (!IO::PathExists(path))
       return Unexpected<string>("File does not exist");
 
-    if (path.ends_with(".bmp"))
-    {
-      IO::BMP bmp;
-      auto image = bmp.Load(path);
-      if (!image)
-        return Unexpected<string>("Failed to load BMP image");
+    // if (path.ends_with(".bmp"))
+    // {
+    //   IO::BMP bmp;
+    //   auto image = bmp.Load(path);
+    //   if (!image)
+    //     return Unexpected<string>("Failed to load BMP image");
 
-      Image result;
-      result.Width = image->Width;
-      result.Height = image->Height;
-      result.Channels = image->Channels;
-      result.Data = std::move(image->Data);
-      return result;
-    }
+    // Image result;
+    // result.Width = image->Width;
+    // result.Height = image->Height;
+    // result.Channels = image->Channels;
+    // result.Data = std::move(image->Data);
+    // return result;
+    // }
 
     stbi_set_flip_vertically_on_load(Settings::FlipImageVerticallyOnLoad);
 
