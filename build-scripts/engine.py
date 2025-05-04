@@ -13,17 +13,19 @@ def get_engine_project():
     "K:/include/",
     f"{THIRD_PARTY_ROOT}Glad/include",
     f"{THIRD_PARTY_ROOT}stb",
-    f"{THIRD_PARTY_ROOT}rapidobj/"
+    f"{THIRD_PARTY_ROOT}rapidobj/",
+    f"{THIRD_PARTY_ROOT}freetype/include",
   ]
   code.build_output_dir = "K:/build/"
   code.build_object_output_dir = code.build_output_dir + "obj/"
   code.disabled_warnings = disabled_warnings
   code.compiler_settings = compiler_settings
   code.ignore_includes = ignore_includes
+  code.linked_libraries = ["freetype.lib"]
   code.defines = defines
   code.ignore_files = []
   code.linker_settings = linker_settings
-  code.linker_settings.extend([f"OUT:{code.build_output_dir}Krystal.lib"])
+  code.linker_settings.extend([f"OUT:{code.build_output_dir}Krystal.lib", f"LIBPATH:\"{THIRD_PARTY_ROOT}freetype\""])
   code.custom_source_files = {
     "Core": ["Core/**/*.cpp"],
     "Debug": ["Debug/**/*.cpp"],
