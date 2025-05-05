@@ -223,7 +223,7 @@ namespace Krys::Gfx::OpenGL
 
         phongBufferWriter.Seek(index * sizeof(PhongMaterialData));
         PhongMaterialData data;
-        memset(&data, 0, sizeof(PhongMaterialData));
+        memset(reinterpret_cast<void *>(&data), 0, sizeof(PhongMaterialData));
 
         KRYS_ASSERT(phong.GetAmbientMap().IsValid(), "Ambient map is invalid.");
         KRYS_ASSERT(phong.GetDiffuseMap().IsValid(), "Diffuse map is invalid.");
@@ -255,12 +255,6 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLRenderer::UpdateTextureTable() noexcept
   {
-    // TODO: don't hack it like this
-    static bool firstTime = true;
-    if (!firstTime)
-      return;
-    firstTime = false;
-
     BufferWriter textureTableWriter(*_textureTable);
     List<TextureWithIndex> textures {};
 

@@ -1,38 +1,37 @@
+[INFO ]: FreeType library initialized successfully
 [INFO ]: Creating window with dimensions: 1920 x 1080
 [INFO ]: Adjusted window dimensions: 1936 x 1119
 [INFO ]: Timer precision range - min: 1ms, max: 1000000ms
 [INFO ]: Camera created.
-[INFO ]: PathExists took 0.169 ms.
-[INFO ]: PathExists took 0.135 ms.
-[DEBUG]: Row size: 4
+[INFO ]: FreeType face created successfully: fonts/arial.ttf
+[INFO ]: TextureManager: Created new sampler.
+[INFO ]: TextureManager: Created 'fonts/arial.ttf_A' (34x35).
+[INFO ]: FontManager::LoadFont took 11.173 ms.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 4 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 5 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: PathExists took 0.192 ms.
-[INFO ]: PathExists took 0.134 ms.
-[INFO ]: PathExists took 0.139 ms.
-[DEBUG]: Row size: 40
-[INFO ]: IO::LoadImage took 15.674 ms.
+[INFO ]: PathExists took 0.262 ms.
+[INFO ]: IO::LoadImage took 12.778 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'test-images/BMP/valid/1bpp-320x240.bmp' into memory (320x240).
-[INFO ]: PathExists took 0.107 ms.
-[INFO ]: ReadFileText took 0.312 ms.
-[INFO ]: PathExists took 0.074 ms.
-[INFO ]: ReadFileText took 0.426 ms.
+[INFO ]: PathExists took 0.094 ms.
+[INFO ]: ReadFileText took 10.170 ms.
+[INFO ]: PathExists took 0.084 ms.
+[INFO ]: ReadFileText took 0.604 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (2 references).
 [INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
 [INFO ]: TextureManager: Loaded sampler from cache (3 references).
-[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' from cache (2 references).
 [INFO ]: TextureManager: Loaded sampler from cache (4 references).
 [INFO ]: TextureManager: Created 'FlatColour_Colour(r: 0, g: 0, b: 0, a: 1)' (1x1).
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: TextureManager: Loaded sampler from cache (5 references).
-[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' from cache (3 references).
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 2 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
@@ -40,13 +39,13 @@
  - Type: Other
  - Source: API
 [INFO ]: TextureManager: Loaded sampler from cache (6 references).
-[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' from cache (4 references).
 [INFO ]: TextureManager: Loaded sampler from cache (7 references).
-[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' from cache (5 references).
 [INFO ]: TextureManager: Loaded sampler from cache (8 references).
-[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' from cache (6 references).
 [INFO ]: TextureManager: Loaded sampler from cache (9 references).
-[INFO ]: TextureManager: Created 'FlatColour_Colour(r: 0, g: 0, b: 0, a: 1)' (1x1).
+[INFO ]: TextureManager: Loaded 'FlatColour_Colour(r: 0, g: 0, b: 0, a: 1)' from cache (2 references).
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 1 (bound to GL_SHADER_STORAGE_BUFFER (0), usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API

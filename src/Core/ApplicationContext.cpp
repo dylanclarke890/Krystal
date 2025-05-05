@@ -68,6 +68,11 @@ namespace Krys
     return _renderTargetManager.get();
   }
 
+  Ptr<Gfx::FontManager> ApplicationContext::GetFontManager() const noexcept
+  {
+    return _fontManager.get();
+  }
+
   const ApplicationSettings &ApplicationContext::GetSettings() const noexcept
   {
     return _settings;

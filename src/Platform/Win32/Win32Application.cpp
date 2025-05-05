@@ -45,6 +45,7 @@ namespace Krys
                                         ctx->_lightManager.get(),        ctx->_sceneGraphManager.get(),
                                         ctx->_renderTargetManager.get(), ctx->_windowManager.get()};
       ctx->_renderer = CreateUnique<OpenGLRenderer>(renderContext);
+      ctx->_fontManager = CreateUnique<Gfx::FontManager>(ctx->_textureManager.get());
     }
     return ctx;
   }

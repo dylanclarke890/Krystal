@@ -17,6 +17,7 @@
 #include "Graphics/RenderTargets/RenderTargetManager.hpp"
 #include "Graphics/Scene/SceneGraphManager.hpp"
 #include "Graphics/Textures/TextureManager.hpp"
+#include "Graphics/Fonts/FontManager.hpp"
 #include "IO/Input/InputManager.hpp"
 
 namespace Krys
@@ -71,6 +72,9 @@ namespace Krys
     /// @brief Get the current 'RenderTargetManager'.
     Ptr<Gfx::RenderTargetManager> GetRenderTargetManager() const noexcept;
 
+    /// @brief Get the current 'FontManager'.
+    Ptr<Gfx::FontManager> GetFontManager() const noexcept;
+
     /// @brief Get the command line arguments.
     const List<string> &GetCLIArgs() const noexcept;
 
@@ -90,6 +94,7 @@ namespace Krys
     Unique<Gfx::LightManager> _lightManager;
     Unique<Gfx::ModelManager> _modelManager;
     Unique<Gfx::RenderTargetManager> _renderTargetManager;
+    Unique<Gfx::FontManager> _fontManager;
     
     ApplicationSettings _settings;
 

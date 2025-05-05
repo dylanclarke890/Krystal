@@ -85,9 +85,19 @@ namespace Krys::Gfx
     {
       static uint32 counter = 0;
       std::stringstream strm;
-      strm << "T" << counter;
+      strm << "Texture_" << counter;
       counter++;
       desc.Name = strm.str();
+    }
+
+    if (_loadedTextures.contains(desc.Name))
+    {
+      auto &loaded = _loadedTextures[desc.Name];
+      loaded.ReferenceCount++;
+      Logger::Info("TextureManager: Loaded '{0}' from cache ({1} references).", desc.Name,
+                   loaded.ReferenceCount);
+
+      return loaded.Resource->GetHandle();
     }
 
     if (!desc.Sampler.IsValid())

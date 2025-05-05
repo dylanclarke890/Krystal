@@ -113,6 +113,7 @@ namespace Krys::Impl
   HANDLE_IMPL(SceneGraph);
   HANDLE_IMPL(Material);
   HANDLE_IMPL(RenderTarget);
+  HANDLE_IMPL(Font);
 
 #undef HANDLE_IMPL
 }
@@ -176,6 +177,7 @@ namespace Krys::Gfx
   DECLARE_HANDLE(SceneGraph);
   DECLARE_HANDLE(Material);
   DECLARE_HANDLE(RenderTarget);
+  DECLARE_HANDLE(Font);
 
 #undef DECLARE_HANDLE
 }
