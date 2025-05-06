@@ -46,7 +46,7 @@ namespace Krys::Gfx
     textureDescriptor.Name = path + "_A";
     textureDescriptor.Width = face->glyph->bitmap.width;
     textureDescriptor.Height = face->glyph->bitmap.rows;
-    textureDescriptor.Channels = 4;
+    textureDescriptor.Channels = 3;
 
     SamplerDescriptor samplerDescriptor;
     samplerDescriptor.MinFilter = SamplerFilter::Linear;
@@ -84,6 +84,8 @@ namespace Krys::Gfx
 
     _fonts.emplace(handle, std::move(font));
     _fontNames.emplace(path, handle);
+
+    FT_Done_Face(face);
 
     return handle;
   }
