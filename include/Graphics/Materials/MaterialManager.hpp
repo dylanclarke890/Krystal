@@ -106,7 +106,7 @@ namespace Krys::Gfx
         auto vertexShader =
           _ctx->CreateShader(ShaderStage::Vertex, IO::ReadFileText("shaders/phong.vert"));
         auto fragmentShader =
-          _ctx->CreateShader(ShaderStage::Fragment, IO::ReadFileText("shaders/phong.frag"));
+          _ctx->CreateShader(ShaderStage::Fragment, IO::ReadFileText("shaders/phong-bindless.frag"));
 
         handle = _ctx->CreateProgram(vertexShader, fragmentShader);
       }

@@ -1,6 +1,6 @@
 #include "Graphics/OpenGL/OpenGLTextureManager.hpp"
+#include "Graphics/OpenGL/OpenGLBindlessTexture.hpp"
 #include "Graphics/OpenGL/OpenGLSampler.hpp"
-#include "Graphics/OpenGL/OpenGLTexture.hpp"
 
 namespace Krys::Gfx::OpenGL
 {
@@ -21,7 +21,8 @@ namespace Krys::Gfx::OpenGL
     auto *sampler = GetSampler(descriptor.Sampler);
     KRYS_ASSERT(sampler != nullptr, "Sampler not found");
 
-    return CreateUnique<OpenGLTexture>(handle, descriptor, static_cast<OpenGLSampler &>(*sampler), data);
+    return CreateUnique<OpenGLBindlessTexture>(handle, descriptor, static_cast<OpenGLSampler &>(*sampler),
+                                               data);
   }
 
 }

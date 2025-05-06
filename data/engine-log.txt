@@ -6,21 +6,21 @@
 [INFO ]: FreeType face created successfully: fonts/arial.ttf
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Created 'fonts/arial.ttf_A' (34x35).
-[INFO ]: FontManager::LoadFont took 11.173 ms.
+[INFO ]: FontManager::LoadFont took 2.125 ms.
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 4 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
 [INFO ]: OPENGL (131185): Buffer detailed info: Buffer object 5 (bound to NONE, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations.
  - Type: Other
  - Source: API
-[INFO ]: PathExists took 0.262 ms.
-[INFO ]: IO::LoadImage took 12.778 ms.
+[INFO ]: PathExists took 0.157 ms.
+[INFO ]: IO::LoadImage took 12.441 ms.
 [INFO ]: TextureManager: Created new sampler.
 [INFO ]: TextureManager: Loaded 'test-images/BMP/valid/1bpp-320x240.bmp' into memory (320x240).
-[INFO ]: PathExists took 0.094 ms.
-[INFO ]: ReadFileText took 10.170 ms.
-[INFO ]: PathExists took 0.084 ms.
-[INFO ]: ReadFileText took 0.604 ms.
+[INFO ]: PathExists took 0.249 ms.
+[INFO ]: ReadFileText took 0.404 ms.
+[INFO ]: PathExists took 0.073 ms.
+[INFO ]: ReadFileText took 0.391 ms.
 [INFO ]: TextureManager: Loaded sampler from cache (2 references).
 [INFO ]: TextureManager: Created 'FlatColour_Colour(r: 1, g: 1, b: 1, a: 1)' (1x1).
 [INFO ]: TextureManager: Loaded sampler from cache (3 references).

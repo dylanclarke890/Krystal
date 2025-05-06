@@ -1,5 +1,7 @@
 #version 450 core
 
+#extension GL_ARB_bindless_texture : require
+
 struct Material
 {
   vec3 Ambient;
@@ -65,8 +67,10 @@ layout(std140, binding = 0) readonly buffer MaterialBuffer
   Material u_Materials[];
 };
 
-#define MAX_TEXTURES 32
-uniform sampler2D u_Textures[MAX_TEXTURES];
+layout(std140, binding = 1) buffer TextureTable
+{
+  sampler2D u_Textures[];
+};
 
 layout(std430, binding = 2) buffer LightBuffer
 {
@@ -137,7 +141,7 @@ Material GetMaterial(int index)
 
 vec4 GetTextureSample(int index, vec4 coords, vec4 defaultSample)
 {
-  if (index >= 0 && index < MAX_TEXTURES)
+  if (index >= 0 && index < u_Textures.length())
   {
     return texture(u_Textures[index], coords.xy);
   }

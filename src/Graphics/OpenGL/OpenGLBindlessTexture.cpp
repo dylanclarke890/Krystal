@@ -1,4 +1,4 @@
-#include "Graphics/OpenGL/OpenGLTexture.hpp"
+#include "Graphics/OpenGL/OpenGLBindlessTexture.hpp"
 #include "Graphics/OpenGL/OpenGLSampler.hpp"
 
 namespace Krys::Gfx::OpenGL
@@ -89,25 +89,25 @@ namespace Krys::Gfx::OpenGL
     return handle;
   }
 
-  OpenGLTexture::OpenGLTexture(TextureHandle handle, const TextureDescriptor &descriptor,
-                               OpenGLSampler &sampler, const List<byte> &data) noexcept
+  OpenGLBindlessTexture::OpenGLBindlessTexture(TextureHandle handle, const TextureDescriptor &descriptor,
+                                               OpenGLSampler &sampler, const List<byte> &data) noexcept
       : Texture(handle, descriptor), _id(CreateTexture(descriptor, sampler.GetDescriptor(), data))
   {
     _bindlessHandle = CreateBindlessHandle(_id, sampler.GetNativeHandle());
   }
 
-  OpenGLTexture::~OpenGLTexture() noexcept
+  OpenGLBindlessTexture::~OpenGLBindlessTexture() noexcept
   {
     ::glMakeTextureHandleNonResidentARB(_bindlessHandle);
     ::glDeleteTextures(1, &_id);
   }
 
-  GLuint OpenGLTexture::GetNativeHandle() const noexcept
+  GLuint OpenGLBindlessTexture::GetNativeHandle() const noexcept
   {
     return _id;
   }
 
-  GLuint64 OpenGLTexture::GetNativeBindlessHandle() const noexcept
+  GLuint64 OpenGLBindlessTexture::GetNativeBindlessHandle() const noexcept
   {
     return _bindlessHandle;
   }

@@ -4,13 +4,13 @@
 #include "Graphics/Cameras/Camera.hpp"
 #include "Graphics/Lights/LightData.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
+#include "Graphics/OpenGL/OpenGLBindlessTexture.hpp"
 #include "Graphics/OpenGL/OpenGLBuffer.hpp"
 #include "Graphics/OpenGL/OpenGLFramebuffer.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
 #include "Graphics/OpenGL/OpenGLMesh.hpp"
 #include "Graphics/OpenGL/OpenGLMeshManager.hpp"
 #include "Graphics/OpenGL/OpenGLProgram.hpp"
-#include "Graphics/OpenGL/OpenGLTexture.hpp"
 #include "Graphics/OpenGL/OpenGLTextureManager.hpp"
 #include "Graphics/RenderTargets/RenderTargetManager.hpp"
 #include "Graphics/Scene/MaterialNode.hpp"
@@ -52,7 +52,7 @@ namespace Krys::Gfx::OpenGL
     {
       auto *renderTarget = _ctx.RenderTargetManager->GetRenderTarget(attachment.Target);
       auto *texture = _ctx.TextureManager->GetTexture(renderTarget->GetTexture());
-      return static_cast<OpenGLTexture *>(texture)->GetNativeHandle();
+      return static_cast<OpenGLBindlessTexture *>(texture)->GetNativeHandle();
     };
 
     auto &passes = _pipeline.GetPasses();
@@ -278,7 +278,7 @@ namespace Krys::Gfx::OpenGL
 
     for (auto &textureWithIndex : textures)
     {
-      const auto &tex = static_cast<const OpenGLTexture &>(*textureWithIndex.Texture);
+      const auto &tex = static_cast<const OpenGLBindlessTexture &>(*textureWithIndex.Texture);
       // TODO: we need to get the index differently once we add cubemaps.
       // Maybe we don't if we treat cubemaps separately here too.
       auto index = textureWithIndex.Index;
