@@ -27,7 +27,8 @@ namespace Krys::Gfx::OpenGL
     void SetClearColour(const Colour &colour) noexcept override;
 
   protected:
-    Unique<Program> CreateProgramImpl(ProgramHandle handle, ShaderHandle vertexShader, ShaderHandle fragmentShader) noexcept override;
+    Unique<Program> CreateProgramImpl(ProgramHandle handle, ShaderHandle vertexShader,
+                                      ShaderHandle fragmentShader) noexcept override;
 
     Unique<Shader> CreateShaderImpl(ShaderHandle handle, ShaderStage stage,
                                     const string &source) noexcept override;
@@ -35,5 +36,10 @@ namespace Krys::Gfx::OpenGL
     Unique<VertexBuffer> CreateVertexBufferImpl(VertexBufferHandle handle, uint32 size) noexcept override;
 
     Unique<IndexBuffer> CreateIndexBufferImpl(IndexBufferHandle handle, uint32 size) noexcept override;
+
+    Unique<UniformBuffer> CreateUniformBufferImpl(UniformBufferHandle handle, uint32 size) noexcept override;
+
+    Unique<ShaderStorageBuffer> CreateShaderStorageBufferImpl(ShaderStorageBufferHandle handle,
+                                                              uint32 size) noexcept override;
   };
 }

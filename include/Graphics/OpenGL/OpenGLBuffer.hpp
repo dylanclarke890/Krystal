@@ -52,6 +52,12 @@ namespace Krys::Gfx::OpenGL
       ::glBindBuffer(Target, 0);
     }
 
+    void Bind(uint32 index) noexcept
+    requires(Target == GL_UNIFORM_BUFFER || Target == GL_SHADER_STORAGE_BUFFER)
+    {
+      ::glBindBufferBase(Target, index, _id);
+    }
+
     NO_DISCARD GLuint GetNativeHandle() const noexcept
     {
       return _id;
@@ -63,5 +69,6 @@ namespace Krys::Gfx::OpenGL
 
   using OpenGLVertexBuffer = OpenGLBuffer<VertexBufferHandle, GL_ARRAY_BUFFER>;
   using OpenGLIndexBuffer = OpenGLBuffer<IndexBufferHandle, GL_ELEMENT_ARRAY_BUFFER>;
-  using OpenGLUniformBuffer = OpenGLBuffer<UniformHandle, GL_UNIFORM_BUFFER>;
+  using OpenGLUniformBuffer = OpenGLBuffer<UniformBufferHandle, GL_UNIFORM_BUFFER>;
+  using OpenGLShaderStorageBuffer = OpenGLBuffer<ShaderStorageBufferHandle, GL_SHADER_STORAGE_BUFFER>;
 }

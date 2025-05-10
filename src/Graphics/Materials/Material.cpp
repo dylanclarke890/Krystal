@@ -3,7 +3,7 @@
 
 namespace Krys::Gfx
 {
-  Material::Material(MaterialType type, MaterialHandle handle, ProgramHandle program) noexcept
+  Material::Material(MaterialHandle handle, ProgramHandle program, MaterialType type) noexcept
       : _handle(handle), _program(program), _type(type)
   {
   }
@@ -21,5 +21,15 @@ namespace Krys::Gfx
   MaterialType Material::GetType() const noexcept
   {
     return _type;
+  }
+
+  bool Material::IsDirty() const noexcept
+  {
+    return _isDirty;
+  }
+
+  void Material::ClearIsDirtyFlag() noexcept
+  {
+    _isDirty = false;
   }
 }

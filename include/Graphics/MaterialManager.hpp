@@ -3,16 +3,22 @@
 #include "Base/Attributes.hpp"
 #include "Base/Pointers.hpp"
 #include "Base/Types.hpp"
+#include "Graphics/Buffer.hpp"
 #include "Graphics/Handles.hpp"
 #include "Graphics/Materials/Material.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
 
 namespace Krys::Gfx
 {
+  class GraphicsContext;
+  class TextureManager;
+
   class MaterialManager
   {
   public:
-    MaterialManager() noexcept = default;
+    MaterialManager(Ptr<TextureManager> textureManager, Ptr<GraphicsContext> ctx) noexcept;
+
+    // TODO: free buffers on destruction/shutdown
     virtual ~MaterialManager() noexcept = default;
 
     /// @brief Creates a material.
@@ -50,8 +56,13 @@ namespace Krys::Gfx
     /// @return True if the material was found, false otherwise.
     NO_DISCARD bool DestroyMaterial(MaterialHandle handle) noexcept;
 
+    /// @brief Gets the materials.
+    NO_DISCARD MaterialHandleMap<Unique<Material>> &GetMaterials() noexcept;
+
   protected:
     MaterialHandleMap<Unique<Material>> _materials;
     MaterialHandleManager _materialHandles {};
+    Ptr<TextureManager> _textureManager {nullptr};
+    Ptr<GraphicsContext> _ctx {nullptr};
   };
 }

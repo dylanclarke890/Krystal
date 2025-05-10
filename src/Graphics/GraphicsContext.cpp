@@ -144,7 +144,15 @@ namespace Krys::Gfx
     return true;
   }
 
-  UniformBuffer *GraphicsContext::GetUniformBuffer(UniformHandle handle) noexcept
+  UniformBufferHandle GraphicsContext::CreateUniformBuffer(uint32 size) noexcept
+  {
+    auto handle = _uniformBufferHandles.Next();
+    auto buffer = CreateUniformBufferImpl(handle, size);
+    _uniformBuffers[handle] = std::move(buffer);
+    return handle;
+  }
+
+  UniformBuffer *GraphicsContext::GetUniformBuffer(UniformBufferHandle handle) noexcept
   {
     KRYS_ASSERT(handle.IsValid(), "Invalid uniform buffer handle");
     auto it = _uniformBuffers.find(handle);
@@ -153,6 +161,53 @@ namespace Krys::Gfx
       return nullptr;
 
     return it->second.get();
+  }
+
+  bool GraphicsContext::DestroyUniformBuffer(UniformBufferHandle handle) noexcept
+  {
+    KRYS_ASSERT(handle.IsValid(), "Invalid uniform buffer handle");
+    auto it = _uniformBuffers.find(handle);
+
+    if (it == _uniformBuffers.end())
+      return false;
+
+    _uniformBuffers.erase(it);
+    _uniformBufferHandles.Recycle(handle);
+
+    return true;
+  }
+
+  ShaderStorageBufferHandle GraphicsContext::CreateShaderStorageBuffer(uint32 size) noexcept
+  {
+    auto handle = _shaderStorageBufferHandles.Next();
+    auto buffer = CreateShaderStorageBufferImpl(handle, size);
+    _shaderStorageBuffers[handle] = std::move(buffer);
+    return handle;
+  }
+
+  ShaderStorageBuffer *GraphicsContext::GetShaderStorageBuffer(ShaderStorageBufferHandle handle) noexcept
+  {
+    KRYS_ASSERT(handle.IsValid(), "Invalid shader storage buffer handle");
+    auto it = _shaderStorageBuffers.find(handle);
+
+    if (it == _shaderStorageBuffers.end())
+      return nullptr;
+
+    return it->second.get();
+  }
+
+  bool GraphicsContext::DestroyShaderStorageBuffer(ShaderStorageBufferHandle handle) noexcept
+  {
+    KRYS_ASSERT(handle.IsValid(), "Invalid shader storage buffer handle");
+    auto it = _shaderStorageBuffers.find(handle);
+
+    if (it == _shaderStorageBuffers.end())
+      return false;
+
+    _shaderStorageBuffers.erase(it);
+    _shaderStorageBufferHandles.Recycle(handle);
+
+    return true;
   }
 
   void GraphicsContext::SetViewport(uint32 width, uint32 height) noexcept
@@ -168,5 +223,10 @@ namespace Krys::Gfx
   void GraphicsContext::SetViewport(const Window &window) noexcept
   {
     SetViewport({0u, 0u, window.GetWidth(), window.GetHeight()});
+  }
+
+  const DeviceCapabilities &GraphicsContext::GetDeviceCapabilities() const noexcept
+  {
+    return _deviceCapabilities;
   }
 }

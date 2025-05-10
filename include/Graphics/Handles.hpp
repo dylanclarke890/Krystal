@@ -12,7 +12,7 @@ namespace Krys::Impl
   class Handle
   {
   public:
-    using handle_t = uint16;
+    using handle_t = uint32;
     using tag_t = Tag;
 
     constexpr static handle_t InvalidHandle = std::numeric_limits<handle_t>::max();
@@ -105,7 +105,8 @@ namespace Krys::Impl
   HANDLE_IMPL(VertexLayout);
   HANDLE_IMPL(Program);
   HANDLE_IMPL(Shader);
-  HANDLE_IMPL(Uniform);
+  HANDLE_IMPL(UniformBuffer);
+  HANDLE_IMPL(ShaderStorageBuffer);
   HANDLE_IMPL(Mesh);
   HANDLE_IMPL(Texture);
   HANDLE_IMPL(Sampler);
@@ -142,7 +143,9 @@ namespace Krys::Gfx
         return handle;
       }
 
-      return handle_t(_nextId++);
+      auto next = _nextId;
+      _nextId++;
+      return handle_t(next);
     }
 
     void Recycle(handle_t handle) noexcept
@@ -168,7 +171,8 @@ namespace Krys::Gfx
   DECLARE_HANDLE(IndexBuffer);
   DECLARE_HANDLE(VertexLayout);
   DECLARE_HANDLE(VertexBuffer);
-  DECLARE_HANDLE(Uniform);
+  DECLARE_HANDLE(UniformBuffer);
+  DECLARE_HANDLE(ShaderStorageBuffer);
   DECLARE_HANDLE(Mesh);
   DECLARE_HANDLE(Texture);
   DECLARE_HANDLE(Sampler);

@@ -12,6 +12,8 @@ namespace Krys::Gfx
   public:
     virtual ~Renderer() noexcept = default;
 
+    virtual void Init() noexcept = 0;
+
     void Submit(const RenderCommand &command) noexcept;
     virtual void Execute() noexcept = 0;
 

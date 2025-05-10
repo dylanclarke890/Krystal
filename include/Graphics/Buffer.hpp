@@ -69,5 +69,6 @@ namespace Krys::Gfx
 
   using VertexBuffer = Buffer<VertexBufferHandle>;
   using IndexBuffer = Buffer<IndexBufferHandle>;
-  using UniformBuffer = Buffer<UniformHandle>;
+  using UniformBuffer = Buffer<UniformBufferHandle>;
+  using ShaderStorageBuffer = Buffer<ShaderStorageBufferHandle>;
 }

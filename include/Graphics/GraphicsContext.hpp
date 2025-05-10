@@ -4,6 +4,7 @@
 #include "Base/Pointers.hpp"
 #include "Graphics/Buffer.hpp"
 #include "Graphics/Colour.hpp"
+#include "Graphics/DeviceCapabilities.hpp"
 #include "Graphics/Handles.hpp"
 #include "Graphics/PrimitiveType.hpp"
 #include "Graphics/Program.hpp"
@@ -97,14 +98,39 @@ namespace Krys::Gfx
     /// @return True if the buffer was found, false otherwise.
     bool DestroyIndexBuffer(IndexBufferHandle handle) noexcept;
 
-    // UniformBufferHandle CreateUniformBuffer(uint32 size) noexcept;
-
     /// @brief Create a new uniform buffer.
+    /// @param size The size of the buffer.
+    /// @return A handle to the buffer.
+    UniformBufferHandle CreateUniformBuffer(uint32 size) noexcept;
+
+    /// @brief Get a uniform buffer from a handle.
     /// @param handle The handle of the buffer.
     /// @return The created uniform buffer.
-    UniformBuffer *GetUniformBuffer(UniformHandle handle) noexcept;
+    UniformBuffer *GetUniformBuffer(UniformBufferHandle handle) noexcept;
 
-    // bool DestroyUniformBuffer(UniformHandle handle) noexcept;
+    /// @brief Destroy a uniform buffer.
+    /// @param handle The handle of the buffer to destroy.
+    /// @return True if the buffer was found, false otherwise.
+    bool DestroyUniformBuffer(UniformBufferHandle handle) noexcept;
+
+#pragma region Shader Storage Buffers
+
+    /// @brief Create a new shader storage buffer.
+    /// @param size The size of the buffer.
+    /// @return A handle to the buffer.
+    ShaderStorageBufferHandle CreateShaderStorageBuffer(uint32 size) noexcept;
+
+    /// @brief Get a shader storage buffer from a handle.
+    /// @param handle The handle of the buffer.
+    /// @return The buffer if found, nullptr otherwise.
+    ShaderStorageBuffer *GetShaderStorageBuffer(ShaderStorageBufferHandle handle) noexcept;
+
+    /// @brief Destroy a shader storage buffer.
+    /// @param handle The handle of the buffer to destroy.
+    /// @return True if the buffer was found, false otherwise.
+    bool DestroyShaderStorageBuffer(ShaderStorageBufferHandle handle) noexcept;
+
+#pragma endregion Shader Storage Buffers
 
     /// @brief Set the viewport of the graphics context.
     /// @param width Width of the viewport.
@@ -144,6 +170,9 @@ namespace Krys::Gfx
     /// @param flags The buffers to clear.
     virtual void Clear(ClearBuffer flags) noexcept = 0;
 
+    /// @brief Get the device capabilities.
+    NO_DISCARD const DeviceCapabilities &GetDeviceCapabilities() const noexcept;
+
   protected:
     /// @brief Create a new shader.
     /// @param handle The handle of the shader.
@@ -173,6 +202,20 @@ namespace Krys::Gfx
     /// @return The created index buffer.
     virtual Unique<IndexBuffer> CreateIndexBufferImpl(IndexBufferHandle handle, uint32 size) noexcept = 0;
 
+    /// @brief Implementation-specific uniform buffer creation.
+    /// @param handle The handle of the buffer.
+    /// @param size The size of the buffer.
+    /// @return The created uniform buffer.
+    virtual Unique<UniformBuffer> CreateUniformBufferImpl(UniformBufferHandle handle,
+                                                          uint32 size) noexcept = 0;
+
+    /// @brief Implementation-specific shader storage buffer creation.
+    /// @param handle The handle of the buffer.
+    /// @param size The size of the buffer.
+    /// @return The created shader storage buffer.
+    virtual Unique<ShaderStorageBuffer> CreateShaderStorageBufferImpl(ShaderStorageBufferHandle handle,
+                                                                      uint32 size) noexcept = 0;
+
   protected:
     ShaderHandleMap<Unique<Shader>> _shaders {};
     ShaderHandleManager _shaderHandles {};
@@ -186,8 +229,13 @@ namespace Krys::Gfx
     IndexBufferHandleMap<Unique<IndexBuffer>> _indexBuffers {};
     IndexBufferHandleManager _indexBufferHandles {};
 
-    UniformHandleMap<Unique<UniformBuffer>> _uniformBuffers {};
-    UniformHandleManager _uniformBufferHandles {};
+    UniformBufferHandleMap<Unique<UniformBuffer>> _uniformBuffers {};
+    UniformBufferHandleManager _uniformBufferHandles {};
+
+    ShaderStorageBufferHandleMap<Unique<ShaderStorageBuffer>> _shaderStorageBuffers {};
+    ShaderStorageBufferHandleManager _shaderStorageBufferHandles {};
+
+    DeviceCapabilities _deviceCapabilities {};
 
     Colour _clearColour {0.0f, 0.0f, 0.0f, 1.0f};
   };

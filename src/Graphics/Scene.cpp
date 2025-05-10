@@ -9,7 +9,7 @@ namespace Krys::Gfx
     SetAmbientLight(Colours::Black);
   }
 
-  const string& Scene::GetName() const noexcept
+  const string &Scene::GetName() const noexcept
   {
     return _name;
   }
@@ -70,5 +70,10 @@ namespace Krys::Gfx
     }
 
     return false;
+  }
+
+  void Scene::SetCamera(Camera *camera) noexcept
+  {
+    _camera = camera;
   }
 }
