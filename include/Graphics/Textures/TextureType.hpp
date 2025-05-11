@@ -15,6 +15,11 @@ namespace Krys::Gfx
     /// that you sample in your shaders, like diffuse, albedo, or normal maps.
     Image,
 
+    /// @brief A texture that stores font data such as glyphs and kerning information.
+    /// @note This type is used for rendering text in your application. It is not meant for textures that
+    /// you sample in your shaders.
+    Font,
+
     /// @brief A render target that stores colour data.
     /// @note This type is used for off-screen rendering, post-processing, and other advanced rendering
     /// techniques. It is not meant for textures that you sample in your shaders.

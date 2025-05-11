@@ -15,7 +15,6 @@ namespace Krys::Gfx
     int32 Advance;
     float OffsetX;
     float OffsetY;
-
   };
 
   class FontManager;
@@ -23,6 +22,7 @@ namespace Krys::Gfx
   class Font
   {
     friend class FontManager;
+
   public:
     Font(const string &path, FontHandle handle) noexcept : _path(path), _handle(handle)
     {
@@ -38,6 +38,11 @@ namespace Krys::Gfx
     NO_DISCARD FontHandle GetHandle() const noexcept
     {
       return _handle;
+    }
+
+    NO_DISCARD const Map<string, Glyph> &GetGlyphs() const noexcept
+    {
+      return _glyphs;
     }
 
   private:

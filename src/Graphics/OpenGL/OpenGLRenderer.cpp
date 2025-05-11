@@ -80,8 +80,8 @@ namespace Krys::Gfx::OpenGL
       _framebuffers.emplace(pass.Name, CreateUnique<OpenGLFramebuffer>(descriptor));
     }
 
-    UpdateMaterialBuffers();
     UpdateTextureTable();
+    UpdateMaterialBuffers();
     UpdateLightBuffer();
 
     static_cast<OpenGLShaderStorageBuffer &>(*_phongMaterialBuffer).Bind(0);
@@ -170,7 +170,7 @@ namespace Krys::Gfx::OpenGL
       {
         auto &meshNode = *static_cast<MeshNode *>(node);
         auto &mesh = *_ctx.MeshManager->GetMesh(meshNode.GetMesh());
-        auto &material = *_ctx.MaterialManager->GetMaterial(activeMaterial);
+        auto &material = *static_cast<PhongMaterial *>(_ctx.MaterialManager->GetMaterial(activeMaterial));
 
         // Resetting it back for the next mesh.
         activeMaterial = _ctx.MaterialManager->GetDefaultPhongMaterial();
@@ -192,8 +192,7 @@ namespace Krys::Gfx::OpenGL
         SetUniform(program.GetNativeHandle(), "u_View", camera.GetView());
         SetUniform(program.GetNativeHandle(), "u_Projection", camera.GetProjection());
         SetUniform(program.GetNativeHandle(), "u_CameraPosition", camera.GetPosition());
-        SetUniform<int>(program.GetNativeHandle(), "u_LightCount",
-                        static_cast<int>(_ctx.LightManager->GetLights().size()));
+        SetUniform(program.GetNativeHandle(), "u_LightCount", (int)_ctx.LightManager->GetLights().size());
 
         mesh.Bind();
         if (mesh.IsIndexed())
@@ -216,7 +215,6 @@ namespace Krys::Gfx::OpenGL
 
       if (material->GetType() == MaterialType::Phong)
       {
-        // TODO: we need to get the index differently once we have cubemaps.
         // TODO: we need to get the index differently once we add PBR materials.
         auto index = handle.Id();
         auto &phong = static_cast<PhongMaterial &>(*material);
@@ -234,10 +232,10 @@ namespace Krys::Gfx::OpenGL
         data.Diffuse = Colour::ToVec3(phong.GetDiffuse());
         data.Specular = Colour::ToVec3(phong.GetSpecular());
         data.Emission = Colour::ToVec3(phong.GetEmission());
-        data.AmbientTexture = phong.GetAmbientMap().Id();
-        data.DiffuseTexture = phong.GetDiffuseMap().Id();
-        data.SpecularTexture = phong.GetSpecularMap().Id();
-        data.EmissionTexture = phong.GetEmissionMap().Id();
+        data.AmbientTexture = _textureIndexes[phong.GetAmbientMap()];
+        data.DiffuseTexture = _textureIndexes[phong.GetDiffuseMap()];
+        data.SpecularTexture = _textureIndexes[phong.GetSpecularMap()];
+        data.EmissionTexture = _textureIndexes[phong.GetEmissionMap()];
         data.Shininess = phong.GetShininess();
 
         phongBufferWriter.Write(data);
@@ -247,44 +245,21 @@ namespace Krys::Gfx::OpenGL
     }
   }
 
-  struct TextureWithIndex
-  {
-    const Texture *Texture;
-    uint32 Index;
-  };
-
   void OpenGLRenderer::UpdateTextureTable() noexcept
   {
     BufferWriter textureTableWriter(*_textureTable);
-    List<TextureWithIndex> textures {};
 
-    std::transform(_ctx.TextureManager->GetTextures().begin(), _ctx.TextureManager->GetTextures().end(),
-                   std::back_inserter(textures),
-                   [](const auto &element) { return TextureWithIndex {element.second, element.first.Id()}; });
-
-    std::sort(std::begin(textures), std::end(textures),
-              [](const TextureWithIndex a, const TextureWithIndex b) { return a.Index < b.Index; });
-
-    auto maxIndex = textures.back().Index;
-    auto *whiteTexture =
-      _ctx.TextureManager->GetTexture(_ctx.TextureManager->CreateFlatColourTexture(Colours::White));
-    for (uint32 i = 0; i < maxIndex; ++i)
+    uint32 index = 0;
+    _textureIndexes.clear();
+    for (const auto &[handle, texture] : _ctx.TextureManager->GetTextures())
     {
-      auto it = std::find_if(textures.begin(), textures.end(),
-                             [i](const TextureWithIndex &tex) { return tex.Index == i; });
-      if (it == textures.end())
-        textures.emplace_back(TextureWithIndex {whiteTexture, i});
-    }
-
-    for (auto &textureWithIndex : textures)
-    {
-      const auto &tex = static_cast<const OpenGLBindlessTexture &>(*textureWithIndex.Texture);
-      // TODO: we need to get the index differently once we add cubemaps.
-      // Maybe we don't if we treat cubemaps separately here too.
-      auto index = textureWithIndex.Index;
-
-      textureTableWriter.Seek(index * sizeof(GLuint64));
-      textureTableWriter.Write(tex.GetNativeBindlessHandle());
+      Logger::Debug("Texture: {} - {}", handle.Id(), texture->GetName());
+      {
+        _textureIndexes[handle] = index;
+        textureTableWriter.Seek(index * sizeof(GLuint64));
+        textureTableWriter.Write(static_cast<OpenGLBindlessTexture *>(texture)->GetNativeBindlessHandle());
+        index++;
+      }
     }
   }
 
@@ -300,7 +275,7 @@ namespace Krys::Gfx::OpenGL
       auto index = handle.Id();
       lightBufferWriter.Seek(index * sizeof(LightData));
 
-      const auto &lightData = light.get()->GetData();
+      const auto lightData = light.get()->GetData();
       lightBufferWriter.Write(lightData);
 
       light->ClearIsDirtyFlag();

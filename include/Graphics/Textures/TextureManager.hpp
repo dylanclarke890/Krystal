@@ -92,7 +92,7 @@ namespace Krys::Gfx
     virtual void OnDestroy(TextureHandle handle) noexcept;
 
   protected:
-    NO_COPY_MOVE(TextureManager);
+    NO_COPY_MOVE(TextureManager)
 
     template <class T>
     struct LoadedResource

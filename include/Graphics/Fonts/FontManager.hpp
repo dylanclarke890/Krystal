@@ -40,6 +40,7 @@ namespace Krys::Gfx
 
     private:
       Ptr<TextureManager> _textureManager;
+      SamplerHandle _sampler;
       FontHandleMap<Unique<Font>> _fonts;
       Map<string, FontHandle> _fontNames;
       FontHandleManager _fontHandles;

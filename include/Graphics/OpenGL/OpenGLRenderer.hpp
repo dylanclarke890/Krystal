@@ -27,7 +27,7 @@ namespace Krys::Gfx::OpenGL
     OpenGLRenderer(const RenderContext& context) noexcept;
 
     ~OpenGLRenderer() noexcept override = default;
-    NO_COPY_MOVE(OpenGLRenderer);
+    NO_COPY_MOVE(OpenGLRenderer)
 
     void Init() noexcept override;
 
@@ -47,6 +47,7 @@ namespace Krys::Gfx::OpenGL
     Ptr<ShaderStorageBuffer> _phongMaterialBuffer {nullptr}, _textureTable {nullptr}, _lightBuffer {nullptr};
 
     Map<string, Unique<OpenGLFramebuffer>> _framebuffers;
+    TextureHandleMap<uint32> _textureIndexes;
 
     template <typename T>
     void SetUniform(GLuint program, const string &name, const T &value) noexcept

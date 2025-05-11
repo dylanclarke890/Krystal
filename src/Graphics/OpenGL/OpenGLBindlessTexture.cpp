@@ -9,8 +9,30 @@ namespace Krys::Gfx::OpenGL
   {
     int levels = !sampler.UseMipmaps ? 1 : static_cast<int>(std::log2(std::max(desc.Width, desc.Height))) + 1;
     // TODO: this should be srgb instead.
-    GLenum internalFormat = desc.Channels == 4 ? GL_RGBA8 : GL_RGB8;
-    GLenum format = desc.Channels == 4 ? GL_RGBA : GL_RGB;
+    GLenum format = 0;
+    GLenum internalFormat = 0;
+    if (desc.Channels == 1)
+    {
+      format = GL_RED;
+      internalFormat = GL_R8;
+    }
+    else if (desc.Channels == 2)
+    {
+      format = GL_RG;
+      internalFormat = GL_RG8;
+    }
+    else if (desc.Channels == 3)
+    {
+      format = GL_RGB;
+      internalFormat = GL_RGB8;
+    }
+    else if (desc.Channels == 4)
+    {
+      format = GL_RGBA;
+      internalFormat = GL_RGBA8;
+    }
+    else
+      KRYS_ASSERT(false, "Invalid number of channels: {}", desc.Channels);
 
     ::glTextureStorage2D(texture, levels, internalFormat, desc.Width, desc.Height);
     ::glTextureSubImage2D(texture, 0, 0, 0, desc.Width, desc.Height, format, GL_UNSIGNED_BYTE, data.data());
@@ -24,8 +46,30 @@ namespace Krys::Gfx::OpenGL
                                 const SamplerDescriptor &sampler, const List<byte> &data) noexcept
   {
     int levels = !sampler.UseMipmaps ? 1 : static_cast<int>(std::log2(std::max(desc.Width, desc.Height))) + 1;
-    GLenum format = desc.Channels == 4 ? GL_RGBA : GL_RGB;
-    GLenum internalFormat = desc.Channels == 4 ? GL_RGBA8 : GL_RGB8;
+    GLenum format = 0;
+    GLenum internalFormat = 0;
+    if (desc.Channels == 1)
+    {
+      format = GL_RED;
+      internalFormat = GL_R8;
+    }
+    else if (desc.Channels == 2)
+    {
+      format = GL_RG;
+      internalFormat = GL_RG8;
+    }
+    else if (desc.Channels == 3)
+    {
+      format = GL_RGB;
+      internalFormat = GL_RGB8;
+    }
+    else if (desc.Channels == 4)
+    {
+      format = GL_RGBA;
+      internalFormat = GL_RGBA8;
+    }
+    else
+      KRYS_ASSERT(false, "Invalid number of channels: {}", desc.Channels);
 
     ::glTextureStorage2D(texture, levels, internalFormat, desc.Width, desc.Height);
     ::glTextureSubImage2D(texture, 0, 0, 0, desc.Width, desc.Height, format, GL_UNSIGNED_BYTE, data.data());
@@ -64,9 +108,13 @@ namespace Krys::Gfx::OpenGL
     GLuint texture;
     ::glCreateTextures(GL_TEXTURE_2D, 1, &texture);
 
+    int alignment = (descriptor.Channels == 1 ? 1 : 4);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
+
     switch (descriptor.Type)
     {
       case TextureType::Image:               CreateImageTexture(texture, descriptor, sampler, data); break;
+      case TextureType::Font:
       case TextureType::Data:                CreateDataTexture(texture, descriptor, sampler, data); break;
       case TextureType::RenderTargetDepth:   CreateRenderTargetDepthTexture(texture, descriptor); break;
       case TextureType::RenderTargetColour:  CreateRenderTargetColourTexture(texture, descriptor); break;

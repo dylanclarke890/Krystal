@@ -11,7 +11,7 @@ namespace Krys::Gfx
   class SceneGraph
   {
   public:
-    NO_COPY_MOVE(SceneGraph);
+    NO_COPY_MOVE(SceneGraph)
 
     SceneGraph(SceneGraphHandle handle, const string &name) noexcept : _handle(handle), _name(name), _root(CreateUnique<Node>())
     {
