@@ -4,13 +4,13 @@
 #include "Graphics/Cameras/Camera.hpp"
 #include "Graphics/Lights/LightData.hpp"
 #include "Graphics/Materials/PhongMaterial.hpp"
-#include "Graphics/OpenGL/OpenGLBindlessTexture.hpp"
 #include "Graphics/OpenGL/OpenGLBuffer.hpp"
 #include "Graphics/OpenGL/OpenGLFramebuffer.hpp"
 #include "Graphics/OpenGL/OpenGLGraphicsContext.hpp"
 #include "Graphics/OpenGL/OpenGLMesh.hpp"
 #include "Graphics/OpenGL/OpenGLMeshManager.hpp"
 #include "Graphics/OpenGL/OpenGLProgram.hpp"
+#include "Graphics/OpenGL/OpenGLTexture.hpp"
 #include "Graphics/OpenGL/OpenGLTextureManager.hpp"
 #include "Graphics/RenderTargets/RenderTargetManager.hpp"
 #include "Graphics/Scene/MaterialNode.hpp"
@@ -40,8 +40,87 @@ namespace Krys::Gfx::OpenGL
     _lightBuffer = _ctx.GraphicsContext->GetShaderStorageBuffer(_lightBufferHandle);
   }
 
-  void OpenGLRenderer::BeforeRender() noexcept
+  static OpenGLTexture *_cyanTexture;
+  static OpenGLTexture *_orangeTexture;
+  static GLuint _cyanVAO;
+  static GLuint _orangeVAO;
+  static OpenGLProgram *_program;
+
+  void OpenGLRenderer::SetupTest() noexcept
   {
+    {
+      auto handle = _ctx.TextureManager->CreateFlatColourTexture(Colours::Cyan);
+      _cyanTexture = static_cast<OpenGLTexture *>(_ctx.TextureManager->GetTexture(handle));
+      glObjectLabel(GL_TEXTURE, _cyanTexture->GetNativeHandle(), -1, "Cyan Texture");
+    }
+
+    {
+      auto handle = _ctx.TextureManager->CreateFlatColourTexture(Colours::Orange);
+      _orangeTexture = static_cast<OpenGLTexture *>(_ctx.TextureManager->GetTexture(handle));
+      glObjectLabel(GL_TEXTURE, _orangeTexture->GetNativeHandle(), -1, "Orange Texture");
+    }
+
+    // Create a vertexBuffer for the cyan quad that covers the left half of the screen
+    auto cyanVertices = std::array<float, 16> {
+      -1.0f, -1.0f, 0.0f, 0.0f, // Bottom left
+      0.0f,  -1.0f, 1.0f, 0.0f, // Bottom right (at center)
+      -1.0f, 1.0f,  0.0f, 1.0f, // Top left
+      0.0f,  1.0f,  1.0f, 1.0f  // Top right (at center)
+    };
+
+    // Create a vertexBuffer for the orange quad that covers the right half of the screen
+    auto orangeVertices = std::array<float, 16> {
+      0.0f, -1.0f, 0.0f, 0.0f, // Bottom left (at center)
+      1.0f, -1.0f, 1.0f, 0.0f, // Bottom right
+      0.0f, 1.0f,  0.0f, 1.0f, // Top left (at center)
+      1.0f, 1.0f,  1.0f, 1.0f  // Top right
+    };
+
+    auto CreateVAO = [&](GLuint &vao, const Array<float, 16> &vertices) noexcept
+    {
+      glCreateVertexArrays(1, &vao);
+      glBindVertexArray(vao);
+
+      VertexBufferHandle vBufferHandle =
+        _ctx.GraphicsContext->CreateVertexBuffer((uint32)(vertices.size() * sizeof(float)));
+      {
+        auto *buffer =
+          static_cast<OpenGLVertexBuffer *>(_ctx.GraphicsContext->GetVertexBuffer(vBufferHandle));
+        BufferWriter<VertexBuffer> writer(*buffer);
+        writer.Write(vertices);
+      }
+
+      auto indices = std::array<uint32, 6> {0, 1, 2, 1, 3, 2};
+      IndexBufferHandle iBufferHandle =
+        _ctx.GraphicsContext->CreateIndexBuffer((uint32)(indices.size() * sizeof(uint32)));
+
+      {
+        auto *buffer = static_cast<OpenGLIndexBuffer *>(_ctx.GraphicsContext->GetIndexBuffer(iBufferHandle));
+        BufferWriter<IndexBuffer> writer(*buffer);
+        writer.Write(indices);
+      }
+
+      VertexLayout layout({VertexAttributeType::FLOAT_2, VertexAttributeType::FLOAT_2});
+      static_cast<OpenGLGraphicsContext *>(_ctx.GraphicsContext)
+        ->SetupVertexArray(vBufferHandle, iBufferHandle, layout);
+    };
+
+    CreateVAO(_cyanVAO, cyanVertices);
+    glObjectLabel(GL_VERTEX_ARRAY, _cyanVAO, -1, "Cyan VAO");
+    CreateVAO(_orangeVAO, orangeVertices);
+    glObjectLabel(GL_VERTEX_ARRAY, _orangeVAO, -1, "Orange VAO");
+
+    {
+      auto fragmentShader =
+        _ctx.GraphicsContext->CreateShader(ShaderStage::Fragment, IO::ReadFileText("shaders/basic.frag"));
+      auto vertexShader =
+        _ctx.GraphicsContext->CreateShader(ShaderStage::Vertex, IO::ReadFileText("shaders/basic.vert"));
+      auto programHandle = _ctx.GraphicsContext->CreateProgram(fragmentShader, vertexShader);
+
+      _program = static_cast<OpenGLProgram *>(_ctx.GraphicsContext->GetProgram(programHandle));
+      _program->Bind();
+      glObjectLabel(GL_PROGRAM, _program->GetNativeHandle(), -1, "Test Program");
+    }
   }
 
   void OpenGLRenderer::OnRenderPipelineChange() noexcept
@@ -52,7 +131,7 @@ namespace Krys::Gfx::OpenGL
     {
       auto *renderTarget = _ctx.RenderTargetManager->GetRenderTarget(attachment.Target);
       auto *texture = _ctx.TextureManager->GetTexture(renderTarget->GetTexture());
-      return static_cast<OpenGLBindlessTexture *>(texture)->GetNativeHandle();
+      return static_cast<OpenGLTexture *>(texture)->GetNativeHandle();
     };
 
     auto &passes = _pipeline.GetPasses();
@@ -130,6 +209,44 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLRenderer::AfterRenderPass(const RenderPass &) noexcept
   {
+  }
+
+  void OpenGLRenderer::RenderTest() noexcept
+  {
+    ::glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "OpenGLRenderer::RenderTest");
+
+    ::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    ::glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    ::glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "RenderTest::Cyan");
+    if (_cyanTexture->IsBindless())
+    {
+      SetUniform(_program->GetNativeHandle(), "u_Texture", _cyanTexture->GetNativeBindlessHandle());
+    }
+    else
+    {
+      SetUniform(_program->GetNativeHandle(), "u_Texture", 0);
+      _cyanTexture->Bind(0);
+    }
+    ::glBindVertexArray(_cyanVAO);
+    ::glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    ::glPopDebugGroup();
+
+    ::glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "RenderTest::Orange");
+    if (_orangeTexture->IsBindless())
+    {
+      SetUniform(_program->GetNativeHandle(), "u_Texture", _orangeTexture->GetNativeBindlessHandle());
+    }
+    else
+    {
+      SetUniform(_program->GetNativeHandle(), "u_Texture", 0);
+      _orangeTexture->Bind(0);
+    }
+    ::glBindVertexArray(_orangeVAO);
+    ::glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    ::glPopDebugGroup();
+
+    ::glPopDebugGroup();
   }
 
   void OpenGLRenderer::Render() noexcept
@@ -257,7 +374,7 @@ namespace Krys::Gfx::OpenGL
       {
         _textureIndexes[handle] = index;
         textureTableWriter.Seek(index * sizeof(GLuint64));
-        textureTableWriter.Write(static_cast<OpenGLBindlessTexture *>(texture)->GetNativeBindlessHandle());
+        textureTableWriter.Write(static_cast<OpenGLTexture *>(texture)->GetNativeBindlessHandle());
         index++;
       }
     }

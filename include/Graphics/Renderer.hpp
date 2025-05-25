@@ -22,6 +22,10 @@ namespace Krys::Gfx
 
     virtual void Render() noexcept = 0;
 
+    virtual void RenderTest() noexcept = 0;
+
+    virtual void SetupTest() noexcept = 0;
+
     void SetRenderPipeline(RenderPipeline pipeline) noexcept;
 
   protected:

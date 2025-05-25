@@ -26,6 +26,9 @@ namespace Krys::Gfx::OpenGL
     void Clear(ClearBuffer flags) noexcept override;
     void SetClearColour(const Colour &colour) noexcept override;
 
+    void SetupVertexArray(VertexBufferHandle vertexBuffer, IndexBufferHandle indexBuffer,
+                          const VertexLayout &layout) noexcept;
+
   protected:
     Unique<Program> CreateProgramImpl(ProgramHandle handle, ShaderHandle vertexShader,
                                       ShaderHandle fragmentShader) noexcept override;

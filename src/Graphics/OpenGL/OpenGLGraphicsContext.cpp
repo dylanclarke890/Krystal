@@ -24,6 +24,30 @@ namespace Krys::Gfx::OpenGL
     }
   }
 
+  struct OpenGLAttributeInfo
+  {
+    GLenum Type;
+    bool IsFloat;
+  };
+
+  static OpenGLAttributeInfo GetOpenGLAttributeInfo(VertexAttributeType attrType) noexcept
+  {
+    switch (attrType)
+    {
+      case VertexAttributeType::FLOAT_1:  return {GL_FLOAT, true};
+      case VertexAttributeType::FLOAT_2:  return {GL_FLOAT, true};
+      case VertexAttributeType::FLOAT_3:  return {GL_FLOAT, true};
+      case VertexAttributeType::FLOAT_4:  return {GL_FLOAT, true};
+      case VertexAttributeType::UINT32_1: return {GL_UNSIGNED_INT, false};
+      case VertexAttributeType::UINT32_2: return {GL_UNSIGNED_INT, false};
+      case VertexAttributeType::UINT32_3: return {GL_UNSIGNED_INT, false};
+      case VertexAttributeType::UINT32_4: return {GL_UNSIGNED_INT, false};
+      default:
+        KRYS_ASSERT(false, "Unrecognised VertexAttributeType: {0}", static_cast<uint8>(attrType));
+        return {0, false};
+    }
+  }
+
   static void OpenGLMessageCallback(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei,
                                     const char *msg, const void *)
   {
@@ -84,13 +108,17 @@ namespace Krys::Gfx::OpenGL
 
   void OpenGLGraphicsContext::Init() noexcept
   {
-    ::glEnable(GL_DEBUG_OUTPUT);
-    ::glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-    ::glDebugMessageCallback(OpenGLMessageCallback, nullptr);
-    LoadDeviceCapabilities(_deviceCapabilities);
+    ::glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "OpenGLGraphicsContext::Init");
+    {
+      ::glEnable(GL_DEBUG_OUTPUT);
+      ::glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+      ::glDebugMessageCallback(OpenGLMessageCallback, nullptr);
+      LoadDeviceCapabilities(_deviceCapabilities);
 
-    ::glEnable(GL_DEPTH_TEST);
-    // ::glEnable(GL_CULL_FACE);
+      ::glEnable(GL_DEPTH_TEST);
+      // ::glEnable(GL_CULL_FACE);
+    }
+    ::glPopDebugGroup();
   }
 
   void OpenGLGraphicsContext::SetViewport(const Vec4ui &viewport) noexcept
@@ -115,6 +143,39 @@ namespace Krys::Gfx::OpenGL
 
     ::glClearColor(colour.r, colour.g, colour.b, colour.a);
     _clearColour = colour;
+  }
+
+  void OpenGLGraphicsContext::SetupVertexArray(VertexBufferHandle vertexBuffer, IndexBufferHandle indexBuffer,
+                                               const VertexLayout &layout) noexcept
+  {
+    KRYS_ASSERT(vertexBuffer.IsValid(), "Invalid vertex buffer handle");
+    GetVertexBuffer(vertexBuffer)->Bind();
+
+    if (indexBuffer.IsValid())
+      GetIndexBuffer(indexBuffer)->Bind();
+
+    auto index = 0u;
+    for (auto &attr : layout)
+    {
+      ::glEnableVertexAttribArray(index);
+
+      auto [type, components, offset, size] = attr;
+      auto [openGLType, isFloat] = GetOpenGLAttributeInfo(type);
+
+      if (isFloat)
+      {
+        ::glVertexAttribPointer(index, components, openGLType, GL_FALSE,
+                                static_cast<GLsizei>(layout.GetStride()),
+                                reinterpret_cast<void *>(static_cast<uintptr_t>(offset)));
+      }
+      else
+      {
+        ::glVertexAttribIPointer(index, components, openGLType, static_cast<GLsizei>(layout.GetStride()),
+                                 reinterpret_cast<void *>(static_cast<uintptr_t>(offset)));
+      }
+
+      index++;
+    }
   }
 
   void OpenGLGraphicsContext::Clear(ClearBuffer flags) noexcept

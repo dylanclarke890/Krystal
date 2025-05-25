@@ -31,12 +31,15 @@ namespace Krys::Gfx::OpenGL
 
     void Init() noexcept override;
 
+    void SetupTest() noexcept override;
+
     void Render() noexcept override;
+
+    void RenderTest() noexcept override;
 
     void OnRenderPipelineChange() noexcept override;
 
   protected:
-    void BeforeRender() noexcept override;
     void Render(Node *node, const Transform &parentTransform, Camera &camera) noexcept;
 
     void BeforeRenderPass(const RenderPass &pass) noexcept override;

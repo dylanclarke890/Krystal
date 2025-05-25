@@ -1,4 +1,4 @@
-#include "Graphics/OpenGL/OpenGLBindlessTexture.hpp"
+#include "Graphics/OpenGL/OpenGLTexture.hpp"
 #include "Graphics/OpenGL/OpenGLSampler.hpp"
 
 namespace Krys::Gfx::OpenGL
@@ -108,8 +108,8 @@ namespace Krys::Gfx::OpenGL
     GLuint texture;
     ::glCreateTextures(GL_TEXTURE_2D, 1, &texture);
 
-    int alignment = (descriptor.Channels == 1 ? 1 : 4);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
+    // int alignment = (descriptor.Channels == 1 ? 1 : 4);
+    // glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
 
     switch (descriptor.Type)
     {
@@ -137,26 +137,42 @@ namespace Krys::Gfx::OpenGL
     return handle;
   }
 
-  OpenGLBindlessTexture::OpenGLBindlessTexture(TextureHandle handle, const TextureDescriptor &descriptor,
-                                               OpenGLSampler &sampler, const List<byte> &data) noexcept
+  OpenGLTexture::OpenGLTexture(TextureHandle handle, const TextureDescriptor &descriptor,
+                               OpenGLSampler &sampler, const List<byte> &data) noexcept
       : Texture(handle, descriptor), _id(CreateTexture(descriptor, sampler.GetDescriptor(), data))
   {
-    _bindlessHandle = CreateBindlessHandle(_id, sampler.GetNativeHandle());
+    if (descriptor.IsBindless)
+      _bindlessHandle = CreateBindlessHandle(_id, sampler.GetNativeHandle());
   }
 
-  OpenGLBindlessTexture::~OpenGLBindlessTexture() noexcept
+  OpenGLTexture::~OpenGLTexture() noexcept
   {
-    ::glMakeTextureHandleNonResidentARB(_bindlessHandle);
+    if (_bindlessHandle != 0)
+      ::glMakeTextureHandleNonResidentARB(_bindlessHandle);
     ::glDeleteTextures(1, &_id);
   }
 
-  GLuint OpenGLBindlessTexture::GetNativeHandle() const noexcept
+  GLuint OpenGLTexture::GetNativeHandle() const noexcept
   {
     return _id;
   }
 
-  GLuint64 OpenGLBindlessTexture::GetNativeBindlessHandle() const noexcept
+  GLuint64 OpenGLTexture::GetNativeBindlessHandle() const noexcept
   {
+    KRYS_ASSERT(_bindlessHandle != 0, "Bindless handle is not valid");
+    KRYS_ASSERT(_descriptor.IsBindless, "Texture is not bindless");
     return _bindlessHandle;
+  }
+
+  void OpenGLTexture::Bind(uint32 unit) const noexcept
+  {
+    KRYS_ASSERT(_id != 0, "Texture is not valid");
+    KRYS_ASSERT(!_descriptor.IsBindless, "Texture is bindless");
+    ::glBindTextureUnit(unit, _id);
+  }
+
+  bool OpenGLTexture::IsBindless() const noexcept
+  {
+    return _descriptor.IsBindless;
   }
 }

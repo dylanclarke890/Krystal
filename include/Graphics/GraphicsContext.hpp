@@ -9,6 +9,7 @@
 #include "Graphics/PrimitiveType.hpp"
 #include "Graphics/Program.hpp"
 #include "Graphics/Shader.hpp"
+#include "Graphics/VertexLayout.hpp"
 #include "MTL/Vectors/Vec3.hpp"
 #include "MTL/Vectors/Vec4.hpp"
 

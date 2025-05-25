@@ -82,7 +82,18 @@ namespace Krys::Platform
 
     KRYS_ASSERT_ALWAYS_EVAL(::SetPixelFormat(_deviceContext, pfdID, &pfd), "Failed to set the pixel format");
 
-    HGLRC renderContext = ::wglCreateContext(_deviceContext);
+    int attribs[] = {// Major version
+                     WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
+                     // Minor version
+                     WGL_CONTEXT_MINOR_VERSION_ARB, 5,
+                     // OpenGL profile
+                     WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+                     // OpenGL context flags
+                     WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_DEBUG_BIT_ARB,
+                     // End of attributes
+                     0};
+
+    HGLRC renderContext = wglCreateContextAttribsARB(_deviceContext, 0, attribs);
     KRYS_ASSERT(renderContext, "Failed to create OpenGL context");
     KRYS_ASSERT_ALWAYS_EVAL(::wglMakeCurrent(_deviceContext, renderContext),
                             "Failed to make OpenGL context current");

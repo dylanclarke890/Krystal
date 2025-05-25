@@ -31,8 +31,6 @@ namespace Krys::Gfx::OpenGL
     void SetIndices(const List<index_t> &indices) noexcept override;
 
   private:
-    void SetupVAO() noexcept;
-
     GLuint _vao;
     Ptr<OpenGLGraphicsContext> _ctx;
   };

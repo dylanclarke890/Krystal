@@ -12,5 +12,6 @@ namespace Krys::Gfx
     TextureType Type {TextureType::Image};
     uint32 Width {0}, Height {0}, Channels {0};
     SamplerHandle Sampler;
+    bool IsBindless {false};
   };
 }

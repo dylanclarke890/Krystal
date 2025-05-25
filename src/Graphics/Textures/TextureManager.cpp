@@ -213,7 +213,8 @@ namespace Krys::Gfx
                                             .Width = 1,
                                             .Height = 1,
                                             .Channels = 4,
-                                            .Sampler = DefaultTextureSampler()},
+                                            .Sampler = DefaultTextureSampler(),
+                                            .IsBindless = true},
                          {Colour::AsBytes(colour)});
   }
 }
